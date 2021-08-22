@@ -14,7 +14,7 @@
 #include "discord.h"
 
 
-enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char *s){
+enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char *s){
   if(strcasecmp("ZERO", s) == 0) return DISCORD_PERMISSIONS_ZERO;
   if(strcasecmp("CREATE_INSTANT_INVITE", s) == 0) return DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE;
   if(strcasecmp("KICK_MEMBERS", s) == 0) return DISCORD_PERMISSIONS_KICK_MEMBERS;
@@ -47,79 +47,50 @@ enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_st
   if(strcasecmp("MANAGE_ROLES", s) == 0) return DISCORD_PERMISSIONS_MANAGE_ROLES;
   if(strcasecmp("MANAGE_WEBHOOKS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_WEBHOOKS;
   if(strcasecmp("MANAGE_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_EMOJIS;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags v){
-  if (v == DISCORD_PERMISSIONS_ZERO) return "ZERO";
-  if (v == DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE) return "CREATE_INSTANT_INVITE";
-  if (v == DISCORD_PERMISSIONS_KICK_MEMBERS) return "KICK_MEMBERS";
-  if (v == DISCORD_PERMISSIONS_BAN_MEMBERS) return "BAN_MEMBERS";
-  if (v == DISCORD_PERMISSIONS_ADMINISTRATOR) return "ADMINISTRATOR";
-  if (v == DISCORD_PERMISSIONS_MANAGE_CHANNELS) return "MANAGE_CHANNELS";
-  if (v == DISCORD_PERMISSIONS_MANAGE_GUILD) return "MANAGE_GUILD";
-  if (v == DISCORD_PERMISSIONS_ADD_REACTIONS) return "ADD_REACTIONS";
-  if (v == DISCORD_PERMISSIONS_VIEW_AUDIT_LOG) return "VIEW_AUDIT_LOG";
-  if (v == DISCORD_PERMISSIONS_PRIORITY_SPEAKER) return "PRIORITY_SPEAKER";
-  if (v == DISCORD_PERMISSIONS_STREAM) return "STREAM";
-  if (v == DISCORD_PERMISSIONS_VIEW_CHANNEL) return "VIEW_CHANNEL";
-  if (v == DISCORD_PERMISSIONS_SEND_MESSAGES) return "SEND_MESSAGES";
-  if (v == DISCORD_PERMISSIONS_SEND_TTS_MESSAGES) return "SEND_TTS_MESSAGES";
-  if (v == DISCORD_PERMISSIONS_MANAGE_MESSAGES) return "MANAGE_MESSAGES";
-  if (v == DISCORD_PERMISSIONS_EMBED_LINKS) return "EMBED_LINKS";
-  if (v == DISCORD_PERMISSIONS_ATTACH_FILES) return "ATTACH_FILES";
-  if (v == DISCORD_PERMISSIONS_READ_MESSAGE_HISTORY) return "READ_MESSAGE_HISTORY";
-  if (v == DISCORD_PERMISSIONS_MENTION_EVERYONE) return "MENTION_EVERYONE";
-  if (v == DISCORD_PERMISSIONS_USE_EXTERNAL_EMOJIS) return "USE_EXTERNAL_EMOJIS";
-  if (v == DISCORD_PERMISSIONS_VIEW_GUILD_INSIGHTS) return "VIEW_GUILD_INSIGHTS";
-  if (v == DISCORD_PERMISSIONS_CONNECT) return "CONNECT";
-  if (v == DISCORD_PERMISSIONS_SPEAK) return "SPEAK";
-  if (v == DISCORD_PERMISSIONS_MUTE_MEMBERS) return "MUTE_MEMBERS";
-  if (v == DISCORD_PERMISSIONS_DEAFEN_MEMBERS) return "DEAFEN_MEMBERS";
-  if (v == DISCORD_PERMISSIONS_MOVE_MEMBERS) return "MOVE_MEMBERS";
-  if (v == DISCORD_PERMISSIONS_USE_VAD) return "USE_VAD";
-  if (v == DISCORD_PERMISSIONS_CHANGE_NICKNAME) return "CHANGE_NICKNAME";
-  if (v == DISCORD_PERMISSIONS_MANAGE_NICKNAMES) return "MANAGE_NICKNAMES";
-  if (v == DISCORD_PERMISSIONS_MANAGE_ROLES) return "MANAGE_ROLES";
-  if (v == DISCORD_PERMISSIONS_MANAGE_WEBHOOKS) return "MANAGE_WEBHOOKS";
-  if (v == DISCORD_PERMISSIONS_MANAGE_EMOJIS) return "MANAGE_EMOJIS";
+char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_PERMISSIONS_ZERO: return "ZERO";
+  case DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE: return "CREATE_INSTANT_INVITE";
+  case DISCORD_PERMISSIONS_KICK_MEMBERS: return "KICK_MEMBERS";
+  case DISCORD_PERMISSIONS_BAN_MEMBERS: return "BAN_MEMBERS";
+  case DISCORD_PERMISSIONS_ADMINISTRATOR: return "ADMINISTRATOR";
+  case DISCORD_PERMISSIONS_MANAGE_CHANNELS: return "MANAGE_CHANNELS";
+  case DISCORD_PERMISSIONS_MANAGE_GUILD: return "MANAGE_GUILD";
+  case DISCORD_PERMISSIONS_ADD_REACTIONS: return "ADD_REACTIONS";
+  case DISCORD_PERMISSIONS_VIEW_AUDIT_LOG: return "VIEW_AUDIT_LOG";
+  case DISCORD_PERMISSIONS_PRIORITY_SPEAKER: return "PRIORITY_SPEAKER";
+  case DISCORD_PERMISSIONS_STREAM: return "STREAM";
+  case DISCORD_PERMISSIONS_VIEW_CHANNEL: return "VIEW_CHANNEL";
+  case DISCORD_PERMISSIONS_SEND_MESSAGES: return "SEND_MESSAGES";
+  case DISCORD_PERMISSIONS_SEND_TTS_MESSAGES: return "SEND_TTS_MESSAGES";
+  case DISCORD_PERMISSIONS_MANAGE_MESSAGES: return "MANAGE_MESSAGES";
+  case DISCORD_PERMISSIONS_EMBED_LINKS: return "EMBED_LINKS";
+  case DISCORD_PERMISSIONS_ATTACH_FILES: return "ATTACH_FILES";
+  case DISCORD_PERMISSIONS_READ_MESSAGE_HISTORY: return "READ_MESSAGE_HISTORY";
+  case DISCORD_PERMISSIONS_MENTION_EVERYONE: return "MENTION_EVERYONE";
+  case DISCORD_PERMISSIONS_USE_EXTERNAL_EMOJIS: return "USE_EXTERNAL_EMOJIS";
+  case DISCORD_PERMISSIONS_VIEW_GUILD_INSIGHTS: return "VIEW_GUILD_INSIGHTS";
+  case DISCORD_PERMISSIONS_CONNECT: return "CONNECT";
+  case DISCORD_PERMISSIONS_SPEAK: return "SPEAK";
+  case DISCORD_PERMISSIONS_MUTE_MEMBERS: return "MUTE_MEMBERS";
+  case DISCORD_PERMISSIONS_DEAFEN_MEMBERS: return "DEAFEN_MEMBERS";
+  case DISCORD_PERMISSIONS_MOVE_MEMBERS: return "MOVE_MEMBERS";
+  case DISCORD_PERMISSIONS_USE_VAD: return "USE_VAD";
+  case DISCORD_PERMISSIONS_CHANGE_NICKNAME: return "CHANGE_NICKNAME";
+  case DISCORD_PERMISSIONS_MANAGE_NICKNAMES: return "MANAGE_NICKNAMES";
+  case DISCORD_PERMISSIONS_MANAGE_ROLES: return "MANAGE_ROLES";
+  case DISCORD_PERMISSIONS_MANAGE_WEBHOOKS: return "MANAGE_WEBHOOKS";
+  case DISCORD_PERMISSIONS_MANAGE_EMOJIS: return "MANAGE_EMOJIS";
+  }
+
+  return NULL;
 }
-bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags v, char *s) {
-  enum discord_permissions_bitwise_flags v1 = discord_permissions_bitwise_flags_from_string(s);
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  if (v & v1) return true;
-  return false;
+bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags v, char *s) {
+  enum discord_permissions_bitwise_flags v1 = discord_permissions_bitwise_flags_eval(s);
+  return v & v1;
 }
 
 void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp)

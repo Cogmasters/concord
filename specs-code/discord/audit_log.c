@@ -197,7 +197,7 @@ size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audi
 
 
 
-enum discord_audit_log_events discord_audit_log_events_from_string(char *s){
+enum discord_audit_log_events discord_audit_log_events_eval(char *s){
   if(strcasecmp("GUILD_UPDATE", s) == 0) return DISCORD_AUDIT_LOG_GUILD_UPDATE;
   if(strcasecmp("CHANNEL_CREATE", s) == 0) return DISCORD_AUDIT_LOG_CHANNEL_CREATE;
   if(strcasecmp("CHANNEL_UPDATE", s) == 0) return DISCORD_AUDIT_LOG_CHANNEL_UPDATE;
@@ -232,83 +232,52 @@ enum discord_audit_log_events discord_audit_log_events_from_string(char *s){
   if(strcasecmp("INTEGRATION_CREATE", s) == 0) return DISCORD_AUDIT_LOG_INTEGRATION_CREATE;
   if(strcasecmp("INTEGRATION_UPDATE", s) == 0) return DISCORD_AUDIT_LOG_INTEGRATION_UPDATE;
   if(strcasecmp("INTEGRATION_DELETE", s) == 0) return DISCORD_AUDIT_LOG_INTEGRATION_DELETE;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_audit_log_events_to_string(enum discord_audit_log_events v){
-  if (v == DISCORD_AUDIT_LOG_GUILD_UPDATE) return "GUILD_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_CHANNEL_CREATE) return "CHANNEL_CREATE";
-  if (v == DISCORD_AUDIT_LOG_CHANNEL_UPDATE) return "CHANNEL_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_CHANNEL_DELETE) return "CHANNEL_DELETE";
-  if (v == DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE) return "CHANNEL_OVERWRITE_CREATE";
-  if (v == DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE) return "CHANNEL_OVERWRITE_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE) return "CHANNEL_OVERWRITE_DELETE";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_KICK) return "MEMBER_KICK";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_PRUNE) return "MEMBER_PRUNE";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_BAN_ADD) return "MEMBER_BAN_ADD";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE) return "MEMBER_BAN_REMOVE";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_UPDATE) return "MEMBER_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE) return "MEMBER_ROLE_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_MOVE) return "MEMBER_MOVE";
-  if (v == DISCORD_AUDIT_LOG_MEMBER_DISCONNECT) return "MEMBER_DISCONNECT";
-  if (v == DISCORD_AUDIT_LOG_BOT_ADD) return "BOT_ADD";
-  if (v == DISCORD_AUDIT_LOG_ROLE_CREATE) return "ROLE_CREATE";
-  if (v == DISCORD_AUDIT_LOG_ROLE_UPDATE) return "ROLE_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_ROLE_DELETE) return "ROLE_DELETE";
-  if (v == DISCORD_AUDIT_LOG_INVITE_CREATE) return "INVITE_CREATE";
-  if (v == DISCORD_AUDIT_LOG_INVITE_DELETE) return "INVITE_DELETE";
-  if (v == DISCORD_AUDIT_LOG_WEBHOOK_CREATE) return "WEBHOOK_CREATE";
-  if (v == DISCORD_AUDIT_LOG_WEBHOOK_UPDATE) return "WEBHOOK_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_WEBHOOK_DELETE) return "WEBHOOK_DELETE";
-  if (v == DISCORD_AUDIT_LOG_EMOJI_CREATE) return "EMOJI_CREATE";
-  if (v == DISCORD_AUDIT_LOG_EMOJI_UPDATE) return "EMOJI_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_EMOJI_DELETE) return "EMOJI_DELETE";
-  if (v == DISCORD_AUDIT_LOG_MESSAGE_DELETE) return "MESSAGE_DELETE";
-  if (v == DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE) return "MESSAGE_BULK_DELETE";
-  if (v == DISCORD_AUDIT_LOG_MESSAGE_PIN) return "MESSAGE_PIN";
-  if (v == DISCORD_AUDIT_LOG_MESSAGE_UNPIN) return "MESSAGE_UNPIN";
-  if (v == DISCORD_AUDIT_LOG_INTEGRATION_CREATE) return "INTEGRATION_CREATE";
-  if (v == DISCORD_AUDIT_LOG_INTEGRATION_UPDATE) return "INTEGRATION_UPDATE";
-  if (v == DISCORD_AUDIT_LOG_INTEGRATION_DELETE) return "INTEGRATION_DELETE";
+char* discord_audit_log_events_print(enum discord_audit_log_events v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_AUDIT_LOG_GUILD_UPDATE: return "GUILD_UPDATE";
+  case DISCORD_AUDIT_LOG_CHANNEL_CREATE: return "CHANNEL_CREATE";
+  case DISCORD_AUDIT_LOG_CHANNEL_UPDATE: return "CHANNEL_UPDATE";
+  case DISCORD_AUDIT_LOG_CHANNEL_DELETE: return "CHANNEL_DELETE";
+  case DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE: return "CHANNEL_OVERWRITE_CREATE";
+  case DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE: return "CHANNEL_OVERWRITE_UPDATE";
+  case DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE: return "CHANNEL_OVERWRITE_DELETE";
+  case DISCORD_AUDIT_LOG_MEMBER_KICK: return "MEMBER_KICK";
+  case DISCORD_AUDIT_LOG_MEMBER_PRUNE: return "MEMBER_PRUNE";
+  case DISCORD_AUDIT_LOG_MEMBER_BAN_ADD: return "MEMBER_BAN_ADD";
+  case DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE: return "MEMBER_BAN_REMOVE";
+  case DISCORD_AUDIT_LOG_MEMBER_UPDATE: return "MEMBER_UPDATE";
+  case DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE: return "MEMBER_ROLE_UPDATE";
+  case DISCORD_AUDIT_LOG_MEMBER_MOVE: return "MEMBER_MOVE";
+  case DISCORD_AUDIT_LOG_MEMBER_DISCONNECT: return "MEMBER_DISCONNECT";
+  case DISCORD_AUDIT_LOG_BOT_ADD: return "BOT_ADD";
+  case DISCORD_AUDIT_LOG_ROLE_CREATE: return "ROLE_CREATE";
+  case DISCORD_AUDIT_LOG_ROLE_UPDATE: return "ROLE_UPDATE";
+  case DISCORD_AUDIT_LOG_ROLE_DELETE: return "ROLE_DELETE";
+  case DISCORD_AUDIT_LOG_INVITE_CREATE: return "INVITE_CREATE";
+  case DISCORD_AUDIT_LOG_INVITE_DELETE: return "INVITE_DELETE";
+  case DISCORD_AUDIT_LOG_WEBHOOK_CREATE: return "WEBHOOK_CREATE";
+  case DISCORD_AUDIT_LOG_WEBHOOK_UPDATE: return "WEBHOOK_UPDATE";
+  case DISCORD_AUDIT_LOG_WEBHOOK_DELETE: return "WEBHOOK_DELETE";
+  case DISCORD_AUDIT_LOG_EMOJI_CREATE: return "EMOJI_CREATE";
+  case DISCORD_AUDIT_LOG_EMOJI_UPDATE: return "EMOJI_UPDATE";
+  case DISCORD_AUDIT_LOG_EMOJI_DELETE: return "EMOJI_DELETE";
+  case DISCORD_AUDIT_LOG_MESSAGE_DELETE: return "MESSAGE_DELETE";
+  case DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE: return "MESSAGE_BULK_DELETE";
+  case DISCORD_AUDIT_LOG_MESSAGE_PIN: return "MESSAGE_PIN";
+  case DISCORD_AUDIT_LOG_MESSAGE_UNPIN: return "MESSAGE_UNPIN";
+  case DISCORD_AUDIT_LOG_INTEGRATION_CREATE: return "INTEGRATION_CREATE";
+  case DISCORD_AUDIT_LOG_INTEGRATION_UPDATE: return "INTEGRATION_UPDATE";
+  case DISCORD_AUDIT_LOG_INTEGRATION_DELETE: return "INTEGRATION_DELETE";
+  }
+
+  return NULL;
 }
-bool discord_audit_log_events_has(enum discord_audit_log_events v, char *s) {
-  enum discord_audit_log_events v1 = discord_audit_log_events_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_audit_log_events_cmp(enum discord_audit_log_events v, char *s) {
+  enum discord_audit_log_events v1 = discord_audit_log_events_eval(s);
+  return v == v1;
 }
 
 void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp)

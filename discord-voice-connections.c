@@ -13,7 +13,7 @@ static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
 static const char*
 opcode_print(enum discord_voice_opcodes opcode)
 {
-  const char *str = discord_voice_opcodes_to_string(opcode);
+  const char *str = discord_voice_opcodes_print(opcode);
   if (NULL == str) {
     log_warn("Invalid Voice opcode (code: %d)", opcode);
     str = "Invalid Voice opcode";
@@ -24,7 +24,7 @@ opcode_print(enum discord_voice_opcodes opcode)
 static const char*
 close_opcode_print(enum discord_voice_close_opcodes opcode)
 {
-  const char *str = discord_voice_close_opcodes_to_string(opcode);
+  const char *str = discord_voice_close_opcodes_print(opcode);
   if (str) return str;
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;

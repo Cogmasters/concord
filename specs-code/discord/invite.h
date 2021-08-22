@@ -6,12 +6,21 @@
 
 
 
+// Target User Types
+// defined at specs/discord/invite.json:6:5
+/**
+ * @see https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
+ *
+ * - <tt> char* discord_invite_target_user_types_print(enum discord_invite_target_user_types code) </tt>
+ * - <tt> enum discord_invite_target_user_types discord_invite_target_user_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types code, char *code_as_str) </tt>
+ */
 enum discord_invite_target_user_types {
   DISCORD_INVITE_STREAM = 1,
 };
-extern char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types);
-extern enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char*);
-extern bool discord_invite_target_user_types_has(enum discord_invite_target_user_types, char*);
+extern char* discord_invite_target_user_types_print(enum discord_invite_target_user_types);
+extern enum discord_invite_target_user_types discord_invite_target_user_types_eval(char*);
+extern bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types, char*);
 
 // Invite Structure
 // defined at specs/discord/invite.json:19:22
@@ -19,16 +28,16 @@ extern bool discord_invite_target_user_types_has(enum discord_invite_target_user
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
  *
  * - Initializer:
- *   - <tt> discord_invite_init(struct discord_invite *) </tt>
+ *   - <tt> void discord_invite_init(struct discord_invite *) </tt>
  * - Cleanup:
- *   - <tt> discord_invite_cleanup(struct discord_invite *) </tt>
- *   - <tt> discord_invite_list_free(struct discord_invite **) </tt>
+ *   - <tt> void discord_invite_cleanup(struct discord_invite *) </tt>
+ *   - <tt> void discord_invite_list_free(struct discord_invite **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **) </tt>
- *   - <tt> discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***) </tt>
+ *   - <tt> void discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **) </tt>
+ *   - <tt> void discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *) </tt>
- *   - <tt> discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite **) </tt>
+ *   - <tt> void discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *) </tt>
+ *   - <tt> void discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite **) </tt>
  */
 struct discord_invite {
   /* specs/discord/invite.json:22:20
@@ -101,16 +110,16 @@ extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
  *
  * - Initializer:
- *   - <tt> discord_invite_metadata_init(struct discord_invite_metadata *) </tt>
+ *   - <tt> void discord_invite_metadata_init(struct discord_invite_metadata *) </tt>
  * - Cleanup:
- *   - <tt> discord_invite_metadata_cleanup(struct discord_invite_metadata *) </tt>
- *   - <tt> discord_invite_metadata_list_free(struct discord_invite_metadata **) </tt>
+ *   - <tt> void discord_invite_metadata_cleanup(struct discord_invite_metadata *) </tt>
+ *   - <tt> void discord_invite_metadata_list_free(struct discord_invite_metadata **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **) </tt>
- *   - <tt> discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***) </tt>
+ *   - <tt> void discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **) </tt>
+ *   - <tt> void discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *) </tt>
- *   - <tt> discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata **) </tt>
+ *   - <tt> void discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *) </tt>
+ *   - <tt> void discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata **) </tt>
  */
 struct discord_invite_metadata {
   /* specs/discord/invite.json:39:20

@@ -11,16 +11,16 @@
  * @see https://discord.com/developers/docs/resources/channel#modify-channel
  *
  * - Initializer:
- *   - <tt> discord_modify_channel_params_init(struct discord_modify_channel_params *) </tt>
+ *   - <tt> void discord_modify_channel_params_init(struct discord_modify_channel_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_channel_params_cleanup(struct discord_modify_channel_params *) </tt>
- *   - <tt> discord_modify_channel_params_list_free(struct discord_modify_channel_params **) </tt>
+ *   - <tt> void discord_modify_channel_params_cleanup(struct discord_modify_channel_params *) </tt>
+ *   - <tt> void discord_modify_channel_params_list_free(struct discord_modify_channel_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params **) </tt>
- *   - <tt> discord_modify_channel_params_list_from_json(char *rbuf, size_t len, struct discord_modify_channel_params ***) </tt>
+ *   - <tt> void discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params **) </tt>
+ *   - <tt> void discord_modify_channel_params_list_from_json(char *rbuf, size_t len, struct discord_modify_channel_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_channel_params_to_json(char *wbuf, size_t len, struct discord_modify_channel_params *) </tt>
- *   - <tt> discord_modify_channel_params_list_to_json(char *wbuf, size_t len, struct discord_modify_channel_params **) </tt>
+ *   - <tt> void discord_modify_channel_params_to_json(char *wbuf, size_t len, struct discord_modify_channel_params *) </tt>
+ *   - <tt> void discord_modify_channel_params_list_to_json(char *wbuf, size_t len, struct discord_modify_channel_params **) </tt>
  */
 struct discord_modify_channel_params {
   /* specs/discord/channel.endpoints-params.json:13:20
@@ -125,16 +125,16 @@ extern size_t discord_modify_channel_params_list_to_json(char *str, size_t len, 
  * @see https://discord.com/developers/docs/resources/channel#get-reactions
  *
  * - Initializer:
- *   - <tt> discord_get_reactions_params_init(struct discord_get_reactions_params *) </tt>
+ *   - <tt> void discord_get_reactions_params_init(struct discord_get_reactions_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_get_reactions_params_cleanup(struct discord_get_reactions_params *) </tt>
- *   - <tt> discord_get_reactions_params_list_free(struct discord_get_reactions_params **) </tt>
+ *   - <tt> void discord_get_reactions_params_cleanup(struct discord_get_reactions_params *) </tt>
+ *   - <tt> void discord_get_reactions_params_list_free(struct discord_get_reactions_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params **) </tt>
- *   - <tt> discord_get_reactions_params_list_from_json(char *rbuf, size_t len, struct discord_get_reactions_params ***) </tt>
+ *   - <tt> void discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params **) </tt>
+ *   - <tt> void discord_get_reactions_params_list_from_json(char *rbuf, size_t len, struct discord_get_reactions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_get_reactions_params_to_json(char *wbuf, size_t len, struct discord_get_reactions_params *) </tt>
- *   - <tt> discord_get_reactions_params_list_to_json(char *wbuf, size_t len, struct discord_get_reactions_params **) </tt>
+ *   - <tt> void discord_get_reactions_params_to_json(char *wbuf, size_t len, struct discord_get_reactions_params *) </tt>
+ *   - <tt> void discord_get_reactions_params_list_to_json(char *wbuf, size_t len, struct discord_get_reactions_params **) </tt>
  */
 struct discord_get_reactions_params {
   /* specs/discord/channel.endpoints-params.json:38:20
@@ -183,16 +183,16 @@ extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, s
  * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
  *
  * - Initializer:
- *   - <tt> discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *) </tt>
- *   - <tt> discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
- *   - <tt> discord_edit_channel_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params ***) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_edit_channel_permissions_params_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params *) </tt>
- *   - <tt> discord_edit_channel_permissions_params_list_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params *) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_list_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
  */
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:49:20
@@ -245,16 +245,16 @@ extern size_t discord_edit_channel_permissions_params_list_to_json(char *str, si
  * @see https://discord.com/developers/docs/resources/channel#follow-news-channel
  *
  * - Initializer:
- *   - <tt> discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *) </tt>
+ *   - <tt> void discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *) </tt>
- *   - <tt> discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **) </tt>
+ *   - <tt> void discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *) </tt>
+ *   - <tt> void discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
- *   - <tt> discord_follow_news_channel_params_list_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params ***) </tt>
+ *   - <tt> void discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
+ *   - <tt> void discord_follow_news_channel_params_list_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_follow_news_channel_params_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params *) </tt>
- *   - <tt> discord_follow_news_channel_params_list_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
+ *   - <tt> void discord_follow_news_channel_params_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params *) </tt>
+ *   - <tt> void discord_follow_news_channel_params_list_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
  */
 struct discord_follow_news_channel_params {
   /* specs/discord/channel.endpoints-params.json:61:20
@@ -299,16 +299,16 @@ extern size_t discord_follow_news_channel_params_list_to_json(char *str, size_t 
  * @see https://discord.com/developers/docs/resources/channel#create-channel-invite
  *
  * - Initializer:
- *   - <tt> discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *) </tt>
+ *   - <tt> void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *) </tt>
- *   - <tt> discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **) </tt>
+ *   - <tt> void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *) </tt>
+ *   - <tt> void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
- *   - <tt> discord_create_channel_invite_params_list_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params ***) </tt>
+ *   - <tt> void discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
+ *   - <tt> void discord_create_channel_invite_params_list_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_channel_invite_params_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params *) </tt>
- *   - <tt> discord_create_channel_invite_params_list_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
+ *   - <tt> void discord_create_channel_invite_params_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params *) </tt>
+ *   - <tt> void discord_create_channel_invite_params_list_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
  */
 struct discord_create_channel_invite_params {
   /* specs/discord/channel.endpoints-params.json:71:20
@@ -377,16 +377,16 @@ extern size_t discord_create_channel_invite_params_list_to_json(char *str, size_
  * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
  *
  * - Initializer:
- *   - <tt> discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *) </tt>
- *   - <tt> discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
- *   - <tt> discord_group_dm_add_recipient_params_list_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params ***) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_list_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_group_dm_add_recipient_params_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params *) </tt>
- *   - <tt> discord_group_dm_add_recipient_params_list_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params *) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_list_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
  */
 struct discord_group_dm_add_recipient_params {
   /* specs/discord/channel.endpoints-params.json:87:20
@@ -435,16 +435,16 @@ extern size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size
  * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params
  *
  * - Initializer:
- *   - <tt> discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params *) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_start_thread_with_message_params_cleanup(struct discord_start_thread_with_message_params *) </tt>
- *   - <tt> discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_cleanup(struct discord_start_thread_with_message_params *) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
- *   - <tt> discord_start_thread_with_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params ***) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_start_thread_with_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params *) </tt>
- *   - <tt> discord_start_thread_with_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params *) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
  */
 struct discord_start_thread_with_message_params {
   /* specs/discord/channel.endpoints-params.json:98:20
@@ -493,16 +493,16 @@ extern size_t discord_start_thread_with_message_params_list_to_json(char *str, s
  * @see https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params
  *
  * - Initializer:
- *   - <tt> discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_start_thread_without_message_params_cleanup(struct discord_start_thread_without_message_params *) </tt>
- *   - <tt> discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_cleanup(struct discord_start_thread_without_message_params *) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
- *   - <tt> discord_start_thread_without_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params ***) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_start_thread_without_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params *) </tt>
- *   - <tt> discord_start_thread_without_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params *) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
  */
 struct discord_start_thread_without_message_params {
   /* specs/discord/channel.endpoints-params.json:109:20
@@ -555,16 +555,16 @@ extern size_t discord_start_thread_without_message_params_list_to_json(char *str
  * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
  *
  * - Initializer:
- *   - <tt> discord_thread_response_body_init(struct discord_thread_response_body *) </tt>
+ *   - <tt> void discord_thread_response_body_init(struct discord_thread_response_body *) </tt>
  * - Cleanup:
- *   - <tt> discord_thread_response_body_cleanup(struct discord_thread_response_body *) </tt>
- *   - <tt> discord_thread_response_body_list_free(struct discord_thread_response_body **) </tt>
+ *   - <tt> void discord_thread_response_body_cleanup(struct discord_thread_response_body *) </tt>
+ *   - <tt> void discord_thread_response_body_list_free(struct discord_thread_response_body **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body **) </tt>
- *   - <tt> discord_thread_response_body_list_from_json(char *rbuf, size_t len, struct discord_thread_response_body ***) </tt>
+ *   - <tt> void discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body **) </tt>
+ *   - <tt> void discord_thread_response_body_list_from_json(char *rbuf, size_t len, struct discord_thread_response_body ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_thread_response_body_to_json(char *wbuf, size_t len, struct discord_thread_response_body *) </tt>
- *   - <tt> discord_thread_response_body_list_to_json(char *wbuf, size_t len, struct discord_thread_response_body **) </tt>
+ *   - <tt> void discord_thread_response_body_to_json(char *wbuf, size_t len, struct discord_thread_response_body *) </tt>
+ *   - <tt> void discord_thread_response_body_list_to_json(char *wbuf, size_t len, struct discord_thread_response_body **) </tt>
  */
 struct discord_thread_response_body {
   /* specs/discord/channel.endpoints-params.json:121:20

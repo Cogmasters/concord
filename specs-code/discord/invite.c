@@ -14,19 +14,21 @@
 #include "discord.h"
 
 
-enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char *s){
+enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *s){
   if(strcasecmp("STREAM", s) == 0) return DISCORD_INVITE_STREAM;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types v){
-  if (v == DISCORD_INVITE_STREAM) return "STREAM";
+char* discord_invite_target_user_types_print(enum discord_invite_target_user_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_INVITE_STREAM: return "STREAM";
+  }
+
+  return NULL;
 }
-bool discord_invite_target_user_types_has(enum discord_invite_target_user_types v, char *s) {
-  enum discord_invite_target_user_types v1 = discord_invite_target_user_types_from_string(s);
-  if (v == v1) return true;
-  return false;
+bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types v, char *s) {
+  enum discord_invite_target_user_types v1 = discord_invite_target_user_types_eval(s);
+  return v == v1;
 }
 
 void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp)

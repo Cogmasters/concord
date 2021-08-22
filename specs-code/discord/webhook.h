@@ -11,16 +11,16 @@
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
  *
  * - Initializer:
- *   - <tt> discord_webhook_init(struct discord_webhook *) </tt>
+ *   - <tt> void discord_webhook_init(struct discord_webhook *) </tt>
  * - Cleanup:
- *   - <tt> discord_webhook_cleanup(struct discord_webhook *) </tt>
- *   - <tt> discord_webhook_list_free(struct discord_webhook **) </tt>
+ *   - <tt> void discord_webhook_cleanup(struct discord_webhook *) </tt>
+ *   - <tt> void discord_webhook_list_free(struct discord_webhook **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **) </tt>
- *   - <tt> discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***) </tt>
+ *   - <tt> void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **) </tt>
+ *   - <tt> void discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *) </tt>
- *   - <tt> discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook **) </tt>
+ *   - <tt> void discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *) </tt>
+ *   - <tt> void discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook **) </tt>
  */
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
@@ -92,10 +92,19 @@ extern size_t discord_webhook_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_webhook_list_to_json(char *str, size_t len, struct discord_webhook **p);
 
 
+// Webhook Types
+// defined at specs/discord/webhook.json:23:5
+/**
+ * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
+ *
+ * - <tt> char* discord_webhook_types_print(enum discord_webhook_types code) </tt>
+ * - <tt> enum discord_webhook_types discord_webhook_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str) </tt>
+ */
 enum discord_webhook_types {
   DISCORD_WEBHOOK_INCOMING = 1,
   DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2,
 };
-extern char* discord_webhook_types_to_string(enum discord_webhook_types);
-extern enum discord_webhook_types discord_webhook_types_from_string(char*);
-extern bool discord_webhook_types_has(enum discord_webhook_types, char*);
+extern char* discord_webhook_types_print(enum discord_webhook_types);
+extern enum discord_webhook_types discord_webhook_types_eval(char*);
+extern bool discord_webhook_types_cmp(enum discord_webhook_types, char*);

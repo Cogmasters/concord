@@ -14,7 +14,7 @@
 #include "discord.h"
 
 
-enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char *s){
+enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *s){
   if(strcasecmp("CLOSE_REASON_UNKNOWN_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR;
   if(strcasecmp("CLOSE_REASON_UNKNOWN_OPCODE", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE;
   if(strcasecmp("CLOSE_REASON_DECODE_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR;
@@ -29,47 +29,36 @@ enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(cha
   if(strcasecmp("CLOSE_REASON_INVALID_API_VERSION", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION;
   if(strcasecmp("CLOSE_REASON_INVALID_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS;
   if(strcasecmp("CLOSE_REASON_DISALLOWED_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes v){
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR) return "CLOSE_REASON_UNKNOWN_ERROR";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE) return "CLOSE_REASON_UNKNOWN_OPCODE";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR) return "CLOSE_REASON_DECODE_ERROR";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED) return "CLOSE_REASON_NOT_AUTHENTICATED";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED) return "CLOSE_REASON_AUTHENTICATION_FAILED";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED) return "CLOSE_REASON_ALREADY_AUTHENTICATED";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE) return "CLOSE_REASON_INVALID_SEQUENCE";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED) return "CLOSE_REASON_RATE_LIMITED";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT) return "CLOSE_REASON_SESSION_TIMED_OUT";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD) return "CLOSE_REASON_INVALID_SHARD";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED) return "CLOSE_REASON_SHARDING_REQUIRED";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION) return "CLOSE_REASON_INVALID_API_VERSION";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS) return "CLOSE_REASON_INVALID_INTENTS";
-  if (v == DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS) return "CLOSE_REASON_DISALLOWED_INTENTS";
+char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR: return "CLOSE_REASON_UNKNOWN_ERROR";
+  case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE: return "CLOSE_REASON_UNKNOWN_OPCODE";
+  case DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR: return "CLOSE_REASON_DECODE_ERROR";
+  case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED: return "CLOSE_REASON_NOT_AUTHENTICATED";
+  case DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED: return "CLOSE_REASON_AUTHENTICATION_FAILED";
+  case DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED: return "CLOSE_REASON_ALREADY_AUTHENTICATED";
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE: return "CLOSE_REASON_INVALID_SEQUENCE";
+  case DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED: return "CLOSE_REASON_RATE_LIMITED";
+  case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT: return "CLOSE_REASON_SESSION_TIMED_OUT";
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD: return "CLOSE_REASON_INVALID_SHARD";
+  case DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED: return "CLOSE_REASON_SHARDING_REQUIRED";
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION: return "CLOSE_REASON_INVALID_API_VERSION";
+  case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS: return "CLOSE_REASON_INVALID_INTENTS";
+  case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS: return "CLOSE_REASON_DISALLOWED_INTENTS";
+  }
+
+  return NULL;
 }
-bool discord_gateway_close_opcodes_has(enum discord_gateway_close_opcodes v, char *s) {
-  enum discord_gateway_close_opcodes v1 = discord_gateway_close_opcodes_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes v, char *s) {
+  enum discord_gateway_close_opcodes v1 = discord_gateway_close_opcodes_eval(s);
+  return v == v1;
 }
 
 
-enum discord_gateway_intents discord_gateway_intents_from_string(char *s){
+enum discord_gateway_intents discord_gateway_intents_eval(char *s){
   if(strcasecmp("GUILDS", s) == 0) return DISCORD_GATEWAY_GUILDS;
   if(strcasecmp("GUILD_MEMBERS", s) == 0) return DISCORD_GATEWAY_GUILD_MEMBERS;
   if(strcasecmp("GUILD_BANS", s) == 0) return DISCORD_GATEWAY_GUILD_BANS;
@@ -85,49 +74,37 @@ enum discord_gateway_intents discord_gateway_intents_from_string(char *s){
   if(strcasecmp("DIRECT_MESSAGES", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGES;
   if(strcasecmp("DIRECT_MESSAGE_REACTIONS", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
   if(strcasecmp("DIRECT_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_gateway_intents_to_string(enum discord_gateway_intents v){
-  if (v == DISCORD_GATEWAY_GUILDS) return "GUILDS";
-  if (v == DISCORD_GATEWAY_GUILD_MEMBERS) return "GUILD_MEMBERS";
-  if (v == DISCORD_GATEWAY_GUILD_BANS) return "GUILD_BANS";
-  if (v == DISCORD_GATEWAY_GUILD_EMOJIS) return "GUILD_EMOJIS";
-  if (v == DISCORD_GATEWAY_GUILD_INTEGRATIONS) return "GUILD_INTEGRATIONS";
-  if (v == DISCORD_GATEWAY_GUILD_WEBHOOKS) return "GUILD_WEBHOOKS";
-  if (v == DISCORD_GATEWAY_GUILD_INVITES) return "GUILD_INVITES";
-  if (v == DISCORD_GATEWAY_GUILD_VOICE_STATES) return "GUILD_VOICE_STATES";
-  if (v == DISCORD_GATEWAY_GUILD_PRESENCES) return "GUILD_PRESENCES";
-  if (v == DISCORD_GATEWAY_GUILD_MESSAGES) return "GUILD_MESSAGES";
-  if (v == DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS) return "GUILD_MESSAGE_REACTIONS";
-  if (v == DISCORD_GATEWAY_GUILD_MESSAGE_TYPING) return "GUILD_MESSAGE_TYPING";
-  if (v == DISCORD_GATEWAY_DIRECT_MESSAGES) return "DIRECT_MESSAGES";
-  if (v == DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS) return "DIRECT_MESSAGE_REACTIONS";
-  if (v == DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING) return "DIRECT_MESSAGE_TYPING";
+char* discord_gateway_intents_print(enum discord_gateway_intents v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GATEWAY_GUILDS: return "GUILDS";
+  case DISCORD_GATEWAY_GUILD_MEMBERS: return "GUILD_MEMBERS";
+  case DISCORD_GATEWAY_GUILD_BANS: return "GUILD_BANS";
+  case DISCORD_GATEWAY_GUILD_EMOJIS: return "GUILD_EMOJIS";
+  case DISCORD_GATEWAY_GUILD_INTEGRATIONS: return "GUILD_INTEGRATIONS";
+  case DISCORD_GATEWAY_GUILD_WEBHOOKS: return "GUILD_WEBHOOKS";
+  case DISCORD_GATEWAY_GUILD_INVITES: return "GUILD_INVITES";
+  case DISCORD_GATEWAY_GUILD_VOICE_STATES: return "GUILD_VOICE_STATES";
+  case DISCORD_GATEWAY_GUILD_PRESENCES: return "GUILD_PRESENCES";
+  case DISCORD_GATEWAY_GUILD_MESSAGES: return "GUILD_MESSAGES";
+  case DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS: return "GUILD_MESSAGE_REACTIONS";
+  case DISCORD_GATEWAY_GUILD_MESSAGE_TYPING: return "GUILD_MESSAGE_TYPING";
+  case DISCORD_GATEWAY_DIRECT_MESSAGES: return "DIRECT_MESSAGES";
+  case DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS: return "DIRECT_MESSAGE_REACTIONS";
+  case DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING: return "DIRECT_MESSAGE_TYPING";
+  }
+
+  return NULL;
 }
-bool discord_gateway_intents_has(enum discord_gateway_intents v, char *s) {
-  enum discord_gateway_intents v1 = discord_gateway_intents_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_gateway_intents_cmp(enum discord_gateway_intents v, char *s) {
+  enum discord_gateway_intents v1 = discord_gateway_intents_eval(s);
+  return v == v1;
 }
 
 
-enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char *s){
+enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *s){
   if(strcasecmp("DISPATCH", s) == 0) return DISCORD_GATEWAY_DISPATCH;
   if(strcasecmp("HEARTBEAT", s) == 0) return DISCORD_GATEWAY_HEARTBEAT;
   if(strcasecmp("IDENTIFY", s) == 0) return DISCORD_GATEWAY_IDENTIFY;
@@ -139,41 +116,33 @@ enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char *s){
   if(strcasecmp("INVALID_SESSION", s) == 0) return DISCORD_GATEWAY_INVALID_SESSION;
   if(strcasecmp("HELLO", s) == 0) return DISCORD_GATEWAY_HELLO;
   if(strcasecmp("HEARTBEAT_ACK", s) == 0) return DISCORD_GATEWAY_HEARTBEAT_ACK;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes v){
-  if (v == DISCORD_GATEWAY_DISPATCH) return "DISPATCH";
-  if (v == DISCORD_GATEWAY_HEARTBEAT) return "HEARTBEAT";
-  if (v == DISCORD_GATEWAY_IDENTIFY) return "IDENTIFY";
-  if (v == DISCORD_GATEWAY_PRESENCE_UPDATE) return "PRESENCE_UPDATE";
-  if (v == DISCORD_GATEWAY_VOICE_STATE_UPDATE) return "VOICE_STATE_UPDATE";
-  if (v == DISCORD_GATEWAY_RESUME) return "RESUME";
-  if (v == DISCORD_GATEWAY_RECONNECT) return "RECONNECT";
-  if (v == DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS) return "REQUEST_GUILD_MEMBERS";
-  if (v == DISCORD_GATEWAY_INVALID_SESSION) return "INVALID_SESSION";
-  if (v == DISCORD_GATEWAY_HELLO) return "HELLO";
-  if (v == DISCORD_GATEWAY_HEARTBEAT_ACK) return "HEARTBEAT_ACK";
+char* discord_gateway_opcodes_print(enum discord_gateway_opcodes v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GATEWAY_DISPATCH: return "DISPATCH";
+  case DISCORD_GATEWAY_HEARTBEAT: return "HEARTBEAT";
+  case DISCORD_GATEWAY_IDENTIFY: return "IDENTIFY";
+  case DISCORD_GATEWAY_PRESENCE_UPDATE: return "PRESENCE_UPDATE";
+  case DISCORD_GATEWAY_VOICE_STATE_UPDATE: return "VOICE_STATE_UPDATE";
+  case DISCORD_GATEWAY_RESUME: return "RESUME";
+  case DISCORD_GATEWAY_RECONNECT: return "RECONNECT";
+  case DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS: return "REQUEST_GUILD_MEMBERS";
+  case DISCORD_GATEWAY_INVALID_SESSION: return "INVALID_SESSION";
+  case DISCORD_GATEWAY_HELLO: return "HELLO";
+  case DISCORD_GATEWAY_HEARTBEAT_ACK: return "HEARTBEAT_ACK";
+  }
+
+  return NULL;
 }
-bool discord_gateway_opcodes_has(enum discord_gateway_opcodes v, char *s) {
-  enum discord_gateway_opcodes v1 = discord_gateway_opcodes_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes v, char *s) {
+  enum discord_gateway_opcodes v1 = discord_gateway_opcodes_eval(s);
+  return v == v1;
 }
 
 
-enum discord_gateway_events discord_gateway_events_from_string(char *s){
+enum discord_gateway_events discord_gateway_events_eval(char *s){
   if(strcasecmp("EVENTS_NONE", s) == 0) return DISCORD_GATEWAY_EVENTS_NONE;
   if(strcasecmp("EVENTS_GUILD_CREATE", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_CREATE;
   if(strcasecmp("EVENTS_GUILD_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_GUILD_UPDATE;
@@ -209,85 +178,53 @@ enum discord_gateway_events discord_gateway_events_from_string(char *s){
   if(strcasecmp("EVENTS_TYPING_START", s) == 0) return DISCORD_GATEWAY_EVENTS_TYPING_START;
   if(strcasecmp("EVENTS_READY", s) == 0) return DISCORD_GATEWAY_EVENTS_READY;
   if(strcasecmp("EVENTS_RESUMED", s) == 0) return DISCORD_GATEWAY_EVENTS_RESUMED;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_gateway_events_to_string(enum discord_gateway_events v){
-  if (v == DISCORD_GATEWAY_EVENTS_NONE) return "EVENTS_NONE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_CREATE) return "EVENTS_GUILD_CREATE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_UPDATE) return "EVENTS_GUILD_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_DELETE) return "EVENTS_GUILD_DELETE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE) return "EVENTS_GUILD_ROLE_CREATE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE) return "EVENTS_GUILD_ROLE_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE) return "EVENTS_GUILD_ROLE_DELETE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD) return "EVENTS_GUILD_MEMBER_ADD";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE) return "EVENTS_GUILD_MEMBER_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE) return "EVENTS_GUILD_MEMBER_REMOVE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD) return "EVENTS_GUILD_BAN_ADD";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE) return "EVENTS_GUILD_BAN_REMOVE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE) return "EVENTS_GUILD_EMOJIS_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE) return "EVENTS_GUILD_INTEGRATIONS_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE) return "EVENTS_CHANNEL_CREATE";
-  if (v == DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE) return "EVENTS_CHANNEL_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE) return "EVENTS_CHANNEL_DELETE";
-  if (v == DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE) return "EVENTS_CHANNEL_PINS_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_INVITE_CREATE) return "EVENTS_INVITE_CREATE";
-  if (v == DISCORD_GATEWAY_EVENTS_INVITE_DELETE) return "EVENTS_INVITE_DELETE";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) return "EVENTS_MESSAGE_CREATE";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE) return "EVENTS_MESSAGE_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE) return "EVENTS_MESSAGE_DELETE";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK) return "EVENTS_MESSAGE_DELETE_BULK";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD) return "EVENTS_MESSAGE_REACTION_ADD";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE) return "EVENTS_MESSAGE_REACTION_REMOVE";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL) return "EVENTS_MESSAGE_REACTION_REMOVE_ALL";
-  if (v == DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI) return "EVENTS_MESSAGE_REACTION_REMOVE_EMOJI";
-  if (v == DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE) return "EVENTS_WEBHOOKS_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE) return "EVENTS_VOICE_STATE_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE) return "EVENTS_VOICE_SERVER_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE) return "EVENTS_PRESENCE_UPDATE";
-  if (v == DISCORD_GATEWAY_EVENTS_TYPING_START) return "EVENTS_TYPING_START";
-  if (v == DISCORD_GATEWAY_EVENTS_READY) return "EVENTS_READY";
-  if (v == DISCORD_GATEWAY_EVENTS_RESUMED) return "EVENTS_RESUMED";
+char* discord_gateway_events_print(enum discord_gateway_events v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GATEWAY_EVENTS_NONE: return "EVENTS_NONE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_CREATE: return "EVENTS_GUILD_CREATE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_UPDATE: return "EVENTS_GUILD_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_DELETE: return "EVENTS_GUILD_DELETE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE: return "EVENTS_GUILD_ROLE_CREATE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE: return "EVENTS_GUILD_ROLE_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE: return "EVENTS_GUILD_ROLE_DELETE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD: return "EVENTS_GUILD_MEMBER_ADD";
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE: return "EVENTS_GUILD_MEMBER_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE: return "EVENTS_GUILD_MEMBER_REMOVE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD: return "EVENTS_GUILD_BAN_ADD";
+  case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE: return "EVENTS_GUILD_BAN_REMOVE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE: return "EVENTS_GUILD_EMOJIS_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE: return "EVENTS_GUILD_INTEGRATIONS_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE: return "EVENTS_CHANNEL_CREATE";
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE: return "EVENTS_CHANNEL_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE: return "EVENTS_CHANNEL_DELETE";
+  case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE: return "EVENTS_CHANNEL_PINS_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_INVITE_CREATE: return "EVENTS_INVITE_CREATE";
+  case DISCORD_GATEWAY_EVENTS_INVITE_DELETE: return "EVENTS_INVITE_DELETE";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE: return "EVENTS_MESSAGE_CREATE";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE: return "EVENTS_MESSAGE_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE: return "EVENTS_MESSAGE_DELETE";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK: return "EVENTS_MESSAGE_DELETE_BULK";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD: return "EVENTS_MESSAGE_REACTION_ADD";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE: return "EVENTS_MESSAGE_REACTION_REMOVE";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL: return "EVENTS_MESSAGE_REACTION_REMOVE_ALL";
+  case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI: return "EVENTS_MESSAGE_REACTION_REMOVE_EMOJI";
+  case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE: return "EVENTS_WEBHOOKS_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE: return "EVENTS_VOICE_STATE_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE: return "EVENTS_VOICE_SERVER_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE: return "EVENTS_PRESENCE_UPDATE";
+  case DISCORD_GATEWAY_EVENTS_TYPING_START: return "EVENTS_TYPING_START";
+  case DISCORD_GATEWAY_EVENTS_READY: return "EVENTS_READY";
+  case DISCORD_GATEWAY_EVENTS_RESUMED: return "EVENTS_RESUMED";
+  }
+
+  return NULL;
 }
-bool discord_gateway_events_has(enum discord_gateway_events v, char *s) {
-  enum discord_gateway_events v1 = discord_gateway_events_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_gateway_events_cmp(enum discord_gateway_events v, char *s) {
+  enum discord_gateway_events v1 = discord_gateway_events_eval(s);
+  return v == v1;
 }
 
 void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify **pp)
@@ -1238,29 +1175,27 @@ size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct disco
 
 
 
-enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char *s){
+enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *s){
   if(strcasecmp("GAME", s) == 0) return DISCORD_GATEWAY_ACTIVITY_GAME;
   if(strcasecmp("STREAMING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_STREAMING;
   if(strcasecmp("LISTENING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_LISTENING;
   if(strcasecmp("CUSTOM", s) == 0) return DISCORD_GATEWAY_ACTIVITY_CUSTOM;
   if(strcasecmp("COMPETING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_COMPETING;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types v){
-  if (v == DISCORD_GATEWAY_ACTIVITY_GAME) return "GAME";
-  if (v == DISCORD_GATEWAY_ACTIVITY_STREAMING) return "STREAMING";
-  if (v == DISCORD_GATEWAY_ACTIVITY_LISTENING) return "LISTENING";
-  if (v == DISCORD_GATEWAY_ACTIVITY_CUSTOM) return "CUSTOM";
-  if (v == DISCORD_GATEWAY_ACTIVITY_COMPETING) return "COMPETING";
+char* discord_gateway_activity_types_print(enum discord_gateway_activity_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GATEWAY_ACTIVITY_GAME: return "GAME";
+  case DISCORD_GATEWAY_ACTIVITY_STREAMING: return "STREAMING";
+  case DISCORD_GATEWAY_ACTIVITY_LISTENING: return "LISTENING";
+  case DISCORD_GATEWAY_ACTIVITY_CUSTOM: return "CUSTOM";
+  case DISCORD_GATEWAY_ACTIVITY_COMPETING: return "COMPETING";
+  }
+
+  return NULL;
 }
-bool discord_gateway_activity_types_has(enum discord_gateway_activity_types v, char *s) {
-  enum discord_gateway_activity_types v1 = discord_gateway_activity_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types v, char *s) {
+  enum discord_gateway_activity_types v1 = discord_gateway_activity_types_eval(s);
+  return v == v1;
 }

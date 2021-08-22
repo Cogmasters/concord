@@ -6,6 +6,15 @@
 
 
 
+// Voice Close Event Codes
+// defined at specs/discord/voice-connections.json:6:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes
+ *
+ * - <tt> char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes code) </tt>
+ * - <tt> enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_voice_close_opcodes {
   DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE = 4001,
   DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR = 4002,
@@ -20,11 +29,20 @@ enum discord_voice_close_opcodes {
   DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH = 4015,
   DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE = 4016,
 };
-extern char* discord_voice_close_opcodes_to_string(enum discord_voice_close_opcodes);
-extern enum discord_voice_close_opcodes discord_voice_close_opcodes_from_string(char*);
-extern bool discord_voice_close_opcodes_has(enum discord_voice_close_opcodes, char*);
+extern char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes);
+extern enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char*);
+extern bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes, char*);
 
 
+// Voice Opcodes
+// defined at specs/discord/voice-connections.json:26:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
+ *
+ * - <tt> char* discord_voice_opcodes_print(enum discord_voice_opcodes code) </tt>
+ * - <tt> enum discord_voice_opcodes discord_voice_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_voice_opcodes_cmp(enum discord_voice_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_voice_opcodes {
   DISCORD_VOICE_IDENTIFY = 0,
   DISCORD_VOICE_SELECT_PROTOCOL = 1,
@@ -39,16 +57,25 @@ enum discord_voice_opcodes {
   DISCORD_VOICE_CLIENT_DISCONNECT = 13,
   DISCORD_VOICE_CODEC = 14,
 };
-extern char* discord_voice_opcodes_to_string(enum discord_voice_opcodes);
-extern enum discord_voice_opcodes discord_voice_opcodes_from_string(char*);
-extern bool discord_voice_opcodes_has(enum discord_voice_opcodes, char*);
+extern char* discord_voice_opcodes_print(enum discord_voice_opcodes);
+extern enum discord_voice_opcodes discord_voice_opcodes_eval(char*);
+extern bool discord_voice_opcodes_cmp(enum discord_voice_opcodes, char*);
 
 
+// Voice Speaking Flags
+// defined at specs/discord/voice-connections.json:46:5
+/**
+ * @see https://discord.com/developers/docs/topics/voice-connections#speaking
+ *
+ * - <tt> char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags code) </tt>
+ * - <tt> enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags code, char *code_as_str) </tt>
+ */
 enum discord_voice_speaking_flags {
-  DISCORD_VOICE_MICROPHONE = 1, // 1 << 0
-  DISCORD_VOICE_SOUNDSHARE = 2, // 1 << 1
-  DISCORD_VOICE_PRIORITY = 4, // 1 << 2
+  DISCORD_VOICE_MICROPHONE = 1, ///< 1 << 0
+  DISCORD_VOICE_SOUNDSHARE = 2, ///< 1 << 1
+  DISCORD_VOICE_PRIORITY = 4, ///< 1 << 2
 };
-extern char* discord_voice_speaking_flags_to_string(enum discord_voice_speaking_flags);
-extern enum discord_voice_speaking_flags discord_voice_speaking_flags_from_string(char*);
-extern bool discord_voice_speaking_flags_has(enum discord_voice_speaking_flags, char*);
+extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
+extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);
+extern bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags, char*);

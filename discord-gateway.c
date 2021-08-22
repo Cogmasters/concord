@@ -72,7 +72,7 @@ discord_get_gateway_bot(struct discord *client, struct discord_session *p_sessio
 static const char*
 opcode_print(enum discord_gateway_opcodes opcode)
 {
-  const char *str = discord_gateway_opcodes_to_string(opcode);
+  const char *str = discord_gateway_opcodes_print(opcode);
   if (NULL == str) {
     log_warn("Invalid Gateway opcode (code: %d)", opcode);
     str = "Invalid Gateway opcode";
@@ -83,7 +83,7 @@ opcode_print(enum discord_gateway_opcodes opcode)
 static const char*
 close_opcode_print(enum discord_gateway_close_opcodes opcode)
 {
-  const char *str = discord_gateway_close_opcodes_to_string(opcode);
+  const char *str = discord_gateway_close_opcodes_print(opcode);
   if (str) return str;
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;

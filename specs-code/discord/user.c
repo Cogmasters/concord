@@ -14,7 +14,7 @@
 #include "discord.h"
 
 
-enum discord_user_flags discord_user_flags_from_string(char *s){
+enum discord_user_flags discord_user_flags_eval(char *s){
   if(strcasecmp("DISCORD_EMPLOYEE", s) == 0) return DISCORD_USER_DISCORD_EMPLOYEE;
   if(strcasecmp("PARTNERED_SERVER_OWNER", s) == 0) return DISCORD_USER_PARTNERED_SERVER_OWNER;
   if(strcasecmp("HYPESQUAD_EVENTS", s) == 0) return DISCORD_USER_HYPESQUAD_EVENTS;
@@ -28,60 +28,51 @@ enum discord_user_flags discord_user_flags_from_string(char *s){
   if(strcasecmp("BUG_HUNTER_LEVEL_2", s) == 0) return DISCORD_USER_BUG_HUNTER_LEVEL_2;
   if(strcasecmp("VERIFIED_BOT", s) == 0) return DISCORD_USER_VERIFIED_BOT;
   if(strcasecmp("EARLY_VERIFIED_BOT_DEVELOPER", s) == 0) return DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_user_flags_to_string(enum discord_user_flags v){
-  if (v == DISCORD_USER_DISCORD_EMPLOYEE) return "DISCORD_EMPLOYEE";
-  if (v == DISCORD_USER_PARTNERED_SERVER_OWNER) return "PARTNERED_SERVER_OWNER";
-  if (v == DISCORD_USER_HYPESQUAD_EVENTS) return "HYPESQUAD_EVENTS";
-  if (v == DISCORD_USER_BUG_HUNTER_LEVEL_1) return "BUG_HUNTER_LEVEL_1";
-  if (v == DISCORD_USER_HOUSE_BRAVERY) return "HOUSE_BRAVERY";
-  if (v == DISCORD_USER_HOUSE_BRILLIANCE) return "HOUSE_BRILLIANCE";
-  if (v == DISCORD_USER_HOUSE_BALANCE) return "HOUSE_BALANCE";
-  if (v == DISCORD_USER_EARLY_SUPPORTER) return "EARLY_SUPPORTER";
-  if (v == DISCORD_USER_TEAM_USER) return "TEAM_USER";
-  if (v == DISCORD_USER_SYSTEM) return "SYSTEM";
-  if (v == DISCORD_USER_BUG_HUNTER_LEVEL_2) return "BUG_HUNTER_LEVEL_2";
-  if (v == DISCORD_USER_VERIFIED_BOT) return "VERIFIED_BOT";
-  if (v == DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER) return "EARLY_VERIFIED_BOT_DEVELOPER";
+char* discord_user_flags_print(enum discord_user_flags v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_USER_DISCORD_EMPLOYEE: return "DISCORD_EMPLOYEE";
+  case DISCORD_USER_PARTNERED_SERVER_OWNER: return "PARTNERED_SERVER_OWNER";
+  case DISCORD_USER_HYPESQUAD_EVENTS: return "HYPESQUAD_EVENTS";
+  case DISCORD_USER_BUG_HUNTER_LEVEL_1: return "BUG_HUNTER_LEVEL_1";
+  case DISCORD_USER_HOUSE_BRAVERY: return "HOUSE_BRAVERY";
+  case DISCORD_USER_HOUSE_BRILLIANCE: return "HOUSE_BRILLIANCE";
+  case DISCORD_USER_HOUSE_BALANCE: return "HOUSE_BALANCE";
+  case DISCORD_USER_EARLY_SUPPORTER: return "EARLY_SUPPORTER";
+  case DISCORD_USER_TEAM_USER: return "TEAM_USER";
+  case DISCORD_USER_SYSTEM: return "SYSTEM";
+  case DISCORD_USER_BUG_HUNTER_LEVEL_2: return "BUG_HUNTER_LEVEL_2";
+  case DISCORD_USER_VERIFIED_BOT: return "VERIFIED_BOT";
+  case DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER: return "EARLY_VERIFIED_BOT_DEVELOPER";
+  }
+
+  return NULL;
 }
-bool discord_user_flags_has(enum discord_user_flags v, char *s) {
-  enum discord_user_flags v1 = discord_user_flags_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_user_flags_cmp(enum discord_user_flags v, char *s) {
+  enum discord_user_flags v1 = discord_user_flags_eval(s);
+  return v == v1;
 }
 
 
-enum discord_user_premium_types discord_user_premium_types_from_string(char *s){
+enum discord_user_premium_types discord_user_premium_types_eval(char *s){
   if(strcasecmp("NITRO_CLASSIC", s) == 0) return DISCORD_USER_NITRO_CLASSIC;
   if(strcasecmp("NITRO", s) == 0) return DISCORD_USER_NITRO;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_user_premium_types_to_string(enum discord_user_premium_types v){
-  if (v == DISCORD_USER_NITRO_CLASSIC) return "NITRO_CLASSIC";
-  if (v == DISCORD_USER_NITRO) return "NITRO";
+char* discord_user_premium_types_print(enum discord_user_premium_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_USER_NITRO_CLASSIC: return "NITRO_CLASSIC";
+  case DISCORD_USER_NITRO: return "NITRO";
+  }
+
+  return NULL;
 }
-bool discord_user_premium_types_has(enum discord_user_premium_types v, char *s) {
-  enum discord_user_premium_types v1 = discord_user_premium_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_user_premium_types_cmp(enum discord_user_premium_types v, char *s) {
+  enum discord_user_premium_types v1 = discord_user_premium_types_eval(s);
+  return v == v1;
 }
 
 void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
@@ -462,22 +453,23 @@ size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p)
 
 
 
-enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char *s){
+enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *s){
   if(strcasecmp("NONE", s) == 0) return DISCORD_USER_CONNECTION_NONE;
   if(strcasecmp("EVERYONE", s) == 0) return DISCORD_USER_CONNECTION_EVERYONE;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types v){
-  if (v == DISCORD_USER_CONNECTION_NONE) return "NONE";
-  if (v == DISCORD_USER_CONNECTION_EVERYONE) return "EVERYONE";
+char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_USER_CONNECTION_NONE: return "NONE";
+  case DISCORD_USER_CONNECTION_EVERYONE: return "EVERYONE";
+  }
+
+  return NULL;
 }
-bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types v, char *s) {
-  enum discord_user_connection_visibility_types v1 = discord_user_connection_visibility_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types v, char *s) {
+  enum discord_user_connection_visibility_types v1 = discord_user_connection_visibility_types_eval(s);
+  return v == v1;
 }
 
 void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp)

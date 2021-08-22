@@ -18,16 +18,16 @@ struct github_user;
 // defined at specs/github/github-user.json:9:33
 /**
  * - Initializer:
- *   - <tt> github_user_init(struct github_user *) </tt>
+ *   - <tt> void github_user_init(struct github_user *) </tt>
  * - Cleanup:
- *   - <tt> github_user_cleanup(struct github_user *) </tt>
- *   - <tt> github_user_list_free(struct github_user **) </tt>
+ *   - <tt> void github_user_cleanup(struct github_user *) </tt>
+ *   - <tt> void github_user_list_free(struct github_user **) </tt>
  * - JSON Decoder:
- *   - <tt> github_user_from_json(char *rbuf, size_t len, struct github_user **) </tt>
- *   - <tt> github_user_list_from_json(char *rbuf, size_t len, struct github_user ***) </tt>
+ *   - <tt> void github_user_from_json(char *rbuf, size_t len, struct github_user **) </tt>
+ *   - <tt> void github_user_list_from_json(char *rbuf, size_t len, struct github_user ***) </tt>
  * - JSON Encoder:
- *   - <tt> github_user_to_json(char *wbuf, size_t len, struct github_user *) </tt>
- *   - <tt> github_user_list_to_json(char *wbuf, size_t len, struct github_user **) </tt>
+ *   - <tt> void github_user_to_json(char *wbuf, size_t len, struct github_user *) </tt>
+ *   - <tt> void github_user_list_to_json(char *wbuf, size_t len, struct github_user **) </tt>
  */
 struct github_user {
   /* specs/github/github-user.json:12:28

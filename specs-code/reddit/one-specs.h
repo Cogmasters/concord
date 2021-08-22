@@ -40,16 +40,16 @@ struct reddit_search_params;
  * @see https://www.reddit.com/dev/api/#POST_api_comment
  *
  * - Initializer:
- *   - <tt> reddit_comment_params_init(struct reddit_comment_params *) </tt>
+ *   - <tt> void reddit_comment_params_init(struct reddit_comment_params *) </tt>
  * - Cleanup:
- *   - <tt> reddit_comment_params_cleanup(struct reddit_comment_params *) </tt>
- *   - <tt> reddit_comment_params_list_free(struct reddit_comment_params **) </tt>
+ *   - <tt> void reddit_comment_params_cleanup(struct reddit_comment_params *) </tt>
+ *   - <tt> void reddit_comment_params_list_free(struct reddit_comment_params **) </tt>
  * - JSON Decoder:
- *   - <tt> reddit_comment_params_from_json(char *rbuf, size_t len, struct reddit_comment_params **) </tt>
- *   - <tt> reddit_comment_params_list_from_json(char *rbuf, size_t len, struct reddit_comment_params ***) </tt>
+ *   - <tt> void reddit_comment_params_from_json(char *rbuf, size_t len, struct reddit_comment_params **) </tt>
+ *   - <tt> void reddit_comment_params_list_from_json(char *rbuf, size_t len, struct reddit_comment_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> reddit_comment_params_to_json(char *wbuf, size_t len, struct reddit_comment_params *) </tt>
- *   - <tt> reddit_comment_params_list_to_json(char *wbuf, size_t len, struct reddit_comment_params **) </tt>
+ *   - <tt> void reddit_comment_params_to_json(char *wbuf, size_t len, struct reddit_comment_params *) </tt>
+ *   - <tt> void reddit_comment_params_list_to_json(char *wbuf, size_t len, struct reddit_comment_params **) </tt>
  */
 struct reddit_comment_params {
   /* specs/reddit/links_n_comments.json:13:20
@@ -97,16 +97,16 @@ struct reddit_comment_params {
 // defined at specs/reddit/oauth2.json:9:22
 /**
  * - Initializer:
- *   - <tt> reddit_access_token_params_init(struct reddit_access_token_params *) </tt>
+ *   - <tt> void reddit_access_token_params_init(struct reddit_access_token_params *) </tt>
  * - Cleanup:
- *   - <tt> reddit_access_token_params_cleanup(struct reddit_access_token_params *) </tt>
- *   - <tt> reddit_access_token_params_list_free(struct reddit_access_token_params **) </tt>
+ *   - <tt> void reddit_access_token_params_cleanup(struct reddit_access_token_params *) </tt>
+ *   - <tt> void reddit_access_token_params_list_free(struct reddit_access_token_params **) </tt>
  * - JSON Decoder:
- *   - <tt> reddit_access_token_params_from_json(char *rbuf, size_t len, struct reddit_access_token_params **) </tt>
- *   - <tt> reddit_access_token_params_list_from_json(char *rbuf, size_t len, struct reddit_access_token_params ***) </tt>
+ *   - <tt> void reddit_access_token_params_from_json(char *rbuf, size_t len, struct reddit_access_token_params **) </tt>
+ *   - <tt> void reddit_access_token_params_list_from_json(char *rbuf, size_t len, struct reddit_access_token_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> reddit_access_token_params_to_json(char *wbuf, size_t len, struct reddit_access_token_params *) </tt>
- *   - <tt> reddit_access_token_params_list_to_json(char *wbuf, size_t len, struct reddit_access_token_params **) </tt>
+ *   - <tt> void reddit_access_token_params_to_json(char *wbuf, size_t len, struct reddit_access_token_params *) </tt>
+ *   - <tt> void reddit_access_token_params_list_to_json(char *wbuf, size_t len, struct reddit_access_token_params **) </tt>
  */
 struct reddit_access_token_params {
   /* specs/reddit/oauth2.json:12:20
@@ -152,16 +152,16 @@ struct reddit_access_token_params {
  * @see https://www.reddit.com/dev/api/#GET_search
  *
  * - Initializer:
- *   - <tt> reddit_search_params_init(struct reddit_search_params *) </tt>
+ *   - <tt> void reddit_search_params_init(struct reddit_search_params *) </tt>
  * - Cleanup:
- *   - <tt> reddit_search_params_cleanup(struct reddit_search_params *) </tt>
- *   - <tt> reddit_search_params_list_free(struct reddit_search_params **) </tt>
+ *   - <tt> void reddit_search_params_cleanup(struct reddit_search_params *) </tt>
+ *   - <tt> void reddit_search_params_list_free(struct reddit_search_params **) </tt>
  * - JSON Decoder:
- *   - <tt> reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params **) </tt>
- *   - <tt> reddit_search_params_list_from_json(char *rbuf, size_t len, struct reddit_search_params ***) </tt>
+ *   - <tt> void reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params **) </tt>
+ *   - <tt> void reddit_search_params_list_from_json(char *rbuf, size_t len, struct reddit_search_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> reddit_search_params_to_json(char *wbuf, size_t len, struct reddit_search_params *) </tt>
- *   - <tt> reddit_search_params_list_to_json(char *wbuf, size_t len, struct reddit_search_params **) </tt>
+ *   - <tt> void reddit_search_params_to_json(char *wbuf, size_t len, struct reddit_search_params *) </tt>
+ *   - <tt> void reddit_search_params_list_to_json(char *wbuf, size_t len, struct reddit_search_params **) </tt>
  */
 struct reddit_search_params {
   /* specs/reddit/search.json:13:20

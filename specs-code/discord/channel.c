@@ -14,7 +14,7 @@
 #include "discord.h"
 
 
-enum discord_channel_types discord_channel_types_from_string(char *s){
+enum discord_channel_types discord_channel_types_eval(char *s){
   if(strcasecmp("GUILD_TEXT", s) == 0) return DISCORD_CHANNEL_GUILD_TEXT;
   if(strcasecmp("DM", s) == 0) return DISCORD_CHANNEL_DM;
   if(strcasecmp("GUILD_VOICE", s) == 0) return DISCORD_CHANNEL_GUILD_VOICE;
@@ -26,37 +26,29 @@ enum discord_channel_types discord_channel_types_from_string(char *s){
   if(strcasecmp("GUILD_PUBLIC_THREAD", s) == 0) return DISCORD_CHANNEL_GUILD_PUBLIC_THREAD;
   if(strcasecmp("GUILD_PRIVATE_THREAD", s) == 0) return DISCORD_CHANNEL_GUILD_PRIVATE_THREAD;
   if(strcasecmp("GUILD_STAGE_VOICE", s) == 0) return DISCORD_CHANNEL_GUILD_STAGE_VOICE;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_channel_types_to_string(enum discord_channel_types v){
-  if (v == DISCORD_CHANNEL_GUILD_TEXT) return "GUILD_TEXT";
-  if (v == DISCORD_CHANNEL_DM) return "DM";
-  if (v == DISCORD_CHANNEL_GUILD_VOICE) return "GUILD_VOICE";
-  if (v == DISCORD_CHANNEL_GROUP_DM) return "GROUP_DM";
-  if (v == DISCORD_CHANNEL_GUILD_CATEGORY) return "GUILD_CATEGORY";
-  if (v == DISCORD_CHANNEL_GUILD_NEWS) return "GUILD_NEWS";
-  if (v == DISCORD_CHANNEL_GUILD_STORE) return "GUILD_STORE";
-  if (v == DISCORD_CHANNEL_GUILD_NEWS_THREAD) return "GUILD_NEWS_THREAD";
-  if (v == DISCORD_CHANNEL_GUILD_PUBLIC_THREAD) return "GUILD_PUBLIC_THREAD";
-  if (v == DISCORD_CHANNEL_GUILD_PRIVATE_THREAD) return "GUILD_PRIVATE_THREAD";
-  if (v == DISCORD_CHANNEL_GUILD_STAGE_VOICE) return "GUILD_STAGE_VOICE";
+char* discord_channel_types_print(enum discord_channel_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_CHANNEL_GUILD_TEXT: return "GUILD_TEXT";
+  case DISCORD_CHANNEL_DM: return "DM";
+  case DISCORD_CHANNEL_GUILD_VOICE: return "GUILD_VOICE";
+  case DISCORD_CHANNEL_GROUP_DM: return "GROUP_DM";
+  case DISCORD_CHANNEL_GUILD_CATEGORY: return "GUILD_CATEGORY";
+  case DISCORD_CHANNEL_GUILD_NEWS: return "GUILD_NEWS";
+  case DISCORD_CHANNEL_GUILD_STORE: return "GUILD_STORE";
+  case DISCORD_CHANNEL_GUILD_NEWS_THREAD: return "GUILD_NEWS_THREAD";
+  case DISCORD_CHANNEL_GUILD_PUBLIC_THREAD: return "GUILD_PUBLIC_THREAD";
+  case DISCORD_CHANNEL_GUILD_PRIVATE_THREAD: return "GUILD_PRIVATE_THREAD";
+  case DISCORD_CHANNEL_GUILD_STAGE_VOICE: return "GUILD_STAGE_VOICE";
+  }
+
+  return NULL;
 }
-bool discord_channel_types_has(enum discord_channel_types v, char *s) {
-  enum discord_channel_types v1 = discord_channel_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_channel_types_cmp(enum discord_channel_types v, char *s) {
+  enum discord_channel_types v1 = discord_channel_types_eval(s);
+  return v == v1;
 }
 
 void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp)
@@ -679,25 +671,25 @@ size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channe
 
 
 
-enum discord_message_sticker_format_types discord_message_sticker_format_types_from_string(char *s){
+enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char *s){
   if(strcasecmp("PNG", s) == 0) return DISCORD_MESSAGE_STICKER_PNG;
   if(strcasecmp("APNG", s) == 0) return DISCORD_MESSAGE_STICKER_APNG;
   if(strcasecmp("LOTTIE", s) == 0) return DISCORD_MESSAGE_STICKER_LOTTIE;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_message_sticker_format_types_to_string(enum discord_message_sticker_format_types v){
-  if (v == DISCORD_MESSAGE_STICKER_PNG) return "PNG";
-  if (v == DISCORD_MESSAGE_STICKER_APNG) return "APNG";
-  if (v == DISCORD_MESSAGE_STICKER_LOTTIE) return "LOTTIE";
+char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_MESSAGE_STICKER_PNG: return "PNG";
+  case DISCORD_MESSAGE_STICKER_APNG: return "APNG";
+  case DISCORD_MESSAGE_STICKER_LOTTIE: return "LOTTIE";
+  }
+
+  return NULL;
 }
-bool discord_message_sticker_format_types_has(enum discord_message_sticker_format_types v, char *s) {
-  enum discord_message_sticker_format_types v1 = discord_message_sticker_format_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types v, char *s) {
+  enum discord_message_sticker_format_types v1 = discord_message_sticker_format_types_eval(s);
+  return v == v1;
 }
 
 void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp)
@@ -979,31 +971,29 @@ size_t discord_message_sticker_list_to_json(char *str, size_t len, struct discor
 
 
 
-enum discord_message_flags discord_message_flags_from_string(char *s){
+enum discord_message_flags discord_message_flags_eval(char *s){
   if(strcasecmp("CROSSPOSTED", s) == 0) return DISCORD_MESSAGE_CROSSPOSTED;
   if(strcasecmp("IS_CROSSPOST", s) == 0) return DISCORD_MESSAGE_IS_CROSSPOST;
   if(strcasecmp("SUPRESS_EMBEDS", s) == 0) return DISCORD_MESSAGE_SUPRESS_EMBEDS;
   if(strcasecmp("SOURCE_MESSAGE_DELETED", s) == 0) return DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED;
   if(strcasecmp("URGENT", s) == 0) return DISCORD_MESSAGE_URGENT;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_message_flags_to_string(enum discord_message_flags v){
-  if (v == DISCORD_MESSAGE_CROSSPOSTED) return "CROSSPOSTED";
-  if (v == DISCORD_MESSAGE_IS_CROSSPOST) return "IS_CROSSPOST";
-  if (v == DISCORD_MESSAGE_SUPRESS_EMBEDS) return "SUPRESS_EMBEDS";
-  if (v == DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED) return "SOURCE_MESSAGE_DELETED";
-  if (v == DISCORD_MESSAGE_URGENT) return "URGENT";
+char* discord_message_flags_print(enum discord_message_flags v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_MESSAGE_CROSSPOSTED: return "CROSSPOSTED";
+  case DISCORD_MESSAGE_IS_CROSSPOST: return "IS_CROSSPOST";
+  case DISCORD_MESSAGE_SUPRESS_EMBEDS: return "SUPRESS_EMBEDS";
+  case DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED: return "SOURCE_MESSAGE_DELETED";
+  case DISCORD_MESSAGE_URGENT: return "URGENT";
+  }
+
+  return NULL;
 }
-bool discord_message_flags_has(enum discord_message_flags v, char *s) {
-  enum discord_message_flags v1 = discord_message_flags_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_message_flags_cmp(enum discord_message_flags v, char *s) {
+  enum discord_message_flags v1 = discord_message_flags_eval(s);
+  return v == v1;
 }
 
 void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp)
@@ -1397,28 +1387,27 @@ size_t discord_message_application_list_to_json(char *str, size_t len, struct di
 
 
 
-enum discord_message_activity_types discord_message_activity_types_from_string(char *s){
+enum discord_message_activity_types discord_message_activity_types_eval(char *s){
   if(strcasecmp("JOIN", s) == 0) return DISCORD_MESSAGE_ACTIVITY_JOIN;
   if(strcasecmp("SPECTATE", s) == 0) return DISCORD_MESSAGE_ACTIVITY_SPECTATE;
   if(strcasecmp("LISTEN", s) == 0) return DISCORD_MESSAGE_ACTIVITY_LISTEN;
   if(strcasecmp("JOIN_REQUEST", s) == 0) return DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_message_activity_types_to_string(enum discord_message_activity_types v){
-  if (v == DISCORD_MESSAGE_ACTIVITY_JOIN) return "JOIN";
-  if (v == DISCORD_MESSAGE_ACTIVITY_SPECTATE) return "SPECTATE";
-  if (v == DISCORD_MESSAGE_ACTIVITY_LISTEN) return "LISTEN";
-  if (v == DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST) return "JOIN_REQUEST";
+char* discord_message_activity_types_print(enum discord_message_activity_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_MESSAGE_ACTIVITY_JOIN: return "JOIN";
+  case DISCORD_MESSAGE_ACTIVITY_SPECTATE: return "SPECTATE";
+  case DISCORD_MESSAGE_ACTIVITY_LISTEN: return "LISTEN";
+  case DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST: return "JOIN_REQUEST";
+  }
+
+  return NULL;
 }
-bool discord_message_activity_types_has(enum discord_message_activity_types v, char *s) {
-  enum discord_message_activity_types v1 = discord_message_activity_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_message_activity_types_cmp(enum discord_message_activity_types v, char *s) {
+  enum discord_message_activity_types v1 = discord_message_activity_types_eval(s);
+  return v == v1;
 }
 
 void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp)
@@ -1566,7 +1555,7 @@ size_t discord_message_activity_list_to_json(char *str, size_t len, struct disco
 
 
 
-enum discord_message_types discord_message_types_from_string(char *s){
+enum discord_message_types discord_message_types_eval(char *s){
   if(strcasecmp("DEFAULT", s) == 0) return DISCORD_MESSAGE_DEFAULT;
   if(strcasecmp("RECIPIENT_ADD", s) == 0) return DISCORD_MESSAGE_RECIPIENT_ADD;
   if(strcasecmp("RECIPIENT_REMOVE", s) == 0) return DISCORD_MESSAGE_RECIPIENT_REMOVE;
@@ -1584,49 +1573,35 @@ enum discord_message_types discord_message_types_from_string(char *s){
   if(strcasecmp("GUILD_DISCOVERY_REQUALIFIED", s) == 0) return DISCORD_MESSAGE_GUILD_DISCOVERY_REQUALIFIED;
   if(strcasecmp("REPLY", s) == 0) return DISCORD_MESSAGE_REPLY;
   if(strcasecmp("APPLICATION_COMMAND", s) == 0) return DISCORD_MESSAGE_APPLICATION_COMMAND;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_message_types_to_string(enum discord_message_types v){
-  if (v == DISCORD_MESSAGE_DEFAULT) return "DEFAULT";
-  if (v == DISCORD_MESSAGE_RECIPIENT_ADD) return "RECIPIENT_ADD";
-  if (v == DISCORD_MESSAGE_RECIPIENT_REMOVE) return "RECIPIENT_REMOVE";
-  if (v == DISCORD_MESSAGE_CALL) return "CALL";
-  if (v == DISCORD_MESSAGE_CHANNEL_NAME_CHANGE) return "CHANNEL_NAME_CHANGE";
-  if (v == DISCORD_MESSAGE_CHANNEL_ICON_CHANGE) return "CHANNEL_ICON_CHANGE";
-  if (v == DISCORD_MESSAGE_CHANNEL_PINNED_MESSAGE) return "CHANNEL_PINNED_MESSAGE";
-  if (v == DISCORD_MESSAGE_GUILD_MEMBER_JOIN) return "GUILD_MEMBER_JOIN";
-  if (v == DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION) return "USER_PREMIUM_GUILD_SUBSCRIPTION";
-  if (v == DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1) return "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1";
-  if (v == DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2) return "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2";
-  if (v == DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3) return "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3";
-  if (v == DISCORD_MESSAGE_CHANNEL_FOLLOW_ADD) return "CHANNEL_FOLLOW_ADD";
-  if (v == DISCORD_MESSAGE_GUILD_DISCOVERY_DISQUALIFIED) return "GUILD_DISCOVERY_DISQUALIFIED";
-  if (v == DISCORD_MESSAGE_GUILD_DISCOVERY_REQUALIFIED) return "GUILD_DISCOVERY_REQUALIFIED";
-  if (v == DISCORD_MESSAGE_REPLY) return "REPLY";
-  if (v == DISCORD_MESSAGE_APPLICATION_COMMAND) return "APPLICATION_COMMAND";
+char* discord_message_types_print(enum discord_message_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_MESSAGE_DEFAULT: return "DEFAULT";
+  case DISCORD_MESSAGE_RECIPIENT_ADD: return "RECIPIENT_ADD";
+  case DISCORD_MESSAGE_RECIPIENT_REMOVE: return "RECIPIENT_REMOVE";
+  case DISCORD_MESSAGE_CALL: return "CALL";
+  case DISCORD_MESSAGE_CHANNEL_NAME_CHANGE: return "CHANNEL_NAME_CHANGE";
+  case DISCORD_MESSAGE_CHANNEL_ICON_CHANGE: return "CHANNEL_ICON_CHANGE";
+  case DISCORD_MESSAGE_CHANNEL_PINNED_MESSAGE: return "CHANNEL_PINNED_MESSAGE";
+  case DISCORD_MESSAGE_GUILD_MEMBER_JOIN: return "GUILD_MEMBER_JOIN";
+  case DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION: return "USER_PREMIUM_GUILD_SUBSCRIPTION";
+  case DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1: return "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1";
+  case DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2: return "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2";
+  case DISCORD_MESSAGE_USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3: return "USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3";
+  case DISCORD_MESSAGE_CHANNEL_FOLLOW_ADD: return "CHANNEL_FOLLOW_ADD";
+  case DISCORD_MESSAGE_GUILD_DISCOVERY_DISQUALIFIED: return "GUILD_DISCOVERY_DISQUALIFIED";
+  case DISCORD_MESSAGE_GUILD_DISCOVERY_REQUALIFIED: return "GUILD_DISCOVERY_REQUALIFIED";
+  case DISCORD_MESSAGE_REPLY: return "REPLY";
+  case DISCORD_MESSAGE_APPLICATION_COMMAND: return "APPLICATION_COMMAND";
+  }
+
+  return NULL;
 }
-bool discord_message_types_has(enum discord_message_types v, char *s) {
-  enum discord_message_types v1 = discord_message_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_message_types_cmp(enum discord_message_types v, char *s) {
+  enum discord_message_types v1 = discord_message_types_eval(s);
+  return v == v1;
 }
 
 void discord_message_from_json(char *json, size_t len, struct discord_message **pp)

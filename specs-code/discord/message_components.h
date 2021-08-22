@@ -11,16 +11,16 @@
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
  *
  * - Initializer:
- *   - <tt> discord_component_init(struct discord_component *) </tt>
+ *   - <tt> void discord_component_init(struct discord_component *) </tt>
  * - Cleanup:
- *   - <tt> discord_component_cleanup(struct discord_component *) </tt>
- *   - <tt> discord_component_list_free(struct discord_component **) </tt>
+ *   - <tt> void discord_component_cleanup(struct discord_component *) </tt>
+ *   - <tt> void discord_component_list_free(struct discord_component **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_component_from_json(char *rbuf, size_t len, struct discord_component **) </tt>
- *   - <tt> discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***) </tt>
+ *   - <tt> void discord_component_from_json(char *rbuf, size_t len, struct discord_component **) </tt>
+ *   - <tt> void discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_component_to_json(char *wbuf, size_t len, struct discord_component *) </tt>
- *   - <tt> discord_component_list_to_json(char *wbuf, size_t len, struct discord_component **) </tt>
+ *   - <tt> void discord_component_to_json(char *wbuf, size_t len, struct discord_component *) </tt>
+ *   - <tt> void discord_component_list_to_json(char *wbuf, size_t len, struct discord_component **) </tt>
  */
 struct discord_component {
   /* specs/discord/message_components.json:12:18
@@ -104,14 +104,23 @@ extern size_t discord_component_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_component_list_to_json(char *str, size_t len, struct discord_component **p);
 
 
+// Component Types
+// defined at specs/discord/message_components.json:26:5
+/**
+ * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-types
+ *
+ * - <tt> char* discord_component_types_print(enum discord_component_types code) </tt>
+ * - <tt> enum discord_component_types discord_component_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str) </tt>
+ */
 enum discord_component_types {
   DISCORD_COMPONENT_ACTION_ROW = 1,
   DISCORD_COMPONENT_BUTTON = 2,
   DISCORD_COMPONENT_SELECT_MENU = 3,
 };
-extern char* discord_component_types_to_string(enum discord_component_types);
-extern enum discord_component_types discord_component_types_from_string(char*);
-extern bool discord_component_types_has(enum discord_component_types, char*);
+extern char* discord_component_types_print(enum discord_component_types);
+extern enum discord_component_types discord_component_types_eval(char*);
+extern bool discord_component_types_cmp(enum discord_component_types, char*);
 
 // Button Structure
 // defined at specs/discord/message_components.json:41:22
@@ -119,16 +128,16 @@ extern bool discord_component_types_has(enum discord_component_types, char*);
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
  *
  * - Initializer:
- *   - <tt> discord_button_init(struct discord_button *) </tt>
+ *   - <tt> void discord_button_init(struct discord_button *) </tt>
  * - Cleanup:
- *   - <tt> discord_button_cleanup(struct discord_button *) </tt>
- *   - <tt> discord_button_list_free(struct discord_button **) </tt>
+ *   - <tt> void discord_button_cleanup(struct discord_button *) </tt>
+ *   - <tt> void discord_button_list_free(struct discord_button **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_button_from_json(char *rbuf, size_t len, struct discord_button **) </tt>
- *   - <tt> discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***) </tt>
+ *   - <tt> void discord_button_from_json(char *rbuf, size_t len, struct discord_button **) </tt>
+ *   - <tt> void discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_button_to_json(char *wbuf, size_t len, struct discord_button *) </tt>
- *   - <tt> discord_button_list_to_json(char *wbuf, size_t len, struct discord_button **) </tt>
+ *   - <tt> void discord_button_to_json(char *wbuf, size_t len, struct discord_button *) </tt>
+ *   - <tt> void discord_button_list_to_json(char *wbuf, size_t len, struct discord_button **) </tt>
  */
 struct discord_button {
   /* specs/discord/message_components.json:44:18
@@ -192,16 +201,25 @@ extern size_t discord_button_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_button_list_to_json(char *str, size_t len, struct discord_button **p);
 
 
+// Button Styles
+// defined at specs/discord/message_components.json:53:5
+/**
+ * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
+ *
+ * - <tt> char* discord_button_styles_print(enum discord_button_styles code) </tt>
+ * - <tt> enum discord_button_styles discord_button_styles_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str) </tt>
+ */
 enum discord_button_styles {
-  DISCORD_BUTTON_PRIMARY = 1, // blurple, requires custom_id
-  DISCORD_BUTTON_SECONDARY = 2, // grey, requires custom_id
-  DISCORD_BUTTON_SUCCESS = 3, // green, requires custom_id
-  DISCORD_BUTTON_DANGER = 4, // red, requires custom_id
-  DISCORD_BUTTON_LINK = 5, // grey, requires url
+  DISCORD_BUTTON_PRIMARY = 1, ///< blurple, requires custom_id
+  DISCORD_BUTTON_SECONDARY = 2, ///< grey, requires custom_id
+  DISCORD_BUTTON_SUCCESS = 3, ///< green, requires custom_id
+  DISCORD_BUTTON_DANGER = 4, ///< red, requires custom_id
+  DISCORD_BUTTON_LINK = 5, ///< grey, requires url
 };
-extern char* discord_button_styles_to_string(enum discord_button_styles);
-extern enum discord_button_styles discord_button_styles_from_string(char*);
-extern bool discord_button_styles_has(enum discord_button_styles, char*);
+extern char* discord_button_styles_print(enum discord_button_styles);
+extern enum discord_button_styles discord_button_styles_eval(char*);
+extern bool discord_button_styles_cmp(enum discord_button_styles, char*);
 
 // Select Menu Structure
 // defined at specs/discord/message_components.json:70:22
@@ -209,16 +227,16 @@ extern bool discord_button_styles_has(enum discord_button_styles, char*);
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
  *
  * - Initializer:
- *   - <tt> discord_select_menu_init(struct discord_select_menu *) </tt>
+ *   - <tt> void discord_select_menu_init(struct discord_select_menu *) </tt>
  * - Cleanup:
- *   - <tt> discord_select_menu_cleanup(struct discord_select_menu *) </tt>
- *   - <tt> discord_select_menu_list_free(struct discord_select_menu **) </tt>
+ *   - <tt> void discord_select_menu_cleanup(struct discord_select_menu *) </tt>
+ *   - <tt> void discord_select_menu_list_free(struct discord_select_menu **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **) </tt>
- *   - <tt> discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***) </tt>
+ *   - <tt> void discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **) </tt>
+ *   - <tt> void discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *) </tt>
- *   - <tt> discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu **) </tt>
+ *   - <tt> void discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *) </tt>
+ *   - <tt> void discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu **) </tt>
  */
 struct discord_select_menu {
   /* specs/discord/message_components.json:73:18
@@ -287,16 +305,16 @@ extern size_t discord_select_menu_list_to_json(char *str, size_t len, struct dis
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
  *
  * - Initializer:
- *   - <tt> discord_select_option_init(struct discord_select_option *) </tt>
+ *   - <tt> void discord_select_option_init(struct discord_select_option *) </tt>
  * - Cleanup:
- *   - <tt> discord_select_option_cleanup(struct discord_select_option *) </tt>
- *   - <tt> discord_select_option_list_free(struct discord_select_option **) </tt>
+ *   - <tt> void discord_select_option_cleanup(struct discord_select_option *) </tt>
+ *   - <tt> void discord_select_option_list_free(struct discord_select_option **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **) </tt>
- *   - <tt> discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***) </tt>
+ *   - <tt> void discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **) </tt>
+ *   - <tt> void discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *) </tt>
- *   - <tt> discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option **) </tt>
+ *   - <tt> void discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *) </tt>
+ *   - <tt> void discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option **) </tt>
  */
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18

@@ -491,7 +491,7 @@ size_t discord_application_command_option_list_to_json(char *str, size_t len, st
 
 
 
-enum discord_application_command_option_types discord_application_command_option_types_from_string(char *s){
+enum discord_application_command_option_types discord_application_command_option_types_eval(char *s){
   if(strcasecmp("SUB_COMMAND", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND;
   if(strcasecmp("SUB_COMMAND_GROUP", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP;
   if(strcasecmp("STRING", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_STRING;
@@ -501,33 +501,27 @@ enum discord_application_command_option_types discord_application_command_option
   if(strcasecmp("CHANNEL", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL;
   if(strcasecmp("ROLE", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_ROLE;
   if(strcasecmp("MENTIONABLE", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_application_command_option_types_to_string(enum discord_application_command_option_types v){
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND) return "SUB_COMMAND";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP) return "SUB_COMMAND_GROUP";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_STRING) return "STRING";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_INTEGER) return "INTEGER";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN) return "BOOLEAN";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_USER) return "USER";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL) return "CHANNEL";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_ROLE) return "ROLE";
-  if (v == DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE) return "MENTIONABLE";
+char* discord_application_command_option_types_print(enum discord_application_command_option_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND: return "SUB_COMMAND";
+  case DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP: return "SUB_COMMAND_GROUP";
+  case DISCORD_APPLICATION_COMMAND_OPTION_STRING: return "STRING";
+  case DISCORD_APPLICATION_COMMAND_OPTION_INTEGER: return "INTEGER";
+  case DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN: return "BOOLEAN";
+  case DISCORD_APPLICATION_COMMAND_OPTION_USER: return "USER";
+  case DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL: return "CHANNEL";
+  case DISCORD_APPLICATION_COMMAND_OPTION_ROLE: return "ROLE";
+  case DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE: return "MENTIONABLE";
+  }
+
+  return NULL;
 }
-bool discord_application_command_option_types_has(enum discord_application_command_option_types v, char *s) {
-  enum discord_application_command_option_types v1 = discord_application_command_option_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_application_command_option_types_cmp(enum discord_application_command_option_types v, char *s) {
+  enum discord_application_command_option_types v1 = discord_application_command_option_types_eval(s);
+  return v == v1;
 }
 
 void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp)
@@ -1003,22 +997,23 @@ size_t discord_application_command_permissions_list_to_json(char *str, size_t le
 
 
 
-enum discord_application_command_permission_types discord_application_command_permission_types_from_string(char *s){
+enum discord_application_command_permission_types discord_application_command_permission_types_eval(char *s){
   if(strcasecmp("ROLE", s) == 0) return DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE;
   if(strcasecmp("USER", s) == 0) return DISCORD_APPLICATION_COMMAND_PERMISSION_USER;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_application_command_permission_types_to_string(enum discord_application_command_permission_types v){
-  if (v == DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE) return "ROLE";
-  if (v == DISCORD_APPLICATION_COMMAND_PERMISSION_USER) return "USER";
+char* discord_application_command_permission_types_print(enum discord_application_command_permission_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE: return "ROLE";
+  case DISCORD_APPLICATION_COMMAND_PERMISSION_USER: return "USER";
+  }
+
+  return NULL;
 }
-bool discord_application_command_permission_types_has(enum discord_application_command_permission_types v, char *s) {
-  enum discord_application_command_permission_types v1 = discord_application_command_permission_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types v, char *s) {
+  enum discord_application_command_permission_types v1 = discord_application_command_permission_types_eval(s);
+  return v == v1;
 }
 
 void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp)
@@ -1333,25 +1328,25 @@ size_t discord_interaction_list_to_json(char *str, size_t len, struct discord_in
 
 
 
-enum discord_interaction_request_types discord_interaction_request_types_from_string(char *s){
+enum discord_interaction_request_types discord_interaction_request_types_eval(char *s){
   if(strcasecmp("PING", s) == 0) return DISCORD_INTERACTION_PING;
   if(strcasecmp("APPLICATION_COMMAND", s) == 0) return DISCORD_INTERACTION_APPLICATION_COMMAND;
   if(strcasecmp("MESSAGE_COMPONENT", s) == 0) return DISCORD_INTERACTION_MESSAGE_COMPONENT;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_interaction_request_types_to_string(enum discord_interaction_request_types v){
-  if (v == DISCORD_INTERACTION_PING) return "PING";
-  if (v == DISCORD_INTERACTION_APPLICATION_COMMAND) return "APPLICATION_COMMAND";
-  if (v == DISCORD_INTERACTION_MESSAGE_COMPONENT) return "MESSAGE_COMPONENT";
+char* discord_interaction_request_types_print(enum discord_interaction_request_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_INTERACTION_PING: return "PING";
+  case DISCORD_INTERACTION_APPLICATION_COMMAND: return "APPLICATION_COMMAND";
+  case DISCORD_INTERACTION_MESSAGE_COMPONENT: return "MESSAGE_COMPONENT";
+  }
+
+  return NULL;
 }
-bool discord_interaction_request_types_has(enum discord_interaction_request_types v, char *s) {
-  enum discord_interaction_request_types v1 = discord_interaction_request_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_interaction_request_types_cmp(enum discord_interaction_request_types v, char *s) {
+  enum discord_interaction_request_types v1 = discord_interaction_request_types_eval(s);
+  return v == v1;
 }
 
 void discord_application_command_interaction_data_from_json(char *json, size_t len, struct discord_application_command_interaction_data **pp)
@@ -2097,31 +2092,29 @@ size_t discord_interaction_response_list_to_json(char *str, size_t len, struct d
 
 
 
-enum discord_interaction_callback_types discord_interaction_callback_types_from_string(char *s){
+enum discord_interaction_callback_types discord_interaction_callback_types_eval(char *s){
   if(strcasecmp("PONG", s) == 0) return DISCORD_INTERACTION_CALLBACK_PONG;
   if(strcasecmp("CHANNEL_MESSAGE_WITH_SOURCE", s) == 0) return DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE;
   if(strcasecmp("DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE", s) == 0) return DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE;
   if(strcasecmp("DEFERRED_UPDATE_MESSAGE", s) == 0) return DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE;
   if(strcasecmp("UPDATE_MESSAGE", s) == 0) return DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_interaction_callback_types_to_string(enum discord_interaction_callback_types v){
-  if (v == DISCORD_INTERACTION_CALLBACK_PONG) return "PONG";
-  if (v == DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE) return "CHANNEL_MESSAGE_WITH_SOURCE";
-  if (v == DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE) return "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE";
-  if (v == DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE) return "DEFERRED_UPDATE_MESSAGE";
-  if (v == DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE) return "UPDATE_MESSAGE";
+char* discord_interaction_callback_types_print(enum discord_interaction_callback_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_INTERACTION_CALLBACK_PONG: return "PONG";
+  case DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE: return "CHANNEL_MESSAGE_WITH_SOURCE";
+  case DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE: return "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE";
+  case DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE: return "DEFERRED_UPDATE_MESSAGE";
+  case DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE: return "UPDATE_MESSAGE";
+  }
+
+  return NULL;
 }
-bool discord_interaction_callback_types_has(enum discord_interaction_callback_types v, char *s) {
-  enum discord_interaction_callback_types v1 = discord_interaction_callback_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types v, char *s) {
+  enum discord_interaction_callback_types v1 = discord_interaction_callback_types_eval(s);
+  return v == v1;
 }
 
 void discord_interaction_application_command_callback_data_from_json(char *json, size_t len, struct discord_interaction_application_command_callback_data **pp)
@@ -2350,19 +2343,21 @@ size_t discord_interaction_application_command_callback_data_list_to_json(char *
 
 
 
-enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_from_string(char *s){
+enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char *s){
   if(strcasecmp("EPHEMERAL", s) == 0) return DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_interaction_application_command_callback_data_flags_to_string(enum discord_interaction_application_command_callback_data_flags v){
-  if (v == DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL) return "EPHEMERAL";
+char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL: return "EPHEMERAL";
+  }
+
+  return NULL;
 }
-bool discord_interaction_application_command_callback_data_flags_has(enum discord_interaction_application_command_callback_data_flags v, char *s) {
-  enum discord_interaction_application_command_callback_data_flags v1 = discord_interaction_application_command_callback_data_flags_from_string(s);
-  if (v == v1) return true;
-  return false;
+bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags v, char *s) {
+  enum discord_interaction_application_command_callback_data_flags v1 = discord_interaction_application_command_callback_data_flags_eval(s);
+  return v == v1;
 }
 
 void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp)

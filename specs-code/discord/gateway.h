@@ -6,6 +6,15 @@
 
 
 
+// Gateway Close Event Codes
+// defined at specs/discord/gateway.json:6:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
+ *
+ * - <tt> char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes code) </tt>
+ * - <tt> enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR = 4000,
   DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE = 4001,
@@ -22,33 +31,51 @@ enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS = 4013,
   DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS = 4014,
 };
-extern char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes);
-extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char*);
-extern bool discord_gateway_close_opcodes_has(enum discord_gateway_close_opcodes, char*);
+extern char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes);
+extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char*);
+extern bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes, char*);
 
 
+// Gateway Intents
+// defined at specs/discord/gateway.json:28:5
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
+ *
+ * - <tt> char* discord_gateway_intents_print(enum discord_gateway_intents code) </tt>
+ * - <tt> enum discord_gateway_intents discord_gateway_intents_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_intents_cmp(enum discord_gateway_intents code, char *code_as_str) </tt>
+ */
 enum discord_gateway_intents {
-  DISCORD_GATEWAY_GUILDS = 1, // 1 << 0
-  DISCORD_GATEWAY_GUILD_MEMBERS = 2, // 1 << 1
-  DISCORD_GATEWAY_GUILD_BANS = 4, // 1 << 2
-  DISCORD_GATEWAY_GUILD_EMOJIS = 8, // 1 << 3
-  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, // 1 << 4
-  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, // 1 << 5
-  DISCORD_GATEWAY_GUILD_INVITES = 64, // 1 << 6
-  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, // 1 << 7
-  DISCORD_GATEWAY_GUILD_PRESENCES = 256, // 1 << 8
-  DISCORD_GATEWAY_GUILD_MESSAGES = 512, // 1 << 9
-  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, // 1 << 10
-  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, // 1 << 11
-  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, // 1 << 12
-  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, // 1 << 13
-  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, // 1 << 14
+  DISCORD_GATEWAY_GUILDS = 1, ///< 1 << 0
+  DISCORD_GATEWAY_GUILD_MEMBERS = 2, ///< 1 << 1
+  DISCORD_GATEWAY_GUILD_BANS = 4, ///< 1 << 2
+  DISCORD_GATEWAY_GUILD_EMOJIS = 8, ///< 1 << 3
+  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, ///< 1 << 4
+  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, ///< 1 << 5
+  DISCORD_GATEWAY_GUILD_INVITES = 64, ///< 1 << 6
+  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, ///< 1 << 7
+  DISCORD_GATEWAY_GUILD_PRESENCES = 256, ///< 1 << 8
+  DISCORD_GATEWAY_GUILD_MESSAGES = 512, ///< 1 << 9
+  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, ///< 1 << 10
+  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, ///< 1 << 11
+  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, ///< 1 << 12
+  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, ///< 1 << 13
+  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, ///< 1 << 14
 };
-extern char* discord_gateway_intents_to_string(enum discord_gateway_intents);
-extern enum discord_gateway_intents discord_gateway_intents_from_string(char*);
-extern bool discord_gateway_intents_has(enum discord_gateway_intents, char*);
+extern char* discord_gateway_intents_print(enum discord_gateway_intents);
+extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
+extern bool discord_gateway_intents_cmp(enum discord_gateway_intents, char*);
 
 
+// Gateway Opcodes
+// defined at specs/discord/gateway.json:51:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
+ *
+ * - <tt> char* discord_gateway_opcodes_print(enum discord_gateway_opcodes code) </tt>
+ * - <tt> enum discord_gateway_opcodes discord_gateway_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_gateway_opcodes {
   DISCORD_GATEWAY_DISPATCH = 0,
   DISCORD_GATEWAY_HEARTBEAT = 1,
@@ -62,11 +89,20 @@ enum discord_gateway_opcodes {
   DISCORD_GATEWAY_HELLO = 10,
   DISCORD_GATEWAY_HEARTBEAT_ACK = 11,
 };
-extern char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes);
-extern enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char*);
-extern bool discord_gateway_opcodes_has(enum discord_gateway_opcodes, char*);
+extern char* discord_gateway_opcodes_print(enum discord_gateway_opcodes);
+extern enum discord_gateway_opcodes discord_gateway_opcodes_eval(char*);
+extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
 
 
+// Gateway Events
+// defined at specs/discord/gateway.json:70:5
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
+ *
+ * - <tt> char* discord_gateway_events_print(enum discord_gateway_events code) </tt>
+ * - <tt> enum discord_gateway_events discord_gateway_events_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_events_cmp(enum discord_gateway_events code, char *code_as_str) </tt>
+ */
 enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_NONE = 0,
   DISCORD_GATEWAY_EVENTS_GUILD_CREATE = 1,
@@ -104,9 +140,9 @@ enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_READY = 33,
   DISCORD_GATEWAY_EVENTS_RESUMED = 34,
 };
-extern char* discord_gateway_events_to_string(enum discord_gateway_events);
-extern enum discord_gateway_events discord_gateway_events_from_string(char*);
-extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
+extern char* discord_gateway_events_print(enum discord_gateway_events);
+extern enum discord_gateway_events discord_gateway_events_eval(char*);
+extern bool discord_gateway_events_cmp(enum discord_gateway_events, char*);
 
 // Identify Structure
 // defined at specs/discord/gateway.json:116:22
@@ -114,16 +150,16 @@ extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
  * - Initializer:
- *   - <tt> discord_gateway_identify_init(struct discord_gateway_identify *) </tt>
+ *   - <tt> void discord_gateway_identify_init(struct discord_gateway_identify *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_identify_cleanup(struct discord_gateway_identify *) </tt>
- *   - <tt> discord_gateway_identify_list_free(struct discord_gateway_identify **) </tt>
+ *   - <tt> void discord_gateway_identify_cleanup(struct discord_gateway_identify *) </tt>
+ *   - <tt> void discord_gateway_identify_list_free(struct discord_gateway_identify **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify **) </tt>
- *   - <tt> discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify ***) </tt>
+ *   - <tt> void discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify **) </tt>
+ *   - <tt> void discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *) </tt>
- *   - <tt> discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify **) </tt>
+ *   - <tt> void discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *) </tt>
+ *   - <tt> void discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify **) </tt>
  */
 struct discord_gateway_identify {
   /* specs/discord/gateway.json:119:19
@@ -196,16 +232,16 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
  *
  * - Initializer:
- *   - <tt> discord_gateway_status_update_init(struct discord_gateway_status_update *) </tt>
+ *   - <tt> void discord_gateway_status_update_init(struct discord_gateway_status_update *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_status_update_cleanup(struct discord_gateway_status_update *) </tt>
- *   - <tt> discord_gateway_status_update_list_free(struct discord_gateway_status_update **) </tt>
+ *   - <tt> void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *) </tt>
+ *   - <tt> void discord_gateway_status_update_list_free(struct discord_gateway_status_update **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **) </tt>
- *   - <tt> discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***) </tt>
+ *   - <tt> void discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **) </tt>
+ *   - <tt> void discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *) </tt>
- *   - <tt> discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **) </tt>
+ *   - <tt> void discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *) </tt>
+ *   - <tt> void discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **) </tt>
  */
 struct discord_gateway_status_update {
   /* specs/discord/gateway.json:135:19
@@ -264,16 +300,16 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
  * - Initializer:
- *   - <tt> discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *) </tt>
+ *   - <tt> void discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *) </tt>
- *   - <tt> discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **) </tt>
+ *   - <tt> void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *) </tt>
+ *   - <tt> void discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
- *   - <tt> discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection ***) </tt>
+ *   - <tt> void discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
+ *   - <tt> void discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *) </tt>
- *   - <tt> discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
+ *   - <tt> void discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *) </tt>
+ *   - <tt> void discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
  */
 struct discord_gateway_identify_connection {
   /* specs/discord/gateway.json:150:19
@@ -326,16 +362,16 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
  * - Initializer:
- *   - <tt> discord_gateway_activity_init(struct discord_gateway_activity *) </tt>
+ *   - <tt> void discord_gateway_activity_init(struct discord_gateway_activity *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_activity_cleanup(struct discord_gateway_activity *) </tt>
- *   - <tt> discord_gateway_activity_list_free(struct discord_gateway_activity **) </tt>
+ *   - <tt> void discord_gateway_activity_cleanup(struct discord_gateway_activity *) </tt>
+ *   - <tt> void discord_gateway_activity_list_free(struct discord_gateway_activity **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity **) </tt>
- *   - <tt> discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity ***) </tt>
+ *   - <tt> void discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity **) </tt>
+ *   - <tt> void discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *) </tt>
- *   - <tt> discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity **) </tt>
+ *   - <tt> void discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *) </tt>
+ *   - <tt> void discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity **) </tt>
  */
 struct discord_gateway_activity {
   /* specs/discord/gateway.json:161:19
@@ -409,6 +445,15 @@ extern size_t discord_gateway_activity_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct discord_gateway_activity **p);
 
 
+// Activity Types
+// defined at specs/discord/gateway.json:177:5
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
+ *
+ * - <tt> char* discord_gateway_activity_types_print(enum discord_gateway_activity_types code) </tt>
+ * - <tt> enum discord_gateway_activity_types discord_gateway_activity_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types code, char *code_as_str) </tt>
+ */
 enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_GAME = 0,
   DISCORD_GATEWAY_ACTIVITY_STREAMING = 1,
@@ -416,6 +461,6 @@ enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_CUSTOM = 4,
   DISCORD_GATEWAY_ACTIVITY_COMPETING = 5,
 };
-extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
-extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);
-extern bool discord_gateway_activity_types_has(enum discord_gateway_activity_types, char*);
+extern char* discord_gateway_activity_types_print(enum discord_gateway_activity_types);
+extern enum discord_gateway_activity_types discord_gateway_activity_types_eval(char*);
+extern bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types, char*);

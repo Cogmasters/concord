@@ -1168,139 +1168,139 @@ size_t discord_guild_list_to_json(char *str, size_t len, struct discord_guild **
 
 
 
-enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_from_string(char *s){
+enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char *s){
   if(strcasecmp("ALL_MESSAGES", s) == 0) return DISCORD_GUILD_ALL_MESSAGES;
   if(strcasecmp("ONLY_MENTIONS", s) == 0) return DISCORD_GUILD_ONLY_MENTIONS;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_default_message_notification_level_to_string(enum discord_guild_default_message_notification_level v){
-  if (v == DISCORD_GUILD_ALL_MESSAGES) return "ALL_MESSAGES";
-  if (v == DISCORD_GUILD_ONLY_MENTIONS) return "ONLY_MENTIONS";
+char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_ALL_MESSAGES: return "ALL_MESSAGES";
+  case DISCORD_GUILD_ONLY_MENTIONS: return "ONLY_MENTIONS";
+  }
+
+  return NULL;
 }
-bool discord_guild_default_message_notification_level_has(enum discord_guild_default_message_notification_level v, char *s) {
-  enum discord_guild_default_message_notification_level v1 = discord_guild_default_message_notification_level_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level v, char *s) {
+  enum discord_guild_default_message_notification_level v1 = discord_guild_default_message_notification_level_eval(s);
+  return v == v1;
 }
 
 
-enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_from_string(char *s){
+enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *s){
   if(strcasecmp("DISABLED", s) == 0) return DISCORD_GUILD_DISABLED;
   if(strcasecmp("MEMBERS_WITHOUT_ROLES", s) == 0) return DISCORD_GUILD_MEMBERS_WITHOUT_ROLES;
   if(strcasecmp("ALL_MEMBERS", s) == 0) return DISCORD_GUILD_ALL_MEMBERS;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_explicit_content_filter_level_to_string(enum discord_guild_explicit_content_filter_level v){
-  if (v == DISCORD_GUILD_DISABLED) return "DISABLED";
-  if (v == DISCORD_GUILD_MEMBERS_WITHOUT_ROLES) return "MEMBERS_WITHOUT_ROLES";
-  if (v == DISCORD_GUILD_ALL_MEMBERS) return "ALL_MEMBERS";
+char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_DISABLED: return "DISABLED";
+  case DISCORD_GUILD_MEMBERS_WITHOUT_ROLES: return "MEMBERS_WITHOUT_ROLES";
+  case DISCORD_GUILD_ALL_MEMBERS: return "ALL_MEMBERS";
+  }
+
+  return NULL;
 }
-bool discord_guild_explicit_content_filter_level_has(enum discord_guild_explicit_content_filter_level v, char *s) {
-  enum discord_guild_explicit_content_filter_level v1 = discord_guild_explicit_content_filter_level_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level v, char *s) {
+  enum discord_guild_explicit_content_filter_level v1 = discord_guild_explicit_content_filter_level_eval(s);
+  return v == v1;
 }
 
 
-enum discord_guild_mfa_level discord_guild_mfa_level_from_string(char *s){
+enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *s){
   if(strcasecmp("DISCORD_MFA_NONE", s) == 0) return DISCORD_GUILD_DISCORD_MFA_NONE;
   if(strcasecmp("ELEVATED", s) == 0) return DISCORD_GUILD_ELEVATED;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_mfa_level_to_string(enum discord_guild_mfa_level v){
-  if (v == DISCORD_GUILD_DISCORD_MFA_NONE) return "DISCORD_MFA_NONE";
-  if (v == DISCORD_GUILD_ELEVATED) return "ELEVATED";
+char* discord_guild_mfa_level_print(enum discord_guild_mfa_level v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_DISCORD_MFA_NONE: return "DISCORD_MFA_NONE";
+  case DISCORD_GUILD_ELEVATED: return "ELEVATED";
+  }
+
+  return NULL;
 }
-bool discord_guild_mfa_level_has(enum discord_guild_mfa_level v, char *s) {
-  enum discord_guild_mfa_level v1 = discord_guild_mfa_level_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level v, char *s) {
+  enum discord_guild_mfa_level v1 = discord_guild_mfa_level_eval(s);
+  return v == v1;
 }
 
 
-enum discord_guild_verification_level discord_guild_verification_level_from_string(char *s){
+enum discord_guild_verification_level discord_guild_verification_level_eval(char *s){
   if(strcasecmp("DISCORD_VL_NONE", s) == 0) return DISCORD_GUILD_DISCORD_VL_NONE;
   if(strcasecmp("LOW", s) == 0) return DISCORD_GUILD_LOW;
   if(strcasecmp("MEDIUM", s) == 0) return DISCORD_GUILD_MEDIUM;
   if(strcasecmp("HIGH", s) == 0) return DISCORD_GUILD_HIGH;
   if(strcasecmp("VERY_HIGH", s) == 0) return DISCORD_GUILD_VERY_HIGH;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_verification_level_to_string(enum discord_guild_verification_level v){
-  if (v == DISCORD_GUILD_DISCORD_VL_NONE) return "DISCORD_VL_NONE";
-  if (v == DISCORD_GUILD_LOW) return "LOW";
-  if (v == DISCORD_GUILD_MEDIUM) return "MEDIUM";
-  if (v == DISCORD_GUILD_HIGH) return "HIGH";
-  if (v == DISCORD_GUILD_VERY_HIGH) return "VERY_HIGH";
+char* discord_guild_verification_level_print(enum discord_guild_verification_level v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_DISCORD_VL_NONE: return "DISCORD_VL_NONE";
+  case DISCORD_GUILD_LOW: return "LOW";
+  case DISCORD_GUILD_MEDIUM: return "MEDIUM";
+  case DISCORD_GUILD_HIGH: return "HIGH";
+  case DISCORD_GUILD_VERY_HIGH: return "VERY_HIGH";
+  }
+
+  return NULL;
 }
-bool discord_guild_verification_level_has(enum discord_guild_verification_level v, char *s) {
-  enum discord_guild_verification_level v1 = discord_guild_verification_level_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_verification_level_cmp(enum discord_guild_verification_level v, char *s) {
+  enum discord_guild_verification_level v1 = discord_guild_verification_level_eval(s);
+  return v == v1;
 }
 
 
-enum discord_guild_premium_tier discord_guild_premium_tier_from_string(char *s){
+enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *s){
   if(strcasecmp("DISCORD_PREMIUM_NONE", s) == 0) return DISCORD_GUILD_DISCORD_PREMIUM_NONE;
   if(strcasecmp("TIER_1", s) == 0) return DISCORD_GUILD_TIER_1;
   if(strcasecmp("TIER_2", s) == 0) return DISCORD_GUILD_TIER_2;
   if(strcasecmp("TIER_3", s) == 0) return DISCORD_GUILD_TIER_3;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_premium_tier_to_string(enum discord_guild_premium_tier v){
-  if (v == DISCORD_GUILD_DISCORD_PREMIUM_NONE) return "DISCORD_PREMIUM_NONE";
-  if (v == DISCORD_GUILD_TIER_1) return "TIER_1";
-  if (v == DISCORD_GUILD_TIER_2) return "TIER_2";
-  if (v == DISCORD_GUILD_TIER_3) return "TIER_3";
+char* discord_guild_premium_tier_print(enum discord_guild_premium_tier v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_DISCORD_PREMIUM_NONE: return "DISCORD_PREMIUM_NONE";
+  case DISCORD_GUILD_TIER_1: return "TIER_1";
+  case DISCORD_GUILD_TIER_2: return "TIER_2";
+  case DISCORD_GUILD_TIER_3: return "TIER_3";
+  }
+
+  return NULL;
 }
-bool discord_guild_premium_tier_has(enum discord_guild_premium_tier v, char *s) {
-  enum discord_guild_premium_tier v1 = discord_guild_premium_tier_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier v, char *s) {
+  enum discord_guild_premium_tier v1 = discord_guild_premium_tier_eval(s);
+  return v == v1;
 }
 
 
-enum discord_guild_system_channel_flags discord_guild_system_channel_flags_from_string(char *s){
+enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *s){
   if(strcasecmp("SUPRESS_JOIN_NOTIFICATIONS", s) == 0) return DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS;
   if(strcasecmp("SUPRESS_PREMIUM_SUBSCRIPTIONS", s) == 0) return DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_system_channel_flags_to_string(enum discord_guild_system_channel_flags v){
-  if (v == DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS) return "SUPRESS_JOIN_NOTIFICATIONS";
-  if (v == DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS) return "SUPRESS_PREMIUM_SUBSCRIPTIONS";
+char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS: return "SUPRESS_JOIN_NOTIFICATIONS";
+  case DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS: return "SUPRESS_PREMIUM_SUBSCRIPTIONS";
+  }
+
+  return NULL;
 }
-bool discord_guild_system_channel_flags_has(enum discord_guild_system_channel_flags v, char *s) {
-  enum discord_guild_system_channel_flags v1 = discord_guild_system_channel_flags_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags v, char *s) {
+  enum discord_guild_system_channel_flags v1 = discord_guild_system_channel_flags_eval(s);
+  return v == v1;
 }
 
 
-enum discord_guild_features discord_guild_features_from_string(char *s){
+enum discord_guild_features discord_guild_features_eval(char *s){
   if(strcasecmp("INVITE_SPLASH", s) == 0) return DISCORD_GUILD_INVITE_SPLASH;
   if(strcasecmp("VIP_REGIONS", s) == 0) return DISCORD_GUILD_VIP_REGIONS;
   if(strcasecmp("VANITY_URL", s) == 0) return DISCORD_GUILD_VANITY_URL;
@@ -1316,45 +1316,33 @@ enum discord_guild_features discord_guild_features_from_string(char *s){
   if(strcasecmp("WELCOME_SCREEN_ENABLED", s) == 0) return DISCORD_GUILD_WELCOME_SCREEN_ENABLED;
   if(strcasecmp("MEMBER_VERIFICATION_GATE_ENABLED", s) == 0) return DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED;
   if(strcasecmp("PREVIEW_ENABLED", s) == 0) return DISCORD_GUILD_PREVIEW_ENABLED;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_features_to_string(enum discord_guild_features v){
-  if (v == DISCORD_GUILD_INVITE_SPLASH) return "INVITE_SPLASH";
-  if (v == DISCORD_GUILD_VIP_REGIONS) return "VIP_REGIONS";
-  if (v == DISCORD_GUILD_VANITY_URL) return "VANITY_URL";
-  if (v == DISCORD_GUILD_VERIFIED) return "VERIFIED";
-  if (v == DISCORD_GUILD_PARTNERED) return "PARTNERED";
-  if (v == DISCORD_GUILD_COMMUNITY) return "COMMUNITY";
-  if (v == DISCORD_GUILD_COMMERCE) return "COMMERCE";
-  if (v == DISCORD_GUILD_NEWS) return "NEWS";
-  if (v == DISCORD_GUILD_DISCOVERABLE) return "DISCOVERABLE";
-  if (v == DISCORD_GUILD_FEATURABLE) return "FEATURABLE";
-  if (v == DISCORD_GUILD_ANIMATED_ICON) return "ANIMATED_ICON";
-  if (v == DISCORD_GUILD_BANNER) return "BANNER";
-  if (v == DISCORD_GUILD_WELCOME_SCREEN_ENABLED) return "WELCOME_SCREEN_ENABLED";
-  if (v == DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED) return "MEMBER_VERIFICATION_GATE_ENABLED";
-  if (v == DISCORD_GUILD_PREVIEW_ENABLED) return "PREVIEW_ENABLED";
+char* discord_guild_features_print(enum discord_guild_features v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_INVITE_SPLASH: return "INVITE_SPLASH";
+  case DISCORD_GUILD_VIP_REGIONS: return "VIP_REGIONS";
+  case DISCORD_GUILD_VANITY_URL: return "VANITY_URL";
+  case DISCORD_GUILD_VERIFIED: return "VERIFIED";
+  case DISCORD_GUILD_PARTNERED: return "PARTNERED";
+  case DISCORD_GUILD_COMMUNITY: return "COMMUNITY";
+  case DISCORD_GUILD_COMMERCE: return "COMMERCE";
+  case DISCORD_GUILD_NEWS: return "NEWS";
+  case DISCORD_GUILD_DISCOVERABLE: return "DISCOVERABLE";
+  case DISCORD_GUILD_FEATURABLE: return "FEATURABLE";
+  case DISCORD_GUILD_ANIMATED_ICON: return "ANIMATED_ICON";
+  case DISCORD_GUILD_BANNER: return "BANNER";
+  case DISCORD_GUILD_WELCOME_SCREEN_ENABLED: return "WELCOME_SCREEN_ENABLED";
+  case DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED: return "MEMBER_VERIFICATION_GATE_ENABLED";
+  case DISCORD_GUILD_PREVIEW_ENABLED: return "PREVIEW_ENABLED";
+  }
+
+  return NULL;
 }
-bool discord_guild_features_has(enum discord_guild_features v, char *s) {
-  enum discord_guild_features v1 = discord_guild_features_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_features_cmp(enum discord_guild_features v, char *s) {
+  enum discord_guild_features v1 = discord_guild_features_eval(s);
+  return v == v1;
 }
 
 void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable **pp)
@@ -2672,22 +2660,23 @@ size_t discord_guild_integration_list_to_json(char *str, size_t len, struct disc
 
 
 
-enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char *s){
+enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char *s){
   if(strcasecmp("REMOVE_ROLE", s) == 0) return DISCORD_GUILD_INTEGRATION_REMOVE_ROLE;
   if(strcasecmp("KICK", s) == 0) return DISCORD_GUILD_INTEGRATION_KICK;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors v){
-  if (v == DISCORD_GUILD_INTEGRATION_REMOVE_ROLE) return "REMOVE_ROLE";
-  if (v == DISCORD_GUILD_INTEGRATION_KICK) return "KICK";
+char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_GUILD_INTEGRATION_REMOVE_ROLE: return "REMOVE_ROLE";
+  case DISCORD_GUILD_INTEGRATION_KICK: return "KICK";
+  }
+
+  return NULL;
 }
-bool discord_guild_integration_expire_behaviors_has(enum discord_guild_integration_expire_behaviors v, char *s) {
-  enum discord_guild_integration_expire_behaviors v1 = discord_guild_integration_expire_behaviors_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors v, char *s) {
+  enum discord_guild_integration_expire_behaviors v1 = discord_guild_integration_expire_behaviors_eval(s);
+  return v == v1;
 }
 
 void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account **pp)

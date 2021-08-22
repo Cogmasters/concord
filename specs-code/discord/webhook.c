@@ -310,20 +310,21 @@ size_t discord_webhook_list_to_json(char *str, size_t len, struct discord_webhoo
 
 
 
-enum discord_webhook_types discord_webhook_types_from_string(char *s){
+enum discord_webhook_types discord_webhook_types_eval(char *s){
   if(strcasecmp("INCOMING", s) == 0) return DISCORD_WEBHOOK_INCOMING;
   if(strcasecmp("CHANNEL_FOLLOWER", s) == 0) return DISCORD_WEBHOOK_CHANNEL_FOLLOWER;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_webhook_types_to_string(enum discord_webhook_types v){
-  if (v == DISCORD_WEBHOOK_INCOMING) return "INCOMING";
-  if (v == DISCORD_WEBHOOK_CHANNEL_FOLLOWER) return "CHANNEL_FOLLOWER";
+char* discord_webhook_types_print(enum discord_webhook_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_WEBHOOK_INCOMING: return "INCOMING";
+  case DISCORD_WEBHOOK_CHANNEL_FOLLOWER: return "CHANNEL_FOLLOWER";
+  }
+
+  return NULL;
 }
-bool discord_webhook_types_has(enum discord_webhook_types v, char *s) {
-  enum discord_webhook_types v1 = discord_webhook_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_webhook_types_cmp(enum discord_webhook_types v, char *s) {
+  enum discord_webhook_types v1 = discord_webhook_types_eval(s);
+  return v == v1;
 }

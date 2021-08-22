@@ -11,16 +11,16 @@
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
  *
  * - Initializer:
- *   - <tt> discord_emoji_init(struct discord_emoji *) </tt>
+ *   - <tt> void discord_emoji_init(struct discord_emoji *) </tt>
  * - Cleanup:
- *   - <tt> discord_emoji_cleanup(struct discord_emoji *) </tt>
- *   - <tt> discord_emoji_list_free(struct discord_emoji **) </tt>
+ *   - <tt> void discord_emoji_cleanup(struct discord_emoji *) </tt>
+ *   - <tt> void discord_emoji_list_free(struct discord_emoji **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji **) </tt>
- *   - <tt> discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji ***) </tt>
+ *   - <tt> void discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji **) </tt>
+ *   - <tt> void discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji *) </tt>
- *   - <tt> discord_emoji_list_to_json(char *wbuf, size_t len, struct discord_emoji **) </tt>
+ *   - <tt> void discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji *) </tt>
+ *   - <tt> void discord_emoji_list_to_json(char *wbuf, size_t len, struct discord_emoji **) </tt>
  */
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20

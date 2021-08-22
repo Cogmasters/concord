@@ -389,25 +389,25 @@ size_t discord_component_list_to_json(char *str, size_t len, struct discord_comp
 
 
 
-enum discord_component_types discord_component_types_from_string(char *s){
+enum discord_component_types discord_component_types_eval(char *s){
   if(strcasecmp("ACTION_ROW", s) == 0) return DISCORD_COMPONENT_ACTION_ROW;
   if(strcasecmp("BUTTON", s) == 0) return DISCORD_COMPONENT_BUTTON;
   if(strcasecmp("SELECT_MENU", s) == 0) return DISCORD_COMPONENT_SELECT_MENU;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_component_types_to_string(enum discord_component_types v){
-  if (v == DISCORD_COMPONENT_ACTION_ROW) return "ACTION_ROW";
-  if (v == DISCORD_COMPONENT_BUTTON) return "BUTTON";
-  if (v == DISCORD_COMPONENT_SELECT_MENU) return "SELECT_MENU";
+char* discord_component_types_print(enum discord_component_types v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_COMPONENT_ACTION_ROW: return "ACTION_ROW";
+  case DISCORD_COMPONENT_BUTTON: return "BUTTON";
+  case DISCORD_COMPONENT_SELECT_MENU: return "SELECT_MENU";
+  }
+
+  return NULL;
 }
-bool discord_component_types_has(enum discord_component_types v, char *s) {
-  enum discord_component_types v1 = discord_component_types_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_component_types_cmp(enum discord_component_types v, char *s) {
+  enum discord_component_types v1 = discord_component_types_eval(s);
+  return v == v1;
 }
 
 void discord_button_from_json(char *json, size_t len, struct discord_button **pp)
@@ -669,31 +669,29 @@ size_t discord_button_list_to_json(char *str, size_t len, struct discord_button 
 
 
 
-enum discord_button_styles discord_button_styles_from_string(char *s){
+enum discord_button_styles discord_button_styles_eval(char *s){
   if(strcasecmp("PRIMARY", s) == 0) return DISCORD_BUTTON_PRIMARY;
   if(strcasecmp("SECONDARY", s) == 0) return DISCORD_BUTTON_SECONDARY;
   if(strcasecmp("SUCCESS", s) == 0) return DISCORD_BUTTON_SUCCESS;
   if(strcasecmp("DANGER", s) == 0) return DISCORD_BUTTON_DANGER;
   if(strcasecmp("LINK", s) == 0) return DISCORD_BUTTON_LINK;
-  abort();
+  ERR("'%s' doesn't match any known enumerator.", s);
 }
-char* discord_button_styles_to_string(enum discord_button_styles v){
-  if (v == DISCORD_BUTTON_PRIMARY) return "PRIMARY";
-  if (v == DISCORD_BUTTON_SECONDARY) return "SECONDARY";
-  if (v == DISCORD_BUTTON_SUCCESS) return "SUCCESS";
-  if (v == DISCORD_BUTTON_DANGER) return "DANGER";
-  if (v == DISCORD_BUTTON_LINK) return "LINK";
+char* discord_button_styles_print(enum discord_button_styles v){
 
-  return (void*)0;
+  switch (v) {
+  case DISCORD_BUTTON_PRIMARY: return "PRIMARY";
+  case DISCORD_BUTTON_SECONDARY: return "SECONDARY";
+  case DISCORD_BUTTON_SUCCESS: return "SUCCESS";
+  case DISCORD_BUTTON_DANGER: return "DANGER";
+  case DISCORD_BUTTON_LINK: return "LINK";
+  }
+
+  return NULL;
 }
-bool discord_button_styles_has(enum discord_button_styles v, char *s) {
-  enum discord_button_styles v1 = discord_button_styles_from_string(s);
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  if (v == v1) return true;
-  return false;
+bool discord_button_styles_cmp(enum discord_button_styles v, char *s) {
+  enum discord_button_styles v1 = discord_button_styles_eval(s);
+  return v == v1;
 }
 
 void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp)

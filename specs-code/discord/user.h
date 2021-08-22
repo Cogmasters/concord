@@ -6,48 +6,66 @@
 
 
 
+// User Flags
+// defined at specs/discord/user.json:7:7
+/**
+ * @see https://discord.com/developers/docs/resources/user#user-object-user-flags
+ *
+ * - <tt> char* discord_user_flags_print(enum discord_user_flags code) </tt>
+ * - <tt> enum discord_user_flags discord_user_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_user_flags_cmp(enum discord_user_flags code, char *code_as_str) </tt>
+ */
 enum discord_user_flags {
-  DISCORD_USER_DISCORD_EMPLOYEE = 1, // 1 << 0
-  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, // 1 << 2
-  DISCORD_USER_HYPESQUAD_EVENTS = 4, // 1 << 3
-  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
-  DISCORD_USER_HOUSE_BRAVERY = 32, // 1 << 6
-  DISCORD_USER_HOUSE_BRILLIANCE = 64, // 1 << 7
-  DISCORD_USER_HOUSE_BALANCE = 128, // 1 << 8
-  DISCORD_USER_EARLY_SUPPORTER = 256, // 1 << 9
-  DISCORD_USER_TEAM_USER = 512, // 1 << 10
-  DISCORD_USER_SYSTEM = 4096, // 1 << 12
-  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
-  DISCORD_USER_VERIFIED_BOT = 65536, // 1 << 16
-  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
+  DISCORD_USER_DISCORD_EMPLOYEE = 1, ///< 1 << 0
+  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, ///< 1 << 2
+  DISCORD_USER_HYPESQUAD_EVENTS = 4, ///< 1 << 3
+  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, ///< 1 << 4
+  DISCORD_USER_HOUSE_BRAVERY = 32, ///< 1 << 6
+  DISCORD_USER_HOUSE_BRILLIANCE = 64, ///< 1 << 7
+  DISCORD_USER_HOUSE_BALANCE = 128, ///< 1 << 8
+  DISCORD_USER_EARLY_SUPPORTER = 256, ///< 1 << 9
+  DISCORD_USER_TEAM_USER = 512, ///< 1 << 10
+  DISCORD_USER_SYSTEM = 4096, ///< 1 << 12
+  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, ///< 1 << 14
+  DISCORD_USER_VERIFIED_BOT = 65536, ///< 1 << 16
+  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, ///< 1 << 17
 };
-extern char* discord_user_flags_to_string(enum discord_user_flags);
-extern enum discord_user_flags discord_user_flags_from_string(char*);
-extern bool discord_user_flags_has(enum discord_user_flags, char*);
+extern char* discord_user_flags_print(enum discord_user_flags);
+extern enum discord_user_flags discord_user_flags_eval(char*);
+extern bool discord_user_flags_cmp(enum discord_user_flags, char*);
 
 
+// Premium Types
+// defined at specs/discord/user.json:29:7
+/**
+ * @see https://discord.com/developers/docs/resources/user#user-object-premium-types
+ *
+ * - <tt> char* discord_user_premium_types_print(enum discord_user_premium_types code) </tt>
+ * - <tt> enum discord_user_premium_types discord_user_premium_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_user_premium_types_cmp(enum discord_user_premium_types code, char *code_as_str) </tt>
+ */
 enum discord_user_premium_types {
   DISCORD_USER_NITRO_CLASSIC = 0,
   DISCORD_USER_NITRO = 1,
 };
-extern char* discord_user_premium_types_to_string(enum discord_user_premium_types);
-extern enum discord_user_premium_types discord_user_premium_types_from_string(char*);
-extern bool discord_user_premium_types_has(enum discord_user_premium_types, char*);
+extern char* discord_user_premium_types_print(enum discord_user_premium_types);
+extern enum discord_user_premium_types discord_user_premium_types_eval(char*);
+extern bool discord_user_premium_types_cmp(enum discord_user_premium_types, char*);
 
 // User Structure
 // defined at specs/discord/user.json:42:28
 /**
  * - Initializer:
- *   - <tt> discord_user_init(struct discord_user *) </tt>
+ *   - <tt> void discord_user_init(struct discord_user *) </tt>
  * - Cleanup:
- *   - <tt> discord_user_cleanup(struct discord_user *) </tt>
- *   - <tt> discord_user_list_free(struct discord_user **) </tt>
+ *   - <tt> void discord_user_cleanup(struct discord_user *) </tt>
+ *   - <tt> void discord_user_list_free(struct discord_user **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_user_from_json(char *rbuf, size_t len, struct discord_user **) </tt>
- *   - <tt> discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***) </tt>
+ *   - <tt> void discord_user_from_json(char *rbuf, size_t len, struct discord_user **) </tt>
+ *   - <tt> void discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_user_to_json(char *wbuf, size_t len, struct discord_user *) </tt>
- *   - <tt> discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **) </tt>
+ *   - <tt> void discord_user_to_json(char *wbuf, size_t len, struct discord_user *) </tt>
+ *   - <tt> void discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **) </tt>
  */
 struct discord_user {
   /* specs/discord/user.json:45:24
@@ -135,13 +153,22 @@ extern size_t discord_user_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p);
 
 
+// Visbility Types
+// defined at specs/discord/user.json:60:7
+/**
+ * @see https://discord.com/developers/docs/resources/user#connection-object-visibility-types
+ *
+ * - <tt> char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code) </tt>
+ * - <tt> enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types code, char *code_as_str) </tt>
+ */
 enum discord_user_connection_visibility_types {
   DISCORD_USER_CONNECTION_NONE = 0,
   DISCORD_USER_CONNECTION_EVERYONE = 1,
 };
-extern char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types);
-extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char*);
-extern bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types, char*);
+extern char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types);
+extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char*);
+extern bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types, char*);
 
 // Connection Structure
 // defined at specs/discord/user.json:74:28
@@ -149,16 +176,16 @@ extern bool discord_user_connection_visibility_types_has(enum discord_user_conne
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
  *
  * - Initializer:
- *   - <tt> discord_connection_init(struct discord_connection *) </tt>
+ *   - <tt> void discord_connection_init(struct discord_connection *) </tt>
  * - Cleanup:
- *   - <tt> discord_connection_cleanup(struct discord_connection *) </tt>
- *   - <tt> discord_connection_list_free(struct discord_connection **) </tt>
+ *   - <tt> void discord_connection_cleanup(struct discord_connection *) </tt>
+ *   - <tt> void discord_connection_list_free(struct discord_connection **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **) </tt>
- *   - <tt> discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***) </tt>
+ *   - <tt> void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **) </tt>
+ *   - <tt> void discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *) </tt>
- *   - <tt> discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **) </tt>
+ *   - <tt> void discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *) </tt>
+ *   - <tt> void discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **) </tt>
  */
 struct discord_connection {
   /* specs/discord/user.json:77:24

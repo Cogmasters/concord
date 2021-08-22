@@ -919,6 +919,15 @@ struct discord_webhook;
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 
 
+// Audit Log Events
+// defined at specs/discord/audit_log.json:18:5
+/**
+ * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events
+ *
+ * - <tt> char* discord_audit_log_events_print(enum discord_audit_log_events code) </tt>
+ * - <tt> enum discord_audit_log_events discord_audit_log_events_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_audit_log_events_cmp(enum discord_audit_log_events code, char *code_as_str) </tt>
+ */
 enum discord_audit_log_events {
   DISCORD_AUDIT_LOG_GUILD_UPDATE = 1,
   DISCORD_AUDIT_LOG_CHANNEL_CREATE = 10,
@@ -955,13 +964,22 @@ enum discord_audit_log_events {
   DISCORD_AUDIT_LOG_INTEGRATION_UPDATE = 81,
   DISCORD_AUDIT_LOG_INTEGRATION_DELETE = 82,
 };
-extern char* discord_audit_log_events_to_string(enum discord_audit_log_events);
-extern enum discord_audit_log_events discord_audit_log_events_from_string(char*);
-extern bool discord_audit_log_events_has(enum discord_audit_log_events, char*);
+extern char* discord_audit_log_events_print(enum discord_audit_log_events);
+extern enum discord_audit_log_events discord_audit_log_events_eval(char*);
+extern bool discord_audit_log_events_cmp(enum discord_audit_log_events, char*);
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 
 
+// Channel Types
+// defined at specs/discord/channel.json:6:5
+/**
+ * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+ *
+ * - <tt> char* discord_channel_types_print(enum discord_channel_types code) </tt>
+ * - <tt> enum discord_channel_types discord_channel_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_channel_types_cmp(enum discord_channel_types code, char *code_as_str) </tt>
+ */
 enum discord_channel_types {
   DISCORD_CHANNEL_GUILD_TEXT = 0,
   DISCORD_CHANNEL_DM = 1,
@@ -975,44 +993,80 @@ enum discord_channel_types {
   DISCORD_CHANNEL_GUILD_PRIVATE_THREAD = 12,
   DISCORD_CHANNEL_GUILD_STAGE_VOICE = 13,
 };
-extern char* discord_channel_types_to_string(enum discord_channel_types);
-extern enum discord_channel_types discord_channel_types_from_string(char*);
-extern bool discord_channel_types_has(enum discord_channel_types, char*);
+extern char* discord_channel_types_print(enum discord_channel_types);
+extern enum discord_channel_types discord_channel_types_eval(char*);
+extern bool discord_channel_types_cmp(enum discord_channel_types, char*);
 
 
+// Message Sticker Format Types
+// defined at specs/discord/channel.json:66:5
+/**
+ * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types
+ *
+ * - <tt> char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types code) </tt>
+ * - <tt> enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types code, char *code_as_str) </tt>
+ */
 enum discord_message_sticker_format_types {
   DISCORD_MESSAGE_STICKER_PNG = 1,
   DISCORD_MESSAGE_STICKER_APNG = 2,
   DISCORD_MESSAGE_STICKER_LOTTIE = 3,
 };
-extern char* discord_message_sticker_format_types_to_string(enum discord_message_sticker_format_types);
-extern enum discord_message_sticker_format_types discord_message_sticker_format_types_from_string(char*);
-extern bool discord_message_sticker_format_types_has(enum discord_message_sticker_format_types, char*);
+extern char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types);
+extern enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char*);
+extern bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types, char*);
 
 
+// Message Flags
+// defined at specs/discord/channel.json:95:5
+/**
+ * @see https://discord.com/developers/docs/resources/channel#message-object-message-flags
+ *
+ * - <tt> char* discord_message_flags_print(enum discord_message_flags code) </tt>
+ * - <tt> enum discord_message_flags discord_message_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_message_flags_cmp(enum discord_message_flags code, char *code_as_str) </tt>
+ */
 enum discord_message_flags {
-  DISCORD_MESSAGE_CROSSPOSTED = 1, // 1<<0
-  DISCORD_MESSAGE_IS_CROSSPOST = 2, // 1<<1
-  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, // 1<<2
-  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, // 1<<3
-  DISCORD_MESSAGE_URGENT = 16, // 1<<4
+  DISCORD_MESSAGE_CROSSPOSTED = 1, ///< 1<<0
+  DISCORD_MESSAGE_IS_CROSSPOST = 2, ///< 1<<1
+  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, ///< 1<<2
+  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, ///< 1<<3
+  DISCORD_MESSAGE_URGENT = 16, ///< 1<<4
 };
-extern char* discord_message_flags_to_string(enum discord_message_flags);
-extern enum discord_message_flags discord_message_flags_from_string(char*);
-extern bool discord_message_flags_has(enum discord_message_flags, char*);
+extern char* discord_message_flags_print(enum discord_message_flags);
+extern enum discord_message_flags discord_message_flags_eval(char*);
+extern bool discord_message_flags_cmp(enum discord_message_flags, char*);
 
 
+// Message Activity Types
+// defined at specs/discord/channel.json:133:5
+/**
+ * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-types
+ *
+ * - <tt> char* discord_message_activity_types_print(enum discord_message_activity_types code) </tt>
+ * - <tt> enum discord_message_activity_types discord_message_activity_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_message_activity_types_cmp(enum discord_message_activity_types code, char *code_as_str) </tt>
+ */
 enum discord_message_activity_types {
   DISCORD_MESSAGE_ACTIVITY_JOIN = 1,
   DISCORD_MESSAGE_ACTIVITY_SPECTATE = 2,
   DISCORD_MESSAGE_ACTIVITY_LISTEN = 3,
   DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST = 5,
 };
-extern char* discord_message_activity_types_to_string(enum discord_message_activity_types);
-extern enum discord_message_activity_types discord_message_activity_types_from_string(char*);
-extern bool discord_message_activity_types_has(enum discord_message_activity_types, char*);
+extern char* discord_message_activity_types_print(enum discord_message_activity_types);
+extern enum discord_message_activity_types discord_message_activity_types_eval(char*);
+extern bool discord_message_activity_types_cmp(enum discord_message_activity_types, char*);
 
 
+// Message Types
+// defined at specs/discord/channel.json:156:5
+/**
+ * @see https://discord.com/developers/docs/resources/channel#message-object-message-types
+ *
+ * - <tt> char* discord_message_types_print(enum discord_message_types code) </tt>
+ * - <tt> enum discord_message_types discord_message_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_message_types_cmp(enum discord_message_types code, char *code_as_str) </tt>
+ */
 enum discord_message_types {
   DISCORD_MESSAGE_DEFAULT = 0,
   DISCORD_MESSAGE_RECIPIENT_ADD = 1,
@@ -1032,14 +1086,23 @@ enum discord_message_types {
   DISCORD_MESSAGE_REPLY = 19,
   DISCORD_MESSAGE_APPLICATION_COMMAND = 20,
 };
-extern char* discord_message_types_to_string(enum discord_message_types);
-extern enum discord_message_types discord_message_types_from_string(char*);
-extern bool discord_message_types_has(enum discord_message_types, char*);
+extern char* discord_message_types_print(enum discord_message_types);
+extern enum discord_message_types discord_message_types_eval(char*);
+extern bool discord_message_types_cmp(enum discord_message_types, char*);
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 
 
+// Gateway Close Event Codes
+// defined at specs/discord/gateway.json:6:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
+ *
+ * - <tt> char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes code) </tt>
+ * - <tt> enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR = 4000,
   DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE = 4001,
@@ -1056,33 +1119,51 @@ enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS = 4013,
   DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS = 4014,
 };
-extern char* discord_gateway_close_opcodes_to_string(enum discord_gateway_close_opcodes);
-extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_from_string(char*);
-extern bool discord_gateway_close_opcodes_has(enum discord_gateway_close_opcodes, char*);
+extern char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes);
+extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char*);
+extern bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes, char*);
 
 
+// Gateway Intents
+// defined at specs/discord/gateway.json:28:5
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
+ *
+ * - <tt> char* discord_gateway_intents_print(enum discord_gateway_intents code) </tt>
+ * - <tt> enum discord_gateway_intents discord_gateway_intents_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_intents_cmp(enum discord_gateway_intents code, char *code_as_str) </tt>
+ */
 enum discord_gateway_intents {
-  DISCORD_GATEWAY_GUILDS = 1, // 1 << 0
-  DISCORD_GATEWAY_GUILD_MEMBERS = 2, // 1 << 1
-  DISCORD_GATEWAY_GUILD_BANS = 4, // 1 << 2
-  DISCORD_GATEWAY_GUILD_EMOJIS = 8, // 1 << 3
-  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, // 1 << 4
-  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, // 1 << 5
-  DISCORD_GATEWAY_GUILD_INVITES = 64, // 1 << 6
-  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, // 1 << 7
-  DISCORD_GATEWAY_GUILD_PRESENCES = 256, // 1 << 8
-  DISCORD_GATEWAY_GUILD_MESSAGES = 512, // 1 << 9
-  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, // 1 << 10
-  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, // 1 << 11
-  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, // 1 << 12
-  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, // 1 << 13
-  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, // 1 << 14
+  DISCORD_GATEWAY_GUILDS = 1, ///< 1 << 0
+  DISCORD_GATEWAY_GUILD_MEMBERS = 2, ///< 1 << 1
+  DISCORD_GATEWAY_GUILD_BANS = 4, ///< 1 << 2
+  DISCORD_GATEWAY_GUILD_EMOJIS = 8, ///< 1 << 3
+  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, ///< 1 << 4
+  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, ///< 1 << 5
+  DISCORD_GATEWAY_GUILD_INVITES = 64, ///< 1 << 6
+  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, ///< 1 << 7
+  DISCORD_GATEWAY_GUILD_PRESENCES = 256, ///< 1 << 8
+  DISCORD_GATEWAY_GUILD_MESSAGES = 512, ///< 1 << 9
+  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, ///< 1 << 10
+  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, ///< 1 << 11
+  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, ///< 1 << 12
+  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, ///< 1 << 13
+  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, ///< 1 << 14
 };
-extern char* discord_gateway_intents_to_string(enum discord_gateway_intents);
-extern enum discord_gateway_intents discord_gateway_intents_from_string(char*);
-extern bool discord_gateway_intents_has(enum discord_gateway_intents, char*);
+extern char* discord_gateway_intents_print(enum discord_gateway_intents);
+extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
+extern bool discord_gateway_intents_cmp(enum discord_gateway_intents, char*);
 
 
+// Gateway Opcodes
+// defined at specs/discord/gateway.json:51:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
+ *
+ * - <tt> char* discord_gateway_opcodes_print(enum discord_gateway_opcodes code) </tt>
+ * - <tt> enum discord_gateway_opcodes discord_gateway_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_gateway_opcodes {
   DISCORD_GATEWAY_DISPATCH = 0,
   DISCORD_GATEWAY_HEARTBEAT = 1,
@@ -1096,11 +1177,20 @@ enum discord_gateway_opcodes {
   DISCORD_GATEWAY_HELLO = 10,
   DISCORD_GATEWAY_HEARTBEAT_ACK = 11,
 };
-extern char* discord_gateway_opcodes_to_string(enum discord_gateway_opcodes);
-extern enum discord_gateway_opcodes discord_gateway_opcodes_from_string(char*);
-extern bool discord_gateway_opcodes_has(enum discord_gateway_opcodes, char*);
+extern char* discord_gateway_opcodes_print(enum discord_gateway_opcodes);
+extern enum discord_gateway_opcodes discord_gateway_opcodes_eval(char*);
+extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
 
 
+// Gateway Events
+// defined at specs/discord/gateway.json:70:5
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
+ *
+ * - <tt> char* discord_gateway_events_print(enum discord_gateway_events code) </tt>
+ * - <tt> enum discord_gateway_events discord_gateway_events_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_events_cmp(enum discord_gateway_events code, char *code_as_str) </tt>
+ */
 enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_NONE = 0,
   DISCORD_GATEWAY_EVENTS_GUILD_CREATE = 1,
@@ -1138,11 +1228,20 @@ enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_READY = 33,
   DISCORD_GATEWAY_EVENTS_RESUMED = 34,
 };
-extern char* discord_gateway_events_to_string(enum discord_gateway_events);
-extern enum discord_gateway_events discord_gateway_events_from_string(char*);
-extern bool discord_gateway_events_has(enum discord_gateway_events, char*);
+extern char* discord_gateway_events_print(enum discord_gateway_events);
+extern enum discord_gateway_events discord_gateway_events_eval(char*);
+extern bool discord_gateway_events_cmp(enum discord_gateway_events, char*);
 
 
+// Activity Types
+// defined at specs/discord/gateway.json:177:5
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
+ *
+ * - <tt> char* discord_gateway_activity_types_print(enum discord_gateway_activity_types code) </tt>
+ * - <tt> enum discord_gateway_activity_types discord_gateway_activity_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types code, char *code_as_str) </tt>
+ */
 enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_GAME = 0,
   DISCORD_GATEWAY_ACTIVITY_STREAMING = 1,
@@ -1150,43 +1249,79 @@ enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_CUSTOM = 4,
   DISCORD_GATEWAY_ACTIVITY_COMPETING = 5,
 };
-extern char* discord_gateway_activity_types_to_string(enum discord_gateway_activity_types);
-extern enum discord_gateway_activity_types discord_gateway_activity_types_from_string(char*);
-extern bool discord_gateway_activity_types_has(enum discord_gateway_activity_types, char*);
+extern char* discord_gateway_activity_types_print(enum discord_gateway_activity_types);
+extern enum discord_gateway_activity_types discord_gateway_activity_types_eval(char*);
+extern bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types, char*);
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 
 
+// Default Message Notification Level
+// defined at specs/discord/guild.json:68:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
+ *
+ * - <tt> char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level code) </tt>
+ * - <tt> enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level code, char *code_as_str) </tt>
+ */
 enum discord_guild_default_message_notification_level {
   DISCORD_GUILD_ALL_MESSAGES = 0,
   DISCORD_GUILD_ONLY_MENTIONS = 1,
 };
-extern char* discord_guild_default_message_notification_level_to_string(enum discord_guild_default_message_notification_level);
-extern enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_from_string(char*);
-extern bool discord_guild_default_message_notification_level_has(enum discord_guild_default_message_notification_level, char*);
+extern char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level);
+extern enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char*);
+extern bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level, char*);
 
 
+// Explicit Content Filter Level
+// defined at specs/discord/guild.json:78:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
+ *
+ * - <tt> char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level code) </tt>
+ * - <tt> enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level code, char *code_as_str) </tt>
+ */
 enum discord_guild_explicit_content_filter_level {
   DISCORD_GUILD_DISABLED = 0,
   DISCORD_GUILD_MEMBERS_WITHOUT_ROLES = 1,
   DISCORD_GUILD_ALL_MEMBERS = 2,
 };
-extern char* discord_guild_explicit_content_filter_level_to_string(enum discord_guild_explicit_content_filter_level);
-extern enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_from_string(char*);
-extern bool discord_guild_explicit_content_filter_level_has(enum discord_guild_explicit_content_filter_level, char*);
+extern char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level);
+extern enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char*);
+extern bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level, char*);
 
 
+// MFA Level
+// defined at specs/discord/guild.json:89:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
+ *
+ * - <tt> char* discord_guild_mfa_level_print(enum discord_guild_mfa_level code) </tt>
+ * - <tt> enum discord_guild_mfa_level discord_guild_mfa_level_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level code, char *code_as_str) </tt>
+ */
 enum discord_guild_mfa_level {
   DISCORD_GUILD_DISCORD_MFA_NONE = 0,
   DISCORD_GUILD_ELEVATED = 1,
 };
-extern char* discord_guild_mfa_level_to_string(enum discord_guild_mfa_level);
-extern enum discord_guild_mfa_level discord_guild_mfa_level_from_string(char*);
-extern bool discord_guild_mfa_level_has(enum discord_guild_mfa_level, char*);
+extern char* discord_guild_mfa_level_print(enum discord_guild_mfa_level);
+extern enum discord_guild_mfa_level discord_guild_mfa_level_eval(char*);
+extern bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level, char*);
 
 
+// Verification Level
+// defined at specs/discord/guild.json:99:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-verification-level
+ *
+ * - <tt> char* discord_guild_verification_level_print(enum discord_guild_verification_level code) </tt>
+ * - <tt> enum discord_guild_verification_level discord_guild_verification_level_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_verification_level_cmp(enum discord_guild_verification_level code, char *code_as_str) </tt>
+ */
 enum discord_guild_verification_level {
   DISCORD_GUILD_DISCORD_VL_NONE = 0,
   DISCORD_GUILD_LOW = 1,
@@ -1194,31 +1329,58 @@ enum discord_guild_verification_level {
   DISCORD_GUILD_HIGH = 3,
   DISCORD_GUILD_VERY_HIGH = 4,
 };
-extern char* discord_guild_verification_level_to_string(enum discord_guild_verification_level);
-extern enum discord_guild_verification_level discord_guild_verification_level_from_string(char*);
-extern bool discord_guild_verification_level_has(enum discord_guild_verification_level, char*);
+extern char* discord_guild_verification_level_print(enum discord_guild_verification_level);
+extern enum discord_guild_verification_level discord_guild_verification_level_eval(char*);
+extern bool discord_guild_verification_level_cmp(enum discord_guild_verification_level, char*);
 
 
+// Premium Tier
+// defined at specs/discord/guild.json:112:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
+ *
+ * - <tt> char* discord_guild_premium_tier_print(enum discord_guild_premium_tier code) </tt>
+ * - <tt> enum discord_guild_premium_tier discord_guild_premium_tier_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier code, char *code_as_str) </tt>
+ */
 enum discord_guild_premium_tier {
   DISCORD_GUILD_DISCORD_PREMIUM_NONE = 0,
   DISCORD_GUILD_TIER_1 = 1,
   DISCORD_GUILD_TIER_2 = 2,
   DISCORD_GUILD_TIER_3 = 3,
 };
-extern char* discord_guild_premium_tier_to_string(enum discord_guild_premium_tier);
-extern enum discord_guild_premium_tier discord_guild_premium_tier_from_string(char*);
-extern bool discord_guild_premium_tier_has(enum discord_guild_premium_tier, char*);
+extern char* discord_guild_premium_tier_print(enum discord_guild_premium_tier);
+extern enum discord_guild_premium_tier discord_guild_premium_tier_eval(char*);
+extern bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier, char*);
 
 
+// System Channel Flags
+// defined at specs/discord/guild.json:124:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags
+ *
+ * - <tt> char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags code) </tt>
+ * - <tt> enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags code, char *code_as_str) </tt>
+ */
 enum discord_guild_system_channel_flags {
-  DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS = 1, // 1<<0
-  DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, // 1<<1
+  DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS = 1, ///< 1<<0
+  DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, ///< 1<<1
 };
-extern char* discord_guild_system_channel_flags_to_string(enum discord_guild_system_channel_flags);
-extern enum discord_guild_system_channel_flags discord_guild_system_channel_flags_from_string(char*);
-extern bool discord_guild_system_channel_flags_has(enum discord_guild_system_channel_flags, char*);
+extern char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags);
+extern enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char*);
+extern bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags, char*);
 
 
+// Guild Features
+// defined at specs/discord/guild.json:134:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-features
+ *
+ * - <tt> char* discord_guild_features_print(enum discord_guild_features code) </tt>
+ * - <tt> enum discord_guild_features discord_guild_features_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_features_cmp(enum discord_guild_features code, char *code_as_str) </tt>
+ */
 enum discord_guild_features {
   DISCORD_GUILD_INVITE_SPLASH = 0,
   DISCORD_GUILD_VIP_REGIONS = 1,
@@ -1236,94 +1398,146 @@ enum discord_guild_features {
   DISCORD_GUILD_MEMBER_VERIFICATION_GATE_ENABLED = 13,
   DISCORD_GUILD_PREVIEW_ENABLED = 14,
 };
-extern char* discord_guild_features_to_string(enum discord_guild_features);
-extern enum discord_guild_features discord_guild_features_from_string(char*);
-extern bool discord_guild_features_has(enum discord_guild_features, char*);
+extern char* discord_guild_features_print(enum discord_guild_features);
+extern enum discord_guild_features discord_guild_features_eval(char*);
+extern bool discord_guild_features_cmp(enum discord_guild_features, char*);
 
 
+// Integration Expire Behaviors
+// defined at specs/discord/guild.json:237:5
+/**
+ * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors
+ *
+ * - <tt> char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors code) </tt>
+ * - <tt> enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors code, char *code_as_str) </tt>
+ */
 enum discord_guild_integration_expire_behaviors {
   DISCORD_GUILD_INTEGRATION_REMOVE_ROLE = 0,
   DISCORD_GUILD_INTEGRATION_KICK = 1,
 };
-extern char* discord_guild_integration_expire_behaviors_to_string(enum discord_guild_integration_expire_behaviors);
-extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_from_string(char*);
-extern bool discord_guild_integration_expire_behaviors_has(enum discord_guild_integration_expire_behaviors, char*);
+extern char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors);
+extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char*);
+extern bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors, char*);
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 
 
+// Target User Types
+// defined at specs/discord/invite.json:6:5
+/**
+ * @see https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
+ *
+ * - <tt> char* discord_invite_target_user_types_print(enum discord_invite_target_user_types code) </tt>
+ * - <tt> enum discord_invite_target_user_types discord_invite_target_user_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types code, char *code_as_str) </tt>
+ */
 enum discord_invite_target_user_types {
   DISCORD_INVITE_STREAM = 1,
 };
-extern char* discord_invite_target_user_types_to_string(enum discord_invite_target_user_types);
-extern enum discord_invite_target_user_types discord_invite_target_user_types_from_string(char*);
-extern bool discord_invite_target_user_types_has(enum discord_invite_target_user_types, char*);
+extern char* discord_invite_target_user_types_print(enum discord_invite_target_user_types);
+extern enum discord_invite_target_user_types discord_invite_target_user_types_eval(char*);
+extern bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types, char*);
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 
 
+// Component Types
+// defined at specs/discord/message_components.json:26:5
+/**
+ * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-types
+ *
+ * - <tt> char* discord_component_types_print(enum discord_component_types code) </tt>
+ * - <tt> enum discord_component_types discord_component_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str) </tt>
+ */
 enum discord_component_types {
   DISCORD_COMPONENT_ACTION_ROW = 1,
   DISCORD_COMPONENT_BUTTON = 2,
   DISCORD_COMPONENT_SELECT_MENU = 3,
 };
-extern char* discord_component_types_to_string(enum discord_component_types);
-extern enum discord_component_types discord_component_types_from_string(char*);
-extern bool discord_component_types_has(enum discord_component_types, char*);
+extern char* discord_component_types_print(enum discord_component_types);
+extern enum discord_component_types discord_component_types_eval(char*);
+extern bool discord_component_types_cmp(enum discord_component_types, char*);
 
 
+// Button Styles
+// defined at specs/discord/message_components.json:53:5
+/**
+ * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
+ *
+ * - <tt> char* discord_button_styles_print(enum discord_button_styles code) </tt>
+ * - <tt> enum discord_button_styles discord_button_styles_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str) </tt>
+ */
 enum discord_button_styles {
-  DISCORD_BUTTON_PRIMARY = 1, // blurple, requires custom_id
-  DISCORD_BUTTON_SECONDARY = 2, // grey, requires custom_id
-  DISCORD_BUTTON_SUCCESS = 3, // green, requires custom_id
-  DISCORD_BUTTON_DANGER = 4, // red, requires custom_id
-  DISCORD_BUTTON_LINK = 5, // grey, requires url
+  DISCORD_BUTTON_PRIMARY = 1, ///< blurple, requires custom_id
+  DISCORD_BUTTON_SECONDARY = 2, ///< grey, requires custom_id
+  DISCORD_BUTTON_SUCCESS = 3, ///< green, requires custom_id
+  DISCORD_BUTTON_DANGER = 4, ///< red, requires custom_id
+  DISCORD_BUTTON_LINK = 5, ///< grey, requires url
 };
-extern char* discord_button_styles_to_string(enum discord_button_styles);
-extern enum discord_button_styles discord_button_styles_from_string(char*);
-extern bool discord_button_styles_has(enum discord_button_styles, char*);
+extern char* discord_button_styles_print(enum discord_button_styles);
+extern enum discord_button_styles discord_button_styles_eval(char*);
+extern bool discord_button_styles_cmp(enum discord_button_styles, char*);
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
+// Bitwise Permission Flags
+// defined at specs/discord/permissions.json:6:5
+/**
+ * - <tt> char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags code) </tt>
+ * - <tt> enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags code, char *code_as_str) </tt>
+ */
 enum discord_permissions_bitwise_flags {
-  DISCORD_PERMISSIONS_ZERO = 0, // No permission bits
-  DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE = 1, // Allows creation of instant invites  T, V
-  DISCORD_PERMISSIONS_KICK_MEMBERS = 2, // Allows kicking members
-  DISCORD_PERMISSIONS_BAN_MEMBERS = 4, // Allows banning members
-  DISCORD_PERMISSIONS_ADMINISTRATOR = 8, // Allows all permissions and bypasses channel permission overwrites   
-  DISCORD_PERMISSIONS_MANAGE_CHANNELS = 16, // Allows management and editing of channels   T, V
-  DISCORD_PERMISSIONS_MANAGE_GUILD = 32, // Allows management and editing of the guild  
-  DISCORD_PERMISSIONS_ADD_REACTIONS = 64, // Allows for the addition of reactions to messages    T
-  DISCORD_PERMISSIONS_VIEW_AUDIT_LOG = 128, // Allows for viewing of audit logs    
-  DISCORD_PERMISSIONS_PRIORITY_SPEAKER = 256, // Allows for using priority speaker in a voice channel    V
-  DISCORD_PERMISSIONS_STREAM = 512, // Allows the user to go live  V
-  DISCORD_PERMISSIONS_VIEW_CHANNEL = 1024, // Allows guild members to view a channel, which includes reading messages in text channels    T, V
-  DISCORD_PERMISSIONS_SEND_MESSAGES = 2048, // Allows for sending messages in a channel    T
-  DISCORD_PERMISSIONS_SEND_TTS_MESSAGES = 4096, // Allows for sending of /tts messages T
-  DISCORD_PERMISSIONS_MANAGE_MESSAGES = 8192, // Allows for deletion of other users messages T
-  DISCORD_PERMISSIONS_EMBED_LINKS = 16384, // Links sent by users with this permission will be auto-embedded  T
-  DISCORD_PERMISSIONS_ATTACH_FILES = 32768, // Allows for uploading images and files   T
-  DISCORD_PERMISSIONS_READ_MESSAGE_HISTORY = 65536, // Allows for reading of message history   T
-  DISCORD_PERMISSIONS_MENTION_EVERYONE = 131072, // Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T
-  DISCORD_PERMISSIONS_USE_EXTERNAL_EMOJIS = 262144, // Allows the usage of custom emojis from other servers    T
-  DISCORD_PERMISSIONS_VIEW_GUILD_INSIGHTS = 524288, // Allows for viewing guild insights   
-  DISCORD_PERMISSIONS_CONNECT = 1048576, // Allows for joining of a voice channel   V
-  DISCORD_PERMISSIONS_SPEAK = 2097152, // Allows for speaking in a voice channel  V
-  DISCORD_PERMISSIONS_MUTE_MEMBERS = 4194304, // Allows for muting members in a voice channel    V
-  DISCORD_PERMISSIONS_DEAFEN_MEMBERS = 8388608, // Allows for deafening of members in a voice channel  V
-  DISCORD_PERMISSIONS_MOVE_MEMBERS = 16777216, // Allows for moving of members between voice channels V
-  DISCORD_PERMISSIONS_USE_VAD = 33554432, // Allows for using voice-activity-detection in a voice channel    V
-  DISCORD_PERMISSIONS_CHANGE_NICKNAME = 67108864, // Allows for modification of own nickname 
-  DISCORD_PERMISSIONS_MANAGE_NICKNAMES = 134217728, // Allows for modification of other users nicknames    
-  DISCORD_PERMISSIONS_MANAGE_ROLES = 268435456, // Allows management and editing of roles  T, V
-  DISCORD_PERMISSIONS_MANAGE_WEBHOOKS = 536870912, // Allows management and editing of webhooks   T, V
-  DISCORD_PERMISSIONS_MANAGE_EMOJIS = 1073741824, // Allows management and editing of emojis
+  DISCORD_PERMISSIONS_ZERO = 0, ///< No permission bits
+  DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE = 1, ///< Allows creation of instant invites  T, V
+  DISCORD_PERMISSIONS_KICK_MEMBERS = 2, ///< Allows kicking members
+  DISCORD_PERMISSIONS_BAN_MEMBERS = 4, ///< Allows banning members
+  DISCORD_PERMISSIONS_ADMINISTRATOR = 8, ///< Allows all permissions and bypasses channel permission overwrites   
+  DISCORD_PERMISSIONS_MANAGE_CHANNELS = 16, ///< Allows management and editing of channels   T, V
+  DISCORD_PERMISSIONS_MANAGE_GUILD = 32, ///< Allows management and editing of the guild  
+  DISCORD_PERMISSIONS_ADD_REACTIONS = 64, ///< Allows for the addition of reactions to messages    T
+  DISCORD_PERMISSIONS_VIEW_AUDIT_LOG = 128, ///< Allows for viewing of audit logs    
+  DISCORD_PERMISSIONS_PRIORITY_SPEAKER = 256, ///< Allows for using priority speaker in a voice channel    V
+  DISCORD_PERMISSIONS_STREAM = 512, ///< Allows the user to go live  V
+  DISCORD_PERMISSIONS_VIEW_CHANNEL = 1024, ///< Allows guild members to view a channel, which includes reading messages in text channels    T, V
+  DISCORD_PERMISSIONS_SEND_MESSAGES = 2048, ///< Allows for sending messages in a channel    T
+  DISCORD_PERMISSIONS_SEND_TTS_MESSAGES = 4096, ///< Allows for sending of /tts messages T
+  DISCORD_PERMISSIONS_MANAGE_MESSAGES = 8192, ///< Allows for deletion of other users messages T
+  DISCORD_PERMISSIONS_EMBED_LINKS = 16384, ///< Links sent by users with this permission will be auto-embedded  T
+  DISCORD_PERMISSIONS_ATTACH_FILES = 32768, ///< Allows for uploading images and files   T
+  DISCORD_PERMISSIONS_READ_MESSAGE_HISTORY = 65536, ///< Allows for reading of message history   T
+  DISCORD_PERMISSIONS_MENTION_EVERYONE = 131072, ///< Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T
+  DISCORD_PERMISSIONS_USE_EXTERNAL_EMOJIS = 262144, ///< Allows the usage of custom emojis from other servers    T
+  DISCORD_PERMISSIONS_VIEW_GUILD_INSIGHTS = 524288, ///< Allows for viewing guild insights   
+  DISCORD_PERMISSIONS_CONNECT = 1048576, ///< Allows for joining of a voice channel   V
+  DISCORD_PERMISSIONS_SPEAK = 2097152, ///< Allows for speaking in a voice channel  V
+  DISCORD_PERMISSIONS_MUTE_MEMBERS = 4194304, ///< Allows for muting members in a voice channel    V
+  DISCORD_PERMISSIONS_DEAFEN_MEMBERS = 8388608, ///< Allows for deafening of members in a voice channel  V
+  DISCORD_PERMISSIONS_MOVE_MEMBERS = 16777216, ///< Allows for moving of members between voice channels V
+  DISCORD_PERMISSIONS_USE_VAD = 33554432, ///< Allows for using voice-activity-detection in a voice channel    V
+  DISCORD_PERMISSIONS_CHANGE_NICKNAME = 67108864, ///< Allows for modification of own nickname 
+  DISCORD_PERMISSIONS_MANAGE_NICKNAMES = 134217728, ///< Allows for modification of other users nicknames    
+  DISCORD_PERMISSIONS_MANAGE_ROLES = 268435456, ///< Allows management and editing of roles  T, V
+  DISCORD_PERMISSIONS_MANAGE_WEBHOOKS = 536870912, ///< Allows management and editing of webhooks   T, V
+  DISCORD_PERMISSIONS_MANAGE_EMOJIS = 1073741824, ///< Allows management and editing of emojis
 };
-extern char* discord_permissions_bitwise_flags_to_string(enum discord_permissions_bitwise_flags);
-extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_from_string(char*);
-extern bool discord_permissions_bitwise_flags_has(enum discord_permissions_bitwise_flags, char*);
+extern char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags);
+extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char*);
+extern bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags, char*);
 /* This file is generated from specs/discord/slash_commands.json, Please don't edit it. */
 
 
+// Application Command Option Type
+// defined at specs/discord/slash_commands.json:36:5
+/**
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type
+ *
+ * - <tt> char* discord_application_command_option_types_print(enum discord_application_command_option_types code) </tt>
+ * - <tt> enum discord_application_command_option_types discord_application_command_option_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_application_command_option_types_cmp(enum discord_application_command_option_types code, char *code_as_str) </tt>
+ */
 enum discord_application_command_option_types {
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND = 1,
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP = 2,
@@ -1335,91 +1549,163 @@ enum discord_application_command_option_types {
   DISCORD_APPLICATION_COMMAND_OPTION_ROLE = 8,
   DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE = 9,
 };
-extern char* discord_application_command_option_types_to_string(enum discord_application_command_option_types);
-extern enum discord_application_command_option_types discord_application_command_option_types_from_string(char*);
-extern bool discord_application_command_option_types_has(enum discord_application_command_option_types, char*);
+extern char* discord_application_command_option_types_print(enum discord_application_command_option_types);
+extern enum discord_application_command_option_types discord_application_command_option_types_eval(char*);
+extern bool discord_application_command_option_types_cmp(enum discord_application_command_option_types, char*);
 
 
+// Application Command Permission Type
+// defined at specs/discord/slash_commands.json:90:5
+/**
+ * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permission-type
+ *
+ * - <tt> char* discord_application_command_permission_types_print(enum discord_application_command_permission_types code) </tt>
+ * - <tt> enum discord_application_command_permission_types discord_application_command_permission_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types code, char *code_as_str) </tt>
+ */
 enum discord_application_command_permission_types {
   DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE = 1,
   DISCORD_APPLICATION_COMMAND_PERMISSION_USER = 2,
 };
-extern char* discord_application_command_permission_types_to_string(enum discord_application_command_permission_types);
-extern enum discord_application_command_permission_types discord_application_command_permission_types_from_string(char*);
-extern bool discord_application_command_permission_types_has(enum discord_application_command_permission_types, char*);
+extern char* discord_application_command_permission_types_print(enum discord_application_command_permission_types);
+extern enum discord_application_command_permission_types discord_application_command_permission_types_eval(char*);
+extern bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types, char*);
 
 
+// Interaction Request Type
+// defined at specs/discord/slash_commands.json:118:5
+/**
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-request-type
+ *
+ * - <tt> char* discord_interaction_request_types_print(enum discord_interaction_request_types code) </tt>
+ * - <tt> enum discord_interaction_request_types discord_interaction_request_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_interaction_request_types_cmp(enum discord_interaction_request_types code, char *code_as_str) </tt>
+ */
 enum discord_interaction_request_types {
   DISCORD_INTERACTION_PING = 1,
   DISCORD_INTERACTION_APPLICATION_COMMAND = 2,
   DISCORD_INTERACTION_MESSAGE_COMPONENT = 3,
 };
-extern char* discord_interaction_request_types_to_string(enum discord_interaction_request_types);
-extern enum discord_interaction_request_types discord_interaction_request_types_from_string(char*);
-extern bool discord_interaction_request_types_has(enum discord_interaction_request_types, char*);
+extern char* discord_interaction_request_types_print(enum discord_interaction_request_types);
+extern enum discord_interaction_request_types discord_interaction_request_types_eval(char*);
+extern bool discord_interaction_request_types_cmp(enum discord_interaction_request_types, char*);
 
 
+// Interaction Callback Type
+// defined at specs/discord/slash_commands.json:182:5
+/**
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-callback-type
+ *
+ * - <tt> char* discord_interaction_callback_types_print(enum discord_interaction_callback_types code) </tt>
+ * - <tt> enum discord_interaction_callback_types discord_interaction_callback_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types code, char *code_as_str) </tt>
+ */
 enum discord_interaction_callback_types {
-  DISCORD_INTERACTION_CALLBACK_PONG = 1, // ACK a Ping
-  DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE = 4, // respond to a interaction with a message
-  DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5, // ACK an interaction and edit a response later, the user sees a loading state
-  DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE = 6, // for components, ACK an interaction and edit the original message later; the user does not see a loading state
-  DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE = 7, // for components, edit the message the component was attached to
+  DISCORD_INTERACTION_CALLBACK_PONG = 1, ///< ACK a Ping
+  DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE = 4, ///< respond to a interaction with a message
+  DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5, ///< ACK an interaction and edit a response later, the user sees a loading state
+  DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE = 6, ///< for components, ACK an interaction and edit the original message later; the user does not see a loading state
+  DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE = 7, ///< for components, edit the message the component was attached to
 };
-extern char* discord_interaction_callback_types_to_string(enum discord_interaction_callback_types);
-extern enum discord_interaction_callback_types discord_interaction_callback_types_from_string(char*);
-extern bool discord_interaction_callback_types_has(enum discord_interaction_callback_types, char*);
+extern char* discord_interaction_callback_types_print(enum discord_interaction_callback_types);
+extern enum discord_interaction_callback_types discord_interaction_callback_types_eval(char*);
+extern bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types, char*);
 
 
+// Interaction Application Command Callback Data Flags
+// defined at specs/discord/slash_commands.json:211:5
+/**
+ * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-flags
+ *
+ * - <tt> char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags code) </tt>
+ * - <tt> enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags code, char *code_as_str) </tt>
+ */
 enum discord_interaction_application_command_callback_data_flags {
-  DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL = 64, // only the user receiving the message can see it
+  DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL = 64, ///< only the user receiving the message can see it
 };
-extern char* discord_interaction_application_command_callback_data_flags_to_string(enum discord_interaction_application_command_callback_data_flags);
-extern enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_from_string(char*);
-extern bool discord_interaction_application_command_callback_data_flags_has(enum discord_interaction_application_command_callback_data_flags, char*);
+extern char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags);
+extern enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char*);
+extern bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags, char*);
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 
 
+// User Flags
+// defined at specs/discord/user.json:7:7
+/**
+ * @see https://discord.com/developers/docs/resources/user#user-object-user-flags
+ *
+ * - <tt> char* discord_user_flags_print(enum discord_user_flags code) </tt>
+ * - <tt> enum discord_user_flags discord_user_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_user_flags_cmp(enum discord_user_flags code, char *code_as_str) </tt>
+ */
 enum discord_user_flags {
-  DISCORD_USER_DISCORD_EMPLOYEE = 1, // 1 << 0
-  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, // 1 << 2
-  DISCORD_USER_HYPESQUAD_EVENTS = 4, // 1 << 3
-  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, // 1 << 4
-  DISCORD_USER_HOUSE_BRAVERY = 32, // 1 << 6
-  DISCORD_USER_HOUSE_BRILLIANCE = 64, // 1 << 7
-  DISCORD_USER_HOUSE_BALANCE = 128, // 1 << 8
-  DISCORD_USER_EARLY_SUPPORTER = 256, // 1 << 9
-  DISCORD_USER_TEAM_USER = 512, // 1 << 10
-  DISCORD_USER_SYSTEM = 4096, // 1 << 12
-  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, // 1 << 14
-  DISCORD_USER_VERIFIED_BOT = 65536, // 1 << 16
-  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, // 1 << 17
+  DISCORD_USER_DISCORD_EMPLOYEE = 1, ///< 1 << 0
+  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, ///< 1 << 2
+  DISCORD_USER_HYPESQUAD_EVENTS = 4, ///< 1 << 3
+  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, ///< 1 << 4
+  DISCORD_USER_HOUSE_BRAVERY = 32, ///< 1 << 6
+  DISCORD_USER_HOUSE_BRILLIANCE = 64, ///< 1 << 7
+  DISCORD_USER_HOUSE_BALANCE = 128, ///< 1 << 8
+  DISCORD_USER_EARLY_SUPPORTER = 256, ///< 1 << 9
+  DISCORD_USER_TEAM_USER = 512, ///< 1 << 10
+  DISCORD_USER_SYSTEM = 4096, ///< 1 << 12
+  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, ///< 1 << 14
+  DISCORD_USER_VERIFIED_BOT = 65536, ///< 1 << 16
+  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, ///< 1 << 17
 };
-extern char* discord_user_flags_to_string(enum discord_user_flags);
-extern enum discord_user_flags discord_user_flags_from_string(char*);
-extern bool discord_user_flags_has(enum discord_user_flags, char*);
+extern char* discord_user_flags_print(enum discord_user_flags);
+extern enum discord_user_flags discord_user_flags_eval(char*);
+extern bool discord_user_flags_cmp(enum discord_user_flags, char*);
 
 
+// Premium Types
+// defined at specs/discord/user.json:29:7
+/**
+ * @see https://discord.com/developers/docs/resources/user#user-object-premium-types
+ *
+ * - <tt> char* discord_user_premium_types_print(enum discord_user_premium_types code) </tt>
+ * - <tt> enum discord_user_premium_types discord_user_premium_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_user_premium_types_cmp(enum discord_user_premium_types code, char *code_as_str) </tt>
+ */
 enum discord_user_premium_types {
   DISCORD_USER_NITRO_CLASSIC = 0,
   DISCORD_USER_NITRO = 1,
 };
-extern char* discord_user_premium_types_to_string(enum discord_user_premium_types);
-extern enum discord_user_premium_types discord_user_premium_types_from_string(char*);
-extern bool discord_user_premium_types_has(enum discord_user_premium_types, char*);
+extern char* discord_user_premium_types_print(enum discord_user_premium_types);
+extern enum discord_user_premium_types discord_user_premium_types_eval(char*);
+extern bool discord_user_premium_types_cmp(enum discord_user_premium_types, char*);
 
 
+// Visbility Types
+// defined at specs/discord/user.json:60:7
+/**
+ * @see https://discord.com/developers/docs/resources/user#connection-object-visibility-types
+ *
+ * - <tt> char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code) </tt>
+ * - <tt> enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types code, char *code_as_str) </tt>
+ */
 enum discord_user_connection_visibility_types {
   DISCORD_USER_CONNECTION_NONE = 0,
   DISCORD_USER_CONNECTION_EVERYONE = 1,
 };
-extern char* discord_user_connection_visibility_types_to_string(enum discord_user_connection_visibility_types);
-extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_from_string(char*);
-extern bool discord_user_connection_visibility_types_has(enum discord_user_connection_visibility_types, char*);
+extern char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types);
+extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char*);
+extern bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types, char*);
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 
 
+// Voice Close Event Codes
+// defined at specs/discord/voice-connections.json:6:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes
+ *
+ * - <tt> char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes code) </tt>
+ * - <tt> enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_voice_close_opcodes {
   DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE = 4001,
   DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR = 4002,
@@ -1434,11 +1720,20 @@ enum discord_voice_close_opcodes {
   DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH = 4015,
   DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE = 4016,
 };
-extern char* discord_voice_close_opcodes_to_string(enum discord_voice_close_opcodes);
-extern enum discord_voice_close_opcodes discord_voice_close_opcodes_from_string(char*);
-extern bool discord_voice_close_opcodes_has(enum discord_voice_close_opcodes, char*);
+extern char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes);
+extern enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char*);
+extern bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes, char*);
 
 
+// Voice Opcodes
+// defined at specs/discord/voice-connections.json:26:5
+/**
+ * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
+ *
+ * - <tt> char* discord_voice_opcodes_print(enum discord_voice_opcodes code) </tt>
+ * - <tt> enum discord_voice_opcodes discord_voice_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_voice_opcodes_cmp(enum discord_voice_opcodes code, char *code_as_str) </tt>
+ */
 enum discord_voice_opcodes {
   DISCORD_VOICE_IDENTIFY = 0,
   DISCORD_VOICE_SELECT_PROTOCOL = 1,
@@ -1453,31 +1748,49 @@ enum discord_voice_opcodes {
   DISCORD_VOICE_CLIENT_DISCONNECT = 13,
   DISCORD_VOICE_CODEC = 14,
 };
-extern char* discord_voice_opcodes_to_string(enum discord_voice_opcodes);
-extern enum discord_voice_opcodes discord_voice_opcodes_from_string(char*);
-extern bool discord_voice_opcodes_has(enum discord_voice_opcodes, char*);
+extern char* discord_voice_opcodes_print(enum discord_voice_opcodes);
+extern enum discord_voice_opcodes discord_voice_opcodes_eval(char*);
+extern bool discord_voice_opcodes_cmp(enum discord_voice_opcodes, char*);
 
 
+// Voice Speaking Flags
+// defined at specs/discord/voice-connections.json:46:5
+/**
+ * @see https://discord.com/developers/docs/topics/voice-connections#speaking
+ *
+ * - <tt> char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags code) </tt>
+ * - <tt> enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags code, char *code_as_str) </tt>
+ */
 enum discord_voice_speaking_flags {
-  DISCORD_VOICE_MICROPHONE = 1, // 1 << 0
-  DISCORD_VOICE_SOUNDSHARE = 2, // 1 << 1
-  DISCORD_VOICE_PRIORITY = 4, // 1 << 2
+  DISCORD_VOICE_MICROPHONE = 1, ///< 1 << 0
+  DISCORD_VOICE_SOUNDSHARE = 2, ///< 1 << 1
+  DISCORD_VOICE_PRIORITY = 4, ///< 1 << 2
 };
-extern char* discord_voice_speaking_flags_to_string(enum discord_voice_speaking_flags);
-extern enum discord_voice_speaking_flags discord_voice_speaking_flags_from_string(char*);
-extern bool discord_voice_speaking_flags_has(enum discord_voice_speaking_flags, char*);
+extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
+extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);
+extern bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags, char*);
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 
 
+// Webhook Types
+// defined at specs/discord/webhook.json:23:5
+/**
+ * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
+ *
+ * - <tt> char* discord_webhook_types_print(enum discord_webhook_types code) </tt>
+ * - <tt> enum discord_webhook_types discord_webhook_types_eval(char * code_as_str) </tt>
+ * - <tt> bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str) </tt>
+ */
 enum discord_webhook_types {
   DISCORD_WEBHOOK_INCOMING = 1,
   DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2,
 };
-extern char* discord_webhook_types_to_string(enum discord_webhook_types);
-extern enum discord_webhook_types discord_webhook_types_from_string(char*);
-extern bool discord_webhook_types_has(enum discord_webhook_types, char*);
+extern char* discord_webhook_types_print(enum discord_webhook_types);
+extern enum discord_webhook_types discord_webhook_types_eval(char*);
+extern bool discord_webhook_types_cmp(enum discord_webhook_types, char*);
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 
 // defined at specs/discord/audit_log.endpoints-params.json:8:22
@@ -1485,16 +1798,16 @@ extern bool discord_webhook_types_has(enum discord_webhook_types, char*);
  * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
  *
  * - Initializer:
- *   - <tt> discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *) </tt>
- *   - <tt> discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
- *   - <tt> discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params ***) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params *) </tt>
- *   - <tt> discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params *) </tt>
+ *   - <tt> void discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
  */
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:11:20
@@ -1536,16 +1849,16 @@ struct discord_get_guild_audit_log_params {
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
  *
  * - Initializer:
- *   - <tt> discord_audit_log_init(struct discord_audit_log *) </tt>
+ *   - <tt> void discord_audit_log_init(struct discord_audit_log *) </tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_cleanup(struct discord_audit_log *) </tt>
- *   - <tt> discord_audit_log_list_free(struct discord_audit_log **) </tt>
+ *   - <tt> void discord_audit_log_cleanup(struct discord_audit_log *) </tt>
+ *   - <tt> void discord_audit_log_list_free(struct discord_audit_log **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log **) </tt>
- *   - <tt> discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log ***) </tt>
+ *   - <tt> void discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log **) </tt>
+ *   - <tt> void discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log *) </tt>
- *   - <tt> discord_audit_log_list_to_json(char *wbuf, size_t len, struct discord_audit_log **) </tt>
+ *   - <tt> void discord_audit_log_to_json(char *wbuf, size_t len, struct discord_audit_log *) </tt>
+ *   - <tt> void discord_audit_log_list_to_json(char *wbuf, size_t len, struct discord_audit_log **) </tt>
  */
 struct discord_audit_log {
   /* specs/discord/audit_log.json:12:18
@@ -1588,16 +1901,16 @@ struct discord_audit_log {
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
  *
  * - Initializer:
- *   - <tt> discord_audit_log_entry_init(struct discord_audit_log_entry *) </tt>
+ *   - <tt> void discord_audit_log_entry_init(struct discord_audit_log_entry *) </tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_entry_cleanup(struct discord_audit_log_entry *) </tt>
- *   - <tt> discord_audit_log_entry_list_free(struct discord_audit_log_entry **) </tt>
+ *   - <tt> void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *) </tt>
+ *   - <tt> void discord_audit_log_entry_list_free(struct discord_audit_log_entry **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry **) </tt>
- *   - <tt> discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry ***) </tt>
+ *   - <tt> void discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry **) </tt>
+ *   - <tt> void discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry *) </tt>
- *   - <tt> discord_audit_log_entry_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry **) </tt>
+ *   - <tt> void discord_audit_log_entry_to_json(char *wbuf, size_t len, struct discord_audit_log_entry *) </tt>
+ *   - <tt> void discord_audit_log_entry_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry **) </tt>
  */
 struct discord_audit_log_entry {
   /* specs/discord/audit_log.json:68:18
@@ -1650,16 +1963,16 @@ struct discord_audit_log_entry {
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
  *
  * - Initializer:
- *   - <tt> discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info *) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_init(struct discord_audit_log_entry_optional_info *) </tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_entry_optional_info_cleanup(struct discord_audit_log_entry_optional_info *) </tt>
- *   - <tt> discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info **) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_cleanup(struct discord_audit_log_entry_optional_info *) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_entry_optional_info_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info **) </tt>
- *   - <tt> discord_audit_log_entry_optional_info_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info ***) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info **) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry_optional_info ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info *) </tt>
- *   - <tt> discord_audit_log_entry_optional_info_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info **) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info *) </tt>
+ *   - <tt> void discord_audit_log_entry_optional_info_list_to_json(char *wbuf, size_t len, struct discord_audit_log_entry_optional_info **) </tt>
  */
 struct discord_audit_log_entry_optional_info {
   /* specs/discord/audit_log.json:84:20
@@ -1716,16 +2029,16 @@ struct discord_audit_log_entry_optional_info {
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
  *
  * - Initializer:
- *   - <tt> discord_audit_log_change_init(struct discord_audit_log_change *) </tt>
+ *   - <tt> void discord_audit_log_change_init(struct discord_audit_log_change *) </tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_change_cleanup(struct discord_audit_log_change *) </tt>
- *   - <tt> discord_audit_log_change_list_free(struct discord_audit_log_change **) </tt>
+ *   - <tt> void discord_audit_log_change_cleanup(struct discord_audit_log_change *) </tt>
+ *   - <tt> void discord_audit_log_change_list_free(struct discord_audit_log_change **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change **) </tt>
- *   - <tt> discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change ***) </tt>
+ *   - <tt> void discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change **) </tt>
+ *   - <tt> void discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change *) </tt>
- *   - <tt> discord_audit_log_change_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change **) </tt>
+ *   - <tt> void discord_audit_log_change_to_json(char *wbuf, size_t len, struct discord_audit_log_change *) </tt>
+ *   - <tt> void discord_audit_log_change_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change **) </tt>
  */
 struct discord_audit_log_change {
   /* specs/discord/audit_log.json:101:18
@@ -1762,16 +2075,16 @@ struct discord_audit_log_change {
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key
  *
  * - Initializer:
- *   - <tt> discord_audit_log_change_key_init(struct discord_audit_log_change_key *) </tt>
+ *   - <tt> void discord_audit_log_change_key_init(struct discord_audit_log_change_key *) </tt>
  * - Cleanup:
- *   - <tt> discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *) </tt>
- *   - <tt> discord_audit_log_change_key_list_free(struct discord_audit_log_change_key **) </tt>
+ *   - <tt> void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *) </tt>
+ *   - <tt> void discord_audit_log_change_key_list_free(struct discord_audit_log_change_key **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_audit_log_change_key_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key **) </tt>
- *   - <tt> discord_audit_log_change_key_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key ***) </tt>
+ *   - <tt> void discord_audit_log_change_key_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key **) </tt>
+ *   - <tt> void discord_audit_log_change_key_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change_key ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key *) </tt>
- *   - <tt> discord_audit_log_change_key_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key **) </tt>
+ *   - <tt> void discord_audit_log_change_key_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key *) </tt>
+ *   - <tt> void discord_audit_log_change_key_list_to_json(char *wbuf, size_t len, struct discord_audit_log_change_key **) </tt>
  */
 struct discord_audit_log_change_key {
   /* specs/discord/audit_log.json:113:18
@@ -2019,16 +2332,16 @@ struct discord_audit_log_change_key {
  * @see https://discord.com/developers/docs/resources/channel#modify-channel
  *
  * - Initializer:
- *   - <tt> discord_modify_channel_params_init(struct discord_modify_channel_params *) </tt>
+ *   - <tt> void discord_modify_channel_params_init(struct discord_modify_channel_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_channel_params_cleanup(struct discord_modify_channel_params *) </tt>
- *   - <tt> discord_modify_channel_params_list_free(struct discord_modify_channel_params **) </tt>
+ *   - <tt> void discord_modify_channel_params_cleanup(struct discord_modify_channel_params *) </tt>
+ *   - <tt> void discord_modify_channel_params_list_free(struct discord_modify_channel_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params **) </tt>
- *   - <tt> discord_modify_channel_params_list_from_json(char *rbuf, size_t len, struct discord_modify_channel_params ***) </tt>
+ *   - <tt> void discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params **) </tt>
+ *   - <tt> void discord_modify_channel_params_list_from_json(char *rbuf, size_t len, struct discord_modify_channel_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_channel_params_to_json(char *wbuf, size_t len, struct discord_modify_channel_params *) </tt>
- *   - <tt> discord_modify_channel_params_list_to_json(char *wbuf, size_t len, struct discord_modify_channel_params **) </tt>
+ *   - <tt> void discord_modify_channel_params_to_json(char *wbuf, size_t len, struct discord_modify_channel_params *) </tt>
+ *   - <tt> void discord_modify_channel_params_list_to_json(char *wbuf, size_t len, struct discord_modify_channel_params **) </tt>
  */
 struct discord_modify_channel_params {
   /* specs/discord/channel.endpoints-params.json:13:20
@@ -2117,16 +2430,16 @@ struct discord_modify_channel_params {
  * @see https://discord.com/developers/docs/resources/channel#get-reactions
  *
  * - Initializer:
- *   - <tt> discord_get_reactions_params_init(struct discord_get_reactions_params *) </tt>
+ *   - <tt> void discord_get_reactions_params_init(struct discord_get_reactions_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_get_reactions_params_cleanup(struct discord_get_reactions_params *) </tt>
- *   - <tt> discord_get_reactions_params_list_free(struct discord_get_reactions_params **) </tt>
+ *   - <tt> void discord_get_reactions_params_cleanup(struct discord_get_reactions_params *) </tt>
+ *   - <tt> void discord_get_reactions_params_list_free(struct discord_get_reactions_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params **) </tt>
- *   - <tt> discord_get_reactions_params_list_from_json(char *rbuf, size_t len, struct discord_get_reactions_params ***) </tt>
+ *   - <tt> void discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params **) </tt>
+ *   - <tt> void discord_get_reactions_params_list_from_json(char *rbuf, size_t len, struct discord_get_reactions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_get_reactions_params_to_json(char *wbuf, size_t len, struct discord_get_reactions_params *) </tt>
- *   - <tt> discord_get_reactions_params_list_to_json(char *wbuf, size_t len, struct discord_get_reactions_params **) </tt>
+ *   - <tt> void discord_get_reactions_params_to_json(char *wbuf, size_t len, struct discord_get_reactions_params *) </tt>
+ *   - <tt> void discord_get_reactions_params_list_to_json(char *wbuf, size_t len, struct discord_get_reactions_params **) </tt>
  */
 struct discord_get_reactions_params {
   /* specs/discord/channel.endpoints-params.json:38:20
@@ -2159,16 +2472,16 @@ struct discord_get_reactions_params {
  * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
  *
  * - Initializer:
- *   - <tt> discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *) </tt>
- *   - <tt> discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
- *   - <tt> discord_edit_channel_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params ***) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_edit_channel_permissions_params_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params *) </tt>
- *   - <tt> discord_edit_channel_permissions_params_list_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params *) </tt>
+ *   - <tt> void discord_edit_channel_permissions_params_list_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
  */
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:49:20
@@ -2205,16 +2518,16 @@ struct discord_edit_channel_permissions_params {
  * @see https://discord.com/developers/docs/resources/channel#follow-news-channel
  *
  * - Initializer:
- *   - <tt> discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *) </tt>
+ *   - <tt> void discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *) </tt>
- *   - <tt> discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **) </tt>
+ *   - <tt> void discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *) </tt>
+ *   - <tt> void discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
- *   - <tt> discord_follow_news_channel_params_list_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params ***) </tt>
+ *   - <tt> void discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
+ *   - <tt> void discord_follow_news_channel_params_list_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_follow_news_channel_params_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params *) </tt>
- *   - <tt> discord_follow_news_channel_params_list_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
+ *   - <tt> void discord_follow_news_channel_params_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params *) </tt>
+ *   - <tt> void discord_follow_news_channel_params_list_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
  */
 struct discord_follow_news_channel_params {
   /* specs/discord/channel.endpoints-params.json:61:20
@@ -2243,16 +2556,16 @@ struct discord_follow_news_channel_params {
  * @see https://discord.com/developers/docs/resources/channel#create-channel-invite
  *
  * - Initializer:
- *   - <tt> discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *) </tt>
+ *   - <tt> void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *) </tt>
- *   - <tt> discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **) </tt>
+ *   - <tt> void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *) </tt>
+ *   - <tt> void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
- *   - <tt> discord_create_channel_invite_params_list_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params ***) </tt>
+ *   - <tt> void discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
+ *   - <tt> void discord_create_channel_invite_params_list_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_channel_invite_params_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params *) </tt>
- *   - <tt> discord_create_channel_invite_params_list_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
+ *   - <tt> void discord_create_channel_invite_params_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params *) </tt>
+ *   - <tt> void discord_create_channel_invite_params_list_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
  */
 struct discord_create_channel_invite_params {
   /* specs/discord/channel.endpoints-params.json:71:20
@@ -2305,16 +2618,16 @@ struct discord_create_channel_invite_params {
  * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
  *
  * - Initializer:
- *   - <tt> discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *) </tt>
- *   - <tt> discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
- *   - <tt> discord_group_dm_add_recipient_params_list_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params ***) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_list_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_group_dm_add_recipient_params_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params *) </tt>
- *   - <tt> discord_group_dm_add_recipient_params_list_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params *) </tt>
+ *   - <tt> void discord_group_dm_add_recipient_params_list_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
  */
 struct discord_group_dm_add_recipient_params {
   /* specs/discord/channel.endpoints-params.json:87:20
@@ -2347,16 +2660,16 @@ struct discord_group_dm_add_recipient_params {
  * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params
  *
  * - Initializer:
- *   - <tt> discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params *) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_start_thread_with_message_params_cleanup(struct discord_start_thread_with_message_params *) </tt>
- *   - <tt> discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_cleanup(struct discord_start_thread_with_message_params *) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
- *   - <tt> discord_start_thread_with_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params ***) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_start_thread_with_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params *) </tt>
- *   - <tt> discord_start_thread_with_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params *) </tt>
+ *   - <tt> void discord_start_thread_with_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
  */
 struct discord_start_thread_with_message_params {
   /* specs/discord/channel.endpoints-params.json:98:20
@@ -2389,16 +2702,16 @@ struct discord_start_thread_with_message_params {
  * @see https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params
  *
  * - Initializer:
- *   - <tt> discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_start_thread_without_message_params_cleanup(struct discord_start_thread_without_message_params *) </tt>
- *   - <tt> discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_cleanup(struct discord_start_thread_without_message_params *) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
- *   - <tt> discord_start_thread_without_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params ***) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_start_thread_without_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params *) </tt>
- *   - <tt> discord_start_thread_without_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params *) </tt>
+ *   - <tt> void discord_start_thread_without_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
  */
 struct discord_start_thread_without_message_params {
   /* specs/discord/channel.endpoints-params.json:109:20
@@ -2435,16 +2748,16 @@ struct discord_start_thread_without_message_params {
  * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
  *
  * - Initializer:
- *   - <tt> discord_thread_response_body_init(struct discord_thread_response_body *) </tt>
+ *   - <tt> void discord_thread_response_body_init(struct discord_thread_response_body *) </tt>
  * - Cleanup:
- *   - <tt> discord_thread_response_body_cleanup(struct discord_thread_response_body *) </tt>
- *   - <tt> discord_thread_response_body_list_free(struct discord_thread_response_body **) </tt>
+ *   - <tt> void discord_thread_response_body_cleanup(struct discord_thread_response_body *) </tt>
+ *   - <tt> void discord_thread_response_body_list_free(struct discord_thread_response_body **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body **) </tt>
- *   - <tt> discord_thread_response_body_list_from_json(char *rbuf, size_t len, struct discord_thread_response_body ***) </tt>
+ *   - <tt> void discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body **) </tt>
+ *   - <tt> void discord_thread_response_body_list_from_json(char *rbuf, size_t len, struct discord_thread_response_body ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_thread_response_body_to_json(char *wbuf, size_t len, struct discord_thread_response_body *) </tt>
- *   - <tt> discord_thread_response_body_list_to_json(char *wbuf, size_t len, struct discord_thread_response_body **) </tt>
+ *   - <tt> void discord_thread_response_body_to_json(char *wbuf, size_t len, struct discord_thread_response_body *) </tt>
+ *   - <tt> void discord_thread_response_body_list_to_json(char *wbuf, size_t len, struct discord_thread_response_body **) </tt>
  */
 struct discord_thread_response_body {
   /* specs/discord/channel.endpoints-params.json:121:20
@@ -2484,16 +2797,16 @@ struct discord_thread_response_body {
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
  *
  * - Initializer:
- *   - <tt> discord_channel_init(struct discord_channel *) </tt>
+ *   - <tt> void discord_channel_init(struct discord_channel *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_cleanup(struct discord_channel *) </tt>
- *   - <tt> discord_channel_list_free(struct discord_channel **) </tt>
+ *   - <tt> void discord_channel_cleanup(struct discord_channel *) </tt>
+ *   - <tt> void discord_channel_list_free(struct discord_channel **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_from_json(char *rbuf, size_t len, struct discord_channel **) </tt>
- *   - <tt> discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel ***) </tt>
+ *   - <tt> void discord_channel_from_json(char *rbuf, size_t len, struct discord_channel **) </tt>
+ *   - <tt> void discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *) </tt>
- *   - <tt> discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel **) </tt>
+ *   - <tt> void discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *) </tt>
+ *   - <tt> void discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel **) </tt>
  */
 struct discord_channel {
   /* specs/discord/channel.json:32:78
@@ -2609,16 +2922,16 @@ struct discord_channel {
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
  *
  * - Initializer:
- *   - <tt> discord_message_sticker_init(struct discord_message_sticker *) </tt>
+ *   - <tt> void discord_message_sticker_init(struct discord_message_sticker *) </tt>
  * - Cleanup:
- *   - <tt> discord_message_sticker_cleanup(struct discord_message_sticker *) </tt>
- *   - <tt> discord_message_sticker_list_free(struct discord_message_sticker **) </tt>
+ *   - <tt> void discord_message_sticker_cleanup(struct discord_message_sticker *) </tt>
+ *   - <tt> void discord_message_sticker_list_free(struct discord_message_sticker **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker **) </tt>
- *   - <tt> discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker ***) </tt>
+ *   - <tt> void discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker **) </tt>
+ *   - <tt> void discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *) </tt>
- *   - <tt> discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker **) </tt>
+ *   - <tt> void discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *) </tt>
+ *   - <tt> void discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker **) </tt>
  */
 struct discord_message_sticker {
   /* specs/discord/channel.json:84:18
@@ -2678,16 +2991,16 @@ struct discord_message_sticker {
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
  *
  * - Initializer:
- *   - <tt> discord_message_reference_init(struct discord_message_reference *) </tt>
+ *   - <tt> void discord_message_reference_init(struct discord_message_reference *) </tt>
  * - Cleanup:
- *   - <tt> discord_message_reference_cleanup(struct discord_message_reference *) </tt>
- *   - <tt> discord_message_reference_list_free(struct discord_message_reference **) </tt>
+ *   - <tt> void discord_message_reference_cleanup(struct discord_message_reference *) </tt>
+ *   - <tt> void discord_message_reference_list_free(struct discord_message_reference **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference **) </tt>
- *   - <tt> discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference ***) </tt>
+ *   - <tt> void discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference **) </tt>
+ *   - <tt> void discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *) </tt>
- *   - <tt> discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference **) </tt>
+ *   - <tt> void discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *) </tt>
+ *   - <tt> void discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference **) </tt>
  */
 struct discord_message_reference {
   /* specs/discord/channel.json:114:18
@@ -2728,16 +3041,16 @@ struct discord_message_reference {
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
  *
  * - Initializer:
- *   - <tt> discord_message_application_init(struct discord_message_application *) </tt>
+ *   - <tt> void discord_message_application_init(struct discord_message_application *) </tt>
  * - Cleanup:
- *   - <tt> discord_message_application_cleanup(struct discord_message_application *) </tt>
- *   - <tt> discord_message_application_list_free(struct discord_message_application **) </tt>
+ *   - <tt> void discord_message_application_cleanup(struct discord_message_application *) </tt>
+ *   - <tt> void discord_message_application_list_free(struct discord_message_application **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application **) </tt>
- *   - <tt> discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application ***) </tt>
+ *   - <tt> void discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application **) </tt>
+ *   - <tt> void discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *) </tt>
- *   - <tt> discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application **) </tt>
+ *   - <tt> void discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *) </tt>
+ *   - <tt> void discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application **) </tt>
  */
 struct discord_message_application {
   /* specs/discord/channel.json:126:18
@@ -2784,16 +3097,16 @@ struct discord_message_application {
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
  *
  * - Initializer:
- *   - <tt> discord_message_activity_init(struct discord_message_activity *) </tt>
+ *   - <tt> void discord_message_activity_init(struct discord_message_activity *) </tt>
  * - Cleanup:
- *   - <tt> discord_message_activity_cleanup(struct discord_message_activity *) </tt>
- *   - <tt> discord_message_activity_list_free(struct discord_message_activity **) </tt>
+ *   - <tt> void discord_message_activity_cleanup(struct discord_message_activity *) </tt>
+ *   - <tt> void discord_message_activity_list_free(struct discord_message_activity **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity **) </tt>
- *   - <tt> discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity ***) </tt>
+ *   - <tt> void discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity **) </tt>
+ *   - <tt> void discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *) </tt>
- *   - <tt> discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity **) </tt>
+ *   - <tt> void discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *) </tt>
+ *   - <tt> void discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity **) </tt>
  */
 struct discord_message_activity {
   /* specs/discord/channel.json:151:18
@@ -2829,16 +3142,16 @@ struct discord_message_activity {
  * @see https://discord.com/developers/docs/resources/channel#message-object
  *
  * - Initializer:
- *   - <tt> discord_message_init(struct discord_message *) </tt>
+ *   - <tt> void discord_message_init(struct discord_message *) </tt>
  * - Cleanup:
- *   - <tt> discord_message_cleanup(struct discord_message *) </tt>
- *   - <tt> discord_message_list_free(struct discord_message **) </tt>
+ *   - <tt> void discord_message_cleanup(struct discord_message *) </tt>
+ *   - <tt> void discord_message_list_free(struct discord_message **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_message_from_json(char *rbuf, size_t len, struct discord_message **) </tt>
- *   - <tt> discord_message_list_from_json(char *rbuf, size_t len, struct discord_message ***) </tt>
+ *   - <tt> void discord_message_from_json(char *rbuf, size_t len, struct discord_message **) </tt>
+ *   - <tt> void discord_message_list_from_json(char *rbuf, size_t len, struct discord_message ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_message_to_json(char *wbuf, size_t len, struct discord_message *) </tt>
- *   - <tt> discord_message_list_to_json(char *wbuf, size_t len, struct discord_message **) </tt>
+ *   - <tt> void discord_message_to_json(char *wbuf, size_t len, struct discord_message *) </tt>
+ *   - <tt> void discord_message_list_to_json(char *wbuf, size_t len, struct discord_message **) </tt>
  */
 struct discord_message {
   /* specs/discord/channel.json:186:79
@@ -2983,16 +3296,16 @@ struct discord_message {
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
  *
  * - Initializer:
- *   - <tt> discord_channel_followed_channel_init(struct discord_channel_followed_channel *) </tt>
+ *   - <tt> void discord_channel_followed_channel_init(struct discord_channel_followed_channel *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *) </tt>
- *   - <tt> discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **) </tt>
+ *   - <tt> void discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *) </tt>
+ *   - <tt> void discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel **) </tt>
- *   - <tt> discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel ***) </tt>
+ *   - <tt> void discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel **) </tt>
+ *   - <tt> void discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *) </tt>
- *   - <tt> discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel **) </tt>
+ *   - <tt> void discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *) </tt>
+ *   - <tt> void discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel **) </tt>
  */
 struct discord_channel_followed_channel {
   /* specs/discord/channel.json:225:20
@@ -3025,16 +3338,16 @@ struct discord_channel_followed_channel {
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
  *
  * - Initializer:
- *   - <tt> discord_channel_reaction_init(struct discord_channel_reaction *) </tt>
+ *   - <tt> void discord_channel_reaction_init(struct discord_channel_reaction *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_reaction_cleanup(struct discord_channel_reaction *) </tt>
- *   - <tt> discord_channel_reaction_list_free(struct discord_channel_reaction **) </tt>
+ *   - <tt> void discord_channel_reaction_cleanup(struct discord_channel_reaction *) </tt>
+ *   - <tt> void discord_channel_reaction_list_free(struct discord_channel_reaction **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction **) </tt>
- *   - <tt> discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction ***) </tt>
+ *   - <tt> void discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction **) </tt>
+ *   - <tt> void discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *) </tt>
- *   - <tt> discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction **) </tt>
+ *   - <tt> void discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *) </tt>
+ *   - <tt> void discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction **) </tt>
  */
 struct discord_channel_reaction {
   /* specs/discord/channel.json:236:20
@@ -3069,16 +3382,16 @@ struct discord_channel_reaction {
 // defined at specs/discord/channel.json:244:22
 /**
  * - Initializer:
- *   - <tt> discord_channel_overwrite_init(struct discord_channel_overwrite *) </tt>
+ *   - <tt> void discord_channel_overwrite_init(struct discord_channel_overwrite *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_overwrite_cleanup(struct discord_channel_overwrite *) </tt>
- *   - <tt> discord_channel_overwrite_list_free(struct discord_channel_overwrite **) </tt>
+ *   - <tt> void discord_channel_overwrite_cleanup(struct discord_channel_overwrite *) </tt>
+ *   - <tt> void discord_channel_overwrite_list_free(struct discord_channel_overwrite **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite **) </tt>
- *   - <tt> discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite ***) </tt>
+ *   - <tt> void discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite **) </tt>
+ *   - <tt> void discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *) </tt>
- *   - <tt> discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite **) </tt>
+ *   - <tt> void discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *) </tt>
+ *   - <tt> void discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite **) </tt>
  */
 struct discord_channel_overwrite {
   /* specs/discord/channel.json:247:20
@@ -3121,16 +3434,16 @@ struct discord_channel_overwrite {
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
  *
  * - Initializer:
- *   - <tt> discord_thread_metadata_init(struct discord_thread_metadata *) </tt>
+ *   - <tt> void discord_thread_metadata_init(struct discord_thread_metadata *) </tt>
  * - Cleanup:
- *   - <tt> discord_thread_metadata_cleanup(struct discord_thread_metadata *) </tt>
- *   - <tt> discord_thread_metadata_list_free(struct discord_thread_metadata **) </tt>
+ *   - <tt> void discord_thread_metadata_cleanup(struct discord_thread_metadata *) </tt>
+ *   - <tt> void discord_thread_metadata_list_free(struct discord_thread_metadata **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata **) </tt>
- *   - <tt> discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata ***) </tt>
+ *   - <tt> void discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata **) </tt>
+ *   - <tt> void discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *) </tt>
- *   - <tt> discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata **) </tt>
+ *   - <tt> void discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *) </tt>
+ *   - <tt> void discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata **) </tt>
  */
 struct discord_thread_metadata {
   /* specs/discord/channel.json:262:20
@@ -3175,16 +3488,16 @@ struct discord_thread_metadata {
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
  *
  * - Initializer:
- *   - <tt> discord_thread_member_init(struct discord_thread_member *) </tt>
+ *   - <tt> void discord_thread_member_init(struct discord_thread_member *) </tt>
  * - Cleanup:
- *   - <tt> discord_thread_member_cleanup(struct discord_thread_member *) </tt>
- *   - <tt> discord_thread_member_list_free(struct discord_thread_member **) </tt>
+ *   - <tt> void discord_thread_member_cleanup(struct discord_thread_member *) </tt>
+ *   - <tt> void discord_thread_member_list_free(struct discord_thread_member **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member **) </tt>
- *   - <tt> discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member ***) </tt>
+ *   - <tt> void discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member **) </tt>
+ *   - <tt> void discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *) </tt>
- *   - <tt> discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member **) </tt>
+ *   - <tt> void discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *) </tt>
+ *   - <tt> void discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member **) </tt>
  */
 struct discord_thread_member {
   /* specs/discord/channel.json:276:20
@@ -3225,16 +3538,16 @@ struct discord_thread_member {
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  *
  * - Initializer:
- *   - <tt> discord_channel_attachment_init(struct discord_channel_attachment *) </tt>
+ *   - <tt> void discord_channel_attachment_init(struct discord_channel_attachment *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_attachment_cleanup(struct discord_channel_attachment *) </tt>
- *   - <tt> discord_channel_attachment_list_free(struct discord_channel_attachment **) </tt>
+ *   - <tt> void discord_channel_attachment_cleanup(struct discord_channel_attachment *) </tt>
+ *   - <tt> void discord_channel_attachment_list_free(struct discord_channel_attachment **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment **) </tt>
- *   - <tt> discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment ***) </tt>
+ *   - <tt> void discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment **) </tt>
+ *   - <tt> void discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *) </tt>
- *   - <tt> discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment **) </tt>
+ *   - <tt> void discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *) </tt>
+ *   - <tt> void discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment **) </tt>
  */
 struct discord_channel_attachment {
   /* specs/discord/channel.json:289:20
@@ -3287,16 +3600,16 @@ struct discord_channel_attachment {
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
  * - Initializer:
- *   - <tt> discord_channel_mention_init(struct discord_channel_mention *) </tt>
+ *   - <tt> void discord_channel_mention_init(struct discord_channel_mention *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_mention_cleanup(struct discord_channel_mention *) </tt>
- *   - <tt> discord_channel_mention_list_free(struct discord_channel_mention **) </tt>
+ *   - <tt> void discord_channel_mention_cleanup(struct discord_channel_mention *) </tt>
+ *   - <tt> void discord_channel_mention_list_free(struct discord_channel_mention **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention **) </tt>
- *   - <tt> discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention ***) </tt>
+ *   - <tt> void discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention **) </tt>
+ *   - <tt> void discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *) </tt>
- *   - <tt> discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention **) </tt>
+ *   - <tt> void discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *) </tt>
+ *   - <tt> void discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention **) </tt>
  */
 struct discord_channel_mention {
   /* specs/discord/channel.json:305:20
@@ -3337,16 +3650,16 @@ struct discord_channel_mention {
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
  * - Initializer:
- *   - <tt> discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions *) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions *) </tt>
  * - Cleanup:
- *   - <tt> discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions *) </tt>
- *   - <tt> discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions *) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions **) </tt>
- *   - <tt> discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions ***) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions **) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *) </tt>
- *   - <tt> discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions **) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *) </tt>
+ *   - <tt> void discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions **) </tt>
  */
 struct discord_channel_allowed_mentions {
   /* specs/discord/channel.json:318:20
@@ -3387,16 +3700,16 @@ struct discord_channel_allowed_mentions {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_init(struct discord_embed *) </tt>
+ *   - <tt> void discord_embed_init(struct discord_embed *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_cleanup(struct discord_embed *) </tt>
- *   - <tt> discord_embed_list_free(struct discord_embed **) </tt>
+ *   - <tt> void discord_embed_cleanup(struct discord_embed *) </tt>
+ *   - <tt> void discord_embed_list_free(struct discord_embed **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_from_json(char *rbuf, size_t len, struct discord_embed **) </tt>
- *   - <tt> discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed ***) </tt>
+ *   - <tt> void discord_embed_from_json(char *rbuf, size_t len, struct discord_embed **) </tt>
+ *   - <tt> void discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *) </tt>
- *   - <tt> discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed **) </tt>
+ *   - <tt> void discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *) </tt>
+ *   - <tt> void discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed **) </tt>
  */
 struct discord_embed {
   /* specs/discord/channel.json:330:20
@@ -3473,16 +3786,16 @@ struct discord_embed {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_thumbnail_init(struct discord_embed_thumbnail *) </tt>
+ *   - <tt> void discord_embed_thumbnail_init(struct discord_embed_thumbnail *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *) </tt>
- *   - <tt> discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **) </tt>
+ *   - <tt> void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *) </tt>
+ *   - <tt> void discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail **) </tt>
- *   - <tt> discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail ***) </tt>
+ *   - <tt> void discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail **) </tt>
+ *   - <tt> void discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *) </tt>
- *   - <tt> discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail **) </tt>
+ *   - <tt> void discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *) </tt>
+ *   - <tt> void discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail **) </tt>
  */
 struct discord_embed_thumbnail {
   /* specs/discord/channel.json:351:20
@@ -3523,16 +3836,16 @@ struct discord_embed_thumbnail {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_video_init(struct discord_embed_video *) </tt>
+ *   - <tt> void discord_embed_video_init(struct discord_embed_video *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_video_cleanup(struct discord_embed_video *) </tt>
- *   - <tt> discord_embed_video_list_free(struct discord_embed_video **) </tt>
+ *   - <tt> void discord_embed_video_cleanup(struct discord_embed_video *) </tt>
+ *   - <tt> void discord_embed_video_list_free(struct discord_embed_video **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video **) </tt>
- *   - <tt> discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video ***) </tt>
+ *   - <tt> void discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video **) </tt>
+ *   - <tt> void discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *) </tt>
- *   - <tt> discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video **) </tt>
+ *   - <tt> void discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *) </tt>
+ *   - <tt> void discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video **) </tt>
  */
 struct discord_embed_video {
   /* specs/discord/channel.json:363:20
@@ -3573,16 +3886,16 @@ struct discord_embed_video {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_image_init(struct discord_embed_image *) </tt>
+ *   - <tt> void discord_embed_image_init(struct discord_embed_image *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_image_cleanup(struct discord_embed_image *) </tt>
- *   - <tt> discord_embed_image_list_free(struct discord_embed_image **) </tt>
+ *   - <tt> void discord_embed_image_cleanup(struct discord_embed_image *) </tt>
+ *   - <tt> void discord_embed_image_list_free(struct discord_embed_image **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image **) </tt>
- *   - <tt> discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image ***) </tt>
+ *   - <tt> void discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image **) </tt>
+ *   - <tt> void discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *) </tt>
- *   - <tt> discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image **) </tt>
+ *   - <tt> void discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *) </tt>
+ *   - <tt> void discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image **) </tt>
  */
 struct discord_embed_image {
   /* specs/discord/channel.json:375:20
@@ -3623,16 +3936,16 @@ struct discord_embed_image {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_provider_init(struct discord_embed_provider *) </tt>
+ *   - <tt> void discord_embed_provider_init(struct discord_embed_provider *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_provider_cleanup(struct discord_embed_provider *) </tt>
- *   - <tt> discord_embed_provider_list_free(struct discord_embed_provider **) </tt>
+ *   - <tt> void discord_embed_provider_cleanup(struct discord_embed_provider *) </tt>
+ *   - <tt> void discord_embed_provider_list_free(struct discord_embed_provider **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider **) </tt>
- *   - <tt> discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider ***) </tt>
+ *   - <tt> void discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider **) </tt>
+ *   - <tt> void discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *) </tt>
- *   - <tt> discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider **) </tt>
+ *   - <tt> void discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *) </tt>
+ *   - <tt> void discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider **) </tt>
  */
 struct discord_embed_provider {
   /* specs/discord/channel.json:387:20
@@ -3665,16 +3978,16 @@ struct discord_embed_provider {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_author_init(struct discord_embed_author *) </tt>
+ *   - <tt> void discord_embed_author_init(struct discord_embed_author *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_author_cleanup(struct discord_embed_author *) </tt>
- *   - <tt> discord_embed_author_list_free(struct discord_embed_author **) </tt>
+ *   - <tt> void discord_embed_author_cleanup(struct discord_embed_author *) </tt>
+ *   - <tt> void discord_embed_author_list_free(struct discord_embed_author **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author **) </tt>
- *   - <tt> discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author ***) </tt>
+ *   - <tt> void discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author **) </tt>
+ *   - <tt> void discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *) </tt>
- *   - <tt> discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author **) </tt>
+ *   - <tt> void discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *) </tt>
+ *   - <tt> void discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author **) </tt>
  */
 struct discord_embed_author {
   /* specs/discord/channel.json:397:20
@@ -3715,16 +4028,16 @@ struct discord_embed_author {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_footer_init(struct discord_embed_footer *) </tt>
+ *   - <tt> void discord_embed_footer_init(struct discord_embed_footer *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_footer_cleanup(struct discord_embed_footer *) </tt>
- *   - <tt> discord_embed_footer_list_free(struct discord_embed_footer **) </tt>
+ *   - <tt> void discord_embed_footer_cleanup(struct discord_embed_footer *) </tt>
+ *   - <tt> void discord_embed_footer_list_free(struct discord_embed_footer **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer **) </tt>
- *   - <tt> discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer ***) </tt>
+ *   - <tt> void discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer **) </tt>
+ *   - <tt> void discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *) </tt>
- *   - <tt> discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer **) </tt>
+ *   - <tt> void discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *) </tt>
+ *   - <tt> void discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer **) </tt>
  */
 struct discord_embed_footer {
   /* specs/discord/channel.json:409:20
@@ -3761,16 +4074,16 @@ struct discord_embed_footer {
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
  * - Initializer:
- *   - <tt> discord_embed_field_init(struct discord_embed_field *) </tt>
+ *   - <tt> void discord_embed_field_init(struct discord_embed_field *) </tt>
  * - Cleanup:
- *   - <tt> discord_embed_field_cleanup(struct discord_embed_field *) </tt>
- *   - <tt> discord_embed_field_list_free(struct discord_embed_field **) </tt>
+ *   - <tt> void discord_embed_field_cleanup(struct discord_embed_field *) </tt>
+ *   - <tt> void discord_embed_field_list_free(struct discord_embed_field **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field **) </tt>
- *   - <tt> discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field ***) </tt>
+ *   - <tt> void discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field **) </tt>
+ *   - <tt> void discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *) </tt>
- *   - <tt> discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field **) </tt>
+ *   - <tt> void discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *) </tt>
+ *   - <tt> void discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field **) </tt>
  */
 struct discord_embed_field {
   /* specs/discord/channel.json:420:20
@@ -3808,16 +4121,16 @@ struct discord_embed_field {
  * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
  *
  * - Initializer:
- *   - <tt> discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *) </tt>
- *   - <tt> discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
- *   - <tt> discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params ***) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params *) </tt>
- *   - <tt> discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params *) </tt>
+ *   - <tt> void discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
  */
 struct discord_create_guild_emoji_params {
   /* specs/discord/emoji.endpoints-params.json:13:20
@@ -3854,16 +4167,16 @@ struct discord_create_guild_emoji_params {
  * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params *) </tt>
- *   - <tt> discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params *) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
- *   - <tt> discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params ***) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params *) </tt>
- *   - <tt> discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params *) </tt>
+ *   - <tt> void discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
  */
 struct discord_modify_guild_emoji_params {
   /* specs/discord/emoji.endpoints-params.json:25:20
@@ -3897,16 +4210,16 @@ struct discord_modify_guild_emoji_params {
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
  *
  * - Initializer:
- *   - <tt> discord_emoji_init(struct discord_emoji *) </tt>
+ *   - <tt> void discord_emoji_init(struct discord_emoji *) </tt>
  * - Cleanup:
- *   - <tt> discord_emoji_cleanup(struct discord_emoji *) </tt>
- *   - <tt> discord_emoji_list_free(struct discord_emoji **) </tt>
+ *   - <tt> void discord_emoji_cleanup(struct discord_emoji *) </tt>
+ *   - <tt> void discord_emoji_list_free(struct discord_emoji **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji **) </tt>
- *   - <tt> discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji ***) </tt>
+ *   - <tt> void discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji **) </tt>
+ *   - <tt> void discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji *) </tt>
- *   - <tt> discord_emoji_list_to_json(char *wbuf, size_t len, struct discord_emoji **) </tt>
+ *   - <tt> void discord_emoji_to_json(char *wbuf, size_t len, struct discord_emoji *) </tt>
+ *   - <tt> void discord_emoji_list_to_json(char *wbuf, size_t len, struct discord_emoji **) </tt>
  */
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20
@@ -3973,16 +4286,16 @@ struct discord_emoji {
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
  * - Initializer:
- *   - <tt> discord_gateway_identify_init(struct discord_gateway_identify *) </tt>
+ *   - <tt> void discord_gateway_identify_init(struct discord_gateway_identify *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_identify_cleanup(struct discord_gateway_identify *) </tt>
- *   - <tt> discord_gateway_identify_list_free(struct discord_gateway_identify **) </tt>
+ *   - <tt> void discord_gateway_identify_cleanup(struct discord_gateway_identify *) </tt>
+ *   - <tt> void discord_gateway_identify_list_free(struct discord_gateway_identify **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify **) </tt>
- *   - <tt> discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify ***) </tt>
+ *   - <tt> void discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify **) </tt>
+ *   - <tt> void discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *) </tt>
- *   - <tt> discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify **) </tt>
+ *   - <tt> void discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *) </tt>
+ *   - <tt> void discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify **) </tt>
  */
 struct discord_gateway_identify {
   /* specs/discord/gateway.json:119:19
@@ -4039,16 +4352,16 @@ struct discord_gateway_identify {
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
  *
  * - Initializer:
- *   - <tt> discord_gateway_status_update_init(struct discord_gateway_status_update *) </tt>
+ *   - <tt> void discord_gateway_status_update_init(struct discord_gateway_status_update *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_status_update_cleanup(struct discord_gateway_status_update *) </tt>
- *   - <tt> discord_gateway_status_update_list_free(struct discord_gateway_status_update **) </tt>
+ *   - <tt> void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *) </tt>
+ *   - <tt> void discord_gateway_status_update_list_free(struct discord_gateway_status_update **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **) </tt>
- *   - <tt> discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***) </tt>
+ *   - <tt> void discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **) </tt>
+ *   - <tt> void discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *) </tt>
- *   - <tt> discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **) </tt>
+ *   - <tt> void discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *) </tt>
+ *   - <tt> void discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **) </tt>
  */
 struct discord_gateway_status_update {
   /* specs/discord/gateway.json:135:19
@@ -4091,16 +4404,16 @@ struct discord_gateway_status_update {
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
  * - Initializer:
- *   - <tt> discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *) </tt>
+ *   - <tt> void discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *) </tt>
- *   - <tt> discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **) </tt>
+ *   - <tt> void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *) </tt>
+ *   - <tt> void discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
- *   - <tt> discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection ***) </tt>
+ *   - <tt> void discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
+ *   - <tt> void discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *) </tt>
- *   - <tt> discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
+ *   - <tt> void discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *) </tt>
+ *   - <tt> void discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
  */
 struct discord_gateway_identify_connection {
   /* specs/discord/gateway.json:150:19
@@ -4137,16 +4450,16 @@ struct discord_gateway_identify_connection {
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
  * - Initializer:
- *   - <tt> discord_gateway_activity_init(struct discord_gateway_activity *) </tt>
+ *   - <tt> void discord_gateway_activity_init(struct discord_gateway_activity *) </tt>
  * - Cleanup:
- *   - <tt> discord_gateway_activity_cleanup(struct discord_gateway_activity *) </tt>
- *   - <tt> discord_gateway_activity_list_free(struct discord_gateway_activity **) </tt>
+ *   - <tt> void discord_gateway_activity_cleanup(struct discord_gateway_activity *) </tt>
+ *   - <tt> void discord_gateway_activity_list_free(struct discord_gateway_activity **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity **) </tt>
- *   - <tt> discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity ***) </tt>
+ *   - <tt> void discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity **) </tt>
+ *   - <tt> void discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *) </tt>
- *   - <tt> discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity **) </tt>
+ *   - <tt> void discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *) </tt>
+ *   - <tt> void discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity **) </tt>
  */
 struct discord_gateway_activity {
   /* specs/discord/gateway.json:161:19
@@ -4212,16 +4525,16 @@ struct discord_gateway_activity {
  * @see https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params
  *
  * - Initializer:
- *   - <tt> discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *) </tt>
- *   - <tt> discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
- *   - <tt> discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params ***) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params *) </tt>
- *   - <tt> discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params *) </tt>
+ *   - <tt> void discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
  */
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:13:20
@@ -4254,16 +4567,16 @@ struct discord_create_guild_from_guild_template_params {
  * @see https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params
  *
  * - Initializer:
- *   - <tt> discord_create_guild_template_params_init(struct discord_create_guild_template_params *) </tt>
+ *   - <tt> void discord_create_guild_template_params_init(struct discord_create_guild_template_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *) </tt>
- *   - <tt> discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **) </tt>
+ *   - <tt> void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *) </tt>
+ *   - <tt> void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params **) </tt>
- *   - <tt> discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params ***) </tt>
+ *   - <tt> void discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params **) </tt>
+ *   - <tt> void discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params *) </tt>
- *   - <tt> discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params **) </tt>
+ *   - <tt> void discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params *) </tt>
+ *   - <tt> void discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params **) </tt>
  */
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:24:20
@@ -4296,16 +4609,16 @@ struct discord_create_guild_template_params {
  * @see https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *) </tt>
+ *   - <tt> void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *) </tt>
- *   - <tt> discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **) </tt>
+ *   - <tt> void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *) </tt>
+ *   - <tt> void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
- *   - <tt> discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params ***) </tt>
+ *   - <tt> void discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
+ *   - <tt> void discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params *) </tt>
- *   - <tt> discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
+ *   - <tt> void discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params *) </tt>
+ *   - <tt> void discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
  */
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:35:20
@@ -4339,16 +4652,16 @@ struct discord_modify_guild_template_params {
  * @see https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_template_init(struct discord_guild_template *) </tt>
+ *   - <tt> void discord_guild_template_init(struct discord_guild_template *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_template_cleanup(struct discord_guild_template *) </tt>
- *   - <tt> discord_guild_template_list_free(struct discord_guild_template **) </tt>
+ *   - <tt> void discord_guild_template_cleanup(struct discord_guild_template *) </tt>
+ *   - <tt> void discord_guild_template_list_free(struct discord_guild_template **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template **) </tt>
- *   - <tt> discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template ***) </tt>
+ *   - <tt> void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template **) </tt>
+ *   - <tt> void discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *) </tt>
- *   - <tt> discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template **) </tt>
+ *   - <tt> void discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *) </tt>
+ *   - <tt> void discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template **) </tt>
  */
 struct discord_guild_template {
   /* specs/discord/guild-template.json:12:20
@@ -4418,16 +4731,16 @@ struct discord_guild_template {
  * @see https://discord.com/developers/docs/resources/guild#create-guild
  *
  * - Initializer:
- *   - <tt> discord_create_guild_params_init(struct discord_create_guild_params *) </tt>
+ *   - <tt> void discord_create_guild_params_init(struct discord_create_guild_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_params_cleanup(struct discord_create_guild_params *) </tt>
- *   - <tt> discord_create_guild_params_list_free(struct discord_create_guild_params **) </tt>
+ *   - <tt> void discord_create_guild_params_cleanup(struct discord_create_guild_params *) </tt>
+ *   - <tt> void discord_create_guild_params_list_free(struct discord_create_guild_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params **) </tt>
- *   - <tt> discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params ***) </tt>
+ *   - <tt> void discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params **) </tt>
+ *   - <tt> void discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_params_to_json(char *wbuf, size_t len, struct discord_create_guild_params *) </tt>
- *   - <tt> discord_create_guild_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_params **) </tt>
+ *   - <tt> void discord_create_guild_params_to_json(char *wbuf, size_t len, struct discord_create_guild_params *) </tt>
+ *   - <tt> void discord_create_guild_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_params **) </tt>
  */
 struct discord_create_guild_params {
   /* specs/discord/guild.endpoints-params.json:13:20
@@ -4496,16 +4809,16 @@ struct discord_create_guild_params {
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-json-params
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_params_init(struct discord_modify_guild_params *) </tt>
+ *   - <tt> void discord_modify_guild_params_init(struct discord_modify_guild_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_params_cleanup(struct discord_modify_guild_params *) </tt>
- *   - <tt> discord_modify_guild_params_list_free(struct discord_modify_guild_params **) </tt>
+ *   - <tt> void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *) </tt>
+ *   - <tt> void discord_modify_guild_params_list_free(struct discord_modify_guild_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params **) </tt>
- *   - <tt> discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params ***) </tt>
+ *   - <tt> void discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params **) </tt>
+ *   - <tt> void discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_params *) </tt>
- *   - <tt> discord_modify_guild_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_params **) </tt>
+ *   - <tt> void discord_modify_guild_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_params *) </tt>
+ *   - <tt> void discord_modify_guild_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_params **) </tt>
  */
 struct discord_modify_guild_params {
   /* specs/discord/guild.endpoints-params.json:33:20
@@ -4606,16 +4919,16 @@ struct discord_modify_guild_params {
  * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
  *
  * - Initializer:
- *   - <tt> discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *) </tt>
+ *   - <tt> void discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *) </tt>
- *   - <tt> discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **) </tt>
+ *   - <tt> void discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *) </tt>
+ *   - <tt> void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
- *   - <tt> discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params ***) </tt>
+ *   - <tt> void discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
+ *   - <tt> void discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_channel_params_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params *) </tt>
- *   - <tt> discord_create_guild_channel_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
+ *   - <tt> void discord_create_guild_channel_params_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params *) </tt>
+ *   - <tt> void discord_create_guild_channel_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
  */
 struct discord_create_guild_channel_params {
   /* specs/discord/guild.endpoints-params.json:61:20
@@ -4680,16 +4993,16 @@ struct discord_create_guild_channel_params {
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *) </tt>
- *   - <tt> discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
- *   - <tt> discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params ***) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_channel_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params *) </tt>
- *   - <tt> discord_modify_guild_channel_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params *) </tt>
+ *   - <tt> void discord_modify_guild_channel_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
  */
 struct discord_modify_guild_channel_positions_params {
   /* specs/discord/guild.endpoints-params.json:80:20
@@ -4730,16 +5043,16 @@ struct discord_modify_guild_channel_positions_params {
  * @see https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params
  *
  * - Initializer:
- *   - <tt> discord_search_guild_members_params_init(struct discord_search_guild_members_params *) </tt>
+ *   - <tt> void discord_search_guild_members_params_init(struct discord_search_guild_members_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *) </tt>
- *   - <tt> discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **) </tt>
+ *   - <tt> void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *) </tt>
+ *   - <tt> void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params **) </tt>
- *   - <tt> discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params ***) </tt>
+ *   - <tt> void discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params **) </tt>
+ *   - <tt> void discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_search_guild_members_params_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params *) </tt>
- *   - <tt> discord_search_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params **) </tt>
+ *   - <tt> void discord_search_guild_members_params_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params *) </tt>
+ *   - <tt> void discord_search_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params **) </tt>
  */
 struct discord_search_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:93:20
@@ -4772,16 +5085,16 @@ struct discord_search_guild_members_params {
  * @see https://discord.com/developers/docs/resources/guild#add-guild-member-json-params
  *
  * - Initializer:
- *   - <tt> discord_add_guild_member_params_init(struct discord_add_guild_member_params *) </tt>
+ *   - <tt> void discord_add_guild_member_params_init(struct discord_add_guild_member_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *) </tt>
- *   - <tt> discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **) </tt>
+ *   - <tt> void discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *) </tt>
+ *   - <tt> void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params **) </tt>
- *   - <tt> discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params ***) </tt>
+ *   - <tt> void discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params **) </tt>
+ *   - <tt> void discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_add_guild_member_params_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params *) </tt>
- *   - <tt> discord_add_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params **) </tt>
+ *   - <tt> void discord_add_guild_member_params_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params *) </tt>
+ *   - <tt> void discord_add_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params **) </tt>
  */
 struct discord_add_guild_member_params {
   /* specs/discord/guild.endpoints-params.json:104:20
@@ -4826,16 +5139,16 @@ struct discord_add_guild_member_params {
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-member
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *) </tt>
+ *   - <tt> void discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *) </tt>
- *   - <tt> discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **) </tt>
+ *   - <tt> void discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *) </tt>
+ *   - <tt> void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
- *   - <tt> discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params ***) </tt>
+ *   - <tt> void discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
+ *   - <tt> void discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_member_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params *) </tt>
- *   - <tt> discord_modify_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
+ *   - <tt> void discord_modify_guild_member_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params *) </tt>
+ *   - <tt> void discord_modify_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
  */
 struct discord_modify_guild_member_params {
   /* specs/discord/guild.endpoints-params.json:118:20
@@ -4880,16 +5193,16 @@ struct discord_modify_guild_member_params {
  * @see https://discord.com/developers/docs/resources/guild#create-guild-role
  *
  * - Initializer:
- *   - <tt> discord_create_guild_role_params_init(struct discord_create_guild_role_params *) </tt>
+ *   - <tt> void discord_create_guild_role_params_init(struct discord_create_guild_role_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *) </tt>
- *   - <tt> discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **) </tt>
+ *   - <tt> void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *) </tt>
+ *   - <tt> void discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params **) </tt>
- *   - <tt> discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params ***) </tt>
+ *   - <tt> void discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params **) </tt>
+ *   - <tt> void discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_guild_role_params_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params *) </tt>
- *   - <tt> discord_create_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params **) </tt>
+ *   - <tt> void discord_create_guild_role_params_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params *) </tt>
+ *   - <tt> void discord_create_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params **) </tt>
  */
 struct discord_create_guild_role_params {
   /* specs/discord/guild.endpoints-params.json:132:20
@@ -4934,16 +5247,16 @@ struct discord_create_guild_role_params {
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *) </tt>
- *   - <tt> discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
- *   - <tt> discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params ***) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_role_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params *) </tt>
- *   - <tt> discord_modify_guild_role_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params *) </tt>
+ *   - <tt> void discord_modify_guild_role_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
  */
 struct discord_modify_guild_role_positions_params {
   /* specs/discord/guild.endpoints-params.json:146:20
@@ -4976,16 +5289,16 @@ struct discord_modify_guild_role_positions_params {
  * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params
  *
  * - Initializer:
- *   - <tt> discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *) </tt>
+ *   - <tt> void discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params *) </tt>
- *   - <tt> discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **) </tt>
+ *   - <tt> void discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params *) </tt>
+ *   - <tt> void discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
- *   - <tt> discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params ***) </tt>
+ *   - <tt> void discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
+ *   - <tt> void discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_guild_role_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params *) </tt>
- *   - <tt> discord_modify_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
+ *   - <tt> void discord_modify_guild_role_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params *) </tt>
+ *   - <tt> void discord_modify_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
  */
 struct discord_modify_guild_role_params {
   /* specs/discord/guild.endpoints-params.json:157:20
@@ -5030,16 +5343,16 @@ struct discord_modify_guild_role_params {
  * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params
  *
  * - Initializer:
- *   - <tt> discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params *) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *) </tt>
- *   - <tt> discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
- *   - <tt> discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params ***) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_get_guild_prune_count_params_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params *) </tt>
- *   - <tt> discord_get_guild_prune_count_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params *) </tt>
+ *   - <tt> void discord_get_guild_prune_count_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
  */
 struct discord_get_guild_prune_count_params {
   /* specs/discord/guild.endpoints-params.json:171:20
@@ -5072,16 +5385,16 @@ struct discord_get_guild_prune_count_params {
  * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params
  *
  * - Initializer:
- *   - <tt> discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params *) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *) </tt>
- *   - <tt> discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
- *   - <tt> discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params ***) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_begin_guild_prune_params_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params *) </tt>
- *   - <tt> discord_begin_guild_prune_params_list_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params *) </tt>
+ *   - <tt> void discord_begin_guild_prune_params_list_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
  */
 struct discord_begin_guild_prune_params {
   /* specs/discord/guild.endpoints-params.json:182:20
@@ -5123,16 +5436,16 @@ struct discord_begin_guild_prune_params {
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_init(struct discord_guild *) </tt>
+ *   - <tt> void discord_guild_init(struct discord_guild *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_cleanup(struct discord_guild *) </tt>
- *   - <tt> discord_guild_list_free(struct discord_guild **) </tt>
+ *   - <tt> void discord_guild_cleanup(struct discord_guild *) </tt>
+ *   - <tt> void discord_guild_list_free(struct discord_guild **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_from_json(char *rbuf, size_t len, struct discord_guild **) </tt>
- *   - <tt> discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild ***) </tt>
+ *   - <tt> void discord_guild_from_json(char *rbuf, size_t len, struct discord_guild **) </tt>
+ *   - <tt> void discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_to_json(char *wbuf, size_t len, struct discord_guild *) </tt>
- *   - <tt> discord_guild_list_to_json(char *wbuf, size_t len, struct discord_guild **) </tt>
+ *   - <tt> void discord_guild_to_json(char *wbuf, size_t len, struct discord_guild *) </tt>
+ *   - <tt> void discord_guild_list_to_json(char *wbuf, size_t len, struct discord_guild **) </tt>
  */
 struct discord_guild {
   /* specs/discord/guild.json:12:78
@@ -5363,16 +5676,16 @@ struct discord_guild {
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
  *
  * - Initializer:
- *   - <tt> discord_guild_unavailable_init(struct discord_guild_unavailable *) </tt>
+ *   - <tt> void discord_guild_unavailable_init(struct discord_guild_unavailable *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_unavailable_cleanup(struct discord_guild_unavailable *) </tt>
- *   - <tt> discord_guild_unavailable_list_free(struct discord_guild_unavailable **) </tt>
+ *   - <tt> void discord_guild_unavailable_cleanup(struct discord_guild_unavailable *) </tt>
+ *   - <tt> void discord_guild_unavailable_list_free(struct discord_guild_unavailable **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_unavailable_from_json(char *rbuf, size_t len, struct discord_guild_unavailable **) </tt>
- *   - <tt> discord_guild_unavailable_list_from_json(char *rbuf, size_t len, struct discord_guild_unavailable ***) </tt>
+ *   - <tt> void discord_guild_unavailable_from_json(char *rbuf, size_t len, struct discord_guild_unavailable **) </tt>
+ *   - <tt> void discord_guild_unavailable_list_from_json(char *rbuf, size_t len, struct discord_guild_unavailable ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable *) </tt>
- *   - <tt> discord_guild_unavailable_list_to_json(char *wbuf, size_t len, struct discord_guild_unavailable **) </tt>
+ *   - <tt> void discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable *) </tt>
+ *   - <tt> void discord_guild_unavailable_list_to_json(char *wbuf, size_t len, struct discord_guild_unavailable **) </tt>
  */
 struct discord_guild_unavailable {
   /* specs/discord/guild.json:163:18
@@ -5405,16 +5718,16 @@ struct discord_guild_unavailable {
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
  *
  * - Initializer:
- *   - <tt> discord_guild_preview_init(struct discord_guild_preview *) </tt>
+ *   - <tt> void discord_guild_preview_init(struct discord_guild_preview *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_preview_cleanup(struct discord_guild_preview *) </tt>
- *   - <tt> discord_guild_preview_list_free(struct discord_guild_preview **) </tt>
+ *   - <tt> void discord_guild_preview_cleanup(struct discord_guild_preview *) </tt>
+ *   - <tt> void discord_guild_preview_list_free(struct discord_guild_preview **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview **) </tt>
- *   - <tt> discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview ***) </tt>
+ *   - <tt> void discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview **) </tt>
+ *   - <tt> void discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview *) </tt>
- *   - <tt> discord_guild_preview_list_to_json(char *wbuf, size_t len, struct discord_guild_preview **) </tt>
+ *   - <tt> void discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview *) </tt>
+ *   - <tt> void discord_guild_preview_list_to_json(char *wbuf, size_t len, struct discord_guild_preview **) </tt>
  */
 struct discord_guild_preview {
   /* specs/discord/guild.json:173:18
@@ -5479,16 +5792,16 @@ struct discord_guild_preview {
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
  *
  * - Initializer:
- *   - <tt> discord_guild_widget_init(struct discord_guild_widget *) </tt>
+ *   - <tt> void discord_guild_widget_init(struct discord_guild_widget *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_widget_cleanup(struct discord_guild_widget *) </tt>
- *   - <tt> discord_guild_widget_list_free(struct discord_guild_widget **) </tt>
+ *   - <tt> void discord_guild_widget_cleanup(struct discord_guild_widget *) </tt>
+ *   - <tt> void discord_guild_widget_list_free(struct discord_guild_widget **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget **) </tt>
- *   - <tt> discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget ***) </tt>
+ *   - <tt> void discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget **) </tt>
+ *   - <tt> void discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget *) </tt>
- *   - <tt> discord_guild_widget_list_to_json(char *wbuf, size_t len, struct discord_guild_widget **) </tt>
+ *   - <tt> void discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget *) </tt>
+ *   - <tt> void discord_guild_widget_list_to_json(char *wbuf, size_t len, struct discord_guild_widget **) </tt>
  */
 struct discord_guild_widget {
   /* specs/discord/guild.json:191:18
@@ -5521,16 +5834,16 @@ struct discord_guild_widget {
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
  *
  * - Initializer:
- *   - <tt> discord_guild_member_init(struct discord_guild_member *) </tt>
+ *   - <tt> void discord_guild_member_init(struct discord_guild_member *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_member_cleanup(struct discord_guild_member *) </tt>
- *   - <tt> discord_guild_member_list_free(struct discord_guild_member **) </tt>
+ *   - <tt> void discord_guild_member_cleanup(struct discord_guild_member *) </tt>
+ *   - <tt> void discord_guild_member_list_free(struct discord_guild_member **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member **) </tt>
- *   - <tt> discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member ***) </tt>
+ *   - <tt> void discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member **) </tt>
+ *   - <tt> void discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member *) </tt>
- *   - <tt> discord_guild_member_list_to_json(char *wbuf, size_t len, struct discord_guild_member **) </tt>
+ *   - <tt> void discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member *) </tt>
+ *   - <tt> void discord_guild_member_list_to_json(char *wbuf, size_t len, struct discord_guild_member **) </tt>
  */
 struct discord_guild_member {
   /* specs/discord/guild.json:202:20
@@ -5591,16 +5904,16 @@ struct discord_guild_member {
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_integration_init(struct discord_guild_integration *) </tt>
+ *   - <tt> void discord_guild_integration_init(struct discord_guild_integration *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_integration_cleanup(struct discord_guild_integration *) </tt>
- *   - <tt> discord_guild_integration_list_free(struct discord_guild_integration **) </tt>
+ *   - <tt> void discord_guild_integration_cleanup(struct discord_guild_integration *) </tt>
+ *   - <tt> void discord_guild_integration_list_free(struct discord_guild_integration **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_integration_from_json(char *rbuf, size_t len, struct discord_guild_integration **) </tt>
- *   - <tt> discord_guild_integration_list_from_json(char *rbuf, size_t len, struct discord_guild_integration ***) </tt>
+ *   - <tt> void discord_guild_integration_from_json(char *rbuf, size_t len, struct discord_guild_integration **) </tt>
+ *   - <tt> void discord_guild_integration_list_from_json(char *rbuf, size_t len, struct discord_guild_integration ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration *) </tt>
- *   - <tt> discord_guild_integration_list_to_json(char *wbuf, size_t len, struct discord_guild_integration **) </tt>
+ *   - <tt> void discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration *) </tt>
+ *   - <tt> void discord_guild_integration_list_to_json(char *wbuf, size_t len, struct discord_guild_integration **) </tt>
  */
 struct discord_guild_integration {
   /* specs/discord/guild.json:220:20
@@ -5687,16 +6000,16 @@ struct discord_guild_integration {
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_integration_account_init(struct discord_guild_integration_account *) </tt>
+ *   - <tt> void discord_guild_integration_account_init(struct discord_guild_integration_account *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_integration_account_cleanup(struct discord_guild_integration_account *) </tt>
- *   - <tt> discord_guild_integration_account_list_free(struct discord_guild_integration_account **) </tt>
+ *   - <tt> void discord_guild_integration_account_cleanup(struct discord_guild_integration_account *) </tt>
+ *   - <tt> void discord_guild_integration_account_list_free(struct discord_guild_integration_account **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_integration_account_from_json(char *rbuf, size_t len, struct discord_guild_integration_account **) </tt>
- *   - <tt> discord_guild_integration_account_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_account ***) </tt>
+ *   - <tt> void discord_guild_integration_account_from_json(char *rbuf, size_t len, struct discord_guild_integration_account **) </tt>
+ *   - <tt> void discord_guild_integration_account_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_account ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account *) </tt>
- *   - <tt> discord_guild_integration_account_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_account **) </tt>
+ *   - <tt> void discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account *) </tt>
+ *   - <tt> void discord_guild_integration_account_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_account **) </tt>
  */
 struct discord_guild_integration_account {
   /* specs/discord/guild.json:253:19
@@ -5729,16 +6042,16 @@ struct discord_guild_integration_account {
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_integration_application_init(struct discord_guild_integration_application *) </tt>
+ *   - <tt> void discord_guild_integration_application_init(struct discord_guild_integration_application *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_integration_application_cleanup(struct discord_guild_integration_application *) </tt>
- *   - <tt> discord_guild_integration_application_list_free(struct discord_guild_integration_application **) </tt>
+ *   - <tt> void discord_guild_integration_application_cleanup(struct discord_guild_integration_application *) </tt>
+ *   - <tt> void discord_guild_integration_application_list_free(struct discord_guild_integration_application **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_integration_application_from_json(char *rbuf, size_t len, struct discord_guild_integration_application **) </tt>
- *   - <tt> discord_guild_integration_application_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_application ***) </tt>
+ *   - <tt> void discord_guild_integration_application_from_json(char *rbuf, size_t len, struct discord_guild_integration_application **) </tt>
+ *   - <tt> void discord_guild_integration_application_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_application ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application *) </tt>
- *   - <tt> discord_guild_integration_application_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_application **) </tt>
+ *   - <tt> void discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application *) </tt>
+ *   - <tt> void discord_guild_integration_application_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_application **) </tt>
  */
 struct discord_guild_integration_application {
   /* specs/discord/guild.json:263:19
@@ -5787,16 +6100,16 @@ struct discord_guild_integration_application {
  * @see https://discord.com/developers/docs/resources/guild#ban-object
  *
  * - Initializer:
- *   - <tt> discord_guild_ban_init(struct discord_guild_ban *) </tt>
+ *   - <tt> void discord_guild_ban_init(struct discord_guild_ban *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_ban_cleanup(struct discord_guild_ban *) </tt>
- *   - <tt> discord_guild_ban_list_free(struct discord_guild_ban **) </tt>
+ *   - <tt> void discord_guild_ban_cleanup(struct discord_guild_ban *) </tt>
+ *   - <tt> void discord_guild_ban_list_free(struct discord_guild_ban **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_ban_from_json(char *rbuf, size_t len, struct discord_guild_ban **) </tt>
- *   - <tt> discord_guild_ban_list_from_json(char *rbuf, size_t len, struct discord_guild_ban ***) </tt>
+ *   - <tt> void discord_guild_ban_from_json(char *rbuf, size_t len, struct discord_guild_ban **) </tt>
+ *   - <tt> void discord_guild_ban_list_from_json(char *rbuf, size_t len, struct discord_guild_ban ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban *) </tt>
- *   - <tt> discord_guild_ban_list_to_json(char *wbuf, size_t len, struct discord_guild_ban **) </tt>
+ *   - <tt> void discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban *) </tt>
+ *   - <tt> void discord_guild_ban_list_to_json(char *wbuf, size_t len, struct discord_guild_ban **) </tt>
  */
 struct discord_guild_ban {
   /* specs/discord/guild.json:278:20
@@ -5829,16 +6142,16 @@ struct discord_guild_ban {
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_welcome_screen_init(struct discord_guild_welcome_screen *) </tt>
+ *   - <tt> void discord_guild_welcome_screen_init(struct discord_guild_welcome_screen *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen *) </tt>
- *   - <tt> discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen **) </tt>
+ *   - <tt> void discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen *) </tt>
+ *   - <tt> void discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_welcome_screen_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen **) </tt>
- *   - <tt> discord_guild_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen ***) </tt>
+ *   - <tt> void discord_guild_welcome_screen_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen **) </tt>
+ *   - <tt> void discord_guild_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen *) </tt>
- *   - <tt> discord_guild_welcome_screen_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen **) </tt>
+ *   - <tt> void discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen *) </tt>
+ *   - <tt> void discord_guild_welcome_screen_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen **) </tt>
  */
 struct discord_guild_welcome_screen {
   /* specs/discord/guild.json:289:20
@@ -5871,16 +6184,16 @@ struct discord_guild_welcome_screen {
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel *) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel *) </tt>
- *   - <tt> discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel **) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel *) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel **) </tt>
- *   - <tt> discord_guild_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel ***) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel **) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel *) </tt>
- *   - <tt> discord_guild_welcome_screen_channel_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel **) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel *) </tt>
+ *   - <tt> void discord_guild_welcome_screen_channel_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel **) </tt>
  */
 struct discord_guild_welcome_screen_channel {
   /* specs/discord/guild.json:300:20
@@ -5922,16 +6235,16 @@ struct discord_guild_welcome_screen_channel {
  * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
  *
  * - Initializer:
- *   - <tt> discord_get_invite_params_init(struct discord_get_invite_params *) </tt>
+ *   - <tt> void discord_get_invite_params_init(struct discord_get_invite_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_get_invite_params_cleanup(struct discord_get_invite_params *) </tt>
- *   - <tt> discord_get_invite_params_list_free(struct discord_get_invite_params **) </tt>
+ *   - <tt> void discord_get_invite_params_cleanup(struct discord_get_invite_params *) </tt>
+ *   - <tt> void discord_get_invite_params_list_free(struct discord_get_invite_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params **) </tt>
- *   - <tt> discord_get_invite_params_list_from_json(char *rbuf, size_t len, struct discord_get_invite_params ***) </tt>
+ *   - <tt> void discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params **) </tt>
+ *   - <tt> void discord_get_invite_params_list_from_json(char *rbuf, size_t len, struct discord_get_invite_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params *) </tt>
- *   - <tt> discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params **) </tt>
+ *   - <tt> void discord_get_invite_params_to_json(char *wbuf, size_t len, struct discord_get_invite_params *) </tt>
+ *   - <tt> void discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params **) </tt>
  */
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:13:20
@@ -5967,16 +6280,16 @@ struct discord_get_invite_params {
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
  *
  * - Initializer:
- *   - <tt> discord_invite_init(struct discord_invite *) </tt>
+ *   - <tt> void discord_invite_init(struct discord_invite *) </tt>
  * - Cleanup:
- *   - <tt> discord_invite_cleanup(struct discord_invite *) </tt>
- *   - <tt> discord_invite_list_free(struct discord_invite **) </tt>
+ *   - <tt> void discord_invite_cleanup(struct discord_invite *) </tt>
+ *   - <tt> void discord_invite_list_free(struct discord_invite **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **) </tt>
- *   - <tt> discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***) </tt>
+ *   - <tt> void discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **) </tt>
+ *   - <tt> void discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *) </tt>
- *   - <tt> discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite **) </tt>
+ *   - <tt> void discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *) </tt>
+ *   - <tt> void discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite **) </tt>
  */
 struct discord_invite {
   /* specs/discord/invite.json:22:20
@@ -6033,16 +6346,16 @@ struct discord_invite {
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
  *
  * - Initializer:
- *   - <tt> discord_invite_metadata_init(struct discord_invite_metadata *) </tt>
+ *   - <tt> void discord_invite_metadata_init(struct discord_invite_metadata *) </tt>
  * - Cleanup:
- *   - <tt> discord_invite_metadata_cleanup(struct discord_invite_metadata *) </tt>
- *   - <tt> discord_invite_metadata_list_free(struct discord_invite_metadata **) </tt>
+ *   - <tt> void discord_invite_metadata_cleanup(struct discord_invite_metadata *) </tt>
+ *   - <tt> void discord_invite_metadata_list_free(struct discord_invite_metadata **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **) </tt>
- *   - <tt> discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***) </tt>
+ *   - <tt> void discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **) </tt>
+ *   - <tt> void discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *) </tt>
- *   - <tt> discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata **) </tt>
+ *   - <tt> void discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *) </tt>
+ *   - <tt> void discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata **) </tt>
  */
 struct discord_invite_metadata {
   /* specs/discord/invite.json:39:20
@@ -6088,16 +6401,16 @@ struct discord_invite_metadata {
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
  *
  * - Initializer:
- *   - <tt> discord_component_init(struct discord_component *) </tt>
+ *   - <tt> void discord_component_init(struct discord_component *) </tt>
  * - Cleanup:
- *   - <tt> discord_component_cleanup(struct discord_component *) </tt>
- *   - <tt> discord_component_list_free(struct discord_component **) </tt>
+ *   - <tt> void discord_component_cleanup(struct discord_component *) </tt>
+ *   - <tt> void discord_component_list_free(struct discord_component **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_component_from_json(char *rbuf, size_t len, struct discord_component **) </tt>
- *   - <tt> discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***) </tt>
+ *   - <tt> void discord_component_from_json(char *rbuf, size_t len, struct discord_component **) </tt>
+ *   - <tt> void discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_component_to_json(char *wbuf, size_t len, struct discord_component *) </tt>
- *   - <tt> discord_component_list_to_json(char *wbuf, size_t len, struct discord_component **) </tt>
+ *   - <tt> void discord_component_to_json(char *wbuf, size_t len, struct discord_component *) </tt>
+ *   - <tt> void discord_component_list_to_json(char *wbuf, size_t len, struct discord_component **) </tt>
  */
 struct discord_component {
   /* specs/discord/message_components.json:12:18
@@ -6172,16 +6485,16 @@ struct discord_component {
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
  *
  * - Initializer:
- *   - <tt> discord_button_init(struct discord_button *) </tt>
+ *   - <tt> void discord_button_init(struct discord_button *) </tt>
  * - Cleanup:
- *   - <tt> discord_button_cleanup(struct discord_button *) </tt>
- *   - <tt> discord_button_list_free(struct discord_button **) </tt>
+ *   - <tt> void discord_button_cleanup(struct discord_button *) </tt>
+ *   - <tt> void discord_button_list_free(struct discord_button **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_button_from_json(char *rbuf, size_t len, struct discord_button **) </tt>
- *   - <tt> discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***) </tt>
+ *   - <tt> void discord_button_from_json(char *rbuf, size_t len, struct discord_button **) </tt>
+ *   - <tt> void discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_button_to_json(char *wbuf, size_t len, struct discord_button *) </tt>
- *   - <tt> discord_button_list_to_json(char *wbuf, size_t len, struct discord_button **) </tt>
+ *   - <tt> void discord_button_to_json(char *wbuf, size_t len, struct discord_button *) </tt>
+ *   - <tt> void discord_button_list_to_json(char *wbuf, size_t len, struct discord_button **) </tt>
  */
 struct discord_button {
   /* specs/discord/message_components.json:44:18
@@ -6236,16 +6549,16 @@ struct discord_button {
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
  *
  * - Initializer:
- *   - <tt> discord_select_menu_init(struct discord_select_menu *) </tt>
+ *   - <tt> void discord_select_menu_init(struct discord_select_menu *) </tt>
  * - Cleanup:
- *   - <tt> discord_select_menu_cleanup(struct discord_select_menu *) </tt>
- *   - <tt> discord_select_menu_list_free(struct discord_select_menu **) </tt>
+ *   - <tt> void discord_select_menu_cleanup(struct discord_select_menu *) </tt>
+ *   - <tt> void discord_select_menu_list_free(struct discord_select_menu **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **) </tt>
- *   - <tt> discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***) </tt>
+ *   - <tt> void discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **) </tt>
+ *   - <tt> void discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *) </tt>
- *   - <tt> discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu **) </tt>
+ *   - <tt> void discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *) </tt>
+ *   - <tt> void discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu **) </tt>
  */
 struct discord_select_menu {
   /* specs/discord/message_components.json:73:18
@@ -6298,16 +6611,16 @@ struct discord_select_menu {
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
  *
  * - Initializer:
- *   - <tt> discord_select_option_init(struct discord_select_option *) </tt>
+ *   - <tt> void discord_select_option_init(struct discord_select_option *) </tt>
  * - Cleanup:
- *   - <tt> discord_select_option_cleanup(struct discord_select_option *) </tt>
- *   - <tt> discord_select_option_list_free(struct discord_select_option **) </tt>
+ *   - <tt> void discord_select_option_cleanup(struct discord_select_option *) </tt>
+ *   - <tt> void discord_select_option_list_free(struct discord_select_option **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **) </tt>
- *   - <tt> discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***) </tt>
+ *   - <tt> void discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **) </tt>
+ *   - <tt> void discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *) </tt>
- *   - <tt> discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option **) </tt>
+ *   - <tt> void discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *) </tt>
+ *   - <tt> void discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option **) </tt>
  */
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18
@@ -6355,16 +6668,16 @@ struct discord_select_option {
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  *
  * - Initializer:
- *   - <tt> discord_permissions_role_init(struct discord_permissions_role *) </tt>
+ *   - <tt> void discord_permissions_role_init(struct discord_permissions_role *) </tt>
  * - Cleanup:
- *   - <tt> discord_permissions_role_cleanup(struct discord_permissions_role *) </tt>
- *   - <tt> discord_permissions_role_list_free(struct discord_permissions_role **) </tt>
+ *   - <tt> void discord_permissions_role_cleanup(struct discord_permissions_role *) </tt>
+ *   - <tt> void discord_permissions_role_list_free(struct discord_permissions_role **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_permissions_role_from_json(char *rbuf, size_t len, struct discord_permissions_role **) </tt>
- *   - <tt> discord_permissions_role_list_from_json(char *rbuf, size_t len, struct discord_permissions_role ***) </tt>
+ *   - <tt> void discord_permissions_role_from_json(char *rbuf, size_t len, struct discord_permissions_role **) </tt>
+ *   - <tt> void discord_permissions_role_list_from_json(char *rbuf, size_t len, struct discord_permissions_role ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role *) </tt>
- *   - <tt> discord_permissions_role_list_to_json(char *wbuf, size_t len, struct discord_permissions_role **) </tt>
+ *   - <tt> void discord_permissions_role_to_json(char *wbuf, size_t len, struct discord_permissions_role *) </tt>
+ *   - <tt> void discord_permissions_role_list_to_json(char *wbuf, size_t len, struct discord_permissions_role **) </tt>
  */
 struct discord_permissions_role {
   /* specs/discord/permissions.json:52:20
@@ -6425,16 +6738,16 @@ struct discord_permissions_role {
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  *
  * - Initializer:
- *   - <tt> discord_permissions_role_tags_init(struct discord_permissions_role_tags *) </tt>
+ *   - <tt> void discord_permissions_role_tags_init(struct discord_permissions_role_tags *) </tt>
  * - Cleanup:
- *   - <tt> discord_permissions_role_tags_cleanup(struct discord_permissions_role_tags *) </tt>
- *   - <tt> discord_permissions_role_tags_list_free(struct discord_permissions_role_tags **) </tt>
+ *   - <tt> void discord_permissions_role_tags_cleanup(struct discord_permissions_role_tags *) </tt>
+ *   - <tt> void discord_permissions_role_tags_list_free(struct discord_permissions_role_tags **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_permissions_role_tags_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags **) </tt>
- *   - <tt> discord_permissions_role_tags_list_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags ***) </tt>
+ *   - <tt> void discord_permissions_role_tags_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags **) </tt>
+ *   - <tt> void discord_permissions_role_tags_list_from_json(char *rbuf, size_t len, struct discord_permissions_role_tags ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags *) </tt>
- *   - <tt> discord_permissions_role_tags_list_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags **) </tt>
+ *   - <tt> void discord_permissions_role_tags_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags *) </tt>
+ *   - <tt> void discord_permissions_role_tags_list_to_json(char *wbuf, size_t len, struct discord_permissions_role_tags **) </tt>
  */
 struct discord_permissions_role_tags {
   /* specs/discord/permissions.json:70:20
@@ -6472,16 +6785,16 @@ struct discord_permissions_role_tags {
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_init(struct discord_application_command *) </tt>
+ *   - <tt> void discord_application_command_init(struct discord_application_command *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_cleanup(struct discord_application_command *) </tt>
- *   - <tt> discord_application_command_list_free(struct discord_application_command **) </tt>
+ *   - <tt> void discord_application_command_cleanup(struct discord_application_command *) </tt>
+ *   - <tt> void discord_application_command_list_free(struct discord_application_command **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command **) </tt>
- *   - <tt> discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command ***) </tt>
+ *   - <tt> void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command **) </tt>
+ *   - <tt> void discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *) </tt>
- *   - <tt> discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command **) </tt>
+ *   - <tt> void discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *) </tt>
+ *   - <tt> void discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command **) </tt>
  */
 struct discord_application_command {
   /* specs/discord/slash_commands.json:12:18
@@ -6534,16 +6847,16 @@ struct discord_application_command {
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_option_init(struct discord_application_command_option *) </tt>
+ *   - <tt> void discord_application_command_option_init(struct discord_application_command_option *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_option_cleanup(struct discord_application_command_option *) </tt>
- *   - <tt> discord_application_command_option_list_free(struct discord_application_command_option **) </tt>
+ *   - <tt> void discord_application_command_option_cleanup(struct discord_application_command_option *) </tt>
+ *   - <tt> void discord_application_command_option_list_free(struct discord_application_command_option **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option **) </tt>
- *   - <tt> discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option ***) </tt>
+ *   - <tt> void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option **) </tt>
+ *   - <tt> void discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *) </tt>
- *   - <tt> discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option **) </tt>
+ *   - <tt> void discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *) </tt>
+ *   - <tt> void discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option **) </tt>
  */
 struct discord_application_command_option {
   /* specs/discord/slash_commands.json:28:18
@@ -6594,16 +6907,16 @@ struct discord_application_command_option {
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_option_choice_init(struct discord_application_command_option_choice *) </tt>
+ *   - <tt> void discord_application_command_option_choice_init(struct discord_application_command_option_choice *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *) </tt>
- *   - <tt> discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **) </tt>
+ *   - <tt> void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *) </tt>
+ *   - <tt> void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice **) </tt>
- *   - <tt> discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice ***) </tt>
+ *   - <tt> void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice **) </tt>
+ *   - <tt> void discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *) </tt>
- *   - <tt> discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice **) </tt>
+ *   - <tt> void discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *) </tt>
+ *   - <tt> void discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice **) </tt>
  */
 struct discord_application_command_option_choice {
   /* specs/discord/slash_commands.json:61:18
@@ -6636,16 +6949,16 @@ struct discord_application_command_option_choice {
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
  *
  * - Initializer:
- *   - <tt> discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions *) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions *) </tt>
  * - Cleanup:
- *   - <tt> discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *) </tt>
- *   - <tt> discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions **) </tt>
- *   - <tt> discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions ***) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions **) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *) </tt>
- *   - <tt> discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions **) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *) </tt>
+ *   - <tt> void discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions **) </tt>
  */
 struct discord_guild_application_command_permissions {
   /* specs/discord/slash_commands.json:72:18
@@ -6686,16 +6999,16 @@ struct discord_guild_application_command_permissions {
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_permissions_init(struct discord_application_command_permissions *) </tt>
+ *   - <tt> void discord_application_command_permissions_init(struct discord_application_command_permissions *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_permissions_cleanup(struct discord_application_command_permissions *) </tt>
- *   - <tt> discord_application_command_permissions_list_free(struct discord_application_command_permissions **) </tt>
+ *   - <tt> void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *) </tt>
+ *   - <tt> void discord_application_command_permissions_list_free(struct discord_application_command_permissions **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions **) </tt>
- *   - <tt> discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions ***) </tt>
+ *   - <tt> void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions **) </tt>
+ *   - <tt> void discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *) </tt>
- *   - <tt> discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions **) </tt>
+ *   - <tt> void discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *) </tt>
+ *   - <tt> void discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions **) </tt>
  */
 struct discord_application_command_permissions {
   /* specs/discord/slash_commands.json:85:18
@@ -6734,16 +7047,16 @@ struct discord_application_command_permissions {
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
  *
  * - Initializer:
- *   - <tt> discord_interaction_init(struct discord_interaction *) </tt>
+ *   - <tt> void discord_interaction_init(struct discord_interaction *) </tt>
  * - Cleanup:
- *   - <tt> discord_interaction_cleanup(struct discord_interaction *) </tt>
- *   - <tt> discord_interaction_list_free(struct discord_interaction **) </tt>
+ *   - <tt> void discord_interaction_cleanup(struct discord_interaction *) </tt>
+ *   - <tt> void discord_interaction_list_free(struct discord_interaction **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction **) </tt>
- *   - <tt> discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction ***) </tt>
+ *   - <tt> void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction **) </tt>
+ *   - <tt> void discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *) </tt>
- *   - <tt> discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction **) </tt>
+ *   - <tt> void discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *) </tt>
+ *   - <tt> void discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction **) </tt>
  */
 struct discord_interaction {
   /* specs/discord/slash_commands.json:107:18
@@ -6806,16 +7119,16 @@ struct discord_interaction {
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_interaction_data_init(struct discord_application_command_interaction_data *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_init(struct discord_application_command_interaction_data *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_interaction_data_cleanup(struct discord_application_command_interaction_data *) </tt>
- *   - <tt> discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_cleanup(struct discord_application_command_interaction_data *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data **) </tt>
- *   - <tt> discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data ***) </tt>
+ *   - <tt> void discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *) </tt>
- *   - <tt> discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data **) </tt>
  */
 struct discord_application_command_interaction_data {
   /* specs/discord/slash_commands.json:137:18
@@ -6864,16 +7177,16 @@ struct discord_application_command_interaction_data {
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_interaction_data_resolved_cleanup(struct discord_application_command_interaction_data_resolved *) </tt>
- *   - <tt> discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_cleanup(struct discord_application_command_interaction_data_resolved *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved **) </tt>
- *   - <tt> discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved ***) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *) </tt>
- *   - <tt> discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved **) </tt>
  */
 struct discord_application_command_interaction_data_resolved {
   /* specs/discord/slash_commands.json:152:18
@@ -6914,16 +7227,16 @@ struct discord_application_command_interaction_data_resolved {
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
  *
  * - Initializer:
- *   - <tt> discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option *) </tt>
  * - Cleanup:
- *   - <tt> discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option *) </tt>
- *   - <tt> discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option **) </tt>
- *   - <tt> discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option ***) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *) </tt>
- *   - <tt> discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option **) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *) </tt>
+ *   - <tt> void discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option **) </tt>
  */
 struct discord_application_command_interaction_data_option {
   /* specs/discord/slash_commands.json:165:18
@@ -6964,16 +7277,16 @@ struct discord_application_command_interaction_data_option {
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
  *
  * - Initializer:
- *   - <tt> discord_interaction_response_init(struct discord_interaction_response *) </tt>
+ *   - <tt> void discord_interaction_response_init(struct discord_interaction_response *) </tt>
  * - Cleanup:
- *   - <tt> discord_interaction_response_cleanup(struct discord_interaction_response *) </tt>
- *   - <tt> discord_interaction_response_list_free(struct discord_interaction_response **) </tt>
+ *   - <tt> void discord_interaction_response_cleanup(struct discord_interaction_response *) </tt>
+ *   - <tt> void discord_interaction_response_list_free(struct discord_interaction_response **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response **) </tt>
- *   - <tt> discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response ***) </tt>
+ *   - <tt> void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response **) </tt>
+ *   - <tt> void discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *) </tt>
- *   - <tt> discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response **) </tt>
+ *   - <tt> void discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *) </tt>
+ *   - <tt> void discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response **) </tt>
  */
 struct discord_interaction_response {
   /* specs/discord/slash_commands.json:178:18
@@ -7008,16 +7321,16 @@ struct discord_interaction_response {
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
  *
  * - Initializer:
- *   - <tt> discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data *) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data *) </tt>
  * - Cleanup:
- *   - <tt> discord_interaction_application_command_callback_data_cleanup(struct discord_interaction_application_command_callback_data *) </tt>
- *   - <tt> discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data **) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_cleanup(struct discord_interaction_application_command_callback_data *) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data **) </tt>
- *   - <tt> discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data ***) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data **) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *) </tt>
- *   - <tt> discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data **) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *) </tt>
+ *   - <tt> void discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data **) </tt>
  */
 struct discord_interaction_application_command_callback_data {
   /* specs/discord/slash_commands.json:203:18
@@ -7068,16 +7381,16 @@ struct discord_interaction_application_command_callback_data {
  * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
  *
  * - Initializer:
- *   - <tt> discord_message_interaction_init(struct discord_message_interaction *) </tt>
+ *   - <tt> void discord_message_interaction_init(struct discord_message_interaction *) </tt>
  * - Cleanup:
- *   - <tt> discord_message_interaction_cleanup(struct discord_message_interaction *) </tt>
- *   - <tt> discord_message_interaction_list_free(struct discord_message_interaction **) </tt>
+ *   - <tt> void discord_message_interaction_cleanup(struct discord_message_interaction *) </tt>
+ *   - <tt> void discord_message_interaction_list_free(struct discord_message_interaction **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction **) </tt>
- *   - <tt> discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction ***) </tt>
+ *   - <tt> void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction **) </tt>
+ *   - <tt> void discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *) </tt>
- *   - <tt> discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction **) </tt>
+ *   - <tt> void discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *) </tt>
+ *   - <tt> void discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction **) </tt>
  */
 struct discord_message_interaction {
   /* specs/discord/slash_commands.json:228:18
@@ -7119,16 +7432,16 @@ struct discord_message_interaction {
  * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
  *
  * - Initializer:
- *   - <tt> discord_modify_current_user_params_init(struct discord_modify_current_user_params *) </tt>
+ *   - <tt> void discord_modify_current_user_params_init(struct discord_modify_current_user_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *) </tt>
- *   - <tt> discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **) </tt>
+ *   - <tt> void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *) </tt>
+ *   - <tt> void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params **) </tt>
- *   - <tt> discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params ***) </tt>
+ *   - <tt> void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params **) </tt>
+ *   - <tt> void discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *) </tt>
- *   - <tt> discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params **) </tt>
+ *   - <tt> void discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *) </tt>
+ *   - <tt> void discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params **) </tt>
  */
 struct discord_modify_current_user_params {
   /* specs/discord/user.endpoints-params.json:13:20
@@ -7161,16 +7474,16 @@ struct discord_modify_current_user_params {
  * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
  *
  * - Initializer:
- *   - <tt> discord_create_group_dm_params_init(struct discord_create_group_dm_params *) </tt>
+ *   - <tt> void discord_create_group_dm_params_init(struct discord_create_group_dm_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *) </tt>
- *   - <tt> discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **) </tt>
+ *   - <tt> void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *) </tt>
+ *   - <tt> void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params **) </tt>
- *   - <tt> discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params ***) </tt>
+ *   - <tt> void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params **) </tt>
+ *   - <tt> void discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *) </tt>
- *   - <tt> discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params **) </tt>
+ *   - <tt> void discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *) </tt>
+ *   - <tt> void discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params **) </tt>
  */
 struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:24:20
@@ -7208,16 +7521,16 @@ struct discord_create_group_dm_params {
 // defined at specs/discord/user.json:42:28
 /**
  * - Initializer:
- *   - <tt> discord_user_init(struct discord_user *) </tt>
+ *   - <tt> void discord_user_init(struct discord_user *) </tt>
  * - Cleanup:
- *   - <tt> discord_user_cleanup(struct discord_user *) </tt>
- *   - <tt> discord_user_list_free(struct discord_user **) </tt>
+ *   - <tt> void discord_user_cleanup(struct discord_user *) </tt>
+ *   - <tt> void discord_user_list_free(struct discord_user **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_user_from_json(char *rbuf, size_t len, struct discord_user **) </tt>
- *   - <tt> discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***) </tt>
+ *   - <tt> void discord_user_from_json(char *rbuf, size_t len, struct discord_user **) </tt>
+ *   - <tt> void discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_user_to_json(char *wbuf, size_t len, struct discord_user *) </tt>
- *   - <tt> discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **) </tt>
+ *   - <tt> void discord_user_to_json(char *wbuf, size_t len, struct discord_user *) </tt>
+ *   - <tt> void discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **) </tt>
  */
 struct discord_user {
   /* specs/discord/user.json:45:24
@@ -7296,16 +7609,16 @@ struct discord_user {
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
  *
  * - Initializer:
- *   - <tt> discord_connection_init(struct discord_connection *) </tt>
+ *   - <tt> void discord_connection_init(struct discord_connection *) </tt>
  * - Cleanup:
- *   - <tt> discord_connection_cleanup(struct discord_connection *) </tt>
- *   - <tt> discord_connection_list_free(struct discord_connection **) </tt>
+ *   - <tt> void discord_connection_cleanup(struct discord_connection *) </tt>
+ *   - <tt> void discord_connection_list_free(struct discord_connection **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **) </tt>
- *   - <tt> discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***) </tt>
+ *   - <tt> void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **) </tt>
+ *   - <tt> void discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *) </tt>
- *   - <tt> discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **) </tt>
+ *   - <tt> void discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *) </tt>
+ *   - <tt> void discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **) </tt>
  */
 struct discord_connection {
   /* specs/discord/user.json:77:24
@@ -7374,16 +7687,16 @@ struct discord_connection {
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
  *
  * - Initializer:
- *   - <tt> discord_voice_state_init(struct discord_voice_state *) </tt>
+ *   - <tt> void discord_voice_state_init(struct discord_voice_state *) </tt>
  * - Cleanup:
- *   - <tt> discord_voice_state_cleanup(struct discord_voice_state *) </tt>
- *   - <tt> discord_voice_state_list_free(struct discord_voice_state **) </tt>
+ *   - <tt> void discord_voice_state_cleanup(struct discord_voice_state *) </tt>
+ *   - <tt> void discord_voice_state_list_free(struct discord_voice_state **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state **) </tt>
- *   - <tt> discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state ***) </tt>
+ *   - <tt> void discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state **) </tt>
+ *   - <tt> void discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state *) </tt>
- *   - <tt> discord_voice_state_list_to_json(char *wbuf, size_t len, struct discord_voice_state **) </tt>
+ *   - <tt> void discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state *) </tt>
+ *   - <tt> void discord_voice_state_list_to_json(char *wbuf, size_t len, struct discord_voice_state **) </tt>
  */
 struct discord_voice_state {
   /* specs/discord/voice.json:12:20
@@ -7456,16 +7769,16 @@ struct discord_voice_state {
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
  *
  * - Initializer:
- *   - <tt> discord_voice_region_init(struct discord_voice_region *) </tt>
+ *   - <tt> void discord_voice_region_init(struct discord_voice_region *) </tt>
  * - Cleanup:
- *   - <tt> discord_voice_region_cleanup(struct discord_voice_region *) </tt>
- *   - <tt> discord_voice_region_list_free(struct discord_voice_region **) </tt>
+ *   - <tt> void discord_voice_region_cleanup(struct discord_voice_region *) </tt>
+ *   - <tt> void discord_voice_region_list_free(struct discord_voice_region **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region **) </tt>
- *   - <tt> discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region ***) </tt>
+ *   - <tt> void discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region **) </tt>
+ *   - <tt> void discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region *) </tt>
- *   - <tt> discord_voice_region_list_to_json(char *wbuf, size_t len, struct discord_voice_region **) </tt>
+ *   - <tt> void discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region *) </tt>
+ *   - <tt> void discord_voice_region_list_to_json(char *wbuf, size_t len, struct discord_voice_region **) </tt>
  */
 struct discord_voice_region {
   /* specs/discord/voice.json:32:20
@@ -7515,16 +7828,16 @@ struct discord_voice_region {
  * @see https://discord.com/developers/docs/resources/webhook#create-webhook
  *
  * - Initializer:
- *   - <tt> discord_create_webhook_params_init(struct discord_create_webhook_params *) </tt>
+ *   - <tt> void discord_create_webhook_params_init(struct discord_create_webhook_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_create_webhook_params_cleanup(struct discord_create_webhook_params *) </tt>
- *   - <tt> discord_create_webhook_params_list_free(struct discord_create_webhook_params **) </tt>
+ *   - <tt> void discord_create_webhook_params_cleanup(struct discord_create_webhook_params *) </tt>
+ *   - <tt> void discord_create_webhook_params_list_free(struct discord_create_webhook_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params **) </tt>
- *   - <tt> discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params ***) </tt>
+ *   - <tt> void discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params **) </tt>
+ *   - <tt> void discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params *) </tt>
- *   - <tt> discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params **) </tt>
+ *   - <tt> void discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params *) </tt>
+ *   - <tt> void discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params **) </tt>
  */
 struct discord_create_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:13:20
@@ -7557,16 +7870,16 @@ struct discord_create_webhook_params {
  * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
  *
  * - Initializer:
- *   - <tt> discord_modify_webhook_params_init(struct discord_modify_webhook_params *) </tt>
+ *   - <tt> void discord_modify_webhook_params_init(struct discord_modify_webhook_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params *) </tt>
- *   - <tt> discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **) </tt>
+ *   - <tt> void discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params *) </tt>
+ *   - <tt> void discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params **) </tt>
- *   - <tt> discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params ***) </tt>
+ *   - <tt> void discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params **) </tt>
+ *   - <tt> void discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params *) </tt>
- *   - <tt> discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params **) </tt>
+ *   - <tt> void discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params *) </tt>
+ *   - <tt> void discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params **) </tt>
  */
 struct discord_modify_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:24:20
@@ -7603,16 +7916,16 @@ struct discord_modify_webhook_params {
  * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
  *
  * - Initializer:
- *   - <tt> discord_execute_webhook_params_init(struct discord_execute_webhook_params *) </tt>
+ *   - <tt> void discord_execute_webhook_params_init(struct discord_execute_webhook_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *) </tt>
- *   - <tt> discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **) </tt>
+ *   - <tt> void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *) </tt>
+ *   - <tt> void discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params **) </tt>
- *   - <tt> discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params ***) </tt>
+ *   - <tt> void discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params **) </tt>
+ *   - <tt> void discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params *) </tt>
- *   - <tt> discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params **) </tt>
+ *   - <tt> void discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params *) </tt>
+ *   - <tt> void discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params **) </tt>
  */
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:37:20
@@ -7699,16 +8012,16 @@ struct discord_execute_webhook_params {
  * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
  *
  * - Initializer:
- *   - <tt> discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *) </tt>
  * - Cleanup:
- *   - <tt> discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *) </tt>
- *   - <tt> discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
- *   - <tt> discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params ***) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params *) </tt>
- *   - <tt> discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params *) </tt>
+ *   - <tt> void discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
  */
 struct discord_edit_webhook_message_params {
   /* specs/discord/webhook.endpoints-params.json:81:20
@@ -7746,16 +8059,16 @@ struct discord_edit_webhook_message_params {
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
  *
  * - Initializer:
- *   - <tt> discord_webhook_init(struct discord_webhook *) </tt>
+ *   - <tt> void discord_webhook_init(struct discord_webhook *) </tt>
  * - Cleanup:
- *   - <tt> discord_webhook_cleanup(struct discord_webhook *) </tt>
- *   - <tt> discord_webhook_list_free(struct discord_webhook **) </tt>
+ *   - <tt> void discord_webhook_cleanup(struct discord_webhook *) </tt>
+ *   - <tt> void discord_webhook_list_free(struct discord_webhook **) </tt>
  * - JSON Decoder:
- *   - <tt> discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **) </tt>
- *   - <tt> discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***) </tt>
+ *   - <tt> void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **) </tt>
+ *   - <tt> void discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***) </tt>
  * - JSON Encoder:
- *   - <tt> discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *) </tt>
- *   - <tt> discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook **) </tt>
+ *   - <tt> void discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *) </tt>
+ *   - <tt> void discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook **) </tt>
  */
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
