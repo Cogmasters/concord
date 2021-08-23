@@ -283,6 +283,7 @@ install :
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h $(CEE_UTILS_DIR)/*.h $(COMMON_DIR)/*.h $(COMMON_DIR)/**/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECS_WDIR)/discord/
+	install -m 644 $(SPECS_WDIR)/discord/*.h $(PREFIX)/include/orca/$(SPECS_WDIR)/discord/
 	install -d $(PREFIX)/include/orca/$(SPECS_WDIR)/github/
 	install -m 644 $(SPECS_WDIR)/github/*.h $(PREFIX)/include/orca/$(SPECS_WDIR)/github/
 
