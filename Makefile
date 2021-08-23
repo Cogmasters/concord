@@ -180,7 +180,7 @@ echo:
 	@ echo SPECS_APIS: $(SPECS_APIS)
 	@ echo DISCORD_OBJS: $(DISCORD_OBJS)
 
-specs_gen: $(SPECSDEPS_OBJS) | $(CEE_UTILS_DIR)
+specs_gen: $(CEE_UTILS_DIR) | $(SPECSDEPS_OBJS)
 	@ $(MAKE) clean specsdeps_clean specs_clean
 	@ $(MAKE) specs_code
 
