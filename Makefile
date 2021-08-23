@@ -180,10 +180,11 @@ echo:
 	@ echo SPECS_APIS: $(SPECS_APIS)
 	@ echo DISCORD_OBJS: $(DISCORD_OBJS)
 
-specs_gen: cee_utils | $(SPECSDEPS_OBJS)
-	@ $(MAKE) clean specsdeps_clean specs_clean specs_code
+specs_gen: $(SPECSDEPS_OBJS) | $(CEE_UTILS_DIR)
+	@ $(MAKE) clean specsdeps_clean specs_clean
+	@ $(MAKE) specs_code
 
-specs_code: specs-gen.exe
+specs_code: | specs-gen.exe
 	@ rm -rf $(SPECS_WDIR)/*/one-specs.h
 	# Generate header files (specs-code/%/*.h)
 	$(foreach var, $(SPECS_JSON), \
