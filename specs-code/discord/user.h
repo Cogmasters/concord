@@ -12,7 +12,7 @@
  * @see https://discord.com/developers/docs/resources/user#user-object-user-flags
  *
  * - <tt> char* discord_user_flags_print(enum discord_user_flags code) </tt>
- * - <tt> enum discord_user_flags discord_user_flags_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_user_flags discord_user_flags_eval(char *code_as_str) </tt>
  * - <tt> bool discord_user_flags_cmp(enum discord_user_flags code, char *code_as_str) </tt>
  */
 enum discord_user_flags {
@@ -41,7 +41,7 @@ extern bool discord_user_flags_cmp(enum discord_user_flags, char*);
  * @see https://discord.com/developers/docs/resources/user#user-object-premium-types
  *
  * - <tt> char* discord_user_premium_types_print(enum discord_user_premium_types code) </tt>
- * - <tt> enum discord_user_premium_types discord_user_premium_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_user_premium_types discord_user_premium_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_user_premium_types_cmp(enum discord_user_premium_types code, char *code_as_str) </tt>
  */
 enum discord_user_premium_types {
@@ -159,7 +159,7 @@ extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_us
  * @see https://discord.com/developers/docs/resources/user#connection-object-visibility-types
  *
  * - <tt> char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code) </tt>
- * - <tt> enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types code, char *code_as_str) </tt>
  */
 enum discord_user_connection_visibility_types {

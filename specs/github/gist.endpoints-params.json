@@ -1,0 +1,20 @@
+{
+    "namespace": ["github"],
+    "comment": "https://docs.github.com/en/rest/reference/gists",
+    "defs":
+    [
+        {
+            "title":"Gist Create",
+            "comment":"https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters",
+            "namespace": ["gist_create"],
+            "struct":"params",
+            "fields":
+            [
+                { "name": "description", "type":{ "base":"char", "dec":"*" }},
+                { "name": "title", "type":{ "base":"char", "dec":"*" }},
+                { "name": "contents", "type":{ "base":"char", "dec":"*" }},
+                { "name": "public", "type":{ "base":"char", "dec":"*" }}
+            ]
+        }
+    ]
+}

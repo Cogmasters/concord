@@ -88,8 +88,8 @@ struct discord_create_group_dm_params {
 
   /* specs/discord/user.endpoints-params.json:26:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}' */
-  ja_u64 **nicks; ///< ia dictionary of user ids to their respective nicknames
+          "comment":"a dictionary of user ids to their respective nicknames"}' */
+  ja_u64 **nicks; ///< a dictionary of user ids to their respective nicknames
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

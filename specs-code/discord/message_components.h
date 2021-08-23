@@ -110,7 +110,7 @@ extern size_t discord_component_list_to_json(char *str, size_t len, struct disco
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-types
  *
  * - <tt> char* discord_component_types_print(enum discord_component_types code) </tt>
- * - <tt> enum discord_component_types discord_component_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_component_types discord_component_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str) </tt>
  */
 enum discord_component_types {
@@ -207,7 +207,7 @@ extern size_t discord_button_list_to_json(char *str, size_t len, struct discord_
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
  *
  * - <tt> char* discord_button_styles_print(enum discord_button_styles code) </tt>
- * - <tt> enum discord_button_styles discord_button_styles_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_button_styles discord_button_styles_eval(char *code_as_str) </tt>
  * - <tt> bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str) </tt>
  */
 enum discord_button_styles {

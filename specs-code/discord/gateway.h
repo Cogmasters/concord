@@ -12,7 +12,7 @@
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
  *
  * - <tt> char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes code) </tt>
- * - <tt> enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *code_as_str) </tt>
  * - <tt> bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes code, char *code_as_str) </tt>
  */
 enum discord_gateway_close_opcodes {
@@ -42,7 +42,7 @@ extern bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  *
  * - <tt> char* discord_gateway_intents_print(enum discord_gateway_intents code) </tt>
- * - <tt> enum discord_gateway_intents discord_gateway_intents_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_gateway_intents discord_gateway_intents_eval(char *code_as_str) </tt>
  * - <tt> bool discord_gateway_intents_cmp(enum discord_gateway_intents code, char *code_as_str) </tt>
  */
 enum discord_gateway_intents {
@@ -73,7 +73,7 @@ extern bool discord_gateway_intents_cmp(enum discord_gateway_intents, char*);
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
  *
  * - <tt> char* discord_gateway_opcodes_print(enum discord_gateway_opcodes code) </tt>
- * - <tt> enum discord_gateway_opcodes discord_gateway_opcodes_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *code_as_str) </tt>
  * - <tt> bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes code, char *code_as_str) </tt>
  */
 enum discord_gateway_opcodes {
@@ -100,7 +100,7 @@ extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
  * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
  *
  * - <tt> char* discord_gateway_events_print(enum discord_gateway_events code) </tt>
- * - <tt> enum discord_gateway_events discord_gateway_events_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_gateway_events discord_gateway_events_eval(char *code_as_str) </tt>
  * - <tt> bool discord_gateway_events_cmp(enum discord_gateway_events code, char *code_as_str) </tt>
  */
 enum discord_gateway_events {
@@ -451,7 +451,7 @@ extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struc
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
  * - <tt> char* discord_gateway_activity_types_print(enum discord_gateway_activity_types code) </tt>
- * - <tt> enum discord_gateway_activity_types discord_gateway_activity_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types code, char *code_as_str) </tt>
  */
 enum discord_gateway_activity_types {

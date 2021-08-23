@@ -1,0 +1,23 @@
+{
+    "title":"Gist Object",
+    "namespace": ["github"],
+    "comment": "https://docs.github.com/en/rest/reference/gists#create-a-gist",
+    "defs":
+    [
+        {
+            "title": "Gist Structure",
+            "struct": "gist",
+            "fields":
+            [
+                { "name": "url", "type":{ "base":"char", "dec":"*"}},
+                { "name": "id", "type":{ "base":"char", "dec":"*"}},
+                { "name": "node_id", "type":{ "base":"char", "dec":"*"}},
+                { "name": "html_url", "type":{ "base":"char", "dec":"*"}},
+                { "name": "created_at", "type":{ "base":"char", "dec":"*"}},
+                { "name": "updated_at", "type":{ "base":"char", "dec":"*"}},
+                { "name": "description", "type":{ "base":"char", "dec":"*"}},
+                { "name": "comments", "type":{ "base":"int"}}
+            ]
+        }
+    ]
+}

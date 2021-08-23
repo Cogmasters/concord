@@ -164,7 +164,7 @@ extern size_t discord_application_command_option_list_to_json(char *str, size_t 
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type
  *
  * - <tt> char* discord_application_command_option_types_print(enum discord_application_command_option_types code) </tt>
- * - <tt> enum discord_application_command_option_types discord_application_command_option_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_application_command_option_types discord_application_command_option_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_application_command_option_types_cmp(enum discord_application_command_option_types code, char *code_as_str) </tt>
  */
 enum discord_application_command_option_types {
@@ -375,7 +375,7 @@ extern size_t discord_application_command_permissions_list_to_json(char *str, si
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permission-type
  *
  * - <tt> char* discord_application_command_permission_types_print(enum discord_application_command_permission_types code) </tt>
- * - <tt> enum discord_application_command_permission_types discord_application_command_permission_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_application_command_permission_types discord_application_command_permission_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types code, char *code_as_str) </tt>
  */
 enum discord_application_command_permission_types {
@@ -479,7 +479,7 @@ extern size_t discord_interaction_list_to_json(char *str, size_t len, struct dis
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-request-type
  *
  * - <tt> char* discord_interaction_request_types_print(enum discord_interaction_request_types code) </tt>
- * - <tt> enum discord_interaction_request_types discord_interaction_request_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_interaction_request_types discord_interaction_request_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_interaction_request_types_cmp(enum discord_interaction_request_types code, char *code_as_str) </tt>
  */
 enum discord_interaction_request_types {
@@ -762,7 +762,7 @@ extern size_t discord_interaction_response_list_to_json(char *str, size_t len, s
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-callback-type
  *
  * - <tt> char* discord_interaction_callback_types_print(enum discord_interaction_callback_types code) </tt>
- * - <tt> enum discord_interaction_callback_types discord_interaction_callback_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_interaction_callback_types discord_interaction_callback_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types code, char *code_as_str) </tt>
  */
 enum discord_interaction_callback_types {
@@ -857,7 +857,7 @@ extern size_t discord_interaction_application_command_callback_data_list_to_json
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-flags
  *
  * - <tt> char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags code) </tt>
- * - <tt> enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char *code_as_str) </tt>
  * - <tt> bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags code, char *code_as_str) </tt>
  */
 enum discord_interaction_application_command_callback_data_flags {

@@ -78,7 +78,7 @@ extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct disco
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events
  *
  * - <tt> char* discord_audit_log_events_print(enum discord_audit_log_events code) </tt>
- * - <tt> enum discord_audit_log_events discord_audit_log_events_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_audit_log_events discord_audit_log_events_eval(char *code_as_str) </tt>
  * - <tt> bool discord_audit_log_events_cmp(enum discord_audit_log_events code, char *code_as_str) </tt>
  */
 enum discord_audit_log_events {

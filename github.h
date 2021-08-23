@@ -11,6 +11,9 @@
 /* This limit is fairly arbitrary, find the maximum at a later time. */
 #define GITHUB_MAXIMUM_REPO_TOPICS 30
 
+/* This limit is fairly arbitrary, find the maximum at a later time. */
+#define GITHUB_MAXIMUM_REPO_TOPICS 30
+
 struct github_file {
   char *path;
   char *sha;
@@ -32,5 +35,6 @@ ORCAcode github_create_a_pull_request(struct github *client, char *branch, char 
 ORCAcode github_get_user(struct github *client, char *username, struct github_user* user);
 ORCAcode github_fill_repo_config(struct github *client, char *repo_config);
 ORCAcode github_get_repository(struct github *client, char* owner, char* repo, struct sized_buffer* output);
+ORCAcode github_create_gist(struct github *client, struct github_gist_create_params *params, struct github_gist *gist);
 
 #endif // GITHUB_V3_H

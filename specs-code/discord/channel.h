@@ -12,7 +12,7 @@
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-types
  *
  * - <tt> char* discord_channel_types_print(enum discord_channel_types code) </tt>
- * - <tt> enum discord_channel_types discord_channel_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_channel_types discord_channel_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_channel_types_cmp(enum discord_channel_types code, char *code_as_str) </tt>
  */
 enum discord_channel_types {
@@ -178,7 +178,7 @@ extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types
  *
  * - <tt> char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types code) </tt>
- * - <tt> enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types code, char *code_as_str) </tt>
  */
 enum discord_message_sticker_format_types {
@@ -280,7 +280,7 @@ extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-flags
  *
  * - <tt> char* discord_message_flags_print(enum discord_message_flags code) </tt>
- * - <tt> enum discord_message_flags discord_message_flags_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_message_flags discord_message_flags_eval(char *code_as_str) </tt>
  * - <tt> bool discord_message_flags_cmp(enum discord_message_flags code, char *code_as_str) </tt>
  */
 enum discord_message_flags {
@@ -437,7 +437,7 @@ extern size_t discord_message_application_list_to_json(char *str, size_t len, st
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-types
  *
  * - <tt> char* discord_message_activity_types_print(enum discord_message_activity_types code) </tt>
- * - <tt> enum discord_message_activity_types discord_message_activity_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_message_activity_types discord_message_activity_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_message_activity_types_cmp(enum discord_message_activity_types code, char *code_as_str) </tt>
  */
 enum discord_message_activity_types {
@@ -516,7 +516,7 @@ extern size_t discord_message_activity_list_to_json(char *str, size_t len, struc
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-types
  *
  * - <tt> char* discord_message_types_print(enum discord_message_types code) </tt>
- * - <tt> enum discord_message_types discord_message_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_message_types discord_message_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_message_types_cmp(enum discord_message_types code, char *code_as_str) </tt>
  */
 enum discord_message_types {

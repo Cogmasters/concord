@@ -98,7 +98,7 @@ extern size_t discord_webhook_list_to_json(char *str, size_t len, struct discord
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
  *
  * - <tt> char* discord_webhook_types_print(enum discord_webhook_types code) </tt>
- * - <tt> enum discord_webhook_types discord_webhook_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_webhook_types discord_webhook_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str) </tt>
  */
 enum discord_webhook_types {

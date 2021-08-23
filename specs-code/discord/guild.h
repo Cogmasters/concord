@@ -254,7 +254,7 @@ extern size_t discord_guild_list_to_json(char *str, size_t len, struct discord_g
  * @see https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
  *
  * - <tt> char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level code) </tt>
- * - <tt> enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level code, char *code_as_str) </tt>
  */
 enum discord_guild_default_message_notification_level {
@@ -272,7 +272,7 @@ extern bool discord_guild_default_message_notification_level_cmp(enum discord_gu
  * @see https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
  *
  * - <tt> char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level code) </tt>
- * - <tt> enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level code, char *code_as_str) </tt>
  */
 enum discord_guild_explicit_content_filter_level {
@@ -291,7 +291,7 @@ extern bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_e
  * @see https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
  *
  * - <tt> char* discord_guild_mfa_level_print(enum discord_guild_mfa_level code) </tt>
- * - <tt> enum discord_guild_mfa_level discord_guild_mfa_level_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level code, char *code_as_str) </tt>
  */
 enum discord_guild_mfa_level {
@@ -309,7 +309,7 @@ extern bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level, char*);
  * @see https://discord.com/developers/docs/resources/guild#guild-object-verification-level
  *
  * - <tt> char* discord_guild_verification_level_print(enum discord_guild_verification_level code) </tt>
- * - <tt> enum discord_guild_verification_level discord_guild_verification_level_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_verification_level discord_guild_verification_level_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_verification_level_cmp(enum discord_guild_verification_level code, char *code_as_str) </tt>
  */
 enum discord_guild_verification_level {
@@ -330,7 +330,7 @@ extern bool discord_guild_verification_level_cmp(enum discord_guild_verification
  * @see https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
  *
  * - <tt> char* discord_guild_premium_tier_print(enum discord_guild_premium_tier code) </tt>
- * - <tt> enum discord_guild_premium_tier discord_guild_premium_tier_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier code, char *code_as_str) </tt>
  */
 enum discord_guild_premium_tier {
@@ -350,7 +350,7 @@ extern bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier, char
  * @see https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags
  *
  * - <tt> char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags code) </tt>
- * - <tt> enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags code, char *code_as_str) </tt>
  */
 enum discord_guild_system_channel_flags {
@@ -368,7 +368,7 @@ extern bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_cha
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-features
  *
  * - <tt> char* discord_guild_features_print(enum discord_guild_features code) </tt>
- * - <tt> enum discord_guild_features discord_guild_features_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_features discord_guild_features_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_features_cmp(enum discord_guild_features code, char *code_as_str) </tt>
  */
 enum discord_guild_features {
@@ -801,7 +801,7 @@ extern size_t discord_guild_integration_list_to_json(char *str, size_t len, stru
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors
  *
  * - <tt> char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors code) </tt>
- * - <tt> enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char *code_as_str) </tt>
  * - <tt> bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors code, char *code_as_str) </tt>
  */
 enum discord_guild_integration_expire_behaviors {

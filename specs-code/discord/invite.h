@@ -12,7 +12,7 @@
  * @see https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
  *
  * - <tt> char* discord_invite_target_user_types_print(enum discord_invite_target_user_types code) </tt>
- * - <tt> enum discord_invite_target_user_types discord_invite_target_user_types_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *code_as_str) </tt>
  * - <tt> bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types code, char *code_as_str) </tt>
  */
 enum discord_invite_target_user_types {

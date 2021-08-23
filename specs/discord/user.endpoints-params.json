@@ -24,7 +24,7 @@
         { "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"},
         { "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
-          "comment":"ia dictionary of user ids to their respective nicknames"}
+          "comment":"a dictionary of user ids to their respective nicknames"}
       ]
     }
   ]

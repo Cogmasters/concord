@@ -10,7 +10,7 @@
 // defined at specs/discord/permissions.json:6:5
 /**
  * - <tt> char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags code) </tt>
- * - <tt> enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char * code_as_str) </tt>
+ * - <tt> enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char *code_as_str) </tt>
  * - <tt> bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags code, char *code_as_str) </tt>
  */
 enum discord_permissions_bitwise_flags {
