@@ -46,9 +46,11 @@ int main(int argc, char **argv)
     case 'o':
         config_file = strdup(optarg);
         break;
-    case 'i':
-        ntl_append2((ntl_t*)&incl_headers, sizeof(name_t), optarg);
-        break;
+    case 'i': {
+        name_t header="";
+        snprintf(header, sizeof(name_t), "%s", optarg);
+        ntl_append2((ntl_t*)&incl_headers, sizeof(name_t), &header);
+        break; }
     case 'h':
         eo.type = FILE_HEADER;
         break;
