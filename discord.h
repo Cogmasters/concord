@@ -777,7 +777,7 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */
 
-/** @defgroup DiscordEndpointsAuditLog
+/** @defgroup DiscordGetGuildAuditLog 
  *  @{ */
 /**
  * @brief @b GET /guilds/{guild.id}/audit-logs
@@ -792,9 +792,11 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
  */
 ORCAcode discord_get_guild_audit_log(struct discord *client, const u64_snowflake_t guild_id, struct discord_get_guild_audit_log_params *params, struct discord_audit_log *p_audit_log);
-/** @} DiscordEndpointsAuditLog */
+/// @struct discord_get_guild_audit_log_params
+/** @} DiscordGetGuildAuditLog */
 
-/** @defgroup DiscordEndpointsChannel
+
+/** @defgroup DiscordGetChannel
  *  @{ */
 /**
  * @brief @b GET /channels/{channel.id}
@@ -807,6 +809,10 @@ ORCAcode discord_get_guild_audit_log(struct discord *client, const u64_snowflake
  * @see https://discord.com/developers/docs/resources/channel#get-channel
  */
 ORCAcode discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
+/** @} DiscordGetChannel */
+
+/** @defgroup DiscordModifyChannel
+ *  @{ */
 /**
  * @brief @b PATCH /channels/{channel.id}
  *
@@ -819,6 +825,11 @@ ORCAcode discord_get_channel(struct discord *client, const u64_snowflake_t chann
  * @see https://discord.com/developers/docs/resources/channel#modify-channel
  */
 ORCAcode discord_modify_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_modify_channel_params *params, struct discord_channel *p_channel);
+/// @struct discord_modify_channel_params
+/** @} DiscordModifyChannel */
+
+/** @defgroup DiscordDeleteChannel
+ *  @{ */
 /**
  * @brief @b DELETE /channels/{channel.id}
  *
@@ -832,6 +843,10 @@ ORCAcode discord_modify_channel(struct discord *client, const u64_snowflake_t ch
  * @see https://discord.com/developers/docs/resources/channel#deleteclose-channel
  */
 ORCAcode discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_channel *p_channel);
+/** @} DiscordDeleteChannel */
+
+/** @defgroup DiscordGetChannelMessages
+ *  @{ */
 /**
  * @brief @b GET /channels/{channel.id}/messages
  *
@@ -847,6 +862,11 @@ ORCAcode discord_delete_channel(struct discord *client, const u64_snowflake_t ch
  * @see https://discord.com/developers/docs/resources/channel#get-channel-messages
  */
 ORCAcode discord_get_channel_messages(struct discord *client, const u64_snowflake_t channel_id, struct discord_get_channel_messages_params *params, NTL_T(struct discord_message) *p_messages);
+/// @struct discord_get_channel_messages_params
+/** @} DiscordGetChannelMessages */
+
+/** @defgroup DiscordGetChannelMessage
+ *  @{ */
 /**
  * @brief @b GET /channels/{channel.id}/messages/{message.id}
  *
@@ -860,6 +880,10 @@ ORCAcode discord_get_channel_messages(struct discord *client, const u64_snowflak
  * @see https://discord.com/developers/docs/resources/channel#get-channel-message
  */
 ORCAcode discord_get_channel_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_message *p_message);
+/** @} DiscordGetChannelMessage */
+
+/** @defgroup DiscordCreateMessage
+ *  @{ */
 /**
  * @brief @b POST /channels/{channel.id}/messages
  *
@@ -872,6 +896,11 @@ ORCAcode discord_get_channel_message(struct discord *client, const u64_snowflake
  * @see https://discord.com/developers/docs/resources/channel#create-message
  */
 ORCAcode discord_create_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_message_params *params, struct discord_message *p_message);
+/// @struct discord_create_message_params
+/** @} DiscordCreateMessage */
+
+/** @defgroup DiscordCrosspostMessage
+ *  @{ */
 /**
  * @brief @b POST /channels/{channel.id}/messages/{message.id}/crosspost
  *
@@ -884,6 +913,10 @@ ORCAcode discord_create_message(struct discord *client, const u64_snowflake_t ch
  * @see https://discord.com/developers/docs/resources/channel#crosspost-message
  */
 ORCAcode discord_crosspost_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_message *p_message);
+/** @} DiscordCrosspostMessage */
+
+/** @defgroup DiscordCreateReaction
+ *  @{ */
 /**
  * @brief @b PUT /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@@me
  *
@@ -897,6 +930,10 @@ ORCAcode discord_crosspost_message(struct discord *client, const u64_snowflake_t
  * @see https://discord.com/developers/docs/resources/channel#create-reaction
  */
 ORCAcode discord_create_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+/** @} DiscordCreateReaction */
+
+/** @defgroup DiscordDeleteOwnReaction
+ *  @{ */
 /**
  * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@@me
  *
@@ -910,6 +947,10 @@ ORCAcode discord_create_reaction(struct discord *client, const u64_snowflake_t c
  * @see https://discord.com/developers/docs/resources/channel#delete-own-reaction
  */
 ORCAcode discord_delete_own_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+/** @} DiscordDeleteOwnReaction */
+
+/** @defgroup DiscordDeleteUserReaction
+ *  @{ */
 /**
  * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}/{user.id}
  *
@@ -924,6 +965,10 @@ ORCAcode discord_delete_own_reaction(struct discord *client, const u64_snowflake
  * @see https://discord.com/developers/docs/resources/channel#delete-user-reaction
  */
 ORCAcode discord_delete_user_reaction(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t user_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
+/** @} DiscordDeleteUserReaction */
+
+/** @defgroup DiscordGetReactions
+ *  @{ */
 /**
  * @brief @b GET /channels/{channel.id}/messages/{message.id}/reactions/{emoji}
  *
@@ -939,6 +984,11 @@ ORCAcode discord_delete_user_reaction(struct discord *client, const u64_snowflak
  * @see https://discord.com/developers/docs/resources/channel#get-reactions
  */
 ORCAcode discord_get_reactions(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[], struct discord_get_reactions_params *params, NTL_T(struct discord_user) *p_users);
+/// @struct discord_get_reactions_params
+/** @} DiscordGetReactions */
+
+/** @defgroup DiscordDeleteAllReactions
+ *  @{ */
 /**
  * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions
  *
@@ -950,6 +1000,10 @@ ORCAcode discord_get_reactions(struct discord *client, u64_snowflake_t channel_i
  * @see https://discord.com/developers/docs/resources/channel#delete-all-reactions
  */
 ORCAcode discord_delete_all_reactions(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
+/** @} DiscordDeleteAllReactions */
+
+/** @defgroup DiscordDeleteAllReactionsForEmoji
+ *  @{ */
 /**
  * @brief @b DELETE /channels/{channel.id}/messages/{message.id}/reactions/{emoji}
  *
@@ -963,101 +1017,382 @@ ORCAcode discord_delete_all_reactions(struct discord *client, u64_snowflake_t ch
  * @see https://discord.com/developers/docs/resources/channel#delete-all-reactions-for-emoji
  */
 ORCAcode discord_delete_all_reactions_for_emoji(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, const u64_snowflake_t emoji_id, const char emoji_name[]);
-ORCAcode discord_edit_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_edit_message_params *params, struct discord_message *p_message);
-ORCAcode discord_delete_message(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
-ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages);
-ORCAcode discord_edit_channel_permissions(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t overwrite_id, struct discord_edit_channel_permissions_params *params);
-ORCAcode discord_get_channel_invites(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_invite) *p_invites);
-ORCAcode discord_create_channel_invite(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_channel_invite_params *params, struct discord_invite *p_invite);
-ORCAcode discord_delete_channel_permission(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t overwrite_id);
-ORCAcode discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id);
-ORCAcode discord_follow_news_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_follow_news_channel_params *params, struct discord_channel *p_followed_channel);
-ORCAcode discord_get_pinned_messages(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_message) *p_messages);
-ORCAcode discord_pin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
-ORCAcode discord_unpin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
-ORCAcode discord_group_dm_add_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id, struct discord_group_dm_add_recipient_params *params);
-ORCAcode discord_group_dm_remove_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
-ORCAcode discord_start_thread_with_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_start_thread_with_message_params *params, struct discord_channel *p_channel);
-ORCAcode discord_start_thread_without_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_start_thread_without_message_params *params, struct discord_channel *p_channel);
-ORCAcode discord_join_thread(struct discord *client, const u64_snowflake_t channel_id);
-ORCAcode discord_add_thread_member(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
-ORCAcode discord_leave_thread(struct discord *client, const u64_snowflake_t channel_id);
-ORCAcode discord_remove_thread_member(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
-ORCAcode discord_list_thread_members(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_thread_member) *p_thread_members);
-ORCAcode discord_list_active_threads(struct discord *client, const u64_snowflake_t channel_id, struct discord_thread_response_body *body);
-ORCAcode discord_list_public_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
-ORCAcode discord_list_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
-ORCAcode discord_list_joined_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
-/** @} DiscordEndpointsChannel */
+/** @} DiscordDeleteAllReactionsForEmoji */
 
-/** @defgroup DiscordEndpointsEmoji
+/** @defgroup DiscordEditMessage
+ *  @{ */
+ORCAcode discord_edit_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_edit_message_params *params, struct discord_message *p_message);
+/// @struct discord_edit_message_params
+/** @} DiscordEditMessage */
+
+/** @defgroup DiscordDeleteMessage
+ *  @{ */
+ORCAcode discord_delete_message(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t message_id);
+/** @} DiscordDeleteMessage */
+
+/** @defgroup DiscordBulkDeleteMessages
+ *  @{ */
+ORCAcode discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages);
+/** @} DiscordBulkDeleteMessages */
+
+/** @defgroup DiscordEditChannelPermissions
+ *  @{ */
+ORCAcode discord_edit_channel_permissions(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t overwrite_id, struct discord_edit_channel_permissions_params *params);
+/// @struct discord_edit_channel_permissions_params
+/** @} DiscordEditChannelPermissions */
+
+/** @defgroup DiscordGetChannelInvites
+ *  @{ */
+ORCAcode discord_get_channel_invites(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_invite) *p_invites);
+/** @} DiscordGetChannelInvites */
+
+/** @defgroup DiscordCreateChannelInvite
+ *  @{ */
+ORCAcode discord_create_channel_invite(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_channel_invite_params *params, struct discord_invite *p_invite);
+/// @struct discord_create_channel_invite_params
+/** @} DiscordCreateChannelInvite */
+
+/** @defgroup DiscordDeleteChannelPermission
+ *  @{ */
+ORCAcode discord_delete_channel_permission(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t overwrite_id);
+/** @} DiscordDeleteChannelPermission */
+
+/** @defgroup DiscordTriggerTypingIndicator
+ *  @{ */
+ORCAcode discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel_id);
+/** @} DiscordTriggerTypingIndicator */
+
+/** @defgroup DiscordFollowNewsChannel
+ *  @{ */
+ORCAcode discord_follow_news_channel(struct discord *client, const u64_snowflake_t channel_id, struct discord_follow_news_channel_params *params, struct discord_channel *p_followed_channel);
+/// @struct discord_follow_news_channel_params
+/** @} DiscordFollowNewsChannel */
+
+/** @defgroup DiscordGetPinnedMessages
+ *  @{ */
+ORCAcode discord_get_pinned_messages(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_message) *p_messages);
+/** @} DiscordGetPinnedMessages */
+
+/** @defgroup DiscordPinMessage
+ *  @{ */
+ORCAcode discord_pin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
+/** @} DiscordPinMessage */
+
+/** @defgroup DiscordUnpinMessage
+ *  @{ */
+ORCAcode discord_unpin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
+/** @} DiscordUnpinMessage */
+
+/** @defgroup DiscordGroupDmAddRecipient
+ *  @{ */
+ORCAcode discord_group_dm_add_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id, struct discord_group_dm_add_recipient_params *params);
+/// @struct discord_group_dm_add_recipient_params
+/** @} DiscordGroupDmAddRecipient */
+
+/** @defgroup DiscordGroupDmRemoveRecipient
+ *  @{ */
+ORCAcode discord_group_dm_remove_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
+/** @} DiscordGroupDmRemoveRecipient */
+
+/** @defgroup DiscordStartThreadWithMessage
+ *  @{ */
+ORCAcode discord_start_thread_with_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_start_thread_with_message_params *params, struct discord_channel *p_channel);
+/// @struct discord_start_thread_with_message_params
+/** @} DiscordStartThreadWithMessage */
+
+/** @defgroup DiscordStartThreadWithoutMessage
+ *  @{ */
+ORCAcode discord_start_thread_without_message(struct discord *client, const u64_snowflake_t channel_id, struct discord_start_thread_without_message_params *params, struct discord_channel *p_channel);
+/// @struct discord_start_thread_without_message_params
+/** @} DiscordStartThreadWithoutMessage */
+
+/** @defgroup DiscordJoinThread
+ *  @{ */
+ORCAcode discord_join_thread(struct discord *client, const u64_snowflake_t channel_id);
+/** @} DiscordJoinThread */
+
+/** @defgroup DiscordAddThreadMember
+ *  @{ */
+ORCAcode discord_add_thread_member(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
+/** @} DiscordAddThreadMember */
+
+/** @defgroup DiscordLeaveThread
+ *  @{ */
+ORCAcode discord_leave_thread(struct discord *client, const u64_snowflake_t channel_id);
+/** @} DiscordLeaveThread */
+
+/** @defgroup DiscordRemoveThreadMember
+ *  @{ */
+ORCAcode discord_remove_thread_member(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
+/** @} DiscordRemoveThreadMember */
+
+/** @defgroup DiscordListThreadMembers
+ *  @{ */
+ORCAcode discord_list_thread_members(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_thread_member) *p_thread_members);
+/** @} DiscordListThreadMembers */
+
+/** @defgroup DiscordListActiveThreads
+ *  @{ */
+ORCAcode discord_list_active_threads(struct discord *client, const u64_snowflake_t channel_id, struct discord_thread_response_body *body);
+/** @} DiscordListActiveThreads */
+
+/** @defgroup DiscordListPublicArchivedThreads
+ *  @{ */
+ORCAcode discord_list_public_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
+/** @} DiscordListPublicArchivedThreads */
+
+/** @defgroup DiscordListPrivateArchivedThreads
+ *  @{ */
+ORCAcode discord_list_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
+/** @} DiscordListPrivateArchivedThreads */
+
+/** @defgroup DiscordListJoinedPrivateArchivedThreads
+ *  @{ */
+ORCAcode discord_list_joined_private_archived_threads(struct discord *client, const u64_snowflake_t channel_id, const u64_unix_ms_t before, const int limit, struct discord_thread_response_body *body);
+/** @} DiscordListJoinedPrivateArchivedThreads */
+
+
+/** @defgroup DiscordListGuildEmojis
  *  @{ */
 ORCAcode discord_list_guild_emojis(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_emoji) *p_emojis);
-ORCAcode discord_get_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_emoji *p_emoji);
-ORCAcode discord_create_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_emoji_params *params, struct discord_emoji *p_emoji);
-ORCAcode discord_modify_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_modify_guild_emoji_params *params, struct discord_emoji *p_emoji);
-ORCAcode discord_delete_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id);
-/** @} DiscordEndpointsEmoji */
+/** @} DiscordListGuildEmojis */
 
-/** @defgroup DiscordEndpointsGuild
+/** @defgroup DiscordGetGuildEmoji
+ *  @{ */
+ORCAcode discord_get_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_emoji *p_emoji);
+/** @} DiscordGetGuildEmoji */
+
+/** @defgroup DiscordCreateGuildEmoji
+ *  @{ */
+ORCAcode discord_create_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_emoji_params *params, struct discord_emoji *p_emoji);
+/// @struct discord_create_guild_emoji_params
+/** @} DiscordCreateGuildEmoji */
+
+/** @defgroup DiscordModifyGuildEmoji
+ *  @{ */
+ORCAcode discord_modify_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id, struct discord_modify_guild_emoji_params *params, struct discord_emoji *p_emoji);
+/// @struct discord_modify_guild_emoji_params
+/** @} DiscordModifyGuildEmoji */
+
+/** @defgroup DiscordDeleteGuildEmoji
+ *  @{ */
+ORCAcode discord_delete_guild_emoji(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t emoji_id);
+/** @} DiscordDeleteGuildEmoji */
+
+
+/** @defgroup DiscordCreateGuild
  *  @{ */
 ORCAcode discord_create_guild(struct discord *client, struct discord_create_guild_params *params, struct discord_guild *p_guild);
-ORCAcode discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
-ORCAcode discord_get_guild_preview(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_preview *p_guild_preview);
-ORCAcode discord_modify_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_modify_guild_params *params, struct discord_guild *p_guild);
-ORCAcode discord_delete_guild(struct discord *client, const u64_snowflake_t guild_id);
-ORCAcode discord_get_guild_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
-ORCAcode discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
-ORCAcode discord_modify_guild_channel_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_channel_positions_params) params);
-ORCAcode  discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member);
-ORCAcode discord_list_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_list_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
-ORCAcode discord_search_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_search_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
-ORCAcode discord_modify_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_modify_guild_member_params *params, struct discord_guild_member *p_member);
-ORCAcode discord_add_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_add_guild_member_params *params, struct discord_guild_member *p_member);
-ORCAcode discord_modify_current_user_nick(struct discord *client, const u64_snowflake_t guild_id, const char nick[]);
-ORCAcode discord_add_guild_member_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const u64_snowflake_t role_id);
-ORCAcode discord_remove_guild_member_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const u64_snowflake_t role_id);
-ORCAcode discord_remove_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
-ORCAcode discord_get_guild_bans(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban) *p_bans);
-ORCAcode discord_get_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_ban *p_ban);
-ORCAcode discord_create_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[]);
-ORCAcode discord_remove_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
-ORCAcode discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_permissions_role) *p_roles);
-ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_permissions_role *p_role);
-ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_permissions_role) *p_roles);
-ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_permissions_role *p_role);
-ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
-/** @} DiscordEndpointsGuild */
+/// @struct discord_create_guild_params
+/** @} DiscordCreateGuild */
 
-/** @defgroup DiscordEndpointsInvite
+/** @defgroup DiscordGetGuild
+ *  @{ */
+ORCAcode discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
+/** @} DiscordGetGuild */
+
+/** @defgroup DiscordGetGuildPreview
+ *  @{ */
+ORCAcode discord_get_guild_preview(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild_preview *p_guild_preview);
+/** @} DiscordGetGuildPreview */
+
+/** @defgroup DiscordModifyGuild
+ *  @{ */
+ORCAcode discord_modify_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_modify_guild_params *params, struct discord_guild *p_guild);
+/// @struct discord_modify_guild_params
+/** @} DiscordModifyGuild */
+
+/** @defgroup DiscordDeleteGuild
+ *  @{ */
+ORCAcode discord_delete_guild(struct discord *client, const u64_snowflake_t guild_id);
+/** @} DiscordDeleteGuild */
+
+/** @defgroup DiscordGetGuildChannels
+ *  @{ */
+ORCAcode discord_get_guild_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
+/** @} DiscordGetGuildChannels */
+
+/** @defgroup DiscordCreateGuildChannel
+ *  @{ */
+ORCAcode discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
+/// @struct discord_create_guild_channel_params
+/** @} DiscordCreateGuildChannel */
+
+/** @defgroup DiscordModifyGuildChannelPositions
+ *  @{ */
+ORCAcode discord_modify_guild_channel_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_channel_positions_params) params);
+/// @struct discord_modify_guild_channel_positions_params
+/** @} DiscordModifyGuildChannelPositions */
+
+/** @defgroup DiscordGetGuildMember
+ *  @{ */
+ORCAcode  discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_snowflake_t user_id, struct discord_guild_member *p_member);
+/** @} DiscordGetGuildMember */
+
+/** @defgroup DiscordListGuildMembers
+ *  @{ */
+ORCAcode discord_list_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_list_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
+/// @struct discord_list_guild_members_params
+/** @} DiscordListGuildMembers */
+
+/** @defgroup DiscordSearchGuildMembers
+ *  @{ */
+ORCAcode discord_search_guild_members(struct discord *client, const u64_snowflake_t guild_id, struct discord_search_guild_members_params *params, NTL_T(struct discord_guild_member) *p_members);
+/// @struct discord_search_guild_members_params
+/** @} DiscordSearchGuildMembers */
+
+/** @defgroup DiscordModifyGuildMember
+ *  @{ */
+ORCAcode discord_modify_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_modify_guild_member_params *params, struct discord_guild_member *p_member);
+/// @struct discord_modify_guild_member_params
+/** @} DiscordModifyGuildMember */
+
+/** @defgroup DiscordAddGuildMember
+ *  @{ */
+ORCAcode discord_add_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_add_guild_member_params *params, struct discord_guild_member *p_member);
+/// @struct discord_add_guild_member_params
+/** @} DiscordAddGuildMember */
+
+/** @defgroup DiscordModifyCurrentUserNick
+ *  @{ */
+ORCAcode discord_modify_current_user_nick(struct discord *client, const u64_snowflake_t guild_id, const char nick[]);
+/** @} DiscordModifyCurrentUserNick */
+
+/** @defgroup DiscordAddGuildMemberRole
+ *  @{ */
+ORCAcode discord_add_guild_member_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const u64_snowflake_t role_id);
+/** @} DiscordAddGuildMemberRole */
+
+/** @defgroup DiscordRemoveGuildMemberRole
+ *  @{ */
+ORCAcode discord_remove_guild_member_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const u64_snowflake_t role_id);
+/** @} DiscordRemoveGuildMemberRole */
+
+/** @defgroup DiscordRemoveGuildMember
+ *  @{ */
+ORCAcode discord_remove_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id);
+/** @} DiscordRemoveGuildMember */
+
+/** @defgroup DiscordGetGuildBans
+ *  @{ */
+ORCAcode discord_get_guild_bans(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban) *p_bans);
+/** @} DiscordGetGuildBans */
+
+/** @defgroup DiscordGetGuildBan
+ *  @{ */
+ORCAcode discord_get_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_ban *p_ban);
+/** @} DiscordGetGuildBan */
+
+/** @defgroup DiscordCreateGuildBan
+ *  @{ */
+ORCAcode discord_create_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, int delete_message_days, const char reason[]);
+/** @} DiscordCreateGuildBan */
+
+/** @defgroup DiscordRemoveGuildBan
+ *  @{ */
+ORCAcode discord_remove_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, const char reason[]);
+/** @} DiscordRemoveGuildBan */
+
+/** @defgroup DiscordGetGuildRoles
+ *  @{ */
+ORCAcode discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_permissions_role) *p_roles);
+/** @} DiscordGetGuildRoles */
+
+/** @defgroup DiscordCreateGuildRole
+ *  @{ */
+ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_permissions_role *p_role);
+/// @struct discord_create_guild_role_params
+/** @} DiscordCreateGuildRole */
+
+/** @defgroup DiscordModifyGuildRolePositions
+ *  @{ */
+ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_permissions_role) *p_roles);
+/// @struct discord_modify_guild_role_positions_params
+/** @} DiscordModifyGuildRolePositions */
+
+/** @defgroup DiscordModifyGuildRole
+ *  @{ */
+ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_permissions_role *p_role);
+/// @struct discord_modify_guild_role_params
+/** @} DiscordModifyGuildRole */
+
+/** @defgroup DiscordDeleteGuildRole
+ *  @{ */
+ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
+/** @} DiscordDeleteGuildRole */
+
+
+/** @defgroup DiscordGetInvite
  *  @{ */
 ORCAcode discord_get_invite(struct discord *client, char *invite_code, struct discord_get_invite_params *params, struct discord_invite *p_invite);
-ORCAcode discord_delete_invite(struct discord *client, char *invite_code, struct discord_invite *p_invite);
-/** @} DiscordEndpointsInvite */
+/// @struct discord_get_invite_params
+/** @} DiscordGetInvite */
 
-/** @defgroup DiscordEndpointsUser
+/** @defgroup DiscordDeleteInvite
+ *  @{ */
+ORCAcode discord_delete_invite(struct discord *client, char *invite_code, struct discord_invite *p_invite);
+/** @} DiscordDeleteInvite */
+
+
+/** @defgroup DiscordGetUser
  *  @{ */
 ORCAcode discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct discord_user *p_user);
+/** @} DiscordGetUser */
+
+/** @defgroup DiscordModifyCurrentUser
+ *  @{ */
 ORCAcode discord_modify_current_user(struct discord *client, struct discord_modify_current_user_params *params, struct discord_user *p_user);
+/// @struct discord_modify_current_user_params
+/** @} DiscordModifyCurrentUser */
+
+/** @defgroup DiscordGetCurrentUser
+ *  @{ */
 ORCAcode discord_get_current_user(struct discord *client, struct discord_user *p_user);
 ORCAcode sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_user);
-ORCAcode discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);
-ORCAcode discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
-ORCAcode discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
-ORCAcode discord_create_group_dm(struct discord *client, struct discord_create_group_dm_params *params, struct discord_channel *p_dm_channel);
-ORCAcode discord_get_user_connections(struct discord *client, NTL_T(struct discord_connection) *p_connections);
-/** @} DiscordEndpointsUser */
+/** @} DiscordGetCurrentUser */
 
-/** @defgroup DiscordEndpointsVoice
+/** @defgroup DiscordGetCurrentUserGuilds
+ *  @{ */
+ORCAcode discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_guild) *p_guilds);
+/** @} DiscordGetCurrentUserGuilds */
+
+/** @defgroup DiscordLeaveGuild
+ *  @{ */
+ORCAcode discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id);
+/** @} DiscordLeaveGuild */
+
+/** @defgroup DiscordCreateDm
+ *  @{ */
+ORCAcode discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel);
+/** @} DiscordCreateDm */
+
+/** @defgroup DiscordCreateGroupDm
+ *  @{ */
+ORCAcode discord_create_group_dm(struct discord *client, struct discord_create_group_dm_params *params, struct discord_channel *p_dm_channel);
+/// @struct discord_create_group_dm_params
+/** @} DiscordCreateGroupDm */
+
+/** @defgroup DiscordGetUserConnections
+ *  @{ */
+ORCAcode discord_get_user_connections(struct discord *client, NTL_T(struct discord_connection) *p_connections);
+/** @} DiscordGetUserConnections */
+
+
+/** @defgroup DiscordListVoiceRegions
  *  @{ */
 ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_region) *p_voice_regions);
-/** @} DiscordEndpointsVoice */
+/** @} DiscordListVoiceRegions */
 
-/** @defgroup DiscordEndpointsGateway
+
+/** @defgroup DiscordGetGateway
  *  @{ */
 ORCAcode discord_get_gateway(struct discord *client, struct discord_session *p_session);
+/** @} DiscordGetGateway */
+
+/** @defgroup DiscordGetGatewayBot
+ *  @{ */
 ORCAcode discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
-/** @} DiscordEndpointsGateway */
+/** @} DiscordGetGatewayBot */
 
 
 /* * * * * * * * * * * * * * * * * * * */
