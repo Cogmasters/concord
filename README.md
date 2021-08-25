@@ -57,7 +57,7 @@ sudo make install
 
 #### Standalone executable
 ```
-gcc your-bot.c -o your-bot.exe -ldiscord -lcurl -lcrypto -lpthread -lm
+gcc myBot.c -o myBot.out -ldiscord -lcurl -lcrypto -lpthread -lm
 ```
 
 ### For Windows
@@ -101,7 +101,7 @@ int main() {
 2. Invite your bot to a testing server. We can invite your
    bot to our testing servers at our [Discord Server](https://discord.gg/2jfycwXVM3).
 3. Run `make bots`
-4. Go to `bots/` folder and run `./bot-echo.exe`
+4. Go to `bots/` folder and run `./bot-echo.out`
 
 ### Test bot-echo
 Type a message in any channel the bot is part of.
@@ -116,7 +116,7 @@ Close the Terminal or type `Ctrl-C` to kill the process.
 
 * Using valgrind, which is more convenient but cannot report all runtime memory errors. 
 ```
-valgrind ./your-bot.exe 
+valgrind ./myBot.out 
 ```
 
 ## Links

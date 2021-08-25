@@ -149,7 +149,7 @@ discord_run(client);
 
 Use `make bot` for compiling the source code.
 
-Then run the bot going to the `bots` folder and typing `./bot-ping-pong.exe` on your terminal.
+Then run the bot going to the `bots` folder and typing `./bot-ping-pong.out` on your terminal.
 
 #### Testing the bot
 Type "ping" or "pong" in any public channel that the bot is part of.

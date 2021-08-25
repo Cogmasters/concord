@@ -1,6 +1,7 @@
 .stensal*
 *.tar
 *.exe
+*.out
 .ccls-cache
 *.o
 a.out

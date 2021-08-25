@@ -63,7 +63,7 @@ LIBSLACK   := $(LIBADDONS) $(LIBDIR)/libslack.a
 
 BOTS_DIR   := bots
 BOTS_SRC   := $(wildcard $(BOTS_DIR)/bot-*.c)
-BOTS_EXES  := $(patsubst %.c, %.exe, $(BOTS_SRC))
+BOTS_EXES  := $(patsubst %.c, %.out, $(BOTS_SRC))
 
 BOTX_DIR  := botx
 BOTX_SRC  := $(wildcard $(BOTX_DIR)/bot-*.c)
@@ -71,7 +71,7 @@ BOTX_EXES := $(patsubst %.c, %.bx, $(BOTX_SRC))
 
 TEST_DIR  := test
 TEST_SRC  := $(wildcard $(TEST_DIR)/test-*.c)
-TEST_EXES := $(filter %.exe, $(TEST_SRC:.c=.exe))
+TEST_EXES := $(filter %.out, $(TEST_SRC:.c=.out))
 
 
 LIBS_CFLAGS  += -I./mujs
@@ -91,7 +91,7 @@ ifeq ($(addons),1)
 	LIBADDONS       := $(LIBDIR)/libaddons.a
 
 	# include addon flags
-	BOTS_EXES    += $(ADDONS_BOTS_SRC:%.c=%.exe)
+	BOTS_EXES    += $(ADDONS_BOTS_SRC:%.c=%.out)
 	LIBS_LDFLAGS += -laddons
 	CFLAGS       += -I./add-ons
 endif
@@ -137,9 +137,9 @@ $(SPECSDEPS_OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(BOTS_DIR)/%.exe: $(BOTS_DIR)/%.c
+$(BOTS_DIR)/%.out: $(BOTS_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
-%.exe: %.c mujs all_api_libs
+%.out: %.c mujs all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
 %.bx: %.c mujs all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
@@ -184,48 +184,48 @@ specs_gen: $(CEE_UTILS_DIR) | $(SPECSDEPS_OBJS)
 	@ $(MAKE) clean specsdeps_clean specs_clean
 	@ $(MAKE) specs_code
 
-specs_code: | specs-gen.exe
+specs_code: | specs-gen.out
 	@ rm -rf $(SPECS_WDIR)/*/one-specs.h
 	# Generate header files (specs-code/%/*.h)
 	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.exe \
+	    ./bin/specs-gen.out \
 			    -h \
 			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.h)) \
 			    $(var) || exit;$(\n))
 	# Generate source files (specs-code/%/*.c)
 	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.exe \
+	    ./bin/specs-gen.out \
 			    -c \
 			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.c)) \
 			    -i $(filter $(SPECS_APIS), $(subst /, ,$(dir $(var)))).h \
 			    $(var) || exit;$(\n))
 	# Generate single header (specs-code/%/one-specs.h)
 	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.exe \
+	    ./bin/specs-gen.out \
 			    -O \
 			    -a \
 			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
 			    $(var) || exit;$(\n))
 	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.exe \
+	    ./bin/specs-gen.out \
 			    -E \
 			    -a \
 			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
 			    $(var) || exit;$(\n))
 	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.exe \
+	    ./bin/specs-gen.out \
 			    -S \
 			    -a \
 			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
 			    $(var) || exit;$(\n))
 	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.exe \
+	    ./bin/specs-gen.out \
 			    -F \
 			    -a \
 			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
 			    $(var) || exit;$(\n))
 
-specs-gen.exe: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)
+specs-gen.out: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)
 	$(CC) -o $@ $(SPECSDEPS_OBJS) -lm
 	mkdir -p bin
 	mv $@ ./bin
@@ -292,7 +292,7 @@ specs_clean :
 specsdeps_clean :
 	rm -rf $(SPECSDEPS_OBJDIR) bin/*
 clean : 
-	rm -rf $(OBJDIR) *.exe $(TEST_DIR)/*.exe $(BOTS_DIR)/*.exe
+	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(BOTS_DIR)/*.out
 	rm -rf $(BOTX_DIR)/*.bx
 	$(MAKE) -C mujs clean
 	rm -rf $(LIBDIR)
