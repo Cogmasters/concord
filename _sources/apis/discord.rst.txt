@@ -183,197 +183,115 @@ Audit Log
 ~~~~~~~~~
 
 .. doxygengroup:: DiscordGetGuildAuditLog
-    :content-only:
 
 Channel
 ~~~~~~~
 
 .. doxygengroup:: DiscordGetChannel
-    :content-only:
 .. doxygengroup:: DiscordModifyChannel
-    :content-only:
 .. doxygengroup:: DiscordDeleteChannel
-    :content-only:
 .. doxygengroup:: DiscordGetChannelMessages
-    :content-only:
 .. doxygengroup:: DiscordGetChannelMessage
-    :content-only:
 .. doxygengroup:: DiscordCreateMessage
-    :content-only:
 .. doxygengroup:: DiscordCrosspostMessage
-    :content-only:
 .. doxygengroup:: DiscordCreateReaction
-    :content-only:
 .. doxygengroup:: DiscordDeleteOwnReaction
-    :content-only:
 .. doxygengroup:: DiscordDeleteUserReaction
-    :content-only:
 .. doxygengroup:: DiscordGetReactions
-    :content-only:
 .. doxygengroup:: DiscordDeleteAllReactions
-    :content-only:
 .. doxygengroup:: DiscordDeleteAllReactionsForEmoji
-    :content-only:
 .. doxygengroup:: DiscordEditMessage
-    :content-only:
 .. doxygengroup:: DiscordDeleteMessage
-    :content-only:
 .. doxygengroup:: DiscordBulkDeleteMessages
-    :content-only:
 .. doxygengroup:: DiscordEditChannelPermissions
-    :content-only:
 .. doxygengroup:: DiscordGetChannelInvites
-    :content-only:
 .. doxygengroup:: DiscordCreateChannelInvite
-    :content-only:
 .. doxygengroup:: DiscordDeleteChannelPermission
-    :content-only:
 .. doxygengroup:: DiscordTriggerTypingIndicator
-    :content-only:
 .. doxygengroup:: DiscordFollowNewsChannel
-    :content-only:
 .. doxygengroup:: DiscordGetPinnedMessages
-    :content-only:
 .. doxygengroup:: DiscordPinMessage
-    :content-only:
 .. doxygengroup:: DiscordUnpinMessage
-    :content-only:
 .. doxygengroup:: DiscordGroupDmAddRecipient
-    :content-only:
 .. doxygengroup:: DiscordGroupDmRemoveRecipient
-    :content-only:
 .. doxygengroup:: DiscordStartThreadWithMessage
-    :content-only:
 .. doxygengroup:: DiscordStartThreadWithoutMessage
-    :content-only:
 .. doxygengroup:: DiscordJoinThread
-    :content-only:
 .. doxygengroup:: DiscordAddThreadMember
-    :content-only:
 .. doxygengroup:: DiscordLeaveThread
-    :content-only:
 .. doxygengroup:: DiscordRemoveThreadMember
-    :content-only:
 .. doxygengroup:: DiscordListThreadMembers
-    :content-only:
 .. doxygengroup:: DiscordListActiveThreads
-    :content-only:
 .. doxygengroup:: DiscordListPublicArchivedThreads
-    :content-only:
 .. doxygengroup:: DiscordListPrivateArchivedThreads
-    :content-only:
 .. doxygengroup:: DiscordListJoinedPrivateArchivedThreads
-    :content-only:
 
 Emoji
 ~~~~~
 
 .. doxygengroup:: DiscordListGuildEmojis
-    :content-only:
 .. doxygengroup:: DiscordGetGuildEmoji
-    :content-only:
 .. doxygengroup:: DiscordCreateGuildEmoji
-    :content-only:
 .. doxygengroup:: DiscordModifyGuildEmoji
-    :content-only:
 .. doxygengroup:: DiscordDeleteGuildEmoji
-    :content-only:
 
 Guild
 ~~~~~
 
 .. doxygengroup:: DiscordCreateGuild
-    :content-only:
 .. doxygengroup:: DiscordGetGuild
-    :content-only:
 .. doxygengroup:: DiscordGetGuildPreview
-    :content-only:
 .. doxygengroup:: DiscordModifyGuild
-    :content-only:
 .. doxygengroup:: DiscordDeleteGuild
-    :content-only:
 .. doxygengroup:: DiscordGetGuildChannels
-    :content-only:
 .. doxygengroup:: DiscordCreateGuildChannel
-    :content-only:
 .. doxygengroup:: DiscordModifyGuildChannelPositions
-    :content-only:
 .. doxygengroup:: DiscordGetGuildMember
-    :content-only:
 .. doxygengroup:: DiscordSearchGuildMembers
-    :content-only:
 .. doxygengroup:: DiscordModifyGuildMember
-    :content-only:
 .. doxygengroup:: DiscordAddGuildMember
-    :content-only:
 .. doxygengroup:: DiscordModifyCurrentUserNick
-    :content-only:
 .. doxygengroup:: DiscordAddGuildMemberRole
-    :content-only:
 .. doxygengroup:: DiscordRemoveGuildMemberRole
-    :content-only:
 .. doxygengroup:: DiscordRemoveGuildMember
-    :content-only:
 .. doxygengroup:: DiscordGetGuildBans
-    :content-only:
 .. doxygengroup:: DiscordGetGuildBan
-    :content-only:
 .. doxygengroup:: DiscordCreateGuildBan
-    :content-only:
 .. doxygengroup:: DiscordRemoveGuildBan
-    :content-only:
 .. doxygengroup:: DiscordGetGuildRoles
-    :content-only:
 .. doxygengroup:: DiscordCreateGuildRole
-    :content-only:
 .. doxygengroup:: DiscordModifyGuildRolePositions
-    :content-only:
 .. doxygengroup:: DiscordModifyGuildRole
-    :content-only:
 .. doxygengroup:: DiscordDeleteGuildRole
-    :content-only:
 
 Invite
 ~~~~~~
 
 .. doxygengroup:: DiscordGetInvite
-    :content-only:
 .. doxygengroup:: DiscordDeleteInvite
-    :content-only:
 
 User
 ~~~~
 
 .. doxygengroup:: DiscordGetUser
-    :content-only:
 .. doxygengroup:: DiscordModifyCurrentUser
-    :content-only:
 .. doxygengroup:: DiscordGetCurrentUser
-    :content-only:
 .. doxygengroup:: DiscordGetCurrentUserGuilds
-    :content-only:
 .. doxygengroup:: DiscordLeaveGuild
-    :content-only:
 .. doxygengroup:: DiscordCreateDm
-    :content-only:
 .. doxygengroup:: DiscordCreateGroupDm
-    :content-only:
 .. doxygengroup:: DiscordGetUserConnections
-    :content-only:
 
 Voice
 ~~~~~
 
 .. doxygengroup:: DiscordListVoiceRegions
-    :content-only:
 
 Gateway
 ~~~~~~~
 
 .. doxygengroup:: DiscordGetGateway
-    :content-only:
 .. doxygengroup:: DiscordGetGatewayBot
-    :content-only:
 
 Misc
 ~~~~
@@ -382,16 +300,13 @@ Channel
 ^^^^^^^
 
 .. doxygengroup:: DiscordMiscChannel
-    :content-only:
 
 Guild
 ^^^^^
 
 .. doxygengroup:: DiscordMiscGuild
-    :content-only:
 
 Embed
 ^^^^^
 
 .. doxygengroup:: DiscordMiscEmbed
-    :content-only:
