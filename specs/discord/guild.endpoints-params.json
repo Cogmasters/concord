@@ -5,7 +5,6 @@
   [
     {
       "title":"Create Guild",
-      "comment":"https://discord.com/developers/docs/resources/guild#create-guild",
       "namespace": ["create_guild"],
       "struct":"params",
       "fields":
@@ -25,7 +24,6 @@
     },
     {
       "title":"Modify Guild",
-      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-json-params",
       "namespace": ["modify_guild"],
       "struct":"params",
       "fields":
@@ -53,7 +51,6 @@
     },
     {
       "title":"Create Guild Channel",
-      "comment":"https://discord.com/developers/docs/resources/guild#create-guild-channel",
       "namespace": ["create_guild_channel"],
       "struct":"params",
       "fields":
@@ -72,7 +69,6 @@
     },
     {
       "title":"Modify Guild Channel Positions",
-      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params",
       "namespace": ["modify_guild_channel_positions"],
       "struct":"params",
       "fields":
@@ -85,7 +81,6 @@
     },
     {
       "title":"Search Guild Members",
-      "comment":"https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params",
       "namespace": ["search_guild_members"],
       "struct":"params",
       "fields":
@@ -96,7 +91,6 @@
     },
     {
       "title":"Add Guild Member",
-      "comment":"https://discord.com/developers/docs/resources/guild#add-guild-member-json-params",
       "namespace": ["add_guild_member"],
       "struct":"params",
       "fields":
@@ -110,7 +104,6 @@
     },
     {
       "title":"Modify Guild Member",
-      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-member",
       "namespace": ["modify_guild_member"],
       "struct":"params",
       "fields":
@@ -124,7 +117,6 @@
     },
     {
       "title":"Create Guild Role",
-      "comment":"https://discord.com/developers/docs/resources/guild#create-guild-role",
       "namespace": ["create_guild_role"],
       "struct":"params",
       "fields":
@@ -138,7 +130,6 @@
     },
     {
       "title":"Modify Guild Role Positions",
-      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params",
       "namespace": ["modify_guild_role_positions"],
       "struct":"params",
       "fields":
@@ -149,7 +140,6 @@
     },
     {
       "title":"Modify Guild Role",
-      "comment":"https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params",
       "namespace": ["modify_guild_role"],
       "struct":"params",
       "fields":
@@ -163,7 +153,6 @@
     },
     {
       "title":"Get Guild Prune Count",
-      "comment":"https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params",
       "namespace": ["get_guild_prune_count"],
       "struct":"params",
       "fields":
@@ -174,7 +163,6 @@
     },
     {
       "title":"Begin Guild Prune",
-      "comment":"https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params",
       "namespace": ["begin_guild_prune"],
       "struct":"params",
       "fields":

@@ -5,7 +5,6 @@
   [
     {
       "title":"Create Guild Emoji",
-      "comment":"https://discord.com/developers/docs/resources/emoji#create-guild-emoji",
       "namespace": ["create_guild_emoji"],
       "struct":"params",
       "fields":
@@ -17,7 +16,6 @@
     },
     {
       "title":"Modify Guild Emoji",
-      "comment":"https://discord.com/developers/docs/resources/emoji#modify-guild-emoji",
       "namespace": ["modify_guild_emoji"],
       "struct":"params",
       "fields":

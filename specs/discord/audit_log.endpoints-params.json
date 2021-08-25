@@ -4,7 +4,6 @@
   "defs":
   [
     {
-      "comment":"https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log",
       "struct":"params",
       "fields":
       [

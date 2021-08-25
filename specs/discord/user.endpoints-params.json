@@ -5,7 +5,6 @@
   [
     {
       "title":"Modify Current User",
-      "comment":"https://discord.com/developers/docs/resources/user#modify-current-user-json-params",
       "namespace": ["modify_current_user"],
       "struct":"params",
       "fields":
@@ -16,7 +15,6 @@
     },
     {
       "title":"Create Group DM",
-      "comment":"https://discord.com/developers/docs/resources/user#create-group-dm-json-params",
       "namespace": ["create_group_dm"],
       "struct":"params",
       "fields":

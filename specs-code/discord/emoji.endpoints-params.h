@@ -6,10 +6,8 @@
 
 
 // Create Guild Emoji
-// defined at specs/discord/emoji.endpoints-params.json:10:22
+// defined at specs/discord/emoji.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *) </tt>
  * - Cleanup:
@@ -23,15 +21,15 @@
  *   - <tt> void discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
  */
 struct discord_create_guild_emoji_params {
-  /* specs/discord/emoji.endpoints-params.json:13:20
+  /* specs/discord/emoji.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/emoji.endpoints-params.json:14:20
+  /* specs/discord/emoji.endpoints-params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
   char *image; ///< Base64 Encoded Image Data
 
-  /* specs/discord/emoji.endpoints-params.json:15:20
+  /* specs/discord/emoji.endpoints-params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   ja_u64 **roles; ///< roles for which this emoji will be whitelisted
 
@@ -68,10 +66,8 @@ extern size_t discord_create_guild_emoji_params_list_to_json_v(char *str, size_t
 extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t len, struct discord_create_guild_emoji_params **p);
 
 // Modify Guild Emoji
-// defined at specs/discord/emoji.endpoints-params.json:22:22
+// defined at specs/discord/emoji.endpoints-params.json:20:22
 /**
- * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *) </tt>
  * - Cleanup:
@@ -85,11 +81,11 @@ extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t l
  *   - <tt> void discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
  */
 struct discord_modify_guild_emoji_params {
-  /* specs/discord/emoji.endpoints-params.json:25:20
+  /* specs/discord/emoji.endpoints-params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/emoji.endpoints-params.json:26:20
+  /* specs/discord/emoji.endpoints-params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   ja_u64 **roles; ///< roles for which this emoji will be whitelisted
 

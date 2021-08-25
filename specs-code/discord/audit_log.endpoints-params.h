@@ -5,10 +5,8 @@
  */
 
 
-// defined at specs/discord/audit_log.endpoints-params.json:8:22
+// defined at specs/discord/audit_log.endpoints-params.json:7:22
 /**
- * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
- *
  * - Initializer:
  *   - <tt> void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *) </tt>
  * - Cleanup:
@@ -22,19 +20,19 @@
  *   - <tt> void discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
  */
 struct discord_get_guild_audit_log_params {
-  /* specs/discord/audit_log.endpoints-params.json:11:20
+  /* specs/discord/audit_log.endpoints-params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t user_id;
 
-  /* specs/discord/audit_log.endpoints-params.json:12:20
+  /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
   enum discord_audit_log_events action_type;
 
-  /* specs/discord/audit_log.endpoints-params.json:13:20
+  /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t before;
 
-  /* specs/discord/audit_log.endpoints-params.json:14:20
+  /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int limit;
 

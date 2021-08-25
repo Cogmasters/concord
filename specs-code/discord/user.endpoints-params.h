@@ -6,10 +6,8 @@
 
 
 // Modify Current User
-// defined at specs/discord/user.endpoints-params.json:10:22
+// defined at specs/discord/user.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_current_user_params_init(struct discord_modify_current_user_params *) </tt>
  * - Cleanup:
@@ -23,11 +21,11 @@
  *   - <tt> void discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params **) </tt>
  */
 struct discord_modify_current_user_params {
-  /* specs/discord/user.endpoints-params.json:13:20
+  /* specs/discord/user.endpoints-params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
   char *username;
 
-  /* specs/discord/user.endpoints-params.json:14:20
+  /* specs/discord/user.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
   char *avatar; ///< base64 encoded image data
 
@@ -64,10 +62,8 @@ extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_
 extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);
 
 // Create Group DM
-// defined at specs/discord/user.endpoints-params.json:21:22
+// defined at specs/discord/user.endpoints-params.json:19:22
 /**
- * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
- *
  * - Initializer:
  *   - <tt> void discord_create_group_dm_params_init(struct discord_create_group_dm_params *) </tt>
  * - Cleanup:
@@ -81,12 +77,12 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
  *   - <tt> void discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params **) </tt>
  */
 struct discord_create_group_dm_params {
-  /* specs/discord/user.endpoints-params.json:24:20
+  /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
   ja_str **access_tokens; ///< access tokens of users that have granted your app the gdm.join scope
 
-  /* specs/discord/user.endpoints-params.json:26:19
+  /* specs/discord/user.endpoints-params.json:24:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"a dictionary of user ids to their respective nicknames"}' */
   ja_u64 **nicks; ///< a dictionary of user ids to their respective nicknames

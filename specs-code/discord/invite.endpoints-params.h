@@ -6,10 +6,8 @@
 
 
 // Get Invite
-// defined at specs/discord/invite.endpoints-params.json:10:22
+// defined at specs/discord/invite.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
- *
  * - Initializer:
  *   - <tt> void discord_get_invite_params_init(struct discord_get_invite_params *) </tt>
  * - Cleanup:
@@ -23,11 +21,11 @@
  *   - <tt> void discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params **) </tt>
  */
 struct discord_get_invite_params {
-  /* specs/discord/invite.endpoints-params.json:13:20
+  /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
   bool with_counts; ///< whether the invite should contain approximate member counts
 
-  /* specs/discord/invite.endpoints-params.json:14:20
+  /* specs/discord/invite.endpoints-params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
   bool with_expiration; ///< whether the invite should contain the expiration date
 

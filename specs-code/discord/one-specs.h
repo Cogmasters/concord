@@ -5,9 +5,8 @@
  */
 
 
-// defined at specs/discord/audit_log.endpoints-params.json:8:22
+// defined at specs/discord/audit_log.endpoints-params.json:7:22
 /**
- * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
  */
 struct discord_get_guild_audit_log_params;
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
@@ -55,75 +54,66 @@ struct discord_audit_log_change;
 struct discord_audit_log_change_key;
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/channel.endpoints-params.json:10:22
+// defined at specs/discord/channel.endpoints-params.json:9:22
 /**
  * @brief Modify Channel
  *
- * @see https://discord.com/developers/docs/resources/channel#modify-channel
  */
 struct discord_modify_channel_params;
 
-// defined at specs/discord/channel.endpoints-params.json:35:22
+// defined at specs/discord/channel.endpoints-params.json:33:22
 /**
  * @brief Get Reactions
  *
- * @see https://discord.com/developers/docs/resources/channel#get-reactions
  */
 struct discord_get_reactions_params;
 
-// defined at specs/discord/channel.endpoints-params.json:46:22
+// defined at specs/discord/channel.endpoints-params.json:43:22
 /**
  * @brief Edit Channel Permissions
  *
- * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
  */
 struct discord_edit_channel_permissions_params;
 
-// defined at specs/discord/channel.endpoints-params.json:58:22
+// defined at specs/discord/channel.endpoints-params.json:54:22
 /**
  * @brief Follow News Channel
  *
- * @see https://discord.com/developers/docs/resources/channel#follow-news-channel
  */
 struct discord_follow_news_channel_params;
 
-// defined at specs/discord/channel.endpoints-params.json:68:22
+// defined at specs/discord/channel.endpoints-params.json:63:22
 /**
  * @brief Create Channel Invite
  *
- * @see https://discord.com/developers/docs/resources/channel#create-channel-invite
  */
 struct discord_create_channel_invite_params;
 
-// defined at specs/discord/channel.endpoints-params.json:84:22
+// defined at specs/discord/channel.endpoints-params.json:78:22
 /**
  * @brief Group DM Add Recipient
  *
- * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
  */
 struct discord_group_dm_add_recipient_params;
 
-// defined at specs/discord/channel.endpoints-params.json:95:22
+// defined at specs/discord/channel.endpoints-params.json:88:22
 /**
  * @brief Start Thread with Message
  *
- * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params
  */
 struct discord_start_thread_with_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:106:22
+// defined at specs/discord/channel.endpoints-params.json:98:22
 /**
  * @brief Start Thread without Message
  *
- * @see https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params
  */
 struct discord_start_thread_without_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:118:22
+// defined at specs/discord/channel.endpoints-params.json:109:22
 /**
  * @brief List Active Threads
  *
- * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
  */
 struct discord_thread_response_body;
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
@@ -314,19 +304,17 @@ struct discord_embed_footer;
 struct discord_embed_field;
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/emoji.endpoints-params.json:10:22
+// defined at specs/discord/emoji.endpoints-params.json:9:22
 /**
  * @brief Create Guild Emoji
  *
- * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
  */
 struct discord_create_guild_emoji_params;
 
-// defined at specs/discord/emoji.endpoints-params.json:22:22
+// defined at specs/discord/emoji.endpoints-params.json:20:22
 /**
  * @brief Modify Guild Emoji
  *
- * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
  */
 struct discord_modify_guild_emoji_params;
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
@@ -383,27 +371,24 @@ struct discord_gateway_activity;
 
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/guild-template.endpoints-params.json:10:22
+// defined at specs/discord/guild-template.endpoints-params.json:9:22
 /**
  * @brief Create Guild From Guild Template
  *
- * @see https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params
  */
 struct discord_create_guild_from_guild_template_params;
 
-// defined at specs/discord/guild-template.endpoints-params.json:21:22
+// defined at specs/discord/guild-template.endpoints-params.json:19:22
 /**
  * @brief Create Guild Template
  *
- * @see https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params
  */
 struct discord_create_guild_template_params;
 
-// defined at specs/discord/guild-template.endpoints-params.json:32:22
+// defined at specs/discord/guild-template.endpoints-params.json:29:22
 /**
  * @brief Modify Guild Template
  *
- * @see https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params
  */
 struct discord_modify_guild_template_params;
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
@@ -417,99 +402,87 @@ struct discord_modify_guild_template_params;
 struct discord_guild_template;
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/guild.endpoints-params.json:10:22
+// defined at specs/discord/guild.endpoints-params.json:9:22
 /**
  * @brief Create Guild
  *
- * @see https://discord.com/developers/docs/resources/guild#create-guild
  */
 struct discord_create_guild_params;
 
-// defined at specs/discord/guild.endpoints-params.json:30:22
+// defined at specs/discord/guild.endpoints-params.json:28:22
 /**
  * @brief Modify Guild
  *
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-json-params
  */
 struct discord_modify_guild_params;
 
-// defined at specs/discord/guild.endpoints-params.json:58:22
+// defined at specs/discord/guild.endpoints-params.json:55:22
 /**
  * @brief Create Guild Channel
  *
- * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
  */
 struct discord_create_guild_channel_params;
 
-// defined at specs/discord/guild.endpoints-params.json:77:22
+// defined at specs/discord/guild.endpoints-params.json:73:22
 /**
  * @brief Modify Guild Channel Positions
  *
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params
  */
 struct discord_modify_guild_channel_positions_params;
 
-// defined at specs/discord/guild.endpoints-params.json:90:22
+// defined at specs/discord/guild.endpoints-params.json:85:22
 /**
  * @brief Search Guild Members
  *
- * @see https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params
  */
 struct discord_search_guild_members_params;
 
-// defined at specs/discord/guild.endpoints-params.json:101:22
+// defined at specs/discord/guild.endpoints-params.json:95:22
 /**
  * @brief Add Guild Member
  *
- * @see https://discord.com/developers/docs/resources/guild#add-guild-member-json-params
  */
 struct discord_add_guild_member_params;
 
-// defined at specs/discord/guild.endpoints-params.json:115:22
+// defined at specs/discord/guild.endpoints-params.json:108:22
 /**
  * @brief Modify Guild Member
  *
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-member
  */
 struct discord_modify_guild_member_params;
 
-// defined at specs/discord/guild.endpoints-params.json:129:22
+// defined at specs/discord/guild.endpoints-params.json:121:22
 /**
  * @brief Create Guild Role
  *
- * @see https://discord.com/developers/docs/resources/guild#create-guild-role
  */
 struct discord_create_guild_role_params;
 
-// defined at specs/discord/guild.endpoints-params.json:143:22
+// defined at specs/discord/guild.endpoints-params.json:134:22
 /**
  * @brief Modify Guild Role Positions
  *
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params
  */
 struct discord_modify_guild_role_positions_params;
 
-// defined at specs/discord/guild.endpoints-params.json:154:22
+// defined at specs/discord/guild.endpoints-params.json:144:22
 /**
  * @brief Modify Guild Role
  *
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params
  */
 struct discord_modify_guild_role_params;
 
-// defined at specs/discord/guild.endpoints-params.json:168:22
+// defined at specs/discord/guild.endpoints-params.json:157:22
 /**
  * @brief Get Guild Prune Count
  *
- * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params
  */
 struct discord_get_guild_prune_count_params;
 
-// defined at specs/discord/guild.endpoints-params.json:179:22
+// defined at specs/discord/guild.endpoints-params.json:167:22
 /**
  * @brief Begin Guild Prune
  *
- * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params
  */
 struct discord_begin_guild_prune_params;
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
@@ -619,11 +592,10 @@ struct discord_guild_welcome_screen;
 struct discord_guild_welcome_screen_channel;
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/invite.endpoints-params.json:10:22
+// defined at specs/discord/invite.endpoints-params.json:9:22
 /**
  * @brief Get Invite
  *
- * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
  */
 struct discord_get_invite_params;
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
@@ -810,19 +782,17 @@ struct discord_interaction_application_command_callback_data;
 struct discord_message_interaction;
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/user.endpoints-params.json:10:22
+// defined at specs/discord/user.endpoints-params.json:9:22
 /**
  * @brief Modify Current User
  *
- * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
  */
 struct discord_modify_current_user_params;
 
-// defined at specs/discord/user.endpoints-params.json:21:22
+// defined at specs/discord/user.endpoints-params.json:19:22
 /**
  * @brief Create Group DM
  *
- * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
  */
 struct discord_create_group_dm_params;
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
@@ -873,35 +843,31 @@ struct discord_voice_state;
 struct discord_voice_region;
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/webhook.endpoints-params.json:10:22
+// defined at specs/discord/webhook.endpoints-params.json:9:22
 /**
  * @brief Create Webhook
  *
- * @see https://discord.com/developers/docs/resources/webhook#create-webhook
  */
 struct discord_create_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:21:22
+// defined at specs/discord/webhook.endpoints-params.json:19:22
 /**
  * @brief Modify Webhook
  *
- * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
  */
 struct discord_modify_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:33:22
+// defined at specs/discord/webhook.endpoints-params.json:30:22
 /**
  * @brief Execute Webhook
  *
- * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
  */
 struct discord_execute_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:78:22
+// defined at specs/discord/webhook.endpoints-params.json:74:22
 /**
  * @brief Edit Webhook Message
  *
- * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
  */
 struct discord_edit_webhook_message_params;
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
@@ -1793,10 +1759,8 @@ extern enum discord_webhook_types discord_webhook_types_eval(char*);
 extern bool discord_webhook_types_cmp(enum discord_webhook_types, char*);
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/audit_log.endpoints-params.json:8:22
+// defined at specs/discord/audit_log.endpoints-params.json:7:22
 /**
- * @see https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log
- *
  * - Initializer:
  *   - <tt> void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *) </tt>
  * - Cleanup:
@@ -1810,19 +1774,19 @@ extern bool discord_webhook_types_cmp(enum discord_webhook_types, char*);
  *   - <tt> void discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
  */
 struct discord_get_guild_audit_log_params {
-  /* specs/discord/audit_log.endpoints-params.json:11:20
+  /* specs/discord/audit_log.endpoints-params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t user_id;
 
-  /* specs/discord/audit_log.endpoints-params.json:12:20
+  /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
   enum discord_audit_log_events action_type;
 
-  /* specs/discord/audit_log.endpoints-params.json:13:20
+  /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t before;
 
-  /* specs/discord/audit_log.endpoints-params.json:14:20
+  /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int limit;
 
@@ -2327,10 +2291,8 @@ struct discord_audit_log_change_key {
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 
 // Modify Channel
-// defined at specs/discord/channel.endpoints-params.json:10:22
+// defined at specs/discord/channel.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#modify-channel
- *
  * - Initializer:
  *   - <tt> void discord_modify_channel_params_init(struct discord_modify_channel_params *) </tt>
  * - Cleanup:
@@ -2344,67 +2306,67 @@ struct discord_audit_log_change_key {
  *   - <tt> void discord_modify_channel_params_list_to_json(char *wbuf, size_t len, struct discord_modify_channel_params **) </tt>
  */
 struct discord_modify_channel_params {
-  /* specs/discord/channel.endpoints-params.json:13:20
+  /* specs/discord/channel.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:14:20
+  /* specs/discord/channel.endpoints-params.json:13:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *icon;
 
-  /* specs/discord/channel.endpoints-params.json:15:20
+  /* specs/discord/channel.endpoints-params.json:14:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
-  /* specs/discord/channel.endpoints-params.json:16:20
+  /* specs/discord/channel.endpoints-params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int position;
 
-  /* specs/discord/channel.endpoints-params.json:17:20
+  /* specs/discord/channel.endpoints-params.json:16:20
      '{ "name": "topic", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *topic;
 
-  /* specs/discord/channel.endpoints-params.json:18:20
+  /* specs/discord/channel.endpoints-params.json:17:20
      '{ "name": "nsfw", "type":{ "base":"bool" }, "inject_if_not":false }' */
   bool nsfw;
 
-  /* specs/discord/channel.endpoints-params.json:19:20
+  /* specs/discord/channel.endpoints-params.json:18:20
      '{ "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int rate_limit_per_user;
 
-  /* specs/discord/channel.endpoints-params.json:20:20
+  /* specs/discord/channel.endpoints-params.json:19:20
      '{ "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int bitrate;
 
-  /* specs/discord/channel.endpoints-params.json:21:20
+  /* specs/discord/channel.endpoints-params.json:20:20
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int user_limit;
 
-  /* specs/discord/channel.endpoints-params.json:22:20
+  /* specs/discord/channel.endpoints-params.json:21:20
      '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
   struct discord_channel_overwrite **permission_overwrites;
 
-  /* specs/discord/channel.endpoints-params.json:23:20
+  /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   u64_snowflake_t parent_id;
 
-  /* specs/discord/channel.endpoints-params.json:24:20
+  /* specs/discord/channel.endpoints-params.json:23:20
      '{ "name": "rtc_region", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *rtc_region;
 
-  /* specs/discord/channel.endpoints-params.json:25:20
+  /* specs/discord/channel.endpoints-params.json:24:20
      '{ "name": "video_quality_mode", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int video_quality_mode;
 
-  /* specs/discord/channel.endpoints-params.json:26:20
+  /* specs/discord/channel.endpoints-params.json:25:20
      '{ "name": "archived", "type":{ "base":"bool" }, "inject_if_not":false }' */
   bool archived;
 
-  /* specs/discord/channel.endpoints-params.json:27:20
+  /* specs/discord/channel.endpoints-params.json:26:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
-  /* specs/discord/channel.endpoints-params.json:28:20
+  /* specs/discord/channel.endpoints-params.json:27:20
      '{ "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }' */
   bool locked;
 
@@ -2425,10 +2387,8 @@ struct discord_modify_channel_params {
 };
 
 // Get Reactions
-// defined at specs/discord/channel.endpoints-params.json:35:22
+// defined at specs/discord/channel.endpoints-params.json:33:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#get-reactions
- *
  * - Initializer:
  *   - <tt> void discord_get_reactions_params_init(struct discord_get_reactions_params *) </tt>
  * - Cleanup:
@@ -2442,11 +2402,11 @@ struct discord_modify_channel_params {
  *   - <tt> void discord_get_reactions_params_list_to_json(char *wbuf, size_t len, struct discord_get_reactions_params **) </tt>
  */
 struct discord_get_reactions_params {
-  /* specs/discord/channel.endpoints-params.json:38:20
+  /* specs/discord/channel.endpoints-params.json:36:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}' */
   u64_snowflake_t after;
 
-  /* specs/discord/channel.endpoints-params.json:39:20
+  /* specs/discord/channel.endpoints-params.json:37:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
   int limit;
 
@@ -2467,10 +2427,8 @@ struct discord_get_reactions_params {
 };
 
 // Edit Channel Permissions
-// defined at specs/discord/channel.endpoints-params.json:46:22
+// defined at specs/discord/channel.endpoints-params.json:43:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#edit-channel-permissions
- *
  * - Initializer:
  *   - <tt> void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *) </tt>
  * - Cleanup:
@@ -2484,15 +2442,15 @@ struct discord_get_reactions_params {
  *   - <tt> void discord_edit_channel_permissions_params_list_to_json(char *wbuf, size_t len, struct discord_edit_channel_permissions_params **) </tt>
  */
 struct discord_edit_channel_permissions_params {
-  /* specs/discord/channel.endpoints-params.json:49:20
+  /* specs/discord/channel.endpoints-params.json:46:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
   enum discord_permissions_bitwise_flags allow; ///< permission bit set
 
-  /* specs/discord/channel.endpoints-params.json:50:20
+  /* specs/discord/channel.endpoints-params.json:47:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
   enum discord_permissions_bitwise_flags deny; ///< permission bit set
 
-  /* specs/discord/channel.endpoints-params.json:51:20
+  /* specs/discord/channel.endpoints-params.json:48:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
@@ -2513,10 +2471,8 @@ struct discord_edit_channel_permissions_params {
 };
 
 // Follow News Channel
-// defined at specs/discord/channel.endpoints-params.json:58:22
+// defined at specs/discord/channel.endpoints-params.json:54:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#follow-news-channel
- *
  * - Initializer:
  *   - <tt> void discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *) </tt>
  * - Cleanup:
@@ -2530,7 +2486,7 @@ struct discord_edit_channel_permissions_params {
  *   - <tt> void discord_follow_news_channel_params_list_to_json(char *wbuf, size_t len, struct discord_follow_news_channel_params **) </tt>
  */
 struct discord_follow_news_channel_params {
-  /* specs/discord/channel.endpoints-params.json:61:20
+  /* specs/discord/channel.endpoints-params.json:57:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   u64_snowflake_t webhook_channel_id;
 
@@ -2551,10 +2507,8 @@ struct discord_follow_news_channel_params {
 };
 
 // Create Channel Invite
-// defined at specs/discord/channel.endpoints-params.json:68:22
+// defined at specs/discord/channel.endpoints-params.json:63:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#create-channel-invite
- *
  * - Initializer:
  *   - <tt> void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *) </tt>
  * - Cleanup:
@@ -2568,31 +2522,31 @@ struct discord_follow_news_channel_params {
  *   - <tt> void discord_create_channel_invite_params_list_to_json(char *wbuf, size_t len, struct discord_create_channel_invite_params **) </tt>
  */
 struct discord_create_channel_invite_params {
-  /* specs/discord/channel.endpoints-params.json:71:20
+  /* specs/discord/channel.endpoints-params.json:66:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
   int max_age;
 
-  /* specs/discord/channel.endpoints-params.json:72:20
+  /* specs/discord/channel.endpoints-params.json:67:20
      '{ "name": "max_uses", "type":{ "base":"int" }}' */
   int max_uses;
 
-  /* specs/discord/channel.endpoints-params.json:73:20
+  /* specs/discord/channel.endpoints-params.json:68:20
      '{ "name": "temporary", "type":{ "base":"bool" }}' */
   bool temporary;
 
-  /* specs/discord/channel.endpoints-params.json:74:20
+  /* specs/discord/channel.endpoints-params.json:69:20
      '{ "name": "unique", "type":{ "base":"bool" }}' */
   bool unique;
 
-  /* specs/discord/channel.endpoints-params.json:75:20
+  /* specs/discord/channel.endpoints-params.json:70:20
      '{ "name": "target_type", "type":{ "base":"int" }, "option":true, "inject_if_not":0 }' */
   int target_type;
 
-  /* specs/discord/channel.endpoints-params.json:76:20
+  /* specs/discord/channel.endpoints-params.json:71:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_user_id;
 
-  /* specs/discord/channel.endpoints-params.json:77:20
+  /* specs/discord/channel.endpoints-params.json:72:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_application_id;
 
@@ -2613,10 +2567,8 @@ struct discord_create_channel_invite_params {
 };
 
 // Group DM Add Recipient
-// defined at specs/discord/channel.endpoints-params.json:84:22
+// defined at specs/discord/channel.endpoints-params.json:78:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
- *
  * - Initializer:
  *   - <tt> void discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *) </tt>
  * - Cleanup:
@@ -2630,11 +2582,11 @@ struct discord_create_channel_invite_params {
  *   - <tt> void discord_group_dm_add_recipient_params_list_to_json(char *wbuf, size_t len, struct discord_group_dm_add_recipient_params **) </tt>
  */
 struct discord_group_dm_add_recipient_params {
-  /* specs/discord/channel.endpoints-params.json:87:20
+  /* specs/discord/channel.endpoints-params.json:81:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
   char *access_token;
 
-  /* specs/discord/channel.endpoints-params.json:88:20
+  /* specs/discord/channel.endpoints-params.json:82:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
@@ -2655,10 +2607,8 @@ struct discord_group_dm_add_recipient_params {
 };
 
 // Start Thread with Message
-// defined at specs/discord/channel.endpoints-params.json:95:22
+// defined at specs/discord/channel.endpoints-params.json:88:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message-json-params
- *
  * - Initializer:
  *   - <tt> void discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params *) </tt>
  * - Cleanup:
@@ -2672,11 +2622,11 @@ struct discord_group_dm_add_recipient_params {
  *   - <tt> void discord_start_thread_with_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_with_message_params **) </tt>
  */
 struct discord_start_thread_with_message_params {
-  /* specs/discord/channel.endpoints-params.json:98:20
+  /* specs/discord/channel.endpoints-params.json:91:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:99:20
+  /* specs/discord/channel.endpoints-params.json:92:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
@@ -2697,10 +2647,8 @@ struct discord_start_thread_with_message_params {
 };
 
 // Start Thread without Message
-// defined at specs/discord/channel.endpoints-params.json:106:22
+// defined at specs/discord/channel.endpoints-params.json:98:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#start-thread-without-message-json-params
- *
  * - Initializer:
  *   - <tt> void discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *) </tt>
  * - Cleanup:
@@ -2714,15 +2662,15 @@ struct discord_start_thread_with_message_params {
  *   - <tt> void discord_start_thread_without_message_params_list_to_json(char *wbuf, size_t len, struct discord_start_thread_without_message_params **) </tt>
  */
 struct discord_start_thread_without_message_params {
-  /* specs/discord/channel.endpoints-params.json:109:20
+  /* specs/discord/channel.endpoints-params.json:101:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:110:20
+  /* specs/discord/channel.endpoints-params.json:102:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
-  /* specs/discord/channel.endpoints-params.json:111:20
+  /* specs/discord/channel.endpoints-params.json:103:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   enum discord_channel_types type;
 
@@ -2743,10 +2691,8 @@ struct discord_start_thread_without_message_params {
 };
 
 // List Active Threads
-// defined at specs/discord/channel.endpoints-params.json:118:22
+// defined at specs/discord/channel.endpoints-params.json:109:22
 /**
- * @see https://discord.com/developers/docs/resources/channel#list-active-threads-response-body
- *
  * - Initializer:
  *   - <tt> void discord_thread_response_body_init(struct discord_thread_response_body *) </tt>
  * - Cleanup:
@@ -2760,15 +2706,15 @@ struct discord_start_thread_without_message_params {
  *   - <tt> void discord_thread_response_body_list_to_json(char *wbuf, size_t len, struct discord_thread_response_body **) </tt>
  */
 struct discord_thread_response_body {
-  /* specs/discord/channel.endpoints-params.json:121:20
+  /* specs/discord/channel.endpoints-params.json:112:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
   struct discord_channel **threads;
 
-  /* specs/discord/channel.endpoints-params.json:122:20
+  /* specs/discord/channel.endpoints-params.json:113:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
   struct discord_thread_member **members;
 
-  /* specs/discord/channel.endpoints-params.json:123:20
+  /* specs/discord/channel.endpoints-params.json:114:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   bool has_more;
 
@@ -4116,10 +4062,8 @@ struct discord_embed_field {
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 
 // Create Guild Emoji
-// defined at specs/discord/emoji.endpoints-params.json:10:22
+// defined at specs/discord/emoji.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/emoji#create-guild-emoji
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *) </tt>
  * - Cleanup:
@@ -4133,15 +4077,15 @@ struct discord_embed_field {
  *   - <tt> void discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
  */
 struct discord_create_guild_emoji_params {
-  /* specs/discord/emoji.endpoints-params.json:13:20
+  /* specs/discord/emoji.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/emoji.endpoints-params.json:14:20
+  /* specs/discord/emoji.endpoints-params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
   char *image; ///< Base64 Encoded Image Data
 
-  /* specs/discord/emoji.endpoints-params.json:15:20
+  /* specs/discord/emoji.endpoints-params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   ja_u64 **roles; ///< roles for which this emoji will be whitelisted
 
@@ -4162,10 +4106,8 @@ struct discord_create_guild_emoji_params {
 };
 
 // Modify Guild Emoji
-// defined at specs/discord/emoji.endpoints-params.json:22:22
+// defined at specs/discord/emoji.endpoints-params.json:20:22
 /**
- * @see https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *) </tt>
  * - Cleanup:
@@ -4179,11 +4121,11 @@ struct discord_create_guild_emoji_params {
  *   - <tt> void discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
  */
 struct discord_modify_guild_emoji_params {
-  /* specs/discord/emoji.endpoints-params.json:25:20
+  /* specs/discord/emoji.endpoints-params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/emoji.endpoints-params.json:26:20
+  /* specs/discord/emoji.endpoints-params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   ja_u64 **roles; ///< roles for which this emoji will be whitelisted
 
@@ -4520,10 +4462,8 @@ struct discord_gateway_activity {
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
 // Create Guild From Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:10:22
+// defined at specs/discord/guild-template.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template-json-params
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *) </tt>
  * - Cleanup:
@@ -4537,11 +4477,11 @@ struct discord_gateway_activity {
  *   - <tt> void discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
  */
 struct discord_create_guild_from_guild_template_params {
-  /* specs/discord/guild-template.endpoints-params.json:13:20
+  /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   char *name; ///< name of the guild
 
-  /* specs/discord/guild-template.endpoints-params.json:14:20
+  /* specs/discord/guild-template.endpoints-params.json:13:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
   char *icon; ///< base64 128x128 image for the guild icon
 
@@ -4562,10 +4502,8 @@ struct discord_create_guild_from_guild_template_params {
 };
 
 // Create Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:21:22
+// defined at specs/discord/guild-template.endpoints-params.json:19:22
 /**
- * @see https://discord.com/developers/docs/resources/guild-template#create-guild-template-json-params
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_template_params_init(struct discord_create_guild_template_params *) </tt>
  * - Cleanup:
@@ -4579,11 +4517,11 @@ struct discord_create_guild_from_guild_template_params {
  *   - <tt> void discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params **) </tt>
  */
 struct discord_create_guild_template_params {
-  /* specs/discord/guild-template.endpoints-params.json:24:20
+  /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   char *name; ///< name of the guild
 
-  /* specs/discord/guild-template.endpoints-params.json:25:20
+  /* specs/discord/guild-template.endpoints-params.json:23:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   char *description; ///< description for the template (0-120) chars
 
@@ -4604,10 +4542,8 @@ struct discord_create_guild_template_params {
 };
 
 // Modify Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:32:22
+// defined at specs/discord/guild-template.endpoints-params.json:29:22
 /**
- * @see https://discord.com/developers/docs/resources/guild-template#modify-guild-template-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *) </tt>
  * - Cleanup:
@@ -4621,11 +4557,11 @@ struct discord_create_guild_template_params {
  *   - <tt> void discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
  */
 struct discord_modify_guild_template_params {
-  /* specs/discord/guild-template.endpoints-params.json:35:20
+  /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
   char *name; ///< name of the guild
 
-  /* specs/discord/guild-template.endpoints-params.json:36:20
+  /* specs/discord/guild-template.endpoints-params.json:33:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
   char *description; ///< description for the template (0-120) chars
 
@@ -4726,10 +4662,8 @@ struct discord_guild_template {
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 
 // Create Guild
-// defined at specs/discord/guild.endpoints-params.json:10:22
+// defined at specs/discord/guild.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#create-guild
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_params_init(struct discord_create_guild_params *) </tt>
  * - Cleanup:
@@ -4743,47 +4677,47 @@ struct discord_guild_template {
  *   - <tt> void discord_create_guild_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_params **) </tt>
  */
 struct discord_create_guild_params {
-  /* specs/discord/guild.endpoints-params.json:13:20
+  /* specs/discord/guild.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
   char *name; ///< name of the guild (2-100) characters
 
-  /* specs/discord/guild.endpoints-params.json:14:20
+  /* specs/discord/guild.endpoints-params.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
   char *region; ///< voice region id
 
-  /* specs/discord/guild.endpoints-params.json:15:20
+  /* specs/discord/guild.endpoints-params.json:14:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
   char *icon; ///< base64 128x1128 image for the guild icon
 
-  /* specs/discord/guild.endpoints-params.json:16:20
+  /* specs/discord/guild.endpoints-params.json:15:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
   int verification_level; ///< verification level
 
-  /* specs/discord/guild.endpoints-params.json:17:20
+  /* specs/discord/guild.endpoints-params.json:16:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
   int default_message_notifications; ///< default message notification level
 
-  /* specs/discord/guild.endpoints-params.json:18:20
+  /* specs/discord/guild.endpoints-params.json:17:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
   int explicit_content_filter; ///< explicit content filter level
 
-  /* specs/discord/guild.endpoints-params.json:19:20
+  /* specs/discord/guild.endpoints-params.json:18:20
      '{ "name": "roles", "type":{ "base":"int" }, "todo":true, "comment":"new guild roles" }' */
   // @todo roles new guild roles;
 
-  /* specs/discord/guild.endpoints-params.json:20:20
+  /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
   struct discord_channel **channels; ///< array of partial channel objects
 
-  /* specs/discord/guild.endpoints-params.json:21:20
+  /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
   u64_snowflake_t afk_channel_id; ///< id for afk channel
 
-  /* specs/discord/guild.endpoints-params.json:22:20
+  /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
   int afk_timeout; ///< afk timeout in seconds
 
-  /* specs/discord/guild.endpoints-params.json:23:20
+  /* specs/discord/guild.endpoints-params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
   u64_snowflake_t system_channel_id; ///< the id of the channel where guild notices such as welcome messages and boost events are posted
 
@@ -4804,10 +4738,8 @@ struct discord_create_guild_params {
 };
 
 // Modify Guild
-// defined at specs/discord/guild.endpoints-params.json:30:22
+// defined at specs/discord/guild.endpoints-params.json:28:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_params_init(struct discord_modify_guild_params *) </tt>
  * - Cleanup:
@@ -4821,79 +4753,79 @@ struct discord_create_guild_params {
  *   - <tt> void discord_modify_guild_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_params **) </tt>
  */
 struct discord_modify_guild_params {
-  /* specs/discord/guild.endpoints-params.json:33:20
+  /* specs/discord/guild.endpoints-params.json:31:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
   char *name; ///< name of the guild (2-100) characters
 
-  /* specs/discord/guild.endpoints-params.json:34:20
+  /* specs/discord/guild.endpoints-params.json:32:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
   char *region; ///< voice region id
 
-  /* specs/discord/guild.endpoints-params.json:35:20
+  /* specs/discord/guild.endpoints-params.json:33:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
   int verification_level; ///< verification level
 
-  /* specs/discord/guild.endpoints-params.json:36:20
+  /* specs/discord/guild.endpoints-params.json:34:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
   int default_message_notifications; ///< default message notification level
 
-  /* specs/discord/guild.endpoints-params.json:37:20
+  /* specs/discord/guild.endpoints-params.json:35:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
   int explicit_content_filter; ///< explicit content filter level
 
-  /* specs/discord/guild.endpoints-params.json:38:20
+  /* specs/discord/guild.endpoints-params.json:36:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
   u64_snowflake_t afk_channel_id; ///< id for afk channel
 
-  /* specs/discord/guild.endpoints-params.json:39:20
+  /* specs/discord/guild.endpoints-params.json:37:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
   int afk_timeout; ///< afk timeout in seconds
 
-  /* specs/discord/guild.endpoints-params.json:40:20
+  /* specs/discord/guild.endpoints-params.json:38:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
   char *icon; ///< base64 128x1128 image for the guild icon
 
-  /* specs/discord/guild.endpoints-params.json:41:20
+  /* specs/discord/guild.endpoints-params.json:39:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}' */
   u64_snowflake_t owner_id; ///< user id to transfer guild ownership to (must be owner)
 
-  /* specs/discord/guild.endpoints-params.json:42:20
+  /* specs/discord/guild.endpoints-params.json:40:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}' */
   char *splash; ///< base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature
 
-  /* specs/discord/guild.endpoints-params.json:43:20
+  /* specs/discord/guild.endpoints-params.json:41:20
      '{ "name": "discovery_splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)"}' */
   char *discovery_splash; ///< base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)
 
-  /* specs/discord/guild.endpoints-params.json:44:20
+  /* specs/discord/guild.endpoints-params.json:42:20
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"}' */
   char *banner; ///< cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh
 
-  /* specs/discord/guild.endpoints-params.json:45:20
+  /* specs/discord/guild.endpoints-params.json:43:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
   u64_snowflake_t system_channel_id; ///< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome
 
-  /* specs/discord/guild.endpoints-params.json:46:20
+  /* specs/discord/guild.endpoints-params.json:44:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
   enum discord_guild_system_channel_flags system_channel_flags; ///< system channel flags
 
-  /* specs/discord/guild.endpoints-params.json:47:20
+  /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}' */
   u64_snowflake_t rules_channel_id; ///< the id of the channel where Community guilds display rules and/or guidelines
 
-  /* specs/discord/guild.endpoints-params.json:48:20
+  /* specs/discord/guild.endpoints-params.json:46:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}' */
   u64_snowflake_t public_updates_channel_id; ///< the id of the channel where admins and moderators of Community guilds receive notices from Discord
 
-  /* specs/discord/guild.endpoints-params.json:49:20
+  /* specs/discord/guild.endpoints-params.json:47:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}' */
   char *preferred_locale; ///< the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US"
 
-  /* specs/discord/guild.endpoints-params.json:50:18
+  /* specs/discord/guild.endpoints-params.json:48:18
      '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true, "comment":"array of guild feature strings"}' */
   // @todo features array of guild feature strings;
 
-  /* specs/discord/guild.endpoints-params.json:51:20
+  /* specs/discord/guild.endpoints-params.json:49:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
   char *description; ///< the description for the guild, if the guild is discoverable
 
@@ -4914,10 +4846,8 @@ struct discord_modify_guild_params {
 };
 
 // Create Guild Channel
-// defined at specs/discord/guild.endpoints-params.json:58:22
+// defined at specs/discord/guild.endpoints-params.json:55:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *) </tt>
  * - Cleanup:
@@ -4931,43 +4861,43 @@ struct discord_modify_guild_params {
  *   - <tt> void discord_create_guild_channel_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_channel_params **) </tt>
  */
 struct discord_create_guild_channel_params {
-  /* specs/discord/guild.endpoints-params.json:61:20
+  /* specs/discord/guild.endpoints-params.json:58:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.endpoints-params.json:62:20
+  /* specs/discord/guild.endpoints-params.json:59:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
-  /* specs/discord/guild.endpoints-params.json:63:20
+  /* specs/discord/guild.endpoints-params.json:60:20
      '{ "name": "topic", "type":{ "base":"char", "dec":"*" }}' */
   char *topic;
 
-  /* specs/discord/guild.endpoints-params.json:64:20
+  /* specs/discord/guild.endpoints-params.json:61:20
      '{ "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0}' */
   int bitrate;
 
-  /* specs/discord/guild.endpoints-params.json:65:20
+  /* specs/discord/guild.endpoints-params.json:62:20
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0}' */
   int user_limit;
 
-  /* specs/discord/guild.endpoints-params.json:66:20
+  /* specs/discord/guild.endpoints-params.json:63:20
      '{ "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0}' */
   int rate_limit_per_user;
 
-  /* specs/discord/guild.endpoints-params.json:67:20
+  /* specs/discord/guild.endpoints-params.json:64:20
      '{ "name": "position", "type":{ "base":"int" } }' */
   int position;
 
-  /* specs/discord/guild.endpoints-params.json:68:20
+  /* specs/discord/guild.endpoints-params.json:65:20
      '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}' */
   struct discord_channel_overwrite **permission_overwrites;
 
-  /* specs/discord/guild.endpoints-params.json:69:20
+  /* specs/discord/guild.endpoints-params.json:66:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
   u64_snowflake_t parent_id;
 
-  /* specs/discord/guild.endpoints-params.json:70:20
+  /* specs/discord/guild.endpoints-params.json:67:20
      '{ "name": "nsfw", "type":{ "base":"bool" }}' */
   bool nsfw;
 
@@ -4988,10 +4918,8 @@ struct discord_create_guild_channel_params {
 };
 
 // Modify Guild Channel Positions
-// defined at specs/discord/guild.endpoints-params.json:77:22
+// defined at specs/discord/guild.endpoints-params.json:73:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *) </tt>
  * - Cleanup:
@@ -5005,19 +4933,19 @@ struct discord_create_guild_channel_params {
  *   - <tt> void discord_modify_guild_channel_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_channel_positions_params **) </tt>
  */
 struct discord_modify_guild_channel_positions_params {
-  /* specs/discord/guild.endpoints-params.json:80:20
+  /* specs/discord/guild.endpoints-params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
   u64_snowflake_t id; ///< channel id
 
-  /* specs/discord/guild.endpoints-params.json:81:20
+  /* specs/discord/guild.endpoints-params.json:77:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}' */
   int position; ///< sorting position of the channel
 
-  /* specs/discord/guild.endpoints-params.json:82:20
+  /* specs/discord/guild.endpoints-params.json:78:20
      '{ "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"}' */
   bool lock_permissions; ///< syncs the permission overwrites with the new parent, if moving to a new category
 
-  /* specs/discord/guild.endpoints-params.json:83:20
+  /* specs/discord/guild.endpoints-params.json:79:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
   u64_snowflake_t parent_id; ///< the new parent ID for the channel that is moved
 
@@ -5038,10 +4966,8 @@ struct discord_modify_guild_channel_positions_params {
 };
 
 // Search Guild Members
-// defined at specs/discord/guild.endpoints-params.json:90:22
+// defined at specs/discord/guild.endpoints-params.json:85:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#search-guild-members-query-string-params
- *
  * - Initializer:
  *   - <tt> void discord_search_guild_members_params_init(struct discord_search_guild_members_params *) </tt>
  * - Cleanup:
@@ -5055,11 +4981,11 @@ struct discord_modify_guild_channel_positions_params {
  *   - <tt> void discord_search_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_search_guild_members_params **) </tt>
  */
 struct discord_search_guild_members_params {
-  /* specs/discord/guild.endpoints-params.json:93:20
+  /* specs/discord/guild.endpoints-params.json:88:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
   char *query; ///< Query string to match username(s) and nickname(s) against.
 
-  /* specs/discord/guild.endpoints-params.json:94:20
+  /* specs/discord/guild.endpoints-params.json:89:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
   int limit; ///< max number of members to return (1-1000)
 
@@ -5080,10 +5006,8 @@ struct discord_search_guild_members_params {
 };
 
 // Add Guild Member
-// defined at specs/discord/guild.endpoints-params.json:101:22
+// defined at specs/discord/guild.endpoints-params.json:95:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#add-guild-member-json-params
- *
  * - Initializer:
  *   - <tt> void discord_add_guild_member_params_init(struct discord_add_guild_member_params *) </tt>
  * - Cleanup:
@@ -5097,23 +5021,23 @@ struct discord_search_guild_members_params {
  *   - <tt> void discord_add_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_add_guild_member_params **) </tt>
  */
 struct discord_add_guild_member_params {
-  /* specs/discord/guild.endpoints-params.json:104:20
+  /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *access_token;
 
-  /* specs/discord/guild.endpoints-params.json:105:20
+  /* specs/discord/guild.endpoints-params.json:99:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *nick;
 
-  /* specs/discord/guild.endpoints-params.json:106:20
+  /* specs/discord/guild.endpoints-params.json:100:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **roles;
 
-  /* specs/discord/guild.endpoints-params.json:107:20
+  /* specs/discord/guild.endpoints-params.json:101:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mute;
 
-  /* specs/discord/guild.endpoints-params.json:108:20
+  /* specs/discord/guild.endpoints-params.json:102:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
@@ -5134,10 +5058,8 @@ struct discord_add_guild_member_params {
 };
 
 // Modify Guild Member
-// defined at specs/discord/guild.endpoints-params.json:115:22
+// defined at specs/discord/guild.endpoints-params.json:108:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-member
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *) </tt>
  * - Cleanup:
@@ -5151,23 +5073,23 @@ struct discord_add_guild_member_params {
  *   - <tt> void discord_modify_guild_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_member_params **) </tt>
  */
 struct discord_modify_guild_member_params {
-  /* specs/discord/guild.endpoints-params.json:118:20
+  /* specs/discord/guild.endpoints-params.json:111:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
-  /* specs/discord/guild.endpoints-params.json:119:20
+  /* specs/discord/guild.endpoints-params.json:112:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **roles;
 
-  /* specs/discord/guild.endpoints-params.json:120:20
+  /* specs/discord/guild.endpoints-params.json:113:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mute;
 
-  /* specs/discord/guild.endpoints-params.json:121:20
+  /* specs/discord/guild.endpoints-params.json:114:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
-  /* specs/discord/guild.endpoints-params.json:122:20
+  /* specs/discord/guild.endpoints-params.json:115:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
   u64_snowflake_t channel_id;
 
@@ -5188,10 +5110,8 @@ struct discord_modify_guild_member_params {
 };
 
 // Create Guild Role
-// defined at specs/discord/guild.endpoints-params.json:129:22
+// defined at specs/discord/guild.endpoints-params.json:121:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#create-guild-role
- *
  * - Initializer:
  *   - <tt> void discord_create_guild_role_params_init(struct discord_create_guild_role_params *) </tt>
  * - Cleanup:
@@ -5205,23 +5125,23 @@ struct discord_modify_guild_member_params {
  *   - <tt> void discord_create_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_role_params **) </tt>
  */
 struct discord_create_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:132:20
+  /* specs/discord/guild.endpoints-params.json:124:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.endpoints-params.json:133:20
+  /* specs/discord/guild.endpoints-params.json:125:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "inject_if_not":0}' */
   enum discord_permissions_bitwise_flags permissions;
 
-  /* specs/discord/guild.endpoints-params.json:134:20
+  /* specs/discord/guild.endpoints-params.json:126:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/guild.endpoints-params.json:135:20
+  /* specs/discord/guild.endpoints-params.json:127:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool hoist;
 
-  /* specs/discord/guild.endpoints-params.json:136:20
+  /* specs/discord/guild.endpoints-params.json:128:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mentionable;
 
@@ -5242,10 +5162,8 @@ struct discord_create_guild_role_params {
 };
 
 // Modify Guild Role Positions
-// defined at specs/discord/guild.endpoints-params.json:143:22
+// defined at specs/discord/guild.endpoints-params.json:134:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-positions-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *) </tt>
  * - Cleanup:
@@ -5259,11 +5177,11 @@ struct discord_create_guild_role_params {
  *   - <tt> void discord_modify_guild_role_positions_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_positions_params **) </tt>
  */
 struct discord_modify_guild_role_positions_params {
-  /* specs/discord/guild.endpoints-params.json:146:20
+  /* specs/discord/guild.endpoints-params.json:137:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
   u64_snowflake_t id; ///< role
 
-  /* specs/discord/guild.endpoints-params.json:147:20
+  /* specs/discord/guild.endpoints-params.json:138:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
   int position; ///< sorting position of the role
 
@@ -5284,10 +5202,8 @@ struct discord_modify_guild_role_positions_params {
 };
 
 // Modify Guild Role
-// defined at specs/discord/guild.endpoints-params.json:154:22
+// defined at specs/discord/guild.endpoints-params.json:144:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#modify-guild-role-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *) </tt>
  * - Cleanup:
@@ -5301,23 +5217,23 @@ struct discord_modify_guild_role_positions_params {
  *   - <tt> void discord_modify_guild_role_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_role_params **) </tt>
  */
 struct discord_modify_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:157:20
+  /* specs/discord/guild.endpoints-params.json:147:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
   char *name; ///< name of the role
 
-  /* specs/discord/guild.endpoints-params.json:158:20
+  /* specs/discord/guild.endpoints-params.json:148:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
   enum discord_permissions_bitwise_flags permissions; ///< bitwise value of the enabled/disabled permissions
 
-  /* specs/discord/guild.endpoints-params.json:159:20
+  /* specs/discord/guild.endpoints-params.json:149:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
   int color; ///< RGB color value
 
-  /* specs/discord/guild.endpoints-params.json:160:20
+  /* specs/discord/guild.endpoints-params.json:150:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
   bool hoist; ///< whether the role should be displayed separately in the sidebar
 
-  /* specs/discord/guild.endpoints-params.json:161:20
+  /* specs/discord/guild.endpoints-params.json:151:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
   bool mentionable; ///< whether the role should be mentionable
 
@@ -5338,10 +5254,8 @@ struct discord_modify_guild_role_params {
 };
 
 // Get Guild Prune Count
-// defined at specs/discord/guild.endpoints-params.json:168:22
+// defined at specs/discord/guild.endpoints-params.json:157:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#get-guild-prune-count-query-string-params
- *
  * - Initializer:
  *   - <tt> void discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params *) </tt>
  * - Cleanup:
@@ -5355,11 +5269,11 @@ struct discord_modify_guild_role_params {
  *   - <tt> void discord_get_guild_prune_count_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_prune_count_params **) </tt>
  */
 struct discord_get_guild_prune_count_params {
-  /* specs/discord/guild.endpoints-params.json:171:20
+  /* specs/discord/guild.endpoints-params.json:160:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:172:20
+  /* specs/discord/guild.endpoints-params.json:161:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
@@ -5380,10 +5294,8 @@ struct discord_get_guild_prune_count_params {
 };
 
 // Begin Guild Prune
-// defined at specs/discord/guild.endpoints-params.json:179:22
+// defined at specs/discord/guild.endpoints-params.json:167:22
 /**
- * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune-json-params
- *
  * - Initializer:
  *   - <tt> void discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params *) </tt>
  * - Cleanup:
@@ -5397,19 +5309,19 @@ struct discord_get_guild_prune_count_params {
  *   - <tt> void discord_begin_guild_prune_params_list_to_json(char *wbuf, size_t len, struct discord_begin_guild_prune_params **) </tt>
  */
 struct discord_begin_guild_prune_params {
-  /* specs/discord/guild.endpoints-params.json:182:20
+  /* specs/discord/guild.endpoints-params.json:170:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:183:20
+  /* specs/discord/guild.endpoints-params.json:171:20
      '{ "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool compute_prune_count;
 
-  /* specs/discord/guild.endpoints-params.json:184:20
+  /* specs/discord/guild.endpoints-params.json:172:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
-  /* specs/discord/guild.endpoints-params.json:185:20
+  /* specs/discord/guild.endpoints-params.json:173:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *reason;
 
@@ -6230,10 +6142,8 @@ struct discord_guild_welcome_screen_channel {
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 
 // Get Invite
-// defined at specs/discord/invite.endpoints-params.json:10:22
+// defined at specs/discord/invite.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/invite#get-invite-query-string-params
- *
  * - Initializer:
  *   - <tt> void discord_get_invite_params_init(struct discord_get_invite_params *) </tt>
  * - Cleanup:
@@ -6247,11 +6157,11 @@ struct discord_guild_welcome_screen_channel {
  *   - <tt> void discord_get_invite_params_list_to_json(char *wbuf, size_t len, struct discord_get_invite_params **) </tt>
  */
 struct discord_get_invite_params {
-  /* specs/discord/invite.endpoints-params.json:13:20
+  /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
   bool with_counts; ///< whether the invite should contain approximate member counts
 
-  /* specs/discord/invite.endpoints-params.json:14:20
+  /* specs/discord/invite.endpoints-params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
   bool with_expiration; ///< whether the invite should contain the expiration date
 
@@ -7427,10 +7337,8 @@ struct discord_message_interaction {
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
 // Modify Current User
-// defined at specs/discord/user.endpoints-params.json:10:22
+// defined at specs/discord/user.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/user#modify-current-user-json-params
- *
  * - Initializer:
  *   - <tt> void discord_modify_current_user_params_init(struct discord_modify_current_user_params *) </tt>
  * - Cleanup:
@@ -7444,11 +7352,11 @@ struct discord_message_interaction {
  *   - <tt> void discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params **) </tt>
  */
 struct discord_modify_current_user_params {
-  /* specs/discord/user.endpoints-params.json:13:20
+  /* specs/discord/user.endpoints-params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
   char *username;
 
-  /* specs/discord/user.endpoints-params.json:14:20
+  /* specs/discord/user.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
   char *avatar; ///< base64 encoded image data
 
@@ -7469,10 +7377,8 @@ struct discord_modify_current_user_params {
 };
 
 // Create Group DM
-// defined at specs/discord/user.endpoints-params.json:21:22
+// defined at specs/discord/user.endpoints-params.json:19:22
 /**
- * @see https://discord.com/developers/docs/resources/user#create-group-dm-json-params
- *
  * - Initializer:
  *   - <tt> void discord_create_group_dm_params_init(struct discord_create_group_dm_params *) </tt>
  * - Cleanup:
@@ -7486,12 +7392,12 @@ struct discord_modify_current_user_params {
  *   - <tt> void discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params **) </tt>
  */
 struct discord_create_group_dm_params {
-  /* specs/discord/user.endpoints-params.json:24:20
+  /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
   ja_str **access_tokens; ///< access tokens of users that have granted your app the gdm.join scope
 
-  /* specs/discord/user.endpoints-params.json:26:19
+  /* specs/discord/user.endpoints-params.json:24:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"a dictionary of user ids to their respective nicknames"}' */
   ja_u64 **nicks; ///< a dictionary of user ids to their respective nicknames
@@ -7823,10 +7729,8 @@ struct discord_voice_region {
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 
 // Create Webhook
-// defined at specs/discord/webhook.endpoints-params.json:10:22
+// defined at specs/discord/webhook.endpoints-params.json:9:22
 /**
- * @see https://discord.com/developers/docs/resources/webhook#create-webhook
- *
  * - Initializer:
  *   - <tt> void discord_create_webhook_params_init(struct discord_create_webhook_params *) </tt>
  * - Cleanup:
@@ -7840,11 +7744,11 @@ struct discord_voice_region {
  *   - <tt> void discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params **) </tt>
  */
 struct discord_create_webhook_params {
-  /* specs/discord/webhook.endpoints-params.json:13:20
+  /* specs/discord/webhook.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
   char *name; ///< name of the webhook(1-80) chars
 
-  /* specs/discord/webhook.endpoints-params.json:14:20
+  /* specs/discord/webhook.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
   char *avatar; ///< base64 image for the default webhook avatar
 
@@ -7865,10 +7769,8 @@ struct discord_create_webhook_params {
 };
 
 // Modify Webhook
-// defined at specs/discord/webhook.endpoints-params.json:21:22
+// defined at specs/discord/webhook.endpoints-params.json:19:22
 /**
- * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
- *
  * - Initializer:
  *   - <tt> void discord_modify_webhook_params_init(struct discord_modify_webhook_params *) </tt>
  * - Cleanup:
@@ -7882,15 +7784,15 @@ struct discord_create_webhook_params {
  *   - <tt> void discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params **) </tt>
  */
 struct discord_modify_webhook_params {
-  /* specs/discord/webhook.endpoints-params.json:24:20
+  /* specs/discord/webhook.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
   char *name; ///< name of the webhook(1-80) chars
 
-  /* specs/discord/webhook.endpoints-params.json:25:20
+  /* specs/discord/webhook.endpoints-params.json:23:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
   char *avatar; ///< base64 image for the default webhook avatar
 
-  /* specs/discord/webhook.endpoints-params.json:26:20
+  /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }' */
   u64_snowflake_t channel_id; ///< the new channel id this webhook should be moved to
 
@@ -7911,10 +7813,8 @@ struct discord_modify_webhook_params {
 };
 
 // Execute Webhook
-// defined at specs/discord/webhook.endpoints-params.json:33:22
+// defined at specs/discord/webhook.endpoints-params.json:30:22
 /**
- * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
- *
  * - Initializer:
  *   - <tt> void discord_execute_webhook_params_init(struct discord_execute_webhook_params *) </tt>
  * - Cleanup:
@@ -7928,61 +7828,61 @@ struct discord_modify_webhook_params {
  *   - <tt> void discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params **) </tt>
  */
 struct discord_execute_webhook_params {
-  /* specs/discord/webhook.endpoints-params.json:37:20
+  /* specs/discord/webhook.endpoints-params.json:34:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
           "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)",
           "required":"one of content, file, embeds"
         }' */
   bool wait; ///< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i
 
-  /* specs/discord/webhook.endpoints-params.json:41:20
+  /* specs/discord/webhook.endpoints-params.json:38:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, 
           "comment":"the message contents (up to 2000 characters)",
           "required":false
         }' */
   char *content; ///< the message contents (up to 2000 characters)
 
-  /* specs/discord/webhook.endpoints-params.json:45:20
+  /* specs/discord/webhook.endpoints-params.json:42:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, 
           "comment":"override the default username of the webhook",
           "required":false
         }' */
   char *username; ///< override the default username of the webhook
 
-  /* specs/discord/webhook.endpoints-params.json:49:20
+  /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
           "comment":"override the default avatar of the webhook" }' */
   char *avatar_url; ///< override the default avatar of the webhook
 
-  /* specs/discord/webhook.endpoints-params.json:51:20
+  /* specs/discord/webhook.endpoints-params.json:48:20
      '{ "name": "tts", "type":{ "base":"bool" }, 
           "comment":"true if this is a TTS message",
           "required":false
         }' */
   bool tts; ///< true if this is a TTS message
 
-  /* specs/discord/webhook.endpoints-params.json:55:20
+  /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, 
           "comment":"the contents of the file being sent",
           "required":"one of content, file, embeds"
         }' */
   char *file; ///< the contents of the file being sent
 
-  /* specs/discord/webhook.endpoints-params.json:59:20
+  /* specs/discord/webhook.endpoints-params.json:56:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
           "comment":"embedded rich content",
           "required":"one of content, file, embeds"
         }' */
   struct discord_embed *embeds; ///< embedded rich content
 
-  /* specs/discord/webhook.endpoints-params.json:63:20
+  /* specs/discord/webhook.endpoints-params.json:60:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
           "comment":"See message create",
           "required":"multipart/form-data only"
         }' */
   char *payload_json; ///< See message create
 
-  /* specs/discord/webhook.endpoints-params.json:67:20
+  /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "allowed_mentions", 
           "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" },
           "comment":"allowed mentions for the message",
@@ -8007,10 +7907,8 @@ struct discord_execute_webhook_params {
 };
 
 // Edit Webhook Message
-// defined at specs/discord/webhook.endpoints-params.json:78:22
+// defined at specs/discord/webhook.endpoints-params.json:74:22
 /**
- * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
- *
  * - Initializer:
  *   - <tt> void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *) </tt>
  * - Cleanup:
@@ -8024,15 +7922,15 @@ struct discord_execute_webhook_params {
  *   - <tt> void discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
  */
 struct discord_edit_webhook_message_params {
-  /* specs/discord/webhook.endpoints-params.json:81:20
+  /* specs/discord/webhook.endpoints-params.json:77:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
   char *content; ///< name of the webhook(1-2000) chars
 
-  /* specs/discord/webhook.endpoints-params.json:82:20
+  /* specs/discord/webhook.endpoints-params.json:78:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
   struct discord_embed **embeds; ///< array of up to 10 embeds objects
 
-  /* specs/discord/webhook.endpoints-params.json:83:20
+  /* specs/discord/webhook.endpoints-params.json:79:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
   struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 

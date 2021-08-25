@@ -5,7 +5,6 @@
   [
     {
       "title":"Create Webhook",
-      "comment":"https://discord.com/developers/docs/resources/webhook#create-webhook",
       "namespace": ["create_webhook"],
       "struct":"params",
       "fields":
@@ -16,7 +15,6 @@
     },
     {
       "title":"Modify Webhook",
-      "comment":"https://discord.com/developers/docs/resources/webhook#modify-webhook",
       "namespace": ["modify_webhook"],
       "struct":"params",
       "fields":
@@ -28,7 +26,6 @@
     },
     {
       "title":"Execute Webhook",
-      "comment":"https://discord.com/developers/docs/resources/webhook#execute-webhook",
       "namespace": ["execute_webhook"],
       "struct":"params",
       "fields":
@@ -73,7 +70,6 @@
     },
     {
       "title":"Edit Webhook Message",
-      "comment":"https://discord.com/developers/docs/resources/webhook#edit-webhook-message",
       "namespace": ["edit_webhook_message"],
       "struct":"params",
       "fields":

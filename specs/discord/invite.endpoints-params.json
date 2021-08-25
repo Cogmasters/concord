@@ -5,7 +5,6 @@
   [
     {
       "title":"Get Invite",
-      "comment":"https://discord.com/developers/docs/resources/invite#get-invite-query-string-params",
       "namespace": ["get_invite"],
       "struct":"params",
       "fields":
