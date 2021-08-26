@@ -48,6 +48,16 @@ sudo apt-get install -y build-essential
 sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 ```
 
+### For Void Linux
+#### Install dependencies:
+
+Void Linux does not seem to come with the header files necessary for libcurl to run, so
+you will need to install them through the `libcurl-devel` package.
+```
+sudo xbps-install -S libcurl-devel
+sudo xbps-install -S wget
+```
+
 #### Compile
 
 ```

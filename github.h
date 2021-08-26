@@ -36,5 +36,6 @@ ORCAcode github_get_user(struct github *client, char *username, struct github_us
 ORCAcode github_fill_repo_config(struct github *client, char *repo_config);
 ORCAcode github_get_repository(struct github *client, char* owner, char* repo, struct sized_buffer* output);
 ORCAcode github_create_gist(struct github *client, struct github_gist_create_params *params, struct github_gist *gist);
+ORCAcode github_create_fork(struct github *client, char *owner, char *repo);
 
 #endif // GITHUB_V3_H

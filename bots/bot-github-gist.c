@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
     else if (argc < 4) {
-        printf("bot-github-gist expects 3 arguments. title, description, and body");
+        printf("bot-github-gist expects 3 arguments. title, description, and body\n");
         exit(1);
     }
 
