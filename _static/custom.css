@@ -1,16 +1,45 @@
+/* Used at _templates/page.html to create collapse menus */
 .toggle .header {
     display: block;
     clear: both;
 }
-
 .toggle .header:hover {
     cursor: pointer;
 }
-
-.toggle .header:after {
+.toggle .header::after {
     content: " ➕";
 }
-
-.toggle .header.open:after {
+.toggle .header.open::after {
     content: " ➖";
+}
+.toggle > *:not(.header) {
+    display: none;
+}
+
+/* THE FOLLOWING MODIFY HOW THE DEFAULT PAGE IS RENDERED */
+
+/* Hide all rendered titles for doxygen's groups */
+.section .sig.sig-object.cpp {
+    display: none;
+}
+
+/* Hide the welcome text */
+.section#welcome-to-orca > h1 {
+    display: none;
+}
+
+.header p {
+    text-indent:0!important;
+}
+
+i.fa-github:hover {
+  color: black;
+}
+
+i.fa-discord:hover {
+  color: #5765f2;
+}
+
+#navbar-icon-links > li.nav-item > a.nav-link:hover {
+   color: rgba(77, 77, 77, 1) !important
 }

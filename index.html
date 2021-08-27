@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentation &#8212; Orca  documentation</title>
+    <title>Welcome to Orca &#8212; Orca  documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -32,7 +32,7 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/icon.ico"/>
+    <link rel="shortcut icon" href="_static/icon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Supported APIs" href="apis/index.html" />
@@ -50,9 +50,11 @@
   <div id="navbar-start">
     
     
+
 <a class="navbar-brand" href="#">
-<p class="title">Orca</p>
+  <img src="_static/icon.svg" class="logo" alt="logo">
 </a>
+
 
     
   </div>
@@ -94,9 +96,15 @@
       <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="GitHub">
-            <span><i class="fab fa-github-square"></i></span>
-            <label class="sr-only">GitHub</label>
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/GNUxKtxf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
           </a>
         </li>
       </ul>
@@ -137,12 +145,12 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#documentation">
    Documentation
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#help">
    Help
   </a>
@@ -175,7 +183,9 @@
               
               <div>
                 
-  <img alt="_images/logo-dropshadow.svg" src="_images/logo-dropshadow.svg" /><p>A Multi-REST API library that is easy to reason about, easy to debug, and easy to use.</p>
+  <div class="section" id="welcome-to-orca">
+<h1>Welcome to Orca<a class="headerlink" href="#welcome-to-orca" title="Permalink to this headline">¶</a></h1>
+<img alt="_images/logo-dropshadow.svg" src="_images/logo-dropshadow.svg" /><p>A Multi-REST API library that is easy to reason about, easy to debug, and easy to use.</p>
 <p><strong>Features:</strong></p>
 <ul class="simple">
 <li><p>Easy to use for the end users</p>
@@ -197,7 +207,7 @@ about race-conditions. All transfers made with Orca are thread-safe by nature.</
 </li>
 </ul>
 <div class="section" id="documentation">
-<h1>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h1>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="apis/index.html">Supported APIs</a><ul>
@@ -213,10 +223,11 @@ about race-conditions. All transfers made with Orca are thread-safe by nature.</
 </div>
 </div>
 <div class="section" id="help">
-<h1>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
+<h2>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 </ul>
+</div>
 </div>
 
 
@@ -238,18 +249,31 @@ about race-conditions. All transfers made with Orca are thread-safe by nature.</
   <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
   
- <script type="text/javascript">
+  <script type="text/javascript">
     $(document).ready(function() {
-        $(".c.struct dd > ul:first-of-type, .c.enum dd > ul:first-of-type").wrap("<div class=\"toggle\"></div>");
-        $(".toggle").prepend("<div class=\"header\"><b>Methods</b></div>");
-        $(".toggle > *").hide();
-        $(".toggle .header").show();
-        $(".toggle .header").click(function() {
-           $(this).parent().children().not(".header").toggle(400);
-           $(this).parent().children(".header").toggleClass("open");
-        })
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
     });
-</script>
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
 
   </body>
 </html>
