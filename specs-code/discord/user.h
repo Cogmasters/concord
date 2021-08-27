@@ -11,9 +11,17 @@
 /**
  * @see https://discord.com/developers/docs/resources/user#user-object-user-flags
  *
- * - <tt> char* discord_user_flags_print(enum discord_user_flags code) </tt>
- * - <tt> enum discord_user_flags discord_user_flags_eval(char *code_as_str) </tt>
- * - <tt> bool discord_user_flags_cmp(enum discord_user_flags code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_user_flags_print(enum discord_user_flags code)`
+ *   * :code:`enum discord_user_flags discord_user_flags_eval(char *code_as_str)`
+ *   * :code:`bool discord_user_flags_cmp(enum discord_user_flags code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_user_flags {
   DISCORD_USER_DISCORD_EMPLOYEE = 1, ///< 1 << 0
@@ -40,9 +48,17 @@ extern bool discord_user_flags_cmp(enum discord_user_flags, char*);
 /**
  * @see https://discord.com/developers/docs/resources/user#user-object-premium-types
  *
- * - <tt> char* discord_user_premium_types_print(enum discord_user_premium_types code) </tt>
- * - <tt> enum discord_user_premium_types discord_user_premium_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_user_premium_types_cmp(enum discord_user_premium_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_user_premium_types_print(enum discord_user_premium_types code)`
+ *   * :code:`enum discord_user_premium_types discord_user_premium_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_user_premium_types_cmp(enum discord_user_premium_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_user_premium_types {
   DISCORD_USER_NITRO_CLASSIC = 0,
@@ -55,17 +71,29 @@ extern bool discord_user_premium_types_cmp(enum discord_user_premium_types, char
 // User Structure
 // defined at specs/discord/user.json:42:28
 /**
- * - Initializer:
- *   - <tt> void discord_user_init(struct discord_user *) </tt>
- * - Cleanup:
- *   - <tt> void discord_user_cleanup(struct discord_user *) </tt>
- *   - <tt> void discord_user_list_free(struct discord_user **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_user_from_json(char *rbuf, size_t len, struct discord_user **) </tt>
- *   - <tt> void discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_user_to_json(char *wbuf, size_t len, struct discord_user *) </tt>
- *   - <tt> void discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_user_init(struct discord_user *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_user_cleanup(struct discord_user *)`
+ *     * :code:`void discord_user_list_free(struct discord_user **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_user_from_json(char *rbuf, size_t len, struct discord_user **)`
+ *     * :code:`void discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_user_to_json(char *wbuf, size_t len, struct discord_user *)`
+ *     * :code:`void discord_user_list_to_json(char *wbuf, size_t len, struct discord_user **)`
+ * @endverbatim
  */
 struct discord_user {
   /* specs/discord/user.json:45:24
@@ -158,9 +186,17 @@ extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_us
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-visibility-types
  *
- * - <tt> char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code) </tt>
- * - <tt> enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code)`
+ *   * :code:`enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_user_connection_visibility_types {
   DISCORD_USER_CONNECTION_NONE = 0,
@@ -175,17 +211,29 @@ extern bool discord_user_connection_visibility_types_cmp(enum discord_user_conne
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
  *
- * - Initializer:
- *   - <tt> void discord_connection_init(struct discord_connection *) </tt>
- * - Cleanup:
- *   - <tt> void discord_connection_cleanup(struct discord_connection *) </tt>
- *   - <tt> void discord_connection_list_free(struct discord_connection **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **) </tt>
- *   - <tt> void discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *) </tt>
- *   - <tt> void discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_connection_init(struct discord_connection *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_connection_cleanup(struct discord_connection *)`
+ *     * :code:`void discord_connection_list_free(struct discord_connection **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **)`
+ *     * :code:`void discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_connection_to_json(char *wbuf, size_t len, struct discord_connection *)`
+ *     * :code:`void discord_connection_list_to_json(char *wbuf, size_t len, struct discord_connection **)`
+ * @endverbatim
  */
 struct discord_connection {
   /* specs/discord/user.json:77:24

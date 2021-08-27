@@ -8,17 +8,29 @@
 // Modify Current User
 // defined at specs/discord/user.endpoints-params.json:9:22
 /**
- * - Initializer:
- *   - <tt> void discord_modify_current_user_params_init(struct discord_modify_current_user_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *) </tt>
- *   - <tt> void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params **) </tt>
- *   - <tt> void discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *) </tt>
- *   - <tt> void discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_current_user_params_init(struct discord_modify_current_user_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *)`
+ *     * :code:`void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params **)`
+ *     * :code:`void discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_current_user_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params *)`
+ *     * :code:`void discord_modify_current_user_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_params **)`
+ * @endverbatim
  */
 struct discord_modify_current_user_params {
   /* specs/discord/user.endpoints-params.json:12:20
@@ -64,17 +76,29 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
 // Create Group DM
 // defined at specs/discord/user.endpoints-params.json:19:22
 /**
- * - Initializer:
- *   - <tt> void discord_create_group_dm_params_init(struct discord_create_group_dm_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *) </tt>
- *   - <tt> void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params **) </tt>
- *   - <tt> void discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *) </tt>
- *   - <tt> void discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_group_dm_params_init(struct discord_create_group_dm_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *)`
+ *     * :code:`void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params **)`
+ *     * :code:`void discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_group_dm_params_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params *)`
+ *     * :code:`void discord_create_group_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_group_dm_params **)`
+ * @endverbatim
  */
 struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:22:20

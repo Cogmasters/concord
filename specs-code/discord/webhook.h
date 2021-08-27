@@ -10,17 +10,29 @@
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
  *
- * - Initializer:
- *   - <tt> void discord_webhook_init(struct discord_webhook *) </tt>
- * - Cleanup:
- *   - <tt> void discord_webhook_cleanup(struct discord_webhook *) </tt>
- *   - <tt> void discord_webhook_list_free(struct discord_webhook **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **) </tt>
- *   - <tt> void discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *) </tt>
- *   - <tt> void discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_webhook_init(struct discord_webhook *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_webhook_cleanup(struct discord_webhook *)`
+ *     * :code:`void discord_webhook_list_free(struct discord_webhook **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **)`
+ *     * :code:`void discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_webhook_to_json(char *wbuf, size_t len, struct discord_webhook *)`
+ *     * :code:`void discord_webhook_list_to_json(char *wbuf, size_t len, struct discord_webhook **)`
+ * @endverbatim
  */
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
@@ -97,9 +109,17 @@ extern size_t discord_webhook_list_to_json(char *str, size_t len, struct discord
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
  *
- * - <tt> char* discord_webhook_types_print(enum discord_webhook_types code) </tt>
- * - <tt> enum discord_webhook_types discord_webhook_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_webhook_types_print(enum discord_webhook_types code)`
+ *   * :code:`enum discord_webhook_types discord_webhook_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_webhook_types {
   DISCORD_WEBHOOK_INCOMING = 1,

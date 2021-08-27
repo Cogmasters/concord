@@ -8,17 +8,29 @@
 // Create Webhook
 // defined at specs/discord/webhook.endpoints-params.json:9:22
 /**
- * - Initializer:
- *   - <tt> void discord_create_webhook_params_init(struct discord_create_webhook_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_create_webhook_params_cleanup(struct discord_create_webhook_params *) </tt>
- *   - <tt> void discord_create_webhook_params_list_free(struct discord_create_webhook_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params **) </tt>
- *   - <tt> void discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params *) </tt>
- *   - <tt> void discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_webhook_params_init(struct discord_create_webhook_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_webhook_params_cleanup(struct discord_create_webhook_params *)`
+ *     * :code:`void discord_create_webhook_params_list_free(struct discord_create_webhook_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params **)`
+ *     * :code:`void discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_webhook_params_to_json(char *wbuf, size_t len, struct discord_create_webhook_params *)`
+ *     * :code:`void discord_create_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_create_webhook_params **)`
+ * @endverbatim
  */
 struct discord_create_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:12:20
@@ -64,17 +76,29 @@ extern size_t discord_create_webhook_params_list_to_json(char *str, size_t len, 
 // Modify Webhook
 // defined at specs/discord/webhook.endpoints-params.json:19:22
 /**
- * - Initializer:
- *   - <tt> void discord_modify_webhook_params_init(struct discord_modify_webhook_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params *) </tt>
- *   - <tt> void discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params **) </tt>
- *   - <tt> void discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params *) </tt>
- *   - <tt> void discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_webhook_params_init(struct discord_modify_webhook_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params *)`
+ *     * :code:`void discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params **)`
+ *     * :code:`void discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_webhook_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params *)`
+ *     * :code:`void discord_modify_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_params **)`
+ * @endverbatim
  */
 struct discord_modify_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:22:20
@@ -124,17 +148,29 @@ extern size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, 
 // Execute Webhook
 // defined at specs/discord/webhook.endpoints-params.json:30:22
 /**
- * - Initializer:
- *   - <tt> void discord_execute_webhook_params_init(struct discord_execute_webhook_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *) </tt>
- *   - <tt> void discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params **) </tt>
- *   - <tt> void discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params *) </tt>
- *   - <tt> void discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_execute_webhook_params_init(struct discord_execute_webhook_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *)`
+ *     * :code:`void discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params **)`
+ *     * :code:`void discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_execute_webhook_params_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params *)`
+ *     * :code:`void discord_execute_webhook_params_list_to_json(char *wbuf, size_t len, struct discord_execute_webhook_params **)`
+ * @endverbatim
  */
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:34:20
@@ -234,17 +270,29 @@ extern size_t discord_execute_webhook_params_list_to_json(char *str, size_t len,
 // Edit Webhook Message
 // defined at specs/discord/webhook.endpoints-params.json:74:22
 /**
- * - Initializer:
- *   - <tt> void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *) </tt>
- *   - <tt> void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
- *   - <tt> void discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params *) </tt>
- *   - <tt> void discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *)`
+ *     * :code:`void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params **)`
+ *     * :code:`void discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_edit_webhook_message_params_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params *)`
+ *     * :code:`void discord_edit_webhook_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_webhook_message_params **)`
+ * @endverbatim
  */
 struct discord_edit_webhook_message_params {
   /* specs/discord/webhook.endpoints-params.json:77:20

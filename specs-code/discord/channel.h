@@ -11,9 +11,17 @@
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-types
  *
- * - <tt> char* discord_channel_types_print(enum discord_channel_types code) </tt>
- * - <tt> enum discord_channel_types discord_channel_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_channel_types_cmp(enum discord_channel_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_channel_types_print(enum discord_channel_types code)`
+ *   * :code:`enum discord_channel_types discord_channel_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_channel_types_cmp(enum discord_channel_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_channel_types {
   DISCORD_CHANNEL_GUILD_TEXT = 0,
@@ -37,17 +45,29 @@ extern bool discord_channel_types_cmp(enum discord_channel_types, char*);
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
  *
- * - Initializer:
- *   - <tt> void discord_channel_init(struct discord_channel *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_cleanup(struct discord_channel *) </tt>
- *   - <tt> void discord_channel_list_free(struct discord_channel **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_from_json(char *rbuf, size_t len, struct discord_channel **) </tt>
- *   - <tt> void discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *) </tt>
- *   - <tt> void discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_init(struct discord_channel *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_cleanup(struct discord_channel *)`
+ *     * :code:`void discord_channel_list_free(struct discord_channel **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_from_json(char *rbuf, size_t len, struct discord_channel **)`
+ *     * :code:`void discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_to_json(char *wbuf, size_t len, struct discord_channel *)`
+ *     * :code:`void discord_channel_list_to_json(char *wbuf, size_t len, struct discord_channel **)`
+ * @endverbatim
  */
 struct discord_channel {
   /* specs/discord/channel.json:32:78
@@ -177,9 +197,17 @@ extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types
  *
- * - <tt> char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types code) </tt>
- * - <tt> enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types code)`
+ *   * :code:`enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_message_sticker_format_types {
   DISCORD_MESSAGE_STICKER_PNG = 1,
@@ -195,17 +223,29 @@ extern bool discord_message_sticker_format_types_cmp(enum discord_message_sticke
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
  *
- * - Initializer:
- *   - <tt> void discord_message_sticker_init(struct discord_message_sticker *) </tt>
- * - Cleanup:
- *   - <tt> void discord_message_sticker_cleanup(struct discord_message_sticker *) </tt>
- *   - <tt> void discord_message_sticker_list_free(struct discord_message_sticker **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker **) </tt>
- *   - <tt> void discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *) </tt>
- *   - <tt> void discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_message_sticker_init(struct discord_message_sticker *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_message_sticker_cleanup(struct discord_message_sticker *)`
+ *     * :code:`void discord_message_sticker_list_free(struct discord_message_sticker **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker **)`
+ *     * :code:`void discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_message_sticker_to_json(char *wbuf, size_t len, struct discord_message_sticker *)`
+ *     * :code:`void discord_message_sticker_list_to_json(char *wbuf, size_t len, struct discord_message_sticker **)`
+ * @endverbatim
  */
 struct discord_message_sticker {
   /* specs/discord/channel.json:84:18
@@ -279,9 +319,17 @@ extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-flags
  *
- * - <tt> char* discord_message_flags_print(enum discord_message_flags code) </tt>
- * - <tt> enum discord_message_flags discord_message_flags_eval(char *code_as_str) </tt>
- * - <tt> bool discord_message_flags_cmp(enum discord_message_flags code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_message_flags_print(enum discord_message_flags code)`
+ *   * :code:`enum discord_message_flags discord_message_flags_eval(char *code_as_str)`
+ *   * :code:`bool discord_message_flags_cmp(enum discord_message_flags code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_message_flags {
   DISCORD_MESSAGE_CROSSPOSTED = 1, ///< 1<<0
@@ -299,17 +347,29 @@ extern bool discord_message_flags_cmp(enum discord_message_flags, char*);
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
  *
- * - Initializer:
- *   - <tt> void discord_message_reference_init(struct discord_message_reference *) </tt>
- * - Cleanup:
- *   - <tt> void discord_message_reference_cleanup(struct discord_message_reference *) </tt>
- *   - <tt> void discord_message_reference_list_free(struct discord_message_reference **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference **) </tt>
- *   - <tt> void discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *) </tt>
- *   - <tt> void discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_message_reference_init(struct discord_message_reference *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_message_reference_cleanup(struct discord_message_reference *)`
+ *     * :code:`void discord_message_reference_list_free(struct discord_message_reference **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference **)`
+ *     * :code:`void discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_message_reference_to_json(char *wbuf, size_t len, struct discord_message_reference *)`
+ *     * :code:`void discord_message_reference_list_to_json(char *wbuf, size_t len, struct discord_message_reference **)`
+ * @endverbatim
  */
 struct discord_message_reference {
   /* specs/discord/channel.json:114:18
@@ -365,17 +425,29 @@ extern size_t discord_message_reference_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
  *
- * - Initializer:
- *   - <tt> void discord_message_application_init(struct discord_message_application *) </tt>
- * - Cleanup:
- *   - <tt> void discord_message_application_cleanup(struct discord_message_application *) </tt>
- *   - <tt> void discord_message_application_list_free(struct discord_message_application **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application **) </tt>
- *   - <tt> void discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *) </tt>
- *   - <tt> void discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_message_application_init(struct discord_message_application *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_message_application_cleanup(struct discord_message_application *)`
+ *     * :code:`void discord_message_application_list_free(struct discord_message_application **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application **)`
+ *     * :code:`void discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_message_application_to_json(char *wbuf, size_t len, struct discord_message_application *)`
+ *     * :code:`void discord_message_application_list_to_json(char *wbuf, size_t len, struct discord_message_application **)`
+ * @endverbatim
  */
 struct discord_message_application {
   /* specs/discord/channel.json:126:18
@@ -436,9 +508,17 @@ extern size_t discord_message_application_list_to_json(char *str, size_t len, st
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-types
  *
- * - <tt> char* discord_message_activity_types_print(enum discord_message_activity_types code) </tt>
- * - <tt> enum discord_message_activity_types discord_message_activity_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_message_activity_types_cmp(enum discord_message_activity_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_message_activity_types_print(enum discord_message_activity_types code)`
+ *   * :code:`enum discord_message_activity_types discord_message_activity_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_message_activity_types_cmp(enum discord_message_activity_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_message_activity_types {
   DISCORD_MESSAGE_ACTIVITY_JOIN = 1,
@@ -455,17 +535,29 @@ extern bool discord_message_activity_types_cmp(enum discord_message_activity_typ
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
  *
- * - Initializer:
- *   - <tt> void discord_message_activity_init(struct discord_message_activity *) </tt>
- * - Cleanup:
- *   - <tt> void discord_message_activity_cleanup(struct discord_message_activity *) </tt>
- *   - <tt> void discord_message_activity_list_free(struct discord_message_activity **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity **) </tt>
- *   - <tt> void discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *) </tt>
- *   - <tt> void discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_message_activity_init(struct discord_message_activity *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_message_activity_cleanup(struct discord_message_activity *)`
+ *     * :code:`void discord_message_activity_list_free(struct discord_message_activity **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity **)`
+ *     * :code:`void discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_message_activity_to_json(char *wbuf, size_t len, struct discord_message_activity *)`
+ *     * :code:`void discord_message_activity_list_to_json(char *wbuf, size_t len, struct discord_message_activity **)`
+ * @endverbatim
  */
 struct discord_message_activity {
   /* specs/discord/channel.json:151:18
@@ -515,9 +607,17 @@ extern size_t discord_message_activity_list_to_json(char *str, size_t len, struc
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-types
  *
- * - <tt> char* discord_message_types_print(enum discord_message_types code) </tt>
- * - <tt> enum discord_message_types discord_message_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_message_types_cmp(enum discord_message_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_message_types_print(enum discord_message_types code)`
+ *   * :code:`enum discord_message_types discord_message_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_message_types_cmp(enum discord_message_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_message_types {
   DISCORD_MESSAGE_DEFAULT = 0,
@@ -547,17 +647,29 @@ extern bool discord_message_types_cmp(enum discord_message_types, char*);
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object
  *
- * - Initializer:
- *   - <tt> void discord_message_init(struct discord_message *) </tt>
- * - Cleanup:
- *   - <tt> void discord_message_cleanup(struct discord_message *) </tt>
- *   - <tt> void discord_message_list_free(struct discord_message **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_message_from_json(char *rbuf, size_t len, struct discord_message **) </tt>
- *   - <tt> void discord_message_list_from_json(char *rbuf, size_t len, struct discord_message ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_message_to_json(char *wbuf, size_t len, struct discord_message *) </tt>
- *   - <tt> void discord_message_list_to_json(char *wbuf, size_t len, struct discord_message **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_message_init(struct discord_message *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_message_cleanup(struct discord_message *)`
+ *     * :code:`void discord_message_list_free(struct discord_message **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_message_from_json(char *rbuf, size_t len, struct discord_message **)`
+ *     * :code:`void discord_message_list_from_json(char *rbuf, size_t len, struct discord_message ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_message_to_json(char *wbuf, size_t len, struct discord_message *)`
+ *     * :code:`void discord_message_list_to_json(char *wbuf, size_t len, struct discord_message **)`
+ * @endverbatim
  */
 struct discord_message {
   /* specs/discord/channel.json:186:79
@@ -717,17 +829,29 @@ extern size_t discord_message_list_to_json(char *str, size_t len, struct discord
 /**
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
  *
- * - Initializer:
- *   - <tt> void discord_channel_followed_channel_init(struct discord_channel_followed_channel *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *) </tt>
- *   - <tt> void discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel **) </tt>
- *   - <tt> void discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *) </tt>
- *   - <tt> void discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_followed_channel_init(struct discord_channel_followed_channel *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_followed_channel_cleanup(struct discord_channel_followed_channel *)`
+ *     * :code:`void discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_followed_channel_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel **)`
+ *     * :code:`void discord_channel_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_channel_followed_channel ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_followed_channel_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel *)`
+ *     * :code:`void discord_channel_followed_channel_list_to_json(char *wbuf, size_t len, struct discord_channel_followed_channel **)`
+ * @endverbatim
  */
 struct discord_channel_followed_channel {
   /* specs/discord/channel.json:225:20
@@ -775,17 +899,29 @@ extern size_t discord_channel_followed_channel_list_to_json(char *str, size_t le
 /**
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
  *
- * - Initializer:
- *   - <tt> void discord_channel_reaction_init(struct discord_channel_reaction *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_reaction_cleanup(struct discord_channel_reaction *) </tt>
- *   - <tt> void discord_channel_reaction_list_free(struct discord_channel_reaction **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction **) </tt>
- *   - <tt> void discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *) </tt>
- *   - <tt> void discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_reaction_init(struct discord_channel_reaction *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_reaction_cleanup(struct discord_channel_reaction *)`
+ *     * :code:`void discord_channel_reaction_list_free(struct discord_channel_reaction **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_reaction_from_json(char *rbuf, size_t len, struct discord_channel_reaction **)`
+ *     * :code:`void discord_channel_reaction_list_from_json(char *rbuf, size_t len, struct discord_channel_reaction ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_reaction_to_json(char *wbuf, size_t len, struct discord_channel_reaction *)`
+ *     * :code:`void discord_channel_reaction_list_to_json(char *wbuf, size_t len, struct discord_channel_reaction **)`
+ * @endverbatim
  */
 struct discord_channel_reaction {
   /* specs/discord/channel.json:236:20
@@ -835,17 +971,29 @@ extern size_t discord_channel_reaction_list_to_json(char *str, size_t len, struc
 // Overwrite Structure
 // defined at specs/discord/channel.json:244:22
 /**
- * - Initializer:
- *   - <tt> void discord_channel_overwrite_init(struct discord_channel_overwrite *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_overwrite_cleanup(struct discord_channel_overwrite *) </tt>
- *   - <tt> void discord_channel_overwrite_list_free(struct discord_channel_overwrite **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite **) </tt>
- *   - <tt> void discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *) </tt>
- *   - <tt> void discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_overwrite_init(struct discord_channel_overwrite *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_overwrite_cleanup(struct discord_channel_overwrite *)`
+ *     * :code:`void discord_channel_overwrite_list_free(struct discord_channel_overwrite **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_overwrite_from_json(char *rbuf, size_t len, struct discord_channel_overwrite **)`
+ *     * :code:`void discord_channel_overwrite_list_from_json(char *rbuf, size_t len, struct discord_channel_overwrite ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_overwrite_to_json(char *wbuf, size_t len, struct discord_channel_overwrite *)`
+ *     * :code:`void discord_channel_overwrite_list_to_json(char *wbuf, size_t len, struct discord_channel_overwrite **)`
+ * @endverbatim
  */
 struct discord_channel_overwrite {
   /* specs/discord/channel.json:247:20
@@ -903,17 +1051,29 @@ extern size_t discord_channel_overwrite_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
  *
- * - Initializer:
- *   - <tt> void discord_thread_metadata_init(struct discord_thread_metadata *) </tt>
- * - Cleanup:
- *   - <tt> void discord_thread_metadata_cleanup(struct discord_thread_metadata *) </tt>
- *   - <tt> void discord_thread_metadata_list_free(struct discord_thread_metadata **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata **) </tt>
- *   - <tt> void discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *) </tt>
- *   - <tt> void discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_thread_metadata_init(struct discord_thread_metadata *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_thread_metadata_cleanup(struct discord_thread_metadata *)`
+ *     * :code:`void discord_thread_metadata_list_free(struct discord_thread_metadata **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata **)`
+ *     * :code:`void discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_thread_metadata_to_json(char *wbuf, size_t len, struct discord_thread_metadata *)`
+ *     * :code:`void discord_thread_metadata_list_to_json(char *wbuf, size_t len, struct discord_thread_metadata **)`
+ * @endverbatim
  */
 struct discord_thread_metadata {
   /* specs/discord/channel.json:262:20
@@ -973,17 +1133,29 @@ extern size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
  *
- * - Initializer:
- *   - <tt> void discord_thread_member_init(struct discord_thread_member *) </tt>
- * - Cleanup:
- *   - <tt> void discord_thread_member_cleanup(struct discord_thread_member *) </tt>
- *   - <tt> void discord_thread_member_list_free(struct discord_thread_member **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member **) </tt>
- *   - <tt> void discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *) </tt>
- *   - <tt> void discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_thread_member_init(struct discord_thread_member *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_thread_member_cleanup(struct discord_thread_member *)`
+ *     * :code:`void discord_thread_member_list_free(struct discord_thread_member **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member **)`
+ *     * :code:`void discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_thread_member_to_json(char *wbuf, size_t len, struct discord_thread_member *)`
+ *     * :code:`void discord_thread_member_list_to_json(char *wbuf, size_t len, struct discord_thread_member **)`
+ * @endverbatim
  */
 struct discord_thread_member {
   /* specs/discord/channel.json:276:20
@@ -1039,17 +1211,29 @@ extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct d
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  *
- * - Initializer:
- *   - <tt> void discord_channel_attachment_init(struct discord_channel_attachment *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_attachment_cleanup(struct discord_channel_attachment *) </tt>
- *   - <tt> void discord_channel_attachment_list_free(struct discord_channel_attachment **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment **) </tt>
- *   - <tt> void discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *) </tt>
- *   - <tt> void discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_attachment_init(struct discord_channel_attachment *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_attachment_cleanup(struct discord_channel_attachment *)`
+ *     * :code:`void discord_channel_attachment_list_free(struct discord_channel_attachment **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_attachment_from_json(char *rbuf, size_t len, struct discord_channel_attachment **)`
+ *     * :code:`void discord_channel_attachment_list_from_json(char *rbuf, size_t len, struct discord_channel_attachment ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_attachment_to_json(char *wbuf, size_t len, struct discord_channel_attachment *)`
+ *     * :code:`void discord_channel_attachment_list_to_json(char *wbuf, size_t len, struct discord_channel_attachment **)`
+ * @endverbatim
  */
 struct discord_channel_attachment {
   /* specs/discord/channel.json:289:20
@@ -1117,17 +1301,29 @@ extern size_t discord_channel_attachment_list_to_json(char *str, size_t len, str
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
- * - Initializer:
- *   - <tt> void discord_channel_mention_init(struct discord_channel_mention *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_mention_cleanup(struct discord_channel_mention *) </tt>
- *   - <tt> void discord_channel_mention_list_free(struct discord_channel_mention **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention **) </tt>
- *   - <tt> void discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *) </tt>
- *   - <tt> void discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_mention_init(struct discord_channel_mention *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_mention_cleanup(struct discord_channel_mention *)`
+ *     * :code:`void discord_channel_mention_list_free(struct discord_channel_mention **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention **)`
+ *     * :code:`void discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_mention_to_json(char *wbuf, size_t len, struct discord_channel_mention *)`
+ *     * :code:`void discord_channel_mention_list_to_json(char *wbuf, size_t len, struct discord_channel_mention **)`
+ * @endverbatim
  */
 struct discord_channel_mention {
   /* specs/discord/channel.json:305:20
@@ -1183,17 +1379,29 @@ extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
- * - Initializer:
- *   - <tt> void discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions *) </tt>
- * - Cleanup:
- *   - <tt> void discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions *) </tt>
- *   - <tt> void discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions **) </tt>
- *   - <tt> void discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *) </tt>
- *   - <tt> void discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_channel_allowed_mentions_init(struct discord_channel_allowed_mentions *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_channel_allowed_mentions_cleanup(struct discord_channel_allowed_mentions *)`
+ *     * :code:`void discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_channel_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions **)`
+ *     * :code:`void discord_channel_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_channel_allowed_mentions ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_channel_allowed_mentions_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions *)`
+ *     * :code:`void discord_channel_allowed_mentions_list_to_json(char *wbuf, size_t len, struct discord_channel_allowed_mentions **)`
+ * @endverbatim
  */
 struct discord_channel_allowed_mentions {
   /* specs/discord/channel.json:318:20
@@ -1249,17 +1457,29 @@ extern size_t discord_channel_allowed_mentions_list_to_json(char *str, size_t le
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_init(struct discord_embed *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_cleanup(struct discord_embed *) </tt>
- *   - <tt> void discord_embed_list_free(struct discord_embed **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_from_json(char *rbuf, size_t len, struct discord_embed **) </tt>
- *   - <tt> void discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *) </tt>
- *   - <tt> void discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_init(struct discord_embed *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_cleanup(struct discord_embed *)`
+ *     * :code:`void discord_embed_list_free(struct discord_embed **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_from_json(char *rbuf, size_t len, struct discord_embed **)`
+ *     * :code:`void discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_to_json(char *wbuf, size_t len, struct discord_embed *)`
+ *     * :code:`void discord_embed_list_to_json(char *wbuf, size_t len, struct discord_embed **)`
+ * @endverbatim
  */
 struct discord_embed {
   /* specs/discord/channel.json:330:20
@@ -1351,17 +1571,29 @@ extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_e
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_thumbnail_init(struct discord_embed_thumbnail *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *) </tt>
- *   - <tt> void discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail **) </tt>
- *   - <tt> void discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *) </tt>
- *   - <tt> void discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_thumbnail_init(struct discord_embed_thumbnail *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *)`
+ *     * :code:`void discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail **)`
+ *     * :code:`void discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_thumbnail_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail *)`
+ *     * :code:`void discord_embed_thumbnail_list_to_json(char *wbuf, size_t len, struct discord_embed_thumbnail **)`
+ * @endverbatim
  */
 struct discord_embed_thumbnail {
   /* specs/discord/channel.json:351:20
@@ -1417,17 +1649,29 @@ extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_video_init(struct discord_embed_video *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_video_cleanup(struct discord_embed_video *) </tt>
- *   - <tt> void discord_embed_video_list_free(struct discord_embed_video **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video **) </tt>
- *   - <tt> void discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *) </tt>
- *   - <tt> void discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_video_init(struct discord_embed_video *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_video_cleanup(struct discord_embed_video *)`
+ *     * :code:`void discord_embed_video_list_free(struct discord_embed_video **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video **)`
+ *     * :code:`void discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_video_to_json(char *wbuf, size_t len, struct discord_embed_video *)`
+ *     * :code:`void discord_embed_video_list_to_json(char *wbuf, size_t len, struct discord_embed_video **)`
+ * @endverbatim
  */
 struct discord_embed_video {
   /* specs/discord/channel.json:363:20
@@ -1483,17 +1727,29 @@ extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_image_init(struct discord_embed_image *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_image_cleanup(struct discord_embed_image *) </tt>
- *   - <tt> void discord_embed_image_list_free(struct discord_embed_image **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image **) </tt>
- *   - <tt> void discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *) </tt>
- *   - <tt> void discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_image_init(struct discord_embed_image *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_image_cleanup(struct discord_embed_image *)`
+ *     * :code:`void discord_embed_image_list_free(struct discord_embed_image **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image **)`
+ *     * :code:`void discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_image_to_json(char *wbuf, size_t len, struct discord_embed_image *)`
+ *     * :code:`void discord_embed_image_list_to_json(char *wbuf, size_t len, struct discord_embed_image **)`
+ * @endverbatim
  */
 struct discord_embed_image {
   /* specs/discord/channel.json:375:20
@@ -1549,17 +1805,29 @@ extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_provider_init(struct discord_embed_provider *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_provider_cleanup(struct discord_embed_provider *) </tt>
- *   - <tt> void discord_embed_provider_list_free(struct discord_embed_provider **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider **) </tt>
- *   - <tt> void discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *) </tt>
- *   - <tt> void discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_provider_init(struct discord_embed_provider *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_provider_cleanup(struct discord_embed_provider *)`
+ *     * :code:`void discord_embed_provider_list_free(struct discord_embed_provider **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider **)`
+ *     * :code:`void discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_provider_to_json(char *wbuf, size_t len, struct discord_embed_provider *)`
+ *     * :code:`void discord_embed_provider_list_to_json(char *wbuf, size_t len, struct discord_embed_provider **)`
+ * @endverbatim
  */
 struct discord_embed_provider {
   /* specs/discord/channel.json:387:20
@@ -1607,17 +1875,29 @@ extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct 
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_author_init(struct discord_embed_author *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_author_cleanup(struct discord_embed_author *) </tt>
- *   - <tt> void discord_embed_author_list_free(struct discord_embed_author **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author **) </tt>
- *   - <tt> void discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *) </tt>
- *   - <tt> void discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_author_init(struct discord_embed_author *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_author_cleanup(struct discord_embed_author *)`
+ *     * :code:`void discord_embed_author_list_free(struct discord_embed_author **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author **)`
+ *     * :code:`void discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_author_to_json(char *wbuf, size_t len, struct discord_embed_author *)`
+ *     * :code:`void discord_embed_author_list_to_json(char *wbuf, size_t len, struct discord_embed_author **)`
+ * @endverbatim
  */
 struct discord_embed_author {
   /* specs/discord/channel.json:397:20
@@ -1673,17 +1953,29 @@ extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_footer_init(struct discord_embed_footer *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_footer_cleanup(struct discord_embed_footer *) </tt>
- *   - <tt> void discord_embed_footer_list_free(struct discord_embed_footer **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer **) </tt>
- *   - <tt> void discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *) </tt>
- *   - <tt> void discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_footer_init(struct discord_embed_footer *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_footer_cleanup(struct discord_embed_footer *)`
+ *     * :code:`void discord_embed_footer_list_free(struct discord_embed_footer **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer **)`
+ *     * :code:`void discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_footer_to_json(char *wbuf, size_t len, struct discord_embed_footer *)`
+ *     * :code:`void discord_embed_footer_list_to_json(char *wbuf, size_t len, struct discord_embed_footer **)`
+ * @endverbatim
  */
 struct discord_embed_footer {
   /* specs/discord/channel.json:409:20
@@ -1735,17 +2027,29 @@ extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
- * - Initializer:
- *   - <tt> void discord_embed_field_init(struct discord_embed_field *) </tt>
- * - Cleanup:
- *   - <tt> void discord_embed_field_cleanup(struct discord_embed_field *) </tt>
- *   - <tt> void discord_embed_field_list_free(struct discord_embed_field **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field **) </tt>
- *   - <tt> void discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *) </tt>
- *   - <tt> void discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_embed_field_init(struct discord_embed_field *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_embed_field_cleanup(struct discord_embed_field *)`
+ *     * :code:`void discord_embed_field_list_free(struct discord_embed_field **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field **)`
+ *     * :code:`void discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_embed_field_to_json(char *wbuf, size_t len, struct discord_embed_field *)`
+ *     * :code:`void discord_embed_field_list_to_json(char *wbuf, size_t len, struct discord_embed_field **)`
+ * @endverbatim
  */
 struct discord_embed_field {
   /* specs/discord/channel.json:420:20

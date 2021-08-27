@@ -8,17 +8,29 @@
 // Create Guild Emoji
 // defined at specs/discord/emoji.endpoints-params.json:9:22
 /**
- * - Initializer:
- *   - <tt> void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *) </tt>
- *   - <tt> void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
- *   - <tt> void discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params *) </tt>
- *   - <tt> void discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *)`
+ *     * :code:`void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params **)`
+ *     * :code:`void discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params *)`
+ *     * :code:`void discord_create_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_emoji_params **)`
+ * @endverbatim
  */
 struct discord_create_guild_emoji_params {
   /* specs/discord/emoji.endpoints-params.json:12:20
@@ -68,17 +80,29 @@ extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t l
 // Modify Guild Emoji
 // defined at specs/discord/emoji.endpoints-params.json:20:22
 /**
- * - Initializer:
- *   - <tt> void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params *) </tt>
- *   - <tt> void discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
- *   - <tt> void discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params *) </tt>
- *   - <tt> void discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params *)`
+ *     * :code:`void discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params **)`
+ *     * :code:`void discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_guild_emoji_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params *)`
+ *     * :code:`void discord_modify_guild_emoji_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_emoji_params **)`
+ * @endverbatim
  */
 struct discord_modify_guild_emoji_params {
   /* specs/discord/emoji.endpoints-params.json:23:20

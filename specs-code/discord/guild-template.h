@@ -10,17 +10,29 @@
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_template_init(struct discord_guild_template *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_template_cleanup(struct discord_guild_template *) </tt>
- *   - <tt> void discord_guild_template_list_free(struct discord_guild_template **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template **) </tt>
- *   - <tt> void discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *) </tt>
- *   - <tt> void discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_template_init(struct discord_guild_template *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_template_cleanup(struct discord_guild_template *)`
+ *     * :code:`void discord_guild_template_list_free(struct discord_guild_template **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template **)`
+ *     * :code:`void discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_template_to_json(char *wbuf, size_t len, struct discord_guild_template *)`
+ *     * :code:`void discord_guild_template_list_to_json(char *wbuf, size_t len, struct discord_guild_template **)`
+ * @endverbatim
  */
 struct discord_guild_template {
   /* specs/discord/guild-template.json:12:20

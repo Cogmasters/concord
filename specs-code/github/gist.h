@@ -8,17 +8,29 @@
 // Gist Structure
 // defined at specs/github/gist.json:9:33
 /**
- * - Initializer:
- *   - <tt> void github_gist_init(struct github_gist *) </tt>
- * - Cleanup:
- *   - <tt> void github_gist_cleanup(struct github_gist *) </tt>
- *   - <tt> void github_gist_list_free(struct github_gist **) </tt>
- * - JSON Decoder:
- *   - <tt> void github_gist_from_json(char *rbuf, size_t len, struct github_gist **) </tt>
- *   - <tt> void github_gist_list_from_json(char *rbuf, size_t len, struct github_gist ***) </tt>
- * - JSON Encoder:
- *   - <tt> void github_gist_to_json(char *wbuf, size_t len, struct github_gist *) </tt>
- *   - <tt> void github_gist_list_to_json(char *wbuf, size_t len, struct github_gist **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void github_gist_init(struct github_gist *)`
+ *   * Cleanup:
+
+ *     * :code:`void github_gist_cleanup(struct github_gist *)`
+ *     * :code:`void github_gist_list_free(struct github_gist **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void github_gist_from_json(char *rbuf, size_t len, struct github_gist **)`
+ *     * :code:`void github_gist_list_from_json(char *rbuf, size_t len, struct github_gist ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void github_gist_to_json(char *wbuf, size_t len, struct github_gist *)`
+ *     * :code:`void github_gist_list_to_json(char *wbuf, size_t len, struct github_gist **)`
+ * @endverbatim
  */
 struct github_gist {
   /* specs/github/gist.json:12:28

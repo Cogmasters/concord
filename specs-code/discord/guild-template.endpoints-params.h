@@ -8,17 +8,29 @@
 // Create Guild From Guild Template
 // defined at specs/discord/guild-template.endpoints-params.json:9:22
 /**
- * - Initializer:
- *   - <tt> void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *) </tt>
- *   - <tt> void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
- *   - <tt> void discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params *) </tt>
- *   - <tt> void discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *)`
+ *     * :code:`void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params **)`
+ *     * :code:`void discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_guild_from_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params *)`
+ *     * :code:`void discord_create_guild_from_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_from_guild_template_params **)`
+ * @endverbatim
  */
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:12:20
@@ -64,17 +76,29 @@ extern size_t discord_create_guild_from_guild_template_params_list_to_json(char 
 // Create Guild Template
 // defined at specs/discord/guild-template.endpoints-params.json:19:22
 /**
- * - Initializer:
- *   - <tt> void discord_create_guild_template_params_init(struct discord_create_guild_template_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *) </tt>
- *   - <tt> void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params **) </tt>
- *   - <tt> void discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params *) </tt>
- *   - <tt> void discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_guild_template_params_init(struct discord_create_guild_template_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *)`
+ *     * :code:`void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params **)`
+ *     * :code:`void discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_guild_template_params_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params *)`
+ *     * :code:`void discord_create_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_template_params **)`
+ * @endverbatim
  */
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:22:20
@@ -120,17 +144,29 @@ extern size_t discord_create_guild_template_params_list_to_json(char *str, size_
 // Modify Guild Template
 // defined at specs/discord/guild-template.endpoints-params.json:29:22
 /**
- * - Initializer:
- *   - <tt> void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *) </tt>
- *   - <tt> void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
- *   - <tt> void discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params *) </tt>
- *   - <tt> void discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *)`
+ *     * :code:`void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params **)`
+ *     * :code:`void discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_guild_template_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params *)`
+ *     * :code:`void discord_modify_guild_template_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_template_params **)`
+ * @endverbatim
  */
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:32:20

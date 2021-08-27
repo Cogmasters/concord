@@ -11,9 +11,17 @@
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes
  *
- * - <tt> char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes code) </tt>
- * - <tt> enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char *code_as_str) </tt>
- * - <tt> bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes code)`
+ *   * :code:`enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char *code_as_str)`
+ *   * :code:`bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_voice_close_opcodes {
   DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE = 4001,
@@ -39,9 +47,17 @@ extern bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes, ch
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
  *
- * - <tt> char* discord_voice_opcodes_print(enum discord_voice_opcodes code) </tt>
- * - <tt> enum discord_voice_opcodes discord_voice_opcodes_eval(char *code_as_str) </tt>
- * - <tt> bool discord_voice_opcodes_cmp(enum discord_voice_opcodes code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_voice_opcodes_print(enum discord_voice_opcodes code)`
+ *   * :code:`enum discord_voice_opcodes discord_voice_opcodes_eval(char *code_as_str)`
+ *   * :code:`bool discord_voice_opcodes_cmp(enum discord_voice_opcodes code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_voice_opcodes {
   DISCORD_VOICE_IDENTIFY = 0,
@@ -67,9 +83,17 @@ extern bool discord_voice_opcodes_cmp(enum discord_voice_opcodes, char*);
 /**
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  *
- * - <tt> char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags code) </tt>
- * - <tt> enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *code_as_str) </tt>
- * - <tt> bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags code)`
+ *   * :code:`enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *code_as_str)`
+ *   * :code:`bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_voice_speaking_flags {
   DISCORD_VOICE_MICROPHONE = 1, ///< 1 << 0

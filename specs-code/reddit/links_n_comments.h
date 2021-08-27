@@ -10,17 +10,29 @@
 /**
  * @see https://www.reddit.com/dev/api/#POST_api_comment
  *
- * - Initializer:
- *   - <tt> void reddit_comment_params_init(struct reddit_comment_params *) </tt>
- * - Cleanup:
- *   - <tt> void reddit_comment_params_cleanup(struct reddit_comment_params *) </tt>
- *   - <tt> void reddit_comment_params_list_free(struct reddit_comment_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void reddit_comment_params_from_json(char *rbuf, size_t len, struct reddit_comment_params **) </tt>
- *   - <tt> void reddit_comment_params_list_from_json(char *rbuf, size_t len, struct reddit_comment_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void reddit_comment_params_to_json(char *wbuf, size_t len, struct reddit_comment_params *) </tt>
- *   - <tt> void reddit_comment_params_list_to_json(char *wbuf, size_t len, struct reddit_comment_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void reddit_comment_params_init(struct reddit_comment_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void reddit_comment_params_cleanup(struct reddit_comment_params *)`
+ *     * :code:`void reddit_comment_params_list_free(struct reddit_comment_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void reddit_comment_params_from_json(char *rbuf, size_t len, struct reddit_comment_params **)`
+ *     * :code:`void reddit_comment_params_list_from_json(char *rbuf, size_t len, struct reddit_comment_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void reddit_comment_params_to_json(char *wbuf, size_t len, struct reddit_comment_params *)`
+ *     * :code:`void reddit_comment_params_list_to_json(char *wbuf, size_t len, struct reddit_comment_params **)`
+ * @endverbatim
  */
 struct reddit_comment_params {
   /* specs/reddit/links_n_comments.json:13:20

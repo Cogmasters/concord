@@ -10,17 +10,29 @@
 /**
  * @see https://www.reddit.com/dev/api/#GET_search
  *
- * - Initializer:
- *   - <tt> void reddit_search_params_init(struct reddit_search_params *) </tt>
- * - Cleanup:
- *   - <tt> void reddit_search_params_cleanup(struct reddit_search_params *) </tt>
- *   - <tt> void reddit_search_params_list_free(struct reddit_search_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params **) </tt>
- *   - <tt> void reddit_search_params_list_from_json(char *rbuf, size_t len, struct reddit_search_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void reddit_search_params_to_json(char *wbuf, size_t len, struct reddit_search_params *) </tt>
- *   - <tt> void reddit_search_params_list_to_json(char *wbuf, size_t len, struct reddit_search_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void reddit_search_params_init(struct reddit_search_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void reddit_search_params_cleanup(struct reddit_search_params *)`
+ *     * :code:`void reddit_search_params_list_free(struct reddit_search_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params **)`
+ *     * :code:`void reddit_search_params_list_from_json(char *rbuf, size_t len, struct reddit_search_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void reddit_search_params_to_json(char *wbuf, size_t len, struct reddit_search_params *)`
+ *     * :code:`void reddit_search_params_list_to_json(char *wbuf, size_t len, struct reddit_search_params **)`
+ * @endverbatim
  */
 struct reddit_search_params {
   /* specs/reddit/search.json:13:20

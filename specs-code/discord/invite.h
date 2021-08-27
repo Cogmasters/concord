@@ -11,9 +11,17 @@
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
  *
- * - <tt> char* discord_invite_target_user_types_print(enum discord_invite_target_user_types code) </tt>
- * - <tt> enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_invite_target_user_types_print(enum discord_invite_target_user_types code)`
+ *   * :code:`enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_invite_target_user_types {
   DISCORD_INVITE_STREAM = 1,
@@ -27,17 +35,29 @@ extern bool discord_invite_target_user_types_cmp(enum discord_invite_target_user
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
  *
- * - Initializer:
- *   - <tt> void discord_invite_init(struct discord_invite *) </tt>
- * - Cleanup:
- *   - <tt> void discord_invite_cleanup(struct discord_invite *) </tt>
- *   - <tt> void discord_invite_list_free(struct discord_invite **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **) </tt>
- *   - <tt> void discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *) </tt>
- *   - <tt> void discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_invite_init(struct discord_invite *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_invite_cleanup(struct discord_invite *)`
+ *     * :code:`void discord_invite_list_free(struct discord_invite **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **)`
+ *     * :code:`void discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_invite_to_json(char *wbuf, size_t len, struct discord_invite *)`
+ *     * :code:`void discord_invite_list_to_json(char *wbuf, size_t len, struct discord_invite **)`
+ * @endverbatim
  */
 struct discord_invite {
   /* specs/discord/invite.json:22:20
@@ -109,17 +129,29 @@ extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
  *
- * - Initializer:
- *   - <tt> void discord_invite_metadata_init(struct discord_invite_metadata *) </tt>
- * - Cleanup:
- *   - <tt> void discord_invite_metadata_cleanup(struct discord_invite_metadata *) </tt>
- *   - <tt> void discord_invite_metadata_list_free(struct discord_invite_metadata **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **) </tt>
- *   - <tt> void discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *) </tt>
- *   - <tt> void discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_invite_metadata_init(struct discord_invite_metadata *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_invite_metadata_cleanup(struct discord_invite_metadata *)`
+ *     * :code:`void discord_invite_metadata_list_free(struct discord_invite_metadata **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **)`
+ *     * :code:`void discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_invite_metadata_to_json(char *wbuf, size_t len, struct discord_invite_metadata *)`
+ *     * :code:`void discord_invite_metadata_list_to_json(char *wbuf, size_t len, struct discord_invite_metadata **)`
+ * @endverbatim
  */
 struct discord_invite_metadata {
   /* specs/discord/invite.json:39:20

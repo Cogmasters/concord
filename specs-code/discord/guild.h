@@ -10,17 +10,29 @@
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_init(struct discord_guild *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_cleanup(struct discord_guild *) </tt>
- *   - <tt> void discord_guild_list_free(struct discord_guild **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_from_json(char *rbuf, size_t len, struct discord_guild **) </tt>
- *   - <tt> void discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_to_json(char *wbuf, size_t len, struct discord_guild *) </tt>
- *   - <tt> void discord_guild_list_to_json(char *wbuf, size_t len, struct discord_guild **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_init(struct discord_guild *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_cleanup(struct discord_guild *)`
+ *     * :code:`void discord_guild_list_free(struct discord_guild **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_from_json(char *rbuf, size_t len, struct discord_guild **)`
+ *     * :code:`void discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_to_json(char *wbuf, size_t len, struct discord_guild *)`
+ *     * :code:`void discord_guild_list_to_json(char *wbuf, size_t len, struct discord_guild **)`
+ * @endverbatim
  */
 struct discord_guild {
   /* specs/discord/guild.json:12:78
@@ -253,9 +265,17 @@ extern size_t discord_guild_list_to_json(char *str, size_t len, struct discord_g
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
  *
- * - <tt> char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level code) </tt>
- * - <tt> enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level code)`
+ *   * :code:`enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_default_message_notification_level {
   DISCORD_GUILD_ALL_MESSAGES = 0,
@@ -271,9 +291,17 @@ extern bool discord_guild_default_message_notification_level_cmp(enum discord_gu
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
  *
- * - <tt> char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level code) </tt>
- * - <tt> enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level code)`
+ *   * :code:`enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_explicit_content_filter_level {
   DISCORD_GUILD_DISABLED = 0,
@@ -290,9 +318,17 @@ extern bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_e
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
  *
- * - <tt> char* discord_guild_mfa_level_print(enum discord_guild_mfa_level code) </tt>
- * - <tt> enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_mfa_level_print(enum discord_guild_mfa_level code)`
+ *   * :code:`enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_mfa_level {
   DISCORD_GUILD_DISCORD_MFA_NONE = 0,
@@ -308,9 +344,17 @@ extern bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level, char*);
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-verification-level
  *
- * - <tt> char* discord_guild_verification_level_print(enum discord_guild_verification_level code) </tt>
- * - <tt> enum discord_guild_verification_level discord_guild_verification_level_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_verification_level_cmp(enum discord_guild_verification_level code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_verification_level_print(enum discord_guild_verification_level code)`
+ *   * :code:`enum discord_guild_verification_level discord_guild_verification_level_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_verification_level_cmp(enum discord_guild_verification_level code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_verification_level {
   DISCORD_GUILD_DISCORD_VL_NONE = 0,
@@ -329,9 +373,17 @@ extern bool discord_guild_verification_level_cmp(enum discord_guild_verification
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
  *
- * - <tt> char* discord_guild_premium_tier_print(enum discord_guild_premium_tier code) </tt>
- * - <tt> enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_premium_tier_print(enum discord_guild_premium_tier code)`
+ *   * :code:`enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_premium_tier {
   DISCORD_GUILD_DISCORD_PREMIUM_NONE = 0,
@@ -349,9 +401,17 @@ extern bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier, char
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags
  *
- * - <tt> char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags code) </tt>
- * - <tt> enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags code)`
+ *   * :code:`enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_system_channel_flags {
   DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS = 1, ///< 1<<0
@@ -367,9 +427,17 @@ extern bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_cha
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-features
  *
- * - <tt> char* discord_guild_features_print(enum discord_guild_features code) </tt>
- * - <tt> enum discord_guild_features discord_guild_features_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_features_cmp(enum discord_guild_features code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_features_print(enum discord_guild_features code)`
+ *   * :code:`enum discord_guild_features discord_guild_features_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_features_cmp(enum discord_guild_features code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_features {
   DISCORD_GUILD_INVITE_SPLASH = 0,
@@ -397,17 +465,29 @@ extern bool discord_guild_features_cmp(enum discord_guild_features, char*);
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
  *
- * - Initializer:
- *   - <tt> void discord_guild_unavailable_init(struct discord_guild_unavailable *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_unavailable_cleanup(struct discord_guild_unavailable *) </tt>
- *   - <tt> void discord_guild_unavailable_list_free(struct discord_guild_unavailable **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_unavailable_from_json(char *rbuf, size_t len, struct discord_guild_unavailable **) </tt>
- *   - <tt> void discord_guild_unavailable_list_from_json(char *rbuf, size_t len, struct discord_guild_unavailable ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable *) </tt>
- *   - <tt> void discord_guild_unavailable_list_to_json(char *wbuf, size_t len, struct discord_guild_unavailable **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_unavailable_init(struct discord_guild_unavailable *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_unavailable_cleanup(struct discord_guild_unavailable *)`
+ *     * :code:`void discord_guild_unavailable_list_free(struct discord_guild_unavailable **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_unavailable_from_json(char *rbuf, size_t len, struct discord_guild_unavailable **)`
+ *     * :code:`void discord_guild_unavailable_list_from_json(char *rbuf, size_t len, struct discord_guild_unavailable ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_unavailable_to_json(char *wbuf, size_t len, struct discord_guild_unavailable *)`
+ *     * :code:`void discord_guild_unavailable_list_to_json(char *wbuf, size_t len, struct discord_guild_unavailable **)`
+ * @endverbatim
  */
 struct discord_guild_unavailable {
   /* specs/discord/guild.json:163:18
@@ -455,17 +535,29 @@ extern size_t discord_guild_unavailable_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
  *
- * - Initializer:
- *   - <tt> void discord_guild_preview_init(struct discord_guild_preview *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_preview_cleanup(struct discord_guild_preview *) </tt>
- *   - <tt> void discord_guild_preview_list_free(struct discord_guild_preview **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview **) </tt>
- *   - <tt> void discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview *) </tt>
- *   - <tt> void discord_guild_preview_list_to_json(char *wbuf, size_t len, struct discord_guild_preview **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_preview_init(struct discord_guild_preview *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_preview_cleanup(struct discord_guild_preview *)`
+ *     * :code:`void discord_guild_preview_list_free(struct discord_guild_preview **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview **)`
+ *     * :code:`void discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_preview_to_json(char *wbuf, size_t len, struct discord_guild_preview *)`
+ *     * :code:`void discord_guild_preview_list_to_json(char *wbuf, size_t len, struct discord_guild_preview **)`
+ * @endverbatim
  */
 struct discord_guild_preview {
   /* specs/discord/guild.json:173:18
@@ -545,17 +637,29 @@ extern size_t discord_guild_preview_list_to_json(char *str, size_t len, struct d
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
  *
- * - Initializer:
- *   - <tt> void discord_guild_widget_init(struct discord_guild_widget *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_widget_cleanup(struct discord_guild_widget *) </tt>
- *   - <tt> void discord_guild_widget_list_free(struct discord_guild_widget **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget **) </tt>
- *   - <tt> void discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget *) </tt>
- *   - <tt> void discord_guild_widget_list_to_json(char *wbuf, size_t len, struct discord_guild_widget **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_widget_init(struct discord_guild_widget *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_widget_cleanup(struct discord_guild_widget *)`
+ *     * :code:`void discord_guild_widget_list_free(struct discord_guild_widget **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget **)`
+ *     * :code:`void discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_widget_to_json(char *wbuf, size_t len, struct discord_guild_widget *)`
+ *     * :code:`void discord_guild_widget_list_to_json(char *wbuf, size_t len, struct discord_guild_widget **)`
+ * @endverbatim
  */
 struct discord_guild_widget {
   /* specs/discord/guild.json:191:18
@@ -603,17 +707,29 @@ extern size_t discord_guild_widget_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
  *
- * - Initializer:
- *   - <tt> void discord_guild_member_init(struct discord_guild_member *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_member_cleanup(struct discord_guild_member *) </tt>
- *   - <tt> void discord_guild_member_list_free(struct discord_guild_member **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member **) </tt>
- *   - <tt> void discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member *) </tt>
- *   - <tt> void discord_guild_member_list_to_json(char *wbuf, size_t len, struct discord_guild_member **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_member_init(struct discord_guild_member *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_member_cleanup(struct discord_guild_member *)`
+ *     * :code:`void discord_guild_member_list_free(struct discord_guild_member **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member **)`
+ *     * :code:`void discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_member_to_json(char *wbuf, size_t len, struct discord_guild_member *)`
+ *     * :code:`void discord_guild_member_list_to_json(char *wbuf, size_t len, struct discord_guild_member **)`
+ * @endverbatim
  */
 struct discord_guild_member {
   /* specs/discord/guild.json:202:20
@@ -689,17 +805,29 @@ extern size_t discord_guild_member_list_to_json(char *str, size_t len, struct di
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_integration_init(struct discord_guild_integration *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_integration_cleanup(struct discord_guild_integration *) </tt>
- *   - <tt> void discord_guild_integration_list_free(struct discord_guild_integration **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_integration_from_json(char *rbuf, size_t len, struct discord_guild_integration **) </tt>
- *   - <tt> void discord_guild_integration_list_from_json(char *rbuf, size_t len, struct discord_guild_integration ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration *) </tt>
- *   - <tt> void discord_guild_integration_list_to_json(char *wbuf, size_t len, struct discord_guild_integration **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_integration_init(struct discord_guild_integration *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_integration_cleanup(struct discord_guild_integration *)`
+ *     * :code:`void discord_guild_integration_list_free(struct discord_guild_integration **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_integration_from_json(char *rbuf, size_t len, struct discord_guild_integration **)`
+ *     * :code:`void discord_guild_integration_list_from_json(char *rbuf, size_t len, struct discord_guild_integration ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_integration_to_json(char *wbuf, size_t len, struct discord_guild_integration *)`
+ *     * :code:`void discord_guild_integration_list_to_json(char *wbuf, size_t len, struct discord_guild_integration **)`
+ * @endverbatim
  */
 struct discord_guild_integration {
   /* specs/discord/guild.json:220:20
@@ -800,9 +928,17 @@ extern size_t discord_guild_integration_list_to_json(char *str, size_t len, stru
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors
  *
- * - <tt> char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors code) </tt>
- * - <tt> enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char *code_as_str) </tt>
- * - <tt> bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors code)`
+ *   * :code:`enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char *code_as_str)`
+ *   * :code:`bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_guild_integration_expire_behaviors {
   DISCORD_GUILD_INTEGRATION_REMOVE_ROLE = 0,
@@ -817,17 +953,29 @@ extern bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_in
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_integration_account_init(struct discord_guild_integration_account *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_integration_account_cleanup(struct discord_guild_integration_account *) </tt>
- *   - <tt> void discord_guild_integration_account_list_free(struct discord_guild_integration_account **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_integration_account_from_json(char *rbuf, size_t len, struct discord_guild_integration_account **) </tt>
- *   - <tt> void discord_guild_integration_account_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_account ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account *) </tt>
- *   - <tt> void discord_guild_integration_account_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_account **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_integration_account_init(struct discord_guild_integration_account *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_integration_account_cleanup(struct discord_guild_integration_account *)`
+ *     * :code:`void discord_guild_integration_account_list_free(struct discord_guild_integration_account **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_integration_account_from_json(char *rbuf, size_t len, struct discord_guild_integration_account **)`
+ *     * :code:`void discord_guild_integration_account_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_account ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_integration_account_to_json(char *wbuf, size_t len, struct discord_guild_integration_account *)`
+ *     * :code:`void discord_guild_integration_account_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_account **)`
+ * @endverbatim
  */
 struct discord_guild_integration_account {
   /* specs/discord/guild.json:253:19
@@ -875,17 +1023,29 @@ extern size_t discord_guild_integration_account_list_to_json(char *str, size_t l
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_integration_application_init(struct discord_guild_integration_application *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_integration_application_cleanup(struct discord_guild_integration_application *) </tt>
- *   - <tt> void discord_guild_integration_application_list_free(struct discord_guild_integration_application **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_integration_application_from_json(char *rbuf, size_t len, struct discord_guild_integration_application **) </tt>
- *   - <tt> void discord_guild_integration_application_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_application ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application *) </tt>
- *   - <tt> void discord_guild_integration_application_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_application **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_integration_application_init(struct discord_guild_integration_application *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_integration_application_cleanup(struct discord_guild_integration_application *)`
+ *     * :code:`void discord_guild_integration_application_list_free(struct discord_guild_integration_application **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_integration_application_from_json(char *rbuf, size_t len, struct discord_guild_integration_application **)`
+ *     * :code:`void discord_guild_integration_application_list_from_json(char *rbuf, size_t len, struct discord_guild_integration_application ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_integration_application_to_json(char *wbuf, size_t len, struct discord_guild_integration_application *)`
+ *     * :code:`void discord_guild_integration_application_list_to_json(char *wbuf, size_t len, struct discord_guild_integration_application **)`
+ * @endverbatim
  */
 struct discord_guild_integration_application {
   /* specs/discord/guild.json:263:19
@@ -949,17 +1109,29 @@ extern size_t discord_guild_integration_application_list_to_json(char *str, size
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
  *
- * - Initializer:
- *   - <tt> void discord_guild_ban_init(struct discord_guild_ban *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_ban_cleanup(struct discord_guild_ban *) </tt>
- *   - <tt> void discord_guild_ban_list_free(struct discord_guild_ban **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_ban_from_json(char *rbuf, size_t len, struct discord_guild_ban **) </tt>
- *   - <tt> void discord_guild_ban_list_from_json(char *rbuf, size_t len, struct discord_guild_ban ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban *) </tt>
- *   - <tt> void discord_guild_ban_list_to_json(char *wbuf, size_t len, struct discord_guild_ban **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_ban_init(struct discord_guild_ban *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_ban_cleanup(struct discord_guild_ban *)`
+ *     * :code:`void discord_guild_ban_list_free(struct discord_guild_ban **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_ban_from_json(char *rbuf, size_t len, struct discord_guild_ban **)`
+ *     * :code:`void discord_guild_ban_list_from_json(char *rbuf, size_t len, struct discord_guild_ban ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_ban_to_json(char *wbuf, size_t len, struct discord_guild_ban *)`
+ *     * :code:`void discord_guild_ban_list_to_json(char *wbuf, size_t len, struct discord_guild_ban **)`
+ * @endverbatim
  */
 struct discord_guild_ban {
   /* specs/discord/guild.json:278:20
@@ -1007,17 +1179,29 @@ extern size_t discord_guild_ban_list_to_json(char *str, size_t len, struct disco
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_welcome_screen_init(struct discord_guild_welcome_screen *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen *) </tt>
- *   - <tt> void discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_welcome_screen_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen **) </tt>
- *   - <tt> void discord_guild_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen *) </tt>
- *   - <tt> void discord_guild_welcome_screen_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_welcome_screen_init(struct discord_guild_welcome_screen *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_welcome_screen_cleanup(struct discord_guild_welcome_screen *)`
+ *     * :code:`void discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_welcome_screen_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen **)`
+ *     * :code:`void discord_guild_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_welcome_screen_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen *)`
+ *     * :code:`void discord_guild_welcome_screen_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen **)`
+ * @endverbatim
  */
 struct discord_guild_welcome_screen {
   /* specs/discord/guild.json:289:20
@@ -1065,17 +1249,29 @@ extern size_t discord_guild_welcome_screen_list_to_json(char *str, size_t len, s
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel *) </tt>
- *   - <tt> void discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel **) </tt>
- *   - <tt> void discord_guild_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel *) </tt>
- *   - <tt> void discord_guild_welcome_screen_channel_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_welcome_screen_channel_init(struct discord_guild_welcome_screen_channel *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_welcome_screen_channel_cleanup(struct discord_guild_welcome_screen_channel *)`
+ *     * :code:`void discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel **)`
+ *     * :code:`void discord_guild_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_guild_welcome_screen_channel ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_welcome_screen_channel_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel *)`
+ *     * :code:`void discord_guild_welcome_screen_channel_list_to_json(char *wbuf, size_t len, struct discord_guild_welcome_screen_channel **)`
+ * @endverbatim
  */
 struct discord_guild_welcome_screen_channel {
   /* specs/discord/guild.json:300:20

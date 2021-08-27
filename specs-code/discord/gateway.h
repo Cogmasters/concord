@@ -11,9 +11,17 @@
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
  *
- * - <tt> char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes code) </tt>
- * - <tt> enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *code_as_str) </tt>
- * - <tt> bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes code)`
+ *   * :code:`enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *code_as_str)`
+ *   * :code:`bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_gateway_close_opcodes {
   DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR = 4000,
@@ -41,9 +49,17 @@ extern bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes
 /**
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  *
- * - <tt> char* discord_gateway_intents_print(enum discord_gateway_intents code) </tt>
- * - <tt> enum discord_gateway_intents discord_gateway_intents_eval(char *code_as_str) </tt>
- * - <tt> bool discord_gateway_intents_cmp(enum discord_gateway_intents code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_gateway_intents_print(enum discord_gateway_intents code)`
+ *   * :code:`enum discord_gateway_intents discord_gateway_intents_eval(char *code_as_str)`
+ *   * :code:`bool discord_gateway_intents_cmp(enum discord_gateway_intents code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_gateway_intents {
   DISCORD_GATEWAY_GUILDS = 1, ///< 1 << 0
@@ -72,9 +88,17 @@ extern bool discord_gateway_intents_cmp(enum discord_gateway_intents, char*);
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
  *
- * - <tt> char* discord_gateway_opcodes_print(enum discord_gateway_opcodes code) </tt>
- * - <tt> enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *code_as_str) </tt>
- * - <tt> bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_gateway_opcodes_print(enum discord_gateway_opcodes code)`
+ *   * :code:`enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *code_as_str)`
+ *   * :code:`bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_gateway_opcodes {
   DISCORD_GATEWAY_DISPATCH = 0,
@@ -99,9 +123,17 @@ extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
 /**
  * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
  *
- * - <tt> char* discord_gateway_events_print(enum discord_gateway_events code) </tt>
- * - <tt> enum discord_gateway_events discord_gateway_events_eval(char *code_as_str) </tt>
- * - <tt> bool discord_gateway_events_cmp(enum discord_gateway_events code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_gateway_events_print(enum discord_gateway_events code)`
+ *   * :code:`enum discord_gateway_events discord_gateway_events_eval(char *code_as_str)`
+ *   * :code:`bool discord_gateway_events_cmp(enum discord_gateway_events code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_NONE = 0,
@@ -149,17 +181,29 @@ extern bool discord_gateway_events_cmp(enum discord_gateway_events, char*);
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
- * - Initializer:
- *   - <tt> void discord_gateway_identify_init(struct discord_gateway_identify *) </tt>
- * - Cleanup:
- *   - <tt> void discord_gateway_identify_cleanup(struct discord_gateway_identify *) </tt>
- *   - <tt> void discord_gateway_identify_list_free(struct discord_gateway_identify **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify **) </tt>
- *   - <tt> void discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *) </tt>
- *   - <tt> void discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_gateway_identify_init(struct discord_gateway_identify *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_gateway_identify_cleanup(struct discord_gateway_identify *)`
+ *     * :code:`void discord_gateway_identify_list_free(struct discord_gateway_identify **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_gateway_identify_from_json(char *rbuf, size_t len, struct discord_gateway_identify **)`
+ *     * :code:`void discord_gateway_identify_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_gateway_identify_to_json(char *wbuf, size_t len, struct discord_gateway_identify *)`
+ *     * :code:`void discord_gateway_identify_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify **)`
+ * @endverbatim
  */
 struct discord_gateway_identify {
   /* specs/discord/gateway.json:119:19
@@ -231,17 +275,29 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
  *
- * - Initializer:
- *   - <tt> void discord_gateway_status_update_init(struct discord_gateway_status_update *) </tt>
- * - Cleanup:
- *   - <tt> void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *) </tt>
- *   - <tt> void discord_gateway_status_update_list_free(struct discord_gateway_status_update **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **) </tt>
- *   - <tt> void discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *) </tt>
- *   - <tt> void discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_gateway_status_update_init(struct discord_gateway_status_update *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *)`
+ *     * :code:`void discord_gateway_status_update_list_free(struct discord_gateway_status_update **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **)`
+ *     * :code:`void discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *)`
+ *     * :code:`void discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **)`
+ * @endverbatim
  */
 struct discord_gateway_status_update {
   /* specs/discord/gateway.json:135:19
@@ -299,17 +355,29 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
- * - Initializer:
- *   - <tt> void discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *) </tt>
- * - Cleanup:
- *   - <tt> void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *) </tt>
- *   - <tt> void discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
- *   - <tt> void discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *) </tt>
- *   - <tt> void discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_gateway_identify_connection_init(struct discord_gateway_identify_connection *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_gateway_identify_connection_cleanup(struct discord_gateway_identify_connection *)`
+ *     * :code:`void discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_gateway_identify_connection_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection **)`
+ *     * :code:`void discord_gateway_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_gateway_identify_connection ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_gateway_identify_connection_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection *)`
+ *     * :code:`void discord_gateway_identify_connection_list_to_json(char *wbuf, size_t len, struct discord_gateway_identify_connection **)`
+ * @endverbatim
  */
 struct discord_gateway_identify_connection {
   /* specs/discord/gateway.json:150:19
@@ -361,17 +429,29 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
- * - Initializer:
- *   - <tt> void discord_gateway_activity_init(struct discord_gateway_activity *) </tt>
- * - Cleanup:
- *   - <tt> void discord_gateway_activity_cleanup(struct discord_gateway_activity *) </tt>
- *   - <tt> void discord_gateway_activity_list_free(struct discord_gateway_activity **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity **) </tt>
- *   - <tt> void discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *) </tt>
- *   - <tt> void discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_gateway_activity_init(struct discord_gateway_activity *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_gateway_activity_cleanup(struct discord_gateway_activity *)`
+ *     * :code:`void discord_gateway_activity_list_free(struct discord_gateway_activity **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_gateway_activity_from_json(char *rbuf, size_t len, struct discord_gateway_activity **)`
+ *     * :code:`void discord_gateway_activity_list_from_json(char *rbuf, size_t len, struct discord_gateway_activity ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_gateway_activity_to_json(char *wbuf, size_t len, struct discord_gateway_activity *)`
+ *     * :code:`void discord_gateway_activity_list_to_json(char *wbuf, size_t len, struct discord_gateway_activity **)`
+ * @endverbatim
  */
 struct discord_gateway_activity {
   /* specs/discord/gateway.json:161:19
@@ -450,9 +530,17 @@ extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struc
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
- * - <tt> char* discord_gateway_activity_types_print(enum discord_gateway_activity_types code) </tt>
- * - <tt> enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_gateway_activity_types_print(enum discord_gateway_activity_types code)`
+ *   * :code:`enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_gateway_activity_types {
   DISCORD_GATEWAY_ACTIVITY_GAME = 0,

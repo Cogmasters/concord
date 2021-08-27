@@ -8,17 +8,29 @@
 // Access Token
 // defined at specs/reddit/oauth2.json:9:22
 /**
- * - Initializer:
- *   - <tt> void reddit_access_token_params_init(struct reddit_access_token_params *) </tt>
- * - Cleanup:
- *   - <tt> void reddit_access_token_params_cleanup(struct reddit_access_token_params *) </tt>
- *   - <tt> void reddit_access_token_params_list_free(struct reddit_access_token_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void reddit_access_token_params_from_json(char *rbuf, size_t len, struct reddit_access_token_params **) </tt>
- *   - <tt> void reddit_access_token_params_list_from_json(char *rbuf, size_t len, struct reddit_access_token_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void reddit_access_token_params_to_json(char *wbuf, size_t len, struct reddit_access_token_params *) </tt>
- *   - <tt> void reddit_access_token_params_list_to_json(char *wbuf, size_t len, struct reddit_access_token_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void reddit_access_token_params_init(struct reddit_access_token_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void reddit_access_token_params_cleanup(struct reddit_access_token_params *)`
+ *     * :code:`void reddit_access_token_params_list_free(struct reddit_access_token_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void reddit_access_token_params_from_json(char *rbuf, size_t len, struct reddit_access_token_params **)`
+ *     * :code:`void reddit_access_token_params_list_from_json(char *rbuf, size_t len, struct reddit_access_token_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void reddit_access_token_params_to_json(char *wbuf, size_t len, struct reddit_access_token_params *)`
+ *     * :code:`void reddit_access_token_params_list_to_json(char *wbuf, size_t len, struct reddit_access_token_params **)`
+ * @endverbatim
  */
 struct reddit_access_token_params {
   /* specs/reddit/oauth2.json:12:20

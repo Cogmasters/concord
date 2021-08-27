@@ -38,17 +38,29 @@ struct github_user;
 /**
  * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
  *
- * - Initializer:
- *   - <tt> void github_gist_create_params_init(struct github_gist_create_params *) </tt>
- * - Cleanup:
- *   - <tt> void github_gist_create_params_cleanup(struct github_gist_create_params *) </tt>
- *   - <tt> void github_gist_create_params_list_free(struct github_gist_create_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void github_gist_create_params_from_json(char *rbuf, size_t len, struct github_gist_create_params **) </tt>
- *   - <tt> void github_gist_create_params_list_from_json(char *rbuf, size_t len, struct github_gist_create_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void github_gist_create_params_to_json(char *wbuf, size_t len, struct github_gist_create_params *) </tt>
- *   - <tt> void github_gist_create_params_list_to_json(char *wbuf, size_t len, struct github_gist_create_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void github_gist_create_params_init(struct github_gist_create_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void github_gist_create_params_cleanup(struct github_gist_create_params *)`
+ *     * :code:`void github_gist_create_params_list_free(struct github_gist_create_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void github_gist_create_params_from_json(char *rbuf, size_t len, struct github_gist_create_params **)`
+ *     * :code:`void github_gist_create_params_list_from_json(char *rbuf, size_t len, struct github_gist_create_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void github_gist_create_params_to_json(char *wbuf, size_t len, struct github_gist_create_params *)`
+ *     * :code:`void github_gist_create_params_list_to_json(char *wbuf, size_t len, struct github_gist_create_params **)`
+ * @endverbatim
  */
 struct github_gist_create_params {
   /* specs/github/gist.endpoints-params.json:13:28
@@ -87,17 +99,29 @@ struct github_gist_create_params {
 // Gist Structure
 // defined at specs/github/gist.json:9:33
 /**
- * - Initializer:
- *   - <tt> void github_gist_init(struct github_gist *) </tt>
- * - Cleanup:
- *   - <tt> void github_gist_cleanup(struct github_gist *) </tt>
- *   - <tt> void github_gist_list_free(struct github_gist **) </tt>
- * - JSON Decoder:
- *   - <tt> void github_gist_from_json(char *rbuf, size_t len, struct github_gist **) </tt>
- *   - <tt> void github_gist_list_from_json(char *rbuf, size_t len, struct github_gist ***) </tt>
- * - JSON Encoder:
- *   - <tt> void github_gist_to_json(char *wbuf, size_t len, struct github_gist *) </tt>
- *   - <tt> void github_gist_list_to_json(char *wbuf, size_t len, struct github_gist **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void github_gist_init(struct github_gist *)`
+ *   * Cleanup:
+
+ *     * :code:`void github_gist_cleanup(struct github_gist *)`
+ *     * :code:`void github_gist_list_free(struct github_gist **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void github_gist_from_json(char *rbuf, size_t len, struct github_gist **)`
+ *     * :code:`void github_gist_list_from_json(char *rbuf, size_t len, struct github_gist ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void github_gist_to_json(char *wbuf, size_t len, struct github_gist *)`
+ *     * :code:`void github_gist_list_to_json(char *wbuf, size_t len, struct github_gist **)`
+ * @endverbatim
  */
 struct github_gist {
   /* specs/github/gist.json:12:28
@@ -152,17 +176,29 @@ struct github_gist {
 // User Structure
 // defined at specs/github/user.json:9:33
 /**
- * - Initializer:
- *   - <tt> void github_user_init(struct github_user *) </tt>
- * - Cleanup:
- *   - <tt> void github_user_cleanup(struct github_user *) </tt>
- *   - <tt> void github_user_list_free(struct github_user **) </tt>
- * - JSON Decoder:
- *   - <tt> void github_user_from_json(char *rbuf, size_t len, struct github_user **) </tt>
- *   - <tt> void github_user_list_from_json(char *rbuf, size_t len, struct github_user ***) </tt>
- * - JSON Encoder:
- *   - <tt> void github_user_to_json(char *wbuf, size_t len, struct github_user *) </tt>
- *   - <tt> void github_user_list_to_json(char *wbuf, size_t len, struct github_user **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void github_user_init(struct github_user *)`
+ *   * Cleanup:
+
+ *     * :code:`void github_user_cleanup(struct github_user *)`
+ *     * :code:`void github_user_list_free(struct github_user **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void github_user_from_json(char *rbuf, size_t len, struct github_user **)`
+ *     * :code:`void github_user_list_from_json(char *rbuf, size_t len, struct github_user ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void github_user_to_json(char *wbuf, size_t len, struct github_user *)`
+ *     * :code:`void github_user_list_to_json(char *wbuf, size_t len, struct github_user **)`
+ * @endverbatim
  */
 struct github_user {
   /* specs/github/user.json:12:28

@@ -10,17 +10,29 @@
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
  *
- * - Initializer:
- *   - <tt> void discord_voice_state_init(struct discord_voice_state *) </tt>
- * - Cleanup:
- *   - <tt> void discord_voice_state_cleanup(struct discord_voice_state *) </tt>
- *   - <tt> void discord_voice_state_list_free(struct discord_voice_state **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state **) </tt>
- *   - <tt> void discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state *) </tt>
- *   - <tt> void discord_voice_state_list_to_json(char *wbuf, size_t len, struct discord_voice_state **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_voice_state_init(struct discord_voice_state *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_voice_state_cleanup(struct discord_voice_state *)`
+ *     * :code:`void discord_voice_state_list_free(struct discord_voice_state **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state **)`
+ *     * :code:`void discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_voice_state_to_json(char *wbuf, size_t len, struct discord_voice_state *)`
+ *     * :code:`void discord_voice_state_list_to_json(char *wbuf, size_t len, struct discord_voice_state **)`
+ * @endverbatim
  */
 struct discord_voice_state {
   /* specs/discord/voice.json:12:20
@@ -108,17 +120,29 @@ extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
  *
- * - Initializer:
- *   - <tt> void discord_voice_region_init(struct discord_voice_region *) </tt>
- * - Cleanup:
- *   - <tt> void discord_voice_region_cleanup(struct discord_voice_region *) </tt>
- *   - <tt> void discord_voice_region_list_free(struct discord_voice_region **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region **) </tt>
- *   - <tt> void discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region *) </tt>
- *   - <tt> void discord_voice_region_list_to_json(char *wbuf, size_t len, struct discord_voice_region **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_voice_region_init(struct discord_voice_region *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_voice_region_cleanup(struct discord_voice_region *)`
+ *     * :code:`void discord_voice_region_list_free(struct discord_voice_region **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region **)`
+ *     * :code:`void discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_voice_region_to_json(char *wbuf, size_t len, struct discord_voice_region *)`
+ *     * :code:`void discord_voice_region_list_to_json(char *wbuf, size_t len, struct discord_voice_region **)`
+ * @endverbatim
  */
 struct discord_voice_region {
   /* specs/discord/voice.json:32:20

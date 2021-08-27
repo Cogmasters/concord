@@ -7,17 +7,29 @@
 
 // defined at specs/discord/audit_log.endpoints-params.json:7:22
 /**
- * - Initializer:
- *   - <tt> void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *) </tt>
- * - Cleanup:
- *   - <tt> void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *) </tt>
- *   - <tt> void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
- *   - <tt> void discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params *) </tt>
- *   - <tt> void discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *)`
+ *     * :code:`void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params **)`
+ *     * :code:`void discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_get_guild_audit_log_params_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params *)`
+ *     * :code:`void discord_get_guild_audit_log_params_list_to_json(char *wbuf, size_t len, struct discord_get_guild_audit_log_params **)`
+ * @endverbatim
  */
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:10:20

@@ -10,17 +10,29 @@
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_init(struct discord_application_command *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_cleanup(struct discord_application_command *) </tt>
- *   - <tt> void discord_application_command_list_free(struct discord_application_command **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command **) </tt>
- *   - <tt> void discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *) </tt>
- *   - <tt> void discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_init(struct discord_application_command *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_cleanup(struct discord_application_command *)`
+ *     * :code:`void discord_application_command_list_free(struct discord_application_command **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command **)`
+ *     * :code:`void discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_to_json(char *wbuf, size_t len, struct discord_application_command *)`
+ *     * :code:`void discord_application_command_list_to_json(char *wbuf, size_t len, struct discord_application_command **)`
+ * @endverbatim
  */
 struct discord_application_command {
   /* specs/discord/slash_commands.json:12:18
@@ -88,17 +100,29 @@ extern size_t discord_application_command_list_to_json(char *str, size_t len, st
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_option_init(struct discord_application_command_option *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_option_cleanup(struct discord_application_command_option *) </tt>
- *   - <tt> void discord_application_command_option_list_free(struct discord_application_command_option **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option **) </tt>
- *   - <tt> void discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *) </tt>
- *   - <tt> void discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_option_init(struct discord_application_command_option *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_option_cleanup(struct discord_application_command_option *)`
+ *     * :code:`void discord_application_command_option_list_free(struct discord_application_command_option **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option **)`
+ *     * :code:`void discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_option_to_json(char *wbuf, size_t len, struct discord_application_command_option *)`
+ *     * :code:`void discord_application_command_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_option **)`
+ * @endverbatim
  */
 struct discord_application_command_option {
   /* specs/discord/slash_commands.json:28:18
@@ -163,9 +187,17 @@ extern size_t discord_application_command_option_list_to_json(char *str, size_t 
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type
  *
- * - <tt> char* discord_application_command_option_types_print(enum discord_application_command_option_types code) </tt>
- * - <tt> enum discord_application_command_option_types discord_application_command_option_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_application_command_option_types_cmp(enum discord_application_command_option_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_application_command_option_types_print(enum discord_application_command_option_types code)`
+ *   * :code:`enum discord_application_command_option_types discord_application_command_option_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_application_command_option_types_cmp(enum discord_application_command_option_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_application_command_option_types {
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND = 1,
@@ -187,17 +219,29 @@ extern bool discord_application_command_option_types_cmp(enum discord_applicatio
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_option_choice_init(struct discord_application_command_option_choice *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *) </tt>
- *   - <tt> void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice **) </tt>
- *   - <tt> void discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *) </tt>
- *   - <tt> void discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_option_choice_init(struct discord_application_command_option_choice *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *)`
+ *     * :code:`void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice **)`
+ *     * :code:`void discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_option_choice_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice *)`
+ *     * :code:`void discord_application_command_option_choice_list_to_json(char *wbuf, size_t len, struct discord_application_command_option_choice **)`
+ * @endverbatim
  */
 struct discord_application_command_option_choice {
   /* specs/discord/slash_commands.json:61:18
@@ -245,17 +289,29 @@ extern size_t discord_application_command_option_choice_list_to_json(char *str, 
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
  *
- * - Initializer:
- *   - <tt> void discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions *) </tt>
- * - Cleanup:
- *   - <tt> void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *) </tt>
- *   - <tt> void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions **) </tt>
- *   - <tt> void discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *) </tt>
- *   - <tt> void discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *)`
+ *     * :code:`void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions **)`
+ *     * :code:`void discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_guild_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions *)`
+ *     * :code:`void discord_guild_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_guild_application_command_permissions **)`
+ * @endverbatim
  */
 struct discord_guild_application_command_permissions {
   /* specs/discord/slash_commands.json:72:18
@@ -311,17 +367,29 @@ extern size_t discord_guild_application_command_permissions_list_to_json(char *s
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_permissions_init(struct discord_application_command_permissions *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *) </tt>
- *   - <tt> void discord_application_command_permissions_list_free(struct discord_application_command_permissions **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions **) </tt>
- *   - <tt> void discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *) </tt>
- *   - <tt> void discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_permissions_init(struct discord_application_command_permissions *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *)`
+ *     * :code:`void discord_application_command_permissions_list_free(struct discord_application_command_permissions **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions **)`
+ *     * :code:`void discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_permissions_to_json(char *wbuf, size_t len, struct discord_application_command_permissions *)`
+ *     * :code:`void discord_application_command_permissions_list_to_json(char *wbuf, size_t len, struct discord_application_command_permissions **)`
+ * @endverbatim
  */
 struct discord_application_command_permissions {
   /* specs/discord/slash_commands.json:85:18
@@ -374,9 +442,17 @@ extern size_t discord_application_command_permissions_list_to_json(char *str, si
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permission-type
  *
- * - <tt> char* discord_application_command_permission_types_print(enum discord_application_command_permission_types code) </tt>
- * - <tt> enum discord_application_command_permission_types discord_application_command_permission_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_application_command_permission_types_print(enum discord_application_command_permission_types code)`
+ *   * :code:`enum discord_application_command_permission_types discord_application_command_permission_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_application_command_permission_types {
   DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE = 1,
@@ -391,17 +467,29 @@ extern bool discord_application_command_permission_types_cmp(enum discord_applic
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
  *
- * - Initializer:
- *   - <tt> void discord_interaction_init(struct discord_interaction *) </tt>
- * - Cleanup:
- *   - <tt> void discord_interaction_cleanup(struct discord_interaction *) </tt>
- *   - <tt> void discord_interaction_list_free(struct discord_interaction **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction **) </tt>
- *   - <tt> void discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *) </tt>
- *   - <tt> void discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_interaction_init(struct discord_interaction *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_interaction_cleanup(struct discord_interaction *)`
+ *     * :code:`void discord_interaction_list_free(struct discord_interaction **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction **)`
+ *     * :code:`void discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_interaction_to_json(char *wbuf, size_t len, struct discord_interaction *)`
+ *     * :code:`void discord_interaction_list_to_json(char *wbuf, size_t len, struct discord_interaction **)`
+ * @endverbatim
  */
 struct discord_interaction {
   /* specs/discord/slash_commands.json:107:18
@@ -478,9 +566,17 @@ extern size_t discord_interaction_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-request-type
  *
- * - <tt> char* discord_interaction_request_types_print(enum discord_interaction_request_types code) </tt>
- * - <tt> enum discord_interaction_request_types discord_interaction_request_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_interaction_request_types_cmp(enum discord_interaction_request_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_interaction_request_types_print(enum discord_interaction_request_types code)`
+ *   * :code:`enum discord_interaction_request_types discord_interaction_request_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_interaction_request_types_cmp(enum discord_interaction_request_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_interaction_request_types {
   DISCORD_INTERACTION_PING = 1,
@@ -496,17 +592,29 @@ extern bool discord_interaction_request_types_cmp(enum discord_interaction_reque
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_interaction_data_init(struct discord_application_command_interaction_data *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_interaction_data_cleanup(struct discord_application_command_interaction_data *) </tt>
- *   - <tt> void discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data **) </tt>
- *   - <tt> void discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *) </tt>
- *   - <tt> void discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_interaction_data_init(struct discord_application_command_interaction_data *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_interaction_data_cleanup(struct discord_application_command_interaction_data *)`
+ *     * :code:`void discord_application_command_interaction_data_list_free(struct discord_application_command_interaction_data **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_interaction_data_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data **)`
+ *     * :code:`void discord_application_command_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_interaction_data_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data *)`
+ *     * :code:`void discord_application_command_interaction_data_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data **)`
+ * @endverbatim
  */
 struct discord_application_command_interaction_data {
   /* specs/discord/slash_commands.json:137:18
@@ -570,17 +678,29 @@ extern size_t discord_application_command_interaction_data_list_to_json(char *st
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_interaction_data_resolved_cleanup(struct discord_application_command_interaction_data_resolved *) </tt>
- *   - <tt> void discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved **) </tt>
- *   - <tt> void discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *) </tt>
- *   - <tt> void discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_interaction_data_resolved_init(struct discord_application_command_interaction_data_resolved *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_interaction_data_resolved_cleanup(struct discord_application_command_interaction_data_resolved *)`
+ *     * :code:`void discord_application_command_interaction_data_resolved_list_free(struct discord_application_command_interaction_data_resolved **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_interaction_data_resolved_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved **)`
+ *     * :code:`void discord_application_command_interaction_data_resolved_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_resolved ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_interaction_data_resolved_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved *)`
+ *     * :code:`void discord_application_command_interaction_data_resolved_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_resolved **)`
+ * @endverbatim
  */
 struct discord_application_command_interaction_data_resolved {
   /* specs/discord/slash_commands.json:152:18
@@ -636,17 +756,29 @@ extern size_t discord_application_command_interaction_data_resolved_list_to_json
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure
  *
- * - Initializer:
- *   - <tt> void discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option *) </tt>
- * - Cleanup:
- *   - <tt> void discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option *) </tt>
- *   - <tt> void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option **) </tt>
- *   - <tt> void discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *) </tt>
- *   - <tt> void discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option *)`
+ *     * :code:`void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option **)`
+ *     * :code:`void discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_application_command_interaction_data_option_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option *)`
+ *     * :code:`void discord_application_command_interaction_data_option_list_to_json(char *wbuf, size_t len, struct discord_application_command_interaction_data_option **)`
+ * @endverbatim
  */
 struct discord_application_command_interaction_data_option {
   /* specs/discord/slash_commands.json:165:18
@@ -702,17 +834,29 @@ extern size_t discord_application_command_interaction_data_option_list_to_json(c
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
  *
- * - Initializer:
- *   - <tt> void discord_interaction_response_init(struct discord_interaction_response *) </tt>
- * - Cleanup:
- *   - <tt> void discord_interaction_response_cleanup(struct discord_interaction_response *) </tt>
- *   - <tt> void discord_interaction_response_list_free(struct discord_interaction_response **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response **) </tt>
- *   - <tt> void discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *) </tt>
- *   - <tt> void discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_interaction_response_init(struct discord_interaction_response *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_interaction_response_cleanup(struct discord_interaction_response *)`
+ *     * :code:`void discord_interaction_response_list_free(struct discord_interaction_response **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response **)`
+ *     * :code:`void discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_interaction_response_to_json(char *wbuf, size_t len, struct discord_interaction_response *)`
+ *     * :code:`void discord_interaction_response_list_to_json(char *wbuf, size_t len, struct discord_interaction_response **)`
+ * @endverbatim
  */
 struct discord_interaction_response {
   /* specs/discord/slash_commands.json:178:18
@@ -761,9 +905,17 @@ extern size_t discord_interaction_response_list_to_json(char *str, size_t len, s
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-callback-type
  *
- * - <tt> char* discord_interaction_callback_types_print(enum discord_interaction_callback_types code) </tt>
- * - <tt> enum discord_interaction_callback_types discord_interaction_callback_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_interaction_callback_types_print(enum discord_interaction_callback_types code)`
+ *   * :code:`enum discord_interaction_callback_types discord_interaction_callback_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_interaction_callback_types {
   DISCORD_INTERACTION_CALLBACK_PONG = 1, ///< ACK a Ping
@@ -781,17 +933,29 @@ extern bool discord_interaction_callback_types_cmp(enum discord_interaction_call
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
  *
- * - Initializer:
- *   - <tt> void discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data *) </tt>
- * - Cleanup:
- *   - <tt> void discord_interaction_application_command_callback_data_cleanup(struct discord_interaction_application_command_callback_data *) </tt>
- *   - <tt> void discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data **) </tt>
- *   - <tt> void discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *) </tt>
- *   - <tt> void discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_interaction_application_command_callback_data_init(struct discord_interaction_application_command_callback_data *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_interaction_application_command_callback_data_cleanup(struct discord_interaction_application_command_callback_data *)`
+ *     * :code:`void discord_interaction_application_command_callback_data_list_free(struct discord_interaction_application_command_callback_data **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_interaction_application_command_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data **)`
+ *     * :code:`void discord_interaction_application_command_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_application_command_callback_data ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_interaction_application_command_callback_data_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data *)`
+ *     * :code:`void discord_interaction_application_command_callback_data_list_to_json(char *wbuf, size_t len, struct discord_interaction_application_command_callback_data **)`
+ * @endverbatim
  */
 struct discord_interaction_application_command_callback_data {
   /* specs/discord/slash_commands.json:203:18
@@ -856,9 +1020,17 @@ extern size_t discord_interaction_application_command_callback_data_list_to_json
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-flags
  *
- * - <tt> char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags code) </tt>
- * - <tt> enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char *code_as_str) </tt>
- * - <tt> bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags code)`
+ *   * :code:`enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char *code_as_str)`
+ *   * :code:`bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_interaction_application_command_callback_data_flags {
   DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL = 64, ///< only the user receiving the message can see it
@@ -872,17 +1044,29 @@ extern bool discord_interaction_application_command_callback_data_flags_cmp(enum
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
  *
- * - Initializer:
- *   - <tt> void discord_message_interaction_init(struct discord_message_interaction *) </tt>
- * - Cleanup:
- *   - <tt> void discord_message_interaction_cleanup(struct discord_message_interaction *) </tt>
- *   - <tt> void discord_message_interaction_list_free(struct discord_message_interaction **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction **) </tt>
- *   - <tt> void discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *) </tt>
- *   - <tt> void discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_message_interaction_init(struct discord_message_interaction *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_message_interaction_cleanup(struct discord_message_interaction *)`
+ *     * :code:`void discord_message_interaction_list_free(struct discord_message_interaction **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction **)`
+ *     * :code:`void discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_message_interaction_to_json(char *wbuf, size_t len, struct discord_message_interaction *)`
+ *     * :code:`void discord_message_interaction_list_to_json(char *wbuf, size_t len, struct discord_message_interaction **)`
+ * @endverbatim
  */
 struct discord_message_interaction {
   /* specs/discord/slash_commands.json:228:18

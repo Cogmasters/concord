@@ -10,17 +10,29 @@
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
  *
- * - Initializer:
- *   - <tt> void discord_component_init(struct discord_component *) </tt>
- * - Cleanup:
- *   - <tt> void discord_component_cleanup(struct discord_component *) </tt>
- *   - <tt> void discord_component_list_free(struct discord_component **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_component_from_json(char *rbuf, size_t len, struct discord_component **) </tt>
- *   - <tt> void discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_component_to_json(char *wbuf, size_t len, struct discord_component *) </tt>
- *   - <tt> void discord_component_list_to_json(char *wbuf, size_t len, struct discord_component **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_component_init(struct discord_component *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_component_cleanup(struct discord_component *)`
+ *     * :code:`void discord_component_list_free(struct discord_component **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_component_from_json(char *rbuf, size_t len, struct discord_component **)`
+ *     * :code:`void discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_component_to_json(char *wbuf, size_t len, struct discord_component *)`
+ *     * :code:`void discord_component_list_to_json(char *wbuf, size_t len, struct discord_component **)`
+ * @endverbatim
  */
 struct discord_component {
   /* specs/discord/message_components.json:12:18
@@ -109,9 +121,17 @@ extern size_t discord_component_list_to_json(char *str, size_t len, struct disco
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-types
  *
- * - <tt> char* discord_component_types_print(enum discord_component_types code) </tt>
- * - <tt> enum discord_component_types discord_component_types_eval(char *code_as_str) </tt>
- * - <tt> bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_component_types_print(enum discord_component_types code)`
+ *   * :code:`enum discord_component_types discord_component_types_eval(char *code_as_str)`
+ *   * :code:`bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_component_types {
   DISCORD_COMPONENT_ACTION_ROW = 1,
@@ -127,17 +147,29 @@ extern bool discord_component_types_cmp(enum discord_component_types, char*);
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
  *
- * - Initializer:
- *   - <tt> void discord_button_init(struct discord_button *) </tt>
- * - Cleanup:
- *   - <tt> void discord_button_cleanup(struct discord_button *) </tt>
- *   - <tt> void discord_button_list_free(struct discord_button **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_button_from_json(char *rbuf, size_t len, struct discord_button **) </tt>
- *   - <tt> void discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_button_to_json(char *wbuf, size_t len, struct discord_button *) </tt>
- *   - <tt> void discord_button_list_to_json(char *wbuf, size_t len, struct discord_button **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_button_init(struct discord_button *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_button_cleanup(struct discord_button *)`
+ *     * :code:`void discord_button_list_free(struct discord_button **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_button_from_json(char *rbuf, size_t len, struct discord_button **)`
+ *     * :code:`void discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_button_to_json(char *wbuf, size_t len, struct discord_button *)`
+ *     * :code:`void discord_button_list_to_json(char *wbuf, size_t len, struct discord_button **)`
+ * @endverbatim
  */
 struct discord_button {
   /* specs/discord/message_components.json:44:18
@@ -206,9 +238,17 @@ extern size_t discord_button_list_to_json(char *str, size_t len, struct discord_
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
  *
- * - <tt> char* discord_button_styles_print(enum discord_button_styles code) </tt>
- * - <tt> enum discord_button_styles discord_button_styles_eval(char *code_as_str) </tt>
- * - <tt> bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_button_styles_print(enum discord_button_styles code)`
+ *   * :code:`enum discord_button_styles discord_button_styles_eval(char *code_as_str)`
+ *   * :code:`bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str)`
+ * @endverbatim
  */
 enum discord_button_styles {
   DISCORD_BUTTON_PRIMARY = 1, ///< blurple, requires custom_id
@@ -226,17 +266,29 @@ extern bool discord_button_styles_cmp(enum discord_button_styles, char*);
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
  *
- * - Initializer:
- *   - <tt> void discord_select_menu_init(struct discord_select_menu *) </tt>
- * - Cleanup:
- *   - <tt> void discord_select_menu_cleanup(struct discord_select_menu *) </tt>
- *   - <tt> void discord_select_menu_list_free(struct discord_select_menu **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **) </tt>
- *   - <tt> void discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *) </tt>
- *   - <tt> void discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_select_menu_init(struct discord_select_menu *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_select_menu_cleanup(struct discord_select_menu *)`
+ *     * :code:`void discord_select_menu_list_free(struct discord_select_menu **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **)`
+ *     * :code:`void discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_select_menu_to_json(char *wbuf, size_t len, struct discord_select_menu *)`
+ *     * :code:`void discord_select_menu_list_to_json(char *wbuf, size_t len, struct discord_select_menu **)`
+ * @endverbatim
  */
 struct discord_select_menu {
   /* specs/discord/message_components.json:73:18
@@ -304,17 +356,29 @@ extern size_t discord_select_menu_list_to_json(char *str, size_t len, struct dis
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
  *
- * - Initializer:
- *   - <tt> void discord_select_option_init(struct discord_select_option *) </tt>
- * - Cleanup:
- *   - <tt> void discord_select_option_cleanup(struct discord_select_option *) </tt>
- *   - <tt> void discord_select_option_list_free(struct discord_select_option **) </tt>
- * - JSON Decoder:
- *   - <tt> void discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **) </tt>
- *   - <tt> void discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***) </tt>
- * - JSON Encoder:
- *   - <tt> void discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *) </tt>
- *   - <tt> void discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option **) </tt>
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_select_option_init(struct discord_select_option *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_select_option_cleanup(struct discord_select_option *)`
+ *     * :code:`void discord_select_option_list_free(struct discord_select_option **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **)`
+ *     * :code:`void discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_select_option_to_json(char *wbuf, size_t len, struct discord_select_option *)`
+ *     * :code:`void discord_select_option_list_to_json(char *wbuf, size_t len, struct discord_select_option **)`
+ * @endverbatim
  */
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18
