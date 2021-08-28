@@ -53,3 +53,45 @@ github_create_gist(struct github *client, struct github_gist_create_params *para
           HTTP_POST,
           "/gists");
 }
+
+ORCAcode
+github_get_gist(struct github *client, char *id, struct github_gist *gist) {
+  log_info("===get-a-gist===");
+
+  if (!id) {
+      log_error("Missing 'id'");
+      return ORCA_MISSING_PARAMETER;
+  }
+
+  if (!gist) {
+      log_error("Missing 'gist'");
+      return ORCA_MISSING_PARAMETER;
+  }
+
+  return github_adapter_run(
+          &client->adapter,
+          &(struct ua_resp_handle){
+            .ok_cb = &github_gist_from_json_v,
+            .ok_obj = &gist
+          },
+          NULL,
+          HTTP_GET,
+          "/gists/%s", id);
+}
+
+ORCAcode
+github_gist_is_starred(struct github *client, char *id) {
+  log_info("===gist-is-starred===");
+
+  if (!id) {
+      log_error("Missing 'id'");
+      return ORCA_MISSING_PARAMETER;
+  }
+
+  return github_adapter_run(
+          &client->adapter,
+          NULL,
+          NULL,
+          HTTP_GET,
+          "/gists/%s/star", id);
+}
