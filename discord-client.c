@@ -254,6 +254,24 @@ discord_set_on_channel_pins_update(struct discord *client, discord_channel_pins_
   discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
 }
 
+void 
+discord_set_on_thread_create(struct discord *client, discord_channel_cb callback) {
+  client->gw.cbs.on_thread_create = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_set_on_thread_update(struct discord *client, discord_channel_cb callback) {
+  client->gw.cbs.on_thread_update = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
+void 
+discord_set_on_thread_delete(struct discord *client, discord_channel_cb callback) {
+  client->gw.cbs.on_thread_delete = callback;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILDS);
+}
+
 void
 discord_set_on_message_create(struct discord *client, discord_message_cb callback) {
   client->gw.cbs.on_message_create = callback;

@@ -197,6 +197,9 @@ struct discord_gateway {
     discord_channel_cb on_channel_update; ///< triggers when a channel is updated
     discord_channel_cb on_channel_delete; ///< triggers when a channel is deleted
     discord_channel_pins_update_cb on_channel_pins_update; ///< triggers when a channel pinned messages updates
+    discord_channel_cb on_thread_create; ///< triggers when a thread is created
+    discord_channel_cb on_thread_update; ///< triggers when a thread is updated
+    discord_channel_cb on_thread_delete; ///< triggers when a thread is deleted
     discord_guild_ban_cb on_guild_ban_add; ///< triggers when a ban occurs
     discord_guild_ban_cb on_guild_ban_remove; ///< triggers when a ban is removed
     discord_guild_member_cb on_guild_member_add; ///< triggers when a guild member joins a guild

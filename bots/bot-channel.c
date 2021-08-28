@@ -16,7 +16,7 @@ void log_on_channel_create(
   const struct discord_user *bot,
   const struct discord_channel *channel)
 {
-  log_warn("Channel %s (%"PRIu64") created", channel->name, channel->id);
+  log_info("Channel %s (%"PRIu64") created", channel->name, channel->id);
 }
 
 void log_on_channel_update(
@@ -24,7 +24,7 @@ void log_on_channel_update(
   const struct discord_user *bot,
   const struct discord_channel *channel)
 {
-  log_warn("Channel %s (%"PRIu64") updated", channel->name, channel->id);
+  log_info("Channel %s (%"PRIu64") updated", channel->name, channel->id);
 }
 
 void log_on_channel_delete(
@@ -32,7 +32,31 @@ void log_on_channel_delete(
   const struct discord_user *bot,
   const struct discord_channel *channel)
 {
-  log_warn("Channel %s (%"PRIu64") deleted", channel->name, channel->id);
+  log_info("Channel %s (%"PRIu64") deleted", channel->name, channel->id);
+}
+
+void log_on_thread_create(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_channel *thread)
+{
+  log_info("Thread %s (%"PRIu64") created", thread->name, thread->id);
+}
+
+void log_on_thread_update(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_channel *thread)
+{
+  log_info("Thread %s (%"PRIu64") updated", thread->name, thread->id);
+}
+
+void log_on_thread_delete(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_channel *thread)
+{
+  log_info("Thread %s (%"PRIu64") deleted", thread->name, thread->id);
 }
 
 void on_channel_create(
@@ -170,6 +194,9 @@ int main(int argc, char *argv[])
   discord_set_on_channel_create(client, &log_on_channel_create);
   discord_set_on_channel_update(client, &log_on_channel_update);
   discord_set_on_channel_delete(client, &log_on_channel_delete);
+  discord_set_on_thread_create(client, &log_on_thread_create);
+  discord_set_on_thread_update(client, &log_on_thread_update);
+  discord_set_on_thread_delete(client, &log_on_thread_delete);
 
   discord_set_prefix(client, "channel.");
   discord_set_on_command(client, "create", &on_channel_create);

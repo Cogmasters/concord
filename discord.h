@@ -104,6 +104,35 @@ typedef void (*discord_event_raw_cb)(
     struct sized_buffer *event_data);
 /** @} DiscordCallbacksGeneral */
 
+/** @defgroup DiscordCallbacksChannel
+ *  @brief Channel-event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#channels 
+ *  @{ */
+/**
+ * @brief Channel/Thread Create/Update/Delete callback
+ *
+ * @see discord_set_on_channel_create() 
+ *      discord_set_on_channel_update() 
+ *      discord_set_on_channel_delete() 
+ *      discord_set_on_thread_create() 
+ *      discord_set_on_thread_update() 
+ *      discord_set_on_thread_delete() 
+ */
+typedef void (*discord_channel_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const struct discord_channel *channel);
+/**
+ * @brief Channel Pins Update callback
+ *
+ * @see discord_set_on_channel_pins_update() 
+ */
+typedef void (*discord_channel_pins_update_cb)(
+    struct discord *client, const struct discord_user *bot, 
+    const u64_snowflake_t guild_id,
+    const u64_snowflake_t channel_id,
+    const u64_unix_ms_t last_pin_timestamp);
+/** @} DiscordCallbacksChannel */
+
 /** @defgroup DiscordCallbacksGuild
  *  @brief Guild-event callbacks
  *  @see https://discord.com/developers/docs/topics/gateway#guilds 
@@ -257,32 +286,6 @@ typedef void (*discord_voice_server_update_cb)(
     const u64_snowflake_t guild_id,
     const char *endpoint);
 /** @} DiscordCallbacksVoice */
-
-/** @defgroup DiscordCallbacksChannel
- *  @brief Channel-event callbacks
- *  @see https://discord.com/developers/docs/topics/gateway#channels 
- *  @{ */
-/**
- * @brief Channel Create/Update/Delete callback
- *
- * @see discord_set_on_channel_create() 
- * @see discord_set_on_channel_update() 
- * @see discord_set_on_channel_delete() 
- */
-typedef void (*discord_channel_cb)(
-    struct discord *client, const struct discord_user *bot, 
-    const struct discord_channel *channel);
-/**
- * @brief Channel Pins Update callback
- *
- * @see discord_set_on_channel_pins_update() 
- */
-typedef void (*discord_channel_pins_update_cb)(
-    struct discord *client, const struct discord_user *bot, 
-    const u64_snowflake_t guild_id,
-    const u64_snowflake_t channel_id,
-    const u64_unix_ms_t last_pin_timestamp);
-/** @} DiscordCallbacksChannel */
 
 
 /**
@@ -625,6 +628,30 @@ void discord_set_on_channel_delete(struct discord *client, discord_channel_cb ca
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
 void discord_set_on_channel_pins_update(struct discord *client, discord_channel_pins_update_cb callback);
+/**
+ * @brief Set a callback that triggers when a thread is created
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_thread_create(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when a thread is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_thread_update(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when a thread is deleted
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_thread_delete(struct discord *client, discord_channel_cb callback);
 /**
  * @brief Set a callback that triggers when a message is created
  *

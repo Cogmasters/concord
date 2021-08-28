@@ -234,11 +234,7 @@ on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
     &guild_id,
     &discord_permissions_role_from_json, &role);
 
-  (*gw->cbs.on_guild_role_create)(
-      gw->p_client, 
-      gw->bot, 
-      guild_id, 
-      role);
+  (*gw->cbs.on_guild_role_create)(gw->p_client, gw->bot, guild_id, role);
 
   discord_permissions_role_cleanup(role);
   free(role);
@@ -256,11 +252,7 @@ on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
     &guild_id,
     &discord_permissions_role_from_json, &role);
 
-  (*gw->cbs.on_guild_role_update)(
-      gw->p_client, 
-      gw->bot, 
-      guild_id, 
-      role);
+  (*gw->cbs.on_guild_role_update)(gw->p_client, gw->bot, guild_id, role);
 
   discord_permissions_role_cleanup(role);
   free(role);
@@ -275,11 +267,7 @@ on_guild_role_delete(struct discord_gateway *gw, struct sized_buffer *data)
     "(role_id):s_as_u64", 
     &guild_id, &role_id);
 
-  (*gw->cbs.on_guild_role_delete)(
-      gw->p_client, 
-      gw->bot, 
-      guild_id, 
-      role_id);
+  (*gw->cbs.on_guild_role_delete)(gw->p_client, gw->bot, guild_id, role_id);
 }
 
 
@@ -292,11 +280,7 @@ on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
 
-  (*gw->cbs.on_guild_member_add)(
-      gw->p_client, 
-      gw->bot, 
-      guild_id,
-      member);
+  (*gw->cbs.on_guild_member_add)(gw->p_client, gw->bot, guild_id, member);
 
   discord_guild_member_cleanup(member);
   free(member);
@@ -311,11 +295,7 @@ on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
 
-  (*gw->cbs.on_guild_member_update)(
-      gw->p_client, 
-      gw->bot, 
-      guild_id, 
-      member);
+  (*gw->cbs.on_guild_member_update)(gw->p_client, gw->bot, guild_id, member);
 
   discord_guild_member_cleanup(member);
   free(member);
@@ -332,11 +312,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
     &guild_id,
     &discord_user_from_json, &user);
 
-  (*gw->cbs.on_guild_member_remove)(
-        gw->p_client, 
-        gw->bot, 
-        guild_id, 
-        user);
+  (*gw->cbs.on_guild_member_remove)(gw->p_client, gw->bot, guild_id, user);
 
   discord_user_cleanup(user);
   free(user);
@@ -353,11 +329,7 @@ on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
     &guild_id,
     &discord_user_from_json, &user);
 
-  (*gw->cbs.on_guild_ban_add)(
-        gw->p_client, 
-        gw->bot, 
-        guild_id, 
-        user);
+  (*gw->cbs.on_guild_ban_add)(gw->p_client, gw->bot, guild_id, user);
 
   discord_user_cleanup(user);
   free(user);
@@ -374,11 +346,7 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
     &guild_id,
     &discord_user_from_json, &user);
 
-  (*gw->cbs.on_guild_ban_remove)(
-        gw->p_client, 
-        gw->bot, 
-        guild_id, 
-        user);
+  (*gw->cbs.on_guild_ban_remove)(gw->p_client, gw->bot, guild_id, user);
 
   discord_user_cleanup(user);
   free(user);
@@ -390,10 +358,7 @@ on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_channel *channel=NULL;
   discord_channel_from_json(data->start, data->size, &channel);
 
-  (*gw->cbs.on_channel_create)(
-        gw->p_client, 
-        gw->bot, 
-        channel);
+  (*gw->cbs.on_channel_create)(gw->p_client, gw->bot, channel);
 
   discord_channel_cleanup(channel);
   free(channel);
@@ -405,10 +370,7 @@ on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_channel *channel=NULL;
   discord_channel_from_json(data->start, data->size, &channel);
 
-  (*gw->cbs.on_channel_update)(
-        gw->p_client, 
-        gw->bot, 
-        channel);
+  (*gw->cbs.on_channel_update)(gw->p_client, gw->bot, channel);
 
   discord_channel_cleanup(channel);
   free(channel);
@@ -420,10 +382,7 @@ on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_channel *channel=NULL;
   discord_channel_from_json(data->start, data->size, &channel);
 
-  (*gw->cbs.on_channel_delete)(
-        gw->p_client, 
-        gw->bot, 
-        channel);
+  (*gw->cbs.on_channel_delete)(gw->p_client, gw->bot, channel);
 
   discord_channel_cleanup(channel);
   free(channel);
@@ -448,6 +407,42 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
         guild_id,
         channel_id,
         last_pin_timestamp);
+}
+
+static void
+on_thread_create(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_channel *thread=NULL;
+  discord_channel_from_json(data->start, data->size, &thread);
+
+  (*gw->cbs.on_thread_create)(gw->p_client, gw->bot, thread);
+
+  discord_channel_cleanup(thread);
+  free(thread);
+}
+
+static void
+on_thread_update(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_channel *thread=NULL;
+  discord_channel_from_json(data->start, data->size, &thread);
+
+  (*gw->cbs.on_thread_update)(gw->p_client, gw->bot, thread);
+
+  discord_channel_cleanup(thread);
+  free(thread);
+}
+
+static void
+on_thread_delete(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_channel *thread=NULL;
+  discord_channel_from_json(data->start, data->size, &thread);
+
+  (*gw->cbs.on_thread_delete)(gw->p_client, gw->bot, thread);
+
+  discord_channel_cleanup(thread);
+  free(thread);
 }
 
 static void
@@ -795,13 +790,16 @@ on_dispatch(struct discord_gateway *gw)
         on_event = &on_channel_pins_update;
       break;
   case DISCORD_GATEWAY_EVENTS_THREAD_CREATE:
-      /// @todo implement
+      if (gw->cbs.on_thread_create)
+        on_event = &on_thread_create;
       break;
   case DISCORD_GATEWAY_EVENTS_THREAD_UPDATE:
-      /// @todo implement
+      if (gw->cbs.on_thread_update)
+        on_event = &on_thread_update;
       break;
   case DISCORD_GATEWAY_EVENTS_THREAD_DELETE:
-      /// @todo implement
+      if (gw->cbs.on_thread_delete)
+        on_event = &on_thread_delete;
       break;
   case DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC:
       /// @todo implement
