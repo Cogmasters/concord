@@ -193,18 +193,18 @@ struct discord_gateway {
     discord_idle_cb on_idle; ///< triggers on every event loop iteration
     discord_event_raw_cb on_event_raw; ///< triggers for every event if set, receive its raw JSON string
     discord_idle_cb on_ready; ///< triggers when connection first establishes
-    discord_guild_role_cb on_guild_role_create; ///< triggers when a guild role is created
-    discord_guild_role_cb on_guild_role_update; ///< triggers when a guild role is updated
-    discord_guild_role_delete_cb on_guild_role_delete; ///< triggers when a guild role is deleted
-    discord_guild_member_cb on_guild_member_add; ///< triggers when a guild member joins a guild
-    discord_guild_member_remove_cb on_guild_member_remove; ///< triggers when a guild member is removed from a guild
-    discord_guild_member_cb on_guild_member_update; ///< triggers when a guild member status is updated (ex: receive role)
-    discord_guild_ban_cb on_guild_ban_add; ///< triggers when a ban occurs
-    discord_guild_ban_cb on_guild_ban_remove; ///< triggers when a ban is removed
     discord_channel_cb on_channel_create; ///< triggers when a channel is created
     discord_channel_cb on_channel_update; ///< triggers when a channel is updated
     discord_channel_cb on_channel_delete; ///< triggers when a channel is deleted
     discord_channel_pins_update_cb on_channel_pins_update; ///< triggers when a channel pinned messages updates
+    discord_guild_ban_cb on_guild_ban_add; ///< triggers when a ban occurs
+    discord_guild_ban_cb on_guild_ban_remove; ///< triggers when a ban is removed
+    discord_guild_member_cb on_guild_member_add; ///< triggers when a guild member joins a guild
+    discord_guild_member_remove_cb on_guild_member_remove; ///< triggers when a guild member is removed from a guild
+    discord_guild_member_cb on_guild_member_update; ///< triggers when a guild member status is updated (ex: receive role)
+    discord_guild_role_cb on_guild_role_create; ///< triggers when a guild role is created
+    discord_guild_role_cb on_guild_role_update; ///< triggers when a guild role is updated
+    discord_guild_role_delete_cb on_guild_role_delete; ///< triggers when a guild role is deleted
     discord_message_cb on_message_create; ///< triggers when a message is created
     discord_sb_message_cb sb_on_message_create; ///< @todo this is temporary
     discord_message_cb on_message_update; ///< trigger when a message is updated

@@ -137,47 +137,66 @@ extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
  */
 enum discord_gateway_events {
   DISCORD_GATEWAY_EVENTS_NONE = 0,
-  DISCORD_GATEWAY_EVENTS_GUILD_CREATE = 1,
-  DISCORD_GATEWAY_EVENTS_GUILD_UPDATE = 2,
-  DISCORD_GATEWAY_EVENTS_GUILD_DELETE = 3,
-  DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE = 4,
-  DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE = 5,
-  DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE = 6,
-  DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD = 7,
-  DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE = 8,
-  DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE = 9,
-  DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD = 10,
-  DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE = 11,
-  DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE = 12,
-  DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE = 13,
-  DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE = 14,
-  DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE = 15,
-  DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE = 16,
-  DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE = 17,
-  DISCORD_GATEWAY_EVENTS_INVITE_CREATE = 18,
-  DISCORD_GATEWAY_EVENTS_INVITE_DELETE = 19,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE = 20,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE = 21,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE = 22,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK = 23,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD = 24,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE = 25,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL = 26,
-  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI = 27,
-  DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE = 28,
-  DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE = 29,
-  DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE = 30,
-  DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE = 31,
-  DISCORD_GATEWAY_EVENTS_TYPING_START = 32,
-  DISCORD_GATEWAY_EVENTS_READY = 33,
-  DISCORD_GATEWAY_EVENTS_RESUMED = 34,
+  DISCORD_GATEWAY_EVENTS_READY = 1,
+  DISCORD_GATEWAY_EVENTS_RESUMED = 2,
+  DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE = 3,
+  DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE = 4,
+  DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE = 5,
+  DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE = 6,
+  DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE = 7,
+  DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE = 8,
+  DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE = 9,
+  DISCORD_GATEWAY_EVENTS_THREAD_CREATE = 10,
+  DISCORD_GATEWAY_EVENTS_THREAD_UPDATE = 11,
+  DISCORD_GATEWAY_EVENTS_THREAD_DELETE = 12,
+  DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC = 13,
+  DISCORD_GATEWAY_EVENTS_THREAD_MEMBER_UPDATE = 14,
+  DISCORD_GATEWAY_EVENTS_THREAD_MEMBERS_UPDATE = 15,
+  DISCORD_GATEWAY_EVENTS_GUILD_CREATE = 16,
+  DISCORD_GATEWAY_EVENTS_GUILD_UPDATE = 17,
+  DISCORD_GATEWAY_EVENTS_GUILD_DELETE = 18,
+  DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD = 19,
+  DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE = 20,
+  DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE = 21,
+  DISCORD_GATEWAY_EVENTS_GUILD_STICKERS_UPDATE = 22,
+  DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE = 23,
+  DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD = 24,
+  DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE = 25,
+  DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE = 26,
+  DISCORD_GATEWAY_EVENTS_GUILD_MEMBERS_CHUNK = 27,
+  DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE = 28,
+  DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE = 29,
+  DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE = 30,
+  DISCORD_GATEWAY_EVENTS_INTEGRATION_CREATE = 31,
+  DISCORD_GATEWAY_EVENTS_INTEGRATION_UPDATE = 32,
+  DISCORD_GATEWAY_EVENTS_INTEGRATION_DELETE = 33,
+  DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE = 34,
+  DISCORD_GATEWAY_EVENTS_INVITE_CREATE = 35,
+  DISCORD_GATEWAY_EVENTS_INVITE_DELETE = 36,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE = 37,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE = 38,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE = 39,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK = 40,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD = 41,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE = 42,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL = 43,
+  DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI = 44,
+  DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE = 45,
+  DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_CREATE = 46,
+  DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_DELETE = 47,
+  DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_UPDATE = 48,
+  DISCORD_GATEWAY_EVENTS_TYPING_START = 49,
+  DISCORD_GATEWAY_EVENTS_USER_UPDATE = 50,
+  DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE = 51,
+  DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE = 52,
+  DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE = 53,
 };
 extern char* discord_gateway_events_print(enum discord_gateway_events);
 extern enum discord_gateway_events discord_gateway_events_eval(char*);
 extern bool discord_gateway_events_cmp(enum discord_gateway_events, char*);
 
 // Identify Structure
-// defined at specs/discord/gateway.json:116:22
+// defined at specs/discord/gateway.json:135:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
@@ -206,35 +225,35 @@ extern bool discord_gateway_events_cmp(enum discord_gateway_events, char*);
  * @endverbatim
  */
 struct discord_gateway_identify {
-  /* specs/discord/gateway.json:119:19
+  /* specs/discord/gateway.json:138:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
   char *token;
 
-  /* specs/discord/gateway.json:120:19
+  /* specs/discord/gateway.json:139:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
   struct discord_gateway_identify_connection *properties;
 
-  /* specs/discord/gateway.json:121:19
+  /* specs/discord/gateway.json:140:19
      '{ "name":"compress","type":{"base":"bool"}}' */
   bool compress;
 
-  /* specs/discord/gateway.json:122:19
+  /* specs/discord/gateway.json:141:19
      '{ "name":"large_threshold","type":{"base":"int"}}' */
   int large_threshold;
 
-  /* specs/discord/gateway.json:123:19
+  /* specs/discord/gateway.json:142:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
   bool guild_subscriptions;
 
-  /* specs/discord/gateway.json:124:19
+  /* specs/discord/gateway.json:143:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   // @todo shard (null);
 
-  /* specs/discord/gateway.json:125:19
+  /* specs/discord/gateway.json:144:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
   struct discord_gateway_status_update *presence;
 
-  /* specs/discord/gateway.json:126:19
+  /* specs/discord/gateway.json:145:19
      '{ "name":"intents","type":{"base":"int"}}' */
   int intents;
 
@@ -271,7 +290,7 @@ extern size_t discord_gateway_identify_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struct discord_gateway_identify **p);
 
 // Gateway Status Update Structure
-// defined at specs/discord/gateway.json:132:22
+// defined at specs/discord/gateway.json:151:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
  *
@@ -300,21 +319,21 @@ extern size_t discord_gateway_identify_list_to_json(char *str, size_t len, struc
  * @endverbatim
  */
 struct discord_gateway_status_update {
-  /* specs/discord/gateway.json:135:19
+  /* specs/discord/gateway.json:154:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }' */
   u64_unix_ms_t since;
 
-  /* specs/discord/gateway.json:137:19
+  /* specs/discord/gateway.json:156:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}' */
   struct discord_gateway_activity **activities;
 
-  /* specs/discord/gateway.json:139:19
+  /* specs/discord/gateway.json:158:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
   char status[16];
 
-  /* specs/discord/gateway.json:140:19
+  /* specs/discord/gateway.json:159:19
      '{ "name":"afk","type":{"base":"bool"}}' */
   bool afk;
 
@@ -351,7 +370,7 @@ extern size_t discord_gateway_status_update_list_to_json_v(char *str, size_t len
 extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, struct discord_gateway_status_update **p);
 
 // Identify Connection Properties
-// defined at specs/discord/gateway.json:147:22
+// defined at specs/discord/gateway.json:166:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
@@ -380,15 +399,15 @@ extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, 
  * @endverbatim
  */
 struct discord_gateway_identify_connection {
-  /* specs/discord/gateway.json:150:19
+  /* specs/discord/gateway.json:169:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}}' */
   char *os;
 
-  /* specs/discord/gateway.json:151:19
+  /* specs/discord/gateway.json:170:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}}' */
   char *browser;
 
-  /* specs/discord/gateway.json:152:19
+  /* specs/discord/gateway.json:171:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}' */
   char *device;
 
@@ -425,7 +444,7 @@ extern size_t discord_gateway_identify_connection_list_to_json_v(char *str, size
 extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t len, struct discord_gateway_identify_connection **p);
 
 // Activity Structure
-// defined at specs/discord/gateway.json:158:22
+// defined at specs/discord/gateway.json:177:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
@@ -454,40 +473,40 @@ extern size_t discord_gateway_identify_connection_list_to_json(char *str, size_t
  * @endverbatim
  */
 struct discord_gateway_activity {
-  /* specs/discord/gateway.json:161:19
+  /* specs/discord/gateway.json:180:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
   char name[512];
 
-  /* specs/discord/gateway.json:162:19
+  /* specs/discord/gateway.json:181:19
      '{ "name":"type","type":{"base":"int"}}' */
   int type;
 
-  /* specs/discord/gateway.json:163:19
+  /* specs/discord/gateway.json:182:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}' */
   char *url;
 
-  /* specs/discord/gateway.json:165:19
+  /* specs/discord/gateway.json:184:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }' */
   u64_unix_ms_t created_at;
 
-  /* specs/discord/gateway.json:167:19
+  /* specs/discord/gateway.json:186:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }' */
   u64_snowflake_t application_id;
 
-  /* specs/discord/gateway.json:169:19
+  /* specs/discord/gateway.json:188:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}' */
   char *details;
 
-  /* specs/discord/gateway.json:171:19
+  /* specs/discord/gateway.json:190:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}' */
   char *state;
 
-  /* specs/discord/gateway.json:173:19
+  /* specs/discord/gateway.json:192:19
      '{ "name":"instance","type":{"base":"bool"},
           "option":true, "inject_if_not":false}' */
   bool instance;
@@ -526,7 +545,7 @@ extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struc
 
 
 // Activity Types
-// defined at specs/discord/gateway.json:177:5
+// defined at specs/discord/gateway.json:196:5
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
