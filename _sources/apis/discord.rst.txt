@@ -193,6 +193,9 @@ Set Event Callbacks
 .. doxygenfunction:: discord_set_on_channel_update
 .. doxygenfunction:: discord_set_on_channel_delete
 .. doxygenfunction:: discord_set_on_channel_pins_update
+.. doxygenfunction:: discord_set_on_thread_create
+.. doxygenfunction:: discord_set_on_thread_update
+.. doxygenfunction:: discord_set_on_thread_delete
 .. doxygenfunction:: discord_set_on_message_create
 .. doxygenfunction:: discord_set_on_message_update
 .. doxygenfunction:: discord_set_on_message_delete

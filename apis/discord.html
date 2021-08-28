@@ -1159,13 +1159,9 @@
 <dl class="c type">
 <dt class="sig sig-object c" id="c.discord_channel_cb">
 <span class="target" id="group__DiscordCallbacksChannel_1gaa054c69949e8bfe92c1df7ad04cf9748"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_channel_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">channel</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.discord_channel_cb" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Channel Create/Update/Delete callback. </p>
+<dd><p>Channel/Thread Create/Update/Delete callback. </p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a151c8f449668af5e309472bb6def1aa3"><span class="std std-ref">discord_set_on_channel_create()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a838e118fa1bdf706c830e037cb6e3285"><span class="std std-ref">discord_set_on_channel_update()</span></a> </p>
-</dd>
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a5d05722282f97efd14df7be810fdda59"><span class="std std-ref">discord_set_on_channel_delete()</span></a> </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a151c8f449668af5e309472bb6def1aa3"><span class="std std-ref">discord_set_on_channel_create()</span></a> <a class="reference internal" href="#discord_8h_1a838e118fa1bdf706c830e037cb6e3285"><span class="std std-ref">discord_set_on_channel_update()</span></a> <a class="reference internal" href="#discord_8h_1a5d05722282f97efd14df7be810fdda59"><span class="std std-ref">discord_set_on_channel_delete()</span></a> <a class="reference internal" href="#discord_8h_1a5c029da954c2d51a70aa33ca64dd12a0"><span class="std std-ref">discord_set_on_thread_create()</span></a> <a class="reference internal" href="#discord_8h_1ad4468696f85059915ec526f691300449"><span class="std std-ref">discord_set_on_thread_update()</span></a> <a class="reference internal" href="#discord_8h_1af08a31f6211b23b0c5fc3c1c7a524aa2"><span class="std std-ref">discord_set_on_thread_delete()</span></a> </p>
 </dd>
 </dl>
 </p>
@@ -9950,6 +9946,60 @@
 <dt class="sig sig-object c" id="c.discord_set_on_channel_pins_update">
 <span class="target" id="discord_8h_1a481558c7aa5e7fcb280f0fce44dd6192"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_channel_pins_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.discord_channel_pins_update_cb" title="discord_channel_pins_update_cb"><span class="n"><span class="pre">discord_channel_pins_update_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_channel_pins_update" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a callback that triggers when some channel pins are updated. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>this function will automatically set intent(s) to make the callback triggerable </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>callback</strong> – the callback that will be executed </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_on_thread_create">
+<span class="target" id="discord_8h_1a5c029da954c2d51a70aa33ca64dd12a0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_thread_create</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.discord_channel_cb" title="discord_channel_cb"><span class="n"><span class="pre">discord_channel_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_thread_create" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a callback that triggers when a thread is created. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>this function will automatically set intent(s) to make the callback triggerable </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>callback</strong> – the callback that will be executed </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_on_thread_update">
+<span class="target" id="discord_8h_1ad4468696f85059915ec526f691300449"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_thread_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.discord_channel_cb" title="discord_channel_cb"><span class="n"><span class="pre">discord_channel_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_thread_update" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a callback that triggers when a thread is updated. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>this function will automatically set intent(s) to make the callback triggerable </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>callback</strong> – the callback that will be executed </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_on_thread_delete">
+<span class="target" id="discord_8h_1af08a31f6211b23b0c5fc3c1c7a524aa2"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_on_thread_delete</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.discord_channel_cb" title="discord_channel_cb"><span class="n"><span class="pre">discord_channel_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_on_thread_delete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a callback that triggers when a thread is deleted. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>this function will automatically set intent(s) to make the callback triggerable </p>
