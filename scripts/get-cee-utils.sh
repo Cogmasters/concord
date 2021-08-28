@@ -1,4 +1,7 @@
 #!/bin/bash
+set -e
+set -o pipefail
+
 mypath=$(dirname $(readlink -f $0))
 url="https://raw.githubusercontent.com/cee-studio/cee-utils/master"
 

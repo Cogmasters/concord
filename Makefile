@@ -235,8 +235,8 @@ bots:
 	@ $(MAKE) $(BOTS_EXES)
 
 $(CEE_UTILS_DIR):
-	if [[ ! -d $@ ]]; then        \
-	  ./scripts/get-cee-utils.sh; \
+	if [[ ! -d $@ ]]; then                \
+	  ./scripts/get-cee-utils.sh || exit; \
 	fi
 
 $(OBJDIR) :
