@@ -841,6 +841,24 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */
 
+/** @defgroup DiscordCreateGlobalApplicationCommand 
+ * @brief @b POST /applications/{application.id}/commands
+ *
+ * Create a new global command. New global commands will be available in all guilds after 1 hour.
+ * @see https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param params request parameters
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_global_application_command(struct discord *client, const u64_snowflake_t application_id, struct discord_create_global_application_command_params *params, struct discord_application_command *p_app_cmd);
+/// @struct discord_create_global_application_command_params
+/** @} DiscordCreateGlobalApplicationCommand */
+
+
 /** @defgroup DiscordGetGuildAuditLog 
  * @brief @b GET /guilds/{guild.id}/audit-logs
  *
