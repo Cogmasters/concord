@@ -110,7 +110,6 @@ extern size_t discord_application_command_list_to_json(char *str, size_t len, st
 
  *   * :code:`char* discord_application_command_types_print(enum discord_application_command_types code)`
  *   * :code:`enum discord_application_command_types discord_application_command_types_eval(char *code_as_str)`
- *   * :code:`bool discord_application_command_types_cmp(enum discord_application_command_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_application_command_types {
@@ -120,7 +119,6 @@ enum discord_application_command_types {
 };
 extern char* discord_application_command_types_print(enum discord_application_command_types);
 extern enum discord_application_command_types discord_application_command_types_eval(char*);
-extern bool discord_application_command_types_cmp(enum discord_application_command_types, char*);
 
 // Application Command Option Structure
 // defined at specs/discord/application_commands.json:37:22
@@ -223,7 +221,6 @@ extern size_t discord_application_command_option_list_to_json(char *str, size_t 
 
  *   * :code:`char* discord_application_command_option_types_print(enum discord_application_command_option_types code)`
  *   * :code:`enum discord_application_command_option_types discord_application_command_option_types_eval(char *code_as_str)`
- *   * :code:`bool discord_application_command_option_types_cmp(enum discord_application_command_option_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_application_command_option_types {
@@ -240,7 +237,6 @@ enum discord_application_command_option_types {
 };
 extern char* discord_application_command_option_types_print(enum discord_application_command_option_types);
 extern enum discord_application_command_option_types discord_application_command_option_types_eval(char*);
-extern bool discord_application_command_option_types_cmp(enum discord_application_command_option_types, char*);
 
 // Application Command Option Choice Structure
 // defined at specs/discord/application_commands.json:71:22
@@ -479,7 +475,6 @@ extern size_t discord_application_command_permissions_list_to_json(char *str, si
 
  *   * :code:`char* discord_application_command_permission_types_print(enum discord_application_command_permission_types code)`
  *   * :code:`enum discord_application_command_permission_types discord_application_command_permission_types_eval(char *code_as_str)`
- *   * :code:`bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_application_command_permission_types {
@@ -488,7 +483,6 @@ enum discord_application_command_permission_types {
 };
 extern char* discord_application_command_permission_types_print(enum discord_application_command_permission_types);
 extern enum discord_application_command_permission_types discord_application_command_permission_types_eval(char*);
-extern bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types, char*);
 
 // Interaction Structure
 // defined at specs/discord/application_commands.json:117:22
@@ -603,7 +597,6 @@ extern size_t discord_interaction_list_to_json(char *str, size_t len, struct dis
 
  *   * :code:`char* discord_interaction_request_types_print(enum discord_interaction_request_types code)`
  *   * :code:`enum discord_interaction_request_types discord_interaction_request_types_eval(char *code_as_str)`
- *   * :code:`bool discord_interaction_request_types_cmp(enum discord_interaction_request_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_interaction_request_types {
@@ -613,7 +606,6 @@ enum discord_interaction_request_types {
 };
 extern char* discord_interaction_request_types_print(enum discord_interaction_request_types);
 extern enum discord_interaction_request_types discord_interaction_request_types_eval(char*);
-extern bool discord_interaction_request_types_cmp(enum discord_interaction_request_types, char*);
 
 // Application Command Interaction Data Structure
 // defined at specs/discord/application_commands.json:147:22
@@ -942,7 +934,6 @@ extern size_t discord_interaction_response_list_to_json(char *str, size_t len, s
 
  *   * :code:`char* discord_interaction_callback_types_print(enum discord_interaction_callback_types code)`
  *   * :code:`enum discord_interaction_callback_types discord_interaction_callback_types_eval(char *code_as_str)`
- *   * :code:`bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_interaction_callback_types {
@@ -954,7 +945,6 @@ enum discord_interaction_callback_types {
 };
 extern char* discord_interaction_callback_types_print(enum discord_interaction_callback_types);
 extern enum discord_interaction_callback_types discord_interaction_callback_types_eval(char*);
-extern bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types, char*);
 
 // Interaction Application Command Callback Data Structure
 // defined at specs/discord/application_commands.json:213:22
@@ -1057,7 +1047,6 @@ extern size_t discord_interaction_application_command_callback_data_list_to_json
 
  *   * :code:`char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags code)`
  *   * :code:`enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char *code_as_str)`
- *   * :code:`bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_interaction_application_command_callback_data_flags {
@@ -1065,7 +1054,6 @@ enum discord_interaction_application_command_callback_data_flags {
 };
 extern char* discord_interaction_application_command_callback_data_flags_print(enum discord_interaction_application_command_callback_data_flags);
 extern enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char*);
-extern bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags, char*);
 
 // Message Interaction Structure
 // defined at specs/discord/application_commands.json:238:22

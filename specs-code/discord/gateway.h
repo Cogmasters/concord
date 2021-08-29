@@ -20,7 +20,6 @@
 
  *   * :code:`char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes code)`
  *   * :code:`enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *code_as_str)`
- *   * :code:`bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_gateway_close_opcodes {
@@ -41,7 +40,6 @@ enum discord_gateway_close_opcodes {
 };
 extern char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes);
 extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char*);
-extern bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes, char*);
 
 
 // Gateway Intents
@@ -58,7 +56,6 @@ extern bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes
 
  *   * :code:`char* discord_gateway_intents_print(enum discord_gateway_intents code)`
  *   * :code:`enum discord_gateway_intents discord_gateway_intents_eval(char *code_as_str)`
- *   * :code:`bool discord_gateway_intents_cmp(enum discord_gateway_intents code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_gateway_intents {
@@ -80,7 +77,6 @@ enum discord_gateway_intents {
 };
 extern char* discord_gateway_intents_print(enum discord_gateway_intents);
 extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
-extern bool discord_gateway_intents_cmp(enum discord_gateway_intents, char*);
 
 
 // Gateway Opcodes
@@ -97,7 +93,6 @@ extern bool discord_gateway_intents_cmp(enum discord_gateway_intents, char*);
 
  *   * :code:`char* discord_gateway_opcodes_print(enum discord_gateway_opcodes code)`
  *   * :code:`enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *code_as_str)`
- *   * :code:`bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_gateway_opcodes {
@@ -115,7 +110,6 @@ enum discord_gateway_opcodes {
 };
 extern char* discord_gateway_opcodes_print(enum discord_gateway_opcodes);
 extern enum discord_gateway_opcodes discord_gateway_opcodes_eval(char*);
-extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
 
 
 // Gateway Events
@@ -132,7 +126,6 @@ extern bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes, char*);
 
  *   * :code:`char* discord_gateway_events_print(enum discord_gateway_events code)`
  *   * :code:`enum discord_gateway_events discord_gateway_events_eval(char *code_as_str)`
- *   * :code:`bool discord_gateway_events_cmp(enum discord_gateway_events code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_gateway_events {
@@ -193,7 +186,6 @@ enum discord_gateway_events {
 };
 extern char* discord_gateway_events_print(enum discord_gateway_events);
 extern enum discord_gateway_events discord_gateway_events_eval(char*);
-extern bool discord_gateway_events_cmp(enum discord_gateway_events, char*);
 
 // Identify Structure
 // defined at specs/discord/gateway.json:135:22
@@ -558,7 +550,6 @@ extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struc
 
  *   * :code:`char* discord_gateway_activity_types_print(enum discord_gateway_activity_types code)`
  *   * :code:`enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *code_as_str)`
- *   * :code:`bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_gateway_activity_types {
@@ -570,4 +561,3 @@ enum discord_gateway_activity_types {
 };
 extern char* discord_gateway_activity_types_print(enum discord_gateway_activity_types);
 extern enum discord_gateway_activity_types discord_gateway_activity_types_eval(char*);
-extern bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types, char*);

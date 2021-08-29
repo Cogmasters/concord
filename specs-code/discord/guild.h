@@ -274,7 +274,6 @@ extern size_t discord_guild_list_to_json(char *str, size_t len, struct discord_g
 
  *   * :code:`char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level code)`
  *   * :code:`enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_default_message_notification_level {
@@ -283,7 +282,6 @@ enum discord_guild_default_message_notification_level {
 };
 extern char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level);
 extern enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char*);
-extern bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level, char*);
 
 
 // Explicit Content Filter Level
@@ -300,7 +298,6 @@ extern bool discord_guild_default_message_notification_level_cmp(enum discord_gu
 
  *   * :code:`char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level code)`
  *   * :code:`enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_explicit_content_filter_level {
@@ -310,7 +307,6 @@ enum discord_guild_explicit_content_filter_level {
 };
 extern char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level);
 extern enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char*);
-extern bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level, char*);
 
 
 // MFA Level
@@ -327,7 +323,6 @@ extern bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_e
 
  *   * :code:`char* discord_guild_mfa_level_print(enum discord_guild_mfa_level code)`
  *   * :code:`enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_mfa_level {
@@ -336,7 +331,6 @@ enum discord_guild_mfa_level {
 };
 extern char* discord_guild_mfa_level_print(enum discord_guild_mfa_level);
 extern enum discord_guild_mfa_level discord_guild_mfa_level_eval(char*);
-extern bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level, char*);
 
 
 // Verification Level
@@ -353,7 +347,6 @@ extern bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level, char*);
 
  *   * :code:`char* discord_guild_verification_level_print(enum discord_guild_verification_level code)`
  *   * :code:`enum discord_guild_verification_level discord_guild_verification_level_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_verification_level_cmp(enum discord_guild_verification_level code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_verification_level {
@@ -365,7 +358,6 @@ enum discord_guild_verification_level {
 };
 extern char* discord_guild_verification_level_print(enum discord_guild_verification_level);
 extern enum discord_guild_verification_level discord_guild_verification_level_eval(char*);
-extern bool discord_guild_verification_level_cmp(enum discord_guild_verification_level, char*);
 
 
 // Premium Tier
@@ -382,7 +374,6 @@ extern bool discord_guild_verification_level_cmp(enum discord_guild_verification
 
  *   * :code:`char* discord_guild_premium_tier_print(enum discord_guild_premium_tier code)`
  *   * :code:`enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_premium_tier {
@@ -393,7 +384,6 @@ enum discord_guild_premium_tier {
 };
 extern char* discord_guild_premium_tier_print(enum discord_guild_premium_tier);
 extern enum discord_guild_premium_tier discord_guild_premium_tier_eval(char*);
-extern bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier, char*);
 
 
 // System Channel Flags
@@ -410,7 +400,6 @@ extern bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier, char
 
  *   * :code:`char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags code)`
  *   * :code:`enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_system_channel_flags {
@@ -419,7 +408,6 @@ enum discord_guild_system_channel_flags {
 };
 extern char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags);
 extern enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char*);
-extern bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags, char*);
 
 
 // Guild Features
@@ -436,7 +424,6 @@ extern bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_cha
 
  *   * :code:`char* discord_guild_features_print(enum discord_guild_features code)`
  *   * :code:`enum discord_guild_features discord_guild_features_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_features_cmp(enum discord_guild_features code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_features {
@@ -458,7 +445,6 @@ enum discord_guild_features {
 };
 extern char* discord_guild_features_print(enum discord_guild_features);
 extern enum discord_guild_features discord_guild_features_eval(char*);
-extern bool discord_guild_features_cmp(enum discord_guild_features, char*);
 
 // Unavailable Guild Object
 // defined at specs/discord/guild.json:161:23
@@ -937,7 +923,6 @@ extern size_t discord_guild_integration_list_to_json(char *str, size_t len, stru
 
  *   * :code:`char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors code)`
  *   * :code:`enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char *code_as_str)`
- *   * :code:`bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_guild_integration_expire_behaviors {
@@ -946,7 +931,6 @@ enum discord_guild_integration_expire_behaviors {
 };
 extern char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors);
 extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char*);
-extern bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors, char*);
 
 // Integration Account Structure
 // defined at specs/discord/guild.json:251:22

@@ -52,10 +52,6 @@ char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes v){
 
   return NULL;
 }
-bool discord_gateway_close_opcodes_cmp(enum discord_gateway_close_opcodes v, char *s) {
-  enum discord_gateway_close_opcodes v1 = discord_gateway_close_opcodes_eval(s);
-  return v == v1;
-}
 
 
 enum discord_gateway_intents discord_gateway_intents_eval(char *s){
@@ -98,10 +94,6 @@ char* discord_gateway_intents_print(enum discord_gateway_intents v){
 
   return NULL;
 }
-bool discord_gateway_intents_cmp(enum discord_gateway_intents v, char *s) {
-  enum discord_gateway_intents v1 = discord_gateway_intents_eval(s);
-  return v == v1;
-}
 
 
 enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *s){
@@ -135,10 +127,6 @@ char* discord_gateway_opcodes_print(enum discord_gateway_opcodes v){
   }
 
   return NULL;
-}
-bool discord_gateway_opcodes_cmp(enum discord_gateway_opcodes v, char *s) {
-  enum discord_gateway_opcodes v1 = discord_gateway_opcodes_eval(s);
-  return v == v1;
 }
 
 
@@ -259,10 +247,6 @@ char* discord_gateway_events_print(enum discord_gateway_events v){
   }
 
   return NULL;
-}
-bool discord_gateway_events_cmp(enum discord_gateway_events v, char *s) {
-  enum discord_gateway_events v1 = discord_gateway_events_eval(s);
-  return v == v1;
 }
 
 void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify **pp)
@@ -1232,8 +1216,4 @@ char* discord_gateway_activity_types_print(enum discord_gateway_activity_types v
   }
 
   return NULL;
-}
-bool discord_gateway_activity_types_cmp(enum discord_gateway_activity_types v, char *s) {
-  enum discord_gateway_activity_types v1 = discord_gateway_activity_types_eval(s);
-  return v == v1;
 }

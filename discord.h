@@ -104,6 +104,22 @@ typedef void (*discord_event_raw_cb)(
     struct sized_buffer *event_data);
 /** @} DiscordCallbacksGeneral */
 
+/** @defgroup DiscordCallbacksApplicationCommand
+ *  @brief Application Command event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#commands 
+ *  @{ */
+/**
+ * @brief Application Command Create/Update/Delete callback
+ *
+ * @see discord_set_on_application_command_create() 
+ *      discord_set_on_application_command_update() 
+ *      discord_set_on_application_command_delete() 
+ */
+typedef void (*discord_application_command_cb)(
+    struct discord *client, const struct discord_user *bot,
+    const struct discord_application_command *app_cmd);
+/** @} DiscordCallbacksApplicationCommand */
+
 /** @defgroup DiscordCallbacksChannel
  *  @brief Channel-event callbacks
  *  @see https://discord.com/developers/docs/topics/gateway#channels 
@@ -596,6 +612,27 @@ void discord_set_on_guild_ban_add(struct discord *client, discord_guild_ban_cb c
  * @note this function will automatically set intent(s) to make the callback triggerable
  */
 void discord_set_on_guild_ban_remove(struct discord *client, discord_guild_ban_cb callback);
+/**
+ * @brief Set a callback that triggers when a applicat command is created
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ */
+void discord_set_on_application_command_create(struct discord *client, discord_application_command_cb callback);
+/**
+ * @brief Set a callback that triggers when a applicat command is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ */
+void discord_set_on_application_command_update(struct discord *client, discord_application_command_cb callback);
+/**
+ * @brief Set a callback that triggers when a applicat command is deleted
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ */
+void discord_set_on_application_command_delete(struct discord *client, discord_application_command_cb callback);
 /**
  * @brief Set a callback that triggers when a channel is created
  *

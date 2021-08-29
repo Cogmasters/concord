@@ -18,7 +18,6 @@
 
  *   * :code:`char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags code)`
  *   * :code:`enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char *code_as_str)`
- *   * :code:`bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_permissions_bitwise_flags {
@@ -57,7 +56,6 @@ enum discord_permissions_bitwise_flags {
 };
 extern char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags);
 extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char*);
-extern bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags, char*);
 
 // Role Structure
 // defined at specs/discord/permissions.json:49:22

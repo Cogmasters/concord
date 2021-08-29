@@ -98,7 +98,6 @@ extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct disco
 
  *   * :code:`char* discord_audit_log_events_print(enum discord_audit_log_events code)`
  *   * :code:`enum discord_audit_log_events discord_audit_log_events_eval(char *code_as_str)`
- *   * :code:`bool discord_audit_log_events_cmp(enum discord_audit_log_events code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_audit_log_events {
@@ -139,7 +138,6 @@ enum discord_audit_log_events {
 };
 extern char* discord_audit_log_events_print(enum discord_audit_log_events);
 extern enum discord_audit_log_events discord_audit_log_events_eval(char*);
-extern bool discord_audit_log_events_cmp(enum discord_audit_log_events, char*);
 
 // Audit Log Entry Structure
 // defined at specs/discord/audit_log.json:65:22

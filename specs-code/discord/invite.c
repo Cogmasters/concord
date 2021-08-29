@@ -26,10 +26,6 @@ char* discord_invite_target_user_types_print(enum discord_invite_target_user_typ
 
   return NULL;
 }
-bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types v, char *s) {
-  enum discord_invite_target_user_types v1 = discord_invite_target_user_types_eval(s);
-  return v == v1;
-}
 
 void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp)
 {

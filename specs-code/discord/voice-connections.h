@@ -20,7 +20,6 @@
 
  *   * :code:`char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes code)`
  *   * :code:`enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char *code_as_str)`
- *   * :code:`bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_voice_close_opcodes {
@@ -39,7 +38,6 @@ enum discord_voice_close_opcodes {
 };
 extern char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes);
 extern enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char*);
-extern bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes, char*);
 
 
 // Voice Opcodes
@@ -56,7 +54,6 @@ extern bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes, ch
 
  *   * :code:`char* discord_voice_opcodes_print(enum discord_voice_opcodes code)`
  *   * :code:`enum discord_voice_opcodes discord_voice_opcodes_eval(char *code_as_str)`
- *   * :code:`bool discord_voice_opcodes_cmp(enum discord_voice_opcodes code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_voice_opcodes {
@@ -75,7 +72,6 @@ enum discord_voice_opcodes {
 };
 extern char* discord_voice_opcodes_print(enum discord_voice_opcodes);
 extern enum discord_voice_opcodes discord_voice_opcodes_eval(char*);
-extern bool discord_voice_opcodes_cmp(enum discord_voice_opcodes, char*);
 
 
 // Voice Speaking Flags
@@ -92,7 +88,6 @@ extern bool discord_voice_opcodes_cmp(enum discord_voice_opcodes, char*);
 
  *   * :code:`char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags code)`
  *   * :code:`enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *code_as_str)`
- *   * :code:`bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_voice_speaking_flags {
@@ -102,4 +97,3 @@ enum discord_voice_speaking_flags {
 };
 extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
 extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);
-extern bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags, char*);

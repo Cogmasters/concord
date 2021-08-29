@@ -193,6 +193,9 @@ struct discord_gateway {
     discord_idle_cb on_idle; ///< triggers on every event loop iteration
     discord_event_raw_cb on_event_raw; ///< triggers for every event if set, receive its raw JSON string
     discord_idle_cb on_ready; ///< triggers when connection first establishes
+    discord_application_command_cb on_application_command_create; ///< triggers when a command is created
+    discord_application_command_cb on_application_command_update; ///< triggers when a command is updated
+    discord_application_command_cb on_application_command_delete; ///< triggers when a command is deleted
     discord_channel_cb on_channel_create; ///< triggers when a channel is created
     discord_channel_cb on_channel_update; ///< triggers when a channel is updated
     discord_channel_cb on_channel_delete; ///< triggers when a channel is deleted

@@ -46,10 +46,6 @@ char* discord_channel_types_print(enum discord_channel_types v){
 
   return NULL;
 }
-bool discord_channel_types_cmp(enum discord_channel_types v, char *s) {
-  enum discord_channel_types v1 = discord_channel_types_eval(s);
-  return v == v1;
-}
 
 void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp)
 {
@@ -687,10 +683,6 @@ char* discord_message_sticker_format_types_print(enum discord_message_sticker_fo
 
   return NULL;
 }
-bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types v, char *s) {
-  enum discord_message_sticker_format_types v1 = discord_message_sticker_format_types_eval(s);
-  return v == v1;
-}
 
 void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp)
 {
@@ -990,10 +982,6 @@ char* discord_message_flags_print(enum discord_message_flags v){
   }
 
   return NULL;
-}
-bool discord_message_flags_cmp(enum discord_message_flags v, char *s) {
-  enum discord_message_flags v1 = discord_message_flags_eval(s);
-  return v == v1;
 }
 
 void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp)
@@ -1405,10 +1393,6 @@ char* discord_message_activity_types_print(enum discord_message_activity_types v
 
   return NULL;
 }
-bool discord_message_activity_types_cmp(enum discord_message_activity_types v, char *s) {
-  enum discord_message_activity_types v1 = discord_message_activity_types_eval(s);
-  return v == v1;
-}
 
 void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp)
 {
@@ -1598,10 +1582,6 @@ char* discord_message_types_print(enum discord_message_types v){
   }
 
   return NULL;
-}
-bool discord_message_types_cmp(enum discord_message_types v, char *s) {
-  enum discord_message_types v1 = discord_message_types_eval(s);
-  return v == v1;
 }
 
 void discord_message_from_json(char *json, size_t len, struct discord_message **pp)

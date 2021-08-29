@@ -20,7 +20,6 @@
 
  *   * :code:`char* discord_invite_target_user_types_print(enum discord_invite_target_user_types code)`
  *   * :code:`enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *code_as_str)`
- *   * :code:`bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_invite_target_user_types {
@@ -28,7 +27,6 @@ enum discord_invite_target_user_types {
 };
 extern char* discord_invite_target_user_types_print(enum discord_invite_target_user_types);
 extern enum discord_invite_target_user_types discord_invite_target_user_types_eval(char*);
-extern bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types, char*);
 
 // Invite Structure
 // defined at specs/discord/invite.json:19:22

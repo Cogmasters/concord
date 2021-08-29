@@ -162,7 +162,6 @@ on_hello(struct discord_gateway *gw)
 static enum discord_gateway_events
 get_dispatch_event(char event_name[])
 {
-
   // Discord is always adding new events, this macro aims to assist adding the necessary check (should be used only in this function)
 #define __RETURN_IF_MATCH(event, str) if (STREQ(#event, str)) return DISCORD_GATEWAY_EVENTS_ ## event
 
@@ -350,6 +349,42 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 
   discord_user_cleanup(user);
   free(user);
+}
+
+static void
+on_application_command_create(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_application_command *cmd=NULL;
+  discord_application_command_from_json(data->start, data->size, &cmd);
+
+  (*gw->cbs.on_application_command_create)(gw->p_client, gw->bot, cmd);
+
+  discord_application_command_cleanup(cmd);
+  free(cmd);
+}
+
+static void
+on_application_command_update(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_application_command *cmd=NULL;
+  discord_application_command_from_json(data->start, data->size, &cmd);
+
+  (*gw->cbs.on_application_command_update)(gw->p_client, gw->bot, cmd);
+
+  discord_application_command_cleanup(cmd);
+  free(cmd);
+}
+
+static void
+on_application_command_delete(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_application_command *cmd=NULL;
+  discord_application_command_from_json(data->start, data->size, &cmd);
+
+  (*gw->cbs.on_application_command_delete)(gw->p_client, gw->bot, cmd);
+
+  discord_application_command_cleanup(cmd);
+  free(cmd);
 }
 
 static void
@@ -765,13 +800,16 @@ on_dispatch(struct discord_gateway *gw)
       /// @todo add callback
       break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE:
-      /// @todo implement
+      if (gw->cbs.on_application_command_create)
+        on_event = &on_application_command_create;
       break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE:
-      /// @todo implement
+      if (gw->cbs.on_application_command_update)
+        on_event = &on_application_command_update;
       break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE:
-      /// @todo implement
+      if (gw->cbs.on_application_command_delete)
+        on_event = &on_application_command_delete;
       break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
       if (gw->cbs.on_channel_create)

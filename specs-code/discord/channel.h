@@ -20,7 +20,6 @@
 
  *   * :code:`char* discord_channel_types_print(enum discord_channel_types code)`
  *   * :code:`enum discord_channel_types discord_channel_types_eval(char *code_as_str)`
- *   * :code:`bool discord_channel_types_cmp(enum discord_channel_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_channel_types {
@@ -38,7 +37,6 @@ enum discord_channel_types {
 };
 extern char* discord_channel_types_print(enum discord_channel_types);
 extern enum discord_channel_types discord_channel_types_eval(char*);
-extern bool discord_channel_types_cmp(enum discord_channel_types, char*);
 
 // Channel Structure
 // defined at specs/discord/channel.json:29:22
@@ -206,7 +204,6 @@ extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord
 
  *   * :code:`char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types code)`
  *   * :code:`enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char *code_as_str)`
- *   * :code:`bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_message_sticker_format_types {
@@ -216,7 +213,6 @@ enum discord_message_sticker_format_types {
 };
 extern char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types);
 extern enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char*);
-extern bool discord_message_sticker_format_types_cmp(enum discord_message_sticker_format_types, char*);
 
 // Message Sticker Structure
 // defined at specs/discord/channel.json:82:22
@@ -328,7 +324,6 @@ extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct
 
  *   * :code:`char* discord_message_flags_print(enum discord_message_flags code)`
  *   * :code:`enum discord_message_flags discord_message_flags_eval(char *code_as_str)`
- *   * :code:`bool discord_message_flags_cmp(enum discord_message_flags code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_message_flags {
@@ -340,7 +335,6 @@ enum discord_message_flags {
 };
 extern char* discord_message_flags_print(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_eval(char*);
-extern bool discord_message_flags_cmp(enum discord_message_flags, char*);
 
 // Message Reference Structure
 // defined at specs/discord/channel.json:112:22
@@ -517,7 +511,6 @@ extern size_t discord_message_application_list_to_json(char *str, size_t len, st
 
  *   * :code:`char* discord_message_activity_types_print(enum discord_message_activity_types code)`
  *   * :code:`enum discord_message_activity_types discord_message_activity_types_eval(char *code_as_str)`
- *   * :code:`bool discord_message_activity_types_cmp(enum discord_message_activity_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_message_activity_types {
@@ -528,7 +521,6 @@ enum discord_message_activity_types {
 };
 extern char* discord_message_activity_types_print(enum discord_message_activity_types);
 extern enum discord_message_activity_types discord_message_activity_types_eval(char*);
-extern bool discord_message_activity_types_cmp(enum discord_message_activity_types, char*);
 
 // Message Activity Structure
 // defined at specs/discord/channel.json:149:22
@@ -616,7 +608,6 @@ extern size_t discord_message_activity_list_to_json(char *str, size_t len, struc
 
  *   * :code:`char* discord_message_types_print(enum discord_message_types code)`
  *   * :code:`enum discord_message_types discord_message_types_eval(char *code_as_str)`
- *   * :code:`bool discord_message_types_cmp(enum discord_message_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_message_types {
@@ -640,7 +631,6 @@ enum discord_message_types {
 };
 extern char* discord_message_types_print(enum discord_message_types);
 extern enum discord_message_types discord_message_types_eval(char*);
-extern bool discord_message_types_cmp(enum discord_message_types, char*);
 
 // Message Structure
 // defined at specs/discord/channel.json:184:22

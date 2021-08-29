@@ -324,7 +324,3 @@ char* discord_webhook_types_print(enum discord_webhook_types v){
 
   return NULL;
 }
-bool discord_webhook_types_cmp(enum discord_webhook_types v, char *s) {
-  enum discord_webhook_types v1 = discord_webhook_types_eval(s);
-  return v == v1;
-}

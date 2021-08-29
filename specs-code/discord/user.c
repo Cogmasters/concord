@@ -50,10 +50,6 @@ char* discord_user_flags_print(enum discord_user_flags v){
 
   return NULL;
 }
-bool discord_user_flags_cmp(enum discord_user_flags v, char *s) {
-  enum discord_user_flags v1 = discord_user_flags_eval(s);
-  return v == v1;
-}
 
 
 enum discord_user_premium_types discord_user_premium_types_eval(char *s){
@@ -69,10 +65,6 @@ char* discord_user_premium_types_print(enum discord_user_premium_types v){
   }
 
   return NULL;
-}
-bool discord_user_premium_types_cmp(enum discord_user_premium_types v, char *s) {
-  enum discord_user_premium_types v1 = discord_user_premium_types_eval(s);
-  return v == v1;
 }
 
 void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
@@ -466,10 +458,6 @@ char* discord_user_connection_visibility_types_print(enum discord_user_connectio
   }
 
   return NULL;
-}
-bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types v, char *s) {
-  enum discord_user_connection_visibility_types v1 = discord_user_connection_visibility_types_eval(s);
-  return v == v1;
 }
 
 void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp)

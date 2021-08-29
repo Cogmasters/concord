@@ -48,10 +48,6 @@ char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes v){
 
   return NULL;
 }
-bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes v, char *s) {
-  enum discord_voice_close_opcodes v1 = discord_voice_close_opcodes_eval(s);
-  return v == v1;
-}
 
 
 enum discord_voice_opcodes discord_voice_opcodes_eval(char *s){
@@ -88,10 +84,6 @@ char* discord_voice_opcodes_print(enum discord_voice_opcodes v){
 
   return NULL;
 }
-bool discord_voice_opcodes_cmp(enum discord_voice_opcodes v, char *s) {
-  enum discord_voice_opcodes v1 = discord_voice_opcodes_eval(s);
-  return v == v1;
-}
 
 
 enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *s){
@@ -109,8 +101,4 @@ char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags v){
   }
 
   return NULL;
-}
-bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags v, char *s) {
-  enum discord_voice_speaking_flags v1 = discord_voice_speaking_flags_eval(s);
-  return v == v1;
 }

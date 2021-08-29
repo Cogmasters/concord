@@ -130,7 +130,6 @@ extern size_t discord_component_list_to_json(char *str, size_t len, struct disco
 
  *   * :code:`char* discord_component_types_print(enum discord_component_types code)`
  *   * :code:`enum discord_component_types discord_component_types_eval(char *code_as_str)`
- *   * :code:`bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_component_types {
@@ -140,7 +139,6 @@ enum discord_component_types {
 };
 extern char* discord_component_types_print(enum discord_component_types);
 extern enum discord_component_types discord_component_types_eval(char*);
-extern bool discord_component_types_cmp(enum discord_component_types, char*);
 
 // Button Structure
 // defined at specs/discord/message_components.json:41:22
@@ -247,7 +245,6 @@ extern size_t discord_button_list_to_json(char *str, size_t len, struct discord_
 
  *   * :code:`char* discord_button_styles_print(enum discord_button_styles code)`
  *   * :code:`enum discord_button_styles discord_button_styles_eval(char *code_as_str)`
- *   * :code:`bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_button_styles {
@@ -259,7 +256,6 @@ enum discord_button_styles {
 };
 extern char* discord_button_styles_print(enum discord_button_styles);
 extern enum discord_button_styles discord_button_styles_eval(char*);
-extern bool discord_button_styles_cmp(enum discord_button_styles, char*);
 
 // Select Menu Structure
 // defined at specs/discord/message_components.json:70:22

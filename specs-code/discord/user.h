@@ -20,7 +20,6 @@
 
  *   * :code:`char* discord_user_flags_print(enum discord_user_flags code)`
  *   * :code:`enum discord_user_flags discord_user_flags_eval(char *code_as_str)`
- *   * :code:`bool discord_user_flags_cmp(enum discord_user_flags code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_user_flags {
@@ -40,7 +39,6 @@ enum discord_user_flags {
 };
 extern char* discord_user_flags_print(enum discord_user_flags);
 extern enum discord_user_flags discord_user_flags_eval(char*);
-extern bool discord_user_flags_cmp(enum discord_user_flags, char*);
 
 
 // Premium Types
@@ -57,7 +55,6 @@ extern bool discord_user_flags_cmp(enum discord_user_flags, char*);
 
  *   * :code:`char* discord_user_premium_types_print(enum discord_user_premium_types code)`
  *   * :code:`enum discord_user_premium_types discord_user_premium_types_eval(char *code_as_str)`
- *   * :code:`bool discord_user_premium_types_cmp(enum discord_user_premium_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_user_premium_types {
@@ -66,7 +63,6 @@ enum discord_user_premium_types {
 };
 extern char* discord_user_premium_types_print(enum discord_user_premium_types);
 extern enum discord_user_premium_types discord_user_premium_types_eval(char*);
-extern bool discord_user_premium_types_cmp(enum discord_user_premium_types, char*);
 
 // User Structure
 // defined at specs/discord/user.json:42:28
@@ -195,7 +191,6 @@ extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_us
 
  *   * :code:`char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code)`
  *   * :code:`enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *code_as_str)`
- *   * :code:`bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_user_connection_visibility_types {
@@ -204,7 +199,6 @@ enum discord_user_connection_visibility_types {
 };
 extern char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types);
 extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char*);
-extern bool discord_user_connection_visibility_types_cmp(enum discord_user_connection_visibility_types, char*);
 
 // Connection Structure
 // defined at specs/discord/user.json:74:28

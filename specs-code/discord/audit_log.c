@@ -275,10 +275,6 @@ char* discord_audit_log_events_print(enum discord_audit_log_events v){
 
   return NULL;
 }
-bool discord_audit_log_events_cmp(enum discord_audit_log_events v, char *s) {
-  enum discord_audit_log_events v1 = discord_audit_log_events_eval(s);
-  return v == v1;
-}
 
 void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp)
 {

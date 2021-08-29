@@ -405,10 +405,6 @@ char* discord_component_types_print(enum discord_component_types v){
 
   return NULL;
 }
-bool discord_component_types_cmp(enum discord_component_types v, char *s) {
-  enum discord_component_types v1 = discord_component_types_eval(s);
-  return v == v1;
-}
 
 void discord_button_from_json(char *json, size_t len, struct discord_button **pp)
 {
@@ -688,10 +684,6 @@ char* discord_button_styles_print(enum discord_button_styles v){
   }
 
   return NULL;
-}
-bool discord_button_styles_cmp(enum discord_button_styles v, char *s) {
-  enum discord_button_styles v1 = discord_button_styles_eval(s);
-  return v == v1;
 }
 
 void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp)

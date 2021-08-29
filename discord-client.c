@@ -231,6 +231,21 @@ discord_set_on_guild_ban_remove(struct discord *client, discord_guild_ban_cb cal
 }
 
 void 
+discord_set_on_application_command_create(struct discord *client, discord_application_command_cb callback) {
+  client->gw.cbs.on_application_command_create = callback;
+}
+
+void 
+discord_set_on_application_command_update(struct discord *client, discord_application_command_cb callback) {
+  client->gw.cbs.on_application_command_update = callback;
+}
+
+void 
+discord_set_on_application_command_delete(struct discord *client, discord_application_command_cb callback) {
+  client->gw.cbs.on_application_command_delete = callback;
+}
+
+void 
 discord_set_on_channel_create(struct discord *client, discord_channel_cb callback) {
   client->gw.cbs.on_channel_create = callback;
   discord_add_intents(client, DISCORD_GATEWAY_GUILDS);

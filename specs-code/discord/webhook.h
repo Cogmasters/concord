@@ -118,7 +118,6 @@ extern size_t discord_webhook_list_to_json(char *str, size_t len, struct discord
 
  *   * :code:`char* discord_webhook_types_print(enum discord_webhook_types code)`
  *   * :code:`enum discord_webhook_types discord_webhook_types_eval(char *code_as_str)`
- *   * :code:`bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_webhook_types {
@@ -127,4 +126,3 @@ enum discord_webhook_types {
 };
 extern char* discord_webhook_types_print(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_eval(char*);
-extern bool discord_webhook_types_cmp(enum discord_webhook_types, char*);

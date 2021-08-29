@@ -279,10 +279,6 @@ char* discord_application_command_types_print(enum discord_application_command_t
 
   return NULL;
 }
-bool discord_application_command_types_cmp(enum discord_application_command_types v, char *s) {
-  enum discord_application_command_types v1 = discord_application_command_types_eval(s);
-  return v == v1;
-}
 
 void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp)
 {
@@ -542,10 +538,6 @@ char* discord_application_command_option_types_print(enum discord_application_co
   }
 
   return NULL;
-}
-bool discord_application_command_option_types_cmp(enum discord_application_command_option_types v, char *s) {
-  enum discord_application_command_option_types v1 = discord_application_command_option_types_eval(s);
-  return v == v1;
 }
 
 void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp)
@@ -1035,10 +1027,6 @@ char* discord_application_command_permission_types_print(enum discord_applicatio
 
   return NULL;
 }
-bool discord_application_command_permission_types_cmp(enum discord_application_command_permission_types v, char *s) {
-  enum discord_application_command_permission_types v1 = discord_application_command_permission_types_eval(s);
-  return v == v1;
-}
 
 void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp)
 {
@@ -1367,10 +1355,6 @@ char* discord_interaction_request_types_print(enum discord_interaction_request_t
   }
 
   return NULL;
-}
-bool discord_interaction_request_types_cmp(enum discord_interaction_request_types v, char *s) {
-  enum discord_interaction_request_types v1 = discord_interaction_request_types_eval(s);
-  return v == v1;
 }
 
 void discord_application_command_interaction_data_from_json(char *json, size_t len, struct discord_application_command_interaction_data **pp)
@@ -2136,10 +2120,6 @@ char* discord_interaction_callback_types_print(enum discord_interaction_callback
 
   return NULL;
 }
-bool discord_interaction_callback_types_cmp(enum discord_interaction_callback_types v, char *s) {
-  enum discord_interaction_callback_types v1 = discord_interaction_callback_types_eval(s);
-  return v == v1;
-}
 
 void discord_interaction_application_command_callback_data_from_json(char *json, size_t len, struct discord_interaction_application_command_callback_data **pp)
 {
@@ -2378,10 +2358,6 @@ char* discord_interaction_application_command_callback_data_flags_print(enum dis
   }
 
   return NULL;
-}
-bool discord_interaction_application_command_callback_data_flags_cmp(enum discord_interaction_application_command_callback_data_flags v, char *s) {
-  enum discord_interaction_application_command_callback_data_flags v1 = discord_interaction_application_command_callback_data_flags_eval(s);
-  return v == v1;
 }
 
 void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp)

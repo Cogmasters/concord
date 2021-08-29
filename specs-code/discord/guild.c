@@ -1182,10 +1182,6 @@ char* discord_guild_default_message_notification_level_print(enum discord_guild_
 
   return NULL;
 }
-bool discord_guild_default_message_notification_level_cmp(enum discord_guild_default_message_notification_level v, char *s) {
-  enum discord_guild_default_message_notification_level v1 = discord_guild_default_message_notification_level_eval(s);
-  return v == v1;
-}
 
 
 enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *s){
@@ -1204,10 +1200,6 @@ char* discord_guild_explicit_content_filter_level_print(enum discord_guild_expli
 
   return NULL;
 }
-bool discord_guild_explicit_content_filter_level_cmp(enum discord_guild_explicit_content_filter_level v, char *s) {
-  enum discord_guild_explicit_content_filter_level v1 = discord_guild_explicit_content_filter_level_eval(s);
-  return v == v1;
-}
 
 
 enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *s){
@@ -1223,10 +1215,6 @@ char* discord_guild_mfa_level_print(enum discord_guild_mfa_level v){
   }
 
   return NULL;
-}
-bool discord_guild_mfa_level_cmp(enum discord_guild_mfa_level v, char *s) {
-  enum discord_guild_mfa_level v1 = discord_guild_mfa_level_eval(s);
-  return v == v1;
 }
 
 
@@ -1250,10 +1238,6 @@ char* discord_guild_verification_level_print(enum discord_guild_verification_lev
 
   return NULL;
 }
-bool discord_guild_verification_level_cmp(enum discord_guild_verification_level v, char *s) {
-  enum discord_guild_verification_level v1 = discord_guild_verification_level_eval(s);
-  return v == v1;
-}
 
 
 enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *s){
@@ -1274,10 +1258,6 @@ char* discord_guild_premium_tier_print(enum discord_guild_premium_tier v){
 
   return NULL;
 }
-bool discord_guild_premium_tier_cmp(enum discord_guild_premium_tier v, char *s) {
-  enum discord_guild_premium_tier v1 = discord_guild_premium_tier_eval(s);
-  return v == v1;
-}
 
 
 enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *s){
@@ -1293,10 +1273,6 @@ char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel
   }
 
   return NULL;
-}
-bool discord_guild_system_channel_flags_cmp(enum discord_guild_system_channel_flags v, char *s) {
-  enum discord_guild_system_channel_flags v1 = discord_guild_system_channel_flags_eval(s);
-  return v == v1;
 }
 
 
@@ -1339,10 +1315,6 @@ char* discord_guild_features_print(enum discord_guild_features v){
   }
 
   return NULL;
-}
-bool discord_guild_features_cmp(enum discord_guild_features v, char *s) {
-  enum discord_guild_features v1 = discord_guild_features_eval(s);
-  return v == v1;
 }
 
 void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable **pp)
@@ -2673,10 +2645,6 @@ char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integr
   }
 
   return NULL;
-}
-bool discord_guild_integration_expire_behaviors_cmp(enum discord_guild_integration_expire_behaviors v, char *s) {
-  enum discord_guild_integration_expire_behaviors v1 = discord_guild_integration_expire_behaviors_eval(s);
-  return v == v1;
 }
 
 void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account **pp)

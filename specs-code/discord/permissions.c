@@ -88,10 +88,6 @@ char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_f
 
   return NULL;
 }
-bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags v, char *s) {
-  enum discord_permissions_bitwise_flags v1 = discord_permissions_bitwise_flags_eval(s);
-  return v & v1;
-}
 
 void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp)
 {
