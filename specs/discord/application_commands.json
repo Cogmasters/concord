@@ -15,7 +15,7 @@
         {"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"},
         {"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"},
         {"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null},
-        {"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}
+        {"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}
       ]
     },
     {
@@ -40,7 +40,7 @@
         {"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"},
         {"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"},
         {"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"},
-        {"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"},
+        {"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"},
         {"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null},
         {"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}
       ]

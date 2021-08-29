@@ -12,9 +12,9 @@
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"},
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"},
-        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true},
+        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null},
         { "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"},
-        { "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}}
+        { "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}
       ]
     },
     {
@@ -24,9 +24,9 @@
       "struct": "params",
       "fields":
       [
-        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"},
-        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"},
-        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true},
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null},
+        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null},
         { "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"}
       ]
     },
@@ -39,9 +39,9 @@
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"},
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"},
-        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true},
+        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null},
         { "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"},
-        { "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}}
+        { "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}
       ]
     },
     {
@@ -51,9 +51,9 @@
       "struct": "params",
       "fields":
       [
-        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"},
-        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"},
-        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true},
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null},
+        { "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null},
         { "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"}
       ]
     },
