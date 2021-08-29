@@ -42,5 +42,5 @@ discord_create_global_application_command(
            },
            &(struct sized_buffer){ payload, ret },
            HTTP_POST, 
-           "/applications/"PRIu64"/commands", application_id);
+           "/applications/%"PRIu64"/commands", application_id);
 }
