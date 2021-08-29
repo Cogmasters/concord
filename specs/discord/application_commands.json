@@ -10,10 +10,11 @@
       "fields":
       [
         {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"},
+        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "option":true, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0},
         {"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"},
-        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"unique id of the command, if not global","inject_if_not":0},
-        {"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"},
-        {"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"},
+        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"guild id of the command, if not global","inject_if_not":0},
+        {"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"},
+        {"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"},
         {"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null},
         {"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}
       ]
