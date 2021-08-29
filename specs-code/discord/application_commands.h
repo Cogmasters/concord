@@ -40,26 +40,30 @@ struct discord_application_command {
   u64_snowflake_t id; ///< unique id of the command
 
   /* specs/discord/application_commands.json:13:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "option":true, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
+  enum discord_application_command_types type; ///< the type of the command, defaults 1 if not set
+
+  /* specs/discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
   u64_snowflake_t application_id; ///< unique id of the parent application
 
-  /* specs/discord/application_commands.json:14:18
-     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"unique id of the command, if not global","inject_if_not":0}' */
-  u64_snowflake_t guild_id; ///< unique id of the command, if not global
-
   /* specs/discord/application_commands.json:15:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  char name[32+1]; ///< 1-32 lowercase character
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"guild id of the command, if not global","inject_if_not":0}' */
+  u64_snowflake_t guild_id; ///< guild id of the command, if not global
 
   /* specs/discord/application_commands.json:16:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  char description[100+1]; ///< 1-100 character description
+     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
+  char name[32+1]; ///< 1-32 character name
 
   /* specs/discord/application_commands.json:17:18
+     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+  char description[100+1]; ///< 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands
+
+  /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
   struct discord_application_command_option **options; ///< the parameters for the command
 
-  /* specs/discord/application_commands.json:18:18
+  /* specs/discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
@@ -72,9 +76,9 @@ struct discord_application_command {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
+    void *arg_switches[8];
+    void *record_defined[8];
+    void *record_null[8];
   } __M; // metadata
 /// @endcond
 };
@@ -97,7 +101,7 @@ extern size_t discord_application_command_list_to_json(char *str, size_t len, st
 
 
 // Application Command Type
-// defined at specs/discord/application_commands.json:21:5
+// defined at specs/discord/application_commands.json:22:5
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types
  *
@@ -121,7 +125,7 @@ extern char* discord_application_command_types_print(enum discord_application_co
 extern enum discord_application_command_types discord_application_command_types_eval(char*);
 
 // Application Command Option Structure
-// defined at specs/discord/application_commands.json:37:22
+// defined at specs/discord/application_commands.json:38:22
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
  *
@@ -150,27 +154,27 @@ extern enum discord_application_command_types discord_application_command_types_
  * @endverbatim
  */
 struct discord_application_command_option {
-  /* specs/discord/application_commands.json:40:18
+  /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
   enum discord_application_command_option_types type; ///< value of application command option type
 
-  /* specs/discord/application_commands.json:41:18
+  /* specs/discord/application_commands.json:42:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
   char name[32+1]; ///< 1-32 lowercase character
 
-  /* specs/discord/application_commands.json:42:18
+  /* specs/discord/application_commands.json:43:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
   char description[100+1]; ///< 1-100 character description
 
-  /* specs/discord/application_commands.json:43:18
+  /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
   bool required; ///< if the paramter is required or optional -- default false
 
-  /* specs/discord/application_commands.json:44:18
+  /* specs/discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
   struct discord_application_command_option_choice **choices; ///< choices for string and int types for the user to pick from
 
-  /* specs/discord/application_commands.json:45:18
+  /* specs/discord/application_commands.json:46:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
   struct discord_application_command_option **options; ///< if the option is a subcommand or subcommand group type, this nested options will be the parameters
 
@@ -208,7 +212,7 @@ extern size_t discord_application_command_option_list_to_json(char *str, size_t 
 
 
 // Application Command Option Type
-// defined at specs/discord/application_commands.json:48:5
+// defined at specs/discord/application_commands.json:49:5
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
  *
@@ -239,7 +243,7 @@ extern char* discord_application_command_option_types_print(enum discord_applica
 extern enum discord_application_command_option_types discord_application_command_option_types_eval(char*);
 
 // Application Command Option Choice Structure
-// defined at specs/discord/application_commands.json:71:22
+// defined at specs/discord/application_commands.json:72:22
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure
  *
@@ -268,11 +272,11 @@ extern enum discord_application_command_option_types discord_application_command
  * @endverbatim
  */
 struct discord_application_command_option_choice {
-  /* specs/discord/application_commands.json:74:18
+  /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
   char name[100+1]; ///< 1-100 character choice name
 
-  /* specs/discord/application_commands.json:75:18
+  /* specs/discord/application_commands.json:76:18
      '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
   char value[100+1]; ///< value of choice, up to 100 characters
 
@@ -309,7 +313,7 @@ extern size_t discord_application_command_option_choice_list_to_json_v(char *str
 extern size_t discord_application_command_option_choice_list_to_json(char *str, size_t len, struct discord_application_command_option_choice **p);
 
 // Guild Application Command Permissions Structure
-// defined at specs/discord/application_commands.json:82:22
+// defined at specs/discord/application_commands.json:83:22
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure
  *
@@ -338,19 +342,19 @@ extern size_t discord_application_command_option_choice_list_to_json(char *str, 
  * @endverbatim
  */
 struct discord_guild_application_command_permissions {
-  /* specs/discord/application_commands.json:85:18
+  /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
   u64_snowflake_t id; ///< the id of the command
 
-  /* specs/discord/application_commands.json:86:18
+  /* specs/discord/application_commands.json:87:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
   u64_snowflake_t application_id; ///< the id of the parent application the command belongs to
 
-  /* specs/discord/application_commands.json:87:18
+  /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
   u64_snowflake_t guild_id; ///< the id of the guild
 
-  /* specs/discord/application_commands.json:88:18
+  /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
   struct discord_application_command_permissions **permissions; ///< the permissions for the command in the guild
 
@@ -387,7 +391,7 @@ extern size_t discord_guild_application_command_permissions_list_to_json_v(char 
 extern size_t discord_guild_application_command_permissions_list_to_json(char *str, size_t len, struct discord_guild_application_command_permissions **p);
 
 // Application Command Permissions Structure
-// defined at specs/discord/application_commands.json:95:22
+// defined at specs/discord/application_commands.json:96:22
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure
  *
@@ -416,15 +420,15 @@ extern size_t discord_guild_application_command_permissions_list_to_json(char *s
  * @endverbatim
  */
 struct discord_application_command_permissions {
-  /* specs/discord/application_commands.json:98:18
+  /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
   u64_snowflake_t id; ///< the id of the command
 
-  /* specs/discord/application_commands.json:99:18
+  /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
   enum discord_application_command_permission_types type; ///< role or user
 
-  /* specs/discord/application_commands.json:100:18
+  /* specs/discord/application_commands.json:101:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
   bool permission; ///< true to allow, false, to disallow
 
@@ -462,7 +466,7 @@ extern size_t discord_application_command_permissions_list_to_json(char *str, si
 
 
 // Application Command Permission Type
-// defined at specs/discord/application_commands.json:103:5
+// defined at specs/discord/application_commands.json:104:5
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type
  *
@@ -485,7 +489,7 @@ extern char* discord_application_command_permission_types_print(enum discord_app
 extern enum discord_application_command_permission_types discord_application_command_permission_types_eval(char*);
 
 // Interaction Structure
-// defined at specs/discord/application_commands.json:117:22
+// defined at specs/discord/application_commands.json:118:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
  *
@@ -514,39 +518,39 @@ extern enum discord_application_command_permission_types discord_application_com
  * @endverbatim
  */
 struct discord_interaction {
-  /* specs/discord/application_commands.json:120:18
+  /* specs/discord/application_commands.json:121:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
   u64_snowflake_t id; ///< id of the interaction
 
-  /* specs/discord/application_commands.json:121:18
+  /* specs/discord/application_commands.json:122:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
   u64_snowflake_t application_id; ///< id of the application this iteraction is for
 
-  /* specs/discord/application_commands.json:122:18
+  /* specs/discord/application_commands.json:123:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_request_types"}, "comment":"the request type of the interaction"}' */
   enum discord_interaction_request_types type; ///< the request type of the interaction
 
-  /* specs/discord/application_commands.json:123:18
+  /* specs/discord/application_commands.json:124:18
      '{"name":"data", "type":{"base":"struct discord_application_command_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
   struct discord_application_command_interaction_data *data; ///< the command data payload
 
-  /* specs/discord/application_commands.json:124:18
+  /* specs/discord/application_commands.json:125:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
   u64_snowflake_t guild_id; ///< the guild it was sent from
 
-  /* specs/discord/application_commands.json:125:18
+  /* specs/discord/application_commands.json:126:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
   u64_snowflake_t channel_id; ///< the channel it was sent from
 
-  /* specs/discord/application_commands.json:126:18
+  /* specs/discord/application_commands.json:127:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
   struct discord_guild_member *member; ///< guild member data for the invoking user, including permissions
 
-  /* specs/discord/application_commands.json:127:18
+  /* specs/discord/application_commands.json:128:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
   struct discord_user *user; ///< user object for the invoking user, if invoked in a DM
 
-  /* specs/discord/application_commands.json:128:18
+  /* specs/discord/application_commands.json:129:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
   char *token; ///< a continuation token for responding to the interaction
 
@@ -584,7 +588,7 @@ extern size_t discord_interaction_list_to_json(char *str, size_t len, struct dis
 
 
 // Interaction Request Type
-// defined at specs/discord/application_commands.json:131:5
+// defined at specs/discord/application_commands.json:132:5
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-request-type
  *
@@ -608,7 +612,7 @@ extern char* discord_interaction_request_types_print(enum discord_interaction_re
 extern enum discord_interaction_request_types discord_interaction_request_types_eval(char*);
 
 // Application Command Interaction Data Structure
-// defined at specs/discord/application_commands.json:147:22
+// defined at specs/discord/application_commands.json:148:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure
  *
@@ -637,27 +641,27 @@ extern enum discord_interaction_request_types discord_interaction_request_types_
  * @endverbatim
  */
 struct discord_application_command_interaction_data {
-  /* specs/discord/application_commands.json:150:18
+  /* specs/discord/application_commands.json:151:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
   u64_snowflake_t id; ///< the ID of the invoked command
 
-  /* specs/discord/application_commands.json:151:18
+  /* specs/discord/application_commands.json:152:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
   char *name; ///< the name of the invoked command
 
-  /* specs/discord/application_commands.json:152:18
+  /* specs/discord/application_commands.json:153:18
      '{"name":"resolved", "type":{"base":"struct discord_application_command_interaction_data_resolved", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
   struct discord_application_command_interaction_data_resolved *resolved; ///< converted users + roles + channels
 
-  /* specs/discord/application_commands.json:153:18
+  /* specs/discord/application_commands.json:154:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the params + values from the user", "inject_if_not":null}' */
   struct discord_application_command_interaction_data_option **options; ///< the params + values from the user
 
-  /* specs/discord/application_commands.json:154:18
+  /* specs/discord/application_commands.json:155:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters"}' */
   char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
 
-  /* specs/discord/application_commands.json:155:18
+  /* specs/discord/application_commands.json:156:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "comment":"component type"}' */
   enum discord_component_types type; ///< component type
 
@@ -694,7 +698,7 @@ extern size_t discord_application_command_interaction_data_list_to_json_v(char *
 extern size_t discord_application_command_interaction_data_list_to_json(char *str, size_t len, struct discord_application_command_interaction_data **p);
 
 // Application Command Interaction Data Resolved Structure
-// defined at specs/discord/application_commands.json:162:22
+// defined at specs/discord/application_commands.json:163:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure
  *
@@ -723,19 +727,19 @@ extern size_t discord_application_command_interaction_data_list_to_json(char *st
  * @endverbatim
  */
 struct discord_application_command_interaction_data_resolved {
-  /* specs/discord/application_commands.json:165:18
+  /* specs/discord/application_commands.json:166:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
   ja_str **users; ///< the ids and User objects
 
-  /* specs/discord/application_commands.json:166:18
+  /* specs/discord/application_commands.json:167:18
      '{"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null}' */
   ja_str **members; ///< the ids and partial Member objects
 
-  /* specs/discord/application_commands.json:167:18
+  /* specs/discord/application_commands.json:168:18
      '{"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null}' */
   ja_str **roles; ///< the ids and Role objects
 
-  /* specs/discord/application_commands.json:168:18
+  /* specs/discord/application_commands.json:169:18
      '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
   ja_str **channels; ///< the ids and partial Channel objects
 
@@ -772,7 +776,7 @@ extern size_t discord_application_command_interaction_data_resolved_list_to_json
 extern size_t discord_application_command_interaction_data_resolved_list_to_json(char *str, size_t len, struct discord_application_command_interaction_data_resolved **p);
 
 // Application Command Interaction Data Option Structure
-// defined at specs/discord/application_commands.json:175:22
+// defined at specs/discord/application_commands.json:176:22
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure
  *
@@ -801,19 +805,19 @@ extern size_t discord_application_command_interaction_data_resolved_list_to_json
  * @endverbatim
  */
 struct discord_application_command_interaction_data_option {
-  /* specs/discord/application_commands.json:178:18
+  /* specs/discord/application_commands.json:179:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
   char *name; ///< the name of the parameter
 
-  /* specs/discord/application_commands.json:179:18
+  /* specs/discord/application_commands.json:180:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
   enum discord_application_command_option_types type; ///< value of application command option type
 
-  /* specs/discord/application_commands.json:180:18
+  /* specs/discord/application_commands.json:181:18
      '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
   enum discord_application_command_option_types value; ///< the value of the pair
 
-  /* specs/discord/application_commands.json:181:18
+  /* specs/discord/application_commands.json:182:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
   struct discord_application_command_interaction_data_option **options; ///< present if this option is a group or subcommand
 
@@ -850,7 +854,7 @@ extern size_t discord_application_command_interaction_data_option_list_to_json_v
 extern size_t discord_application_command_interaction_data_option_list_to_json(char *str, size_t len, struct discord_application_command_interaction_data_option **p);
 
 // Interaction Response Structure
-// defined at specs/discord/application_commands.json:188:22
+// defined at specs/discord/application_commands.json:189:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure
  *
@@ -879,11 +883,11 @@ extern size_t discord_application_command_interaction_data_option_list_to_json(c
  * @endverbatim
  */
 struct discord_interaction_response {
-  /* specs/discord/application_commands.json:191:18
+  /* specs/discord/application_commands.json:192:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
   enum discord_interaction_callback_types type; ///< the type of response
 
-  /* specs/discord/application_commands.json:192:18
+  /* specs/discord/application_commands.json:193:18
      '{"name":"data", "type":{"base":"struct discord_interaction_application_command_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
   struct discord_interaction_application_command_callback_data *data; ///< an optional response message
 
@@ -921,7 +925,7 @@ extern size_t discord_interaction_response_list_to_json(char *str, size_t len, s
 
 
 // Interaction Callback Type
-// defined at specs/discord/application_commands.json:195:5
+// defined at specs/discord/application_commands.json:196:5
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-callback-type
  *
@@ -947,7 +951,7 @@ extern char* discord_interaction_callback_types_print(enum discord_interaction_c
 extern enum discord_interaction_callback_types discord_interaction_callback_types_eval(char*);
 
 // Interaction Application Command Callback Data Structure
-// defined at specs/discord/application_commands.json:213:22
+// defined at specs/discord/application_commands.json:214:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure
  *
@@ -976,27 +980,27 @@ extern enum discord_interaction_callback_types discord_interaction_callback_type
  * @endverbatim
  */
 struct discord_interaction_application_command_callback_data {
-  /* specs/discord/application_commands.json:216:18
+  /* specs/discord/application_commands.json:217:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
   bool tts; ///< is the response TTS
 
-  /* specs/discord/application_commands.json:217:18
+  /* specs/discord/application_commands.json:218:18
      '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
   char *content; ///< message content
 
-  /* specs/discord/application_commands.json:218:18
+  /* specs/discord/application_commands.json:219:18
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
   struct discord_embed **embeds; ///< support up to 10 embeds
 
-  /* specs/discord/application_commands.json:219:18
+  /* specs/discord/application_commands.json:220:18
      '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
   // @todo allowed_mentions allowed mentions object;
 
-  /* specs/discord/application_commands.json:220:18
+  /* specs/discord/application_commands.json:221:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_application_command_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
   enum discord_interaction_application_command_callback_data_flags flags; ///< interaction application command callback data flags
 
-  /* specs/discord/application_commands.json:221:18
+  /* specs/discord/application_commands.json:222:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
   struct discord_component **components; ///< message components
 
@@ -1034,7 +1038,7 @@ extern size_t discord_interaction_application_command_callback_data_list_to_json
 
 
 // Interaction Application Command Callback Data Flags
-// defined at specs/discord/application_commands.json:224:5
+// defined at specs/discord/application_commands.json:225:5
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-flags
  *
@@ -1056,7 +1060,7 @@ extern char* discord_interaction_application_command_callback_data_flags_print(e
 extern enum discord_interaction_application_command_callback_data_flags discord_interaction_application_command_callback_data_flags_eval(char*);
 
 // Message Interaction Structure
-// defined at specs/discord/application_commands.json:238:22
+// defined at specs/discord/application_commands.json:239:22
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure
  *
@@ -1085,19 +1089,19 @@ extern enum discord_interaction_application_command_callback_data_flags discord_
  * @endverbatim
  */
 struct discord_message_interaction {
-  /* specs/discord/application_commands.json:241:18
+  /* specs/discord/application_commands.json:242:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
   u64_snowflake_t id; ///< id of the interaction
 
-  /* specs/discord/application_commands.json:242:18
+  /* specs/discord/application_commands.json:243:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_request_types"}, "comment":"the request type of the interaction"}' */
   enum discord_interaction_request_types type; ///< the request type of the interaction
 
-  /* specs/discord/application_commands.json:243:18
+  /* specs/discord/application_commands.json:244:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
   char *name; ///< the name of the application command
 
-  /* specs/discord/application_commands.json:244:18
+  /* specs/discord/application_commands.json:245:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
   struct discord_user *user; ///< the user who invoked the interaction
 
