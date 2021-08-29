@@ -5,7 +5,7 @@
   [
     {
       "title":"Application Command Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-structure",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure",
       "struct":"application_command",
       "fields":
       [
@@ -19,8 +19,20 @@
       ]
     },
     {
+      "title":"Application Command Type",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types",
+      "namespace":["application_command"],
+      "enum":"types",
+      "items":
+      [
+        {"name":"CHAT_INPUT", "value":1},
+        {"name":"USER","value":2},
+        {"name":"MESSAGE","value":3}
+      ]
+    },
+    {
       "title":"Application Command Option Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-structure",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure",
       "namespace":["application_command"],
       "struct":"option",
       "fields":
@@ -35,7 +47,7 @@
     },
     {
       "title":"Application Command Option Type",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type",
       "namespace":["application_command_option"],
       "enum":"types",
       "items":
@@ -48,12 +60,13 @@
         {"name":"USER","value":6},
         {"name":"CHANNEL","value":7},
         {"name":"ROLE","value":8},
-        {"name":"MENTIONABLE","value":9}
+        {"name":"MENTIONABLE","value":9},
+        {"name":"NUMBER","value":10}
       ]
     },
     {
       "title":"Application Command Option Choice Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-choice-structure",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure",
       "namespace":["application_command_option"],
       "struct":"choice",
       "fields":
@@ -64,7 +77,7 @@
     },
     {
       "title":"Guild Application Command Permissions Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure",
       "namespace":["guild", "application_command"],
       "struct":"permissions",
       "fields":
@@ -77,7 +90,7 @@
     },
     {
       "title":"Application Command Permissions Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure",
       "namespace":["application_command"],
       "struct":"permissions",
       "fields":
@@ -89,7 +102,7 @@
     },
     {
       "title":"Application Command Permission Type",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permission-type",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type",
       "namespace":["application_command_permission"],
       "enum":"types",
       "items":
@@ -157,7 +170,7 @@
     },
     {
       "title":"Application Command Interaction Data Option Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-option-structure",
+      "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure",
       "namespace":["application_command", "interaction"],
       "struct":"data_option",
       "fields":
