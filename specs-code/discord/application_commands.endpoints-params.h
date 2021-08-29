@@ -44,7 +44,7 @@ struct discord_create_global_application_command_params {
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:15:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true}' */
+     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:16:20
@@ -52,7 +52,7 @@ struct discord_create_global_application_command_params {
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   /* specs/discord/application_commands.endpoints-params.json:17:20
-     '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}}' */
+     '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
   enum discord_application_command_types type;
 
   // The following is metadata used to 
@@ -118,15 +118,15 @@ extern size_t discord_create_global_application_command_params_list_to_json(char
  */
 struct discord_edit_global_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:27:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
   char *name; ///< 1-32 lowercase character name
 
   /* specs/discord/application_commands.endpoints-params.json:28:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:29:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true}' */
+     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:30:20
@@ -204,7 +204,7 @@ struct discord_create_guild_application_command_params {
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:42:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true}' */
+     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:43:20
@@ -212,7 +212,7 @@ struct discord_create_guild_application_command_params {
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   /* specs/discord/application_commands.endpoints-params.json:44:20
-     '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}}' */
+     '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
   enum discord_application_command_types type;
 
   // The following is metadata used to 
@@ -278,15 +278,15 @@ extern size_t discord_create_guild_application_command_params_list_to_json(char 
  */
 struct discord_edit_guild_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
   char *name; ///< 1-32 lowercase character name
 
   /* specs/discord/application_commands.endpoints-params.json:55:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:56:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true}' */
+     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:57:20

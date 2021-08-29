@@ -60,7 +60,7 @@ struct discord_application_command {
   struct discord_application_command_option **options; ///< the parameters for the command
 
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   // The following is metadata used to 
@@ -163,7 +163,7 @@ struct discord_application_command_option {
   char description[100+1]; ///< 1-100 character description
 
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
   bool required; ///< if the paramter is required or optional -- default false
 
   /* specs/discord/application_commands.json:44:18

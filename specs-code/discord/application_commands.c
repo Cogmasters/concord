@@ -39,7 +39,7 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,"
                 "@arg_switches:b"
                 "@record_defined"
@@ -63,7 +63,7 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
                 discord_application_command_option_list_from_json, &p->options,
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 &p->default_permission,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -101,9 +101,8 @@ static void discord_application_command_use_default_inject_settings(struct disco
     p->__M.arg_switches[5] = p->options;
 
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  if (p->default_permission != true)
-    p->__M.arg_switches[6] = &p->default_permission;
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+  p->__M.arg_switches[6] = &p->default_permission;
 
 }
 
@@ -131,7 +130,7 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,"
                 "@arg_switches:b",
   /* specs/discord/application_commands.json:12:18
@@ -153,7 +152,7 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
                 discord_application_command_option_list_to_json, p->options,
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 &p->default_permission,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -213,7 +212,7 @@ void discord_application_command_cleanup(struct discord_application_command *d) 
   if (d->options)
     discord_application_command_option_list_free(d->options);
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   // p->default_permission is a scalar
 }
 
@@ -238,7 +237,7 @@ void discord_application_command_init(struct discord_application_command *p) {
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
 
   /* specs/discord/application_commands.json:18:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "inject_if_not":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
 
 }
 void discord_application_command_list_free(struct discord_application_command **p) {
@@ -297,7 +296,7 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
                 "(description):s,"
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
                 "(required):b,"
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
@@ -318,7 +317,7 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
                 p->description,
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
                 &p->required,
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
@@ -348,9 +347,8 @@ static void discord_application_command_option_use_default_inject_settings(struc
   p->__M.arg_switches[2] = p->description;
 
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
-  if (p->required != false)
-    p->__M.arg_switches[3] = &p->required;
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
+  p->__M.arg_switches[3] = &p->required;
 
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
@@ -379,7 +377,7 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
                 "(description):s,"
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
                 "(required):b,"
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
@@ -398,7 +396,7 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
                 p->description,
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
                 &p->required,
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
@@ -454,7 +452,7 @@ void discord_application_command_option_cleanup(struct discord_application_comma
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
   // p->description is a scalar
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
   // p->required is a scalar
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
@@ -478,7 +476,7 @@ void discord_application_command_option_init(struct discord_application_command_
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
 
   /* specs/discord/application_commands.json:43:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"if the paramter is required or optional -- default false"}' */
+     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
 
   /* specs/discord/application_commands.json:44:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
