@@ -481,6 +481,18 @@ on_thread_delete(struct discord_gateway *gw, struct sized_buffer *data)
 }
 
 static void
+on_interaction_create(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_interaction *interaction=NULL;
+  discord_interaction_from_json(data->start, data->size, &interaction);
+
+  (*gw->cbs.on_interaction_create)(gw->p_client, gw->bot, interaction);
+
+  discord_interaction_cleanup(interaction);
+  free(interaction);
+}
+
+static void
 on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_message *msg=NULL;
@@ -908,7 +920,8 @@ on_dispatch(struct discord_gateway *gw)
       /// @todo implement
       break;
   case DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE:
-      /// @todo implement
+      if (gw->cbs.on_interaction_create)
+        on_event = &on_interaction_create;
       break;
   case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
       /// @todo implement

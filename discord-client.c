@@ -350,6 +350,12 @@ discord_set_on_message_reaction_remove_emoji(struct discord *client, discord_mes
 }
 
 void
+discord_set_on_interaction_create(struct discord *client, discord_interaction_cb callback)
+{
+  client->gw.cbs.on_interaction_create = callback;
+}
+
+void
 discord_set_on_voice_state_update(struct discord *client, discord_voice_state_update_cb callback)
 {
   client->gw.cbs.on_voice_state_update = callback;

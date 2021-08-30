@@ -211,6 +211,7 @@ struct discord_gateway {
     discord_guild_role_cb on_guild_role_create; ///< triggers when a guild role is created
     discord_guild_role_cb on_guild_role_update; ///< triggers when a guild role is updated
     discord_guild_role_delete_cb on_guild_role_delete; ///< triggers when a guild role is deleted
+    discord_interaction_cb on_interaction_create; ///< triggers when a interaction is created 
     discord_message_cb on_message_create; ///< triggers when a message is created
     discord_sb_message_cb sb_on_message_create; ///< @todo this is temporary
     discord_message_cb on_message_update; ///< trigger when a message is updated

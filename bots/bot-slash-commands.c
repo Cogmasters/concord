@@ -50,6 +50,14 @@ void log_on_application_command_delete(
   log_info("Application Command %s deleted", cmd->name);
 }
 
+void log_on_interaction_create(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_interaction *interaction)
+{
+  log_info("Interaction %"PRIu64" received", interaction->id);
+}
+
 void* read_input(void *p_client)
 {
   pthread_detach(pthread_self());
@@ -146,6 +154,7 @@ int main(int argc, char *argv[])
   discord_set_on_application_command_create(client, &log_on_application_command_create);
   discord_set_on_application_command_update(client, &log_on_application_command_update);
   discord_set_on_application_command_delete(client, &log_on_application_command_delete);
+  discord_set_on_interaction_create(client, &log_on_interaction_create);
 
   printf("\n\nThis bot demonstrates how easy it is to create/update/delete application commands\n"
          "1. Input a valid application id from https://discord.com/developers/applications\n"
