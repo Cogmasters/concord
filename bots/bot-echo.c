@@ -37,19 +37,18 @@ void on_message_create(
   if (msg->author->bot) return;
 
   struct discord_create_message_params params = { .content = msg->content };
-  struct discord_message_reference msg_ref;
-  discord_message_reference_init(&msg_ref);
 
+  struct discord_message_reference msg_ref;
   if (msg->referenced_message) {
-    msg_ref.message_id = msg->referenced_message->id;
-    msg_ref.channel_id = msg->channel_id;
-    msg_ref.guild_id = msg->guild_id;
+    msg_ref = (struct discord_message_reference){
+      .message_id = msg->referenced_message->id,
+      .channel_id = msg->channel_id,
+      .guild_id = msg->guild_id,
+    };
     params.message_reference = &msg_ref;
   }
 
   discord_create_message(client, msg->channel_id, &params, NULL);
-
-  discord_message_reference_cleanup(&msg_ref);
 }
 
 void on_message_update(

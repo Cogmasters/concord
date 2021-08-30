@@ -161,8 +161,7 @@ create_session_channel(
   const u64_snowflake_t guild_id,
   const struct discord_guild_member *member)
 {
-  struct discord_channel ch;
-  discord_channel_init(&ch);
+  struct discord_channel ch={0};
 
   struct discord_create_guild_channel_params params1 = {
     .name = g_session.chat_name,
@@ -212,8 +211,7 @@ add_session_role(
   snprintf(text, sizeof(text), \
     "TMP%" PRIu64 "_%" PRIu64, member->user->id, channel_id);
 
-  struct discord_permissions_role ret_role;
-  discord_permissions_role_init(&ret_role);
+  struct discord_permissions_role ret_role={0};
   struct discord_create_guild_role_params params2 = {
     .name = text
   };
@@ -258,8 +256,7 @@ void start_new_session(
   }
 #endif
 
-  struct discord_message ret_msg;
-  discord_message_init(&ret_msg);
+  struct discord_message ret_msg={0};
 
   struct discord_create_message_params params = {
     .content = "Would you like to start?"
@@ -305,8 +302,7 @@ void send_next_question(
       'A'+ i, question->answers[i].desc);
   }
 
-  struct discord_message ret_msg;
-  discord_message_init(&ret_msg);
+  struct discord_message ret_msg={0};
   struct discord_create_message_params params = {
     .content = text
   };

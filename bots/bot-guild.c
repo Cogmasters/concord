@@ -47,8 +47,7 @@ void on_create(
 {
   if (msg->author->bot) return;
 
-  struct discord_guild guild;
-  discord_guild_init(&guild);
+  struct discord_guild guild={0};
 
   ORCAcode code;
   {
@@ -82,8 +81,7 @@ void on_modify(
   sscanf(msg->content, "%"SCNu64" %s", &guild_id, guild_name);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  struct discord_guild guild;
-  discord_guild_init(&guild);
+  struct discord_guild guild={0};
   {
     struct discord_modify_guild_params params = { .name = guild_name };
     if (ORCA_OK == discord_modify_guild(client, guild_id, &params, &guild))
@@ -131,8 +129,7 @@ void on_role_create(
     sprintf(text, "Couldn't create role `%s`", name);
   }
   else {
-    struct discord_permissions_role role;
-    discord_permissions_role_init(&role);
+    struct discord_permissions_role role={0};
 
     struct discord_create_guild_role_params params = { .name = name };
     if (ORCA_OK == discord_create_guild_role(client, msg->guild_id, &params, &role))
@@ -276,8 +273,7 @@ void on_member_get(
     sprintf(text, "Invalid format for `guild.member_get <user_id>`");
   }
   else {
-    struct discord_guild_member member;
-    discord_guild_member_init(&member);
+    struct discord_guild_member member={0};
 
     if (ORCA_OK == discord_get_guild_member(client, msg->guild_id, msg->author->id, &member))
       sprintf(text, "Member <@%"PRIu64"> found!", user_id);

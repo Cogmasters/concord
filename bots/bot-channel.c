@@ -118,8 +118,7 @@ void on_channel_create_invite(
 {
   if (msg->author->bot) return;
 
-  struct discord_invite invite;
-  discord_invite_init(&invite);
+  struct discord_invite invite={0};
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK == discord_create_channel_invite(client, msg->channel_id, NULL, &invite))
@@ -140,8 +139,7 @@ void on_channel_start_thread(
 {
   if (msg->author->bot) return;
 
-  struct discord_channel channel;
-  discord_channel_init(&channel);
+  struct discord_channel channel={0};
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;

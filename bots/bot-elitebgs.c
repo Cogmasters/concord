@@ -261,13 +261,12 @@ void on_command(
   update_last_tick_ms(&tick_ms);
 
   /* Initialize embed struct that will be loaded to  */
-  struct discord_embed new_embed;
-  discord_embed_init(&new_embed);
-
+  struct discord_embed new_embed = {
+    .timestamp = cee_timestamp_ms(),
+    .color = 15844367 // gold
+  };
   /* Set embed fields */
   strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
-  new_embed.timestamp = cee_timestamp_ms();
-  new_embed.color = 15844367; //gold
   discord_embed_set_footer(&new_embed, 
       "designed & built by https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);

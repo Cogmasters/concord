@@ -56,8 +56,7 @@ void on_get_my_audit_log(
     sscanf(msg->content, "%d", &event);
   }
 
-  struct discord_audit_log audit_log;
-  discord_audit_log_init(&audit_log);
+  struct discord_audit_log audit_log={0};
   {
     struct discord_get_guild_audit_log_params params = {
       .user_id = msg->author->id,

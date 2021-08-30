@@ -18,8 +18,7 @@ void on_invite_get(
 {
   if (msg->author->bot) return;
 
-  struct discord_invite invite;
-  discord_invite_init(&invite);
+  struct discord_invite invite={0};
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   {
