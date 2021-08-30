@@ -841,6 +841,21 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */
 
+/** @defgroup DiscordGetGlobalApplicationCommands 
+ * @brief @b GET /applications/{application.id}/commands
+ *
+ * Fetch all of the global commands for your application. Returns an array of application command objects.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-global-application-commands
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param p_app_cmds the null-terminated array of application command objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_global_application_commands(struct discord *client, const u64_snowflake_t application_id, NTL_T(struct discord_application_command) *p_app_cmds);
+/** @} DiscordGetGlobalApplicationCommands */
+
 /** @defgroup DiscordCreateGlobalApplicationCommand 
  * @brief @b POST /applications/{application.id}/commands
  *

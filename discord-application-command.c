@@ -8,6 +8,32 @@
 
 
 ORCAcode
+discord_get_global_application_commands(
+  struct discord *client,
+  const u64_snowflake_t application_id,
+  NTL_T(struct discord_application_command) *p_app_cmds)
+{
+  if (!application_id) {
+    log_error("Missing 'application_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_app_cmds) {
+    log_error("Missing 'p_app_cmds'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run( 
+           &client->adapter,
+           &(struct ua_resp_handle){ 
+             .ok_cb = &discord_application_command_list_from_json_v, 
+             .ok_obj = p_app_cmds 
+           },
+           NULL,
+           HTTP_GET, 
+           "/applications/%"PRIu64"/commands", application_id);
+}
+
+ORCAcode
 discord_create_global_application_command(
   struct discord *client,
   const u64_snowflake_t application_id,
