@@ -1,6 +1,6 @@
 {
   "namespace": ["discord"],
-  "comment":"https://discord.com/developers/docs/interactions/slash-commands#data-models-and-types",
+  "comment":"https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure",
   "defs":
   [
     {
@@ -26,9 +26,9 @@
       "enum":"types",
       "items":
       [
-        {"name":"CHAT_INPUT", "value":1},
-        {"name":"USER","value":2},
-        {"name":"MESSAGE","value":3}
+        {"name":"CHAT_INPUT", "value":1, "comment":"Slash commands; a text-based command that shows up when a user types /" },
+        {"name":"USER","value":2, "comment":"A UI-based command that shows up when you right click or tap on a user" },
+        {"name":"MESSAGE","value":3, "comment":"A UI-based command that shows up when you right lick or tap on a message" }
       ]
     },
     {
@@ -49,26 +49,26 @@
     {
       "title":"Application Command Option Type",
       "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type",
-      "namespace":["application_command_option"],
+      "namespace":["application_command", "option"],
       "enum":"types",
       "items":
       [
         {"name":"SUB_COMMAND", "value":1},
         {"name":"SUB_COMMAND_GROUP","value":2},
         {"name":"STRING","value":3},
-        {"name":"INTEGER","value":4},
+        {"name":"INTEGER","value":4, "comment":"Any integer between -2^53 and 2^53" },
         {"name":"BOOLEAN","value":5},
         {"name":"USER","value":6},
-        {"name":"CHANNEL","value":7},
+        {"name":"CHANNEL","value":7, "comment":"Includes all channel types + categories" },
         {"name":"ROLE","value":8},
-        {"name":"MENTIONABLE","value":9},
-        {"name":"NUMBER","value":10}
+        {"name":"MENTIONABLE","value":9, "comment":"Includes users and roles" },
+        {"name":"NUMBER","value":10, "comment":"Any double between -2^53 and 2^53" }
       ]
     },
     {
       "title":"Application Command Option Choice Structure",
       "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure",
-      "namespace":["application_command_option"],
+      "namespace":["application_command", "option"],
       "struct":"choice",
       "fields":
       [
@@ -104,69 +104,12 @@
     {
       "title":"Application Command Permission Type",
       "comment":"https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type",
-      "namespace":["application_command_permission"],
+      "namespace":["application_command", "permission"],
       "enum":"types",
       "items":
       [
         {"name":"ROLE", "value":1},
         {"name":"USER","value":2}
-      ]
-    },
-    {
-      "title":"Interaction Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure",
-      "struct":"interaction",
-      "fields":
-      [
-        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"},
-        {"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"},
-        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_request_types"}, "comment":"the request type of the interaction"},
-        {"name":"data", "type":{"base":"struct discord_application_command_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null},
-        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0},
-        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0},
-        {"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null},
-        {"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null},
-        {"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}
-      ]
-    },
-    {
-      "title":"Interaction Request Type",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-request-type",
-      "namespace":["interaction"],
-      "enum":"request_types",
-      "items":
-      [
-        {"name":"PING", "value":1},
-        {"name":"APPLICATION_COMMAND","value":2},
-        {"name":"MESSAGE_COMPONENT","value":3}
-      ]
-    },
-    {
-      "title":"Application Command Interaction Data Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-structure",
-      "namespace":["application_command", "interaction"],
-      "struct":"data",
-      "fields":
-      [
-        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"},
-        {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"},
-        {"name":"resolved", "type":{"base":"struct discord_application_command_interaction_data_resolved", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null},
-        {"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the params + values from the user", "inject_if_not":null},
-        {"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters"},
-        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "comment":"component type"}
-      ]
-    },
-    {
-      "title":"Application Command Interaction Data Resolved Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-object-application-command-interaction-data-resolved-structure",
-      "namespace":["application_command", "interaction"],
-      "struct":"data_resolved",
-      "fields":
-      [
-        {"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null},
-        {"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null},
-        {"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null},
-        {"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}
       ]
     },
     {
@@ -181,71 +124,6 @@
         {"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"},
         {"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"present if this option is a group or subcommand", "inject_if_not":null}
       ]
-    },
-    {
-      "title":"Interaction Response Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-response-structure",
-      "namespace":["interaction"],
-      "struct":"response",
-      "fields":
-      [
-        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"},
-        {"name":"data", "type":{"base":"struct discord_interaction_application_command_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}
-      ]
-    },
-    {
-      "title":"Interaction Callback Type",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-callback-type",
-      "namespace":["interaction", "callback"],
-      "enum":"types",
-      "items":
-      [
-        {"name":"PONG", "value":1, "comment":"ACK a Ping"},
-        {"name":"CHANNEL_MESSAGE_WITH_SOURCE","value":4, "comment":"respond to a interaction with a message"},
-        {"name":"DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE","value":5, "comment":"ACK an interaction and edit a response later, the user sees a loading state"},
-        {"name":"DEFERRED_UPDATE_MESSAGE","value":6, "comment":"for components, ACK an interaction and edit the original message later; the user does not see a loading state"},
-        {"name":"UPDATE_MESSAGE","value":7, "comment":"for components, edit the message the component was attached to"}
-      ]
-    },
-    {
-      "title":"Interaction Application Command Callback Data Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-structure",
-      "namespace":["interaction", "application_command", "callback"],
-      "struct":"data",
-      "fields":
-      [
-        {"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"},
-        {"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null},
-        {"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null},
-        {"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true},
-        {"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_application_command_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0},
-        {"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}
-      ]
-    },
-    {
-      "title":"Interaction Application Command Callback Data Flags",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#interaction-response-object-interaction-application-command-callback-data-flags",
-      "namespace":["interaction", "application_command", "callback", "data"],
-      "enum":"flags",
-      "items":
-      [
-        {"name":"EPHEMERAL", "value":64, "comment":"only the user receiving the message can see it"}
-      ]
-    },
-    {
-      "title":"Message Interaction Structure",
-      "comment":"https://discord.com/developers/docs/interactions/slash-commands#message-interaction-object-message-interaction-structure",
-      "namespace":["message"],
-      "struct":"interaction",
-      "fields":
-      [
-        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"},
-        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_request_types"}, "comment":"the request type of the interaction"},
-        {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"},
-        {"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}
-      ]
     }
   ]
 }
-
-
