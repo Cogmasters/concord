@@ -60,7 +60,7 @@ embed_reddit_search_result(
             .before = (before && *before) ? before : NULL,
             .after = (after && *after) ? after : NULL,
             .sort = (sort && *sort) ? sort : NULL,
-            .restrict_sr = (0 == strcmp(subreddits, "all"))
+            .restrict_sr = (strcmp(subreddits, "all") != 0)
            }, 
            subreddits, 
            &resp_body);
