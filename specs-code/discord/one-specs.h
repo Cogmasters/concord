@@ -9923,16 +9923,32 @@ struct discord_execute_webhook_params {
  */
 struct discord_edit_webhook_message_params {
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   char *content; ///< name of the webhook(1-2000) chars
 
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   struct discord_embed **embeds; ///< array of up to 10 embeds objects
 
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+  char *file; ///< the contents of the file being sent/edited
+
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+  char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
+
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_channel_attachment **attachments; ///< attached files to keep
+
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+  struct discord_component **components; ///< the components to include with the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -9943,9 +9959,9 @@ struct discord_edit_webhook_message_params {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
+    void *arg_switches[7];
+    void *record_defined[7];
+    void *record_null[7];
   } __M; // metadata
 /// @endcond
 };

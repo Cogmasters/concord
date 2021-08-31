@@ -805,26 +805,50 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   struct discord_edit_webhook_message_params *p = *pp;
   r=json_extract(json, len, 
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
                 "(content):?s,"
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 "(embeds):F,"
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+                "(file):?s,"
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+                "(payload_json):?s,"
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                "(attachments):F,"
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+                "(components):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
                 &p->content,
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 discord_embed_list_from_json, &p->embeds,
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+                &p->file,
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+                &p->payload_json,
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 discord_channel_allowed_mentions_from_json, &p->allowed_mentions,
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_channel_attachment_list_from_json, &p->attachments,
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+                discord_component_list_from_json, &p->components,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -835,16 +859,39 @@ static void discord_edit_webhook_message_params_use_default_inject_settings(stru
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
-  p->__M.arg_switches[0] = p->content;
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
+  if (p->content != NULL)
+    p->__M.arg_switches[0] = p->content;
 
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
-  p->__M.arg_switches[1] = p->embeds;
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
+  if (p->embeds != NULL)
+    p->__M.arg_switches[1] = p->embeds;
 
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
-  p->__M.arg_switches[2] = p->allowed_mentions;
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+  if (p->file != NULL)
+    p->__M.arg_switches[2] = p->file;
+
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+  if (p->payload_json != NULL)
+    p->__M.arg_switches[3] = p->payload_json;
+
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  if (p->allowed_mentions != NULL)
+    p->__M.arg_switches[4] = p->allowed_mentions;
+
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  if (p->attachments != NULL)
+    p->__M.arg_switches[5] = p->attachments;
+
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+  if (p->components != NULL)
+    p->__M.arg_switches[6] = p->components;
 
 }
 
@@ -854,24 +901,48 @@ size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struc
   discord_edit_webhook_message_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
                 "(content):s,"
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 "(embeds):F,"
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+                "(file):s,"
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+                "(payload_json):s,"
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                "(attachments):F,"
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+                "(components):F,"
                 "@arg_switches:b",
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
                 p->content,
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 discord_embed_list_to_json, p->embeds,
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+                p->file,
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+                p->payload_json,
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 discord_channel_allowed_mentions_to_json, p->allowed_mentions,
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_channel_attachment_list_to_json, p->attachments,
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+                discord_component_list_to_json, p->components,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
 }
@@ -911,33 +982,61 @@ size_t discord_edit_webhook_message_params_list_to_json_v(char *str, size_t len,
 
 void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *d) {
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   if (d->content)
     free(d->content);
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   if (d->embeds)
     discord_embed_list_free(d->embeds);
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+  if (d->file)
+    free(d->file);
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+  if (d->payload_json)
+    free(d->payload_json);
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (d->allowed_mentions) {
     discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
     free(d->allowed_mentions);
   }
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  if (d->attachments)
+    discord_channel_attachment_list_free(d->attachments);
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+  if (d->components)
+    discord_component_list_free(d->components);
 }
 
 void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *p) {
   memset(p, 0, sizeof(struct discord_edit_webhook_message_params));
   /* specs/discord/webhook.endpoints-params.json:77:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" }' */
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
 
   /* specs/discord/webhook.endpoints-params.json:78:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" }' */
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
 
   /* specs/discord/webhook.endpoints-params.json:79:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+
+  /* specs/discord/webhook.endpoints-params.json:80:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+
+  /* specs/discord/webhook.endpoints-params.json:81:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   p->allowed_mentions = malloc(sizeof *p->allowed_mentions);
   discord_channel_allowed_mentions_init(p->allowed_mentions);
+
+  /* specs/discord/webhook.endpoints-params.json:82:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+
+  /* specs/discord/webhook.endpoints-params.json:83:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
 
 }
 void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **p) {
