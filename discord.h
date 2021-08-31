@@ -1150,6 +1150,55 @@ ORCAcode discord_batch_edit_application_command_permissions(struct discord *clie
 /** @} DiscordBatchEditApplicationCommandPermissions */
 
 
+/** @defgroup DiscordCreateInteractionResponse
+ * @brief @b POST /interactions/{interaction.id}/{interaction.token}/callback
+ *
+ * Create a response to an Interaction from the gateway. Takes an interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#create-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @param params the request parameters
+ * @param p_response the interaction response object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_interaction_response *params, struct discord_interaction_response *p_response);
+/** @} DiscordCreateInteractionResponse */
+
+/** @defgroup DiscordGetOriginalInteractionResponse
+ * @brief @b GET /webhooks/{interaction.id}/{interaction.token}/messages/@original
+ *
+ * Returns the initial Interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#get-original-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @param p_response the interaction response object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_interaction_response *p_response);
+/** @} DiscordGetOriginalInteractionResponse */
+
+/** @defgroup DiscordDeleteOriginalInteractionResponse
+ * @brief @b DELETE /webhooks/{interaction.id}/{interaction.token}/messages/@original
+ *
+ * Delete the initial Interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#delete-original-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_delete_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[]);
+/** @} DiscordDeleteOriginalInteractionResponse */
+
+
 /** @defgroup DiscordGetGuildAuditLog 
  * @brief @b GET /guilds/{guild.id}/audit-logs
  *
