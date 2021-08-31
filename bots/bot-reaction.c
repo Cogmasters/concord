@@ -20,20 +20,18 @@ void on_get_users(
   if (msg->author->bot || !msg->referenced_message) return;
 
   NTL_T(struct discord_user) users=NULL;
-  {
-    struct discord_get_reactions_params params = { .limit = 25 };
-    discord_get_reactions(
-        client, 
-        msg->referenced_message->channel_id, 
-        msg->referenced_message->id, 
-        0, 
-        msg->content,
-        &params,
-        &users);
-  }
+  ORCAcode code;
+  code = discord_get_reactions(
+           client, 
+           msg->referenced_message->channel_id, 
+           msg->referenced_message->id, 
+           0, 
+           msg->content,
+           &(struct discord_get_reactions_params){ .limit = 25 },
+           &users);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  if (!users) {
+  if (code != ORCA_OK || !users) {
     snprintf(text, sizeof(text), "Nobody reacted with '%s'!", msg->content);
   }
   else {

@@ -99,16 +99,20 @@ void on_channel_get_invites(
   if (msg->author->bot) return;
 
   NTL_T(struct discord_invite) invites=NULL;
-  discord_get_channel_invites(client, msg->channel_id, &invites);
+
+  ORCAcode code;
+  code = discord_get_channel_invites(client, msg->channel_id, &invites);
+  if (code != ORCA_OK || !invites) {
+    log_info("Couldn't fetch invites");
+    return;
+  }
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   snprintf(text, sizeof(text), "%zu invite links created.", ntl_length((ntl_t)invites));
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  if (invites) {
-    discord_invite_list_free(invites);
-  }
+  discord_invite_list_free(invites);
 }
 
 void on_channel_create_invite(

@@ -94,11 +94,13 @@ void on_builder_init(
 {
   if (msg->author->bot) return;
 
-  struct discord_embed embed={0};
-  discord_embed_set_title(&embed, "%s", "Orca");
-  snprintf(embed.description, sizeof(embed.description), "Multi-REST Api library");
-  embed.url = strdup("https://github.com/cee-studio/orca");
-  embed.color = 3447003;
+  struct discord_embed embed = {
+    .title = "Orca",
+    .description = "Multi-REST Api lbrary",
+    .url = strdup("https://github.com/cee-studio/orca"),
+    .color = 3447003
+  };
+
   discord_embed_set_footer(
     &embed, 
     "github.com/cee-studio/orca",

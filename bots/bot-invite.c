@@ -20,18 +20,21 @@ void on_invite_get(
 
   struct discord_invite invite={0};
 
-  char text[DISCORD_MAX_MESSAGE_LEN];
-  {
-    struct discord_get_invite_params params = {
-      .with_counts = true,
-      .with_expiration = true
-    };
+  ORCAcode code;
+  code = discord_get_invite(
+           client, 
+           msg->content,
+           &(struct discord_get_invite_params){
+             .with_counts = true,
+             .with_expiration = true
+           },
+           &invite);
 
-    if (ORCA_OK == discord_get_invite(client, msg->content, &params, &invite))
-      sprintf(text, "https://discord.gg/%s", invite.code);
-    else
-      sprintf(text, "Couldn't create invite.");
-  }
+  char text[DISCORD_MAX_MESSAGE_LEN];
+  if (ORCA_OK == code)
+    sprintf(text, "https://discord.gg/%s", invite.code);
+  else
+    sprintf(text, "Couldn't get invite.");
 
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);

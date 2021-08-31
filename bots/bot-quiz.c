@@ -132,7 +132,7 @@ close_existing_sessions(
   discord_get_guild_roles(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
-    if ( strncmp("TMP", rls[i]->name, 3) )
+    if (strncmp("TMP", rls[i]->name, 3))
       continue;
 
     u64_snowflake_t channel_id, user_id;

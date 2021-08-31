@@ -14,8 +14,7 @@ struct {
   char *discriminator;
 } SUDO;
 
-void 
-on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   log_info("Shell-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
@@ -54,7 +53,7 @@ void on_less_like(
     return; // EARLY RETURN IF NOT SUDO USER
   }
 
-  struct discord_create_message_params params={};
+  struct discord_create_message_params params={0};
   if (*msg->content)
     params.file.name = msg->content;
   else

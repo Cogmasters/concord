@@ -19,10 +19,11 @@ void on_list(
   if (msg->author->bot) return;
 
   NTL_T(struct discord_emoji) emojis=NULL;
-  discord_list_guild_emojis(client, msg->guild_id, &emojis);
+  ORCAcode code;
+  code = discord_list_guild_emojis(client, msg->guild_id, &emojis);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  if (!emojis) {
+  if (code != ORCA_OK || !emojis) {
     sprintf(text, "No guild emojis found.");
   }
   else {

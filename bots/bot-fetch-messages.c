@@ -14,15 +14,15 @@ select_guild(struct discord *client)
   discord_get_current_user_guilds(client, &guilds);
   assert(NULL != guilds && "Couldn't fetch guilds");
 
-  fprintf(stderr, "\n\nSelect the guild that the user you wish to fetch messages from is part of");
+  printf("\n\nSelect the guild that the user you wish to fetch messages from is part of");
   int i=0;
   while (guilds[i]) {
-    fprintf(stderr, "\n%d. %s", i+1, guilds[i]->name);
+    printf("\n%d. %s", i+1, guilds[i]->name);
     ++i;
   }
 
   do {
-    fputs("\n\nNUMBER >>\n", stderr);
+    puts("\n\nNUMBER >>");
     char strnum[10]; // 10 digits should be more than enough..
     fgets(strnum, sizeof(strnum), stdin);
     int num = strtol(strnum, NULL, 10);
@@ -31,7 +31,7 @@ select_guild(struct discord *client)
       discord_guild_list_free(guilds);
       return guild_id;
     }
-    fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
+    printf("\nPlease, insert a value between 1 and %d", i);
   } while (1);
 }
 
@@ -48,18 +48,18 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
   assert(NULL != members && "Guild is empty or bot needs to activate its privileged intents.\n\t"
                             "See this guide to activate it: https://discordpy.readthedocs.io/en/latest/intents.html#privileged-intents");
 
-  fprintf(stderr, "\n\nSelect the member that will have its messages fetched");
+  printf("\n\nSelect the member that will have its messages fetched");
   int i=0;
   while (members[i]) {
-    fprintf(stderr, "\n%d. %s", i+1, members[i]->user->username);
+    printf("\n%d. %s", i+1, members[i]->user->username);
     if (*members[i]->nick) { // prints nick if available
-      fprintf(stderr, " (%s)", members[i]->nick);
+      printf(" (%s)", members[i]->nick);
     }
     ++i;
   }
 
   do {
-    fputs("\n\nNUMBER >>\n", stderr);
+    puts("\n\nNUMBER >>");
     char strnum[10]; // 10 digits should be more than enough..
     fgets(strnum, sizeof(strnum), stdin);
     int num = strtol(strnum, NULL, 10);
@@ -68,7 +68,7 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
       discord_guild_member_list_free(members);
       return user_id;
     }
-    fprintf(stderr, "\nPlease, insert a value between 1 and %d", i);
+    printf("\nPlease, insert a value between 1 and %d", i);
   } while (1);
 }
 
@@ -95,8 +95,9 @@ fetch_member_msgs(struct discord *client, u64_snowflake_t guild_id, u64_snowflak
 
       for (n_msg = 0; messages[n_msg]; ++n_msg) {
         if (user_id == messages[n_msg]->author->id 
-            && *messages[n_msg]->content) {
-          fprintf(stdout, "%s\n", messages[n_msg]->content);
+            && *messages[n_msg]->content) 
+        {
+          printf("%s\n", messages[n_msg]->content);
         }
       }
 

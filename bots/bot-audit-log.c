@@ -9,7 +9,7 @@
 #include "discord.h"
 
 
-void on_log_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   log_info("Audit-Log-Bot succesfully connected to Discord as %s#%s!", bot->username, bot->discriminator);
 }
 
@@ -31,8 +31,7 @@ void on_log_guild_member_update(
   char nick[128]="";
   if (member->nick && *member->nick)
     snprintf(nick, sizeof(nick), " (%s)", member->nick);
-  log_info("%s#%s%s updated (guild %"PRIu64")", \
-      member->user->username, member->user->discriminator, nick, guild_id);
+  log_info("%s#%s%s updated (guild %"PRIu64")", member->user->username, member->user->discriminator, nick, guild_id);
 }
 
 void on_log_guild_member_remove(
@@ -62,12 +61,14 @@ void on_get_my_audit_log(
       .user_id = msg->author->id,
       .action_type = (enum discord_audit_log_events)event
     };
-    discord_get_guild_audit_log(client, msg->guild_id, &params, &audit_log);
+    if (discord_get_guild_audit_log(client, msg->guild_id, &params, &audit_log)) {
+      log_error("Couldn't retrieve audit log");
+      return;
+    }
   }
 
   char audit_json[4096];
-  size_t size;
-  size = discord_audit_log_to_json(audit_json, sizeof(audit_json), &audit_log);
+  size_t size = discord_audit_log_to_json(audit_json, sizeof(audit_json), &audit_log);
 
   struct discord_create_message_params params;
   if (size) {
@@ -104,11 +105,12 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
-  discord_add_intents(client, 32767);
-  discord_set_on_ready(client, &on_log_ready);
+  discord_add_intents(client, 32767); // subscribe to all events
+  discord_set_on_ready(client, &on_ready);
   discord_set_on_guild_member_add(client, &on_log_guild_member_add);
   discord_set_on_guild_member_update(client, &on_log_guild_member_update);
   discord_set_on_guild_member_remove(client, &on_log_guild_member_remove);
+
   discord_set_on_command(client, "!my_audit", &on_get_my_audit_log);
 
   printf("\n\nThis bot demonstrates how easy it is to log"
