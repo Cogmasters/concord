@@ -282,6 +282,12 @@ enum discord_guild_default_message_notification_level {
 };
 extern char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level);
 extern enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char*);
+extern void discord_guild_default_message_notification_level_list_free_v(void **p);
+extern void discord_guild_default_message_notification_level_list_free(enum discord_guild_default_message_notification_level **p);
+extern void discord_guild_default_message_notification_level_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_default_message_notification_level_list_from_json(char *str, size_t len, enum discord_guild_default_message_notification_level ***p);
+extern size_t discord_guild_default_message_notification_level_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_default_message_notification_level_list_to_json(char *str, size_t len, enum discord_guild_default_message_notification_level **p);
 
 
 // Explicit Content Filter Level
@@ -307,6 +313,12 @@ enum discord_guild_explicit_content_filter_level {
 };
 extern char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level);
 extern enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char*);
+extern void discord_guild_explicit_content_filter_level_list_free_v(void **p);
+extern void discord_guild_explicit_content_filter_level_list_free(enum discord_guild_explicit_content_filter_level **p);
+extern void discord_guild_explicit_content_filter_level_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_explicit_content_filter_level_list_from_json(char *str, size_t len, enum discord_guild_explicit_content_filter_level ***p);
+extern size_t discord_guild_explicit_content_filter_level_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_explicit_content_filter_level_list_to_json(char *str, size_t len, enum discord_guild_explicit_content_filter_level **p);
 
 
 // MFA Level
@@ -331,6 +343,12 @@ enum discord_guild_mfa_level {
 };
 extern char* discord_guild_mfa_level_print(enum discord_guild_mfa_level);
 extern enum discord_guild_mfa_level discord_guild_mfa_level_eval(char*);
+extern void discord_guild_mfa_level_list_free_v(void **p);
+extern void discord_guild_mfa_level_list_free(enum discord_guild_mfa_level **p);
+extern void discord_guild_mfa_level_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_mfa_level_list_from_json(char *str, size_t len, enum discord_guild_mfa_level ***p);
+extern size_t discord_guild_mfa_level_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_mfa_level_list_to_json(char *str, size_t len, enum discord_guild_mfa_level **p);
 
 
 // Verification Level
@@ -358,6 +376,12 @@ enum discord_guild_verification_level {
 };
 extern char* discord_guild_verification_level_print(enum discord_guild_verification_level);
 extern enum discord_guild_verification_level discord_guild_verification_level_eval(char*);
+extern void discord_guild_verification_level_list_free_v(void **p);
+extern void discord_guild_verification_level_list_free(enum discord_guild_verification_level **p);
+extern void discord_guild_verification_level_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_verification_level_list_from_json(char *str, size_t len, enum discord_guild_verification_level ***p);
+extern size_t discord_guild_verification_level_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_verification_level_list_to_json(char *str, size_t len, enum discord_guild_verification_level **p);
 
 
 // Premium Tier
@@ -384,6 +408,12 @@ enum discord_guild_premium_tier {
 };
 extern char* discord_guild_premium_tier_print(enum discord_guild_premium_tier);
 extern enum discord_guild_premium_tier discord_guild_premium_tier_eval(char*);
+extern void discord_guild_premium_tier_list_free_v(void **p);
+extern void discord_guild_premium_tier_list_free(enum discord_guild_premium_tier **p);
+extern void discord_guild_premium_tier_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_premium_tier_list_from_json(char *str, size_t len, enum discord_guild_premium_tier ***p);
+extern size_t discord_guild_premium_tier_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_premium_tier_list_to_json(char *str, size_t len, enum discord_guild_premium_tier **p);
 
 
 // System Channel Flags
@@ -408,6 +438,12 @@ enum discord_guild_system_channel_flags {
 };
 extern char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags);
 extern enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char*);
+extern void discord_guild_system_channel_flags_list_free_v(void **p);
+extern void discord_guild_system_channel_flags_list_free(enum discord_guild_system_channel_flags **p);
+extern void discord_guild_system_channel_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_system_channel_flags_list_from_json(char *str, size_t len, enum discord_guild_system_channel_flags ***p);
+extern size_t discord_guild_system_channel_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_system_channel_flags_list_to_json(char *str, size_t len, enum discord_guild_system_channel_flags **p);
 
 
 // Guild Features
@@ -445,6 +481,12 @@ enum discord_guild_features {
 };
 extern char* discord_guild_features_print(enum discord_guild_features);
 extern enum discord_guild_features discord_guild_features_eval(char*);
+extern void discord_guild_features_list_free_v(void **p);
+extern void discord_guild_features_list_free(enum discord_guild_features **p);
+extern void discord_guild_features_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_features_list_from_json(char *str, size_t len, enum discord_guild_features ***p);
+extern size_t discord_guild_features_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_features_list_to_json(char *str, size_t len, enum discord_guild_features **p);
 
 // Unavailable Guild Object
 // defined at specs/discord/guild.json:161:23
@@ -931,6 +973,12 @@ enum discord_guild_integration_expire_behaviors {
 };
 extern char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors);
 extern enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char*);
+extern void discord_guild_integration_expire_behaviors_list_free_v(void **p);
+extern void discord_guild_integration_expire_behaviors_list_free(enum discord_guild_integration_expire_behaviors **p);
+extern void discord_guild_integration_expire_behaviors_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_guild_integration_expire_behaviors_list_from_json(char *str, size_t len, enum discord_guild_integration_expire_behaviors ***p);
+extern size_t discord_guild_integration_expire_behaviors_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_guild_integration_expire_behaviors_list_to_json(char *str, size_t len, enum discord_guild_integration_expire_behaviors **p);
 
 // Integration Account Structure
 // defined at specs/discord/guild.json:251:22

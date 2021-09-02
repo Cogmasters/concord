@@ -14,6 +14,21 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_user_flags_list_free_v(void **p) {
+  discord_user_flags_list_free((enum discord_user_flags**)p);
+}
+
+void discord_user_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_user_flags_list_from_json(str, len, (enum discord_user_flags ***)p);
+}
+
+size_t discord_user_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_user_flags_list_to_json(str, len, (enum discord_user_flags **)p);
+}
+
 enum discord_user_flags discord_user_flags_eval(char *s){
   if(strcasecmp("DISCORD_EMPLOYEE", s) == 0) return DISCORD_USER_DISCORD_EMPLOYEE;
   if(strcasecmp("PARTNERED_SERVER_OWNER", s) == 0) return DISCORD_USER_PARTNERED_SERVER_OWNER;
@@ -30,6 +45,7 @@ enum discord_user_flags discord_user_flags_eval(char *s){
   if(strcasecmp("EARLY_VERIFIED_BOT_DEVELOPER", s) == 0) return DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_user_flags_print(enum discord_user_flags v){
 
   switch (v) {
@@ -51,12 +67,49 @@ char* discord_user_flags_print(enum discord_user_flags v){
   return NULL;
 }
 
+void discord_user_flags_list_free(enum discord_user_flags **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_user_flags_list_from_json(char *str, size_t len, enum discord_user_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_user_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_user_flags_list_to_json(char *str, size_t len, enum discord_user_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_user_premium_types_list_free_v(void **p) {
+  discord_user_premium_types_list_free((enum discord_user_premium_types**)p);
+}
+
+void discord_user_premium_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_user_premium_types_list_from_json(str, len, (enum discord_user_premium_types ***)p);
+}
+
+size_t discord_user_premium_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_user_premium_types_list_to_json(str, len, (enum discord_user_premium_types **)p);
+}
 
 enum discord_user_premium_types discord_user_premium_types_eval(char *s){
   if(strcasecmp("NITRO_CLASSIC", s) == 0) return DISCORD_USER_NITRO_CLASSIC;
   if(strcasecmp("NITRO", s) == 0) return DISCORD_USER_NITRO;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_user_premium_types_print(enum discord_user_premium_types v){
 
   switch (v) {
@@ -66,6 +119,27 @@ char* discord_user_premium_types_print(enum discord_user_premium_types v){
 
   return NULL;
 }
+
+void discord_user_premium_types_list_free(enum discord_user_premium_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_user_premium_types_list_from_json(char *str, size_t len, enum discord_user_premium_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_user_premium_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_user_premium_types_list_to_json(char *str, size_t len, enum discord_user_premium_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
 {
@@ -446,11 +520,27 @@ size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p)
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_user_connection_visibility_types_list_free_v(void **p) {
+  discord_user_connection_visibility_types_list_free((enum discord_user_connection_visibility_types**)p);
+}
+
+void discord_user_connection_visibility_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_user_connection_visibility_types_list_from_json(str, len, (enum discord_user_connection_visibility_types ***)p);
+}
+
+size_t discord_user_connection_visibility_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_user_connection_visibility_types_list_to_json(str, len, (enum discord_user_connection_visibility_types **)p);
+}
+
 enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *s){
   if(strcasecmp("NONE", s) == 0) return DISCORD_USER_CONNECTION_NONE;
   if(strcasecmp("EVERYONE", s) == 0) return DISCORD_USER_CONNECTION_EVERYONE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types v){
 
   switch (v) {
@@ -460,6 +550,27 @@ char* discord_user_connection_visibility_types_print(enum discord_user_connectio
 
   return NULL;
 }
+
+void discord_user_connection_visibility_types_list_free(enum discord_user_connection_visibility_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_user_connection_visibility_types_list_from_json(char *str, size_t len, enum discord_user_connection_visibility_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_user_connection_visibility_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_user_connection_visibility_types_list_to_json(char *str, size_t len, enum discord_user_connection_visibility_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp)
 {

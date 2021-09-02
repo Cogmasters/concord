@@ -123,6 +123,12 @@ enum discord_application_command_types {
 };
 extern char* discord_application_command_types_print(enum discord_application_command_types);
 extern enum discord_application_command_types discord_application_command_types_eval(char*);
+extern void discord_application_command_types_list_free_v(void **p);
+extern void discord_application_command_types_list_free(enum discord_application_command_types **p);
+extern void discord_application_command_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_application_command_types_list_from_json(char *str, size_t len, enum discord_application_command_types ***p);
+extern size_t discord_application_command_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_application_command_types_list_to_json(char *str, size_t len, enum discord_application_command_types **p);
 
 // Application Command Option Structure
 // defined at specs/discord/application_commands.json:38:22
@@ -241,6 +247,12 @@ enum discord_application_command_option_types {
 };
 extern char* discord_application_command_option_types_print(enum discord_application_command_option_types);
 extern enum discord_application_command_option_types discord_application_command_option_types_eval(char*);
+extern void discord_application_command_option_types_list_free_v(void **p);
+extern void discord_application_command_option_types_list_free(enum discord_application_command_option_types **p);
+extern void discord_application_command_option_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_application_command_option_types_list_from_json(char *str, size_t len, enum discord_application_command_option_types ***p);
+extern size_t discord_application_command_option_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_application_command_option_types_list_to_json(char *str, size_t len, enum discord_application_command_option_types **p);
 
 // Application Command Option Choice Structure
 // defined at specs/discord/application_commands.json:72:22
@@ -487,6 +499,12 @@ enum discord_application_command_permission_types {
 };
 extern char* discord_application_command_permission_types_print(enum discord_application_command_permission_types);
 extern enum discord_application_command_permission_types discord_application_command_permission_types_eval(char*);
+extern void discord_application_command_permission_types_list_free_v(void **p);
+extern void discord_application_command_permission_types_list_free(enum discord_application_command_permission_types **p);
+extern void discord_application_command_permission_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_application_command_permission_types_list_from_json(char *str, size_t len, enum discord_application_command_permission_types ***p);
+extern size_t discord_application_command_permission_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_application_command_permission_types_list_to_json(char *str, size_t len, enum discord_application_command_permission_types **p);
 
 // Application Command Interaction Data Option Structure
 // defined at specs/discord/application_commands.json:119:22

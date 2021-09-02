@@ -388,12 +388,28 @@ size_t discord_component_list_to_json(char *str, size_t len, struct discord_comp
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_component_types_list_free_v(void **p) {
+  discord_component_types_list_free((enum discord_component_types**)p);
+}
+
+void discord_component_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_component_types_list_from_json(str, len, (enum discord_component_types ***)p);
+}
+
+size_t discord_component_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_component_types_list_to_json(str, len, (enum discord_component_types **)p);
+}
+
 enum discord_component_types discord_component_types_eval(char *s){
   if(strcasecmp("ACTION_ROW", s) == 0) return DISCORD_COMPONENT_ACTION_ROW;
   if(strcasecmp("BUTTON", s) == 0) return DISCORD_COMPONENT_BUTTON;
   if(strcasecmp("SELECT_MENU", s) == 0) return DISCORD_COMPONENT_SELECT_MENU;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_component_types_print(enum discord_component_types v){
 
   switch (v) {
@@ -404,6 +420,27 @@ char* discord_component_types_print(enum discord_component_types v){
 
   return NULL;
 }
+
+void discord_component_types_list_free(enum discord_component_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_component_types_list_from_json(char *str, size_t len, enum discord_component_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_component_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_component_types_list_to_json(char *str, size_t len, enum discord_component_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_button_from_json(char *json, size_t len, struct discord_button **pp)
 {
@@ -663,6 +700,21 @@ size_t discord_button_list_to_json(char *str, size_t len, struct discord_button 
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_button_styles_list_free_v(void **p) {
+  discord_button_styles_list_free((enum discord_button_styles**)p);
+}
+
+void discord_button_styles_list_from_json_v(char *str, size_t len, void *p) {
+  discord_button_styles_list_from_json(str, len, (enum discord_button_styles ***)p);
+}
+
+size_t discord_button_styles_list_to_json_v(char *str, size_t len, void *p){
+  return discord_button_styles_list_to_json(str, len, (enum discord_button_styles **)p);
+}
+
 enum discord_button_styles discord_button_styles_eval(char *s){
   if(strcasecmp("PRIMARY", s) == 0) return DISCORD_BUTTON_PRIMARY;
   if(strcasecmp("SECONDARY", s) == 0) return DISCORD_BUTTON_SECONDARY;
@@ -671,6 +723,7 @@ enum discord_button_styles discord_button_styles_eval(char *s){
   if(strcasecmp("LINK", s) == 0) return DISCORD_BUTTON_LINK;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_button_styles_print(enum discord_button_styles v){
 
   switch (v) {
@@ -683,6 +736,27 @@ char* discord_button_styles_print(enum discord_button_styles v){
 
   return NULL;
 }
+
+void discord_button_styles_list_free(enum discord_button_styles **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_button_styles_list_from_json(char *str, size_t len, enum discord_button_styles ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_button_styles);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_button_styles **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp)
 {

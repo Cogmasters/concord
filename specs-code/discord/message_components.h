@@ -139,6 +139,12 @@ enum discord_component_types {
 };
 extern char* discord_component_types_print(enum discord_component_types);
 extern enum discord_component_types discord_component_types_eval(char*);
+extern void discord_component_types_list_free_v(void **p);
+extern void discord_component_types_list_free(enum discord_component_types **p);
+extern void discord_component_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_component_types_list_from_json(char *str, size_t len, enum discord_component_types ***p);
+extern size_t discord_component_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_component_types_list_to_json(char *str, size_t len, enum discord_component_types **p);
 
 // Button Structure
 // defined at specs/discord/message_components.json:41:22
@@ -256,6 +262,12 @@ enum discord_button_styles {
 };
 extern char* discord_button_styles_print(enum discord_button_styles);
 extern enum discord_button_styles discord_button_styles_eval(char*);
+extern void discord_button_styles_list_free_v(void **p);
+extern void discord_button_styles_list_free(enum discord_button_styles **p);
+extern void discord_button_styles_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_button_styles_list_from_json(char *str, size_t len, enum discord_button_styles ***p);
+extern size_t discord_button_styles_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_button_styles **p);
 
 // Select Menu Structure
 // defined at specs/discord/message_components.json:70:22

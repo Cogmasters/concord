@@ -14,6 +14,21 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_permissions_bitwise_flags_list_free_v(void **p) {
+  discord_permissions_bitwise_flags_list_free((enum discord_permissions_bitwise_flags**)p);
+}
+
+void discord_permissions_bitwise_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_permissions_bitwise_flags_list_from_json(str, len, (enum discord_permissions_bitwise_flags ***)p);
+}
+
+size_t discord_permissions_bitwise_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_permissions_bitwise_flags_list_to_json(str, len, (enum discord_permissions_bitwise_flags **)p);
+}
+
 enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char *s){
   if(strcasecmp("ZERO", s) == 0) return DISCORD_PERMISSIONS_ZERO;
   if(strcasecmp("CREATE_INSTANT_INVITE", s) == 0) return DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE;
@@ -49,6 +64,7 @@ enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(ch
   if(strcasecmp("MANAGE_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_EMOJIS;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags v){
 
   switch (v) {
@@ -88,6 +104,27 @@ char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_f
 
   return NULL;
 }
+
+void discord_permissions_bitwise_flags_list_free(enum discord_permissions_bitwise_flags **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_permissions_bitwise_flags_list_from_json(char *str, size_t len, enum discord_permissions_bitwise_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_permissions_bitwise_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_permissions_bitwise_flags_list_to_json(char *str, size_t len, enum discord_permissions_bitwise_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp)
 {

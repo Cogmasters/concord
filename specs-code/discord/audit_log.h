@@ -138,6 +138,12 @@ enum discord_audit_log_events {
 };
 extern char* discord_audit_log_events_print(enum discord_audit_log_events);
 extern enum discord_audit_log_events discord_audit_log_events_eval(char*);
+extern void discord_audit_log_events_list_free_v(void **p);
+extern void discord_audit_log_events_list_free(enum discord_audit_log_events **p);
+extern void discord_audit_log_events_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_audit_log_events_list_from_json(char *str, size_t len, enum discord_audit_log_events ***p);
+extern size_t discord_audit_log_events_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum discord_audit_log_events **p);
 
 // Audit Log Entry Structure
 // defined at specs/discord/audit_log.json:65:22

@@ -39,6 +39,12 @@ enum discord_user_flags {
 };
 extern char* discord_user_flags_print(enum discord_user_flags);
 extern enum discord_user_flags discord_user_flags_eval(char*);
+extern void discord_user_flags_list_free_v(void **p);
+extern void discord_user_flags_list_free(enum discord_user_flags **p);
+extern void discord_user_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_user_flags_list_from_json(char *str, size_t len, enum discord_user_flags ***p);
+extern size_t discord_user_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_user_flags_list_to_json(char *str, size_t len, enum discord_user_flags **p);
 
 
 // Premium Types
@@ -63,6 +69,12 @@ enum discord_user_premium_types {
 };
 extern char* discord_user_premium_types_print(enum discord_user_premium_types);
 extern enum discord_user_premium_types discord_user_premium_types_eval(char*);
+extern void discord_user_premium_types_list_free_v(void **p);
+extern void discord_user_premium_types_list_free(enum discord_user_premium_types **p);
+extern void discord_user_premium_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_user_premium_types_list_from_json(char *str, size_t len, enum discord_user_premium_types ***p);
+extern size_t discord_user_premium_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_user_premium_types_list_to_json(char *str, size_t len, enum discord_user_premium_types **p);
 
 // User Structure
 // defined at specs/discord/user.json:41:28
@@ -199,6 +211,12 @@ enum discord_user_connection_visibility_types {
 };
 extern char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types);
 extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char*);
+extern void discord_user_connection_visibility_types_list_free_v(void **p);
+extern void discord_user_connection_visibility_types_list_free(enum discord_user_connection_visibility_types **p);
+extern void discord_user_connection_visibility_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_user_connection_visibility_types_list_from_json(char *str, size_t len, enum discord_user_connection_visibility_types ***p);
+extern size_t discord_user_connection_visibility_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_user_connection_visibility_types_list_to_json(char *str, size_t len, enum discord_user_connection_visibility_types **p);
 
 // Connection Structure
 // defined at specs/discord/user.json:73:28

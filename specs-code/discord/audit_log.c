@@ -198,6 +198,21 @@ size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audi
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_audit_log_events_list_free_v(void **p) {
+  discord_audit_log_events_list_free((enum discord_audit_log_events**)p);
+}
+
+void discord_audit_log_events_list_from_json_v(char *str, size_t len, void *p) {
+  discord_audit_log_events_list_from_json(str, len, (enum discord_audit_log_events ***)p);
+}
+
+size_t discord_audit_log_events_list_to_json_v(char *str, size_t len, void *p){
+  return discord_audit_log_events_list_to_json(str, len, (enum discord_audit_log_events **)p);
+}
+
 enum discord_audit_log_events discord_audit_log_events_eval(char *s){
   if(strcasecmp("GUILD_UPDATE", s) == 0) return DISCORD_AUDIT_LOG_GUILD_UPDATE;
   if(strcasecmp("CHANNEL_CREATE", s) == 0) return DISCORD_AUDIT_LOG_CHANNEL_CREATE;
@@ -235,6 +250,7 @@ enum discord_audit_log_events discord_audit_log_events_eval(char *s){
   if(strcasecmp("INTEGRATION_DELETE", s) == 0) return DISCORD_AUDIT_LOG_INTEGRATION_DELETE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_audit_log_events_print(enum discord_audit_log_events v){
 
   switch (v) {
@@ -276,6 +292,27 @@ char* discord_audit_log_events_print(enum discord_audit_log_events v){
 
   return NULL;
 }
+
+void discord_audit_log_events_list_free(enum discord_audit_log_events **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_audit_log_events_list_from_json(char *str, size_t len, enum discord_audit_log_events ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_audit_log_events);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum discord_audit_log_events **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp)
 {

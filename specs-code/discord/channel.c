@@ -14,6 +14,21 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_channel_types_list_free_v(void **p) {
+  discord_channel_types_list_free((enum discord_channel_types**)p);
+}
+
+void discord_channel_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_channel_types_list_from_json(str, len, (enum discord_channel_types ***)p);
+}
+
+size_t discord_channel_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_channel_types_list_to_json(str, len, (enum discord_channel_types **)p);
+}
+
 enum discord_channel_types discord_channel_types_eval(char *s){
   if(strcasecmp("GUILD_TEXT", s) == 0) return DISCORD_CHANNEL_GUILD_TEXT;
   if(strcasecmp("DM", s) == 0) return DISCORD_CHANNEL_DM;
@@ -28,6 +43,7 @@ enum discord_channel_types discord_channel_types_eval(char *s){
   if(strcasecmp("GUILD_STAGE_VOICE", s) == 0) return DISCORD_CHANNEL_GUILD_STAGE_VOICE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_channel_types_print(enum discord_channel_types v){
 
   switch (v) {
@@ -46,6 +62,27 @@ char* discord_channel_types_print(enum discord_channel_types v){
 
   return NULL;
 }
+
+void discord_channel_types_list_free(enum discord_channel_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_channel_types_list_from_json(char *str, size_t len, enum discord_channel_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_channel_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_channel_types_list_to_json(char *str, size_t len, enum discord_channel_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp)
 {
@@ -668,12 +705,28 @@ size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channe
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_message_sticker_format_types_list_free_v(void **p) {
+  discord_message_sticker_format_types_list_free((enum discord_message_sticker_format_types**)p);
+}
+
+void discord_message_sticker_format_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_message_sticker_format_types_list_from_json(str, len, (enum discord_message_sticker_format_types ***)p);
+}
+
+size_t discord_message_sticker_format_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_message_sticker_format_types_list_to_json(str, len, (enum discord_message_sticker_format_types **)p);
+}
+
 enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char *s){
   if(strcasecmp("PNG", s) == 0) return DISCORD_MESSAGE_STICKER_PNG;
   if(strcasecmp("APNG", s) == 0) return DISCORD_MESSAGE_STICKER_APNG;
   if(strcasecmp("LOTTIE", s) == 0) return DISCORD_MESSAGE_STICKER_LOTTIE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types v){
 
   switch (v) {
@@ -684,6 +737,27 @@ char* discord_message_sticker_format_types_print(enum discord_message_sticker_fo
 
   return NULL;
 }
+
+void discord_message_sticker_format_types_list_free(enum discord_message_sticker_format_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_message_sticker_format_types_list_from_json(char *str, size_t len, enum discord_message_sticker_format_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_message_sticker_format_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_message_sticker_format_types_list_to_json(char *str, size_t len, enum discord_message_sticker_format_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp)
 {
@@ -965,6 +1039,21 @@ size_t discord_message_sticker_list_to_json(char *str, size_t len, struct discor
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_message_flags_list_free_v(void **p) {
+  discord_message_flags_list_free((enum discord_message_flags**)p);
+}
+
+void discord_message_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_message_flags_list_from_json(str, len, (enum discord_message_flags ***)p);
+}
+
+size_t discord_message_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_message_flags_list_to_json(str, len, (enum discord_message_flags **)p);
+}
+
 enum discord_message_flags discord_message_flags_eval(char *s){
   if(strcasecmp("CROSSPOSTED", s) == 0) return DISCORD_MESSAGE_CROSSPOSTED;
   if(strcasecmp("IS_CROSSPOST", s) == 0) return DISCORD_MESSAGE_IS_CROSSPOST;
@@ -973,6 +1062,7 @@ enum discord_message_flags discord_message_flags_eval(char *s){
   if(strcasecmp("URGENT", s) == 0) return DISCORD_MESSAGE_URGENT;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_message_flags_print(enum discord_message_flags v){
 
   switch (v) {
@@ -985,6 +1075,27 @@ char* discord_message_flags_print(enum discord_message_flags v){
 
   return NULL;
 }
+
+void discord_message_flags_list_free(enum discord_message_flags **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_message_flags_list_from_json(char *str, size_t len, enum discord_message_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_message_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_message_flags_list_to_json(char *str, size_t len, enum discord_message_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp)
 {
@@ -1379,6 +1490,21 @@ size_t discord_message_application_list_to_json(char *str, size_t len, struct di
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_message_activity_types_list_free_v(void **p) {
+  discord_message_activity_types_list_free((enum discord_message_activity_types**)p);
+}
+
+void discord_message_activity_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_message_activity_types_list_from_json(str, len, (enum discord_message_activity_types ***)p);
+}
+
+size_t discord_message_activity_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_message_activity_types_list_to_json(str, len, (enum discord_message_activity_types **)p);
+}
+
 enum discord_message_activity_types discord_message_activity_types_eval(char *s){
   if(strcasecmp("JOIN", s) == 0) return DISCORD_MESSAGE_ACTIVITY_JOIN;
   if(strcasecmp("SPECTATE", s) == 0) return DISCORD_MESSAGE_ACTIVITY_SPECTATE;
@@ -1386,6 +1512,7 @@ enum discord_message_activity_types discord_message_activity_types_eval(char *s)
   if(strcasecmp("JOIN_REQUEST", s) == 0) return DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_message_activity_types_print(enum discord_message_activity_types v){
 
   switch (v) {
@@ -1397,6 +1524,27 @@ char* discord_message_activity_types_print(enum discord_message_activity_types v
 
   return NULL;
 }
+
+void discord_message_activity_types_list_free(enum discord_message_activity_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_message_activity_types_list_from_json(char *str, size_t len, enum discord_message_activity_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_message_activity_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_message_activity_types_list_to_json(char *str, size_t len, enum discord_message_activity_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp)
 {
@@ -1544,6 +1692,21 @@ size_t discord_message_activity_list_to_json(char *str, size_t len, struct disco
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_message_types_list_free_v(void **p) {
+  discord_message_types_list_free((enum discord_message_types**)p);
+}
+
+void discord_message_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_message_types_list_from_json(str, len, (enum discord_message_types ***)p);
+}
+
+size_t discord_message_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_message_types_list_to_json(str, len, (enum discord_message_types **)p);
+}
+
 enum discord_message_types discord_message_types_eval(char *s){
   if(strcasecmp("DEFAULT", s) == 0) return DISCORD_MESSAGE_DEFAULT;
   if(strcasecmp("RECIPIENT_ADD", s) == 0) return DISCORD_MESSAGE_RECIPIENT_ADD;
@@ -1564,6 +1727,7 @@ enum discord_message_types discord_message_types_eval(char *s){
   if(strcasecmp("APPLICATION_COMMAND", s) == 0) return DISCORD_MESSAGE_APPLICATION_COMMAND;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_message_types_print(enum discord_message_types v){
 
   switch (v) {
@@ -1588,6 +1752,27 @@ char* discord_message_types_print(enum discord_message_types v){
 
   return NULL;
 }
+
+void discord_message_types_list_free(enum discord_message_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_message_types_list_from_json(char *str, size_t len, enum discord_message_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_message_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_message_types_list_to_json(char *str, size_t len, enum discord_message_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_message_from_json(char *json, size_t len, struct discord_message **pp)
 {

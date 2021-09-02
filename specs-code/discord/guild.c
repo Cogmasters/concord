@@ -1167,11 +1167,27 @@ size_t discord_guild_list_to_json(char *str, size_t len, struct discord_guild **
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_default_message_notification_level_list_free_v(void **p) {
+  discord_guild_default_message_notification_level_list_free((enum discord_guild_default_message_notification_level**)p);
+}
+
+void discord_guild_default_message_notification_level_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_default_message_notification_level_list_from_json(str, len, (enum discord_guild_default_message_notification_level ***)p);
+}
+
+size_t discord_guild_default_message_notification_level_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_default_message_notification_level_list_to_json(str, len, (enum discord_guild_default_message_notification_level **)p);
+}
+
 enum discord_guild_default_message_notification_level discord_guild_default_message_notification_level_eval(char *s){
   if(strcasecmp("ALL_MESSAGES", s) == 0) return DISCORD_GUILD_ALL_MESSAGES;
   if(strcasecmp("ONLY_MENTIONS", s) == 0) return DISCORD_GUILD_ONLY_MENTIONS;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_default_message_notification_level_print(enum discord_guild_default_message_notification_level v){
 
   switch (v) {
@@ -1182,6 +1198,42 @@ char* discord_guild_default_message_notification_level_print(enum discord_guild_
   return NULL;
 }
 
+void discord_guild_default_message_notification_level_list_free(enum discord_guild_default_message_notification_level **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_default_message_notification_level_list_from_json(char *str, size_t len, enum discord_guild_default_message_notification_level ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_default_message_notification_level);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_default_message_notification_level_list_to_json(char *str, size_t len, enum discord_guild_default_message_notification_level **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_explicit_content_filter_level_list_free_v(void **p) {
+  discord_guild_explicit_content_filter_level_list_free((enum discord_guild_explicit_content_filter_level**)p);
+}
+
+void discord_guild_explicit_content_filter_level_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_explicit_content_filter_level_list_from_json(str, len, (enum discord_guild_explicit_content_filter_level ***)p);
+}
+
+size_t discord_guild_explicit_content_filter_level_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_explicit_content_filter_level_list_to_json(str, len, (enum discord_guild_explicit_content_filter_level **)p);
+}
 
 enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_filter_level_eval(char *s){
   if(strcasecmp("DISABLED", s) == 0) return DISCORD_GUILD_DISABLED;
@@ -1189,6 +1241,7 @@ enum discord_guild_explicit_content_filter_level discord_guild_explicit_content_
   if(strcasecmp("ALL_MEMBERS", s) == 0) return DISCORD_GUILD_ALL_MEMBERS;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_explicit_content_filter_level_print(enum discord_guild_explicit_content_filter_level v){
 
   switch (v) {
@@ -1200,12 +1253,49 @@ char* discord_guild_explicit_content_filter_level_print(enum discord_guild_expli
   return NULL;
 }
 
+void discord_guild_explicit_content_filter_level_list_free(enum discord_guild_explicit_content_filter_level **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_explicit_content_filter_level_list_from_json(char *str, size_t len, enum discord_guild_explicit_content_filter_level ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_explicit_content_filter_level);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_explicit_content_filter_level_list_to_json(char *str, size_t len, enum discord_guild_explicit_content_filter_level **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_mfa_level_list_free_v(void **p) {
+  discord_guild_mfa_level_list_free((enum discord_guild_mfa_level**)p);
+}
+
+void discord_guild_mfa_level_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_mfa_level_list_from_json(str, len, (enum discord_guild_mfa_level ***)p);
+}
+
+size_t discord_guild_mfa_level_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_mfa_level_list_to_json(str, len, (enum discord_guild_mfa_level **)p);
+}
 
 enum discord_guild_mfa_level discord_guild_mfa_level_eval(char *s){
   if(strcasecmp("DISCORD_MFA_NONE", s) == 0) return DISCORD_GUILD_DISCORD_MFA_NONE;
   if(strcasecmp("ELEVATED", s) == 0) return DISCORD_GUILD_ELEVATED;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_mfa_level_print(enum discord_guild_mfa_level v){
 
   switch (v) {
@@ -1216,6 +1306,42 @@ char* discord_guild_mfa_level_print(enum discord_guild_mfa_level v){
   return NULL;
 }
 
+void discord_guild_mfa_level_list_free(enum discord_guild_mfa_level **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_mfa_level_list_from_json(char *str, size_t len, enum discord_guild_mfa_level ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_mfa_level);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_mfa_level_list_to_json(char *str, size_t len, enum discord_guild_mfa_level **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_verification_level_list_free_v(void **p) {
+  discord_guild_verification_level_list_free((enum discord_guild_verification_level**)p);
+}
+
+void discord_guild_verification_level_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_verification_level_list_from_json(str, len, (enum discord_guild_verification_level ***)p);
+}
+
+size_t discord_guild_verification_level_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_verification_level_list_to_json(str, len, (enum discord_guild_verification_level **)p);
+}
 
 enum discord_guild_verification_level discord_guild_verification_level_eval(char *s){
   if(strcasecmp("DISCORD_VL_NONE", s) == 0) return DISCORD_GUILD_DISCORD_VL_NONE;
@@ -1225,6 +1351,7 @@ enum discord_guild_verification_level discord_guild_verification_level_eval(char
   if(strcasecmp("VERY_HIGH", s) == 0) return DISCORD_GUILD_VERY_HIGH;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_verification_level_print(enum discord_guild_verification_level v){
 
   switch (v) {
@@ -1238,6 +1365,42 @@ char* discord_guild_verification_level_print(enum discord_guild_verification_lev
   return NULL;
 }
 
+void discord_guild_verification_level_list_free(enum discord_guild_verification_level **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_verification_level_list_from_json(char *str, size_t len, enum discord_guild_verification_level ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_verification_level);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_verification_level_list_to_json(char *str, size_t len, enum discord_guild_verification_level **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_premium_tier_list_free_v(void **p) {
+  discord_guild_premium_tier_list_free((enum discord_guild_premium_tier**)p);
+}
+
+void discord_guild_premium_tier_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_premium_tier_list_from_json(str, len, (enum discord_guild_premium_tier ***)p);
+}
+
+size_t discord_guild_premium_tier_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_premium_tier_list_to_json(str, len, (enum discord_guild_premium_tier **)p);
+}
 
 enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *s){
   if(strcasecmp("DISCORD_PREMIUM_NONE", s) == 0) return DISCORD_GUILD_DISCORD_PREMIUM_NONE;
@@ -1246,6 +1409,7 @@ enum discord_guild_premium_tier discord_guild_premium_tier_eval(char *s){
   if(strcasecmp("TIER_3", s) == 0) return DISCORD_GUILD_TIER_3;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_premium_tier_print(enum discord_guild_premium_tier v){
 
   switch (v) {
@@ -1258,12 +1422,49 @@ char* discord_guild_premium_tier_print(enum discord_guild_premium_tier v){
   return NULL;
 }
 
+void discord_guild_premium_tier_list_free(enum discord_guild_premium_tier **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_premium_tier_list_from_json(char *str, size_t len, enum discord_guild_premium_tier ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_premium_tier);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_premium_tier_list_to_json(char *str, size_t len, enum discord_guild_premium_tier **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_system_channel_flags_list_free_v(void **p) {
+  discord_guild_system_channel_flags_list_free((enum discord_guild_system_channel_flags**)p);
+}
+
+void discord_guild_system_channel_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_system_channel_flags_list_from_json(str, len, (enum discord_guild_system_channel_flags ***)p);
+}
+
+size_t discord_guild_system_channel_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_system_channel_flags_list_to_json(str, len, (enum discord_guild_system_channel_flags **)p);
+}
 
 enum discord_guild_system_channel_flags discord_guild_system_channel_flags_eval(char *s){
   if(strcasecmp("SUPRESS_JOIN_NOTIFICATIONS", s) == 0) return DISCORD_GUILD_SUPRESS_JOIN_NOTIFICATIONS;
   if(strcasecmp("SUPRESS_PREMIUM_SUBSCRIPTIONS", s) == 0) return DISCORD_GUILD_SUPRESS_PREMIUM_SUBSCRIPTIONS;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel_flags v){
 
   switch (v) {
@@ -1274,6 +1475,42 @@ char* discord_guild_system_channel_flags_print(enum discord_guild_system_channel
   return NULL;
 }
 
+void discord_guild_system_channel_flags_list_free(enum discord_guild_system_channel_flags **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_system_channel_flags_list_from_json(char *str, size_t len, enum discord_guild_system_channel_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_system_channel_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_system_channel_flags_list_to_json(char *str, size_t len, enum discord_guild_system_channel_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_features_list_free_v(void **p) {
+  discord_guild_features_list_free((enum discord_guild_features**)p);
+}
+
+void discord_guild_features_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_features_list_from_json(str, len, (enum discord_guild_features ***)p);
+}
+
+size_t discord_guild_features_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_features_list_to_json(str, len, (enum discord_guild_features **)p);
+}
 
 enum discord_guild_features discord_guild_features_eval(char *s){
   if(strcasecmp("INVITE_SPLASH", s) == 0) return DISCORD_GUILD_INVITE_SPLASH;
@@ -1293,6 +1530,7 @@ enum discord_guild_features discord_guild_features_eval(char *s){
   if(strcasecmp("PREVIEW_ENABLED", s) == 0) return DISCORD_GUILD_PREVIEW_ENABLED;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_features_print(enum discord_guild_features v){
 
   switch (v) {
@@ -1315,6 +1553,27 @@ char* discord_guild_features_print(enum discord_guild_features v){
 
   return NULL;
 }
+
+void discord_guild_features_list_free(enum discord_guild_features **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_features_list_from_json(char *str, size_t len, enum discord_guild_features ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_features);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_features_list_to_json(char *str, size_t len, enum discord_guild_features **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable **pp)
 {
@@ -2628,11 +2887,27 @@ size_t discord_guild_integration_list_to_json(char *str, size_t len, struct disc
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_guild_integration_expire_behaviors_list_free_v(void **p) {
+  discord_guild_integration_expire_behaviors_list_free((enum discord_guild_integration_expire_behaviors**)p);
+}
+
+void discord_guild_integration_expire_behaviors_list_from_json_v(char *str, size_t len, void *p) {
+  discord_guild_integration_expire_behaviors_list_from_json(str, len, (enum discord_guild_integration_expire_behaviors ***)p);
+}
+
+size_t discord_guild_integration_expire_behaviors_list_to_json_v(char *str, size_t len, void *p){
+  return discord_guild_integration_expire_behaviors_list_to_json(str, len, (enum discord_guild_integration_expire_behaviors **)p);
+}
+
 enum discord_guild_integration_expire_behaviors discord_guild_integration_expire_behaviors_eval(char *s){
   if(strcasecmp("REMOVE_ROLE", s) == 0) return DISCORD_GUILD_INTEGRATION_REMOVE_ROLE;
   if(strcasecmp("KICK", s) == 0) return DISCORD_GUILD_INTEGRATION_KICK;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integration_expire_behaviors v){
 
   switch (v) {
@@ -2642,6 +2917,27 @@ char* discord_guild_integration_expire_behaviors_print(enum discord_guild_integr
 
   return NULL;
 }
+
+void discord_guild_integration_expire_behaviors_list_free(enum discord_guild_integration_expire_behaviors **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_guild_integration_expire_behaviors_list_from_json(char *str, size_t len, enum discord_guild_integration_expire_behaviors ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_guild_integration_expire_behaviors);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_guild_integration_expire_behaviors_list_to_json(char *str, size_t len, enum discord_guild_integration_expire_behaviors **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account **pp)
 {

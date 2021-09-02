@@ -150,3 +150,9 @@ enum discord_application_flags {
 };
 extern char* discord_application_flags_print(enum discord_application_flags);
 extern enum discord_application_flags discord_application_flags_eval(char*);
+extern void discord_application_flags_list_free_v(void **p);
+extern void discord_application_flags_list_free(enum discord_application_flags **p);
+extern void discord_application_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_application_flags_list_from_json(char *str, size_t len, enum discord_application_flags ***p);
+extern size_t discord_application_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_application_flags_list_to_json(char *str, size_t len, enum discord_application_flags **p);

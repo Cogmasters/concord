@@ -38,6 +38,12 @@ enum discord_voice_close_opcodes {
 };
 extern char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes);
 extern enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char*);
+extern void discord_voice_close_opcodes_list_free_v(void **p);
+extern void discord_voice_close_opcodes_list_free(enum discord_voice_close_opcodes **p);
+extern void discord_voice_close_opcodes_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_close_opcodes_list_from_json(char *str, size_t len, enum discord_voice_close_opcodes ***p);
+extern size_t discord_voice_close_opcodes_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_close_opcodes_list_to_json(char *str, size_t len, enum discord_voice_close_opcodes **p);
 
 
 // Voice Opcodes
@@ -72,6 +78,12 @@ enum discord_voice_opcodes {
 };
 extern char* discord_voice_opcodes_print(enum discord_voice_opcodes);
 extern enum discord_voice_opcodes discord_voice_opcodes_eval(char*);
+extern void discord_voice_opcodes_list_free_v(void **p);
+extern void discord_voice_opcodes_list_free(enum discord_voice_opcodes **p);
+extern void discord_voice_opcodes_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_opcodes_list_from_json(char *str, size_t len, enum discord_voice_opcodes ***p);
+extern size_t discord_voice_opcodes_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum discord_voice_opcodes **p);
 
 
 // Voice Speaking Flags
@@ -97,3 +109,9 @@ enum discord_voice_speaking_flags {
 };
 extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
 extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);
+extern void discord_voice_speaking_flags_list_free_v(void **p);
+extern void discord_voice_speaking_flags_list_free(enum discord_voice_speaking_flags **p);
+extern void discord_voice_speaking_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_speaking_flags_list_from_json(char *str, size_t len, enum discord_voice_speaking_flags ***p);
+extern size_t discord_voice_speaking_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, enum discord_voice_speaking_flags **p);

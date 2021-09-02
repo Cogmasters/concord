@@ -131,6 +131,12 @@ enum discord_interaction_types {
 };
 extern char* discord_interaction_types_print(enum discord_interaction_types);
 extern enum discord_interaction_types discord_interaction_types_eval(char*);
+extern void discord_interaction_types_list_free_v(void **p);
+extern void discord_interaction_types_list_free(enum discord_interaction_types **p);
+extern void discord_interaction_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_interaction_types_list_from_json(char *str, size_t len, enum discord_interaction_types ***p);
+extern size_t discord_interaction_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_interaction_types_list_to_json(char *str, size_t len, enum discord_interaction_types **p);
 
 // Interaction Data Structure
 // defined at specs/discord/receiving_and_responding.json:40:22
@@ -482,6 +488,12 @@ enum discord_interaction_callback_types {
 };
 extern char* discord_interaction_callback_types_print(enum discord_interaction_callback_types);
 extern enum discord_interaction_callback_types discord_interaction_callback_types_eval(char*);
+extern void discord_interaction_callback_types_list_free_v(void **p);
+extern void discord_interaction_callback_types_list_free(enum discord_interaction_callback_types **p);
+extern void discord_interaction_callback_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_interaction_callback_types_list_from_json(char *str, size_t len, enum discord_interaction_callback_types ***p);
+extern size_t discord_interaction_callback_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_interaction_callback_types_list_to_json(char *str, size_t len, enum discord_interaction_callback_types **p);
 
 // Interaction Callback Data Structure
 // defined at specs/discord/receiving_and_responding.json:109:22
@@ -591,3 +603,9 @@ enum discord_interaction_callback_data_flags {
 };
 extern char* discord_interaction_callback_data_flags_print(enum discord_interaction_callback_data_flags);
 extern enum discord_interaction_callback_data_flags discord_interaction_callback_data_flags_eval(char*);
+extern void discord_interaction_callback_data_flags_list_free_v(void **p);
+extern void discord_interaction_callback_data_flags_list_free(enum discord_interaction_callback_data_flags **p);
+extern void discord_interaction_callback_data_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_interaction_callback_data_flags_list_from_json(char *str, size_t len, enum discord_interaction_callback_data_flags ***p);
+extern size_t discord_interaction_callback_data_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_interaction_callback_data_flags_list_to_json(char *str, size_t len, enum discord_interaction_callback_data_flags **p);

@@ -14,6 +14,21 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_gateway_close_opcodes_list_free_v(void **p) {
+  discord_gateway_close_opcodes_list_free((enum discord_gateway_close_opcodes**)p);
+}
+
+void discord_gateway_close_opcodes_list_from_json_v(char *str, size_t len, void *p) {
+  discord_gateway_close_opcodes_list_from_json(str, len, (enum discord_gateway_close_opcodes ***)p);
+}
+
+size_t discord_gateway_close_opcodes_list_to_json_v(char *str, size_t len, void *p){
+  return discord_gateway_close_opcodes_list_to_json(str, len, (enum discord_gateway_close_opcodes **)p);
+}
+
 enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *s){
   if(strcasecmp("CLOSE_REASON_UNKNOWN_ERROR", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR;
   if(strcasecmp("CLOSE_REASON_UNKNOWN_OPCODE", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE;
@@ -31,6 +46,7 @@ enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *s){
   if(strcasecmp("CLOSE_REASON_DISALLOWED_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes v){
 
   switch (v) {
@@ -53,6 +69,42 @@ char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes v){
   return NULL;
 }
 
+void discord_gateway_close_opcodes_list_free(enum discord_gateway_close_opcodes **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_gateway_close_opcodes_list_from_json(char *str, size_t len, enum discord_gateway_close_opcodes ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_gateway_close_opcodes);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, enum discord_gateway_close_opcodes **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_gateway_intents_list_free_v(void **p) {
+  discord_gateway_intents_list_free((enum discord_gateway_intents**)p);
+}
+
+void discord_gateway_intents_list_from_json_v(char *str, size_t len, void *p) {
+  discord_gateway_intents_list_from_json(str, len, (enum discord_gateway_intents ***)p);
+}
+
+size_t discord_gateway_intents_list_to_json_v(char *str, size_t len, void *p){
+  return discord_gateway_intents_list_to_json(str, len, (enum discord_gateway_intents **)p);
+}
 
 enum discord_gateway_intents discord_gateway_intents_eval(char *s){
   if(strcasecmp("GUILDS", s) == 0) return DISCORD_GATEWAY_GUILDS;
@@ -72,6 +124,7 @@ enum discord_gateway_intents discord_gateway_intents_eval(char *s){
   if(strcasecmp("DIRECT_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_gateway_intents_print(enum discord_gateway_intents v){
 
   switch (v) {
@@ -95,6 +148,42 @@ char* discord_gateway_intents_print(enum discord_gateway_intents v){
   return NULL;
 }
 
+void discord_gateway_intents_list_free(enum discord_gateway_intents **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_gateway_intents_list_from_json(char *str, size_t len, enum discord_gateway_intents ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_gateway_intents);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_gateway_intents_list_to_json(char *str, size_t len, enum discord_gateway_intents **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_gateway_opcodes_list_free_v(void **p) {
+  discord_gateway_opcodes_list_free((enum discord_gateway_opcodes**)p);
+}
+
+void discord_gateway_opcodes_list_from_json_v(char *str, size_t len, void *p) {
+  discord_gateway_opcodes_list_from_json(str, len, (enum discord_gateway_opcodes ***)p);
+}
+
+size_t discord_gateway_opcodes_list_to_json_v(char *str, size_t len, void *p){
+  return discord_gateway_opcodes_list_to_json(str, len, (enum discord_gateway_opcodes **)p);
+}
 
 enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *s){
   if(strcasecmp("DISPATCH", s) == 0) return DISCORD_GATEWAY_DISPATCH;
@@ -110,6 +199,7 @@ enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *s){
   if(strcasecmp("HEARTBEAT_ACK", s) == 0) return DISCORD_GATEWAY_HEARTBEAT_ACK;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_gateway_opcodes_print(enum discord_gateway_opcodes v){
 
   switch (v) {
@@ -129,6 +219,42 @@ char* discord_gateway_opcodes_print(enum discord_gateway_opcodes v){
   return NULL;
 }
 
+void discord_gateway_opcodes_list_free(enum discord_gateway_opcodes **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_gateway_opcodes_list_from_json(char *str, size_t len, enum discord_gateway_opcodes ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_gateway_opcodes);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_gateway_opcodes_list_to_json(char *str, size_t len, enum discord_gateway_opcodes **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_gateway_events_list_free_v(void **p) {
+  discord_gateway_events_list_free((enum discord_gateway_events**)p);
+}
+
+void discord_gateway_events_list_from_json_v(char *str, size_t len, void *p) {
+  discord_gateway_events_list_from_json(str, len, (enum discord_gateway_events ***)p);
+}
+
+size_t discord_gateway_events_list_to_json_v(char *str, size_t len, void *p){
+  return discord_gateway_events_list_to_json(str, len, (enum discord_gateway_events **)p);
+}
 
 enum discord_gateway_events discord_gateway_events_eval(char *s){
   if(strcasecmp("EVENTS_NONE", s) == 0) return DISCORD_GATEWAY_EVENTS_NONE;
@@ -187,6 +313,7 @@ enum discord_gateway_events discord_gateway_events_eval(char *s){
   if(strcasecmp("EVENTS_WEBHOOKS_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_gateway_events_print(enum discord_gateway_events v){
 
   switch (v) {
@@ -248,6 +375,27 @@ char* discord_gateway_events_print(enum discord_gateway_events v){
 
   return NULL;
 }
+
+void discord_gateway_events_list_free(enum discord_gateway_events **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_gateway_events_list_from_json(char *str, size_t len, enum discord_gateway_events ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_gateway_events);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_gateway_events_list_to_json(char *str, size_t len, enum discord_gateway_events **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify **pp)
 {
@@ -1197,6 +1345,21 @@ size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct disco
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_gateway_activity_types_list_free_v(void **p) {
+  discord_gateway_activity_types_list_free((enum discord_gateway_activity_types**)p);
+}
+
+void discord_gateway_activity_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_gateway_activity_types_list_from_json(str, len, (enum discord_gateway_activity_types ***)p);
+}
+
+size_t discord_gateway_activity_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_gateway_activity_types_list_to_json(str, len, (enum discord_gateway_activity_types **)p);
+}
+
 enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *s){
   if(strcasecmp("GAME", s) == 0) return DISCORD_GATEWAY_ACTIVITY_GAME;
   if(strcasecmp("STREAMING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_STREAMING;
@@ -1205,6 +1368,7 @@ enum discord_gateway_activity_types discord_gateway_activity_types_eval(char *s)
   if(strcasecmp("COMPETING", s) == 0) return DISCORD_GATEWAY_ACTIVITY_COMPETING;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_gateway_activity_types_print(enum discord_gateway_activity_types v){
 
   switch (v) {
@@ -1217,3 +1381,24 @@ char* discord_gateway_activity_types_print(enum discord_gateway_activity_types v
 
   return NULL;
 }
+
+void discord_gateway_activity_types_list_free(enum discord_gateway_activity_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_gateway_activity_types_list_from_json(char *str, size_t len, enum discord_gateway_activity_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_gateway_activity_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_gateway_activity_types_list_to_json(char *str, size_t len, enum discord_gateway_activity_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+

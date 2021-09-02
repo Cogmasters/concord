@@ -44,8 +44,8 @@ struct discord_create_global_application_command_params {
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:15:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
-  // @todo options the parameters for the command;
+     '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
+  struct discord_application_command_option **options; ///< the parameters for the command
 
   /* specs/discord/application_commands.endpoints-params.json:16:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
@@ -126,8 +126,8 @@ struct discord_edit_global_application_command_params {
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:29:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
-  // @todo options the parameters for the command;
+     '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
+  struct discord_application_command_option **options; ///< the parameters for the command
 
   /* specs/discord/application_commands.endpoints-params.json:30:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
@@ -204,8 +204,8 @@ struct discord_create_guild_application_command_params {
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:42:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
-  // @todo options the parameters for the command;
+     '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
+  struct discord_application_command_option **options; ///< the parameters for the command
 
   /* specs/discord/application_commands.endpoints-params.json:43:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
@@ -286,8 +286,8 @@ struct discord_edit_guild_application_command_params {
   char *description; ///< 1-100 character description
 
   /* specs/discord/application_commands.endpoints-params.json:56:20
-     '{ "name": "options", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types", "dec":"ntl"}, "comment":"the parameters for the command", "todo":true, "inject_if_not":null}' */
-  // @todo options the parameters for the command;
+     '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
+  struct discord_application_command_option **options; ///< the parameters for the command
 
   /* specs/discord/application_commands.endpoints-params.json:57:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */

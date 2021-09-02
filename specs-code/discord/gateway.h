@@ -40,6 +40,12 @@ enum discord_gateway_close_opcodes {
 };
 extern char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes);
 extern enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char*);
+extern void discord_gateway_close_opcodes_list_free_v(void **p);
+extern void discord_gateway_close_opcodes_list_free(enum discord_gateway_close_opcodes **p);
+extern void discord_gateway_close_opcodes_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_close_opcodes_list_from_json(char *str, size_t len, enum discord_gateway_close_opcodes ***p);
+extern size_t discord_gateway_close_opcodes_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, enum discord_gateway_close_opcodes **p);
 
 
 // Gateway Intents
@@ -77,6 +83,12 @@ enum discord_gateway_intents {
 };
 extern char* discord_gateway_intents_print(enum discord_gateway_intents);
 extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
+extern void discord_gateway_intents_list_free_v(void **p);
+extern void discord_gateway_intents_list_free(enum discord_gateway_intents **p);
+extern void discord_gateway_intents_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_intents_list_from_json(char *str, size_t len, enum discord_gateway_intents ***p);
+extern size_t discord_gateway_intents_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_intents_list_to_json(char *str, size_t len, enum discord_gateway_intents **p);
 
 
 // Gateway Opcodes
@@ -110,6 +122,12 @@ enum discord_gateway_opcodes {
 };
 extern char* discord_gateway_opcodes_print(enum discord_gateway_opcodes);
 extern enum discord_gateway_opcodes discord_gateway_opcodes_eval(char*);
+extern void discord_gateway_opcodes_list_free_v(void **p);
+extern void discord_gateway_opcodes_list_free(enum discord_gateway_opcodes **p);
+extern void discord_gateway_opcodes_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_opcodes_list_from_json(char *str, size_t len, enum discord_gateway_opcodes ***p);
+extern size_t discord_gateway_opcodes_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_opcodes_list_to_json(char *str, size_t len, enum discord_gateway_opcodes **p);
 
 
 // Gateway Events
@@ -186,6 +204,12 @@ enum discord_gateway_events {
 };
 extern char* discord_gateway_events_print(enum discord_gateway_events);
 extern enum discord_gateway_events discord_gateway_events_eval(char*);
+extern void discord_gateway_events_list_free_v(void **p);
+extern void discord_gateway_events_list_free(enum discord_gateway_events **p);
+extern void discord_gateway_events_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_events_list_from_json(char *str, size_t len, enum discord_gateway_events ***p);
+extern size_t discord_gateway_events_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum discord_gateway_events **p);
 
 // Identify Structure
 // defined at specs/discord/gateway.json:135:22
@@ -561,3 +585,9 @@ enum discord_gateway_activity_types {
 };
 extern char* discord_gateway_activity_types_print(enum discord_gateway_activity_types);
 extern enum discord_gateway_activity_types discord_gateway_activity_types_eval(char*);
+extern void discord_gateway_activity_types_list_free_v(void **p);
+extern void discord_gateway_activity_types_list_free(enum discord_gateway_activity_types **p);
+extern void discord_gateway_activity_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_gateway_activity_types_list_from_json(char *str, size_t len, enum discord_gateway_activity_types ***p);
+extern size_t discord_gateway_activity_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_gateway_activity_types_list_to_json(char *str, size_t len, enum discord_gateway_activity_types **p);

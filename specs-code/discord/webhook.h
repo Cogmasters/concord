@@ -126,3 +126,9 @@ enum discord_webhook_types {
 };
 extern char* discord_webhook_types_print(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_eval(char*);
+extern void discord_webhook_types_list_free_v(void **p);
+extern void discord_webhook_types_list_free(enum discord_webhook_types **p);
+extern void discord_webhook_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_webhook_types_list_from_json(char *str, size_t len, enum discord_webhook_types ***p);
+extern size_t discord_webhook_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_webhook_types_list_to_json(char *str, size_t len, enum discord_webhook_types **p);

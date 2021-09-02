@@ -56,6 +56,12 @@ enum discord_permissions_bitwise_flags {
 };
 extern char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags);
 extern enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char*);
+extern void discord_permissions_bitwise_flags_list_free_v(void **p);
+extern void discord_permissions_bitwise_flags_list_free(enum discord_permissions_bitwise_flags **p);
+extern void discord_permissions_bitwise_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_permissions_bitwise_flags_list_from_json(char *str, size_t len, enum discord_permissions_bitwise_flags ***p);
+extern size_t discord_permissions_bitwise_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_permissions_bitwise_flags_list_to_json(char *str, size_t len, enum discord_permissions_bitwise_flags **p);
 
 // Role Structure
 // defined at specs/discord/permissions.json:49:22

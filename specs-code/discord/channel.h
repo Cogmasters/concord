@@ -37,6 +37,12 @@ enum discord_channel_types {
 };
 extern char* discord_channel_types_print(enum discord_channel_types);
 extern enum discord_channel_types discord_channel_types_eval(char*);
+extern void discord_channel_types_list_free_v(void **p);
+extern void discord_channel_types_list_free(enum discord_channel_types **p);
+extern void discord_channel_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_channel_types_list_from_json(char *str, size_t len, enum discord_channel_types ***p);
+extern size_t discord_channel_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_channel_types_list_to_json(char *str, size_t len, enum discord_channel_types **p);
 
 // Channel Structure
 // defined at specs/discord/channel.json:29:22
@@ -213,6 +219,12 @@ enum discord_message_sticker_format_types {
 };
 extern char* discord_message_sticker_format_types_print(enum discord_message_sticker_format_types);
 extern enum discord_message_sticker_format_types discord_message_sticker_format_types_eval(char*);
+extern void discord_message_sticker_format_types_list_free_v(void **p);
+extern void discord_message_sticker_format_types_list_free(enum discord_message_sticker_format_types **p);
+extern void discord_message_sticker_format_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_message_sticker_format_types_list_from_json(char *str, size_t len, enum discord_message_sticker_format_types ***p);
+extern size_t discord_message_sticker_format_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_message_sticker_format_types_list_to_json(char *str, size_t len, enum discord_message_sticker_format_types **p);
 
 // Message Sticker Structure
 // defined at specs/discord/channel.json:82:22
@@ -335,6 +347,12 @@ enum discord_message_flags {
 };
 extern char* discord_message_flags_print(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_eval(char*);
+extern void discord_message_flags_list_free_v(void **p);
+extern void discord_message_flags_list_free(enum discord_message_flags **p);
+extern void discord_message_flags_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_message_flags_list_from_json(char *str, size_t len, enum discord_message_flags ***p);
+extern size_t discord_message_flags_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_message_flags_list_to_json(char *str, size_t len, enum discord_message_flags **p);
 
 // Message Reference Structure
 // defined at specs/discord/channel.json:112:22
@@ -521,6 +539,12 @@ enum discord_message_activity_types {
 };
 extern char* discord_message_activity_types_print(enum discord_message_activity_types);
 extern enum discord_message_activity_types discord_message_activity_types_eval(char*);
+extern void discord_message_activity_types_list_free_v(void **p);
+extern void discord_message_activity_types_list_free(enum discord_message_activity_types **p);
+extern void discord_message_activity_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_message_activity_types_list_from_json(char *str, size_t len, enum discord_message_activity_types ***p);
+extern size_t discord_message_activity_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_message_activity_types_list_to_json(char *str, size_t len, enum discord_message_activity_types **p);
 
 // Message Activity Structure
 // defined at specs/discord/channel.json:149:22
@@ -631,6 +655,12 @@ enum discord_message_types {
 };
 extern char* discord_message_types_print(enum discord_message_types);
 extern enum discord_message_types discord_message_types_eval(char*);
+extern void discord_message_types_list_free_v(void **p);
+extern void discord_message_types_list_free(enum discord_message_types **p);
+extern void discord_message_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_message_types_list_from_json(char *str, size_t len, enum discord_message_types ***p);
+extern size_t discord_message_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_message_types_list_to_json(char *str, size_t len, enum discord_message_types **p);
 
 // Message Structure
 // defined at specs/discord/channel.json:184:22

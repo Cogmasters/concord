@@ -346,12 +346,28 @@ size_t discord_interaction_list_to_json(char *str, size_t len, struct discord_in
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_interaction_types_list_free_v(void **p) {
+  discord_interaction_types_list_free((enum discord_interaction_types**)p);
+}
+
+void discord_interaction_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_interaction_types_list_from_json(str, len, (enum discord_interaction_types ***)p);
+}
+
+size_t discord_interaction_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_interaction_types_list_to_json(str, len, (enum discord_interaction_types **)p);
+}
+
 enum discord_interaction_types discord_interaction_types_eval(char *s){
   if(strcasecmp("PING", s) == 0) return DISCORD_INTERACTION_PING;
   if(strcasecmp("APPLICATION_COMMAND", s) == 0) return DISCORD_INTERACTION_APPLICATION_COMMAND;
   if(strcasecmp("MESSAGE_COMPONENT", s) == 0) return DISCORD_INTERACTION_MESSAGE_COMPONENT;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_interaction_types_print(enum discord_interaction_types v){
 
   switch (v) {
@@ -362,6 +378,27 @@ char* discord_interaction_types_print(enum discord_interaction_types v){
 
   return NULL;
 }
+
+void discord_interaction_types_list_free(enum discord_interaction_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_interaction_types_list_from_json(char *str, size_t len, enum discord_interaction_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_interaction_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_interaction_types_list_to_json(char *str, size_t len, enum discord_interaction_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data **pp)
 {
@@ -1180,6 +1217,21 @@ size_t discord_interaction_response_list_to_json(char *str, size_t len, struct d
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_interaction_callback_types_list_free_v(void **p) {
+  discord_interaction_callback_types_list_free((enum discord_interaction_callback_types**)p);
+}
+
+void discord_interaction_callback_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_interaction_callback_types_list_from_json(str, len, (enum discord_interaction_callback_types ***)p);
+}
+
+size_t discord_interaction_callback_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_interaction_callback_types_list_to_json(str, len, (enum discord_interaction_callback_types **)p);
+}
+
 enum discord_interaction_callback_types discord_interaction_callback_types_eval(char *s){
   if(strcasecmp("PONG", s) == 0) return DISCORD_INTERACTION_CALLBACK_PONG;
   if(strcasecmp("CHANNEL_MESSAGE_WITH_SOURCE", s) == 0) return DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE;
@@ -1188,6 +1240,7 @@ enum discord_interaction_callback_types discord_interaction_callback_types_eval(
   if(strcasecmp("UPDATE_MESSAGE", s) == 0) return DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_interaction_callback_types_print(enum discord_interaction_callback_types v){
 
   switch (v) {
@@ -1200,6 +1253,27 @@ char* discord_interaction_callback_types_print(enum discord_interaction_callback
 
   return NULL;
 }
+
+void discord_interaction_callback_types_list_free(enum discord_interaction_callback_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_interaction_callback_types_list_from_json(char *str, size_t len, enum discord_interaction_callback_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_interaction_callback_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_interaction_callback_types_list_to_json(char *str, size_t len, enum discord_interaction_callback_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data **pp)
 {
@@ -1428,10 +1502,26 @@ size_t discord_interaction_callback_data_list_to_json(char *str, size_t len, str
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_interaction_callback_data_flags_list_free_v(void **p) {
+  discord_interaction_callback_data_flags_list_free((enum discord_interaction_callback_data_flags**)p);
+}
+
+void discord_interaction_callback_data_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_interaction_callback_data_flags_list_from_json(str, len, (enum discord_interaction_callback_data_flags ***)p);
+}
+
+size_t discord_interaction_callback_data_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_interaction_callback_data_flags_list_to_json(str, len, (enum discord_interaction_callback_data_flags **)p);
+}
+
 enum discord_interaction_callback_data_flags discord_interaction_callback_data_flags_eval(char *s){
   if(strcasecmp("EPHEMERAL", s) == 0) return DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_interaction_callback_data_flags_print(enum discord_interaction_callback_data_flags v){
 
   switch (v) {
@@ -1440,3 +1530,24 @@ char* discord_interaction_callback_data_flags_print(enum discord_interaction_cal
 
   return NULL;
 }
+
+void discord_interaction_callback_data_flags_list_free(enum discord_interaction_callback_data_flags **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_interaction_callback_data_flags_list_from_json(char *str, size_t len, enum discord_interaction_callback_data_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_interaction_callback_data_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_interaction_callback_data_flags_list_to_json(char *str, size_t len, enum discord_interaction_callback_data_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+

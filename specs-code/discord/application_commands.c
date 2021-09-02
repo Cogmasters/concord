@@ -286,12 +286,28 @@ size_t discord_application_command_list_to_json(char *str, size_t len, struct di
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_application_command_types_list_free_v(void **p) {
+  discord_application_command_types_list_free((enum discord_application_command_types**)p);
+}
+
+void discord_application_command_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_application_command_types_list_from_json(str, len, (enum discord_application_command_types ***)p);
+}
+
+size_t discord_application_command_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_application_command_types_list_to_json(str, len, (enum discord_application_command_types **)p);
+}
+
 enum discord_application_command_types discord_application_command_types_eval(char *s){
   if(strcasecmp("CHAT_INPUT", s) == 0) return DISCORD_APPLICATION_COMMAND_CHAT_INPUT;
   if(strcasecmp("USER", s) == 0) return DISCORD_APPLICATION_COMMAND_USER;
   if(strcasecmp("MESSAGE", s) == 0) return DISCORD_APPLICATION_COMMAND_MESSAGE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_application_command_types_print(enum discord_application_command_types v){
 
   switch (v) {
@@ -302,6 +318,27 @@ char* discord_application_command_types_print(enum discord_application_command_t
 
   return NULL;
 }
+
+void discord_application_command_types_list_free(enum discord_application_command_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_application_command_types_list_from_json(char *str, size_t len, enum discord_application_command_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_application_command_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_application_command_types_list_to_json(char *str, size_t len, enum discord_application_command_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp)
 {
@@ -532,6 +569,21 @@ size_t discord_application_command_option_list_to_json(char *str, size_t len, st
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_application_command_option_types_list_free_v(void **p) {
+  discord_application_command_option_types_list_free((enum discord_application_command_option_types**)p);
+}
+
+void discord_application_command_option_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_application_command_option_types_list_from_json(str, len, (enum discord_application_command_option_types ***)p);
+}
+
+size_t discord_application_command_option_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_application_command_option_types_list_to_json(str, len, (enum discord_application_command_option_types **)p);
+}
+
 enum discord_application_command_option_types discord_application_command_option_types_eval(char *s){
   if(strcasecmp("SUB_COMMAND", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND;
   if(strcasecmp("SUB_COMMAND_GROUP", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP;
@@ -545,6 +597,7 @@ enum discord_application_command_option_types discord_application_command_option
   if(strcasecmp("NUMBER", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_NUMBER;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_application_command_option_types_print(enum discord_application_command_option_types v){
 
   switch (v) {
@@ -562,6 +615,27 @@ char* discord_application_command_option_types_print(enum discord_application_co
 
   return NULL;
 }
+
+void discord_application_command_option_types_list_free(enum discord_application_command_option_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_application_command_option_types_list_from_json(char *str, size_t len, enum discord_application_command_option_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_application_command_option_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_application_command_option_types_list_to_json(char *str, size_t len, enum discord_application_command_option_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp)
 {
@@ -1039,11 +1113,27 @@ size_t discord_application_command_permissions_list_to_json(char *str, size_t le
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_application_command_permission_types_list_free_v(void **p) {
+  discord_application_command_permission_types_list_free((enum discord_application_command_permission_types**)p);
+}
+
+void discord_application_command_permission_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_application_command_permission_types_list_from_json(str, len, (enum discord_application_command_permission_types ***)p);
+}
+
+size_t discord_application_command_permission_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_application_command_permission_types_list_to_json(str, len, (enum discord_application_command_permission_types **)p);
+}
+
 enum discord_application_command_permission_types discord_application_command_permission_types_eval(char *s){
   if(strcasecmp("ROLE", s) == 0) return DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE;
   if(strcasecmp("USER", s) == 0) return DISCORD_APPLICATION_COMMAND_PERMISSION_USER;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_application_command_permission_types_print(enum discord_application_command_permission_types v){
 
   switch (v) {
@@ -1053,6 +1143,27 @@ char* discord_application_command_permission_types_print(enum discord_applicatio
 
   return NULL;
 }
+
+void discord_application_command_permission_types_list_free(enum discord_application_command_permission_types **p) {
+  ntl_free((void**)p, NULL);
+}
+
+void discord_application_command_permission_types_list_from_json(char *str, size_t len, enum discord_application_command_permission_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_application_command_permission_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_application_command_permission_types_list_to_json(char *str, size_t len, enum discord_application_command_permission_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp)
 {
