@@ -117,22 +117,29 @@ void* read_input(void *p_client)
 
         struct discord_application_command app_cmd={0};
         if (guild_id) {
-          struct discord_create_guild_application_command_params params = {
-            .name = cmd_name,
-            .description = cmd_desc,
-            .default_permission = true,
-            .type = 1
-          };
-          code = discord_create_guild_application_command(client, g_application_id, guild_id, &params, &app_cmd);
+          code = discord_create_guild_application_command(
+                   client, 
+                   g_application_id, 
+                   guild_id, 
+                   &(struct discord_create_guild_application_command_params){
+                     .name = cmd_name,
+                     .description = cmd_desc,
+                     .default_permission = true,
+                     .type = 1
+                   }, 
+                   &app_cmd);
         }
         else {
-          struct discord_create_global_application_command_params params = {
-            .name = cmd_name,
-            .description = cmd_desc,
-            .default_permission = true,
-            .type = 1
-          };
-          code = discord_create_global_application_command(client, g_application_id, &params, &app_cmd);
+          code = discord_create_global_application_command(
+                   client, 
+                   g_application_id, 
+                   &(struct discord_create_global_application_commands_params){
+                     .name = cmd_name,
+                     .description = cmd_desc,
+                     .default_permission = true,
+                     .type = 1
+                   }, 
+                   &app_cmd);
         }
 
         if (ORCA_OK == code && app_cmd.id) {
@@ -152,20 +159,29 @@ void* read_input(void *p_client)
 
         struct discord_application_command app_cmd = {0};
         if (guild_id) {
-          struct discord_edit_guild_application_command_params params = {
-            .name = *cmd_name ? cmd_name : NULL,
-            .description = *cmd_desc ? cmd_desc : NULL,
-            .default_permission = true
-          };
-          code = discord_edit_guild_application_command(client, g_application_id, guild_id, command_id, &params, &app_cmd);
+          code = discord_edit_guild_application_command(
+                   client, 
+                   g_application_id, 
+                   guild_id, 
+                   command_id, 
+                   &(struct discord_edit_guild_application_command_params){
+                     .name = *cmd_name ? cmd_name : NULL,
+                     .description = *cmd_desc ? cmd_desc : NULL,
+                     .default_permission = true
+                   }, 
+                   &app_cmd);
         }
         else {
-          struct discord_edit_global_application_command_params params = {
-            .name = *cmd_name ? cmd_name : NULL,
-            .description = *cmd_desc ? cmd_desc : NULL,
-            .default_permission = true
-          };
-          code = discord_edit_global_application_command(client, g_application_id, command_id, &params, &app_cmd);
+          code = discord_edit_global_application_command(
+                   client, 
+                   g_application_id, 
+                   command_id, 
+                   &(struct discord_edit_global_application_command_params){
+                     .name = *cmd_name ? cmd_name : NULL,
+                     .description = *cmd_desc ? cmd_desc : NULL,
+                     .default_permission = true
+                   }, 
+                   &app_cmd);
         }
 
         if (ORCA_OK == code && app_cmd.id) {
@@ -178,7 +194,6 @@ void* read_input(void *p_client)
     }
     else if (0 == strcasecmp(cmd_action, "DELETE")) 
     {
-        goto _help;
     }
     else 
     {
@@ -186,10 +201,8 @@ void* read_input(void *p_client)
     }
 
     continue;
-
 _help:
     print_usage();
-    continue;
   }
 
   pthread_exit(NULL);
