@@ -48,7 +48,7 @@ struct discord_create_global_application_command_params {
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:16:20
-     '{ "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   /* specs/discord/application_commands.endpoints-params.json:17:20
@@ -130,7 +130,7 @@ struct discord_edit_global_application_command_params {
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:30:20
-     '{ "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   // The following is metadata used to 
@@ -208,7 +208,7 @@ struct discord_create_guild_application_command_params {
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:43:20
-     '{ "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   /* specs/discord/application_commands.endpoints-params.json:44:20
@@ -290,7 +290,7 @@ struct discord_edit_guild_application_command_params {
   // @todo options the parameters for the command;
 
   /* specs/discord/application_commands.endpoints-params.json:57:20
-     '{ "name": "default_permission", "type":{"base":"bool"}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   // The following is metadata used to 
