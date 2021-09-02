@@ -17,8 +17,9 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_channel_params *p = *pp;
+  discord_modify_channel_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
@@ -480,8 +481,9 @@ void discord_get_reactions_params_from_json(char *json, size_t len, struct disco
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_get_reactions_params *p = *pp;
+  discord_get_reactions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:36:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}' */
@@ -615,8 +617,9 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_edit_channel_permissions_params *p = *pp;
+  discord_edit_channel_permissions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:46:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
@@ -772,8 +775,9 @@ void discord_follow_news_channel_params_from_json(char *json, size_t len, struct
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_follow_news_channel_params *p = *pp;
+  discord_follow_news_channel_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:57:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
@@ -885,8 +889,9 @@ void discord_create_channel_invite_params_from_json(char *json, size_t len, stru
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_channel_invite_params *p = *pp;
+  discord_create_channel_invite_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:66:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
@@ -1133,8 +1138,9 @@ void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, str
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_group_dm_add_recipient_params *p = *pp;
+  discord_group_dm_add_recipient_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:81:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
@@ -1270,8 +1276,9 @@ void discord_start_thread_with_message_params_from_json(char *json, size_t len, 
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_start_thread_with_message_params *p = *pp;
+  discord_start_thread_with_message_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:91:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
@@ -1408,8 +1415,9 @@ void discord_start_thread_without_message_params_from_json(char *json, size_t le
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_start_thread_without_message_params *p = *pp;
+  discord_start_thread_without_message_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:101:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
@@ -1567,8 +1575,9 @@ void discord_thread_response_body_from_json(char *json, size_t len, struct disco
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_thread_response_body *p = *pp;
+  discord_thread_response_body_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:112:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */

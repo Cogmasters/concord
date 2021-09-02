@@ -93,8 +93,9 @@ void discord_permissions_role_from_json(char *json, size_t len, struct discord_p
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_permissions_role *p = *pp;
+  discord_permissions_role_init(p);
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:52:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -359,8 +360,6 @@ void discord_permissions_role_init(struct discord_permissions_role *p) {
 
   /* specs/discord/permissions.json:60:20
      '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
-  p->tags = malloc(sizeof *p->tags);
-  discord_permissions_role_tags_init(p->tags);
 
 }
 void discord_permissions_role_list_free(struct discord_permissions_role **p) {
@@ -388,8 +387,9 @@ void discord_permissions_role_tags_from_json(char *json, size_t len, struct disc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_permissions_role_tags *p = *pp;
+  discord_permissions_role_tags_init(p);
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:70:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */

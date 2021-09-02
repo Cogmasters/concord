@@ -17,8 +17,9 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_guild_template *p = *pp;
+  discord_guild_template_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild-template.json:12:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
@@ -317,8 +318,6 @@ void discord_guild_template_init(struct discord_guild_template *p) {
 
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  p->creator = malloc(sizeof *p->creator);
-  discord_user_init(p->creator);
 
   /* specs/discord/guild-template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -331,8 +330,6 @@ void discord_guild_template_init(struct discord_guild_template *p) {
 
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
-  p->serialized_source_guild = malloc(sizeof *p->serialized_source_guild);
-  discord_guild_init(p->serialized_source_guild);
 
   /* specs/discord/guild-template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"bool" }}' */

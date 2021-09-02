@@ -253,8 +253,9 @@ void discord_gateway_identify_from_json(char *json, size_t len, struct discord_g
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_gateway_identify *p = *pp;
+  discord_gateway_identify_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:138:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
@@ -477,8 +478,6 @@ void discord_gateway_identify_init(struct discord_gateway_identify *p) {
 
   /* specs/discord/gateway.json:139:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
-  p->properties = malloc(sizeof *p->properties);
-  discord_gateway_identify_connection_init(p->properties);
 
   /* specs/discord/gateway.json:140:19
      '{ "name":"compress","type":{"base":"bool"}}' */
@@ -494,8 +493,6 @@ void discord_gateway_identify_init(struct discord_gateway_identify *p) {
 
   /* specs/discord/gateway.json:144:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
-  p->presence = malloc(sizeof *p->presence);
-  discord_gateway_status_update_init(p->presence);
 
   /* specs/discord/gateway.json:145:19
      '{ "name":"intents","type":{"base":"int"}}' */
@@ -526,8 +523,9 @@ void discord_gateway_status_update_from_json(char *json, size_t len, struct disc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_gateway_status_update *p = *pp;
+  discord_gateway_status_update_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:154:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
@@ -722,8 +720,9 @@ void discord_gateway_identify_connection_from_json(char *json, size_t len, struc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_gateway_identify_connection *p = *pp;
+  discord_gateway_identify_connection_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:169:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}}' */
@@ -882,8 +881,9 @@ void discord_gateway_activity_from_json(char *json, size_t len, struct discord_g
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_gateway_activity *p = *pp;
+  discord_gateway_activity_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:180:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
@@ -968,7 +968,7 @@ static void discord_gateway_activity_use_default_inject_settings(struct discord_
   /* specs/discord/gateway.json:182:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}' */
-  if (p->url != NULL && strlen(p->url) != 0)
+  if (p->url && *p->url)
     p->__M.arg_switches[2] = p->url;
 
   /* specs/discord/gateway.json:184:19

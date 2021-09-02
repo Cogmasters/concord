@@ -17,8 +17,9 @@ void discord_application_identify_from_json(char *json, size_t len, struct disco
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_identify *p = *pp;
+  discord_application_identify_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */

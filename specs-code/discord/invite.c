@@ -31,8 +31,9 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_invite *p = *pp;
+  discord_invite_init(p);
   r=json_extract(json, len, 
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -266,23 +267,15 @@ void discord_invite_init(struct discord_invite *p) {
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
-  p->guild = malloc(sizeof *p->guild);
-  discord_guild_init(p->guild);
 
   /* specs/discord/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
-  p->channel = malloc(sizeof *p->channel);
-  discord_channel_init(p->channel);
 
   /* specs/discord/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
-  p->inviter = malloc(sizeof *p->inviter);
-  discord_user_init(p->inviter);
 
   /* specs/discord/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  p->target_user = malloc(sizeof *p->target_user);
-  discord_user_init(p->target_user);
 
   /* specs/discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
@@ -319,8 +312,9 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_invite_metadata *p = *pp;
+  discord_invite_metadata_init(p);
   r=json_extract(json, len, 
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */

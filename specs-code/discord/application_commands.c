@@ -17,8 +17,9 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command *p = *pp;
+  discord_application_command_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
@@ -306,8 +307,9 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_option *p = *pp;
+  discord_application_command_option_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
@@ -565,8 +567,9 @@ void discord_application_command_option_choice_from_json(char *json, size_t len,
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_option_choice *p = *pp;
+  discord_application_command_option_choice_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
@@ -700,8 +703,9 @@ void discord_guild_application_command_permissions_from_json(char *json, size_t 
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_guild_application_command_permissions *p = *pp;
+  discord_guild_application_command_permissions_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
@@ -880,8 +884,9 @@ void discord_application_command_permissions_from_json(char *json, size_t len, s
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_permissions *p = *pp;
+  discord_application_command_permissions_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
@@ -1053,8 +1058,9 @@ void discord_application_command_interaction_data_option_from_json(char *json, s
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_interaction_data_option *p = *pp;
+  discord_application_command_interaction_data_option_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:122:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */

@@ -17,8 +17,9 @@ void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_lo
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log *p = *pp;
+  discord_audit_log_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } }' */
@@ -280,8 +281,9 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_entry *p = *pp;
+  discord_audit_log_entry_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:68:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}}' */
@@ -528,8 +530,9 @@ void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, str
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_entry_optional_info *p = *pp;
+  discord_audit_log_entry_optional_info_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:84:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
@@ -800,8 +803,9 @@ void discord_audit_log_change_from_json(char *json, size_t len, struct discord_a
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_change *p = *pp;
+  discord_audit_log_change_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:101:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*"}}' */
@@ -959,8 +963,9 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_change_key *p = *pp;
+  discord_audit_log_change_key_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:113:18
      '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */

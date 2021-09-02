@@ -17,8 +17,9 @@ void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_get_guild_audit_log_params *p = *pp;
+  discord_get_guild_audit_log_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.endpoints-params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */

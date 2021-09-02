@@ -71,8 +71,9 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_user *p = *pp;
+  discord_user_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
@@ -464,8 +465,9 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_connection *p = *pp;
+  discord_connection_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.json:76:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */

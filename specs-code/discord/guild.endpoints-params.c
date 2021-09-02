@@ -17,8 +17,9 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_params *p = *pp;
+  discord_create_guild_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
@@ -358,8 +359,9 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_params *p = *pp;
+  discord_modify_guild_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:31:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
@@ -885,8 +887,9 @@ void discord_create_guild_channel_params_from_json(char *json, size_t len, struc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_channel_params *p = *pp;
+  discord_create_guild_channel_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:58:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
@@ -1204,8 +1207,9 @@ void discord_modify_guild_channel_positions_params_from_json(char *json, size_t 
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_channel_positions_params *p = *pp;
+  discord_modify_guild_channel_positions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
@@ -1387,8 +1391,9 @@ void discord_search_guild_members_params_from_json(char *json, size_t len, struc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_search_guild_members_params *p = *pp;
+  discord_search_guild_members_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:88:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
@@ -1525,8 +1530,9 @@ void discord_add_guild_member_params_from_json(char *json, size_t len, struct di
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_add_guild_member_params *p = *pp;
+  discord_add_guild_member_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -1734,8 +1740,9 @@ void discord_modify_guild_member_params_from_json(char *json, size_t len, struct
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_member_params *p = *pp;
+  discord_modify_guild_member_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:111:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
@@ -1941,8 +1948,9 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_role_params *p = *pp;
+  discord_create_guild_role_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:124:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
@@ -2147,8 +2155,9 @@ void discord_modify_guild_role_positions_params_from_json(char *json, size_t len
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_role_positions_params *p = *pp;
+  discord_modify_guild_role_positions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:137:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
@@ -2284,8 +2293,9 @@ void discord_modify_guild_role_params_from_json(char *json, size_t len, struct d
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_role_params *p = *pp;
+  discord_modify_guild_role_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:147:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
@@ -2491,8 +2501,9 @@ void discord_get_guild_prune_count_params_from_json(char *json, size_t len, stru
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_get_guild_prune_count_params *p = *pp;
+  discord_get_guild_prune_count_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:160:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2629,8 +2640,9 @@ void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct d
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_begin_guild_prune_params *p = *pp;
+  discord_begin_guild_prune_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:170:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */

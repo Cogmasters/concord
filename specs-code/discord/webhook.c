@@ -17,8 +17,9 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_webhook *p = *pp;
+  discord_webhook_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -272,8 +273,6 @@ void discord_webhook_init(struct discord_webhook *p) {
 
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  p->user = malloc(sizeof *p->user);
-  discord_user_init(p->user);
 
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */

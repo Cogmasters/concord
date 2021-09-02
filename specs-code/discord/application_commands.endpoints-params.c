@@ -17,8 +17,9 @@ void discord_create_global_application_command_params_from_json(char *json, size
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_global_application_command_params *p = *pp;
+  discord_create_global_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
@@ -215,8 +216,9 @@ void discord_edit_global_application_command_params_from_json(char *json, size_t
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_edit_global_application_command_params *p = *pp;
+  discord_edit_global_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
@@ -393,8 +395,9 @@ void discord_create_guild_application_command_params_from_json(char *json, size_
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_application_command_params *p = *pp;
+  discord_create_guild_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:40:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
@@ -591,8 +594,9 @@ void discord_edit_guild_application_command_params_from_json(char *json, size_t 
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_edit_guild_application_command_params *p = *pp;
+  discord_edit_guild_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
@@ -769,8 +773,9 @@ void discord_edit_application_command_permissions_params_from_json(char *json, s
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_edit_application_command_permissions_params *p = *pp;
+  discord_edit_application_command_permissions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
