@@ -563,7 +563,7 @@ set_method(
 static void
 set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list args)
 {
-  size_t url_len = ua->base_url.size;
+  size_t url_len = 1 + ua->base_url.size;
 
   va_list tmp;
   va_copy (tmp, args);
@@ -667,7 +667,7 @@ perform_request(
           resp_handle->err_obj);
       }
     }
-    return conn->info.httpcode;
+    return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 400) {
     log_error("[%s] "ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
@@ -692,7 +692,7 @@ perform_request(
           resp_handle->err_obj);
       }
     }
-    return conn->info.httpcode;
+    return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 300) {
     log_warn("[%s] "ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
@@ -701,7 +701,7 @@ perform_request(
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
-    return conn->info.httpcode;
+    return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 200) {
     log_info("[%s] "ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
