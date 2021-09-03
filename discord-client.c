@@ -12,17 +12,18 @@ static void
 _discord_init(struct discord *new_client)
 {
   new_client->adapter = calloc(1, sizeof *new_client->adapter);
-  new_client->gw = calloc(1, sizeof *new_client->gw);
+  new_client->gw      = calloc(1, sizeof *new_client->gw);
+  new_client->vcs     = calloc(1, sizeof *new_client->vcs * DISCORD_MAX_VOICE_CONNECTIONS);
 
   new_client->adapter->p_client = new_client;
   new_client->gw->p_client = new_client;
   discord_adapter_init(
     new_client->adapter, 
-    &new_client->config, 
+    new_client->config, 
     &new_client->token);
   discord_gateway_init(
     new_client->gw, 
-    &new_client->config,
+    new_client->config,
     &new_client->token);
   discord_voice_connections_init(new_client);
 }
@@ -31,8 +32,9 @@ struct discord*
 discord_init(const char token[])
 {
   struct discord *new_client = calloc(1, sizeof *new_client);
+  new_client->config = calloc(1, sizeof *new_client->config);
+  logconf_setup(new_client->config, NULL);
 
-  logconf_setup(&new_client->config, NULL);
   new_client->token = (struct sized_buffer){
     .start = (char*)token,
     .size = cee_str_bounds_check(token, 128) // avoid overflow
@@ -47,23 +49,34 @@ struct discord*
 discord_config_init(const char config_file[])
 {
   struct discord *new_client = calloc(1, sizeof *new_client);
+  new_client->config = calloc(1, sizeof *new_client->config);
+  logconf_setup(new_client->config, config_file);
 
-  logconf_setup(&new_client->config, config_file);
-  new_client->token = logconf_get_field(&new_client->config, "discord.token");
+  new_client->token = logconf_get_field(new_client->config, "discord.token");
 
   _discord_init(new_client);
 
   return new_client;
 }
 
+struct discord*
+discord_clone(struct discord *orig_client)
+{
+  struct discord *clone_client = calloc(1, sizeof(struct discord));
+  memcpy(clone_client, orig_client, sizeof(struct discord));
+  return clone_client;
+}
+
 void
 discord_cleanup(struct discord *client)
 {
-  logconf_cleanup(&client->config);
+  logconf_cleanup(client->config);
   discord_adapter_cleanup(client->adapter);
   discord_gateway_cleanup(client->gw);
+  free(client->config);
   free(client->adapter);
   free(client->gw);
+  free(client->vcs);
   free(client);
 }
 
