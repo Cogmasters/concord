@@ -113,7 +113,7 @@ discord_set_prefix(struct discord *client, char *prefix)
 {
   if (IS_EMPTY_STRING(prefix)) return;
 
-  const size_t PREFIX_LEN = sizeof(client->gw.prefix);
+  const size_t PREFIX_LEN = 32;
   ssize_t len;
   if (!(len = cee_str_bounds_check(prefix, PREFIX_LEN))) {
     log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
