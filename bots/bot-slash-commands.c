@@ -133,7 +133,7 @@ void* read_input(void *p_client)
           code = discord_create_global_application_command(
                    client, 
                    g_application_id, 
-                   &(struct discord_create_global_application_commands_params){
+                   &(struct discord_create_global_application_command_params){
                      .name = cmd_name,
                      .description = cmd_desc,
                      .default_permission = true,
