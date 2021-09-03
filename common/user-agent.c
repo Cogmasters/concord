@@ -141,7 +141,7 @@ http_reason_print(int httpcode)
   case HTTP_METHOD_NOT_ALLOWED:
       return "The HTTP method used is not valid for the location specified.";
   case HTTP_TOO_MANY_REQUESTS:
-      return "You got synced.";
+      return "You got ratelimited.";
   case HTTP_GATEWAY_UNAVAILABLE:
       return "There was not a gateway available to process your request. Wait a bit and retry.";
   default:
