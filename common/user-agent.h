@@ -47,7 +47,6 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 #define HTTP_GATEWAY_UNAVAILABLE  502
 
 #define UA_MAX_HEADER_SIZE 100 + 1
-#define UA_MAX_URL_LEN     512 + 1
 
 //callback for object to be loaded by api response
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
@@ -114,7 +113,7 @@ struct ua_info {
   /** 
    * request's url
    */
-  char req_url[UA_MAX_URL_LEN];
+  struct sized_buffer req_url;
   /** 
    * timestamp of when its request completed
    */
@@ -144,8 +143,8 @@ void ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)
 struct user_agent* ua_init(struct logconf *conf);
 void ua_cleanup(struct user_agent *ua);
 
-void ua_set_url(struct user_agent *ua, const char base_url[]);
-char* ua_get_url(struct user_agent *ua);
+void ua_set_url(struct user_agent *ua, const char *base_url);
+const char* ua_get_url(struct user_agent *ua);
 void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
 ORCAcode ua_vrun(
   struct user_agent *ua,

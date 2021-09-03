@@ -100,13 +100,14 @@ new_UserAgent(js_State *J)
   if (js_isstring(J, 1)) {
     char *tmp = (char*)js_tostring(J, 1);
 
-    char url[UA_MAX_URL_LEN];
+    char *url=NULL;
     if ('<' == *tmp) // remove enclosing '< >' from string
-      snprintf(url, sizeof(url), "%.*s", (int)(strlen(tmp+1)-1), tmp+1); 
+      asprintf(&url, "%.*s", (int)(strlen(tmp+1)-1), tmp+1); 
     else
-      snprintf(url, sizeof(url), "%s", tmp); 
+      asprintf(&url, "%s", tmp); 
 
     ua_set_url(ua, url);
+    free(url);
   }
 
   js_currentfunction(J);
@@ -126,7 +127,7 @@ UserAgent_prototype_run(js_State *J)
     js_pushnumber(J, (double)info.httpcode);
     js_setproperty(J, -2, "httpcode");
 
-    js_pushstring(J, info.req_url);
+    js_pushstring(J, info.req_url.start);
     js_setproperty(J, -2, "requestUrl");
 
     char aux[64]; // convert timestamp to string

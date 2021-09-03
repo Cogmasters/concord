@@ -37,7 +37,7 @@ struct user_agent {
   /** 
    * the base_url for every conn
    */
-  char base_url[UA_MAX_URL_LEN];
+  struct sized_buffer base_url;
   /**
    * lock every active conn from conn_pool until timestamp
    */
@@ -473,6 +473,7 @@ void
 ua_cleanup(struct user_agent *ua)
 {
   curl_slist_free_all(ua->req_header);
+  if (ua->base_url.start) free(ua->base_url.start);
   if (ua->conn_pool) {
     for (size_t i=0; i < ua->num_conn; ++i)
       conn_cleanup(ua->conn_pool[i]);
@@ -482,16 +483,15 @@ ua_cleanup(struct user_agent *ua)
   free(ua);
 }
 
-char*
+const char*
 ua_get_url(struct user_agent *ua) {
-  return ua->base_url;
+  return ua->base_url.start;
 }
 
 void
-ua_set_url(struct user_agent *ua, const char base_url[])
-{
-  int ret = snprintf(ua->base_url, sizeof(ua->base_url), "%s", base_url);
-  ASSERT_S(ret < sizeof(ua->base_url), "Out of bounds write attempt");
+ua_set_url(struct user_agent *ua, const char *base_url) {
+  if (ua->base_url.start) free(ua->base_url.start);
+  ua->base_url.size = asprintf(&ua->base_url.start, "%s", base_url);
 }
 
 /* set specific http method used for the request */
@@ -543,18 +543,27 @@ set_method(
 static void
 set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list args)
 {
-  //create the url route
-  char url_route[UA_MAX_URL_LEN];
-  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
-  ASSERT_S(ret < sizeof(url_route), "oob write of url_route");
+  size_t url_len = ua->base_url.size;
+  url_len += 1 + vsnprintf(NULL, 0, endpoint, args);
+  if (url_len > conn->info.req_url.size) {
+    void *tmp = realloc(conn->info.req_url.start, url_len);
+    ASSERT_S(NULL != tmp, "Couldn't increase buffer's length");
 
-  ret = snprintf(conn->info.req_url, sizeof(conn->info.req_url), "%s%s", ua->base_url, url_route);
-  ASSERT_S(ret < sizeof(conn->info.req_url), "Out of bounds write attempt");
+    conn->info.req_url = (struct sized_buffer){
+      .start = tmp,
+      .size  = url_len
+    };
+  }
 
-  CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url);
+  size_t ret = snprintf(conn->info.req_url.start, conn->info.req_url.size, "%.*s", (int)ua->base_url.size, ua->base_url.start);
+  ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
+  ret += vsnprintf(conn->info.req_url.start+ret, conn->info.req_url.size-ret, endpoint, args);
+  ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
+
+  CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url.start);
   CURLE_CHECK(conn, ecode);
 
-  log_trace("[%s] Request URL: %s", conn->tag, conn->info.req_url);
+  log_trace("[%s] Request URL: %s", conn->tag, conn->info.req_url.start);
 }
 
 static int
@@ -708,9 +717,7 @@ perform_request(
         conn->tag);
     return ORCA_NO_RESPONSE;
   }
-  log_error("[%s] Unusual HTTP response code: %d", 
-      conn->tag, 
-      conn->info.httpcode);
+  log_error("[%s] Unusual HTTP response code: %d", conn->tag, conn->info.httpcode);
   return ORCA_UNUSUAL_HTTP_CODE;
 }
 
@@ -748,7 +755,7 @@ ua_vrun(
     ua->p_config, 
     &conn->info.loginfo,
     ua,
-    conn->info.req_url, 
+    conn->info.req_url.start, 
     (struct sized_buffer){buf, sizeof(buf)},
     *req_body,
     "HTTP_SEND_%s", method_str);
@@ -768,6 +775,8 @@ ua_vrun(
         (int)conn->info.resp_body.length, conn->info.resp_body.buf);
     asprintf(&info->resp_header.buf, "%.*s", \
         (int)conn->info.resp_header.length, conn->info.resp_header.buf);
+    asprintf(&info->req_url.start, "%.*s", \
+        (int)conn->info.req_url.size, conn->info.req_url.start);
   }
 
   conn_reset(conn); // reset for next iteration
@@ -806,6 +815,8 @@ ua_run(
 void
 ua_info_cleanup(struct ua_info *info) 
 {
+  if (info->req_url.start)
+    free(info->req_url.start);
   if (info->resp_body.buf)
     free(info->resp_body.buf);
   if (info->resp_header.buf)
