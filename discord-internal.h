@@ -294,8 +294,8 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
 struct discord {
   /// @privatesection
   struct sized_buffer token; ///< the bot token
-  struct discord_adapter adapter; ///< the HTTP adapter for performing requests
-  struct discord_gateway gw; ///< the WebSockets handle for establishing a connection to Discord
+  struct discord_adapter *adapter; ///< the HTTP adapter for performing requests
+  struct discord_gateway *gw; ///< the WebSockets handle for establishing a connection to Discord
   
   struct logconf config; ///< store bot.config file contents and sync logging between adapter/gw
 

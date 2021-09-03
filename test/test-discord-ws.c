@@ -71,7 +71,7 @@ void on_disconnect(
   struct discord_create_message_params params = { .content = "Disconnecting ..." };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  discord_gateway_shutdown(&client->gw);
+  discord_gateway_shutdown(client->gw);
 }
 
 void on_send_json(
@@ -82,7 +82,7 @@ void on_send_json(
   if (msg->author->bot) return;
 
   discord_adapter_run(
-    &client->adapter,
+    client->adapter,
     NULL,
     &(struct sized_buffer){ JSON, sizeof(JSON)-1 },
     HTTP_POST, 

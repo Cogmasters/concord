@@ -40,7 +40,7 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_session_from_json, 
              .ok_obj = &p_session 
@@ -59,7 +59,7 @@ discord_get_gateway_bot(struct discord *client, struct discord_session *p_sessio
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_session_from_json, 
              .ok_obj = &p_session 

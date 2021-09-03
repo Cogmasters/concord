@@ -22,7 +22,7 @@ discord_create_guild(
   size_t ret = discord_create_guild_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_guild ? &discord_guild_from_json_v : NULL,
              .ok_obj = &p_guild
@@ -48,7 +48,7 @@ discord_get_guild(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_from_json_v, 
              .ok_obj = &p_guild 
@@ -74,7 +74,7 @@ discord_get_guild_preview(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_preview_from_json_v, 
              .ok_obj = &p_guild_preview
@@ -104,7 +104,7 @@ discord_modify_guild(
   size_t ret = discord_modify_guild_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_guild ? &discord_guild_from_json_v : NULL,
              .ok_obj = &p_guild
@@ -125,7 +125,7 @@ discord_delete_guild(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE, 
@@ -148,7 +148,7 @@ discord_get_guild_channels(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_channel_list_from_json_v, 
              .ok_obj = p_channels 
@@ -178,7 +178,7 @@ discord_create_guild_channel(
   size_t ret = discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_channel
@@ -207,7 +207,7 @@ discord_modify_guild_channel_positions(
   size_t ret = discord_modify_guild_channel_positions_params_list_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_PATCH, 
@@ -231,7 +231,7 @@ discord_get_guild_member(struct discord *client, u64_snowflake_t guild_id, u64_s
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = discord_guild_member_from_json_v, 
              .ok_obj = &p_member
@@ -273,7 +273,7 @@ discord_list_guild_members(
   }
   
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_member_list_from_json_v, 
              .ok_obj = p_members 
@@ -317,7 +317,7 @@ discord_search_guild_members(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_member_list_from_json_v, 
              .ok_obj = p_members 
@@ -353,7 +353,7 @@ discord_add_guild_member(
   size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = discord_guild_member_from_json_v, 
              .ok_obj = &p_member
@@ -389,7 +389,7 @@ discord_modify_guild_member(
   size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
              .ok_obj = &p_member,
@@ -418,7 +418,7 @@ discord_modify_current_user_nick(
   size_t ret = json_inject(payload, sizeof(payload), "(nick):s", nick);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_PATCH,
@@ -446,7 +446,7 @@ discord_add_guild_member_role(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_PUT,
@@ -475,7 +475,7 @@ discord_remove_guild_member_role(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -499,7 +499,7 @@ discord_remove_guild_member(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -522,7 +522,7 @@ discord_get_guild_bans(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_ban_list_from_json_v, 
              .ok_obj = p_bans 
@@ -553,7 +553,7 @@ discord_get_guild_ban(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_guild_ban_from_json_v, 
              .ok_obj = &p_ban
@@ -606,7 +606,7 @@ discord_create_guild_ban(
                         A, sizeof(A));
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_PUT, 
@@ -640,7 +640,7 @@ discord_remove_guild_ban(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_DELETE, 
@@ -663,7 +663,7 @@ discord_get_guild_roles(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_permissions_role_list_from_json_v, 
              .ok_obj = p_roles 
@@ -689,7 +689,7 @@ discord_create_guild_role(
   size_t ret = discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL, 
              .ok_obj = &p_role
@@ -719,7 +719,7 @@ discord_modify_guild_role_positions(
   size_t ret = discord_modify_guild_role_positions_params_list_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_roles ? &discord_permissions_role_list_from_json_v : NULL, 
              .ok_obj = p_roles 
@@ -753,7 +753,7 @@ discord_modify_guild_role(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL, 
              .ok_obj = &p_role
@@ -779,7 +779,7 @@ discord_delete_guild_role(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE, 

@@ -140,7 +140,7 @@ on_speaking(struct discord_voice *vc)
   (*client->voice_cbs.on_speaking) (
       client,
       vc,
-      vc->p_client->gw.bot,
+      vc->p_client->gw->bot,
       user_id,
       speaking,
       delay,
@@ -172,7 +172,7 @@ on_client_disconnect(struct discord_voice *vc)
   (*client->voice_cbs.on_client_disconnect)(
       client,
       vc,
-      client->gw.bot,
+      client->gw->bot,
       user_id);
 }
 
@@ -191,7 +191,7 @@ on_codec(struct discord_voice *vc)
   (*client->voice_cbs.on_codec)(
       client,
       vc,
-      client->gw.bot,
+      client->gw->bot,
       audio_codec,
       video_codec);
 }
@@ -351,7 +351,7 @@ _discord_voice_init(
   new_vc->p_client = client;
   new_vc->guild_id = guild_id;
   new_vc->channel_id = channel_id;
-  new_vc->bot_id = client->gw.bot->id;
+  new_vc->bot_id = client->gw->bot->id;
   if (NULL == new_vc->ws) {
     struct ws_callbacks cbs = {
       .data = new_vc,
@@ -464,7 +464,7 @@ discord_join_vc(
   bool self_mute,
   bool self_deaf)
 {
-  if (!ws_is_functional(client->gw.ws))
+  if (!ws_is_functional(client->gw->ws))
     return DISCORD_JOIN_VC_ERROR;
 
   bool found_a_running_vcs = false;
@@ -499,7 +499,7 @@ discord_join_vc(
 
   recycle_active_vc(vc, guild_id, voice_channel_id);
   vc->message_channel_id = msg->channel_id;
-  send_voice_state_update(&client->gw, guild_id, voice_channel_id, self_mute, self_deaf);
+  send_voice_state_update(client->gw, guild_id, voice_channel_id, self_mute, self_deaf);
   return DISCORD_JOIN_VC_JOINED;
 }
 
@@ -569,7 +569,7 @@ event_loop(struct discord_voice *vc)
       vc->hbeat.tstamp = ws_timestamp(vc->ws); //update heartbeat timestamp
     }
     if (client->voice_cbs.on_idle)
-      (*client->voice_cbs.on_idle)(client, vc, vc->p_client->gw.bot);
+      (*client->voice_cbs.on_idle)(client, vc, vc->p_client->gw->bot);
   }
   vc->is_ready = false;
 }
@@ -694,8 +694,8 @@ static void noop_on_udp_server_connected(struct discord_voice *a) { return; }
 void 
 discord_voice_connections_init(struct discord *client) 
 {
-  client->gw.cbs.on_voice_state_update = noop_voice_state_update_cb;
-  client->gw.cbs.on_voice_server_update = noop_voice_server_update_cb;
+  client->gw->cbs.on_voice_state_update = noop_voice_state_update_cb;
+  client->gw->cbs.on_voice_server_update = noop_voice_server_update_cb;
 
   client->voice_cbs.on_idle = noop_idle_cb;
   client->voice_cbs.on_ready = noop_on_ready;
@@ -720,7 +720,7 @@ discord_voice_shutdown(struct discord_voice *vc)
   ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 
   send_voice_state_update(
-    &vc->p_client->gw, 
+    vc->p_client->gw, 
     vc->guild_id, 
     0, 
     false, 

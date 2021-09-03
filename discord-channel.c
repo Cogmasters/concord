@@ -20,7 +20,7 @@ discord_get_channel(struct discord *client, const u64_snowflake_t channel_id, st
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_channel_from_json_v,
              .ok_obj = &p_channel
@@ -50,7 +50,7 @@ discord_modify_channel(
   size_t ret = discord_modify_channel_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_channel
@@ -69,7 +69,7 @@ discord_delete_channel(struct discord *client, const u64_snowflake_t channel_id,
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_channel
@@ -121,7 +121,7 @@ discord_get_channel_messages(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_message_list_from_json_v, 
              .ok_obj = p_messages 
@@ -153,7 +153,7 @@ discord_get_channel_message(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_message_from_json_v, 
              .ok_obj = &p_message
@@ -272,7 +272,7 @@ discord_create_message(
     }
 
     code = discord_adapter_run( 
-             &client->adapter,
+             client->adapter,
              &resp_handle,
              &(struct sized_buffer){ payload, ret },
              HTTP_POST, 
@@ -282,19 +282,19 @@ discord_create_message(
   }
   else 
   { // content-type is multipart/form-data
-    ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
+    ua_reqheader_add(client->adapter->ua, "Content-Type", "multipart/form-data");
 
-    ua_curl_mime_setopt(client->adapter.ua, params, &curl_mime_cb);
+    ua_curl_mime_setopt(client->adapter->ua, params, &curl_mime_cb);
 
     code = discord_adapter_run( 
-             &client->adapter,
+             client->adapter,
              &resp_handle,
              NULL,
              HTTP_MIMEPOST, 
              "/channels/%"PRIu64"/messages", channel_id);
 
     //set back to default
-    ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
+    ua_reqheader_add(client->adapter->ua, "Content-Type", "application/json");
   }
   return code;
 }
@@ -316,7 +316,7 @@ discord_crosspost_message(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_message ? &discord_message_from_json_v : NULL,
              .ok_obj = &p_message
@@ -356,7 +356,7 @@ discord_create_reaction(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_PUT,
@@ -397,7 +397,7 @@ discord_delete_own_reaction(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -443,7 +443,7 @@ discord_delete_user_reaction(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -513,7 +513,7 @@ discord_get_reactions(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_user_list_from_json_v, 
              .ok_obj = &p_users 
@@ -544,7 +544,7 @@ discord_delete_all_reactions(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -581,7 +581,7 @@ discord_delete_all_reactions_for_emoji(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -640,7 +640,7 @@ discord_edit_message(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_message ? &discord_message_from_json_v : NULL,
              .ok_obj = &p_message
@@ -671,7 +671,7 @@ discord_delete_message(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -713,7 +713,7 @@ discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id,
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_POST,
@@ -748,7 +748,7 @@ discord_edit_channel_permissions(
   size_t ret = discord_edit_channel_permissions_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_PUT,
@@ -772,7 +772,7 @@ discord_get_channel_invites(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_invite_list_from_json_v,
              .ok_obj = &p_invites
@@ -802,7 +802,7 @@ discord_create_channel_invite(
     ret = sprintf(payload, "{}");
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_invite ? &discord_invite_from_json_v : NULL,
              .ok_obj = &p_invite
@@ -828,7 +828,7 @@ discord_delete_channel_permission(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -855,7 +855,7 @@ discord_follow_news_channel(
   size_t ret = discord_follow_news_channel_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_followed_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_followed_channel
@@ -874,7 +874,7 @@ discord_trigger_typing_indicator(struct discord* client, u64_snowflake_t channel
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_POST, 
@@ -897,7 +897,7 @@ discord_get_pinned_messages(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_message_list_from_json_v, 
              .ok_obj = &p_messages 
@@ -923,7 +923,7 @@ discord_pin_message(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_PUT, 
@@ -946,7 +946,7 @@ discord_unpin_message(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -977,7 +977,7 @@ discord_group_dm_add_recipient(
   size_t ret = discord_group_dm_add_recipient_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            &(struct sized_buffer){ payload, ret },
            HTTP_PUT,
@@ -1001,7 +1001,7 @@ discord_group_dm_remove_recipient(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -1034,7 +1034,7 @@ discord_start_thread_with_message(
   size_t ret = discord_start_thread_with_message_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_channel
@@ -1065,7 +1065,7 @@ discord_start_thread_without_message(
   size_t ret = discord_start_thread_without_message_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_channel
@@ -1084,7 +1084,7 @@ discord_join_thread(struct discord *client, const u64_snowflake_t channel_id)
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_PUT,
@@ -1107,7 +1107,7 @@ discord_add_thread_member(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_PUT,
@@ -1124,7 +1124,7 @@ discord_leave_thread(struct discord *client, const u64_snowflake_t channel_id)
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -1147,7 +1147,7 @@ discord_remove_thread_member(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,
@@ -1171,7 +1171,7 @@ discord_list_thread_members(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_thread_member_list_from_json_v,
              .ok_obj = &p_thread_members
@@ -1197,7 +1197,7 @@ discord_list_active_threads(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_thread_response_body_from_json_v,
              .ok_obj = &body
@@ -1238,7 +1238,7 @@ discord_list_public_archived_threads(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_thread_response_body_from_json_v,
              .ok_obj = &body
@@ -1280,7 +1280,7 @@ discord_list_private_archived_threads(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_thread_response_body_from_json_v,
              .ok_obj = &body
@@ -1322,7 +1322,7 @@ discord_list_joined_private_archived_threads(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_thread_response_body_from_json_v,
              .ok_obj = &body

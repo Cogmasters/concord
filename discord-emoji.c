@@ -23,7 +23,7 @@ discord_list_guild_emojis(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_emoji_list_from_json_v, 
              .ok_obj = &p_emojis
@@ -54,7 +54,7 @@ discord_get_guild_emoji(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_emoji_from_json_v, 
              .ok_obj = &p_emoji
@@ -94,7 +94,7 @@ discord_create_guild_emoji(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
              .ok_obj = &p_emoji
@@ -151,7 +151,7 @@ discord_modify_guild_emoji(
 
   ORCAcode code;
   code = discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
              .ok_obj = &p_emoji
@@ -181,7 +181,7 @@ discord_delete_guild_emoji(
   }
 
   return discord_adapter_run(
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE,

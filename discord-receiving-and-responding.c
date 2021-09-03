@@ -32,7 +32,7 @@ discord_create_interaction_response(
   size_t ret = discord_interaction_response_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_response ? &discord_interaction_response_from_json_v : NULL, 
              .ok_obj = &p_response 
@@ -63,7 +63,7 @@ discord_get_original_interaction_response(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_interaction_response_from_json_v, 
              .ok_obj = &p_response 
@@ -89,7 +89,7 @@ discord_delete_original_interaction_response(
   }
 
   return discord_adapter_run( 
-           &client->adapter,
+           client->adapter,
            NULL,
            NULL,
            HTTP_DELETE, 
