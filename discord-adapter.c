@@ -44,15 +44,16 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
  * https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes 
  */
 static void
-json_error_cb(char *str, size_t len, void *p_err)
+json_error_cb(char *str, size_t len, void *p_jsoncode)
 {
-  int code=0; // last error code received
+  int *jsoncode = p_jsoncode;
   char message[256]=""; // meaning of the error received
+
   json_extract(str, len, \
-      "(message):.*s (code):d", sizeof(message), message, &code);
+      "(message):.*s (code):d", sizeof(message), message, jsoncode);
   log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)   \
             " - See Discord's JSON Error Codes\n\t\t%.*s", \
-            code, message, (int)len, str);
+            *jsoncode, message, (int)len, str);
 }
 
 /* template function for performing requests */
@@ -63,13 +64,15 @@ discord_adapter_run(
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...)
 {
+  int jsoncode=0, httpcode=0;
+
   va_list args;
   va_start(args, endpoint);
 
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
     resp_handle->err_cb = &json_error_cb;
-    resp_handle->err_obj = NULL;
+    resp_handle->err_obj = &jsoncode;
   }
 
   /* Check if endpoint contain a major param */
@@ -90,7 +93,7 @@ discord_adapter_run(
 
   ORCAcode code;
   bool keepalive=true;
-  while (keepalive) 
+  do
   {
     discord_bucket_try_cooldown(bucket);
 
@@ -101,53 +104,62 @@ discord_adapter_run(
       resp_handle,
       req_body,
       http_method, endpoint, args);
-
-    switch (code) {
-    case ORCA_OK:
-    case ORCA_UNUSUAL_HTTP_CODE:
-    case ORCA_NO_RESPONSE:
+    
+    if (code != ORCA_HTTP_CODE) 
+    {
         keepalive = false;
-        break;
-    case HTTP_FORBIDDEN:
-    case HTTP_NOT_FOUND:
-    case HTTP_BAD_REQUEST:
-        keepalive = false; 
-        break;
-    case HTTP_UNAUTHORIZED:
-    case HTTP_METHOD_NOT_ALLOWED:
-        ERR("Aborting after %s received", http_code_print(code));
-        break;
-    case HTTP_TOO_MANY_REQUESTS: {
-        char message[256]="";
-        double retry_after=-1; // seconds
+    }
+    else 
+    {
+        httpcode = info.httpcode;
+        switch (httpcode) {
+        case HTTP_FORBIDDEN:
+        case HTTP_NOT_FOUND:
+        case HTTP_BAD_REQUEST:
+            keepalive = false; 
+            break;
+        case HTTP_UNAUTHORIZED:
+        case HTTP_METHOD_NOT_ALLOWED:
+            ERR("Aborting after %s received", http_code_print(httpcode));
+            break;
+        case HTTP_TOO_MANY_REQUESTS: {
+            char message[256]="";
+            double retry_after=-1; // seconds
 
-        struct sized_buffer body = ua_info_get_resp_body(&info);
-        json_extract(body.start, body.size,         \
-                    "(message):s (retry_after):lf", \
-                    message, &retry_after);
+            struct sized_buffer body = ua_info_get_resp_body(&info);
+            json_extract(body.start, body.size,
+                        "(message):s (retry_after):lf",
+                        message, &retry_after);
 
-        if (retry_after >= 0) { // retry after attribute received
-          log_warn("GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
-          ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
+            if (retry_after >= 0) { // retry after attribute received
+              log_warn("GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
+              ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
+            }
+            else { // no retry after included, we should abort
+              ERR("(NO RETRY-AFTER INCLUDED) %s", message);
+            }
+           break; }
+        default:
+            if (httpcode >= 500) // server related error, retry
+              ua_block_ms(adapter->ua, 5000); // wait for 5 seconds
+            break;
         }
-        else { // no retry after included, we should abort
-          ERR("(NO RETRY-AFTER INCLUDED) %s", message);
-        }
-       break; }
-    default:
-        if (code >= 500) // server related error, retry
-          ua_block_ms(adapter->ua, 5000); // wait for 5 seconds
-        break;
     }
 
     pthread_mutex_lock(&adapter->ratelimit.lock);
     discord_bucket_build(adapter, bucket, route, code, &info);
     pthread_mutex_unlock(&adapter->ratelimit.lock);
-    
+
     ua_info_cleanup(&info);
   }
+  while (keepalive);
 
   va_end(args);
+
+  if (adapter->p_client) {
+    adapter->p_client->httpcode = httpcode;
+    adapter->p_client->jsoncode = jsoncode;
+  }
 
   return code;
 }

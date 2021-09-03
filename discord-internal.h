@@ -304,6 +304,9 @@ struct discord {
   struct discord_voice_cbs voice_cbs;
 
   void *data; ///< space for user arbitrary data @see discord_get_data() and discord_set_data()
+
+  int httpcode; ///< latest http response code from current's thread
+  int jsoncode; ///< latest json error code from current's thread
 };
 
 struct discord_event_cxt {
