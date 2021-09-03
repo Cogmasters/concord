@@ -307,10 +307,10 @@ struct discord {
 };
 
 struct discord_event_cxt {
-  char event_name[64];
+  char *event_name;
   pthread_t tid; ///< the thread id
   struct sized_buffer data; ///< a copy of payload data
-  struct discord_gateway *p_gw; ///< the gateway client
+  struct discord *p_client; ///< the discord client
   enum discord_gateway_events event;
   void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
   bool is_main_thread;

@@ -748,29 +748,43 @@ static void*
 dispatch_run(void *p_cxt)
 {
   struct discord_event_cxt *cxt = p_cxt;
-  bool is_main_thread = cxt->is_main_thread;
   cxt->tid = pthread_self();
 
-  if (!is_main_thread)
-    log_info("Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
-             cxt->event_name);
+  if (cxt->is_main_thread) {
+    (*cxt->on_event)(cxt->p_client->gw, &cxt->data);
 
-  (*cxt->on_event)(cxt->p_gw, &cxt->data);
+    (*cxt->p_client->gw->cbs.on_event_raw)(
+        cxt->p_client, 
+        cxt->event, 
+        &cxt->p_client->gw->sb_bot, 
+        &cxt->data);
 
-  (*cxt->p_gw->cbs.on_event_raw)(
-      cxt->p_gw->p_client, 
+    return NULL;
+  }
+
+  if (pthread_detach(cxt->tid))
+    ERR("Couldn't detach thread");
+
+  log_info("Thread "ANSICOLOR("starts", ANSI_FG_RED)" to serve %s",
+           cxt->event_name);
+
+  (*cxt->on_event)(cxt->p_client->gw, &cxt->data);
+
+  (*cxt->p_client->gw->cbs.on_event_raw)(
+      cxt->p_client, 
       cxt->event, 
-      &cxt->p_gw->sb_bot, 
+      &cxt->p_client->gw->sb_bot, 
       &cxt->data);
 
+  log_info("Thread "ANSICOLOR("exits", ANSI_FG_RED)" from serving %s",
+           cxt->event_name);
+
+  free(cxt->event_name);
+  free(cxt->p_client);
   free(cxt->data.start);
-  if (!is_main_thread) {
-    log_info("Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
-             cxt->event_name);
-    free(cxt);
-    pthread_exit(NULL);
-  }
-  return NULL;
+  free(cxt);
+
+  pthread_exit(NULL);
 }
 
 static void
@@ -997,37 +1011,42 @@ on_dispatch(struct discord_gateway *gw)
 
   if (!on_event) return; /* user not subscribed to the event */
   
-  struct discord_event_cxt cxt;
-  asprintf(&cxt.data.start, "%.*s", \
-      (int)gw->payload.event_data.size, gw->payload.event_data.start);
-  cxt.data.size = gw->payload.event_data.size;
-  cxt.p_gw = gw;
-  cxt.event = event;
-  cxt.on_event = on_event;
-  snprintf(cxt.event_name, sizeof(cxt.event_name), "%s", gw->payload.event_name);
-
-  enum discord_event_handling_mode mode = gw->event_handler(
-                                            gw->p_client, 
-                                            gw->bot,
-                                            &cxt.data,
-                                            cxt.event);
+  enum discord_event_handling_mode mode;
+  mode = gw->event_handler(gw->p_client, gw->bot, &gw->payload.event_data, event);
   switch (mode) {
   case DISCORD_EVENT_IGNORE: 
-      free(cxt.data.start);
       return;
-  case DISCORD_EVENT_MAIN_THREAD:
-      cxt.is_main_thread = true;
+  case DISCORD_EVENT_MAIN_THREAD: {
+      struct discord_event_cxt cxt = {
+        .event_name = gw->payload.event_name,
+        .p_client = gw->p_client,
+        .data = gw->payload.event_data,
+        .event = event,
+        .on_event = on_event,
+        .is_main_thread = true
+      };
       dispatch_run(&cxt);
-      return;
+      return; }
   case DISCORD_EVENT_CHILD_THREAD: {
-      cxt.is_main_thread = false;
-      struct discord_event_cxt *cxt_p = malloc(sizeof(struct discord_event_cxt));
-      memcpy(cxt_p, &cxt, sizeof(cxt));
+      struct discord *client_cpy = malloc(sizeof(struct discord));
+      memcpy(client_cpy, gw->p_client, sizeof(struct discord));
+
+      struct discord_event_cxt *p_cxt = malloc(sizeof *p_cxt);
+      *p_cxt = (struct discord_event_cxt){
+        .event_name = strdup(gw->payload.event_name),
+        .p_client = client_cpy,
+        .data = {
+          .start = strndup(gw->payload.event_data.start, gw->payload.event_data.size),
+          .size = gw->payload.event_data.size
+        },
+        .event = event,
+        .on_event = on_event,
+        .is_main_thread = false
+      };
+
       pthread_t tid;
-      if (pthread_create(&tid, NULL, &dispatch_run, cxt_p))
+      if (pthread_create(&tid, NULL, &dispatch_run, p_cxt))
         ERR("Couldn't create thread");
-      if (pthread_detach(tid))
-        ERR("Couldn't detach thread");
       return; }
   default:
       ERR("Unknown event handling mode (code: %d)", mode);
