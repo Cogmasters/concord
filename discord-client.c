@@ -62,7 +62,7 @@ discord_clone(const struct discord *orig_client)
   memcpy(clone_client, orig_client, sizeof(struct discord));
 
   clone_client->adapter.ua = ua_clone(orig_client->adapter.ua);
-  // @todo add websockets handle clone
+  memset(&clone_client->adapter.err, 0, sizeof clone_client->adapter.err);
 
   clone_client->is_original = false;
 
@@ -80,6 +80,7 @@ discord_cleanup(struct discord *client)
   }
   else {
     ua_cleanup(client->adapter.ua);
+    ua_info_cleanup(&client->adapter.err.info);
   }
   free(client);
 }

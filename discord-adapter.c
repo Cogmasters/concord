@@ -39,6 +39,7 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
   pthread_mutex_destroy(adapter->lock);
   free(adapter->lock);
   discord_buckets_cleanup(adapter);
+  ua_info_cleanup(&adapter->err.info);
 }
 
 /**
@@ -46,18 +47,15 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
  * https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes 
  */
 static void
-json_error_cb(char *str, size_t len, void *p_jsoncode)
+json_error_cb(char *str, size_t len, void *p_adapter)
 {
-  int jsoncode=0;
-  char message[256]=""; // meaning of the error received
+  struct discord_adapter *adapter = p_adapter;
 
   json_extract(str, len, "(message):.*s (code):d", 
-      sizeof(message), message, &jsoncode);
+      sizeof(adapter->err.jsonmsg), adapter->err.jsonmsg, &adapter->err.jsoncode);
   log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
             " - See Discord's JSON Error Codes\n\t\t%.*s",
-            jsoncode, message, (int)len, str);
-
-  (void)p_jsoncode;
+            adapter->err.jsoncode, adapter->err.jsonmsg, (int)len, str);
 }
 
 /* template function for performing requests */
@@ -74,7 +72,7 @@ discord_adapter_run(
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
     resp_handle->err_cb = &json_error_cb;
-    resp_handle->err_obj = NULL;
+    resp_handle->err_obj = adapter;
   }
 
   /* Check if endpoint contain a major param */
@@ -95,25 +93,26 @@ discord_adapter_run(
 
   ORCAcode code;
   bool keepalive=true;
-  do
-  {
+  do {
+    ua_info_cleanup(&adapter->err.info);
+
     discord_bucket_try_cooldown(bucket);
 
-    struct ua_info info;
     code = ua_vrun(
       adapter->ua,
-      &info,
+      &adapter->err.info,
       resp_handle,
       req_body,
       http_method, endpoint, args);
     
-    if (code != ORCA_HTTP_CODE) 
+    if (code != ORCA_HTTP_CODE)
     {
         keepalive = false;
     }
     else 
     {
-        switch (info.httpcode) {
+        const int httpcode = adapter->err.info.httpcode;
+        switch (httpcode) {
         case HTTP_FORBIDDEN:
         case HTTP_NOT_FOUND:
         case HTTP_BAD_REQUEST:
@@ -121,13 +120,13 @@ discord_adapter_run(
             break;
         case HTTP_UNAUTHORIZED:
         case HTTP_METHOD_NOT_ALLOWED:
-            ERR("Aborting after %s received", http_code_print(info.httpcode));
+            ERR("Aborting after %s received", http_code_print(httpcode));
             break;
         case HTTP_TOO_MANY_REQUESTS: {
             char message[256]="";
             double retry_after=-1; // seconds
 
-            struct sized_buffer body = ua_info_get_resp_body(&info);
+            struct sized_buffer body = ua_info_get_resp_body(&adapter->err.info);
             json_extract(body.start, body.size,
                         "(message):s (retry_after):lf",
                         message, &retry_after);
@@ -141,21 +140,18 @@ discord_adapter_run(
             }
            break; }
         default:
-            if (info.httpcode >= 500) // server related error, retry
+            if (httpcode >= 500) // server related error, retry
               ua_block_ms(adapter->ua, 5000); // wait for 5 seconds
             break;
         }
     }
 
     pthread_mutex_lock(adapter->lock);
-    discord_bucket_build(adapter, bucket, route, code, &info);
+    discord_bucket_build(adapter, bucket, route, code, &adapter->err.info);
     pthread_mutex_unlock(adapter->lock);
-
-    ua_info_cleanup(&info);
-  }
-  while (keepalive);
+  } while (keepalive);
 
   va_end(args);
 
-  return code;
+  return (code == ORCA_HTTP_CODE) ? ORCA_DISCORD_JSON_CODE : code;
 }

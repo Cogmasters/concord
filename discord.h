@@ -21,6 +21,9 @@
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 #define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
 
+/* ERROR CODES */
+#define ORCA_DISCORD_JSON_CODE 1 ///< @see discord_strerror()
+
 /* FORWARD DECLARATIONS */
 struct discord;
 struct discord_voice_cbs;
