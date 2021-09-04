@@ -141,6 +141,7 @@ void ua_curl_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CUR
 void ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
 
 struct user_agent* ua_init(struct logconf *conf);
+struct user_agent* ua_clone(struct user_agent *orig_ua);
 void ua_cleanup(struct user_agent *ua);
 
 void ua_set_url(struct user_agent *ua, const char *base_url);

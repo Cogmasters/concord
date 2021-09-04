@@ -31,12 +31,14 @@ struct user_agent {
    */
   struct curl_slist *req_header;
   /**
-   * a pool of connectors for easy reuse
+   * a pool of connection nodes for easy reuse
    * @note conns are wrappers around basic CURL functionalities,
    *        each active conn is responsible for a HTTP request
    */
-  struct _ua_conn **conn_pool;
-  size_t           *num_conn;
+  struct {
+    struct _ua_conn **pool;
+    size_t amt; ///< amount of connections node in pool
+  } *conn;
   /** 
    * the base_url for every conn
    */
@@ -367,7 +369,7 @@ static struct _ua_conn*
 conn_init(struct user_agent *ua)
 {
   struct _ua_conn *new_conn = calloc(1, sizeof(struct _ua_conn));
-  snprintf(new_conn->tag, sizeof(new_conn->tag), "%s#%zu", logconf_tag(ua->p_config, ua), *ua->num_conn);
+  snprintf(new_conn->tag, sizeof(new_conn->tag), "%s#%zu", logconf_tag(ua->p_config, ua), ua->conn->amt);
 
   CURL *new_ehandle = curl_easy_init(); // will be assigned to new_conn
 
@@ -436,18 +438,18 @@ get_conn(struct user_agent *ua)
   struct _ua_conn *ret_conn=NULL;
 
   size_t i=0;
-  while (i < *ua->num_conn) {
-    if (!ua->conn_pool[i]->is_busy) {
-      ret_conn = ua->conn_pool[i];
+  while (i < ua->conn->amt) {
+    if (!ua->conn->pool[i]->is_busy) {
+      ret_conn = ua->conn->pool[i];
       break; /* EARLY BREAK */
     }
     ++i;
   }
   if (!ret_conn) { // no available conn, create new
-    ++*ua->num_conn;
-    ua->conn_pool = realloc(ua->conn_pool, \
-                        *ua->num_conn * sizeof *ua->conn_pool);
-    ret_conn = ua->conn_pool[*ua->num_conn-1] = conn_init(ua);
+    ++ua->conn->amt;
+    ua->conn->pool = realloc(ua->conn->pool, \
+                        ua->conn->amt * sizeof *ua->conn->pool);
+    ret_conn = ua->conn->pool[ua->conn->amt-1] = conn_init(ua);
   }
   VASSERT_S(NULL != ret_conn, "[%s] (Internal error) Couldn't fetch conn", logconf_tag(ua->p_config, ua));
   ret_conn->is_busy = true;
@@ -459,7 +461,7 @@ struct user_agent*
 ua_init(struct logconf *config) 
 {
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
-  new_ua->num_conn = calloc(1, sizeof *new_ua->num_conn);
+  new_ua->conn = calloc(1, sizeof *new_ua->conn);
   new_ua->shared = calloc(1, sizeof *new_ua->shared);
 
   // default header
@@ -478,27 +480,54 @@ ua_init(struct logconf *config)
   return new_ua;
 }
 
+struct user_agent*
+ua_clone(struct user_agent *orig_ua) 
+{
+  struct user_agent *clone_ua = malloc(sizeof(struct user_agent));
+
+  pthread_mutex_lock(&orig_ua->shared->lock);
+  memcpy(clone_ua, orig_ua, sizeof(struct user_agent));
+
+  // copy orig_ua header into clone_ua
+  struct curl_slist *orig_node = orig_ua->req_header;
+  clone_ua->req_header = curl_slist_append(NULL, orig_node->data);
+  while (NULL != orig_node->next) {
+    orig_node = orig_node->next;
+    curl_slist_append(clone_ua->req_header, orig_node->data);
+  }
+
+  // use a different base_url context than the original
+  clone_ua->base_url.size = asprintf(&clone_ua->base_url.start, "%.*s",
+                              (int)orig_ua->base_url.size, orig_ua->base_url.start);
+
+  pthread_mutex_lock(&orig_ua->shared->lock);
+
+  clone_ua->is_original = false;
+
+  return clone_ua;
+}
+
 void
 ua_cleanup(struct user_agent *ua)
 {
-  if (!ua->is_original) {
-    free(ua);
-    return;
-  }
-
   curl_slist_free_all(ua->req_header);
 
-  if (ua->base_url.start) free(ua->base_url.start);
-
-  if (ua->conn_pool) {
-    for (size_t i=0; i < *ua->num_conn; ++i)
-      conn_cleanup(ua->conn_pool[i]);
-    free(ua->conn_pool);
+  if (ua->base_url.start) {
+    free(ua->base_url.start);
   }
-  free(ua->num_conn);
 
-  pthread_mutex_destroy(&ua->shared->lock);
-  free(ua->shared);
+  if (ua->is_original) 
+  {
+    if (ua->conn->pool) {
+      for (size_t i=0; i < ua->conn->amt; ++i)
+        conn_cleanup(ua->conn->pool[i]);
+      free(ua->conn->pool);
+    }
+    free(ua->conn);
+
+    pthread_mutex_destroy(&ua->shared->lock);
+    free(ua->shared);
+  }
 
   free(ua);
 }
@@ -835,20 +864,6 @@ ua_run(
 
   va_end(args);
   return code;
-}
-
-struct user_agent*
-ua_clone(struct user_agent *orig_ua) 
-{
-  struct user_agent *clone_ua = malloc(sizeof(struct user_agent));
-
-  pthread_mutex_lock(&orig_ua->shared->lock);
-  memcpy(clone_ua, orig_ua, sizeof(struct user_agent));
-  pthread_mutex_lock(&orig_ua->shared->lock);
-
-  clone_ua->is_original = false;
-
-  return clone_ua;
 }
 
 void
