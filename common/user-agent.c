@@ -500,7 +500,7 @@ ua_clone(struct user_agent *orig_ua)
   clone_ua->base_url.size = asprintf(&clone_ua->base_url.start, "%.*s",
                               (int)orig_ua->base_url.size, orig_ua->base_url.start);
 
-  pthread_mutex_lock(&orig_ua->shared->lock);
+  pthread_mutex_unlock(&orig_ua->shared->lock);
 
   clone_ua->is_original = false;
 
