@@ -1,15 +1,17 @@
-#ifndef GITHUB_V3_H
-#define GITHUB_V3_H
+#ifndef GITHUB_H
+#define GITHUB_H
 
 #include <stdbool.h>
 #include "json-actor-boxed.h"
 #include "types.h"
 #include "logconf.h"
 
-#include "specs-code/github/one-specs.h"
+/* Github error codes */
+#define ORCA_GITHUB_JSON        1
+#define ORCA_GITHUB_BAD_AUTH    2
+#define ORCA_GITHUB_NOT_STARRED 404
 
-/* This limit is fairly arbitrary, find the maximum at a later time. */
-#define GITHUB_MAXIMUM_REPO_TOPICS 30
+#include "specs-code/github/one-specs.h"
 
 /* This limit is fairly arbitrary, find the maximum at a later time. */
 #define GITHUB_MAXIMUM_REPO_TOPICS 30
@@ -41,4 +43,4 @@ ORCAcode github_get_gist(struct github *client, char *id, struct github_gist *gi
 ORCAcode github_create_gist(struct github *client, struct github_gist_create_params *params, struct github_gist *gist);
 ORCAcode github_gist_is_starred(struct github *client, char *id);
 
-#endif // GITHUB_V3_H
+#endif // GITHUB_H
