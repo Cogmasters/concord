@@ -14,8 +14,7 @@
 #define _CLIENT(p_gw) (struct discord*)((int8_t*)(p_gw) - offsetof(struct discord, gw))
 
 // shorten event callback for maintainability purposes
-#define _ON(event, ...) \
-  (*gw->user_cmd->cbs.on_ ## event)(_CLIENT(gw), &gw->bot, ## __VA_ARGS__)
+#define _ON(event, ...) (*gw->user_cmd->cbs.on_ ## event)(_CLIENT(gw), &gw->bot, ## __VA_ARGS__)
 
 static void
 discord_session_from_json(char *str, size_t len, void *pp)
@@ -400,7 +399,6 @@ on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
   struct discord_channel *channel=NULL;
   discord_channel_from_json(data->start, data->size, &channel);
 
-  (*gw->user_cmd->cbs.on_channel_create)(_CLIENT(gw), &gw->bot, channel);
   _ON(channel_create, channel);
 
   discord_channel_cleanup(channel);
