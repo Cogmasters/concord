@@ -58,7 +58,7 @@ sudo xbps-install -S libcurl-devel
 sudo xbps-install -S wget
 ```
 
-#### Compile
+### Compile
 
 ```
 make
@@ -73,7 +73,6 @@ gcc myBot.c -o myBot.out -ldiscord -lcurl -lcrypto -lpthread -lm
 ### For Windows
 
 * If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-* If you have Windows but don't want to use WSL2, you can find a tutorial [here](/docs/BUILDING_WITH_WINDOWS.md)
 
 ## Example usage
 
