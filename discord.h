@@ -425,6 +425,17 @@ struct discord* discord_init(const char token[]);
 struct discord* discord_config_init(const char config_file[]);
 
 /**
+ * @brief Clone a discord client
+ *
+ * This is useful in a multithreading scenario. For example, making
+ *        sure each client instance has its own shared url, headers,
+ *        return codes.
+ * @param orig_client the original client created with discord_init()
+ * @return the original client clone
+ */
+struct discord* discord_clone(const struct discord *orig_client);
+
+/**
  * @brief Free a Discord Client handle
  *
  * @param client the client created with discord_init()

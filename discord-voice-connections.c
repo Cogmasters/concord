@@ -694,8 +694,8 @@ static void noop_on_udp_server_connected(struct discord_voice *a) { return; }
 void 
 discord_voice_connections_init(struct discord *client) 
 {
-  client->gw.cbs.on_voice_state_update = noop_voice_state_update_cb;
-  client->gw.cbs.on_voice_server_update = noop_voice_server_update_cb;
+  client->gw.user_cmd->cbs.on_voice_state_update = noop_voice_state_update_cb;
+  client->gw.user_cmd->cbs.on_voice_server_update = noop_voice_server_update_cb;
 
   client->voice_cbs.on_idle = noop_idle_cb;
   client->voice_cbs.on_ready = noop_on_ready;
