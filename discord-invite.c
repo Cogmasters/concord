@@ -31,7 +31,7 @@ discord_get_invite(
   size_t ret = discord_get_invite_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_invite_from_json_v, 
              .ok_obj = &p_invite
@@ -53,7 +53,7 @@ discord_delete_invite(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_invite ? &discord_invite_from_json_v : NULL, 
              .ok_obj = &p_invite

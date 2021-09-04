@@ -27,7 +27,8 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
 
-  if (pthread_mutex_init(&adapter->ratelimit.lock, NULL))
+  adapter->lock = malloc(sizeof *adapter->lock);
+  if (pthread_mutex_init(adapter->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
 }
 
@@ -35,7 +36,8 @@ void
 discord_adapter_cleanup(struct discord_adapter *adapter)
 {
   ua_cleanup(adapter->ua);
-  pthread_mutex_destroy(&adapter->ratelimit.lock);
+  pthread_mutex_destroy(adapter->lock);
+  free(adapter->lock);
   discord_buckets_cleanup(adapter);
 }
 
@@ -46,14 +48,16 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
 static void
 json_error_cb(char *str, size_t len, void *p_jsoncode)
 {
-  int *jsoncode = p_jsoncode;
+  int jsoncode=0;
   char message[256]=""; // meaning of the error received
 
-  json_extract(str, len, \
-      "(message):.*s (code):d", sizeof(message), message, jsoncode);
-  log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)   \
-            " - See Discord's JSON Error Codes\n\t\t%.*s", \
-            *jsoncode, message, (int)len, str);
+  json_extract(str, len, "(message):.*s (code):d", 
+      sizeof(message), message, &jsoncode);
+  log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
+            " - See Discord's JSON Error Codes\n\t\t%.*s",
+            jsoncode, message, (int)len, str);
+
+  (void)p_jsoncode;
 }
 
 /* template function for performing requests */
@@ -64,15 +68,13 @@ discord_adapter_run(
   struct sized_buffer *req_body,
   enum http_method http_method, char endpoint[], ...)
 {
-  int jsoncode=0, httpcode=0;
-
   va_list args;
   va_start(args, endpoint);
 
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
     resp_handle->err_cb = &json_error_cb;
-    resp_handle->err_obj = &jsoncode;
+    resp_handle->err_obj = NULL;
   }
 
   /* Check if endpoint contain a major param */
@@ -87,9 +89,9 @@ discord_adapter_run(
     route = endpoint;
 
   struct discord_bucket *bucket;
-  pthread_mutex_lock(&adapter->ratelimit.lock);
+  pthread_mutex_lock(adapter->lock);
   bucket = discord_bucket_try_get(adapter, route);
-  pthread_mutex_unlock(&adapter->ratelimit.lock);
+  pthread_mutex_unlock(adapter->lock);
 
   ORCAcode code;
   bool keepalive=true;
@@ -111,8 +113,7 @@ discord_adapter_run(
     }
     else 
     {
-        httpcode = info.httpcode;
-        switch (httpcode) {
+        switch (info.httpcode) {
         case HTTP_FORBIDDEN:
         case HTTP_NOT_FOUND:
         case HTTP_BAD_REQUEST:
@@ -120,7 +121,7 @@ discord_adapter_run(
             break;
         case HTTP_UNAUTHORIZED:
         case HTTP_METHOD_NOT_ALLOWED:
-            ERR("Aborting after %s received", http_code_print(httpcode));
+            ERR("Aborting after %s received", http_code_print(info.httpcode));
             break;
         case HTTP_TOO_MANY_REQUESTS: {
             char message[256]="";
@@ -140,26 +141,21 @@ discord_adapter_run(
             }
            break; }
         default:
-            if (httpcode >= 500) // server related error, retry
+            if (info.httpcode >= 500) // server related error, retry
               ua_block_ms(adapter->ua, 5000); // wait for 5 seconds
             break;
         }
     }
 
-    pthread_mutex_lock(&adapter->ratelimit.lock);
+    pthread_mutex_lock(adapter->lock);
     discord_bucket_build(adapter, bucket, route, code, &info);
-    pthread_mutex_unlock(&adapter->ratelimit.lock);
+    pthread_mutex_unlock(adapter->lock);
 
     ua_info_cleanup(&info);
   }
   while (keepalive);
 
   va_end(args);
-
-  if (adapter->p_client) {
-    adapter->p_client->httpcode = httpcode;
-    adapter->p_client->jsoncode = jsoncode;
-  }
 
   return code;
 }

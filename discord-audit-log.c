@@ -49,7 +49,7 @@ discord_get_guild_audit_log(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_audit_log ? &discord_audit_log_from_json_v : NULL,
              .ok_obj = &p_audit_log

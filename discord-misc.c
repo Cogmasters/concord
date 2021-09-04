@@ -342,7 +342,7 @@ discord_disconnect_guild_member(
   size_t ret = json_inject(payload, sizeof(payload), "(channel_id):null");
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
              .ok_obj = &p_member,

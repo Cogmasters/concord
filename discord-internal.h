@@ -34,11 +34,8 @@
  */
 struct discord_adapter {
   struct user_agent *ua; ///< The user agent handle for performing requests
-  struct { /* RATELIMITING STRUCTURE */
-    struct discord_bucket *buckets; ///< Endpoint/routes discovered, check a endpoint/bucket match with tree search functions
-    pthread_mutex_t lock; ///< Mutex used when adding to or searching for buckets
-  } ratelimit;
-  struct discord *p_client; ///< pointer to client this struct is part of
+  struct discord_bucket *buckets; ///< Endpoint/routes discovered, check a endpoint/bucket match with tree search functions
+  pthread_mutex_t *lock; ///< Mutex used when adding to or searching for buckets
 };
 
 /**
@@ -143,6 +140,43 @@ struct discord_gateway_cmd_cbs {
   discord_message_cb cb;
 };
 
+struct discord_gateway_cbs {
+  discord_idle_cb on_idle; ///< triggers on every event loop iteration
+  discord_event_raw_cb on_event_raw; ///< triggers for every event if set, receive its raw JSON string
+  discord_idle_cb on_ready; ///< triggers when connection first establishes
+  discord_application_command_cb on_application_command_create; ///< triggers when a command is created
+  discord_application_command_cb on_application_command_update; ///< triggers when a command is updated
+  discord_application_command_cb on_application_command_delete; ///< triggers when a command is deleted
+  discord_channel_cb on_channel_create; ///< triggers when a channel is created
+  discord_channel_cb on_channel_update; ///< triggers when a channel is updated
+  discord_channel_cb on_channel_delete; ///< triggers when a channel is deleted
+  discord_channel_pins_update_cb on_channel_pins_update; ///< triggers when a channel pinned messages updates
+  discord_channel_cb on_thread_create; ///< triggers when a thread is created
+  discord_channel_cb on_thread_update; ///< triggers when a thread is updated
+  discord_channel_cb on_thread_delete; ///< triggers when a thread is deleted
+  discord_guild_ban_cb on_guild_ban_add; ///< triggers when a ban occurs
+  discord_guild_ban_cb on_guild_ban_remove; ///< triggers when a ban is removed
+  discord_guild_member_cb on_guild_member_add; ///< triggers when a guild member joins a guild
+  discord_guild_member_remove_cb on_guild_member_remove; ///< triggers when a guild member is removed from a guild
+  discord_guild_member_cb on_guild_member_update; ///< triggers when a guild member status is updated (ex: receive role)
+  discord_guild_role_cb on_guild_role_create; ///< triggers when a guild role is created
+  discord_guild_role_cb on_guild_role_update; ///< triggers when a guild role is updated
+  discord_guild_role_delete_cb on_guild_role_delete; ///< triggers when a guild role is deleted
+  discord_interaction_cb on_interaction_create; ///< triggers when a interaction is created 
+  discord_message_cb on_message_create; ///< triggers when a message is created
+  discord_sb_message_cb sb_on_message_create; ///< @todo this is temporary
+  discord_message_cb on_message_update; ///< trigger when a message is updated
+  discord_sb_message_cb sb_on_message_update; ///< @todo this is temporary
+  discord_message_delete_cb on_message_delete; ///< triggers when a message is deleted
+  discord_message_delete_bulk_cb on_message_delete_bulk; ///< triggers when a bulk of messages is deleted
+  discord_message_reaction_add_cb on_message_reaction_add; ///< triggers when a reaction is added to a message
+  discord_message_reaction_remove_cb on_message_reaction_remove; ///< triggers when a reaction is removed from a message
+  discord_message_reaction_remove_all_cb on_message_reaction_remove_all; ///< triggers when all reactions are removed from a message
+  discord_message_reaction_remove_emoji_cb on_message_reaction_remove_emoji; ///< triggers when all occurences of a specific reaction is removed from a message
+  discord_voice_state_update_cb on_voice_state_update; ///< triggers when a voice state is updated
+  discord_voice_server_update_cb on_voice_server_update; ///< triggers when a voice server is updated
+};
+
 /**
  * @brief The handle used for establishing a Discord Gateway connection
  *        via WebSockets
@@ -156,7 +190,7 @@ struct discord_gateway_cmd_cbs {
  */
 struct discord_gateway {
   struct websockets *ws; ///< the websockets handle that connects to Discord
-  struct { /* RECONNECT STRUCTURE */
+  struct { ///< Reconnect structure
     bool enable; ///< will attempt reconnecting if true
     int attempt; ///< current reconnect attempt (resets to 0 when succesful)
     int threshold; ///< max amount of reconnects before giving up
@@ -165,7 +199,7 @@ struct discord_gateway {
   bool is_ready; ///< can start sending/receiving additional events to discord
   bool shutdown; ///< if true shutdown websockets connection as soon as possible
 
-  struct discord_gateway_identify *id; ///< this info sent expecting a connection authentication
+  struct discord_gateway_identify id; ///< this info sent expecting a connection authentication
   char session_id[512]; ///< the session id (for resuming lost connections)
   
  // https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
@@ -189,53 +223,14 @@ struct discord_gateway {
   struct discord_gateway_cmd_cbs on_default_cmd, *on_cmd; ///< user's command/callback pair and amount of callback pairs @see discord_set_on_command()
   size_t num_cmd; 
 
-  struct { /* CALLBACKS STRUCTURE */
-    discord_idle_cb on_idle; ///< triggers on every event loop iteration
-    discord_event_raw_cb on_event_raw; ///< triggers for every event if set, receive its raw JSON string
-    discord_idle_cb on_ready; ///< triggers when connection first establishes
-    discord_application_command_cb on_application_command_create; ///< triggers when a command is created
-    discord_application_command_cb on_application_command_update; ///< triggers when a command is updated
-    discord_application_command_cb on_application_command_delete; ///< triggers when a command is deleted
-    discord_channel_cb on_channel_create; ///< triggers when a channel is created
-    discord_channel_cb on_channel_update; ///< triggers when a channel is updated
-    discord_channel_cb on_channel_delete; ///< triggers when a channel is deleted
-    discord_channel_pins_update_cb on_channel_pins_update; ///< triggers when a channel pinned messages updates
-    discord_channel_cb on_thread_create; ///< triggers when a thread is created
-    discord_channel_cb on_thread_update; ///< triggers when a thread is updated
-    discord_channel_cb on_thread_delete; ///< triggers when a thread is deleted
-    discord_guild_ban_cb on_guild_ban_add; ///< triggers when a ban occurs
-    discord_guild_ban_cb on_guild_ban_remove; ///< triggers when a ban is removed
-    discord_guild_member_cb on_guild_member_add; ///< triggers when a guild member joins a guild
-    discord_guild_member_remove_cb on_guild_member_remove; ///< triggers when a guild member is removed from a guild
-    discord_guild_member_cb on_guild_member_update; ///< triggers when a guild member status is updated (ex: receive role)
-    discord_guild_role_cb on_guild_role_create; ///< triggers when a guild role is created
-    discord_guild_role_cb on_guild_role_update; ///< triggers when a guild role is updated
-    discord_guild_role_delete_cb on_guild_role_delete; ///< triggers when a guild role is deleted
-    discord_interaction_cb on_interaction_create; ///< triggers when a interaction is created 
-    discord_message_cb on_message_create; ///< triggers when a message is created
-    discord_sb_message_cb sb_on_message_create; ///< @todo this is temporary
-    discord_message_cb on_message_update; ///< trigger when a message is updated
-    discord_sb_message_cb sb_on_message_update; ///< @todo this is temporary
-    discord_message_delete_cb on_message_delete; ///< triggers when a message is deleted
-    discord_message_delete_bulk_cb on_message_delete_bulk; ///< triggers when a bulk of messages is deleted
-    discord_message_reaction_add_cb on_message_reaction_add; ///< triggers when a reaction is added to a message
-    discord_message_reaction_remove_cb on_message_reaction_remove; ///< triggers when a reaction is removed from a message
-    discord_message_reaction_remove_all_cb on_message_reaction_remove_all; ///< triggers when all reactions are removed from a message
-    discord_message_reaction_remove_emoji_cb on_message_reaction_remove_emoji; ///< triggers when all occurences of a specific reaction is removed from a message
-    discord_voice_state_update_cb on_voice_state_update; ///< triggers when a voice state is updated
-    discord_voice_server_update_cb on_voice_server_update; ///< triggers when a voice server is updated
-  } cbs;
+  struct discord_gateway_cbs cbs;
 
   discord_event_mode_cb event_handler; ///< Handle context on how each event callback is executed @see discord_set_event_handler()
   
   int ping_ms; ///< latency between client and websockets server, calculated by the interval between HEARTBEAT and HEARTBEAT_ACK
 
-  pthread_mutex_t lock;
-  
-  struct discord_user *bot; ///< the bot user structure
+  struct discord_user bot; ///< the bot user structure
   struct sized_buffer sb_bot; ///< @todo this is temporary
-
-  struct discord *p_client; ///< pointer to client this struct is part of
 };
 
 /**
@@ -296,24 +291,21 @@ struct discord {
   struct sized_buffer token;   ///< the bot token
   struct logconf      *config; ///< store config file contents and sync logging between clients
 
-  struct discord_adapter *adapter; ///< the HTTP adapter for performing requests
-  struct discord_gateway *gw;      ///< the WebSockets handle for establishing a connection to Discord
-  struct discord_voice   *vcs;     ///< the WebSockets handles for establishing voice connections to Discord
+  struct discord_adapter adapter; ///< the HTTP adapter for performing requests
+  struct discord_gateway gw;      ///< the WebSockets handle for establishing a connection to Discord
+  struct discord_voice   vcs[DISCORD_MAX_VOICE_CONNECTIONS]; ///< the WebSockets handles for establishing voice connections to Discord
 
   // @todo? create a analogous struct for gateway
   struct discord_voice_cbs voice_cbs;
 
   void *data; ///< space for user arbitrary data @see discord_get_data() and discord_set_data()
-
-  int httpcode; ///< latest http response code from current's thread
-  int jsoncode; ///< latest json error code from current's thread
 };
 
 struct discord_event_cxt {
   char *event_name;
   pthread_t tid; ///< the thread id
   struct sized_buffer data; ///< a copy of payload data
-  struct discord *p_client; ///< the discord client
+  struct discord_gateway *p_gw; ///< the discord gateway client
   enum discord_gateway_events event;
   void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
   bool is_main_thread;

@@ -15,7 +15,7 @@ discord_list_voice_regions(struct discord *client, NTL_T(struct discord_voice_re
   }
 
   return discord_adapter_run(
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_voice_region_list_from_json_v, 
              .ok_obj = p_voice_regions 

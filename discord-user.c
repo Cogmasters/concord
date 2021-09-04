@@ -17,7 +17,7 @@ discord_get_current_user(struct discord *client, struct discord_user *p_user)
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_user_from_json_v, 
              .ok_obj = &p_user
@@ -40,7 +40,7 @@ discord_get_user(struct discord *client, const u64_snowflake_t user_id, struct d
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_user_from_json_v, 
              .ok_obj = &p_user
@@ -62,7 +62,7 @@ discord_modify_current_user(struct discord *client, struct discord_modify_curren
   size_t ret = discord_modify_current_user_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_user ? &discord_user_from_json_v : NULL,
              .ok_obj = &p_user
@@ -91,7 +91,7 @@ sb_discord_get_current_user(struct discord *client, struct sized_buffer *p_sb_us
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &sized_buffer_from_json, 
              .ok_obj = &p_sb_user
@@ -110,7 +110,7 @@ discord_get_current_user_guilds(struct discord *client, NTL_T(struct discord_gui
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_guild_list_from_json_v, 
              .ok_obj = p_guilds
@@ -129,7 +129,7 @@ discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
   }
 
   return discord_adapter_run(
-           client->adapter,
+           &client->adapter,
            NULL,
            &(struct sized_buffer){ "{}", 2 },
            HTTP_DELETE,
@@ -149,7 +149,7 @@ discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, st
       "(recipient_id):s_as_u64", &recipient_id);
 
   return discord_adapter_run(
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_dm_channel
@@ -179,7 +179,7 @@ discord_create_group_dm(struct discord *client, struct discord_create_group_dm_p
   size_t ret = discord_create_group_dm_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
              .ok_obj = &p_dm_channel
@@ -198,7 +198,7 @@ discord_get_user_connections(struct discord *client, NTL_T(struct discord_connec
   }
 
   return discord_adapter_run(
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_connection_list_from_json_v,
              .ok_obj = p_connections

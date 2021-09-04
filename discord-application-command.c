@@ -23,7 +23,7 @@ discord_get_global_application_commands(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_application_command_list_from_json_v, 
              .ok_obj = p_app_cmds 
@@ -61,7 +61,7 @@ discord_create_global_application_command(
   size_t ret = discord_create_global_application_command_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL,
              .ok_obj = &p_app_cmd
@@ -92,7 +92,7 @@ discord_get_global_application_command(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_application_command_from_json_v, 
              .ok_obj = &p_app_cmd
@@ -124,7 +124,7 @@ discord_edit_global_application_command(
   size_t ret = discord_edit_global_application_command_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL, 
              .ok_obj = &p_app_cmd
@@ -151,7 +151,7 @@ discord_delete_global_application_command(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            NULL,
            NULL,
            HTTP_DELETE, 
@@ -179,7 +179,7 @@ discord_bulk_overwrite_global_application_command(
   size_t ret = discord_application_command_list_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_app_cmds ? &discord_application_command_list_from_json_v : NULL, 
              .ok_obj = p_app_cmds 
@@ -210,7 +210,7 @@ discord_get_guild_application_commands(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_application_command_list_from_json_v, 
              .ok_obj = p_app_cmds 
@@ -254,7 +254,7 @@ discord_create_guild_application_command(
   size_t ret = discord_create_guild_application_command_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL,
              .ok_obj = &p_app_cmd
@@ -292,7 +292,7 @@ discord_get_guild_application_command(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_application_command_from_json_v, 
              .ok_obj = &p_app_cmd
@@ -329,7 +329,7 @@ discord_edit_guild_application_command(
   size_t ret = discord_edit_guild_application_command_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL, 
              .ok_obj = &p_app_cmd
@@ -361,7 +361,7 @@ discord_delete_guild_application_command(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            NULL,
            NULL,
            HTTP_DELETE, 
@@ -394,7 +394,7 @@ discord_bulk_overwrite_guild_application_command(
   size_t ret = discord_application_command_list_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_app_cmds ? &discord_application_command_list_from_json_v : NULL, 
              .ok_obj = p_app_cmds 
@@ -426,7 +426,7 @@ discord_get_guild_application_command_permissions(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_application_command_permissions_list_from_json_v, 
              .ok_obj = p_permissions
@@ -463,7 +463,7 @@ discord_get_application_command_permissions(
   }
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_guild_application_command_permissions_from_json_v, 
              .ok_obj = &p_permissions
@@ -500,7 +500,7 @@ discord_edit_application_command_permissions(
   size_t ret = discord_edit_application_command_permissions_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_permissions ? &discord_guild_application_command_permissions_from_json_v : NULL, 
              .ok_obj = &p_permissions
@@ -536,7 +536,7 @@ discord_batch_edit_application_command_permissions(
   size_t ret = discord_guild_application_command_permissions_list_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
-           client->adapter,
+           &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = p_permissions ? &discord_guild_application_command_permissions_list_from_json_v : NULL, 
              .ok_obj = p_permissions
