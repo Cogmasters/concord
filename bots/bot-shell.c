@@ -55,7 +55,9 @@ void on_less_like(
 
   struct discord_create_message_params params={0};
   if (*msg->content)
-    params.file.name = msg->content;
+    params.file = &(struct discord_file){
+      .name = msg->content
+    };
   else
     params.content = "No file specified";
 
@@ -104,7 +106,7 @@ on_default(
   struct discord_create_message_params params;
   if (fsize > DISCORD_MAX_MESSAGE_LEN) // MAX MESSAGE LEN is 2000 bytes
     params = (struct discord_create_message_params){
-      .file = {
+      .file = &(struct discord_file){
         .content = pathtmp,
         .size = fsize
       }
