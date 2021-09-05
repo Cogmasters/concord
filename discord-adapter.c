@@ -27,7 +27,7 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
 
-  adapter->ratelimit = malloc(sizeof *adapter->ratelimit);
+  adapter->ratelimit = calloc(1, sizeof *adapter->ratelimit);
   if (pthread_mutex_init(&adapter->ratelimit->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
 }
