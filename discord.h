@@ -413,9 +413,9 @@ void discord_global_cleanup();
 
 /**
  * @brief Return the meaning of ORCAcode
- * @note client may be NULL, but this will give a generic error message
+ * @note if the client parameter is provided, the raw JSON error string will be given for ORCA_DISCORD_JSON_CODE code
  * @param code the ORCAcode to be explained
- * @param client the client created with discord_init()
+ * @param client the client created with discord_init(), NULL for generic error descriptions
  * @return a string containing the code meaning
  */
 const char* discord_strerror(ORCAcode code, struct discord *client);
