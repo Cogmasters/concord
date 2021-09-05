@@ -919,7 +919,7 @@ struct discord_modify_webhook_params;
  */
 struct discord_execute_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:74:22
+// defined at specs/discord/webhook.endpoints-params.json:50:22
 /**
  * @brief Edit Webhook Message
  *
@@ -2293,7 +2293,7 @@ extern size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, e
 
 
 // Webhook Types
-// defined at specs/discord/webhook.json:23:5
+// defined at specs/discord/webhook.json:26:5
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
  *
@@ -2309,8 +2309,9 @@ extern size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, e
  * @endverbatim
  */
 enum discord_webhook_types {
-  DISCORD_WEBHOOK_INCOMING = 1,
-  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2,
+  DISCORD_WEBHOOK_INCOMING = 1, ///< Incoming Webhooks can post messages to channels with a generated token
+  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2, ///< Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels
+  DISCORD_WEBHOOK_APPLICATION = 3, ///< Application webhooks are webhooks used with interactions
 };
 extern char* discord_webhook_types_print(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_eval(char*);
@@ -10039,66 +10040,48 @@ struct discord_modify_webhook_params {
  */
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:34:20
-     '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query",
-          "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)",
-          "required":"one of content, file, embeds"
-        }' */
+     '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
   bool wait; ///< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i
 
-  /* specs/discord/webhook.endpoints-params.json:38:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"the message contents (up to 2000 characters)",
-          "required":false
-        }' */
+  /* specs/discord/webhook.endpoints-params.json:35:20
+     '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
+  u64_snowflake_t thread_id; ///< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived
+
+  /* specs/discord/webhook.endpoints-params.json:36:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
   char *content; ///< the message contents (up to 2000 characters)
 
-  /* specs/discord/webhook.endpoints-params.json:42:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"override the default username of the webhook",
-          "required":false
-        }' */
+  /* specs/discord/webhook.endpoints-params.json:37:20
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
   char *username; ///< override the default username of the webhook
 
-  /* specs/discord/webhook.endpoints-params.json:46:20
-     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"override the default avatar of the webhook" }' */
+  /* specs/discord/webhook.endpoints-params.json:38:20
+     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
   char *avatar_url; ///< override the default avatar of the webhook
 
-  /* specs/discord/webhook.endpoints-params.json:48:20
-     '{ "name": "tts", "type":{ "base":"bool" }, 
-          "comment":"true if this is a TTS message",
-          "required":false
-        }' */
+  /* specs/discord/webhook.endpoints-params.json:39:20
+     '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
   bool tts; ///< true if this is a TTS message
 
-  /* specs/discord/webhook.endpoints-params.json:52:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"the contents of the file being sent",
-          "required":"one of content, file, embeds"
-        }' */
+  /* specs/discord/webhook.endpoints-params.json:40:20
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
   char *file; ///< the contents of the file being sent
 
-  /* specs/discord/webhook.endpoints-params.json:56:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
-          "comment":"embedded rich content",
-          "required":"one of content, file, embeds"
-        }' */
+  /* specs/discord/webhook.endpoints-params.json:41:20
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
   struct discord_embed *embeds; ///< embedded rich content
 
-  /* specs/discord/webhook.endpoints-params.json:60:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"See message create",
-          "required":"multipart/form-data only"
-        }' */
-  char *payload_json; ///< See message create
+  /* specs/discord/webhook.endpoints-params.json:42:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
+  char *payload_json; ///< JSON encoded body of non-file params
 
-  /* specs/discord/webhook.endpoints-params.json:64:20
-     '{ "name": "allowed_mentions", 
-          "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" },
-          "comment":"allowed mentions for the message",
-          "required":"false"
-        }' */
+  /* specs/discord/webhook.endpoints-params.json:43:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+
+  /* specs/discord/webhook.endpoints-params.json:44:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
+  struct discord_component **components; ///< the components to include with the message
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -10109,15 +10092,15 @@ struct discord_execute_webhook_params {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
+    void *arg_switches[11];
+    void *record_defined[11];
+    void *record_null[11];
   } __M; // metadata
 /// @endcond
 };
 
 // Edit Webhook Message
-// defined at specs/discord/webhook.endpoints-params.json:74:22
+// defined at specs/discord/webhook.endpoints-params.json:50:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10144,31 +10127,31 @@ struct discord_execute_webhook_params {
  * @endverbatim
  */
 struct discord_edit_webhook_message_params {
-  /* specs/discord/webhook.endpoints-params.json:77:20
+  /* specs/discord/webhook.endpoints-params.json:53:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   char *content; ///< name of the webhook(1-2000) chars
 
-  /* specs/discord/webhook.endpoints-params.json:78:20
+  /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   struct discord_embed **embeds; ///< array of up to 10 embeds objects
 
-  /* specs/discord/webhook.endpoints-params.json:79:20
+  /* specs/discord/webhook.endpoints-params.json:55:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
   char *file; ///< the contents of the file being sent/edited
 
-  /* specs/discord/webhook.endpoints-params.json:80:20
+  /* specs/discord/webhook.endpoints-params.json:56:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
   char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
 
-  /* specs/discord/webhook.endpoints-params.json:81:20
+  /* specs/discord/webhook.endpoints-params.json:57:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
-  /* specs/discord/webhook.endpoints-params.json:82:20
+  /* specs/discord/webhook.endpoints-params.json:58:20
      '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_channel_attachment **attachments; ///< attached files to keep
 
-  /* specs/discord/webhook.endpoints-params.json:83:20
+  /* specs/discord/webhook.endpoints-params.json:59:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; ///< the components to include with the message
 
@@ -10220,40 +10203,52 @@ struct discord_edit_webhook_message_params {
  */
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t id;
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" }' */
+  u64_snowflake_t id; ///< the id of the webhook
 
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
-  enum discord_webhook_types type;
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }, "comment":"the type of the webhook" }' */
+  enum discord_webhook_types type; ///< the type of the webhook
 
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t guild_id;
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the guild id this webhook is for, if any", "inject_if_not":0 }' */
+  u64_snowflake_t guild_id; ///< the guild id this webhook is for, if any
 
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t channel_id;
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the channel id this webhook is for, if any", "inject_if_not":0 }' */
+  u64_snowflake_t channel_id; ///< the channel id this webhook is for, if any
 
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  struct discord_user *user;
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null }' */
+  struct discord_user *user; ///< the user this webhook was created by (not returned when getting a webhook with its token
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]", "comment":"the default name of the webhook", "inject_if_not":"" }}' */
   char name[DISCORD_WEBHOOK_NAME_LEN];
 
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *avatar; ///< @todo fixed size limit
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"the default user avatar has of the webhook", "inject_if_not":null }' */
+  char *avatar; ///< the default user avatar has of the webhook
 
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *token; ///< @todo fixed size limit
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"the secure token of the webhook (returned for Incoming Webhooks)", "inject_if_not":null }' */
+  char *token; ///< the secure token of the webhook (returned for Incoming Webhooks)
 
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t application_id;
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the bot/OAuth2 application that created this webhook", "inject_if_not":0 }' */
+  u64_snowflake_t application_id; ///< the bot/OAuth2 application that created this webhook
+
+  /* specs/discord/webhook.json:21:20
+     '{ "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null }' */
+  struct discord_guild *source_guild; ///< the guild of the channel that this webhook is following (returned for Channel Follower Webhook)
+
+  /* specs/discord/webhook.json:22:20
+     '{ "name": "source_channel", "type":{ "base":"struct discord_channel", "dec":"*" }, "comment":"the channel that this webhook is following (returned for Channel Follower Webhooks)", "inject_if_not":null }' */
+  struct discord_channel *source_channel; ///< the channel that this webhook is following (returned for Channel Follower Webhooks)
+
+  /* specs/discord/webhook.json:23:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }' */
+  char *url; ///< the url used for executing the webhook (returned by the webhooks OAuth2 flow)
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -10264,9 +10259,9 @@ struct discord_webhook {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
+    void *arg_switches[12];
+    void *record_defined[12];
+    void *record_null[12];
   } __M; // metadata
 /// @endcond
 };
