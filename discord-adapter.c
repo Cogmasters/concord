@@ -36,9 +36,9 @@ void
 discord_adapter_cleanup(struct discord_adapter *adapter)
 {
   ua_cleanup(adapter->ua);
+  discord_buckets_cleanup(adapter);
   pthread_mutex_destroy(&adapter->ratelimit->lock);
   free(adapter->ratelimit);
-  discord_buckets_cleanup(adapter);
   ua_info_cleanup(&adapter->err.info);
 }
 
