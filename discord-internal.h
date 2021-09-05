@@ -40,7 +40,7 @@ struct discord_adapter {
   struct { ///< Error storage context
     struct ua_info info; ///< Informational on the latest transfer
     int  jsoncode;       ///< JSON error code on failed request
-    char jsonmsg[256];   ///< Meaning of the error code received
+    char jsonstr[512];   ///< Meaning of the error code received
   } err;
 };
 

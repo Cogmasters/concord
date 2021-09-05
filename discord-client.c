@@ -105,7 +105,7 @@ discord_strerror(ORCAcode code, struct discord *client)
   default: 
     return orca_strerror(code);
   case ORCA_DISCORD_JSON_CODE:
-      if (client) return client->adapter.err.jsonmsg;
+      if (client) return client->adapter.err.jsonstr;
       return "Discord JSON Error Code: Failed request";
   }
 }

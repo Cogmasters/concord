@@ -50,12 +50,16 @@ static void
 json_error_cb(char *str, size_t len, void *p_adapter)
 {
   struct discord_adapter *adapter = p_adapter;
+  char message[256]="";
 
   json_extract(str, len, "(message):.*s (code):d", 
-      sizeof(adapter->err.jsonmsg), adapter->err.jsonmsg, &adapter->err.jsoncode);
+      sizeof(message), message, &adapter->err.jsoncode);
   log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
             " - See Discord's JSON Error Codes\n\t\t%.*s",
-            adapter->err.jsoncode, adapter->err.jsonmsg, (int)len, str);
+            adapter->err.jsoncode, message, (int)len, str);
+
+  snprintf(adapter->err.jsonstr, sizeof(adapter->err.jsonstr), 
+      "%.*s", (int)len, str);
 }
 
 /* template function for performing requests */
