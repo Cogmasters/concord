@@ -40,6 +40,13 @@ typedef int ORCAcode;             ///< the error code datatype
 #define ORCA_LIMITS_REGION 16 + 1
 /** @} OrcaLimits */
 
+/**
+ * @brief Return a generic meaning for ORCAcode
+ * @param code the ORCAcode to be explained
+ * @return a string containing the code meaning
+ */
+const char* orca_strerror(ORCAcode code);
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

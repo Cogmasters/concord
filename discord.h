@@ -412,6 +412,15 @@ void discord_global_init();
 void discord_global_cleanup();
 
 /**
+ * @brief Return the meaning of ORCAcode
+ * @note client may be NULL, but this will give a generic error message
+ * @param code the ORCAcode to be explained
+ * @param client the client created with discord_init()
+ * @return a string containing the code meaning
+ */
+const char* discord_strerror(ORCAcode code, struct discord *client);
+
+/**
  * @brief Create a Discord Client handle by its token
  *
  * @param token the bot token

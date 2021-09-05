@@ -97,6 +97,19 @@ discord_global_cleanup() {
   curl_global_cleanup();
 }
 
+
+const char*
+discord_strerror(ORCAcode code, struct discord *client)
+{
+  switch (code) {
+  default: 
+    return orca_strerror(code);
+  case ORCA_DISCORD_JSON_CODE:
+      if (client) return client->adapter.err.jsonmsg;
+      return "Discord JSON Error Code: Failed request";
+  }
+}
+
 //@todo make this thread safe
 void*
 discord_set_data(struct discord *client, void *data) {
