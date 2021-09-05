@@ -21,14 +21,21 @@ int main(int argc, char *argv[])
   struct discord_user me;
   discord_user_init(&me); 
 
-  discord_get_current_user(client, &me);
+  assert(ORCA_OK == discord_get_current_user(client, &me));
   printf("Greetings, %s#%s!\n", me.username, me.discriminator);
 
   NTL_T(struct discord_guild) guilds = NULL;
-  discord_get_current_user_guilds(client, &guilds);
-  for (size_t i=0; guilds[i]; ++i) {
+  assert(ORCA_OK == discord_get_current_user_guilds(client, &guilds));
+  for (size_t i=0; guilds[i]; ++i)
     fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name, guilds[i]->id);
-  }
+
+  // Test discord_strerror()
+  ORCAcode code;
+  code = discord_delete_channel(client, 123, NULL);
+  fprintf(stderr, "%s\n", discord_strerror(code, client));
+  code = discord_modify_channel(client, 123, NULL, NULL);
+  fprintf(stderr, "%s\n", discord_strerror(code, client));
+
 
   discord_guild_list_free(guilds);
   discord_user_cleanup(&me);

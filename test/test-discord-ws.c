@@ -63,6 +63,21 @@ void on_stop(
   pthread_mutex_unlock(&g_lock);
 }
 
+void on_force_error(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  ORCAcode code = discord_delete_channel(client, 123, NULL);
+  struct discord_create_message_params params = { 
+    .content = (char *)discord_strerror(code, client) 
+  };
+
+  discord_create_message(client, msg->channel_id, &params, NULL);
+}
+
 enum discord_event_handling_mode 
 on_any_event(
   struct discord *client,
@@ -93,6 +108,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "disconnect", &on_disconnect);
   discord_set_on_command(client, "spam", &on_spam);
   discord_set_on_command(client, "stop", &on_stop);
+  discord_set_on_command(client, "force_error", &on_force_error);
 
   discord_run(client);
 
