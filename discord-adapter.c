@@ -12,14 +12,14 @@
 void
 discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token)
 {
-  adapter->ua = ua_init(config);
-  ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
-  logconf_add_id(config, adapter->ua, "DISCORD_HTTP");
-
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
     token->start = NULL;
   }
   ASSERT_S(NULL != token->start, "Missing bot token");
+
+  adapter->ua = ua_init(config);
+  ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
+  logconf_add_id(config, adapter->ua, "DISCORD_HTTP");
 
   char auth[128];
   int ret = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
@@ -27,8 +27,8 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
 
-  adapter->lock = malloc(sizeof *adapter->lock);
-  if (pthread_mutex_init(adapter->lock, NULL))
+  adapter->ratelimit = malloc(sizeof *adapter->ratelimit);
+  if (pthread_mutex_init(&adapter->ratelimit->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
 }
 
@@ -36,8 +36,8 @@ void
 discord_adapter_cleanup(struct discord_adapter *adapter)
 {
   ua_cleanup(adapter->ua);
-  pthread_mutex_destroy(adapter->lock);
-  free(adapter->lock);
+  pthread_mutex_destroy(&adapter->ratelimit->lock);
+  free(adapter->ratelimit);
   discord_buckets_cleanup(adapter);
   ua_info_cleanup(&adapter->err.info);
 }
@@ -91,9 +91,9 @@ discord_adapter_run(
     route = endpoint;
 
   struct discord_bucket *bucket;
-  pthread_mutex_lock(adapter->lock);
+  pthread_mutex_lock(&adapter->ratelimit->lock);
   bucket = discord_bucket_try_get(adapter, route);
-  pthread_mutex_unlock(adapter->lock);
+  pthread_mutex_unlock(&adapter->ratelimit->lock);
 
   ORCAcode code;
   bool keepalive=true;
@@ -150,9 +150,9 @@ discord_adapter_run(
         }
     }
 
-    pthread_mutex_lock(adapter->lock);
+    pthread_mutex_lock(&adapter->ratelimit->lock);
     discord_bucket_build(adapter, bucket, route, code, &adapter->err.info);
-    pthread_mutex_unlock(adapter->lock);
+    pthread_mutex_unlock(&adapter->ratelimit->lock);
   } while (keepalive);
 
   va_end(args);

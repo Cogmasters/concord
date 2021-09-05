@@ -40,8 +40,8 @@ void
 discord_buckets_cleanup(struct discord_adapter *adapter)
 { 
   struct discord_bucket *bucket, *tmp;
-  HASH_ITER(hh, adapter->buckets, bucket, tmp) {
-    HASH_DEL(adapter->buckets, bucket);
+  HASH_ITER(hh, adapter->ratelimit->buckets, bucket, tmp) {
+    HASH_DEL(adapter->ratelimit->buckets, bucket);
     bucket_cleanup(bucket);
   }
 }
@@ -99,7 +99,7 @@ discord_bucket_try_get(struct discord_adapter *adapter, const char route[])
 {
   log_trace("[?] Attempt to find matching bucket for route '%s'", route);
   struct discord_bucket *bucket;
-  HASH_FIND_STR(adapter->buckets, route, bucket);
+  HASH_FIND_STR(adapter->ratelimit->buckets, route, bucket);
   if (!bucket)
     log_trace("[?] Couldn't match bucket to route '%s', will attempt to create a new one", route);
   else
@@ -163,7 +163,7 @@ match_route(struct discord_adapter *adapter, const char route[], ORCAcode code, 
 
   struct discord_bucket *bucket=NULL, *iter, *tmp;
   //attempt to match hash to client bucket hashes
-  HASH_ITER(hh, adapter->buckets, iter, tmp) {
+  HASH_ITER(hh, adapter->ratelimit->buckets, iter, tmp) {
     if (STRNEQ(iter->hash, hash.start, hash.size)) {
       bucket = iter;
       break;
@@ -173,7 +173,7 @@ match_route(struct discord_adapter *adapter, const char route[], ORCAcode code, 
 
   //assign new route and update bucket ratelimit fields
   log_trace("[%s] Assign new route '%s' to bucket", bucket->hash, bucket->route);
-  HASH_ADD_STR(adapter->buckets, route, bucket);
+  HASH_ADD_STR(adapter->ratelimit->buckets, route, bucket);
   parse_ratelimits(bucket, code, info);
 }
 

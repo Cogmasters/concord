@@ -34,13 +34,16 @@
  */
 struct discord_adapter {
   struct user_agent *ua; ///< The user agent handle for performing requests
-  struct discord_bucket *buckets; ///< Endpoint/routes discovered, check a endpoint/bucket match with tree search functions
-  pthread_mutex_t *lock; ///< Mutex used when adding to or searching for buckets
+
+  struct { ///< Ratelimiting structure
+    struct discord_bucket *buckets; ///< Endpoint/routes discovered, check a endpoint/bucket match with tree search functions
+    pthread_mutex_t lock;           ///< Mutex used when adding to or searching for buckets
+  } *ratelimit;
 
   struct { ///< Error storage context
     struct ua_info info; ///< Informational on the latest transfer
     int  jsoncode;       ///< JSON error code on failed request
-    char jsonstr[512];   ///< Meaning of the error code received
+    char jsonstr[512];   ///< The entire JSON response of the error
   } err;
 };
 
