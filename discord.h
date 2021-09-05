@@ -320,84 +320,6 @@ typedef void (*discord_voice_server_update_cb)(
 /** @} DiscordCallbacksVoice */
 
 
-/**
- * @todo make this specs generated code
- * @see https://discord.com/developers/docs/topics/gateway#get-gateway-bot-json-response
- * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object
- */
-struct discord_session {
-  char url[1024]; ///< The WSS URL that can be used for connecting to the gateway
-  int shards; ///< The recommended number of shards to use when connecting
-  
-  int total; ///< the total number of session starts the current user is allowed
-  int remaining; ///< the remaining number of session starts the current user is allowed
-  int reset_after; ///< the number of milliseconds after which the limit resets
-  int max_concurrency; ///< the number of identify requests allowed per 5 seconds
-
-  int concurrent; ///< active concurrent sessions
-  u64_unix_ms_t identify_tstamp; ///< timestamp of last succesful identify request
-
-  u64_unix_ms_t event_tstamp; ///< timestamp of last succesful event timestamp in ms (resets every 60s)
-
-  int event_count; ///< event counter to avoid reaching limit of 120 events per 60 sec
-};
-
-/**
- * @todo make this specs generated code
- */
-struct discord_get_channel_messages_params {
-  u64_snowflake_t around;
-  u64_snowflake_t before;
-  u64_snowflake_t after;
-  int limit; // max number of messages (1-100)
-};
-
-/**
- * @todo make this specs generated code
- * @warning content-type sent is @p application/json, UNLESS any 
- *        @p multipart/form-data parameter is set
- */
-struct discord_create_message_params {
-  // common to @b application/json and @b multipart/form-data parameters
-  char *content; ///< the content of the message being sent
-  bool tts; ///< enable/disable text-to-speech
-  
-  // parameters for @b application/json
-  NTL_T(struct discord_embed) embeds;
-  struct discord_embed *embed; ///< deprecated
-  struct discord_channel_allowed_mentions *allowed_mentions;
-  struct discord_message_reference *message_reference;
-  NTL_T(struct discord_component) components;
-  
-  // parameters for @b multipart/form-data
-  // @note if just name field is set, will search for file in working directory
-  struct { // FILE STRUCT
-    char *name; ///< the name of the file being sent
-    char *content; ///< the contents of the file being sent (optional)
-    size_t size; ///< the size of the file being sent (if content is set)
-  } file;
-  char *payload_json;
-};
-
-/** 
- * @todo make this specs generated code
- */
-struct discord_edit_message_params {
-  char *content;
-  struct discord_embed *embed;
-  enum discord_message_flags_code *flags;
-  struct discord_channel_allowed_mentions *allowed_mentions;
-};
-
-/**
- * @todo this can become specs generated code
- */
-struct discord_list_guild_members_params {
-  int limit; ///< the number of members to return (1-1000)
-  u64_snowflake_t after; ///< the highest user id in the previous page
-};
-
-
  /* * * * * * * * * * * * * * * */
 /* * * * CLIENT FUNCTIONS * * * */
 
@@ -1831,12 +1753,12 @@ ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord
 
 /** @defgroup DiscordGetGateway
  *  @{ */
-ORCAcode discord_get_gateway(struct discord *client, struct discord_session *p_session);
+ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *p_json);
 /** @} DiscordGetGateway */
 
 /** @defgroup DiscordGetGatewayBot
  *  @{ */
-ORCAcode discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
+ORCAcode discord_get_gateway_bot(struct discord *client, struct sized_buffer *p_json);
 /** @} DiscordGetGatewayBot */
 
 

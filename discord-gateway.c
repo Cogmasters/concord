@@ -16,40 +16,26 @@
 // shorten event callback for maintainability purposes
 #define _ON(event, ...) (*gw->user_cmd->cbs.on_ ## event)(_CLIENT(gw), &gw->bot, ## __VA_ARGS__)
 
-static void
-discord_session_from_json(char *str, size_t len, void *pp)
+static void 
+sized_buffer_from_json(char *json, size_t len, void *data) 
 {
-  struct discord_session **p_session = pp;
-  if (!*p_session) *p_session = calloc(1, sizeof **p_session);
-  struct discord_session *session = *p_session;
-  json_extract(str, len,
-      "(url):s"
-      "(shards):d"
-      "(session_start_limit.total):d"
-      "(session_start_limit.remaining):d"
-      "(session_start_limit.reset_after):d"
-      "(session_start_limit.max_concurrency):d",
-      session->url,
-      &session->shards,
-      &session->total,
-      &session->remaining,
-      &session->reset_after,
-      &session->max_concurrency);
+  struct sized_buffer *p = data;
+  p->size = asprintf(&p->start, "%.*s", (int)len, json);
 }
 
 ORCAcode
-discord_get_gateway(struct discord *client, struct discord_session *p_session)
+discord_get_gateway(struct discord *client, struct sized_buffer *p_json)
 {
-  if (!p_session) {
-    log_error("Missing 'p_session'");
+  if (!p_json) {
+    log_error("Missing 'p_json'");
     return ORCA_MISSING_PARAMETER;
   }
 
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = &discord_session_from_json, 
-             .ok_obj = &p_session 
+             .ok_cb = &sized_buffer_from_json, 
+             .ok_obj = p_json 
            },
            NULL,
            HTTP_GET,
@@ -57,18 +43,18 @@ discord_get_gateway(struct discord *client, struct discord_session *p_session)
 }
 
 ORCAcode
-discord_get_gateway_bot(struct discord *client, struct discord_session *p_session)
+discord_get_gateway_bot(struct discord *client, struct sized_buffer *p_json)
 {
-  if (!p_session) {
-    log_error("Missing 'p_session'");
+  if (!p_json) {
+    log_error("Missing 'p_json'");
     return ORCA_MISSING_PARAMETER;
   }
 
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = &discord_session_from_json, 
-             .ok_obj = &p_session 
+             .ok_cb = &sized_buffer_from_json, 
+             .ok_obj = p_json 
            },
            NULL,
            HTTP_GET,
@@ -127,8 +113,8 @@ send_identify(struct discord_gateway *gw)
   /* Ratelimit check */
   if ((ws_timestamp(gw->ws) - gw->session.identify_tstamp) < 5) {
     ++gw->session.concurrent;
-    VASSERT_S(gw->session.concurrent < gw->session.max_concurrency,
-        "Reach identify request threshold (%d every 5 seconds)", gw->session.max_concurrency);
+    VASSERT_S(gw->session.concurrent < gw->session.start_limit.max_concurrency,
+        "Reach identify request threshold (%d every 5 seconds)", gw->session.start_limit.max_concurrency);
   }
   else {
     gw->session.concurrent = 0;
@@ -1274,6 +1260,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
   free(gw->id.properties);
   free(gw->id.presence);
 #endif
+  if (gw->session.url)
+    free(gw->session.url);
   discord_user_cleanup(&gw->bot);
   free(gw->sb_bot.start);
 
@@ -1292,8 +1280,19 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 static void
 event_loop(struct discord_gateway *gw) 
 {
-  // get session info
-  discord_get_gateway_bot(_CLIENT(gw), &gw->session);
+  // get gateway bot info
+  struct sized_buffer json={0};
+  if (discord_get_gateway_bot(_CLIENT(gw), &json)) {
+    ERR("Couldn't retrieve Gateway Bot information");
+  }
+
+  json_extract(json.start, json.size,
+    "(url):?s,(shards):d,(session_start_limit):F",
+    &gw->session.url,
+    &gw->session.shards,
+    &discord_session_start_limit_from_json, 
+    &(struct discord_session_start_limit*){&gw->session.start_limit});
+  free(json.start);
 
   // build URL that will be used to connect to Discord
   char url[1024];
@@ -1306,10 +1305,10 @@ event_loop(struct discord_gateway *gw)
 
   ws_start(gw->ws);
 
-  if (!gw->session.remaining) {
+  if (!gw->session.start_limit.remaining) {
     log_fatal("Reach sessions threshold (%d),"
               "Please wait %d seconds and try again",
-              gw->session.total, gw->session.reset_after/1000);
+              gw->session.start_limit.total, gw->session.start_limit.reset_after/1000);
     return;
   }
 

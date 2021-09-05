@@ -223,9 +223,18 @@ struct discord_gateway {
 
   struct discord_gateway_identify id;              ///< the info sent for connection authentication
   char                            session_id[512]; ///< the session id (for resuming lost connections)
-  struct discord_session          session;         ///< the on-going Discord Gateway session
-  struct discord_user             bot;             ///< the client's user structure
-  struct sized_buffer             sb_bot;          ///< the client's user raw JSON @todo this is temporary
+  struct {
+    char *url;
+    int shards;
+    struct discord_session_start_limit start_limit;
+    int concurrent;                ///< active concurrent sessions
+    u64_unix_ms_t identify_tstamp; ///< timestamp of last succesful identify request
+    u64_unix_ms_t event_tstamp;    ///< timestamp of last succesful event timestamp in ms (resets every 60s)
+    int event_count;               ///< event counter to avoid reaching limit of 120 events per 60 sec
+  } session;
+
+  struct discord_user bot;             ///< the client's user structure
+  struct sized_buffer sb_bot;          ///< the client's user raw JSON @todo this is temporary
   
  // https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
   struct { ///< Response-payload structure

@@ -1,11 +1,12 @@
 {
-  "namespace": ["discord", "gateway"],
+  "namespace": ["discord"],
   "comment":"https://discord.com/developers/docs/topics/gateway",
   "defs":
   [
     {
       "title":"Gateway Close Event Codes",
       "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes",
+      "namespace": ["gateway"],
       "enum":"close_opcodes",
       "items":
       [
@@ -28,6 +29,7 @@
     {
       "title":"Gateway Intents",
       "comment": "https://discord.com/developers/docs/topics/gateway#gateway-intents",
+      "namespace": ["gateway"],
       "enum":"intents",
       "items":
       [
@@ -51,6 +53,7 @@
     {
       "title":"Gateway Opcodes",
       "comment": "https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes",
+      "namespace": ["gateway"],
       "enum":"opcodes",
       "items":
       [
@@ -70,6 +73,7 @@
     {
       "title":"Gateway Events",
       "comment": "https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events",
+      "namespace": ["gateway"],
       "enum":"events",
       "items":
       [
@@ -132,6 +136,7 @@
     {
       "title":"Identify Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-structure",
+      "namespace": ["gateway"],
       "struct":"identify",
       "fields":
       [
@@ -148,6 +153,7 @@
     {
       "title":"Gateway Status Update Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
+      "namespace": ["gateway"],
       "struct":"status_update",
       "fields":
       [
@@ -160,9 +166,9 @@
       ]
     },
     {
-      "namespace": ["identify"],
       "title": "Identify Connection Properties",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties",
+      "namespace": ["gateway", "identify"],
       "struct":"connection",
       "fields":
       [
@@ -174,6 +180,7 @@
     {
       "title":"Activity Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure",
+      "namespace": ["gateway"],
       "struct":"activity",
       "fields":
       [
@@ -194,9 +201,9 @@
       ]
     },
     {
-      "namespace": ["activity"],
       "title":"Activity Types",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-types",
+      "namespace": ["gateway","activity"],
       "enum":"types",
       "items":
       [
@@ -205,6 +212,19 @@
         { "name":"LISTENING","value":2}, 
         { "name":"CUSTOM","value":4}, 
         { "name":"COMPETING","value":5} 
+      ]
+    },
+    {
+      "title":"Session Start Limit Structure",
+      "comment": "https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure",
+      "namespace": ["session"],
+      "struct":"start_limit",
+      "fields":
+      [
+        { "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 },
+        { "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 },
+        { "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 },
+        { "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }
       ]
     }
   ]

@@ -80,6 +80,16 @@
       ]
     },
     {
+      "title":"List Guild Members",
+      "namespace": ["list_guild_members"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 },
+        { "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}
+      ]
+    },
+    {
       "title":"Search Guild Members",
       "namespace": ["search_guild_members"],
       "struct":"params",
