@@ -9,15 +9,18 @@
       "struct":"webhook",
       "fields":
       [
-        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }},
-        { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }},
-        { "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }},
-        { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" },
+        { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }, "comment":"the type of the webhook" },
+        { "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the guild id this webhook is for, if any", "inject_if_not":0 },
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the channel id this webhook is for, if any", "inject_if_not":0 },
+        { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null },
+        { "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]", "comment":"the default name of the webhook", "inject_if_not":"" }},
+        { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"the default user avatar has of the webhook", "inject_if_not":null },
+        { "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"the secure token of the webhook (returned for Incoming Webhooks)", "inject_if_not":null },
+        { "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the bot/OAuth2 application that created this webhook", "inject_if_not":0 },
+        { "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null },
+        { "name": "source_channel", "type":{ "base":"struct discord_channel", "dec":"*" }, "comment":"the channel that this webhook is following (returned for Channel Follower Webhooks)", "inject_if_not":null },
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }
       ]
     },
     {
@@ -27,10 +30,10 @@
       "enum":"types",
       "items":
       [
-        {"name": "INCOMING", "value":1 },
-        {"name": "CHANNEL_FOLLOWER" }
+        {"name": "INCOMING", "value":1, "comment":"Incoming Webhooks can post messages to channels with a generated token" },
+        {"name": "CHANNEL_FOLLOWER", "value":2, "comment":"Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels" },
+        {"name": "APPLICATION", "value":3, "comment":"Application webhooks are webhooks used with interactions" }
       ]
     }
   ]
 }
-
