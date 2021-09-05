@@ -152,8 +152,6 @@ extern void discord_permissions_role_from_json_v(char *json, size_t len, void *p
 extern void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp);
 extern size_t discord_permissions_role_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_permissions_role *p);
-extern size_t discord_permissions_role_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_permissions_role_to_query(char *json, size_t len, struct discord_permissions_role *p);
 extern void discord_permissions_role_list_free_v(void **p);
 extern void discord_permissions_role_list_free(struct discord_permissions_role **p);
 extern void discord_permissions_role_list_from_json_v(char *str, size_t len, void *p);
@@ -226,8 +224,6 @@ extern void discord_permissions_role_tags_from_json_v(char *json, size_t len, vo
 extern void discord_permissions_role_tags_from_json(char *json, size_t len, struct discord_permissions_role_tags **pp);
 extern size_t discord_permissions_role_tags_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_permissions_role_tags_to_json(char *json, size_t len, struct discord_permissions_role_tags *p);
-extern size_t discord_permissions_role_tags_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_permissions_role_tags_to_query(char *json, size_t len, struct discord_permissions_role_tags *p);
 extern void discord_permissions_role_tags_list_free_v(void **p);
 extern void discord_permissions_role_tags_list_free(struct discord_permissions_role_tags **p);
 extern void discord_permissions_role_tags_list_from_json_v(char *str, size_t len, void *p);

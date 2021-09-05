@@ -91,8 +91,6 @@ extern void discord_emoji_from_json_v(char *json, size_t len, void *pp);
 extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp);
 extern size_t discord_emoji_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p);
-extern size_t discord_emoji_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_emoji_to_query(char *json, size_t len, struct discord_emoji *p);
 extern void discord_emoji_list_free_v(void **p);
 extern void discord_emoji_list_free(struct discord_emoji **p);
 extern void discord_emoji_list_from_json_v(char *str, size_t len, void *p);

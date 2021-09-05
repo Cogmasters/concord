@@ -90,8 +90,6 @@ extern void discord_application_command_from_json_v(char *json, size_t len, void
 extern void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp);
 extern size_t discord_application_command_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_to_json(char *json, size_t len, struct discord_application_command *p);
-extern size_t discord_application_command_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_to_query(char *json, size_t len, struct discord_application_command *p);
 extern void discord_application_command_list_free_v(void **p);
 extern void discord_application_command_list_free(struct discord_application_command **p);
 extern void discord_application_command_list_from_json_v(char *str, size_t len, void *p);
@@ -207,8 +205,6 @@ extern void discord_application_command_option_from_json_v(char *json, size_t le
 extern void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp);
 extern size_t discord_application_command_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_to_json(char *json, size_t len, struct discord_application_command_option *p);
-extern size_t discord_application_command_option_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_option_to_query(char *json, size_t len, struct discord_application_command_option *p);
 extern void discord_application_command_option_list_free_v(void **p);
 extern void discord_application_command_option_list_free(struct discord_application_command_option **p);
 extern void discord_application_command_option_list_from_json_v(char *str, size_t len, void *p);
@@ -315,8 +311,6 @@ extern void discord_application_command_option_choice_from_json_v(char *json, si
 extern void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp);
 extern size_t discord_application_command_option_choice_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_choice_to_json(char *json, size_t len, struct discord_application_command_option_choice *p);
-extern size_t discord_application_command_option_choice_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_option_choice_to_query(char *json, size_t len, struct discord_application_command_option_choice *p);
 extern void discord_application_command_option_choice_list_free_v(void **p);
 extern void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **p);
 extern void discord_application_command_option_choice_list_from_json_v(char *str, size_t len, void *p);
@@ -393,8 +387,6 @@ extern void discord_guild_application_command_permissions_from_json_v(char *json
 extern void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions **pp);
 extern size_t discord_guild_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_application_command_permissions_to_json(char *json, size_t len, struct discord_guild_application_command_permissions *p);
-extern size_t discord_guild_application_command_permissions_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_application_command_permissions_to_query(char *json, size_t len, struct discord_guild_application_command_permissions *p);
 extern void discord_guild_application_command_permissions_list_free_v(void **p);
 extern void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **p);
 extern void discord_guild_application_command_permissions_list_from_json_v(char *str, size_t len, void *p);
@@ -467,8 +459,6 @@ extern void discord_application_command_permissions_from_json_v(char *json, size
 extern void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions **pp);
 extern size_t discord_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_permissions_to_json(char *json, size_t len, struct discord_application_command_permissions *p);
-extern size_t discord_application_command_permissions_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_permissions_to_query(char *json, size_t len, struct discord_application_command_permissions *p);
 extern void discord_application_command_permissions_list_free_v(void **p);
 extern void discord_application_command_permissions_list_free(struct discord_application_command_permissions **p);
 extern void discord_application_command_permissions_list_from_json_v(char *str, size_t len, void *p);
@@ -575,8 +565,6 @@ extern void discord_application_command_interaction_data_option_from_json_v(char
 extern void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp);
 extern size_t discord_application_command_interaction_data_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_interaction_data_option_to_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
-extern size_t discord_application_command_interaction_data_option_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_interaction_data_option_to_query(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
 extern void discord_application_command_interaction_data_option_list_free_v(void **p);
 extern void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **p);
 extern void discord_application_command_interaction_data_option_list_from_json_v(char *str, size_t len, void *p);

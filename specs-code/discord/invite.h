@@ -119,8 +119,6 @@ extern void discord_invite_from_json_v(char *json, size_t len, void *pp);
 extern void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp);
 extern size_t discord_invite_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p);
-extern size_t discord_invite_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_invite_to_query(char *json, size_t len, struct discord_invite *p);
 extern void discord_invite_list_free_v(void **p);
 extern void discord_invite_list_free(struct discord_invite **p);
 extern void discord_invite_list_from_json_v(char *str, size_t len, void *p);
@@ -201,8 +199,6 @@ extern void discord_invite_metadata_from_json_v(char *json, size_t len, void *pp
 extern void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata **pp);
 extern size_t discord_invite_metadata_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_invite_metadata *p);
-extern size_t discord_invite_metadata_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_invite_metadata_to_query(char *json, size_t len, struct discord_invite_metadata *p);
 extern void discord_invite_metadata_list_free_v(void **p);
 extern void discord_invite_metadata_list_free(struct discord_invite_metadata **p);
 extern void discord_invite_metadata_list_from_json_v(char *str, size_t len, void *p);

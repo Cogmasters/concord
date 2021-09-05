@@ -140,8 +140,6 @@ extern void github_user_from_json_v(char *json, size_t len, void *pp);
 extern void github_user_from_json(char *json, size_t len, struct github_user **pp);
 extern size_t github_user_to_json_v(char *json, size_t len, void *p);
 extern size_t github_user_to_json(char *json, size_t len, struct github_user *p);
-extern size_t github_user_to_query_v(char *json, size_t len, void *p);
-extern size_t github_user_to_query(char *json, size_t len, struct github_user *p);
 extern void github_user_list_free_v(void **p);
 extern void github_user_list_free(struct github_user **p);
 extern void github_user_list_from_json_v(char *str, size_t len, void *p);

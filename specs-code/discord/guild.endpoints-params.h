@@ -100,8 +100,6 @@ extern void discord_create_guild_params_from_json_v(char *json, size_t len, void
 extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params **pp);
 extern size_t discord_create_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_params_to_json(char *json, size_t len, struct discord_create_guild_params *p);
-extern size_t discord_create_guild_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_params_to_query(char *json, size_t len, struct discord_create_guild_params *p);
 extern void discord_create_guild_params_list_free_v(void **p);
 extern void discord_create_guild_params_list_free(struct discord_create_guild_params **p);
 extern void discord_create_guild_params_list_from_json_v(char *str, size_t len, void *p);
@@ -236,8 +234,6 @@ extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void
 extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params **pp);
 extern size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p);
-extern size_t discord_modify_guild_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_params_to_query(char *json, size_t len, struct discord_modify_guild_params *p);
 extern void discord_modify_guild_params_list_free_v(void **p);
 extern void discord_modify_guild_params_list_free(struct discord_modify_guild_params **p);
 extern void discord_modify_guild_params_list_from_json_v(char *str, size_t len, void *p);
@@ -336,8 +332,6 @@ extern void discord_create_guild_channel_params_from_json_v(char *json, size_t l
 extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params **pp);
 extern size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
-extern size_t discord_create_guild_channel_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_channel_params_to_query(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern void discord_create_guild_channel_params_list_free_v(void **p);
 extern void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **p);
 extern void discord_create_guild_channel_params_list_from_json_v(char *str, size_t len, void *p);
@@ -412,8 +406,6 @@ extern void discord_modify_guild_channel_positions_params_from_json_v(char *json
 extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
 extern size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
-extern size_t discord_modify_guild_channel_positions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_channel_positions_params_to_query(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern void discord_modify_guild_channel_positions_params_list_free_v(void **p);
 extern void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **p);
 extern void discord_modify_guild_channel_positions_params_list_from_json_v(char *str, size_t len, void *p);
@@ -421,8 +413,74 @@ extern void discord_modify_guild_channel_positions_params_list_from_json(char *s
 extern size_t discord_modify_guild_channel_positions_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params **p);
 
-// Search Guild Members
+// List Guild Members
 // defined at specs/discord/guild.endpoints-params.json:85:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_list_guild_members_params_init(struct discord_list_guild_members_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *)`
+ *     * :code:`void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_list_guild_members_params_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params **)`
+ *     * :code:`void discord_list_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_list_guild_members_params_to_json(char *wbuf, size_t len, struct discord_list_guild_members_params *)`
+ *     * :code:`void discord_list_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_list_guild_members_params **)`
+ * @endverbatim
+ */
+struct discord_list_guild_members_params {
+  /* specs/discord/guild.endpoints-params.json:88:20
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
+  int limit; ///< max numbers of members to return (1-1000)
+
+  /* specs/discord/guild.endpoints-params.json:89:20
+     '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
+  u64_snowflake_t after; ///< the highest user id in the previous page
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+/// @endcond
+};
+extern void discord_list_guild_members_params_cleanup_v(void *p);
+extern void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *p);
+extern void discord_list_guild_members_params_init_v(void *p);
+extern void discord_list_guild_members_params_init(struct discord_list_guild_members_params *p);
+extern void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params **pp);
+extern size_t discord_list_guild_members_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_list_guild_members_params_to_json(char *json, size_t len, struct discord_list_guild_members_params *p);
+extern void discord_list_guild_members_params_list_free_v(void **p);
+extern void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **p);
+extern void discord_list_guild_members_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_list_guild_members_params_list_from_json(char *str, size_t len, struct discord_list_guild_members_params ***p);
+extern size_t discord_list_guild_members_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_list_guild_members_params_list_to_json(char *str, size_t len, struct discord_list_guild_members_params **p);
+
+// Search Guild Members
+// defined at specs/discord/guild.endpoints-params.json:95:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -449,11 +507,11 @@ extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *s
  * @endverbatim
  */
 struct discord_search_guild_members_params {
-  /* specs/discord/guild.endpoints-params.json:88:20
+  /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
   char *query; ///< Query string to match username(s) and nickname(s) against.
 
-  /* specs/discord/guild.endpoints-params.json:89:20
+  /* specs/discord/guild.endpoints-params.json:99:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
   int limit; ///< max number of members to return (1-1000)
 
@@ -480,8 +538,6 @@ extern void discord_search_guild_members_params_from_json_v(char *json, size_t l
 extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params **pp);
 extern size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p);
-extern size_t discord_search_guild_members_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_search_guild_members_params_to_query(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern void discord_search_guild_members_params_list_free_v(void **p);
 extern void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **p);
 extern void discord_search_guild_members_params_list_from_json_v(char *str, size_t len, void *p);
@@ -490,7 +546,7 @@ extern size_t discord_search_guild_members_params_list_to_json_v(char *str, size
 extern size_t discord_search_guild_members_params_list_to_json(char *str, size_t len, struct discord_search_guild_members_params **p);
 
 // Add Guild Member
-// defined at specs/discord/guild.endpoints-params.json:95:22
+// defined at specs/discord/guild.endpoints-params.json:105:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -517,23 +573,23 @@ extern size_t discord_search_guild_members_params_list_to_json(char *str, size_t
  * @endverbatim
  */
 struct discord_add_guild_member_params {
-  /* specs/discord/guild.endpoints-params.json:98:20
+  /* specs/discord/guild.endpoints-params.json:108:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *access_token;
 
-  /* specs/discord/guild.endpoints-params.json:99:20
+  /* specs/discord/guild.endpoints-params.json:109:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *nick;
 
-  /* specs/discord/guild.endpoints-params.json:100:20
+  /* specs/discord/guild.endpoints-params.json:110:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **roles;
 
-  /* specs/discord/guild.endpoints-params.json:101:20
+  /* specs/discord/guild.endpoints-params.json:111:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mute;
 
-  /* specs/discord/guild.endpoints-params.json:102:20
+  /* specs/discord/guild.endpoints-params.json:112:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
@@ -560,8 +616,6 @@ extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, 
 extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params **pp);
 extern size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p);
-extern size_t discord_add_guild_member_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_add_guild_member_params_to_query(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern void discord_add_guild_member_params_list_free_v(void **p);
 extern void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **p);
 extern void discord_add_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
@@ -570,7 +624,7 @@ extern size_t discord_add_guild_member_params_list_to_json_v(char *str, size_t l
 extern size_t discord_add_guild_member_params_list_to_json(char *str, size_t len, struct discord_add_guild_member_params **p);
 
 // Modify Guild Member
-// defined at specs/discord/guild.endpoints-params.json:108:22
+// defined at specs/discord/guild.endpoints-params.json:118:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -597,23 +651,23 @@ extern size_t discord_add_guild_member_params_list_to_json(char *str, size_t len
  * @endverbatim
  */
 struct discord_modify_guild_member_params {
-  /* specs/discord/guild.endpoints-params.json:111:20
+  /* specs/discord/guild.endpoints-params.json:121:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
-  /* specs/discord/guild.endpoints-params.json:112:20
+  /* specs/discord/guild.endpoints-params.json:122:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **roles;
 
-  /* specs/discord/guild.endpoints-params.json:113:20
+  /* specs/discord/guild.endpoints-params.json:123:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mute;
 
-  /* specs/discord/guild.endpoints-params.json:114:20
+  /* specs/discord/guild.endpoints-params.json:124:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
-  /* specs/discord/guild.endpoints-params.json:115:20
+  /* specs/discord/guild.endpoints-params.json:125:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
   u64_snowflake_t channel_id;
 
@@ -640,8 +694,6 @@ extern void discord_modify_guild_member_params_from_json_v(char *json, size_t le
 extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params **pp);
 extern size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
-extern size_t discord_modify_guild_member_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_member_params_to_query(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern void discord_modify_guild_member_params_list_free_v(void **p);
 extern void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **p);
 extern void discord_modify_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
@@ -650,7 +702,7 @@ extern size_t discord_modify_guild_member_params_list_to_json_v(char *str, size_
 extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_modify_guild_member_params **p);
 
 // Create Guild Role
-// defined at specs/discord/guild.endpoints-params.json:121:22
+// defined at specs/discord/guild.endpoints-params.json:131:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -677,23 +729,23 @@ extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t 
  * @endverbatim
  */
 struct discord_create_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:124:20
+  /* specs/discord/guild.endpoints-params.json:134:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.endpoints-params.json:125:20
+  /* specs/discord/guild.endpoints-params.json:135:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "inject_if_not":0}' */
   enum discord_permissions_bitwise_flags permissions;
 
-  /* specs/discord/guild.endpoints-params.json:126:20
+  /* specs/discord/guild.endpoints-params.json:136:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/guild.endpoints-params.json:127:20
+  /* specs/discord/guild.endpoints-params.json:137:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool hoist;
 
-  /* specs/discord/guild.endpoints-params.json:128:20
+  /* specs/discord/guild.endpoints-params.json:138:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mentionable;
 
@@ -720,8 +772,6 @@ extern void discord_create_guild_role_params_from_json_v(char *json, size_t len,
 extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params **pp);
 extern size_t discord_create_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct discord_create_guild_role_params *p);
-extern size_t discord_create_guild_role_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_role_params_to_query(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_list_free_v(void **p);
 extern void discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **p);
 extern void discord_create_guild_role_params_list_from_json_v(char *str, size_t len, void *p);
@@ -730,7 +780,7 @@ extern size_t discord_create_guild_role_params_list_to_json_v(char *str, size_t 
 extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t len, struct discord_create_guild_role_params **p);
 
 // Modify Guild Role Positions
-// defined at specs/discord/guild.endpoints-params.json:134:22
+// defined at specs/discord/guild.endpoints-params.json:144:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -757,11 +807,11 @@ extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_modify_guild_role_positions_params {
-  /* specs/discord/guild.endpoints-params.json:137:20
+  /* specs/discord/guild.endpoints-params.json:147:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
   u64_snowflake_t id; ///< role
 
-  /* specs/discord/guild.endpoints-params.json:138:20
+  /* specs/discord/guild.endpoints-params.json:148:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
   int position; ///< sorting position of the role
 
@@ -788,8 +838,6 @@ extern void discord_modify_guild_role_positions_params_from_json_v(char *json, s
 extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
 extern size_t discord_modify_guild_role_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
-extern size_t discord_modify_guild_role_positions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_role_positions_params_to_query(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern void discord_modify_guild_role_positions_params_list_free_v(void **p);
 extern void discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **p);
 extern void discord_modify_guild_role_positions_params_list_from_json_v(char *str, size_t len, void *p);
@@ -798,7 +846,7 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json_v(char *st
 extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_role_positions_params **p);
 
 // Modify Guild Role
-// defined at specs/discord/guild.endpoints-params.json:144:22
+// defined at specs/discord/guild.endpoints-params.json:154:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -825,23 +873,23 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str,
  * @endverbatim
  */
 struct discord_modify_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:147:20
+  /* specs/discord/guild.endpoints-params.json:157:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
   char *name; ///< name of the role
 
-  /* specs/discord/guild.endpoints-params.json:148:20
+  /* specs/discord/guild.endpoints-params.json:158:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
   enum discord_permissions_bitwise_flags permissions; ///< bitwise value of the enabled/disabled permissions
 
-  /* specs/discord/guild.endpoints-params.json:149:20
+  /* specs/discord/guild.endpoints-params.json:159:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
   int color; ///< RGB color value
 
-  /* specs/discord/guild.endpoints-params.json:150:20
+  /* specs/discord/guild.endpoints-params.json:160:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
   bool hoist; ///< whether the role should be displayed separately in the sidebar
 
-  /* specs/discord/guild.endpoints-params.json:151:20
+  /* specs/discord/guild.endpoints-params.json:161:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
   bool mentionable; ///< whether the role should be mentionable
 
@@ -868,8 +916,6 @@ extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len,
 extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params **pp);
 extern size_t discord_modify_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
-extern size_t discord_modify_guild_role_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_role_params_to_query(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern void discord_modify_guild_role_params_list_free_v(void **p);
 extern void discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **p);
 extern void discord_modify_guild_role_params_list_from_json_v(char *str, size_t len, void *p);
@@ -878,7 +924,7 @@ extern size_t discord_modify_guild_role_params_list_to_json_v(char *str, size_t 
 extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t len, struct discord_modify_guild_role_params **p);
 
 // Get Guild Prune Count
-// defined at specs/discord/guild.endpoints-params.json:157:22
+// defined at specs/discord/guild.endpoints-params.json:167:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -905,11 +951,11 @@ extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_get_guild_prune_count_params {
-  /* specs/discord/guild.endpoints-params.json:160:20
+  /* specs/discord/guild.endpoints-params.json:170:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:161:20
+  /* specs/discord/guild.endpoints-params.json:171:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
@@ -936,8 +982,6 @@ extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t 
 extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
 extern size_t discord_get_guild_prune_count_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
-extern size_t discord_get_guild_prune_count_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_get_guild_prune_count_params_to_query(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern void discord_get_guild_prune_count_params_list_free_v(void **p);
 extern void discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **p);
 extern void discord_get_guild_prune_count_params_list_from_json_v(char *str, size_t len, void *p);
@@ -946,7 +990,7 @@ extern size_t discord_get_guild_prune_count_params_list_to_json_v(char *str, siz
 extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_t len, struct discord_get_guild_prune_count_params **p);
 
 // Begin Guild Prune
-// defined at specs/discord/guild.endpoints-params.json:167:22
+// defined at specs/discord/guild.endpoints-params.json:177:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -973,19 +1017,19 @@ extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_
  * @endverbatim
  */
 struct discord_begin_guild_prune_params {
-  /* specs/discord/guild.endpoints-params.json:170:20
+  /* specs/discord/guild.endpoints-params.json:180:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:171:20
+  /* specs/discord/guild.endpoints-params.json:181:20
      '{ "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool compute_prune_count;
 
-  /* specs/discord/guild.endpoints-params.json:172:20
+  /* specs/discord/guild.endpoints-params.json:182:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
-  /* specs/discord/guild.endpoints-params.json:173:20
+  /* specs/discord/guild.endpoints-params.json:183:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *reason;
 
@@ -1012,8 +1056,6 @@ extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len,
 extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
 extern size_t discord_begin_guild_prune_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
-extern size_t discord_begin_guild_prune_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_begin_guild_prune_params_to_query(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern void discord_begin_guild_prune_params_list_free_v(void **p);
 extern void discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **p);
 extern void discord_begin_guild_prune_params_list_from_json_v(char *str, size_t len, void *p);

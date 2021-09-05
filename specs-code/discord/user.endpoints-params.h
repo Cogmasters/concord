@@ -64,8 +64,6 @@ extern void discord_modify_current_user_params_from_json_v(char *json, size_t le
 extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params **pp);
 extern size_t discord_modify_current_user_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct discord_modify_current_user_params *p);
-extern size_t discord_modify_current_user_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_current_user_params_to_query(char *json, size_t len, struct discord_modify_current_user_params *p);
 extern void discord_modify_current_user_params_list_free_v(void **p);
 extern void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **p);
 extern void discord_modify_current_user_params_list_from_json_v(char *str, size_t len, void *p);
@@ -134,8 +132,6 @@ extern void discord_create_group_dm_params_from_json_v(char *json, size_t len, v
 extern void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params **pp);
 extern size_t discord_create_group_dm_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct discord_create_group_dm_params *p);
-extern size_t discord_create_group_dm_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_group_dm_params_to_query(char *json, size_t len, struct discord_create_group_dm_params *p);
 extern void discord_create_group_dm_params_list_free_v(void **p);
 extern void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **p);
 extern void discord_create_group_dm_params_list_from_json_v(char *str, size_t len, void *p);

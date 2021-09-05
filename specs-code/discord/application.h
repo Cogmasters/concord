@@ -114,8 +114,6 @@ extern void discord_application_identify_from_json_v(char *json, size_t len, voi
 extern void discord_application_identify_from_json(char *json, size_t len, struct discord_application_identify **pp);
 extern size_t discord_application_identify_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_identify_to_json(char *json, size_t len, struct discord_application_identify *p);
-extern size_t discord_application_identify_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_identify_to_query(char *json, size_t len, struct discord_application_identify *p);
 extern void discord_application_identify_list_free_v(void **p);
 extern void discord_application_identify_list_free(struct discord_application_identify **p);
 extern void discord_application_identify_list_from_json_v(char *str, size_t len, void *p);

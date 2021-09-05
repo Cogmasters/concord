@@ -170,54 +170,75 @@ struct discord_modify_channel_params;
 
 // defined at specs/discord/channel.endpoints-params.json:33:22
 /**
+ * @brief Create Message
+ *
+ */
+struct discord_create_message_params;
+
+// defined at specs/discord/channel.endpoints-params.json:51:22
+/**
+ * @brief Get Channel Messages
+ *
+ */
+struct discord_get_channel_messages_params;
+
+// defined at specs/discord/channel.endpoints-params.json:63:22
+/**
  * @brief Get Reactions
  *
  */
 struct discord_get_reactions_params;
 
-// defined at specs/discord/channel.endpoints-params.json:43:22
+// defined at specs/discord/channel.endpoints-params.json:73:22
 /**
  * @brief Edit Channel Permissions
  *
  */
 struct discord_edit_channel_permissions_params;
 
-// defined at specs/discord/channel.endpoints-params.json:54:22
+// defined at specs/discord/channel.endpoints-params.json:84:22
+/**
+ * @brief Edit Message
+ *
+ */
+struct discord_edit_message_params;
+
+// defined at specs/discord/channel.endpoints-params.json:101:22
 /**
  * @brief Follow News Channel
  *
  */
 struct discord_follow_news_channel_params;
 
-// defined at specs/discord/channel.endpoints-params.json:63:22
+// defined at specs/discord/channel.endpoints-params.json:110:22
 /**
  * @brief Create Channel Invite
  *
  */
 struct discord_create_channel_invite_params;
 
-// defined at specs/discord/channel.endpoints-params.json:78:22
+// defined at specs/discord/channel.endpoints-params.json:125:22
 /**
  * @brief Group DM Add Recipient
  *
  */
 struct discord_group_dm_add_recipient_params;
 
-// defined at specs/discord/channel.endpoints-params.json:88:22
+// defined at specs/discord/channel.endpoints-params.json:135:22
 /**
  * @brief Start Thread with Message
  *
  */
 struct discord_start_thread_with_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:98:22
+// defined at specs/discord/channel.endpoints-params.json:145:22
 /**
  * @brief Start Thread without Message
  *
  */
 struct discord_start_thread_without_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:109:22
+// defined at specs/discord/channel.endpoints-params.json:156:22
 /**
  * @brief List Active Threads
  *
@@ -443,7 +464,7 @@ struct discord_emoji;
 
 
 
-// defined at specs/discord/gateway.json:135:22
+// defined at specs/discord/gateway.json:140:22
 /**
  * @brief Identify Structure
  *
@@ -451,7 +472,7 @@ struct discord_emoji;
  */
 struct discord_gateway_identify;
 
-// defined at specs/discord/gateway.json:151:22
+// defined at specs/discord/gateway.json:157:22
 /**
  * @brief Gateway Status Update Structure
  *
@@ -459,7 +480,7 @@ struct discord_gateway_identify;
  */
 struct discord_gateway_status_update;
 
-// defined at specs/discord/gateway.json:166:22
+// defined at specs/discord/gateway.json:172:22
 /**
  * @brief Identify Connection Properties
  *
@@ -467,7 +488,7 @@ struct discord_gateway_status_update;
  */
 struct discord_gateway_identify_connection;
 
-// defined at specs/discord/gateway.json:177:22
+// defined at specs/discord/gateway.json:184:22
 /**
  * @brief Activity Structure
  *
@@ -476,6 +497,14 @@ struct discord_gateway_identify_connection;
 struct discord_gateway_activity;
 
 
+
+// defined at specs/discord/gateway.json:221:22
+/**
+ * @brief Session Start Limit Structure
+ *
+ * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure
+ */
+struct discord_session_start_limit;
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
 // defined at specs/discord/guild-template.endpoints-params.json:9:22
@@ -539,54 +568,61 @@ struct discord_modify_guild_channel_positions_params;
 
 // defined at specs/discord/guild.endpoints-params.json:85:22
 /**
+ * @brief List Guild Members
+ *
+ */
+struct discord_list_guild_members_params;
+
+// defined at specs/discord/guild.endpoints-params.json:95:22
+/**
  * @brief Search Guild Members
  *
  */
 struct discord_search_guild_members_params;
 
-// defined at specs/discord/guild.endpoints-params.json:95:22
+// defined at specs/discord/guild.endpoints-params.json:105:22
 /**
  * @brief Add Guild Member
  *
  */
 struct discord_add_guild_member_params;
 
-// defined at specs/discord/guild.endpoints-params.json:108:22
+// defined at specs/discord/guild.endpoints-params.json:118:22
 /**
  * @brief Modify Guild Member
  *
  */
 struct discord_modify_guild_member_params;
 
-// defined at specs/discord/guild.endpoints-params.json:121:22
+// defined at specs/discord/guild.endpoints-params.json:131:22
 /**
  * @brief Create Guild Role
  *
  */
 struct discord_create_guild_role_params;
 
-// defined at specs/discord/guild.endpoints-params.json:134:22
+// defined at specs/discord/guild.endpoints-params.json:144:22
 /**
  * @brief Modify Guild Role Positions
  *
  */
 struct discord_modify_guild_role_positions_params;
 
-// defined at specs/discord/guild.endpoints-params.json:144:22
+// defined at specs/discord/guild.endpoints-params.json:154:22
 /**
  * @brief Modify Guild Role
  *
  */
 struct discord_modify_guild_role_params;
 
-// defined at specs/discord/guild.endpoints-params.json:157:22
+// defined at specs/discord/guild.endpoints-params.json:167:22
 /**
  * @brief Get Guild Prune Count
  *
  */
 struct discord_get_guild_prune_count_params;
 
-// defined at specs/discord/guild.endpoints-params.json:167:22
+// defined at specs/discord/guild.endpoints-params.json:177:22
 /**
  * @brief Begin Guild Prune
  *
@@ -761,6 +797,14 @@ struct discord_select_menu;
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
  */
 struct discord_select_option;
+/* This file is generated from specs/discord/misc.json, Please don't edit it. */
+
+// defined at specs/discord/misc.json:7:22
+/**
+ * @brief Custom File Structure
+ *
+ */
+struct discord_file;
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -914,12 +958,19 @@ struct discord_modify_webhook_params;
 
 // defined at specs/discord/webhook.endpoints-params.json:30:22
 /**
+ * @brief Modify Webhook with Token
+ *
+ */
+struct discord_modify_webhook_with_token_params;
+
+// defined at specs/discord/webhook.endpoints-params.json:40:22
+/**
  * @brief Execute Webhook
  *
  */
 struct discord_execute_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:50:22
+// defined at specs/discord/webhook.endpoints-params.json:60:22
 /**
  * @brief Edit Webhook Message
  *
@@ -1366,7 +1417,7 @@ extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, 
 
 
 // Gateway Intents
-// defined at specs/discord/gateway.json:28:5
+// defined at specs/discord/gateway.json:29:5
 /**
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  *
@@ -1409,7 +1460,7 @@ extern size_t discord_gateway_intents_list_to_json(char *str, size_t len, enum d
 
 
 // Gateway Opcodes
-// defined at specs/discord/gateway.json:51:5
+// defined at specs/discord/gateway.json:53:5
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
  *
@@ -1448,7 +1499,7 @@ extern size_t discord_gateway_opcodes_list_to_json(char *str, size_t len, enum d
 
 
 // Gateway Events
-// defined at specs/discord/gateway.json:70:5
+// defined at specs/discord/gateway.json:73:5
 /**
  * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
  *
@@ -1530,7 +1581,7 @@ extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum di
 
 
 // Activity Types
-// defined at specs/discord/gateway.json:196:5
+// defined at specs/discord/gateway.json:203:5
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
@@ -1919,6 +1970,7 @@ extern void discord_button_styles_list_from_json_v(char *str, size_t len, void *
 extern void discord_button_styles_list_from_json(char *str, size_t len, enum discord_button_styles ***p);
 extern size_t discord_button_styles_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_button_styles **p);
+/* This file is generated from specs/discord/misc.json, Please don't edit it. */
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -3837,8 +3889,152 @@ struct discord_modify_channel_params {
 /// @endcond
 };
 
-// Get Reactions
+// Create Message
 // defined at specs/discord/channel.endpoints-params.json:33:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_message_params_init(struct discord_create_message_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_message_params_cleanup(struct discord_create_message_params *)`
+ *     * :code:`void discord_create_message_params_list_free(struct discord_create_message_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_message_params_from_json(char *rbuf, size_t len, struct discord_create_message_params **)`
+ *     * :code:`void discord_create_message_params_list_from_json(char *rbuf, size_t len, struct discord_create_message_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_message_params_to_json(char *wbuf, size_t len, struct discord_create_message_params *)`
+ *     * :code:`void discord_create_message_params_list_to_json(char *wbuf, size_t len, struct discord_create_message_params **)`
+ * @endverbatim
+ */
+struct discord_create_message_params {
+  /* specs/discord/channel.endpoints-params.json:36:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
+  char *content; ///< the message contents (up to 2000 characters)
+
+  /* specs/discord/channel.endpoints-params.json:37:20
+     '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
+  bool tts; ///< true if this is a TTS message
+
+  /* specs/discord/channel.endpoints-params.json:38:20
+     '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
+  struct discord_file *file; ///< the contents of the file being sent
+
+  /* specs/discord/channel.endpoints-params.json:39:20
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
+  struct discord_embed **embeds; ///< embedded rich content (up to 6000 characters)
+
+  /* specs/discord/channel.endpoints-params.json:40:20
+     '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
+  struct discord_embed *embed; ///< embedded rich content, deprecated in favor of embeds
+
+  /* specs/discord/channel.endpoints-params.json:41:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
+  char *payload_json; ///< JSON encoded body of non-file params
+
+  /* specs/discord/channel.endpoints-params.json:42:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+
+  /* specs/discord/channel.endpoints-params.json:43:20
+     '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
+  struct discord_message_reference *message_reference; ///< include to make your message a reply
+
+  /* specs/discord/channel.endpoints-params.json:44:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+  struct discord_component **components; ///< the components to include with the message
+
+  /* specs/discord/channel.endpoints-params.json:45:20
+     '{ "name": "sticker_ids", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"ids of up to 3 stickers in the server to send in the message", "inject_if_not":null }' */
+  ja_u64 **sticker_ids; ///< ids of up to 3 stickers in the server to send in the message
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[10];
+    void *record_defined[10];
+    void *record_null[10];
+  } __M; // metadata
+/// @endcond
+};
+
+// Get Channel Messages
+// defined at specs/discord/channel.endpoints-params.json:51:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_get_channel_messages_params_init(struct discord_get_channel_messages_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_get_channel_messages_params_cleanup(struct discord_get_channel_messages_params *)`
+ *     * :code:`void discord_get_channel_messages_params_list_free(struct discord_get_channel_messages_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_get_channel_messages_params_from_json(char *rbuf, size_t len, struct discord_get_channel_messages_params **)`
+ *     * :code:`void discord_get_channel_messages_params_list_from_json(char *rbuf, size_t len, struct discord_get_channel_messages_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_get_channel_messages_params_to_json(char *wbuf, size_t len, struct discord_get_channel_messages_params *)`
+ *     * :code:`void discord_get_channel_messages_params_list_to_json(char *wbuf, size_t len, struct discord_get_channel_messages_params **)`
+ * @endverbatim
+ */
+struct discord_get_channel_messages_params {
+  /* specs/discord/channel.endpoints-params.json:54:20
+     '{ "name": "around", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages around this message ID", "inject_if_not":0 }' */
+  u64_snowflake_t around; ///< get messages around this message ID
+
+  /* specs/discord/channel.endpoints-params.json:55:20
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages before this message ID", "inject_if_not":0 }' */
+  u64_snowflake_t before; ///< get messages before this message ID
+
+  /* specs/discord/channel.endpoints-params.json:56:20
+     '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages after this message ID", "inject_if_not":0 }' */
+  u64_snowflake_t after; ///< get messages after this message ID
+
+  /* specs/discord/channel.endpoints-params.json:57:20
+     '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
+  int limit; ///< max number of messages to return (1-100)
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
+
+// Get Reactions
+// defined at specs/discord/channel.endpoints-params.json:63:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3865,11 +4061,11 @@ struct discord_modify_channel_params {
  * @endverbatim
  */
 struct discord_get_reactions_params {
-  /* specs/discord/channel.endpoints-params.json:36:20
+  /* specs/discord/channel.endpoints-params.json:66:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}' */
   u64_snowflake_t after;
 
-  /* specs/discord/channel.endpoints-params.json:37:20
+  /* specs/discord/channel.endpoints-params.json:67:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
   int limit;
 
@@ -3890,7 +4086,7 @@ struct discord_get_reactions_params {
 };
 
 // Edit Channel Permissions
-// defined at specs/discord/channel.endpoints-params.json:43:22
+// defined at specs/discord/channel.endpoints-params.json:73:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3917,15 +4113,15 @@ struct discord_get_reactions_params {
  * @endverbatim
  */
 struct discord_edit_channel_permissions_params {
-  /* specs/discord/channel.endpoints-params.json:46:20
+  /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
   enum discord_permissions_bitwise_flags allow; ///< permission bit set
 
-  /* specs/discord/channel.endpoints-params.json:47:20
+  /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
   enum discord_permissions_bitwise_flags deny; ///< permission bit set
 
-  /* specs/discord/channel.endpoints-params.json:48:20
+  /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
@@ -3945,8 +4141,88 @@ struct discord_edit_channel_permissions_params {
 /// @endcond
 };
 
+// Edit Message
+// defined at specs/discord/channel.endpoints-params.json:84:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_edit_message_params_init(struct discord_edit_message_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_edit_message_params_cleanup(struct discord_edit_message_params *)`
+ *     * :code:`void discord_edit_message_params_list_free(struct discord_edit_message_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_edit_message_params_from_json(char *rbuf, size_t len, struct discord_edit_message_params **)`
+ *     * :code:`void discord_edit_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_message_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_edit_message_params_to_json(char *wbuf, size_t len, struct discord_edit_message_params *)`
+ *     * :code:`void discord_edit_message_params_list_to_json(char *wbuf, size_t len, struct discord_edit_message_params **)`
+ * @endverbatim
+ */
+struct discord_edit_message_params {
+  /* specs/discord/channel.endpoints-params.json:87:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
+  char *content; ///< the message contents (up to 2000 characters)
+
+  /* specs/discord/channel.endpoints-params.json:88:20
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
+  struct discord_embed **embeds; ///< embedded rich content (up to 6000 characters)
+
+  /* specs/discord/channel.endpoints-params.json:89:20
+     '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
+  struct discord_embed *embed; ///< embedded rich content, deprecated in favor of embeds
+
+  /* specs/discord/channel.endpoints-params.json:90:20
+     '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
+  enum discord_message_flags flags; ///< edit the flags of a message
+
+  /* specs/discord/channel.endpoints-params.json:91:20
+     '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
+  struct discord_file *file; ///< the contents of the file being sent
+
+  /* specs/discord/channel.endpoints-params.json:92:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
+  char *payload_json; ///< JSON encoded body of non-file params
+
+  /* specs/discord/channel.endpoints-params.json:93:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+
+  /* specs/discord/channel.endpoints-params.json:94:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_channel_attachment **attachments; ///< attached files to keep
+
+  /* specs/discord/channel.endpoints-params.json:95:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+  struct discord_component **components; ///< the components to include with the message
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[9];
+    void *record_defined[9];
+    void *record_null[9];
+  } __M; // metadata
+/// @endcond
+};
+
 // Follow News Channel
-// defined at specs/discord/channel.endpoints-params.json:54:22
+// defined at specs/discord/channel.endpoints-params.json:101:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3973,7 +4249,7 @@ struct discord_edit_channel_permissions_params {
  * @endverbatim
  */
 struct discord_follow_news_channel_params {
-  /* specs/discord/channel.endpoints-params.json:57:20
+  /* specs/discord/channel.endpoints-params.json:104:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   u64_snowflake_t webhook_channel_id;
 
@@ -3994,7 +4270,7 @@ struct discord_follow_news_channel_params {
 };
 
 // Create Channel Invite
-// defined at specs/discord/channel.endpoints-params.json:63:22
+// defined at specs/discord/channel.endpoints-params.json:110:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4021,31 +4297,31 @@ struct discord_follow_news_channel_params {
  * @endverbatim
  */
 struct discord_create_channel_invite_params {
-  /* specs/discord/channel.endpoints-params.json:66:20
+  /* specs/discord/channel.endpoints-params.json:113:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
   int max_age;
 
-  /* specs/discord/channel.endpoints-params.json:67:20
+  /* specs/discord/channel.endpoints-params.json:114:20
      '{ "name": "max_uses", "type":{ "base":"int" }}' */
   int max_uses;
 
-  /* specs/discord/channel.endpoints-params.json:68:20
+  /* specs/discord/channel.endpoints-params.json:115:20
      '{ "name": "temporary", "type":{ "base":"bool" }}' */
   bool temporary;
 
-  /* specs/discord/channel.endpoints-params.json:69:20
+  /* specs/discord/channel.endpoints-params.json:116:20
      '{ "name": "unique", "type":{ "base":"bool" }}' */
   bool unique;
 
-  /* specs/discord/channel.endpoints-params.json:70:20
+  /* specs/discord/channel.endpoints-params.json:117:20
      '{ "name": "target_type", "type":{ "base":"int" }, "option":true, "inject_if_not":0 }' */
   int target_type;
 
-  /* specs/discord/channel.endpoints-params.json:71:20
+  /* specs/discord/channel.endpoints-params.json:118:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_user_id;
 
-  /* specs/discord/channel.endpoints-params.json:72:20
+  /* specs/discord/channel.endpoints-params.json:119:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_application_id;
 
@@ -4066,7 +4342,7 @@ struct discord_create_channel_invite_params {
 };
 
 // Group DM Add Recipient
-// defined at specs/discord/channel.endpoints-params.json:78:22
+// defined at specs/discord/channel.endpoints-params.json:125:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4093,11 +4369,11 @@ struct discord_create_channel_invite_params {
  * @endverbatim
  */
 struct discord_group_dm_add_recipient_params {
-  /* specs/discord/channel.endpoints-params.json:81:20
+  /* specs/discord/channel.endpoints-params.json:128:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
   char *access_token;
 
-  /* specs/discord/channel.endpoints-params.json:82:20
+  /* specs/discord/channel.endpoints-params.json:129:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
@@ -4118,7 +4394,7 @@ struct discord_group_dm_add_recipient_params {
 };
 
 // Start Thread with Message
-// defined at specs/discord/channel.endpoints-params.json:88:22
+// defined at specs/discord/channel.endpoints-params.json:135:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4145,11 +4421,11 @@ struct discord_group_dm_add_recipient_params {
  * @endverbatim
  */
 struct discord_start_thread_with_message_params {
-  /* specs/discord/channel.endpoints-params.json:91:20
+  /* specs/discord/channel.endpoints-params.json:138:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:92:20
+  /* specs/discord/channel.endpoints-params.json:139:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
@@ -4170,7 +4446,7 @@ struct discord_start_thread_with_message_params {
 };
 
 // Start Thread without Message
-// defined at specs/discord/channel.endpoints-params.json:98:22
+// defined at specs/discord/channel.endpoints-params.json:145:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4197,15 +4473,15 @@ struct discord_start_thread_with_message_params {
  * @endverbatim
  */
 struct discord_start_thread_without_message_params {
-  /* specs/discord/channel.endpoints-params.json:101:20
+  /* specs/discord/channel.endpoints-params.json:148:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:102:20
+  /* specs/discord/channel.endpoints-params.json:149:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
-  /* specs/discord/channel.endpoints-params.json:103:20
+  /* specs/discord/channel.endpoints-params.json:150:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   enum discord_channel_types type;
 
@@ -4226,7 +4502,7 @@ struct discord_start_thread_without_message_params {
 };
 
 // List Active Threads
-// defined at specs/discord/channel.endpoints-params.json:109:22
+// defined at specs/discord/channel.endpoints-params.json:156:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4253,15 +4529,15 @@ struct discord_start_thread_without_message_params {
  * @endverbatim
  */
 struct discord_thread_response_body {
-  /* specs/discord/channel.endpoints-params.json:112:20
+  /* specs/discord/channel.endpoints-params.json:159:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
   struct discord_channel **threads;
 
-  /* specs/discord/channel.endpoints-params.json:113:20
+  /* specs/discord/channel.endpoints-params.json:160:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
   struct discord_thread_member **members;
 
-  /* specs/discord/channel.endpoints-params.json:114:20
+  /* specs/discord/channel.endpoints-params.json:161:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   bool has_more;
 
@@ -6070,7 +6346,7 @@ struct discord_emoji {
 
 
 // Identify Structure
-// defined at specs/discord/gateway.json:135:22
+// defined at specs/discord/gateway.json:140:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
@@ -6099,35 +6375,35 @@ struct discord_emoji {
  * @endverbatim
  */
 struct discord_gateway_identify {
-  /* specs/discord/gateway.json:138:19
+  /* specs/discord/gateway.json:143:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
   char *token;
 
-  /* specs/discord/gateway.json:139:19
+  /* specs/discord/gateway.json:144:19
      '{ "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}}' */
   struct discord_gateway_identify_connection *properties;
 
-  /* specs/discord/gateway.json:140:19
+  /* specs/discord/gateway.json:145:19
      '{ "name":"compress","type":{"base":"bool"}}' */
   bool compress;
 
-  /* specs/discord/gateway.json:141:19
+  /* specs/discord/gateway.json:146:19
      '{ "name":"large_threshold","type":{"base":"int"}}' */
   int large_threshold;
 
-  /* specs/discord/gateway.json:142:19
+  /* specs/discord/gateway.json:147:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
   bool guild_subscriptions;
 
-  /* specs/discord/gateway.json:143:19
+  /* specs/discord/gateway.json:148:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   // @todo shard (null);
 
-  /* specs/discord/gateway.json:144:19
+  /* specs/discord/gateway.json:149:19
      '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
   struct discord_gateway_status_update *presence;
 
-  /* specs/discord/gateway.json:145:19
+  /* specs/discord/gateway.json:150:19
      '{ "name":"intents","type":{"base":"int"}}' */
   int intents;
 
@@ -6148,7 +6424,7 @@ struct discord_gateway_identify {
 };
 
 // Gateway Status Update Structure
-// defined at specs/discord/gateway.json:151:22
+// defined at specs/discord/gateway.json:157:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
  *
@@ -6177,21 +6453,21 @@ struct discord_gateway_identify {
  * @endverbatim
  */
 struct discord_gateway_status_update {
-  /* specs/discord/gateway.json:154:19
+  /* specs/discord/gateway.json:160:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }' */
   u64_unix_ms_t since;
 
-  /* specs/discord/gateway.json:156:19
+  /* specs/discord/gateway.json:162:19
      '{ "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null}' */
   struct discord_gateway_activity **activities;
 
-  /* specs/discord/gateway.json:158:19
+  /* specs/discord/gateway.json:164:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
   char status[16];
 
-  /* specs/discord/gateway.json:159:19
+  /* specs/discord/gateway.json:165:19
      '{ "name":"afk","type":{"base":"bool"}}' */
   bool afk;
 
@@ -6212,7 +6488,7 @@ struct discord_gateway_status_update {
 };
 
 // Identify Connection Properties
-// defined at specs/discord/gateway.json:166:22
+// defined at specs/discord/gateway.json:172:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
@@ -6241,15 +6517,15 @@ struct discord_gateway_status_update {
  * @endverbatim
  */
 struct discord_gateway_identify_connection {
-  /* specs/discord/gateway.json:169:19
+  /* specs/discord/gateway.json:175:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}}' */
   char *os;
 
-  /* specs/discord/gateway.json:170:19
+  /* specs/discord/gateway.json:176:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}}' */
   char *browser;
 
-  /* specs/discord/gateway.json:171:19
+  /* specs/discord/gateway.json:177:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}' */
   char *device;
 
@@ -6270,7 +6546,7 @@ struct discord_gateway_identify_connection {
 };
 
 // Activity Structure
-// defined at specs/discord/gateway.json:177:22
+// defined at specs/discord/gateway.json:184:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
@@ -6299,40 +6575,40 @@ struct discord_gateway_identify_connection {
  * @endverbatim
  */
 struct discord_gateway_activity {
-  /* specs/discord/gateway.json:180:19
+  /* specs/discord/gateway.json:187:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
   char name[512];
 
-  /* specs/discord/gateway.json:181:19
+  /* specs/discord/gateway.json:188:19
      '{ "name":"type","type":{"base":"int"}}' */
   int type;
 
-  /* specs/discord/gateway.json:182:19
+  /* specs/discord/gateway.json:189:19
      '{ "name":"url","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":""}' */
   char *url;
 
-  /* specs/discord/gateway.json:184:19
+  /* specs/discord/gateway.json:191:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 }' */
   u64_unix_ms_t created_at;
 
-  /* specs/discord/gateway.json:186:19
+  /* specs/discord/gateway.json:193:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
           "option":true, "inject_if_not":0 }' */
   u64_snowflake_t application_id;
 
-  /* specs/discord/gateway.json:188:19
+  /* specs/discord/gateway.json:195:19
      '{ "name":"details","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}' */
   char *details;
 
-  /* specs/discord/gateway.json:190:19
+  /* specs/discord/gateway.json:197:19
      '{ "name":"state","type":{"base":"char", "dec":"*"},
           "option":true, "inject_if_not":null}' */
   char *state;
 
-  /* specs/discord/gateway.json:192:19
+  /* specs/discord/gateway.json:199:19
      '{ "name":"instance","type":{"base":"bool"},
           "option":true, "inject_if_not":false}' */
   bool instance;
@@ -6354,6 +6630,68 @@ struct discord_gateway_activity {
 };
 
 
+
+// Session Start Limit Structure
+// defined at specs/discord/gateway.json:221:22
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure
+ *
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_session_start_limit_init(struct discord_session_start_limit *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_session_start_limit_cleanup(struct discord_session_start_limit *)`
+ *     * :code:`void discord_session_start_limit_list_free(struct discord_session_start_limit **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_session_start_limit_from_json(char *rbuf, size_t len, struct discord_session_start_limit **)`
+ *     * :code:`void discord_session_start_limit_list_from_json(char *rbuf, size_t len, struct discord_session_start_limit ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_session_start_limit_to_json(char *wbuf, size_t len, struct discord_session_start_limit *)`
+ *     * :code:`void discord_session_start_limit_list_to_json(char *wbuf, size_t len, struct discord_session_start_limit **)`
+ * @endverbatim
+ */
+struct discord_session_start_limit {
+  /* specs/discord/gateway.json:224:19
+     '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
+  int total; ///< the total number of session starts the current user is allowed
+
+  /* specs/discord/gateway.json:225:19
+     '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
+  int remaining; ///< the remaining number of session starts the current user is allowed
+
+  /* specs/discord/gateway.json:226:19
+     '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
+  int reset_after; ///< the number of milliseconds after which the limit resets
+
+  /* specs/discord/gateway.json:227:19
+     '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
+  int max_concurrency; ///< the number of identify requests allowed per 5 seconds
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
 // Create Guild From Guild Template
@@ -6956,8 +7294,60 @@ struct discord_modify_guild_channel_positions_params {
 /// @endcond
 };
 
-// Search Guild Members
+// List Guild Members
 // defined at specs/discord/guild.endpoints-params.json:85:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_list_guild_members_params_init(struct discord_list_guild_members_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *)`
+ *     * :code:`void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_list_guild_members_params_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params **)`
+ *     * :code:`void discord_list_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_list_guild_members_params_to_json(char *wbuf, size_t len, struct discord_list_guild_members_params *)`
+ *     * :code:`void discord_list_guild_members_params_list_to_json(char *wbuf, size_t len, struct discord_list_guild_members_params **)`
+ * @endverbatim
+ */
+struct discord_list_guild_members_params {
+  /* specs/discord/guild.endpoints-params.json:88:20
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
+  int limit; ///< max numbers of members to return (1-1000)
+
+  /* specs/discord/guild.endpoints-params.json:89:20
+     '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
+  u64_snowflake_t after; ///< the highest user id in the previous page
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+/// @endcond
+};
+
+// Search Guild Members
+// defined at specs/discord/guild.endpoints-params.json:95:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6984,11 +7374,11 @@ struct discord_modify_guild_channel_positions_params {
  * @endverbatim
  */
 struct discord_search_guild_members_params {
-  /* specs/discord/guild.endpoints-params.json:88:20
+  /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
   char *query; ///< Query string to match username(s) and nickname(s) against.
 
-  /* specs/discord/guild.endpoints-params.json:89:20
+  /* specs/discord/guild.endpoints-params.json:99:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
   int limit; ///< max number of members to return (1-1000)
 
@@ -7009,7 +7399,7 @@ struct discord_search_guild_members_params {
 };
 
 // Add Guild Member
-// defined at specs/discord/guild.endpoints-params.json:95:22
+// defined at specs/discord/guild.endpoints-params.json:105:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7036,23 +7426,23 @@ struct discord_search_guild_members_params {
  * @endverbatim
  */
 struct discord_add_guild_member_params {
-  /* specs/discord/guild.endpoints-params.json:98:20
+  /* specs/discord/guild.endpoints-params.json:108:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *access_token;
 
-  /* specs/discord/guild.endpoints-params.json:99:20
+  /* specs/discord/guild.endpoints-params.json:109:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *nick;
 
-  /* specs/discord/guild.endpoints-params.json:100:20
+  /* specs/discord/guild.endpoints-params.json:110:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **roles;
 
-  /* specs/discord/guild.endpoints-params.json:101:20
+  /* specs/discord/guild.endpoints-params.json:111:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mute;
 
-  /* specs/discord/guild.endpoints-params.json:102:20
+  /* specs/discord/guild.endpoints-params.json:112:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
@@ -7073,7 +7463,7 @@ struct discord_add_guild_member_params {
 };
 
 // Modify Guild Member
-// defined at specs/discord/guild.endpoints-params.json:108:22
+// defined at specs/discord/guild.endpoints-params.json:118:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7100,23 +7490,23 @@ struct discord_add_guild_member_params {
  * @endverbatim
  */
 struct discord_modify_guild_member_params {
-  /* specs/discord/guild.endpoints-params.json:111:20
+  /* specs/discord/guild.endpoints-params.json:121:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
-  /* specs/discord/guild.endpoints-params.json:112:20
+  /* specs/discord/guild.endpoints-params.json:122:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **roles;
 
-  /* specs/discord/guild.endpoints-params.json:113:20
+  /* specs/discord/guild.endpoints-params.json:123:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mute;
 
-  /* specs/discord/guild.endpoints-params.json:114:20
+  /* specs/discord/guild.endpoints-params.json:124:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
-  /* specs/discord/guild.endpoints-params.json:115:20
+  /* specs/discord/guild.endpoints-params.json:125:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
   u64_snowflake_t channel_id;
 
@@ -7137,7 +7527,7 @@ struct discord_modify_guild_member_params {
 };
 
 // Create Guild Role
-// defined at specs/discord/guild.endpoints-params.json:121:22
+// defined at specs/discord/guild.endpoints-params.json:131:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7164,23 +7554,23 @@ struct discord_modify_guild_member_params {
  * @endverbatim
  */
 struct discord_create_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:124:20
+  /* specs/discord/guild.endpoints-params.json:134:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.endpoints-params.json:125:20
+  /* specs/discord/guild.endpoints-params.json:135:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "inject_if_not":0}' */
   enum discord_permissions_bitwise_flags permissions;
 
-  /* specs/discord/guild.endpoints-params.json:126:20
+  /* specs/discord/guild.endpoints-params.json:136:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/guild.endpoints-params.json:127:20
+  /* specs/discord/guild.endpoints-params.json:137:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool hoist;
 
-  /* specs/discord/guild.endpoints-params.json:128:20
+  /* specs/discord/guild.endpoints-params.json:138:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mentionable;
 
@@ -7201,7 +7591,7 @@ struct discord_create_guild_role_params {
 };
 
 // Modify Guild Role Positions
-// defined at specs/discord/guild.endpoints-params.json:134:22
+// defined at specs/discord/guild.endpoints-params.json:144:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7228,11 +7618,11 @@ struct discord_create_guild_role_params {
  * @endverbatim
  */
 struct discord_modify_guild_role_positions_params {
-  /* specs/discord/guild.endpoints-params.json:137:20
+  /* specs/discord/guild.endpoints-params.json:147:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
   u64_snowflake_t id; ///< role
 
-  /* specs/discord/guild.endpoints-params.json:138:20
+  /* specs/discord/guild.endpoints-params.json:148:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
   int position; ///< sorting position of the role
 
@@ -7253,7 +7643,7 @@ struct discord_modify_guild_role_positions_params {
 };
 
 // Modify Guild Role
-// defined at specs/discord/guild.endpoints-params.json:144:22
+// defined at specs/discord/guild.endpoints-params.json:154:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7280,23 +7670,23 @@ struct discord_modify_guild_role_positions_params {
  * @endverbatim
  */
 struct discord_modify_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:147:20
+  /* specs/discord/guild.endpoints-params.json:157:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
   char *name; ///< name of the role
 
-  /* specs/discord/guild.endpoints-params.json:148:20
+  /* specs/discord/guild.endpoints-params.json:158:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
   enum discord_permissions_bitwise_flags permissions; ///< bitwise value of the enabled/disabled permissions
 
-  /* specs/discord/guild.endpoints-params.json:149:20
+  /* specs/discord/guild.endpoints-params.json:159:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
   int color; ///< RGB color value
 
-  /* specs/discord/guild.endpoints-params.json:150:20
+  /* specs/discord/guild.endpoints-params.json:160:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
   bool hoist; ///< whether the role should be displayed separately in the sidebar
 
-  /* specs/discord/guild.endpoints-params.json:151:20
+  /* specs/discord/guild.endpoints-params.json:161:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
   bool mentionable; ///< whether the role should be mentionable
 
@@ -7317,7 +7707,7 @@ struct discord_modify_guild_role_params {
 };
 
 // Get Guild Prune Count
-// defined at specs/discord/guild.endpoints-params.json:157:22
+// defined at specs/discord/guild.endpoints-params.json:167:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7344,11 +7734,11 @@ struct discord_modify_guild_role_params {
  * @endverbatim
  */
 struct discord_get_guild_prune_count_params {
-  /* specs/discord/guild.endpoints-params.json:160:20
+  /* specs/discord/guild.endpoints-params.json:170:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:161:20
+  /* specs/discord/guild.endpoints-params.json:171:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
@@ -7369,7 +7759,7 @@ struct discord_get_guild_prune_count_params {
 };
 
 // Begin Guild Prune
-// defined at specs/discord/guild.endpoints-params.json:167:22
+// defined at specs/discord/guild.endpoints-params.json:177:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7396,19 +7786,19 @@ struct discord_get_guild_prune_count_params {
  * @endverbatim
  */
 struct discord_begin_guild_prune_params {
-  /* specs/discord/guild.endpoints-params.json:170:20
+  /* specs/discord/guild.endpoints-params.json:180:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:171:20
+  /* specs/discord/guild.endpoints-params.json:181:20
      '{ "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool compute_prune_count;
 
-  /* specs/discord/guild.endpoints-params.json:172:20
+  /* specs/discord/guild.endpoints-params.json:182:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
-  /* specs/discord/guild.endpoints-params.json:173:20
+  /* specs/discord/guild.endpoints-params.json:183:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *reason;
 
@@ -8871,6 +9261,63 @@ struct discord_select_option {
   } __M; // metadata
 /// @endcond
 };
+/* This file is generated from specs/discord/misc.json, Please don't edit it. */
+
+// Custom File Structure
+// defined at specs/discord/misc.json:7:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_file_init(struct discord_file *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_file_cleanup(struct discord_file *)`
+ *     * :code:`void discord_file_list_free(struct discord_file **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_file_from_json(char *rbuf, size_t len, struct discord_file **)`
+ *     * :code:`void discord_file_list_from_json(char *rbuf, size_t len, struct discord_file ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_file_to_json(char *wbuf, size_t len, struct discord_file *)`
+ *     * :code:`void discord_file_list_to_json(char *wbuf, size_t len, struct discord_file **)`
+ * @endverbatim
+ */
+struct discord_file {
+  /* specs/discord/misc.json:11:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"the name of the file being sent", "inject_if_not":null }' */
+  char *name; ///< the name of the file being sent
+
+  /* specs/discord/misc.json:12:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
+  char *content; ///< the contents of the file being sent
+
+  /* specs/discord/misc.json:13:20
+     '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
+  size_t size; ///< the size of the file in bytes
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[3];
+    void *record_defined[3];
+    void *record_null[3];
+  } __M; // metadata
+/// @endcond
+};
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -9984,7 +10431,7 @@ struct discord_create_webhook_params {
  */
 struct discord_modify_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:22:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
   char *name; ///< name of the webhook(1-80) chars
 
   /* specs/discord/webhook.endpoints-params.json:23:20
@@ -9992,7 +10439,7 @@ struct discord_modify_webhook_params {
   char *avatar; ///< base64 image for the default webhook avatar
 
   /* specs/discord/webhook.endpoints-params.json:24:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }' */
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
   u64_snowflake_t channel_id; ///< the new channel id this webhook should be moved to
 
   // The following is metadata used to 
@@ -10011,8 +10458,60 @@ struct discord_modify_webhook_params {
 /// @endcond
 };
 
-// Execute Webhook
+// Modify Webhook with Token
 // defined at specs/discord/webhook.endpoints-params.json:30:22
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_webhook_with_token_params_init(struct discord_modify_webhook_with_token_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_webhook_with_token_params_cleanup(struct discord_modify_webhook_with_token_params *)`
+ *     * :code:`void discord_modify_webhook_with_token_params_list_free(struct discord_modify_webhook_with_token_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_webhook_with_token_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_with_token_params **)`
+ *     * :code:`void discord_modify_webhook_with_token_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_with_token_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_webhook_with_token_params_to_json(char *wbuf, size_t len, struct discord_modify_webhook_with_token_params *)`
+ *     * :code:`void discord_modify_webhook_with_token_params_list_to_json(char *wbuf, size_t len, struct discord_modify_webhook_with_token_params **)`
+ * @endverbatim
+ */
+struct discord_modify_webhook_with_token_params {
+  /* specs/discord/webhook.endpoints-params.json:33:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
+  char *name; ///< name of the webhook(1-80) chars
+
+  /* specs/discord/webhook.endpoints-params.json:34:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
+  char *avatar; ///< base64 image for the default webhook avatar
+
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[2];
+    void *record_defined[2];
+    void *record_null[2];
+  } __M; // metadata
+/// @endcond
+};
+
+// Execute Webhook
+// defined at specs/discord/webhook.endpoints-params.json:40:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10039,47 +10538,47 @@ struct discord_modify_webhook_params {
  * @endverbatim
  */
 struct discord_execute_webhook_params {
-  /* specs/discord/webhook.endpoints-params.json:34:20
+  /* specs/discord/webhook.endpoints-params.json:44:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
   bool wait; ///< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i
 
-  /* specs/discord/webhook.endpoints-params.json:35:20
+  /* specs/discord/webhook.endpoints-params.json:45:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
   u64_snowflake_t thread_id; ///< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived
 
-  /* specs/discord/webhook.endpoints-params.json:36:20
+  /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
   char *content; ///< the message contents (up to 2000 characters)
 
-  /* specs/discord/webhook.endpoints-params.json:37:20
+  /* specs/discord/webhook.endpoints-params.json:47:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
   char *username; ///< override the default username of the webhook
 
-  /* specs/discord/webhook.endpoints-params.json:38:20
+  /* specs/discord/webhook.endpoints-params.json:48:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
   char *avatar_url; ///< override the default avatar of the webhook
 
-  /* specs/discord/webhook.endpoints-params.json:39:20
+  /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
   bool tts; ///< true if this is a TTS message
 
-  /* specs/discord/webhook.endpoints-params.json:40:20
+  /* specs/discord/webhook.endpoints-params.json:50:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
   char *file; ///< the contents of the file being sent
 
-  /* specs/discord/webhook.endpoints-params.json:41:20
+  /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
   struct discord_embed *embeds; ///< embedded rich content
 
-  /* specs/discord/webhook.endpoints-params.json:42:20
+  /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
   char *payload_json; ///< JSON encoded body of non-file params
 
-  /* specs/discord/webhook.endpoints-params.json:43:20
+  /* specs/discord/webhook.endpoints-params.json:53:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
-  /* specs/discord/webhook.endpoints-params.json:44:20
+  /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
   struct discord_component **components; ///< the components to include with the message
 
@@ -10100,7 +10599,7 @@ struct discord_execute_webhook_params {
 };
 
 // Edit Webhook Message
-// defined at specs/discord/webhook.endpoints-params.json:50:22
+// defined at specs/discord/webhook.endpoints-params.json:60:22
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10127,31 +10626,31 @@ struct discord_execute_webhook_params {
  * @endverbatim
  */
 struct discord_edit_webhook_message_params {
-  /* specs/discord/webhook.endpoints-params.json:53:20
+  /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   char *content; ///< name of the webhook(1-2000) chars
 
-  /* specs/discord/webhook.endpoints-params.json:54:20
+  /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   struct discord_embed **embeds; ///< array of up to 10 embeds objects
 
-  /* specs/discord/webhook.endpoints-params.json:55:20
+  /* specs/discord/webhook.endpoints-params.json:65:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
   char *file; ///< the contents of the file being sent/edited
 
-  /* specs/discord/webhook.endpoints-params.json:56:20
+  /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
   char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
 
-  /* specs/discord/webhook.endpoints-params.json:57:20
+  /* specs/discord/webhook.endpoints-params.json:67:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
-  /* specs/discord/webhook.endpoints-params.json:58:20
+  /* specs/discord/webhook.endpoints-params.json:68:20
      '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_channel_attachment **attachments; ///< attached files to keep
 
-  /* specs/discord/webhook.endpoints-params.json:59:20
+  /* specs/discord/webhook.endpoints-params.json:69:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; ///< the components to include with the message
 
@@ -10277,8 +10776,6 @@ extern void discord_application_identify_from_json_v(char *json, size_t len, voi
 extern void discord_application_identify_from_json(char *json, size_t len, struct discord_application_identify **pp);
 extern size_t discord_application_identify_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_identify_to_json(char *json, size_t len, struct discord_application_identify *p);
-extern size_t discord_application_identify_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_identify_to_query(char *json, size_t len, struct discord_application_identify *p);
 extern void discord_application_identify_list_free_v(void **p);
 extern void discord_application_identify_list_free(struct discord_application_identify **p);
 extern void discord_application_identify_list_from_json_v(char *str, size_t len, void *p);
@@ -10297,8 +10794,6 @@ extern void discord_create_global_application_command_params_from_json_v(char *j
 extern void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params **pp);
 extern size_t discord_create_global_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_global_application_command_params_to_json(char *json, size_t len, struct discord_create_global_application_command_params *p);
-extern size_t discord_create_global_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_global_application_command_params_to_query(char *json, size_t len, struct discord_create_global_application_command_params *p);
 extern void discord_create_global_application_command_params_list_free_v(void **p);
 extern void discord_create_global_application_command_params_list_free(struct discord_create_global_application_command_params **p);
 extern void discord_create_global_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10314,8 +10809,6 @@ extern void discord_edit_global_application_command_params_from_json_v(char *jso
 extern void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params **pp);
 extern size_t discord_edit_global_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_global_application_command_params_to_json(char *json, size_t len, struct discord_edit_global_application_command_params *p);
-extern size_t discord_edit_global_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_global_application_command_params_to_query(char *json, size_t len, struct discord_edit_global_application_command_params *p);
 extern void discord_edit_global_application_command_params_list_free_v(void **p);
 extern void discord_edit_global_application_command_params_list_free(struct discord_edit_global_application_command_params **p);
 extern void discord_edit_global_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10331,8 +10824,6 @@ extern void discord_create_guild_application_command_params_from_json_v(char *js
 extern void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params **pp);
 extern size_t discord_create_guild_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_application_command_params_to_json(char *json, size_t len, struct discord_create_guild_application_command_params *p);
-extern size_t discord_create_guild_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_application_command_params_to_query(char *json, size_t len, struct discord_create_guild_application_command_params *p);
 extern void discord_create_guild_application_command_params_list_free_v(void **p);
 extern void discord_create_guild_application_command_params_list_free(struct discord_create_guild_application_command_params **p);
 extern void discord_create_guild_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10348,8 +10839,6 @@ extern void discord_edit_guild_application_command_params_from_json_v(char *json
 extern void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params **pp);
 extern size_t discord_edit_guild_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_guild_application_command_params_to_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p);
-extern size_t discord_edit_guild_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_guild_application_command_params_to_query(char *json, size_t len, struct discord_edit_guild_application_command_params *p);
 extern void discord_edit_guild_application_command_params_list_free_v(void **p);
 extern void discord_edit_guild_application_command_params_list_free(struct discord_edit_guild_application_command_params **p);
 extern void discord_edit_guild_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10365,8 +10854,6 @@ extern void discord_edit_application_command_permissions_params_from_json_v(char
 extern void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params **pp);
 extern size_t discord_edit_application_command_permissions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_application_command_permissions_params_to_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p);
-extern size_t discord_edit_application_command_permissions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_application_command_permissions_params_to_query(char *json, size_t len, struct discord_edit_application_command_permissions_params *p);
 extern void discord_edit_application_command_permissions_params_list_free_v(void **p);
 extern void discord_edit_application_command_permissions_params_list_free(struct discord_edit_application_command_permissions_params **p);
 extern void discord_edit_application_command_permissions_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10383,8 +10870,6 @@ extern void discord_application_command_from_json_v(char *json, size_t len, void
 extern void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp);
 extern size_t discord_application_command_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_to_json(char *json, size_t len, struct discord_application_command *p);
-extern size_t discord_application_command_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_to_query(char *json, size_t len, struct discord_application_command *p);
 extern void discord_application_command_list_free_v(void **p);
 extern void discord_application_command_list_free(struct discord_application_command **p);
 extern void discord_application_command_list_from_json_v(char *str, size_t len, void *p);
@@ -10402,8 +10887,6 @@ extern void discord_application_command_option_from_json_v(char *json, size_t le
 extern void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp);
 extern size_t discord_application_command_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_to_json(char *json, size_t len, struct discord_application_command_option *p);
-extern size_t discord_application_command_option_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_option_to_query(char *json, size_t len, struct discord_application_command_option *p);
 extern void discord_application_command_option_list_free_v(void **p);
 extern void discord_application_command_option_list_free(struct discord_application_command_option **p);
 extern void discord_application_command_option_list_from_json_v(char *str, size_t len, void *p);
@@ -10421,8 +10904,6 @@ extern void discord_application_command_option_choice_from_json_v(char *json, si
 extern void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp);
 extern size_t discord_application_command_option_choice_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_choice_to_json(char *json, size_t len, struct discord_application_command_option_choice *p);
-extern size_t discord_application_command_option_choice_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_option_choice_to_query(char *json, size_t len, struct discord_application_command_option_choice *p);
 extern void discord_application_command_option_choice_list_free_v(void **p);
 extern void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **p);
 extern void discord_application_command_option_choice_list_from_json_v(char *str, size_t len, void *p);
@@ -10438,8 +10919,6 @@ extern void discord_guild_application_command_permissions_from_json_v(char *json
 extern void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions **pp);
 extern size_t discord_guild_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_application_command_permissions_to_json(char *json, size_t len, struct discord_guild_application_command_permissions *p);
-extern size_t discord_guild_application_command_permissions_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_application_command_permissions_to_query(char *json, size_t len, struct discord_guild_application_command_permissions *p);
 extern void discord_guild_application_command_permissions_list_free_v(void **p);
 extern void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **p);
 extern void discord_guild_application_command_permissions_list_from_json_v(char *str, size_t len, void *p);
@@ -10455,8 +10934,6 @@ extern void discord_application_command_permissions_from_json_v(char *json, size
 extern void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions **pp);
 extern size_t discord_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_permissions_to_json(char *json, size_t len, struct discord_application_command_permissions *p);
-extern size_t discord_application_command_permissions_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_permissions_to_query(char *json, size_t len, struct discord_application_command_permissions *p);
 extern void discord_application_command_permissions_list_free_v(void **p);
 extern void discord_application_command_permissions_list_free(struct discord_application_command_permissions **p);
 extern void discord_application_command_permissions_list_from_json_v(char *str, size_t len, void *p);
@@ -10474,8 +10951,6 @@ extern void discord_application_command_interaction_data_option_from_json_v(char
 extern void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp);
 extern size_t discord_application_command_interaction_data_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_interaction_data_option_to_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
-extern size_t discord_application_command_interaction_data_option_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_application_command_interaction_data_option_to_query(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
 extern void discord_application_command_interaction_data_option_list_free_v(void **p);
 extern void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **p);
 extern void discord_application_command_interaction_data_option_list_from_json_v(char *str, size_t len, void *p);
@@ -10492,8 +10967,6 @@ extern void discord_get_guild_audit_log_params_from_json_v(char *json, size_t le
 extern void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params **pp);
 extern size_t discord_get_guild_audit_log_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
-extern size_t discord_get_guild_audit_log_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_get_guild_audit_log_params_to_query(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
 extern void discord_get_guild_audit_log_params_list_free_v(void **p);
 extern void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **p);
 extern void discord_get_guild_audit_log_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10510,8 +10983,6 @@ extern void discord_audit_log_from_json_v(char *json, size_t len, void *pp);
 extern void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log **pp);
 extern size_t discord_audit_log_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_log *p);
-extern size_t discord_audit_log_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_to_query(char *json, size_t len, struct discord_audit_log *p);
 extern void discord_audit_log_list_free_v(void **p);
 extern void discord_audit_log_list_free(struct discord_audit_log **p);
 extern void discord_audit_log_list_from_json_v(char *str, size_t len, void *p);
@@ -10529,8 +11000,6 @@ extern void discord_audit_log_entry_from_json_v(char *json, size_t len, void *pp
 extern void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp);
 extern size_t discord_audit_log_entry_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_audit_log_entry *p);
-extern size_t discord_audit_log_entry_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_entry_to_query(char *json, size_t len, struct discord_audit_log_entry *p);
 extern void discord_audit_log_entry_list_free_v(void **p);
 extern void discord_audit_log_entry_list_free(struct discord_audit_log_entry **p);
 extern void discord_audit_log_entry_list_from_json_v(char *str, size_t len, void *p);
@@ -10546,8 +11015,6 @@ extern void discord_audit_log_entry_optional_info_from_json_v(char *json, size_t
 extern void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, struct discord_audit_log_entry_optional_info **pp);
 extern size_t discord_audit_log_entry_optional_info_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_entry_optional_info_to_json(char *json, size_t len, struct discord_audit_log_entry_optional_info *p);
-extern size_t discord_audit_log_entry_optional_info_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_entry_optional_info_to_query(char *json, size_t len, struct discord_audit_log_entry_optional_info *p);
 extern void discord_audit_log_entry_optional_info_list_free_v(void **p);
 extern void discord_audit_log_entry_optional_info_list_free(struct discord_audit_log_entry_optional_info **p);
 extern void discord_audit_log_entry_optional_info_list_from_json_v(char *str, size_t len, void *p);
@@ -10563,8 +11030,6 @@ extern void discord_audit_log_change_from_json_v(char *json, size_t len, void *p
 extern void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change **pp);
 extern size_t discord_audit_log_change_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_change_to_json(char *json, size_t len, struct discord_audit_log_change *p);
-extern size_t discord_audit_log_change_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_change_to_query(char *json, size_t len, struct discord_audit_log_change *p);
 extern void discord_audit_log_change_list_free_v(void **p);
 extern void discord_audit_log_change_list_free(struct discord_audit_log_change **p);
 extern void discord_audit_log_change_list_from_json_v(char *str, size_t len, void *p);
@@ -10580,8 +11045,6 @@ extern void discord_audit_log_change_key_from_json_v(char *json, size_t len, voi
 extern void discord_audit_log_change_key_from_json(char *json, size_t len, struct discord_audit_log_change_key **pp);
 extern size_t discord_audit_log_change_key_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct discord_audit_log_change_key *p);
-extern size_t discord_audit_log_change_key_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_audit_log_change_key_to_query(char *json, size_t len, struct discord_audit_log_change_key *p);
 extern void discord_audit_log_change_key_list_free_v(void **p);
 extern void discord_audit_log_change_key_list_free(struct discord_audit_log_change_key **p);
 extern void discord_audit_log_change_key_list_from_json_v(char *str, size_t len, void *p);
@@ -10598,14 +11061,42 @@ extern void discord_modify_channel_params_from_json_v(char *json, size_t len, vo
 extern void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params **pp);
 extern size_t discord_modify_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_channel_params_to_json(char *json, size_t len, struct discord_modify_channel_params *p);
-extern size_t discord_modify_channel_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_channel_params_to_query(char *json, size_t len, struct discord_modify_channel_params *p);
 extern void discord_modify_channel_params_list_free_v(void **p);
 extern void discord_modify_channel_params_list_free(struct discord_modify_channel_params **p);
 extern void discord_modify_channel_params_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_modify_channel_params_list_from_json(char *str, size_t len, struct discord_modify_channel_params ***p);
 extern size_t discord_modify_channel_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_channel_params_list_to_json(char *str, size_t len, struct discord_modify_channel_params **p);
+
+extern void discord_create_message_params_cleanup_v(void *p);
+extern void discord_create_message_params_cleanup(struct discord_create_message_params *p);
+extern void discord_create_message_params_init_v(void *p);
+extern void discord_create_message_params_init(struct discord_create_message_params *p);
+extern void discord_create_message_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_message_params_from_json(char *json, size_t len, struct discord_create_message_params **pp);
+extern size_t discord_create_message_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_message_params_to_json(char *json, size_t len, struct discord_create_message_params *p);
+extern void discord_create_message_params_list_free_v(void **p);
+extern void discord_create_message_params_list_free(struct discord_create_message_params **p);
+extern void discord_create_message_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_message_params_list_from_json(char *str, size_t len, struct discord_create_message_params ***p);
+extern size_t discord_create_message_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_message_params_list_to_json(char *str, size_t len, struct discord_create_message_params **p);
+
+extern void discord_get_channel_messages_params_cleanup_v(void *p);
+extern void discord_get_channel_messages_params_cleanup(struct discord_get_channel_messages_params *p);
+extern void discord_get_channel_messages_params_init_v(void *p);
+extern void discord_get_channel_messages_params_init(struct discord_get_channel_messages_params *p);
+extern void discord_get_channel_messages_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_get_channel_messages_params_from_json(char *json, size_t len, struct discord_get_channel_messages_params **pp);
+extern size_t discord_get_channel_messages_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_get_channel_messages_params_to_json(char *json, size_t len, struct discord_get_channel_messages_params *p);
+extern void discord_get_channel_messages_params_list_free_v(void **p);
+extern void discord_get_channel_messages_params_list_free(struct discord_get_channel_messages_params **p);
+extern void discord_get_channel_messages_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_get_channel_messages_params_list_from_json(char *str, size_t len, struct discord_get_channel_messages_params ***p);
+extern size_t discord_get_channel_messages_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_get_channel_messages_params_list_to_json(char *str, size_t len, struct discord_get_channel_messages_params **p);
 
 extern void discord_get_reactions_params_cleanup_v(void *p);
 extern void discord_get_reactions_params_cleanup(struct discord_get_reactions_params *p);
@@ -10615,8 +11106,6 @@ extern void discord_get_reactions_params_from_json_v(char *json, size_t len, voi
 extern void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params **pp);
 extern size_t discord_get_reactions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_reactions_params_to_json(char *json, size_t len, struct discord_get_reactions_params *p);
-extern size_t discord_get_reactions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_get_reactions_params_to_query(char *json, size_t len, struct discord_get_reactions_params *p);
 extern void discord_get_reactions_params_list_free_v(void **p);
 extern void discord_get_reactions_params_list_free(struct discord_get_reactions_params **p);
 extern void discord_get_reactions_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10632,14 +11121,27 @@ extern void discord_edit_channel_permissions_params_from_json_v(char *json, size
 extern void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params **pp);
 extern size_t discord_edit_channel_permissions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p);
-extern size_t discord_edit_channel_permissions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_channel_permissions_params_to_query(char *json, size_t len, struct discord_edit_channel_permissions_params *p);
 extern void discord_edit_channel_permissions_params_list_free_v(void **p);
 extern void discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **p);
 extern void discord_edit_channel_permissions_params_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_edit_channel_permissions_params_list_from_json(char *str, size_t len, struct discord_edit_channel_permissions_params ***p);
 extern size_t discord_edit_channel_permissions_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_edit_channel_permissions_params_list_to_json(char *str, size_t len, struct discord_edit_channel_permissions_params **p);
+
+extern void discord_edit_message_params_cleanup_v(void *p);
+extern void discord_edit_message_params_cleanup(struct discord_edit_message_params *p);
+extern void discord_edit_message_params_init_v(void *p);
+extern void discord_edit_message_params_init(struct discord_edit_message_params *p);
+extern void discord_edit_message_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_edit_message_params_from_json(char *json, size_t len, struct discord_edit_message_params **pp);
+extern size_t discord_edit_message_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_edit_message_params_to_json(char *json, size_t len, struct discord_edit_message_params *p);
+extern void discord_edit_message_params_list_free_v(void **p);
+extern void discord_edit_message_params_list_free(struct discord_edit_message_params **p);
+extern void discord_edit_message_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_edit_message_params_list_from_json(char *str, size_t len, struct discord_edit_message_params ***p);
+extern size_t discord_edit_message_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_edit_message_params_list_to_json(char *str, size_t len, struct discord_edit_message_params **p);
 
 extern void discord_follow_news_channel_params_cleanup_v(void *p);
 extern void discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *p);
@@ -10649,8 +11151,6 @@ extern void discord_follow_news_channel_params_from_json_v(char *json, size_t le
 extern void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params **pp);
 extern size_t discord_follow_news_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
-extern size_t discord_follow_news_channel_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_follow_news_channel_params_to_query(char *json, size_t len, struct discord_follow_news_channel_params *p);
 extern void discord_follow_news_channel_params_list_free_v(void **p);
 extern void discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **p);
 extern void discord_follow_news_channel_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10666,8 +11166,6 @@ extern void discord_create_channel_invite_params_from_json_v(char *json, size_t 
 extern void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params **pp);
 extern size_t discord_create_channel_invite_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_channel_invite_params_to_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
-extern size_t discord_create_channel_invite_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_channel_invite_params_to_query(char *json, size_t len, struct discord_create_channel_invite_params *p);
 extern void discord_create_channel_invite_params_list_free_v(void **p);
 extern void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **p);
 extern void discord_create_channel_invite_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10683,8 +11181,6 @@ extern void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t
 extern void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params **pp);
 extern size_t discord_group_dm_add_recipient_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_group_dm_add_recipient_params_to_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
-extern size_t discord_group_dm_add_recipient_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_group_dm_add_recipient_params_to_query(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
 extern void discord_group_dm_add_recipient_params_list_free_v(void **p);
 extern void discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **p);
 extern void discord_group_dm_add_recipient_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10700,8 +11196,6 @@ extern void discord_start_thread_with_message_params_from_json_v(char *json, siz
 extern void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params **pp);
 extern size_t discord_start_thread_with_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_start_thread_with_message_params_to_json(char *json, size_t len, struct discord_start_thread_with_message_params *p);
-extern size_t discord_start_thread_with_message_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_start_thread_with_message_params_to_query(char *json, size_t len, struct discord_start_thread_with_message_params *p);
 extern void discord_start_thread_with_message_params_list_free_v(void **p);
 extern void discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **p);
 extern void discord_start_thread_with_message_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10717,8 +11211,6 @@ extern void discord_start_thread_without_message_params_from_json_v(char *json, 
 extern void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params **pp);
 extern size_t discord_start_thread_without_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_start_thread_without_message_params_to_json(char *json, size_t len, struct discord_start_thread_without_message_params *p);
-extern size_t discord_start_thread_without_message_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_start_thread_without_message_params_to_query(char *json, size_t len, struct discord_start_thread_without_message_params *p);
 extern void discord_start_thread_without_message_params_list_free_v(void **p);
 extern void discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **p);
 extern void discord_start_thread_without_message_params_list_from_json_v(char *str, size_t len, void *p);
@@ -10734,8 +11226,6 @@ extern void discord_thread_response_body_from_json_v(char *json, size_t len, voi
 extern void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body **pp);
 extern size_t discord_thread_response_body_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_response_body_to_json(char *json, size_t len, struct discord_thread_response_body *p);
-extern size_t discord_thread_response_body_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_thread_response_body_to_query(char *json, size_t len, struct discord_thread_response_body *p);
 extern void discord_thread_response_body_list_free_v(void **p);
 extern void discord_thread_response_body_list_free(struct discord_thread_response_body **p);
 extern void discord_thread_response_body_list_from_json_v(char *str, size_t len, void *p);
@@ -10754,8 +11244,6 @@ extern void discord_channel_from_json_v(char *json, size_t len, void *pp);
 extern void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp);
 extern size_t discord_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p);
-extern size_t discord_channel_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_to_query(char *json, size_t len, struct discord_channel *p);
 extern void discord_channel_list_free_v(void **p);
 extern void discord_channel_list_free(struct discord_channel **p);
 extern void discord_channel_list_from_json_v(char *str, size_t len, void *p);
@@ -10773,8 +11261,6 @@ extern void discord_message_sticker_from_json_v(char *json, size_t len, void *pp
 extern void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp);
 extern size_t discord_message_sticker_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_message_sticker *p);
-extern size_t discord_message_sticker_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_message_sticker_to_query(char *json, size_t len, struct discord_message_sticker *p);
 extern void discord_message_sticker_list_free_v(void **p);
 extern void discord_message_sticker_list_free(struct discord_message_sticker **p);
 extern void discord_message_sticker_list_from_json_v(char *str, size_t len, void *p);
@@ -10792,8 +11278,6 @@ extern void discord_message_reference_from_json_v(char *json, size_t len, void *
 extern void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp);
 extern size_t discord_message_reference_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_reference_to_json(char *json, size_t len, struct discord_message_reference *p);
-extern size_t discord_message_reference_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_message_reference_to_query(char *json, size_t len, struct discord_message_reference *p);
 extern void discord_message_reference_list_free_v(void **p);
 extern void discord_message_reference_list_free(struct discord_message_reference **p);
 extern void discord_message_reference_list_from_json_v(char *str, size_t len, void *p);
@@ -10809,8 +11293,6 @@ extern void discord_message_application_from_json_v(char *json, size_t len, void
 extern void discord_message_application_from_json(char *json, size_t len, struct discord_message_application **pp);
 extern size_t discord_message_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_application_to_json(char *json, size_t len, struct discord_message_application *p);
-extern size_t discord_message_application_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_message_application_to_query(char *json, size_t len, struct discord_message_application *p);
 extern void discord_message_application_list_free_v(void **p);
 extern void discord_message_application_list_free(struct discord_message_application **p);
 extern void discord_message_application_list_from_json_v(char *str, size_t len, void *p);
@@ -10828,8 +11310,6 @@ extern void discord_message_activity_from_json_v(char *json, size_t len, void *p
 extern void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp);
 extern size_t discord_message_activity_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_activity_to_json(char *json, size_t len, struct discord_message_activity *p);
-extern size_t discord_message_activity_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_message_activity_to_query(char *json, size_t len, struct discord_message_activity *p);
 extern void discord_message_activity_list_free_v(void **p);
 extern void discord_message_activity_list_free(struct discord_message_activity **p);
 extern void discord_message_activity_list_from_json_v(char *str, size_t len, void *p);
@@ -10847,8 +11327,6 @@ extern void discord_message_from_json_v(char *json, size_t len, void *pp);
 extern void discord_message_from_json(char *json, size_t len, struct discord_message **pp);
 extern size_t discord_message_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_to_json(char *json, size_t len, struct discord_message *p);
-extern size_t discord_message_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_message_to_query(char *json, size_t len, struct discord_message *p);
 extern void discord_message_list_free_v(void **p);
 extern void discord_message_list_free(struct discord_message **p);
 extern void discord_message_list_from_json_v(char *str, size_t len, void *p);
@@ -10864,8 +11342,6 @@ extern void discord_channel_followed_channel_from_json_v(char *json, size_t len,
 extern void discord_channel_followed_channel_from_json(char *json, size_t len, struct discord_channel_followed_channel **pp);
 extern size_t discord_channel_followed_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_followed_channel_to_json(char *json, size_t len, struct discord_channel_followed_channel *p);
-extern size_t discord_channel_followed_channel_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_followed_channel_to_query(char *json, size_t len, struct discord_channel_followed_channel *p);
 extern void discord_channel_followed_channel_list_free_v(void **p);
 extern void discord_channel_followed_channel_list_free(struct discord_channel_followed_channel **p);
 extern void discord_channel_followed_channel_list_from_json_v(char *str, size_t len, void *p);
@@ -10881,8 +11357,6 @@ extern void discord_channel_reaction_from_json_v(char *json, size_t len, void *p
 extern void discord_channel_reaction_from_json(char *json, size_t len, struct discord_channel_reaction **pp);
 extern size_t discord_channel_reaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_reaction_to_json(char *json, size_t len, struct discord_channel_reaction *p);
-extern size_t discord_channel_reaction_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_reaction_to_query(char *json, size_t len, struct discord_channel_reaction *p);
 extern void discord_channel_reaction_list_free_v(void **p);
 extern void discord_channel_reaction_list_free(struct discord_channel_reaction **p);
 extern void discord_channel_reaction_list_from_json_v(char *str, size_t len, void *p);
@@ -10898,8 +11372,6 @@ extern void discord_channel_overwrite_from_json_v(char *json, size_t len, void *
 extern void discord_channel_overwrite_from_json(char *json, size_t len, struct discord_channel_overwrite **pp);
 extern size_t discord_channel_overwrite_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_overwrite_to_json(char *json, size_t len, struct discord_channel_overwrite *p);
-extern size_t discord_channel_overwrite_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_overwrite_to_query(char *json, size_t len, struct discord_channel_overwrite *p);
 extern void discord_channel_overwrite_list_free_v(void **p);
 extern void discord_channel_overwrite_list_free(struct discord_channel_overwrite **p);
 extern void discord_channel_overwrite_list_from_json_v(char *str, size_t len, void *p);
@@ -10915,8 +11387,6 @@ extern void discord_thread_metadata_from_json_v(char *json, size_t len, void *pp
 extern void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata **pp);
 extern size_t discord_thread_metadata_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_metadata_to_json(char *json, size_t len, struct discord_thread_metadata *p);
-extern size_t discord_thread_metadata_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_thread_metadata_to_query(char *json, size_t len, struct discord_thread_metadata *p);
 extern void discord_thread_metadata_list_free_v(void **p);
 extern void discord_thread_metadata_list_free(struct discord_thread_metadata **p);
 extern void discord_thread_metadata_list_from_json_v(char *str, size_t len, void *p);
@@ -10932,8 +11402,6 @@ extern void discord_thread_member_from_json_v(char *json, size_t len, void *pp);
 extern void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member **pp);
 extern size_t discord_thread_member_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_member_to_json(char *json, size_t len, struct discord_thread_member *p);
-extern size_t discord_thread_member_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_thread_member_to_query(char *json, size_t len, struct discord_thread_member *p);
 extern void discord_thread_member_list_free_v(void **p);
 extern void discord_thread_member_list_free(struct discord_thread_member **p);
 extern void discord_thread_member_list_from_json_v(char *str, size_t len, void *p);
@@ -10949,8 +11417,6 @@ extern void discord_channel_attachment_from_json_v(char *json, size_t len, void 
 extern void discord_channel_attachment_from_json(char *json, size_t len, struct discord_channel_attachment **pp);
 extern size_t discord_channel_attachment_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_attachment_to_json(char *json, size_t len, struct discord_channel_attachment *p);
-extern size_t discord_channel_attachment_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_attachment_to_query(char *json, size_t len, struct discord_channel_attachment *p);
 extern void discord_channel_attachment_list_free_v(void **p);
 extern void discord_channel_attachment_list_free(struct discord_channel_attachment **p);
 extern void discord_channel_attachment_list_from_json_v(char *str, size_t len, void *p);
@@ -10966,8 +11432,6 @@ extern void discord_channel_mention_from_json_v(char *json, size_t len, void *pp
 extern void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention **pp);
 extern size_t discord_channel_mention_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_mention_to_json(char *json, size_t len, struct discord_channel_mention *p);
-extern size_t discord_channel_mention_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_mention_to_query(char *json, size_t len, struct discord_channel_mention *p);
 extern void discord_channel_mention_list_free_v(void **p);
 extern void discord_channel_mention_list_free(struct discord_channel_mention **p);
 extern void discord_channel_mention_list_from_json_v(char *str, size_t len, void *p);
@@ -10983,8 +11447,6 @@ extern void discord_channel_allowed_mentions_from_json_v(char *json, size_t len,
 extern void discord_channel_allowed_mentions_from_json(char *json, size_t len, struct discord_channel_allowed_mentions **pp);
 extern size_t discord_channel_allowed_mentions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_allowed_mentions_to_json(char *json, size_t len, struct discord_channel_allowed_mentions *p);
-extern size_t discord_channel_allowed_mentions_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_channel_allowed_mentions_to_query(char *json, size_t len, struct discord_channel_allowed_mentions *p);
 extern void discord_channel_allowed_mentions_list_free_v(void **p);
 extern void discord_channel_allowed_mentions_list_free(struct discord_channel_allowed_mentions **p);
 extern void discord_channel_allowed_mentions_list_from_json_v(char *str, size_t len, void *p);
@@ -11000,8 +11462,6 @@ extern void discord_embed_from_json_v(char *json, size_t len, void *pp);
 extern void discord_embed_from_json(char *json, size_t len, struct discord_embed **pp);
 extern size_t discord_embed_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_to_json(char *json, size_t len, struct discord_embed *p);
-extern size_t discord_embed_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_to_query(char *json, size_t len, struct discord_embed *p);
 extern void discord_embed_list_free_v(void **p);
 extern void discord_embed_list_free(struct discord_embed **p);
 extern void discord_embed_list_from_json_v(char *str, size_t len, void *p);
@@ -11017,8 +11477,6 @@ extern void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *pp
 extern void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail **pp);
 extern size_t discord_embed_thumbnail_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_thumbnail_to_json(char *json, size_t len, struct discord_embed_thumbnail *p);
-extern size_t discord_embed_thumbnail_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_thumbnail_to_query(char *json, size_t len, struct discord_embed_thumbnail *p);
 extern void discord_embed_thumbnail_list_free_v(void **p);
 extern void discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **p);
 extern void discord_embed_thumbnail_list_from_json_v(char *str, size_t len, void *p);
@@ -11034,8 +11492,6 @@ extern void discord_embed_video_from_json_v(char *json, size_t len, void *pp);
 extern void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video **pp);
 extern size_t discord_embed_video_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_video_to_json(char *json, size_t len, struct discord_embed_video *p);
-extern size_t discord_embed_video_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_video_to_query(char *json, size_t len, struct discord_embed_video *p);
 extern void discord_embed_video_list_free_v(void **p);
 extern void discord_embed_video_list_free(struct discord_embed_video **p);
 extern void discord_embed_video_list_from_json_v(char *str, size_t len, void *p);
@@ -11051,8 +11507,6 @@ extern void discord_embed_image_from_json_v(char *json, size_t len, void *pp);
 extern void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image **pp);
 extern size_t discord_embed_image_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_image_to_json(char *json, size_t len, struct discord_embed_image *p);
-extern size_t discord_embed_image_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_image_to_query(char *json, size_t len, struct discord_embed_image *p);
 extern void discord_embed_image_list_free_v(void **p);
 extern void discord_embed_image_list_free(struct discord_embed_image **p);
 extern void discord_embed_image_list_from_json_v(char *str, size_t len, void *p);
@@ -11068,8 +11522,6 @@ extern void discord_embed_provider_from_json_v(char *json, size_t len, void *pp)
 extern void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider **pp);
 extern size_t discord_embed_provider_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_provider_to_json(char *json, size_t len, struct discord_embed_provider *p);
-extern size_t discord_embed_provider_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_provider_to_query(char *json, size_t len, struct discord_embed_provider *p);
 extern void discord_embed_provider_list_free_v(void **p);
 extern void discord_embed_provider_list_free(struct discord_embed_provider **p);
 extern void discord_embed_provider_list_from_json_v(char *str, size_t len, void *p);
@@ -11085,8 +11537,6 @@ extern void discord_embed_author_from_json_v(char *json, size_t len, void *pp);
 extern void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author **pp);
 extern size_t discord_embed_author_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_author_to_json(char *json, size_t len, struct discord_embed_author *p);
-extern size_t discord_embed_author_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_author_to_query(char *json, size_t len, struct discord_embed_author *p);
 extern void discord_embed_author_list_free_v(void **p);
 extern void discord_embed_author_list_free(struct discord_embed_author **p);
 extern void discord_embed_author_list_from_json_v(char *str, size_t len, void *p);
@@ -11102,8 +11552,6 @@ extern void discord_embed_footer_from_json_v(char *json, size_t len, void *pp);
 extern void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer **pp);
 extern size_t discord_embed_footer_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_footer_to_json(char *json, size_t len, struct discord_embed_footer *p);
-extern size_t discord_embed_footer_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_footer_to_query(char *json, size_t len, struct discord_embed_footer *p);
 extern void discord_embed_footer_list_free_v(void **p);
 extern void discord_embed_footer_list_free(struct discord_embed_footer **p);
 extern void discord_embed_footer_list_from_json_v(char *str, size_t len, void *p);
@@ -11119,8 +11567,6 @@ extern void discord_embed_field_from_json_v(char *json, size_t len, void *pp);
 extern void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field **pp);
 extern size_t discord_embed_field_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_field_to_json(char *json, size_t len, struct discord_embed_field *p);
-extern size_t discord_embed_field_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_embed_field_to_query(char *json, size_t len, struct discord_embed_field *p);
 extern void discord_embed_field_list_free_v(void **p);
 extern void discord_embed_field_list_free(struct discord_embed_field **p);
 extern void discord_embed_field_list_from_json_v(char *str, size_t len, void *p);
@@ -11137,8 +11583,6 @@ extern void discord_create_guild_emoji_params_from_json_v(char *json, size_t len
 extern void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_create_guild_emoji_params **pp);
 extern size_t discord_create_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_emoji_params_to_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
-extern size_t discord_create_guild_emoji_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_emoji_params_to_query(char *json, size_t len, struct discord_create_guild_emoji_params *p);
 extern void discord_create_guild_emoji_params_list_free_v(void **p);
 extern void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **p);
 extern void discord_create_guild_emoji_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11154,8 +11598,6 @@ extern void discord_modify_guild_emoji_params_from_json_v(char *json, size_t len
 extern void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct discord_modify_guild_emoji_params **pp);
 extern size_t discord_modify_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_emoji_params_to_json(char *json, size_t len, struct discord_modify_guild_emoji_params *p);
-extern size_t discord_modify_guild_emoji_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_emoji_params_to_query(char *json, size_t len, struct discord_modify_guild_emoji_params *p);
 extern void discord_modify_guild_emoji_params_list_free_v(void **p);
 extern void discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **p);
 extern void discord_modify_guild_emoji_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11172,8 +11614,6 @@ extern void discord_emoji_from_json_v(char *json, size_t len, void *pp);
 extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp);
 extern size_t discord_emoji_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p);
-extern size_t discord_emoji_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_emoji_to_query(char *json, size_t len, struct discord_emoji *p);
 extern void discord_emoji_list_free_v(void **p);
 extern void discord_emoji_list_free(struct discord_emoji **p);
 extern void discord_emoji_list_from_json_v(char *str, size_t len, void *p);
@@ -11198,8 +11638,6 @@ extern void discord_gateway_identify_from_json_v(char *json, size_t len, void *p
 extern void discord_gateway_identify_from_json(char *json, size_t len, struct discord_gateway_identify **pp);
 extern size_t discord_gateway_identify_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_identify_to_json(char *json, size_t len, struct discord_gateway_identify *p);
-extern size_t discord_gateway_identify_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_identify_to_query(char *json, size_t len, struct discord_gateway_identify *p);
 extern void discord_gateway_identify_list_free_v(void **p);
 extern void discord_gateway_identify_list_free(struct discord_gateway_identify **p);
 extern void discord_gateway_identify_list_from_json_v(char *str, size_t len, void *p);
@@ -11215,8 +11653,6 @@ extern void discord_gateway_status_update_from_json_v(char *json, size_t len, vo
 extern void discord_gateway_status_update_from_json(char *json, size_t len, struct discord_gateway_status_update **pp);
 extern size_t discord_gateway_status_update_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_status_update_to_json(char *json, size_t len, struct discord_gateway_status_update *p);
-extern size_t discord_gateway_status_update_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_status_update_to_query(char *json, size_t len, struct discord_gateway_status_update *p);
 extern void discord_gateway_status_update_list_free_v(void **p);
 extern void discord_gateway_status_update_list_free(struct discord_gateway_status_update **p);
 extern void discord_gateway_status_update_list_from_json_v(char *str, size_t len, void *p);
@@ -11232,8 +11668,6 @@ extern void discord_gateway_identify_connection_from_json_v(char *json, size_t l
 extern void discord_gateway_identify_connection_from_json(char *json, size_t len, struct discord_gateway_identify_connection **pp);
 extern size_t discord_gateway_identify_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_identify_connection_to_json(char *json, size_t len, struct discord_gateway_identify_connection *p);
-extern size_t discord_gateway_identify_connection_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_identify_connection_to_query(char *json, size_t len, struct discord_gateway_identify_connection *p);
 extern void discord_gateway_identify_connection_list_free_v(void **p);
 extern void discord_gateway_identify_connection_list_free(struct discord_gateway_identify_connection **p);
 extern void discord_gateway_identify_connection_list_from_json_v(char *str, size_t len, void *p);
@@ -11249,8 +11683,6 @@ extern void discord_gateway_activity_from_json_v(char *json, size_t len, void *p
 extern void discord_gateway_activity_from_json(char *json, size_t len, struct discord_gateway_activity **pp);
 extern size_t discord_gateway_activity_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_gateway_activity_to_json(char *json, size_t len, struct discord_gateway_activity *p);
-extern size_t discord_gateway_activity_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_activity_to_query(char *json, size_t len, struct discord_gateway_activity *p);
 extern void discord_gateway_activity_list_free_v(void **p);
 extern void discord_gateway_activity_list_free(struct discord_gateway_activity **p);
 extern void discord_gateway_activity_list_from_json_v(char *str, size_t len, void *p);
@@ -11259,6 +11691,21 @@ extern size_t discord_gateway_activity_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_gateway_activity_list_to_json(char *str, size_t len, struct discord_gateway_activity **p);
 
 
+
+extern void discord_session_start_limit_cleanup_v(void *p);
+extern void discord_session_start_limit_cleanup(struct discord_session_start_limit *p);
+extern void discord_session_start_limit_init_v(void *p);
+extern void discord_session_start_limit_init(struct discord_session_start_limit *p);
+extern void discord_session_start_limit_from_json_v(char *json, size_t len, void *pp);
+extern void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit **pp);
+extern size_t discord_session_start_limit_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_session_start_limit_to_json(char *json, size_t len, struct discord_session_start_limit *p);
+extern void discord_session_start_limit_list_free_v(void **p);
+extern void discord_session_start_limit_list_free(struct discord_session_start_limit **p);
+extern void discord_session_start_limit_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_session_start_limit_list_from_json(char *str, size_t len, struct discord_session_start_limit ***p);
+extern size_t discord_session_start_limit_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_session_start_limit_list_to_json(char *str, size_t len, struct discord_session_start_limit **p);
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
 extern void discord_create_guild_from_guild_template_params_cleanup_v(void *p);
@@ -11269,8 +11716,6 @@ extern void discord_create_guild_from_guild_template_params_from_json_v(char *js
 extern void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params **pp);
 extern size_t discord_create_guild_from_guild_template_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_from_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p);
-extern size_t discord_create_guild_from_guild_template_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_from_guild_template_params_to_query(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p);
 extern void discord_create_guild_from_guild_template_params_list_free_v(void **p);
 extern void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **p);
 extern void discord_create_guild_from_guild_template_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11286,8 +11731,6 @@ extern void discord_create_guild_template_params_from_json_v(char *json, size_t 
 extern void discord_create_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_template_params **pp);
 extern size_t discord_create_guild_template_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_template_params *p);
-extern size_t discord_create_guild_template_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_template_params_to_query(char *json, size_t len, struct discord_create_guild_template_params *p);
 extern void discord_create_guild_template_params_list_free_v(void **p);
 extern void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **p);
 extern void discord_create_guild_template_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11303,8 +11746,6 @@ extern void discord_modify_guild_template_params_from_json_v(char *json, size_t 
 extern void discord_modify_guild_template_params_from_json(char *json, size_t len, struct discord_modify_guild_template_params **pp);
 extern size_t discord_modify_guild_template_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_template_params_to_json(char *json, size_t len, struct discord_modify_guild_template_params *p);
-extern size_t discord_modify_guild_template_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_template_params_to_query(char *json, size_t len, struct discord_modify_guild_template_params *p);
 extern void discord_modify_guild_template_params_list_free_v(void **p);
 extern void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **p);
 extern void discord_modify_guild_template_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11321,8 +11762,6 @@ extern void discord_guild_template_from_json_v(char *json, size_t len, void *pp)
 extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template **pp);
 extern size_t discord_guild_template_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_template_to_json(char *json, size_t len, struct discord_guild_template *p);
-extern size_t discord_guild_template_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_template_to_query(char *json, size_t len, struct discord_guild_template *p);
 extern void discord_guild_template_list_free_v(void **p);
 extern void discord_guild_template_list_free(struct discord_guild_template **p);
 extern void discord_guild_template_list_from_json_v(char *str, size_t len, void *p);
@@ -11339,8 +11778,6 @@ extern void discord_create_guild_params_from_json_v(char *json, size_t len, void
 extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params **pp);
 extern size_t discord_create_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_params_to_json(char *json, size_t len, struct discord_create_guild_params *p);
-extern size_t discord_create_guild_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_params_to_query(char *json, size_t len, struct discord_create_guild_params *p);
 extern void discord_create_guild_params_list_free_v(void **p);
 extern void discord_create_guild_params_list_free(struct discord_create_guild_params **p);
 extern void discord_create_guild_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11356,8 +11793,6 @@ extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void
 extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params **pp);
 extern size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p);
-extern size_t discord_modify_guild_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_params_to_query(char *json, size_t len, struct discord_modify_guild_params *p);
 extern void discord_modify_guild_params_list_free_v(void **p);
 extern void discord_modify_guild_params_list_free(struct discord_modify_guild_params **p);
 extern void discord_modify_guild_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11373,8 +11808,6 @@ extern void discord_create_guild_channel_params_from_json_v(char *json, size_t l
 extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params **pp);
 extern size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
-extern size_t discord_create_guild_channel_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_channel_params_to_query(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern void discord_create_guild_channel_params_list_free_v(void **p);
 extern void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **p);
 extern void discord_create_guild_channel_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11390,14 +11823,27 @@ extern void discord_modify_guild_channel_positions_params_from_json_v(char *json
 extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
 extern size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
-extern size_t discord_modify_guild_channel_positions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_channel_positions_params_to_query(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern void discord_modify_guild_channel_positions_params_list_free_v(void **p);
 extern void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **p);
 extern void discord_modify_guild_channel_positions_params_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_modify_guild_channel_positions_params_list_from_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params ***p);
 extern size_t discord_modify_guild_channel_positions_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params **p);
+
+extern void discord_list_guild_members_params_cleanup_v(void *p);
+extern void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *p);
+extern void discord_list_guild_members_params_init_v(void *p);
+extern void discord_list_guild_members_params_init(struct discord_list_guild_members_params *p);
+extern void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params **pp);
+extern size_t discord_list_guild_members_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_list_guild_members_params_to_json(char *json, size_t len, struct discord_list_guild_members_params *p);
+extern void discord_list_guild_members_params_list_free_v(void **p);
+extern void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **p);
+extern void discord_list_guild_members_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_list_guild_members_params_list_from_json(char *str, size_t len, struct discord_list_guild_members_params ***p);
+extern size_t discord_list_guild_members_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_list_guild_members_params_list_to_json(char *str, size_t len, struct discord_list_guild_members_params **p);
 
 extern void discord_search_guild_members_params_cleanup_v(void *p);
 extern void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *p);
@@ -11407,8 +11853,6 @@ extern void discord_search_guild_members_params_from_json_v(char *json, size_t l
 extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params **pp);
 extern size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p);
-extern size_t discord_search_guild_members_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_search_guild_members_params_to_query(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern void discord_search_guild_members_params_list_free_v(void **p);
 extern void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **p);
 extern void discord_search_guild_members_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11424,8 +11868,6 @@ extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, 
 extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params **pp);
 extern size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p);
-extern size_t discord_add_guild_member_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_add_guild_member_params_to_query(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern void discord_add_guild_member_params_list_free_v(void **p);
 extern void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **p);
 extern void discord_add_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11441,8 +11883,6 @@ extern void discord_modify_guild_member_params_from_json_v(char *json, size_t le
 extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params **pp);
 extern size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
-extern size_t discord_modify_guild_member_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_member_params_to_query(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern void discord_modify_guild_member_params_list_free_v(void **p);
 extern void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **p);
 extern void discord_modify_guild_member_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11458,8 +11898,6 @@ extern void discord_create_guild_role_params_from_json_v(char *json, size_t len,
 extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params **pp);
 extern size_t discord_create_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct discord_create_guild_role_params *p);
-extern size_t discord_create_guild_role_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_role_params_to_query(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_list_free_v(void **p);
 extern void discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **p);
 extern void discord_create_guild_role_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11475,8 +11913,6 @@ extern void discord_modify_guild_role_positions_params_from_json_v(char *json, s
 extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
 extern size_t discord_modify_guild_role_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
-extern size_t discord_modify_guild_role_positions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_role_positions_params_to_query(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern void discord_modify_guild_role_positions_params_list_free_v(void **p);
 extern void discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **p);
 extern void discord_modify_guild_role_positions_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11492,8 +11928,6 @@ extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len,
 extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params **pp);
 extern size_t discord_modify_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
-extern size_t discord_modify_guild_role_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_guild_role_params_to_query(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern void discord_modify_guild_role_params_list_free_v(void **p);
 extern void discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **p);
 extern void discord_modify_guild_role_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11509,8 +11943,6 @@ extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t 
 extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
 extern size_t discord_get_guild_prune_count_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
-extern size_t discord_get_guild_prune_count_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_get_guild_prune_count_params_to_query(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern void discord_get_guild_prune_count_params_list_free_v(void **p);
 extern void discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **p);
 extern void discord_get_guild_prune_count_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11526,8 +11958,6 @@ extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len,
 extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
 extern size_t discord_begin_guild_prune_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
-extern size_t discord_begin_guild_prune_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_begin_guild_prune_params_to_query(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern void discord_begin_guild_prune_params_list_free_v(void **p);
 extern void discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **p);
 extern void discord_begin_guild_prune_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11544,8 +11974,6 @@ extern void discord_guild_from_json_v(char *json, size_t len, void *pp);
 extern void discord_guild_from_json(char *json, size_t len, struct discord_guild **pp);
 extern size_t discord_guild_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p);
-extern size_t discord_guild_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_to_query(char *json, size_t len, struct discord_guild *p);
 extern void discord_guild_list_free_v(void **p);
 extern void discord_guild_list_free(struct discord_guild **p);
 extern void discord_guild_list_from_json_v(char *str, size_t len, void *p);
@@ -11575,8 +12003,6 @@ extern void discord_guild_unavailable_from_json_v(char *json, size_t len, void *
 extern void discord_guild_unavailable_from_json(char *json, size_t len, struct discord_guild_unavailable **pp);
 extern size_t discord_guild_unavailable_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_unavailable_to_json(char *json, size_t len, struct discord_guild_unavailable *p);
-extern size_t discord_guild_unavailable_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_unavailable_to_query(char *json, size_t len, struct discord_guild_unavailable *p);
 extern void discord_guild_unavailable_list_free_v(void **p);
 extern void discord_guild_unavailable_list_free(struct discord_guild_unavailable **p);
 extern void discord_guild_unavailable_list_from_json_v(char *str, size_t len, void *p);
@@ -11592,8 +12018,6 @@ extern void discord_guild_preview_from_json_v(char *json, size_t len, void *pp);
 extern void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview **pp);
 extern size_t discord_guild_preview_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guild_preview *p);
-extern size_t discord_guild_preview_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_preview_to_query(char *json, size_t len, struct discord_guild_preview *p);
 extern void discord_guild_preview_list_free_v(void **p);
 extern void discord_guild_preview_list_free(struct discord_guild_preview **p);
 extern void discord_guild_preview_list_from_json_v(char *str, size_t len, void *p);
@@ -11609,8 +12033,6 @@ extern void discord_guild_widget_from_json_v(char *json, size_t len, void *pp);
 extern void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget **pp);
 extern size_t discord_guild_widget_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_widget_to_json(char *json, size_t len, struct discord_guild_widget *p);
-extern size_t discord_guild_widget_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_widget_to_query(char *json, size_t len, struct discord_guild_widget *p);
 extern void discord_guild_widget_list_free_v(void **p);
 extern void discord_guild_widget_list_free(struct discord_guild_widget **p);
 extern void discord_guild_widget_list_from_json_v(char *str, size_t len, void *p);
@@ -11626,8 +12048,6 @@ extern void discord_guild_member_from_json_v(char *json, size_t len, void *pp);
 extern void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member **pp);
 extern size_t discord_guild_member_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_member_to_json(char *json, size_t len, struct discord_guild_member *p);
-extern size_t discord_guild_member_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_member_to_query(char *json, size_t len, struct discord_guild_member *p);
 extern void discord_guild_member_list_free_v(void **p);
 extern void discord_guild_member_list_free(struct discord_guild_member **p);
 extern void discord_guild_member_list_from_json_v(char *str, size_t len, void *p);
@@ -11643,8 +12063,6 @@ extern void discord_guild_integration_from_json_v(char *json, size_t len, void *
 extern void discord_guild_integration_from_json(char *json, size_t len, struct discord_guild_integration **pp);
 extern size_t discord_guild_integration_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_integration_to_json(char *json, size_t len, struct discord_guild_integration *p);
-extern size_t discord_guild_integration_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_to_query(char *json, size_t len, struct discord_guild_integration *p);
 extern void discord_guild_integration_list_free_v(void **p);
 extern void discord_guild_integration_list_free(struct discord_guild_integration **p);
 extern void discord_guild_integration_list_from_json_v(char *str, size_t len, void *p);
@@ -11662,8 +12080,6 @@ extern void discord_guild_integration_account_from_json_v(char *json, size_t len
 extern void discord_guild_integration_account_from_json(char *json, size_t len, struct discord_guild_integration_account **pp);
 extern size_t discord_guild_integration_account_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_integration_account_to_json(char *json, size_t len, struct discord_guild_integration_account *p);
-extern size_t discord_guild_integration_account_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_account_to_query(char *json, size_t len, struct discord_guild_integration_account *p);
 extern void discord_guild_integration_account_list_free_v(void **p);
 extern void discord_guild_integration_account_list_free(struct discord_guild_integration_account **p);
 extern void discord_guild_integration_account_list_from_json_v(char *str, size_t len, void *p);
@@ -11679,8 +12095,6 @@ extern void discord_guild_integration_application_from_json_v(char *json, size_t
 extern void discord_guild_integration_application_from_json(char *json, size_t len, struct discord_guild_integration_application **pp);
 extern size_t discord_guild_integration_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_integration_application_to_json(char *json, size_t len, struct discord_guild_integration_application *p);
-extern size_t discord_guild_integration_application_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_integration_application_to_query(char *json, size_t len, struct discord_guild_integration_application *p);
 extern void discord_guild_integration_application_list_free_v(void **p);
 extern void discord_guild_integration_application_list_free(struct discord_guild_integration_application **p);
 extern void discord_guild_integration_application_list_from_json_v(char *str, size_t len, void *p);
@@ -11696,8 +12110,6 @@ extern void discord_guild_ban_from_json_v(char *json, size_t len, void *pp);
 extern void discord_guild_ban_from_json(char *json, size_t len, struct discord_guild_ban **pp);
 extern size_t discord_guild_ban_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_ban_to_json(char *json, size_t len, struct discord_guild_ban *p);
-extern size_t discord_guild_ban_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_ban_to_query(char *json, size_t len, struct discord_guild_ban *p);
 extern void discord_guild_ban_list_free_v(void **p);
 extern void discord_guild_ban_list_free(struct discord_guild_ban **p);
 extern void discord_guild_ban_list_from_json_v(char *str, size_t len, void *p);
@@ -11713,8 +12125,6 @@ extern void discord_guild_welcome_screen_from_json_v(char *json, size_t len, voi
 extern void discord_guild_welcome_screen_from_json(char *json, size_t len, struct discord_guild_welcome_screen **pp);
 extern size_t discord_guild_welcome_screen_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_welcome_screen_to_json(char *json, size_t len, struct discord_guild_welcome_screen *p);
-extern size_t discord_guild_welcome_screen_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_welcome_screen_to_query(char *json, size_t len, struct discord_guild_welcome_screen *p);
 extern void discord_guild_welcome_screen_list_free_v(void **p);
 extern void discord_guild_welcome_screen_list_free(struct discord_guild_welcome_screen **p);
 extern void discord_guild_welcome_screen_list_from_json_v(char *str, size_t len, void *p);
@@ -11730,8 +12140,6 @@ extern void discord_guild_welcome_screen_channel_from_json_v(char *json, size_t 
 extern void discord_guild_welcome_screen_channel_from_json(char *json, size_t len, struct discord_guild_welcome_screen_channel **pp);
 extern size_t discord_guild_welcome_screen_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_welcome_screen_channel_to_json(char *json, size_t len, struct discord_guild_welcome_screen_channel *p);
-extern size_t discord_guild_welcome_screen_channel_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_welcome_screen_channel_to_query(char *json, size_t len, struct discord_guild_welcome_screen_channel *p);
 extern void discord_guild_welcome_screen_channel_list_free_v(void **p);
 extern void discord_guild_welcome_screen_channel_list_free(struct discord_guild_welcome_screen_channel **p);
 extern void discord_guild_welcome_screen_channel_list_from_json_v(char *str, size_t len, void *p);
@@ -11748,8 +12156,6 @@ extern void discord_get_invite_params_from_json_v(char *json, size_t len, void *
 extern void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params **pp);
 extern size_t discord_get_invite_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_invite_params_to_json(char *json, size_t len, struct discord_get_invite_params *p);
-extern size_t discord_get_invite_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_get_invite_params_to_query(char *json, size_t len, struct discord_get_invite_params *p);
 extern void discord_get_invite_params_list_free_v(void **p);
 extern void discord_get_invite_params_list_free(struct discord_get_invite_params **p);
 extern void discord_get_invite_params_list_from_json_v(char *str, size_t len, void *p);
@@ -11768,8 +12174,6 @@ extern void discord_invite_from_json_v(char *json, size_t len, void *pp);
 extern void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp);
 extern size_t discord_invite_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p);
-extern size_t discord_invite_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_invite_to_query(char *json, size_t len, struct discord_invite *p);
 extern void discord_invite_list_free_v(void **p);
 extern void discord_invite_list_free(struct discord_invite **p);
 extern void discord_invite_list_from_json_v(char *str, size_t len, void *p);
@@ -11785,8 +12189,6 @@ extern void discord_invite_metadata_from_json_v(char *json, size_t len, void *pp
 extern void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata **pp);
 extern size_t discord_invite_metadata_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_invite_metadata *p);
-extern size_t discord_invite_metadata_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_invite_metadata_to_query(char *json, size_t len, struct discord_invite_metadata *p);
 extern void discord_invite_metadata_list_free_v(void **p);
 extern void discord_invite_metadata_list_free(struct discord_invite_metadata **p);
 extern void discord_invite_metadata_list_from_json_v(char *str, size_t len, void *p);
@@ -11803,8 +12205,6 @@ extern void discord_component_from_json_v(char *json, size_t len, void *pp);
 extern void discord_component_from_json(char *json, size_t len, struct discord_component **pp);
 extern size_t discord_component_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_component_to_json(char *json, size_t len, struct discord_component *p);
-extern size_t discord_component_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_component_to_query(char *json, size_t len, struct discord_component *p);
 extern void discord_component_list_free_v(void **p);
 extern void discord_component_list_free(struct discord_component **p);
 extern void discord_component_list_from_json_v(char *str, size_t len, void *p);
@@ -11822,8 +12222,6 @@ extern void discord_button_from_json_v(char *json, size_t len, void *pp);
 extern void discord_button_from_json(char *json, size_t len, struct discord_button **pp);
 extern size_t discord_button_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_button_to_json(char *json, size_t len, struct discord_button *p);
-extern size_t discord_button_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_button_to_query(char *json, size_t len, struct discord_button *p);
 extern void discord_button_list_free_v(void **p);
 extern void discord_button_list_free(struct discord_button **p);
 extern void discord_button_list_from_json_v(char *str, size_t len, void *p);
@@ -11841,8 +12239,6 @@ extern void discord_select_menu_from_json_v(char *json, size_t len, void *pp);
 extern void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp);
 extern size_t discord_select_menu_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_select_menu_to_json(char *json, size_t len, struct discord_select_menu *p);
-extern size_t discord_select_menu_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_select_menu_to_query(char *json, size_t len, struct discord_select_menu *p);
 extern void discord_select_menu_list_free_v(void **p);
 extern void discord_select_menu_list_free(struct discord_select_menu **p);
 extern void discord_select_menu_list_from_json_v(char *str, size_t len, void *p);
@@ -11858,14 +12254,20 @@ extern void discord_select_option_from_json_v(char *json, size_t len, void *pp);
 extern void discord_select_option_from_json(char *json, size_t len, struct discord_select_option **pp);
 extern size_t discord_select_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_select_option_to_json(char *json, size_t len, struct discord_select_option *p);
-extern size_t discord_select_option_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_select_option_to_query(char *json, size_t len, struct discord_select_option *p);
 extern void discord_select_option_list_free_v(void **p);
 extern void discord_select_option_list_free(struct discord_select_option **p);
 extern void discord_select_option_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_select_option_list_from_json(char *str, size_t len, struct discord_select_option ***p);
 extern size_t discord_select_option_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_select_option_list_to_json(char *str, size_t len, struct discord_select_option **p);
+/* This file is generated from specs/discord/misc.json, Please don't edit it. */
+
+extern void discord_file_cleanup_v(void *p);
+extern void discord_file_cleanup(struct discord_file *p);
+extern void discord_file_init_v(void *p);
+extern void discord_file_init(struct discord_file *p);
+extern void discord_file_list_free_v(void **p);
+extern void discord_file_list_free(struct discord_file **p);
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -11878,8 +12280,6 @@ extern void discord_permissions_role_from_json_v(char *json, size_t len, void *p
 extern void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp);
 extern size_t discord_permissions_role_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_permissions_role_to_json(char *json, size_t len, struct discord_permissions_role *p);
-extern size_t discord_permissions_role_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_permissions_role_to_query(char *json, size_t len, struct discord_permissions_role *p);
 extern void discord_permissions_role_list_free_v(void **p);
 extern void discord_permissions_role_list_free(struct discord_permissions_role **p);
 extern void discord_permissions_role_list_from_json_v(char *str, size_t len, void *p);
@@ -11895,8 +12295,6 @@ extern void discord_permissions_role_tags_from_json_v(char *json, size_t len, vo
 extern void discord_permissions_role_tags_from_json(char *json, size_t len, struct discord_permissions_role_tags **pp);
 extern size_t discord_permissions_role_tags_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_permissions_role_tags_to_json(char *json, size_t len, struct discord_permissions_role_tags *p);
-extern size_t discord_permissions_role_tags_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_permissions_role_tags_to_query(char *json, size_t len, struct discord_permissions_role_tags *p);
 extern void discord_permissions_role_tags_list_free_v(void **p);
 extern void discord_permissions_role_tags_list_free(struct discord_permissions_role_tags **p);
 extern void discord_permissions_role_tags_list_from_json_v(char *str, size_t len, void *p);
@@ -11913,8 +12311,6 @@ extern void discord_interaction_from_json_v(char *json, size_t len, void *pp);
 extern void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp);
 extern size_t discord_interaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_to_json(char *json, size_t len, struct discord_interaction *p);
-extern size_t discord_interaction_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_interaction_to_query(char *json, size_t len, struct discord_interaction *p);
 extern void discord_interaction_list_free_v(void **p);
 extern void discord_interaction_list_free(struct discord_interaction **p);
 extern void discord_interaction_list_from_json_v(char *str, size_t len, void *p);
@@ -11932,8 +12328,6 @@ extern void discord_interaction_data_from_json_v(char *json, size_t len, void *p
 extern void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data **pp);
 extern size_t discord_interaction_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_interaction_data *p);
-extern size_t discord_interaction_data_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_interaction_data_to_query(char *json, size_t len, struct discord_interaction_data *p);
 extern void discord_interaction_data_list_free_v(void **p);
 extern void discord_interaction_data_list_free(struct discord_interaction_data **p);
 extern void discord_interaction_data_list_from_json_v(char *str, size_t len, void *p);
@@ -11949,8 +12343,6 @@ extern void discord_resolved_data_from_json_v(char *json, size_t len, void *pp);
 extern void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data **pp);
 extern size_t discord_resolved_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_resolved_data *p);
-extern size_t discord_resolved_data_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_resolved_data_to_query(char *json, size_t len, struct discord_resolved_data *p);
 extern void discord_resolved_data_list_free_v(void **p);
 extern void discord_resolved_data_list_free(struct discord_resolved_data **p);
 extern void discord_resolved_data_list_from_json_v(char *str, size_t len, void *p);
@@ -11966,8 +12358,6 @@ extern void discord_message_interaction_from_json_v(char *json, size_t len, void
 extern void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp);
 extern size_t discord_message_interaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_interaction_to_json(char *json, size_t len, struct discord_message_interaction *p);
-extern size_t discord_message_interaction_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_message_interaction_to_query(char *json, size_t len, struct discord_message_interaction *p);
 extern void discord_message_interaction_list_free_v(void **p);
 extern void discord_message_interaction_list_free(struct discord_message_interaction **p);
 extern void discord_message_interaction_list_from_json_v(char *str, size_t len, void *p);
@@ -11983,8 +12373,6 @@ extern void discord_interaction_response_from_json_v(char *json, size_t len, voi
 extern void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response **pp);
 extern size_t discord_interaction_response_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_response_to_json(char *json, size_t len, struct discord_interaction_response *p);
-extern size_t discord_interaction_response_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_interaction_response_to_query(char *json, size_t len, struct discord_interaction_response *p);
 extern void discord_interaction_response_list_free_v(void **p);
 extern void discord_interaction_response_list_free(struct discord_interaction_response **p);
 extern void discord_interaction_response_list_from_json_v(char *str, size_t len, void *p);
@@ -12002,8 +12390,6 @@ extern void discord_interaction_callback_data_from_json_v(char *json, size_t len
 extern void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data **pp);
 extern size_t discord_interaction_callback_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct discord_interaction_callback_data *p);
-extern size_t discord_interaction_callback_data_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_interaction_callback_data_to_query(char *json, size_t len, struct discord_interaction_callback_data *p);
 extern void discord_interaction_callback_data_list_free_v(void **p);
 extern void discord_interaction_callback_data_list_free(struct discord_interaction_callback_data **p);
 extern void discord_interaction_callback_data_list_from_json_v(char *str, size_t len, void *p);
@@ -12022,8 +12408,6 @@ extern void discord_modify_current_user_params_from_json_v(char *json, size_t le
 extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params **pp);
 extern size_t discord_modify_current_user_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct discord_modify_current_user_params *p);
-extern size_t discord_modify_current_user_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_current_user_params_to_query(char *json, size_t len, struct discord_modify_current_user_params *p);
 extern void discord_modify_current_user_params_list_free_v(void **p);
 extern void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **p);
 extern void discord_modify_current_user_params_list_from_json_v(char *str, size_t len, void *p);
@@ -12039,8 +12423,6 @@ extern void discord_create_group_dm_params_from_json_v(char *json, size_t len, v
 extern void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params **pp);
 extern size_t discord_create_group_dm_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct discord_create_group_dm_params *p);
-extern size_t discord_create_group_dm_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_group_dm_params_to_query(char *json, size_t len, struct discord_create_group_dm_params *p);
 extern void discord_create_group_dm_params_list_free_v(void **p);
 extern void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **p);
 extern void discord_create_group_dm_params_list_from_json_v(char *str, size_t len, void *p);
@@ -12061,8 +12443,6 @@ extern void discord_user_from_json_v(char *json, size_t len, void *pp);
 extern void discord_user_from_json(char *json, size_t len, struct discord_user **pp);
 extern size_t discord_user_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_user_to_json(char *json, size_t len, struct discord_user *p);
-extern size_t discord_user_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_user_to_query(char *json, size_t len, struct discord_user *p);
 extern void discord_user_list_free_v(void **p);
 extern void discord_user_list_free(struct discord_user **p);
 extern void discord_user_list_from_json_v(char *str, size_t len, void *p);
@@ -12080,8 +12460,6 @@ extern void discord_connection_from_json_v(char *json, size_t len, void *pp);
 extern void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp);
 extern size_t discord_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_connection_to_json(char *json, size_t len, struct discord_connection *p);
-extern size_t discord_connection_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_connection_to_query(char *json, size_t len, struct discord_connection *p);
 extern void discord_connection_list_free_v(void **p);
 extern void discord_connection_list_free(struct discord_connection **p);
 extern void discord_connection_list_from_json_v(char *str, size_t len, void *p);
@@ -12105,8 +12483,6 @@ extern void discord_voice_state_from_json_v(char *json, size_t len, void *pp);
 extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state **pp);
 extern size_t discord_voice_state_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p);
-extern size_t discord_voice_state_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_voice_state_to_query(char *json, size_t len, struct discord_voice_state *p);
 extern void discord_voice_state_list_free_v(void **p);
 extern void discord_voice_state_list_free(struct discord_voice_state **p);
 extern void discord_voice_state_list_from_json_v(char *str, size_t len, void *p);
@@ -12122,8 +12498,6 @@ extern void discord_voice_region_from_json_v(char *json, size_t len, void *pp);
 extern void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region **pp);
 extern size_t discord_voice_region_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice_region *p);
-extern size_t discord_voice_region_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_voice_region_to_query(char *json, size_t len, struct discord_voice_region *p);
 extern void discord_voice_region_list_free_v(void **p);
 extern void discord_voice_region_list_free(struct discord_voice_region **p);
 extern void discord_voice_region_list_from_json_v(char *str, size_t len, void *p);
@@ -12140,8 +12514,6 @@ extern void discord_create_webhook_params_from_json_v(char *json, size_t len, vo
 extern void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params **pp);
 extern size_t discord_create_webhook_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_webhook_params_to_json(char *json, size_t len, struct discord_create_webhook_params *p);
-extern size_t discord_create_webhook_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_webhook_params_to_query(char *json, size_t len, struct discord_create_webhook_params *p);
 extern void discord_create_webhook_params_list_free_v(void **p);
 extern void discord_create_webhook_params_list_free(struct discord_create_webhook_params **p);
 extern void discord_create_webhook_params_list_from_json_v(char *str, size_t len, void *p);
@@ -12157,14 +12529,27 @@ extern void discord_modify_webhook_params_from_json_v(char *json, size_t len, vo
 extern void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params **pp);
 extern size_t discord_modify_webhook_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct discord_modify_webhook_params *p);
-extern size_t discord_modify_webhook_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_modify_webhook_params_to_query(char *json, size_t len, struct discord_modify_webhook_params *p);
 extern void discord_modify_webhook_params_list_free_v(void **p);
 extern void discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **p);
 extern void discord_modify_webhook_params_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_modify_webhook_params_list_from_json(char *str, size_t len, struct discord_modify_webhook_params ***p);
 extern size_t discord_modify_webhook_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, struct discord_modify_webhook_params **p);
+
+extern void discord_modify_webhook_with_token_params_cleanup_v(void *p);
+extern void discord_modify_webhook_with_token_params_cleanup(struct discord_modify_webhook_with_token_params *p);
+extern void discord_modify_webhook_with_token_params_init_v(void *p);
+extern void discord_modify_webhook_with_token_params_init(struct discord_modify_webhook_with_token_params *p);
+extern void discord_modify_webhook_with_token_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params **pp);
+extern size_t discord_modify_webhook_with_token_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_webhook_with_token_params_to_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p);
+extern void discord_modify_webhook_with_token_params_list_free_v(void **p);
+extern void discord_modify_webhook_with_token_params_list_free(struct discord_modify_webhook_with_token_params **p);
+extern void discord_modify_webhook_with_token_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_webhook_with_token_params_list_from_json(char *str, size_t len, struct discord_modify_webhook_with_token_params ***p);
+extern size_t discord_modify_webhook_with_token_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_webhook_with_token_params_list_to_json(char *str, size_t len, struct discord_modify_webhook_with_token_params **p);
 
 extern void discord_execute_webhook_params_cleanup_v(void *p);
 extern void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *p);
@@ -12174,8 +12559,6 @@ extern void discord_execute_webhook_params_from_json_v(char *json, size_t len, v
 extern void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params **pp);
 extern size_t discord_execute_webhook_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct discord_execute_webhook_params *p);
-extern size_t discord_execute_webhook_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_execute_webhook_params_to_query(char *json, size_t len, struct discord_execute_webhook_params *p);
 extern void discord_execute_webhook_params_list_free_v(void **p);
 extern void discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **p);
 extern void discord_execute_webhook_params_list_from_json_v(char *str, size_t len, void *p);
@@ -12191,8 +12574,6 @@ extern void discord_edit_webhook_message_params_from_json_v(char *json, size_t l
 extern void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params **pp);
 extern size_t discord_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_edit_webhook_message_params *p);
-extern size_t discord_edit_webhook_message_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_webhook_message_params_to_query(char *json, size_t len, struct discord_edit_webhook_message_params *p);
 extern void discord_edit_webhook_message_params_list_free_v(void **p);
 extern void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **p);
 extern void discord_edit_webhook_message_params_list_from_json_v(char *str, size_t len, void *p);
@@ -12209,8 +12590,6 @@ extern void discord_webhook_from_json_v(char *json, size_t len, void *pp);
 extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp);
 extern size_t discord_webhook_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p);
-extern size_t discord_webhook_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_webhook_to_query(char *json, size_t len, struct discord_webhook *p);
 extern void discord_webhook_list_free_v(void **p);
 extern void discord_webhook_list_free(struct discord_webhook **p);
 extern void discord_webhook_list_from_json_v(char *str, size_t len, void *p);

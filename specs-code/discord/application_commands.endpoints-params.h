@@ -78,8 +78,6 @@ extern void discord_create_global_application_command_params_from_json_v(char *j
 extern void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params **pp);
 extern size_t discord_create_global_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_global_application_command_params_to_json(char *json, size_t len, struct discord_create_global_application_command_params *p);
-extern size_t discord_create_global_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_global_application_command_params_to_query(char *json, size_t len, struct discord_create_global_application_command_params *p);
 extern void discord_create_global_application_command_params_list_free_v(void **p);
 extern void discord_create_global_application_command_params_list_free(struct discord_create_global_application_command_params **p);
 extern void discord_create_global_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -156,8 +154,6 @@ extern void discord_edit_global_application_command_params_from_json_v(char *jso
 extern void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params **pp);
 extern size_t discord_edit_global_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_global_application_command_params_to_json(char *json, size_t len, struct discord_edit_global_application_command_params *p);
-extern size_t discord_edit_global_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_global_application_command_params_to_query(char *json, size_t len, struct discord_edit_global_application_command_params *p);
 extern void discord_edit_global_application_command_params_list_free_v(void **p);
 extern void discord_edit_global_application_command_params_list_free(struct discord_edit_global_application_command_params **p);
 extern void discord_edit_global_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -238,8 +234,6 @@ extern void discord_create_guild_application_command_params_from_json_v(char *js
 extern void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params **pp);
 extern size_t discord_create_guild_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_application_command_params_to_json(char *json, size_t len, struct discord_create_guild_application_command_params *p);
-extern size_t discord_create_guild_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_create_guild_application_command_params_to_query(char *json, size_t len, struct discord_create_guild_application_command_params *p);
 extern void discord_create_guild_application_command_params_list_free_v(void **p);
 extern void discord_create_guild_application_command_params_list_free(struct discord_create_guild_application_command_params **p);
 extern void discord_create_guild_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -316,8 +310,6 @@ extern void discord_edit_guild_application_command_params_from_json_v(char *json
 extern void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params **pp);
 extern size_t discord_edit_guild_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_guild_application_command_params_to_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p);
-extern size_t discord_edit_guild_application_command_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_guild_application_command_params_to_query(char *json, size_t len, struct discord_edit_guild_application_command_params *p);
 extern void discord_edit_guild_application_command_params_list_free_v(void **p);
 extern void discord_edit_guild_application_command_params_list_free(struct discord_edit_guild_application_command_params **p);
 extern void discord_edit_guild_application_command_params_list_from_json_v(char *str, size_t len, void *p);
@@ -382,8 +374,6 @@ extern void discord_edit_application_command_permissions_params_from_json_v(char
 extern void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params **pp);
 extern size_t discord_edit_application_command_permissions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_application_command_permissions_params_to_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p);
-extern size_t discord_edit_application_command_permissions_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_edit_application_command_permissions_params_to_query(char *json, size_t len, struct discord_edit_application_command_permissions_params *p);
 extern void discord_edit_application_command_permissions_params_list_free_v(void **p);
 extern void discord_edit_application_command_permissions_params_list_free(struct discord_edit_application_command_permissions_params **p);
 extern void discord_edit_application_command_permissions_params_list_from_json_v(char *str, size_t len, void *p);

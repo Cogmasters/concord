@@ -88,8 +88,6 @@ extern void github_gist_from_json_v(char *json, size_t len, void *pp);
 extern void github_gist_from_json(char *json, size_t len, struct github_gist **pp);
 extern size_t github_gist_to_json_v(char *json, size_t len, void *p);
 extern size_t github_gist_to_json(char *json, size_t len, struct github_gist *p);
-extern size_t github_gist_to_query_v(char *json, size_t len, void *p);
-extern size_t github_gist_to_query(char *json, size_t len, struct github_gist *p);
 extern void github_gist_list_free_v(void **p);
 extern void github_gist_list_free(struct github_gist **p);
 extern void github_gist_list_from_json_v(char *str, size_t len, void *p);

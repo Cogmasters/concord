@@ -102,8 +102,6 @@ extern void discord_guild_template_from_json_v(char *json, size_t len, void *pp)
 extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template **pp);
 extern size_t discord_guild_template_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_template_to_json(char *json, size_t len, struct discord_guild_template *p);
-extern size_t discord_guild_template_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_guild_template_to_query(char *json, size_t len, struct discord_guild_template *p);
 extern void discord_guild_template_list_free_v(void **p);
 extern void discord_guild_template_list_free(struct discord_guild_template **p);
 extern void discord_guild_template_list_from_json_v(char *str, size_t len, void *p);
