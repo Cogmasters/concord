@@ -280,7 +280,7 @@ discord_execute_webhook(
   size_t ret=0;
 
   if (params->wait) {
-    ret = snprintf(query, sizeof(query), "thing_id=1");
+    ret = snprintf(query, sizeof(query), "wait=1");
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
   if (params->thread_id) {
@@ -345,7 +345,7 @@ discord_get_webhook_message(
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'webhook_id'");
+    log_error("Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_message) {
