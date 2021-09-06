@@ -1751,6 +1751,218 @@ ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord
 /** @} DiscordListVoiceRegions */
 
 
+/** @defgroup DiscordCreateWebhook
+ * @brief @b POST /channels/{channel.id}/webhooks
+ *
+ * Create a new webhook. Requires the MANAGE_WEBHOOKS permission. Returns a webhook object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#create-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the webhook belongs to
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_create_webhook(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_webhook_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_create_webhook_params
+/** @} DiscordCreateWebhook */
+
+/** @defgroup DiscordGetChannelWebhooks
+ * @brief @b GET /channels/{channel.id}/webhooks
+ *
+ * Returns a list of channel webhook objects. Requires the MANAGE_WEBHOOKS permission.
+ * @see https://discord.com/developers/docs/resources/webhook#get-channel-webhooks
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the webhooks belongs to
+ * @param p_webhooks a null-terminated list of webhook objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_channel_webhooks(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_webhook) *p_webhooks);
+/** @} DiscordGetChannelWebhooks */
+
+/** @defgroup DiscordGetGuildWebhooks
+ * @brief @b GET /guilds/{guild.id}/webhooks
+ *
+ * Returns a list of guild webhook objects. Requires the MANAGE_WEBHOOKS permission.
+ * @see https://discord.com/developers/docs/resources/webhook#get-guild-webhooks
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the guild that the webhooks belongs to
+ * @param p_webhooks a null-terminated list of webhook objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_guild_webhooks(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_webhook) *p_webhooks);
+/** @} DiscordGetGuildWebhooks */
+
+/** @defgroup DiscordGetWebhook
+ * @brief @b GET /webhooks/{webhook.id}
+ *
+ * Returns the new webhook object for the given id.
+ * @see https://discord.com/developers/docs/resources/webhook#get-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_webhook(struct discord *client, const u64_snowflake_t webhook_id, struct discord_webhook *p_webhook);
+/** @} DiscordGetWebhook */
+
+/** @defgroup DiscordGetWebhookWithToken
+ * @brief @b GET /webhooks/{webhook.id}/{webhook.token}
+ *
+ * Same discord_get_webhook(), except this call does not require authentication and returns no user in the webhook object
+ * @see https://discord.com/developers/docs/resources/webhook#get-webhook-with-token
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_webhook_with_token(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], struct discord_webhook *p_webhook);
+/** @} DiscordGetWebhookWithToken */
+
+/** @defgroup DiscordModifyWebhook
+ * @brief @b PATCH /webhooks/{webhook.id}
+ *
+ * Modify a webhook. Requires the MANAGE_WEBHOOKS permission. Returns the updated webhook object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_modify_webhook(struct discord *client, const u64_snowflake_t webhook_id, struct discord_modify_webhook_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_modify_webhook_params
+/** @} DiscordModifyWebhook */
+
+/** @defgroup DiscordModifyWebhookWithToken
+ * @brief @b PATCH /webhooks/{webhook.id}/{webhook.token}
+ *
+ * Same discord_modify_webhook(), except this call does not require authentication and returns no user in the webhook object
+ * @see https://discord.com/developers/docs/resources/webhook#modify-webhook-with-token
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_modify_webhook_with_token(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], struct discord_modify_webhook_with_token_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_modify_webhook_with_token_params
+/** @} DiscordModifyWebhookWithToken */
+
+/** @defgroup DiscordDeleteWebhook
+ * @brief @b DELETE /webhooks/{webhook.id}
+ *
+ * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission.
+ * @see https://discord.com/developers/docs/resources/webhook#delete-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_delete_webhook(struct discord *client, const u64_snowflake_t webhook_id);
+/** @} DiscordDeleteWebhook */
+
+/** @defgroup DiscordDeleteWebhookWithToken
+ * @brief @b DELETE /webhooks/{webhook.id}/{webhook.token}
+ *
+ * Same discord_delete_webhook(), except this call does not require authentication.
+ * @see https://discord.com/developers/docs/resources/webhook#delete-webhook-with-token
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_delete_webhook_with_token(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[]);
+/** @} DiscordDeleteWebhookWithToken */
+
+/** @defgroup DiscordExecuteWebhook
+ * @brief @b POST /webhooks/{webhook.id}/{webhook.token}
+ *
+ * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_execute_webhook(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], struct discord_execute_webhook_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_execute_webhook_params
+/** @} DiscordExecuteWebhook */
+
+/** @defgroup DiscordGetWebhookMessage
+ * @brief @b GET /webhooks/{webhook.id}/{webhook.token}/messages/{message.id}
+ *
+ * Returns a previously-sent webhook message from the same token. Returns a message object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#get-webhook-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param message_id the message the webhook belongs to
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_webhook_message(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], const u64_snowflake_t message_id, struct discord_message *p_message);
+/** @} DiscordGetWebhookMessage */
+
+/** @defgroup DiscordEditWebhookMessage
+ * @brief @b PATCH /webhooks/{webhook.id}/{webhook.token}/messages/{message.id}
+ *
+ * Edits a previously-sent webhook message from the same token. Returns a message object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param message_id the message the webhook belongs to
+ * @param params request parameters
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_edit_webhook_message(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], const u64_snowflake_t message_id, struct discord_edit_webhook_message_params *params, struct discord_message *p_message);
+/// @struct discord_edit_webhook_message_params
+/** @} DiscordEditWebhookMessage */
+
+/** @defgroup DiscordDeleteWebhookMessage
+ * @brief @b DELETE /webhooks/{webhook.id}/{webhook.token}/messages/{message.id}
+ *
+ * Deletes a message that was created by the webhook. Returns a 204 NO CONTENT response on success.
+ * @see https://discord.com/developers/docs/resources/webhook#delete-webhook-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param message_id the message the webhook belongs to
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_delete_webhook_message(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], const u64_snowflake_t message_id);
+/** @} DiscordDeleteWebhookMessage */
+
+
 /** @defgroup DiscordGetGateway
  *  @{ */
 ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *p_json);
