@@ -10563,7 +10563,7 @@ struct discord_execute_webhook_params {
   bool tts; ///< true if this is a TTS message
 
   /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
   char *file; ///< the contents of the file being sent
 
   /* specs/discord/webhook.endpoints-params.json:51:20
@@ -10635,7 +10635,7 @@ struct discord_edit_webhook_message_params {
   struct discord_embed **embeds; ///< array of up to 10 embeds objects
 
   /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
   char *file; ///< the contents of the file being sent/edited
 
   /* specs/discord/webhook.endpoints-params.json:66:20

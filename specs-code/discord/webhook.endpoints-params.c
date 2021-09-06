@@ -475,9 +475,6 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
                 "(tts):b,"
-  /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-                "(file):?s,"
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
                 "(embeds):F,"
@@ -505,9 +502,6 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
                 &p->tts,
-  /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-                &p->file,
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
                 discord_embed_from_json, &p->embeds,
@@ -559,7 +553,7 @@ static void discord_execute_webhook_params_use_default_inject_settings(struct di
     p->__M.arg_switches[5] = &p->tts;
 
   /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
   if (p->file != NULL)
     p->__M.arg_switches[6] = p->file;
 
@@ -602,9 +596,6 @@ size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
                 "(tts):b,"
-  /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-                "(file):s,"
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
                 "(embeds):F,"
@@ -630,9 +621,6 @@ size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
                 &p->tts,
-  /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-                p->file,
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
                 discord_embed_to_json, p->embeds,
@@ -705,7 +693,7 @@ void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_param
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
   // p->tts is a scalar
   /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
   if (d->file)
     free(d->file);
   /* specs/discord/webhook.endpoints-params.json:51:20
@@ -751,7 +739,7 @@ void discord_execute_webhook_params_init(struct discord_execute_webhook_params *
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
 
   /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
 
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
@@ -801,9 +789,6 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 "(embeds):F,"
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-                "(file):?s,"
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 "(payload_json):?s,"
@@ -825,9 +810,6 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 discord_embed_list_from_json, &p->embeds,
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-                &p->file,
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 &p->payload_json,
@@ -860,7 +842,7 @@ static void discord_edit_webhook_message_params_use_default_inject_settings(stru
     p->__M.arg_switches[1] = p->embeds;
 
   /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
   if (p->file != NULL)
     p->__M.arg_switches[2] = p->file;
 
@@ -897,9 +879,6 @@ size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struc
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 "(embeds):F,"
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-                "(file):s,"
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 "(payload_json):s,"
@@ -919,9 +898,6 @@ size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struc
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
                 discord_embed_list_to_json, p->embeds,
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-                p->file,
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 p->payload_json,
@@ -981,7 +957,7 @@ void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_mes
   if (d->embeds)
     discord_embed_list_free(d->embeds);
   /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
   if (d->file)
     free(d->file);
   /* specs/discord/webhook.endpoints-params.json:66:20
@@ -1013,7 +989,7 @@ void discord_edit_webhook_message_params_init(struct discord_edit_webhook_messag
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
 
   /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
 
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
