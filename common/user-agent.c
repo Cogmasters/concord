@@ -581,7 +581,7 @@ set_method(
       curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       break;
   default:
-      ERR("[%s] Unknown http method (code: %d)", method, conn->tag);
+      ERR("[%s] Unknown http method (code: %d)", conn->tag, method);
   }
   
   //set ptr to payload that will be sent via POST/PUT/PATCH
