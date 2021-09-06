@@ -167,6 +167,18 @@
   <a class="reference internal nav-link" href="#error-codes">
    Error Codes
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#orca-api">
+     Orca API
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#discord-api">
+     Discord API
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#limits">
@@ -229,6 +241,8 @@
 </div>
 <div class="section" id="error-codes">
 <h2>Error Codes<a class="headerlink" href="#error-codes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="orca-api">
+<h3>Orca API<a class="headerlink" href="#orca-api" title="Permalink to this headline">¶</a></h3>
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__OrcaCodes"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaCodes</span></span></dt>
@@ -249,32 +263,38 @@
 </dd></dl>
 
 <dl class="c macro">
+<dt class="sig sig-object c" id="c.ORCA_HTTP_CODE">
+<span class="target" id="group__OrcaCodes_1ga0557ec1529f3c96ac1a72ad8ea801409"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_HTTP_CODE</span></span></span> <span class="pre">-1</span><a class="headerlink" href="#c.ORCA_HTTP_CODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>request wasn’t succesful (2xx) </p>
+</dd></dl>
+
+<dl class="c macro">
 <dt class="sig sig-object c" id="c.ORCA_NO_RESPONSE">
-<span class="target" id="group__OrcaCodes_1ga8880e92512783e988d4755f9f03c4580"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_NO_RESPONSE</span></span></span> <span class="pre">-1</span><a class="headerlink" href="#c.ORCA_NO_RESPONSE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__OrcaCodes_1ga8880e92512783e988d4755f9f03c4580"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_NO_RESPONSE</span></span></span> <span class="pre">-2</span><a class="headerlink" href="#c.ORCA_NO_RESPONSE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>failure connecting to API’s url </p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.ORCA_UNUSUAL_HTTP_CODE">
-<span class="target" id="group__OrcaCodes_1ga110d8f5a1faaf13ba1a763b7b260c82b"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_UNUSUAL_HTTP_CODE</span></span></span> <span class="pre">-2</span><a class="headerlink" href="#c.ORCA_UNUSUAL_HTTP_CODE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__OrcaCodes_1ga110d8f5a1faaf13ba1a763b7b260c82b"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_UNUSUAL_HTTP_CODE</span></span></span> <span class="pre">-3</span><a class="headerlink" href="#c.ORCA_UNUSUAL_HTTP_CODE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>received a non-standard http code </p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.ORCA_MISSING_PARAMETER">
-<span class="target" id="group__OrcaCodes_1gafc0b28e6e4fc98109015eb537f207bd7"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_MISSING_PARAMETER</span></span></span> <span class="pre">-3</span><a class="headerlink" href="#c.ORCA_MISSING_PARAMETER" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__OrcaCodes_1gafc0b28e6e4fc98109015eb537f207bd7"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_MISSING_PARAMETER</span></span></span> <span class="pre">-4</span><a class="headerlink" href="#c.ORCA_MISSING_PARAMETER" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>missing a mandatory function parameter </p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.ORCA_BAD_PARAMETER">
-<span class="target" id="group__OrcaCodes_1gaf21cf4909ec6435f4d6ced88922bcea8"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_BAD_PARAMETER</span></span></span> <span class="pre">-4</span><a class="headerlink" href="#c.ORCA_BAD_PARAMETER" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__OrcaCodes_1gaf21cf4909ec6435f4d6ced88922bcea8"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_BAD_PARAMETER</span></span></span> <span class="pre">-5</span><a class="headerlink" href="#c.ORCA_BAD_PARAMETER" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>unexpected value for parameter </p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.ORCA_BAD_JSON">
-<span class="target" id="group__OrcaCodes_1ga641eec95dca09556c3cbf01121015e28"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_BAD_JSON</span></span></span> <span class="pre">-5</span><a class="headerlink" href="#c.ORCA_BAD_JSON" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__OrcaCodes_1ga641eec95dca09556c3cbf01121015e28"></span><span class="sig-name descname"><span class="n"><span class="pre">ORCA_BAD_JSON</span></span></span> <span class="pre">-6</span><a class="headerlink" href="#c.ORCA_BAD_JSON" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>internal failure when encoding or decoding JSON </p>
 </dd></dl>
 
@@ -290,6 +310,14 @@
 </div>
 </dd></dl>
 
+</div>
+<div class="section" id="discord-api">
+<h3>Discord API<a class="headerlink" href="#discord-api" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygengroup: Cannot find group “OrcaDiscordCodes” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
+</div>
 </div>
 <div class="section" id="limits">
 <h2>Limits<a class="headerlink" href="#limits" title="Permalink to this headline">¶</a></h2>

@@ -17,7 +17,15 @@ Primitives
 Error Codes
 -----------
 
+Orca API
+^^^^^^^^
+
 .. doxygengroup:: OrcaCodes
+
+Discord API
+^^^^^^^^^^^
+
+.. doxygengroup:: OrcaDiscordCodes
 
 Limits
 ------

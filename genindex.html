@@ -198,19 +198,9 @@
 </li>
       <li><a href="apis/discord.html#c.discord_application_command.options">discord_application_command.options (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data">discord_application_command_interaction_data (C struct)</a>
+      <li><a href="apis/discord.html#c.discord_application_command.type">discord_application_command.type (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data.custom_id">discord_application_command_interaction_data.custom_id (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data.id">discord_application_command_interaction_data.id (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data.name">discord_application_command_interaction_data.name (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data.options">discord_application_command_interaction_data.options (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data.resolved">discord_application_command_interaction_data.resolved (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data.type">discord_application_command_interaction_data.type (C var)</a>
+      <li><a href="apis/discord.html#c.discord_application_command_cb">discord_application_command_cb (C type)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_application_command_interaction_data_option">discord_application_command_interaction_data_option (C struct)</a>
 </li>
@@ -221,16 +211,6 @@
       <li><a href="apis/discord.html#c.discord_application_command_interaction_data_option.type">discord_application_command_interaction_data_option.type (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_application_command_interaction_data_option.value">discord_application_command_interaction_data_option.value (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data_resolved">discord_application_command_interaction_data_resolved (C struct)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data_resolved.channels">discord_application_command_interaction_data_resolved.channels (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data_resolved.members">discord_application_command_interaction_data_resolved.members (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data_resolved.roles">discord_application_command_interaction_data_resolved.roles (C var)</a>
-</li>
-      <li><a href="apis/discord.html#c.discord_application_command_interaction_data_resolved.users">discord_application_command_interaction_data_resolved.users (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_application_command_option">discord_application_command_option (C struct)</a>
 </li>
@@ -262,6 +242,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE">discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE (C enumerator)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_NUMBER">discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_NUMBER (C enumerator)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_ROLE">discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_ROLE (C enumerator)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_STRING">discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_STRING (C enumerator)</a>
@@ -285,6 +267,14 @@
       <li><a href="apis/discord.html#c.discord_application_command_permissions.permission">discord_application_command_permissions.permission (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_application_command_permissions.type">discord_application_command_permissions.type (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_application_command_types">discord_application_command_types (C enum)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_CHAT_INPUT">discord_application_command_types.DISCORD_APPLICATION_COMMAND_CHAT_INPUT (C enumerator)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_MESSAGE">discord_application_command_types.DISCORD_APPLICATION_COMMAND_MESSAGE (C enumerator)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_USER">discord_application_command_types.DISCORD_APPLICATION_COMMAND_USER (C enumerator)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_audit_log">discord_audit_log (C struct)</a>
 </li>
@@ -510,7 +500,11 @@
 </li>
       <li><a href="apis/discord.html#c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_UPDATE">discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_UPDATE (C enumerator)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_batch_edit_application_command_permissions">discord_batch_edit_application_command_permissions (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_bulk_delete_messages">discord_bulk_delete_messages (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_bulk_overwrite_global_application_command">discord_bulk_overwrite_global_application_command (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_button">discord_button (C struct)</a>
 </li>
@@ -670,6 +664,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_cleanup">discord_cleanup (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_clone">discord_clone (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_component">discord_component (C struct)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_component.components">discord_component.components (C var)</a>
@@ -746,6 +742,22 @@
 </li>
       <li><a href="apis/discord.html#c.discord_create_dm">discord_create_dm (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message">discord_create_followup_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command">discord_create_global_application_command (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command_params">discord_create_global_application_command_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command_params.default_permission">discord_create_global_application_command_params.default_permission (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command_params.description">discord_create_global_application_command_params.description (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command_params.name">discord_create_global_application_command_params.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command_params.options">discord_create_global_application_command_params.options (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_global_application_command_params.type">discord_create_global_application_command_params.type (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_create_group_dm">discord_create_group_dm (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_group_dm_params">discord_create_group_dm_params (C struct)</a>
@@ -755,6 +767,20 @@
       <li><a href="apis/discord.html#c.discord_create_group_dm_params.nicks">discord_create_group_dm_params.nicks (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_guild">discord_create_guild (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command">discord_create_guild_application_command (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command_params">discord_create_guild_application_command_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command_params.default_permission">discord_create_guild_application_command_params.default_permission (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command_params.description">discord_create_guild_application_command_params.description (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command_params.name">discord_create_guild_application_command_params.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command_params.options">discord_create_guild_application_command_params.options (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_guild_application_command_params.type">discord_create_guild_application_command_params.type (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_guild_ban">discord_create_guild_ban (C function)</a>
 </li>
@@ -828,6 +854,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_create_guild_role_params.permissions">discord_create_guild_role_params.permissions (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_create_interaction_response">discord_create_interaction_response (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_create_message">discord_create_message (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_message_params">discord_create_message_params (C struct)</a>
@@ -846,15 +874,21 @@
 </li>
       <li><a href="apis/discord.html#c.discord_create_message_params.message_reference">discord_create_message_params.message_reference (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_create_message_params.name">discord_create_message_params.name (C var)</a>
-</li>
       <li><a href="apis/discord.html#c.discord_create_message_params.payload_json">discord_create_message_params.payload_json (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_create_message_params.size">discord_create_message_params.size (C var)</a>
+      <li><a href="apis/discord.html#c.discord_create_message_params.sticker_ids">discord_create_message_params.sticker_ids (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_message_params.tts">discord_create_message_params.tts (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_reaction">discord_create_reaction (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_webhook">discord_create_webhook (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_webhook_params">discord_create_webhook_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_webhook_params.avatar">discord_create_webhook_params.avatar (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_webhook_params.name">discord_create_webhook_params.name (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_crosspost_message">discord_crosspost_message (C function)</a>
 </li>
@@ -866,7 +900,13 @@
 </li>
       <li><a href="apis/discord.html#c.discord_delete_channel_permission">discord_delete_channel_permission (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_delete_followup_message">discord_delete_followup_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_delete_global_application_command">discord_delete_global_application_command (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_delete_guild">discord_delete_guild (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_delete_guild_application_command">discord_delete_guild_application_command (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_delete_guild_emoji">discord_delete_guild_emoji (C function)</a>
 </li>
@@ -878,11 +918,25 @@
 </li>
       <li><a href="apis/discord.html#c.discord_delete_messages_by_author_id">discord_delete_messages_by_author_id (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_delete_original_interaction_response">discord_delete_original_interaction_response (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_delete_own_reaction">discord_delete_own_reaction (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_delete_user_reaction">discord_delete_user_reaction (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_delete_webhook">discord_delete_webhook (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_delete_webhook_message">discord_delete_webhook_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_delete_webhook_with_token">discord_delete_webhook_with_token (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_disconnect_guild_member">discord_disconnect_guild_member (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_application_command_permissions">discord_edit_application_command_permissions (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_application_command_permissions_params">discord_edit_application_command_permissions_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_application_command_permissions_params.permissions">discord_edit_application_command_permissions_params.permissions (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_edit_channel_permissions">discord_edit_channel_permissions (C function)</a>
 </li>
@@ -894,17 +948,73 @@
 </li>
       <li><a href="apis/discord.html#c.discord_edit_channel_permissions_params.type">discord_edit_channel_permissions_params.type (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message">discord_edit_followup_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_global_application_command">discord_edit_global_application_command (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_global_application_command_params">discord_edit_global_application_command_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_global_application_command_params.default_permission">discord_edit_global_application_command_params.default_permission (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_global_application_command_params.description">discord_edit_global_application_command_params.description (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_global_application_command_params.name">discord_edit_global_application_command_params.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_global_application_command_params.options">discord_edit_global_application_command_params.options (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_guild_application_command">discord_edit_guild_application_command (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_guild_application_command_params">discord_edit_guild_application_command_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_guild_application_command_params.default_permission">discord_edit_guild_application_command_params.default_permission (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_guild_application_command_params.description">discord_edit_guild_application_command_params.description (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_guild_application_command_params.name">discord_edit_guild_application_command_params.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_guild_application_command_params.options">discord_edit_guild_application_command_params.options (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_edit_message">discord_edit_message (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_edit_message_params">discord_edit_message_params (C struct)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_edit_message_params.allowed_mentions">discord_edit_message_params.allowed_mentions (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_edit_message_params.attachments">discord_edit_message_params.attachments (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_message_params.components">discord_edit_message_params.components (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_edit_message_params.content">discord_edit_message_params.content (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_edit_message_params.embed">discord_edit_message_params.embed (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_edit_message_params.embeds">discord_edit_message_params.embeds (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_message_params.file">discord_edit_message_params.file (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_edit_message_params.flags">discord_edit_message_params.flags (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_message_params.payload_json">discord_edit_message_params.payload_json (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_original_interaction_response">discord_edit_original_interaction_response (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message">discord_edit_webhook_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params">discord_edit_webhook_message_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.allowed_mentions">discord_edit_webhook_message_params.allowed_mentions (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.attachments">discord_edit_webhook_message_params.attachments (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.components">discord_edit_webhook_message_params.components (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.content">discord_edit_webhook_message_params.content (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.embeds">discord_edit_webhook_message_params.embeds (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.file">discord_edit_webhook_message_params.file (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_webhook_message_params.payload_json">discord_edit_webhook_message_params.payload_json (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_embed">discord_embed (C struct)</a>
 </li>
@@ -1053,6 +1163,40 @@
       <li><a href="apis/discord.html#c.discord_event_mode_cb">discord_event_mode_cb (C type)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_event_raw_cb">discord_event_raw_cb (C type)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook">discord_execute_webhook (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params">discord_execute_webhook_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.allowed_mentions">discord_execute_webhook_params.allowed_mentions (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.avatar_url">discord_execute_webhook_params.avatar_url (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.components">discord_execute_webhook_params.components (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.content">discord_execute_webhook_params.content (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.embeds">discord_execute_webhook_params.embeds (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.file">discord_execute_webhook_params.file (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.payload_json">discord_execute_webhook_params.payload_json (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.thread_id">discord_execute_webhook_params.thread_id (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.tts">discord_execute_webhook_params.tts (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.username">discord_execute_webhook_params.username (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_execute_webhook_params.wait">discord_execute_webhook_params.wait (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_file">discord_file (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_file.content">discord_file.content (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_file.name">discord_file.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_file.size">discord_file.size (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_follow_news_channel">discord_follow_news_channel (C function)</a>
 </li>
@@ -1320,6 +1464,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_gateway_status_update.status">discord_gateway_status_update.status (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_get_application_command_permissions">discord_get_application_command_permissions (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_get_channel">discord_get_channel (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_channel_at_pos">discord_get_channel_at_pos (C function)</a>
@@ -1340,17 +1486,31 @@
 </li>
       <li><a href="apis/discord.html#c.discord_get_channel_messages_params.limit">discord_get_channel_messages_params.limit (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_get_channel_webhooks">discord_get_channel_webhooks (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_get_current_user">discord_get_current_user (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_current_user_guilds">discord_get_current_user_guilds (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_data">discord_get_data (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_get_followup_message">discord_get_followup_message (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_get_gateway">discord_get_gateway (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_gateway_bot">discord_get_gateway_bot (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_get_global_application_command">discord_get_global_application_command (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_global_application_commands">discord_get_global_application_commands (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_get_guild">discord_get_guild (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_guild_application_command">discord_get_guild_application_command (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_guild_application_command_permissions">discord_get_guild_application_command_permissions (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_guild_application_commands">discord_get_guild_application_commands (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild_audit_log">discord_get_guild_audit_log (C function)</a>
 </li>
@@ -1364,6 +1524,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild_audit_log_params.user_id">discord_get_guild_audit_log_params.user_id (C var)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apis/discord.html#c.discord_get_guild_ban">discord_get_guild_ban (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild_bans">discord_get_guild_bans (C function)</a>
@@ -1378,6 +1540,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild_roles">discord_get_guild_roles (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_get_guild_webhooks">discord_get_guild_webhooks (C function)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_get_invite">discord_get_invite (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_invite_params">discord_get_invite_params (C struct)</a>
@@ -1385,6 +1549,8 @@
       <li><a href="apis/discord.html#c.discord_get_invite_params.with_counts">discord_get_invite_params.with_counts (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_invite_params.with_expiration">discord_get_invite_params.with_expiration (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_original_interaction_response">discord_get_original_interaction_response (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_pinned_messages">discord_get_pinned_messages (C function)</a>
 </li>
@@ -1398,9 +1564,13 @@
 </li>
       <li><a href="apis/discord.html#c.discord_get_user">discord_get_user (C function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apis/discord.html#c.discord_get_user_connections">discord_get_user_connections (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_webhook">discord_get_webhook (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_webhook_message">discord_get_webhook_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_get_webhook_with_token">discord_get_webhook_with_token (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_global_cleanup">discord_global_cleanup (C function)</a>
 </li>
@@ -1776,27 +1946,29 @@
 </li>
       <li><a href="apis/discord.html#c.discord_interaction.member">discord_interaction.member (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_interaction.message">discord_interaction.message (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_interaction.token">discord_interaction.token (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_interaction.type">discord_interaction.type (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_interaction.user">discord_interaction.user (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data">discord_interaction_application_command_callback_data (C struct)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data">discord_interaction_callback_data (C struct)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data.components">discord_interaction_application_command_callback_data.components (C var)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data.components">discord_interaction_callback_data.components (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data.content">discord_interaction_application_command_callback_data.content (C var)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data.content">discord_interaction_callback_data.content (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data.embeds">discord_interaction_application_command_callback_data.embeds (C var)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data.embeds">discord_interaction_callback_data.embeds (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data.flags">discord_interaction_application_command_callback_data.flags (C var)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data.flags">discord_interaction_callback_data.flags (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data.tts">discord_interaction_application_command_callback_data.tts (C var)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data.tts">discord_interaction_callback_data.tts (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data_flags">discord_interaction_application_command_callback_data_flags (C enum)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data_flags">discord_interaction_callback_data_flags (C enum)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_application_command_callback_data_flags.DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL">discord_interaction_application_command_callback_data_flags.DISCORD_INTERACTION_APPLICATION_COMMAND_CALLBACK_DATA_EPHEMERAL (C enumerator)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_callback_data_flags.DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL">discord_interaction_callback_data_flags.DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL (C enumerator)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_interaction_callback_types">discord_interaction_callback_types (C enum)</a>
 </li>
@@ -1810,19 +1982,39 @@
 </li>
       <li><a href="apis/discord.html#c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE">discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE (C enumerator)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_request_types">discord_interaction_request_types (C enum)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_cb">discord_interaction_cb (C type)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_request_types.DISCORD_INTERACTION_APPLICATION_COMMAND">discord_interaction_request_types.DISCORD_INTERACTION_APPLICATION_COMMAND (C enumerator)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_data">discord_interaction_data (C struct)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_request_types.DISCORD_INTERACTION_MESSAGE_COMPONENT">discord_interaction_request_types.DISCORD_INTERACTION_MESSAGE_COMPONENT (C enumerator)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_data.custom_id">discord_interaction_data.custom_id (C var)</a>
 </li>
-      <li><a href="apis/discord.html#c.discord_interaction_request_types.DISCORD_INTERACTION_PING">discord_interaction_request_types.DISCORD_INTERACTION_PING (C enumerator)</a>
+      <li><a href="apis/discord.html#c.discord_interaction_data.id">discord_interaction_data.id (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_data.name">discord_interaction_data.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_data.options">discord_interaction_data.options (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_data.resolved">discord_interaction_data.resolved (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_data.target_id">discord_interaction_data.target_id (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_data.type">discord_interaction_data.type (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_data.values">discord_interaction_data.values (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_interaction_response">discord_interaction_response (C struct)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_interaction_response.data">discord_interaction_response.data (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_interaction_response.type">discord_interaction_response.type (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_types">discord_interaction_types (C enum)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_types.DISCORD_INTERACTION_APPLICATION_COMMAND">discord_interaction_types.DISCORD_INTERACTION_APPLICATION_COMMAND (C enumerator)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_types.DISCORD_INTERACTION_MESSAGE_COMPONENT">discord_interaction_types.DISCORD_INTERACTION_MESSAGE_COMPONENT (C enumerator)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_interaction_types.DISCORD_INTERACTION_PING">discord_interaction_types.DISCORD_INTERACTION_PING (C enumerator)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_invite">discord_invite (C struct)</a>
 </li>
@@ -2236,6 +2428,24 @@
 </li>
       <li><a href="apis/discord.html#c.discord_modify_guild_role_positions_params.position">discord_modify_guild_role_positions_params.position (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook">discord_modify_webhook (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_params">discord_modify_webhook_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_params.avatar">discord_modify_webhook_params.avatar (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_params.channel_id">discord_modify_webhook_params.channel_id (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_params.name">discord_modify_webhook_params.name (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_with_token">discord_modify_webhook_with_token (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_with_token_params">discord_modify_webhook_with_token_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_with_token_params.avatar">discord_modify_webhook_with_token_params.avatar (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_modify_webhook_with_token_params.name">discord_modify_webhook_with_token_params.name (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_overwrite_append">discord_overwrite_append (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_permissions_bitwise_flags">discord_permissions_bitwise_flags (C enum)</a>
@@ -2346,6 +2556,18 @@
 </li>
       <li><a href="apis/discord.html#c.discord_replace_presence">discord_replace_presence (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_resolved_data">discord_resolved_data (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_resolved_data.channels">discord_resolved_data.channels (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_resolved_data.members">discord_resolved_data.members (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_resolved_data.messages">discord_resolved_data.messages (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_resolved_data.roles">discord_resolved_data.roles (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_resolved_data.users">discord_resolved_data.users (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_run">discord_run (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_sb_message_cb">discord_sb_message_cb (C type)</a>
@@ -2386,9 +2608,25 @@
 </li>
       <li><a href="apis/discord.html#c.discord_select_option.value">discord_select_option.value (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_session_start_limit">discord_session_start_limit (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_session_start_limit.max_concurrency">discord_session_start_limit.max_concurrency (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_session_start_limit.remaining">discord_session_start_limit.remaining (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_session_start_limit.reset_after">discord_session_start_limit.reset_after (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_session_start_limit.total">discord_session_start_limit.total (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_set_data">discord_set_data (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_set_event_handler">discord_set_event_handler (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_set_on_application_command_create">discord_set_on_application_command_create (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_set_on_application_command_delete">discord_set_on_application_command_delete (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_set_on_application_command_update">discord_set_on_application_command_update (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_set_on_channel_create">discord_set_on_channel_create (C function)</a>
 </li>
@@ -2415,6 +2653,8 @@
       <li><a href="apis/discord.html#c.discord_set_on_guild_role_update">discord_set_on_guild_role_update (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_set_on_idle">discord_set_on_idle (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_set_on_interaction_create">discord_set_on_interaction_create (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_set_on_message_create">discord_set_on_message_create (C function)</a>
 </li>
@@ -2473,6 +2713,8 @@
       <li><a href="apis/discord.html#c.discord_start_thread_without_message_params.name">discord_start_thread_without_message_params.name (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_start_thread_without_message_params.type">discord_start_thread_without_message_params.type (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_strerror">discord_strerror (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_thread_member">discord_thread_member (C struct)</a>
 </li>
@@ -2626,15 +2868,23 @@
 </li>
       <li><a href="apis/discord.html#c.discord_webhook.name">discord_webhook.name (C var)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_webhook.source_channel">discord_webhook.source_channel (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_webhook.source_guild">discord_webhook.source_guild (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_webhook.token">discord_webhook.token (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_webhook.type">discord_webhook.type (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_webhook.url">discord_webhook.url (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_webhook.user">discord_webhook.user (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.DISCORD_WEBHOOK_NAME_LEN">DISCORD_WEBHOOK_NAME_LEN (C macro)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_webhook_types">discord_webhook_types (C enum)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_webhook_types.DISCORD_WEBHOOK_APPLICATION">discord_webhook_types.DISCORD_WEBHOOK_APPLICATION (C enumerator)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_webhook_types.DISCORD_WEBHOOK_CHANNEL_FOLLOWER">discord_webhook_types.DISCORD_WEBHOOK_CHANNEL_FOLLOWER (C enumerator)</a>
 </li>
@@ -2649,6 +2899,8 @@
       <li><a href="common/types.html#c.ORCA_BAD_JSON">ORCA_BAD_JSON (C macro)</a>
 </li>
       <li><a href="common/types.html#c.ORCA_BAD_PARAMETER">ORCA_BAD_PARAMETER (C macro)</a>
+</li>
+      <li><a href="common/types.html#c.ORCA_HTTP_CODE">ORCA_HTTP_CODE (C macro)</a>
 </li>
       <li><a href="common/types.html#c.ORCA_LIMITS_EMAIL">ORCA_LIMITS_EMAIL (C macro)</a>
 </li>

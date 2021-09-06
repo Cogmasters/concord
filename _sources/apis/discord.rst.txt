@@ -32,103 +32,138 @@ General
 
 .. doxygengroup:: DiscordCallbacksGeneral
 
-Guild
-^^^^^
+Application Command
+^^^^^^^^^^^^^^^^^^^
 
-.. doxygengroup:: DiscordCallbacksGuild
-
-Message
-^^^^^^^
-
-.. doxygengroup:: DiscordCallbacksMessage
+.. doxygengroup:: DiscordCallbacksApplicationCommand
 
 Channel
 ^^^^^^^
 
 .. doxygengroup:: DiscordCallbacksChannel
 
+Guild
+^^^^^
+
+.. doxygengroup:: DiscordCallbacksGuild
+
+Interaction
+^^^^^^^^^^^
+
+.. doxygengroup:: DiscordCallbacksInteraction
+
+Message
+^^^^^^^
+
+.. doxygengroup:: DiscordCallbacksMessage
+
 Voice
 ^^^^^
 
 .. doxygengroup:: DiscordCallbacksVoice
 
-Audit Log
+Interactions
+~~~~~~~~~~~~
+
+Application Commands
+^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/application_commands.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
+Message Components
+^^^^^^^^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/message_components.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
+Receiving and Responding
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/interaction.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
+Resources
 ~~~~~~~~~
+
+Audit Log
+^^^^^^^^^
 
 .. doxygenfile:: specs-code/discord/audit_log.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Channel
-~~~~~~~
+^^^^^^^
 
 .. doxygenfile:: specs-code/discord/channel.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Emoji
-~~~~~
+^^^^^
 
 .. doxygenfile:: specs-code/discord/emoji.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Guild
-~~~~~
+^^^^^
 
 .. doxygenfile:: specs-code/discord/guild.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Guild Template
-~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 .. doxygenfile:: specs-code/discord/guild-template.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Invite
-~~~~~~
+^^^^^^
 
 .. doxygenfile:: specs-code/discord/invite.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
-Message Components
-~~~~~~~~~~~~~~~~~~
-
-.. doxygenfile:: specs-code/discord/message_components.h
-    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
-
-Permissions
-~~~~~~~~~~~
-
-.. doxygenfile:: specs-code/discord/permissions.h
-    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
-
-Slash Commands
-~~~~~~~~~~~~~~
-
-.. doxygenfile:: specs-code/discord/slash_commands.h
-    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
-
 User
-~~~~
+^^^^
 
 .. doxygenfile:: specs-code/discord/user.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Voice
-~~~~~
+^^^^^
 
 .. doxygenfile:: specs-code/discord/voice.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
 Webhook
-~~~~~~~
+^^^^^^^
 
 .. doxygenfile:: specs-code/discord/webhook.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
+Topics
+~~~~~~
+
 Gateway
-~~~~~~~
+^^^^^^^
 
 .. doxygenfile:: specs-code/discord/gateway.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
+Permissions
+^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/permissions.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
+Custom
+~~~~~~
+
+Miscellaneous
+^^^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/misc.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
 
 Macros
 ------
@@ -166,8 +201,14 @@ Initialization / Cleanup
 .. doxygenfunction:: discord_global_cleanup
 .. doxygenfunction:: discord_init
 .. doxygenfunction:: discord_config_init
+.. doxygenfunction:: discord_clone
 .. doxygenfunction:: discord_cleanup
 .. doxygenfunction:: discord_run
+
+Error Handling
+^^^^^^^^^^^^^^
+
+.. doxygenfunction:: discord_strerror
 
 Set Behaviour
 ^^^^^^^^^^^^^
@@ -183,12 +224,10 @@ Set Event Callbacks
 .. doxygenfunction:: discord_set_on_command
 .. doxygenfunction:: discord_set_on_event_raw
 .. doxygenfunction:: discord_set_on_idle
-.. doxygenfunction:: discord_set_on_guild_role_create
-.. doxygenfunction:: discord_set_on_guild_role_update
-.. doxygenfunction:: discord_set_on_guild_role_delete
-.. doxygenfunction:: discord_set_on_guild_member_update
-.. doxygenfunction:: discord_set_on_guild_ban_add
-.. doxygenfunction:: discord_set_on_guild_ban_remove
+.. doxygenfunction:: discord_set_on_ready
+.. doxygenfunction:: discord_set_on_application_command_create
+.. doxygenfunction:: discord_set_on_application_command_update
+.. doxygenfunction:: discord_set_on_application_command_delete
 .. doxygenfunction:: discord_set_on_channel_create
 .. doxygenfunction:: discord_set_on_channel_update
 .. doxygenfunction:: discord_set_on_channel_delete
@@ -196,6 +235,13 @@ Set Event Callbacks
 .. doxygenfunction:: discord_set_on_thread_create
 .. doxygenfunction:: discord_set_on_thread_update
 .. doxygenfunction:: discord_set_on_thread_delete
+.. doxygenfunction:: discord_set_on_guild_role_create
+.. doxygenfunction:: discord_set_on_guild_role_update
+.. doxygenfunction:: discord_set_on_guild_role_delete
+.. doxygenfunction:: discord_set_on_guild_member_update
+.. doxygenfunction:: discord_set_on_guild_ban_add
+.. doxygenfunction:: discord_set_on_guild_ban_remove
+.. doxygenfunction:: discord_set_on_interaction_create
 .. doxygenfunction:: discord_set_on_message_create
 .. doxygenfunction:: discord_set_on_message_update
 .. doxygenfunction:: discord_set_on_message_delete
@@ -204,17 +250,142 @@ Set Event Callbacks
 .. doxygenfunction:: discord_set_on_message_reaction_remove
 .. doxygenfunction:: discord_set_on_message_reaction_remove_all
 .. doxygenfunction:: discord_set_on_message_reaction_remove_emoji
-.. doxygenfunction:: discord_set_on_ready
 .. doxygenfunction:: discord_set_on_voice_state_update
 .. doxygenfunction:: discord_set_on_voice_server_update
 
-Misc
-^^^^
+Miscellaneous
+^^^^^^^^^^^^^
 
 .. doxygenfunction:: discord_set_data
 .. doxygenfunction:: discord_get_data
 .. doxygenfunction:: discord_replace_presence
 .. doxygenfunction:: discord_set_presence
+
+Application Commands
+~~~~~~~~~~~~~~~~~~~~
+
+Get Global Application Commands
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetGlobalApplicationCommands
+
+Create Global Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordCreateGlobalApplicationCommand
+
+Get Global Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetGlobalApplicationCommand
+
+Edit Global Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordEditGlobalApplicationCommand
+
+Delete Global Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteGlobalApplicationCommand
+
+Bulk Overwrite Global Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordBulkOverwriteGlobalApplicationCommand
+
+Get Guild Application Commands
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetGuildApplicationCommands
+
+Create Guild Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordCreateGuildApplicationCommand
+
+Get Guild Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetGuildApplicationCommand
+
+Edit Guild Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordEditGuildApplicationCommand
+
+Delete Guild Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteGuildApplicationCommand
+
+Bulk Overwrite Guild Application Command
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordBulkOverwriteGuildApplicationCommand
+
+Get Guild Application Command Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetGuildApplicationCommandPermissions
+
+Get Application Command Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetApplicationCommandPermissions
+
+Edit Application Command Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordEditApplicationCommandPermissions
+
+Batch Edit Application Command Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordBatchEditApplicationCommandPermissions
+
+Interaction
+~~~~~~~~~~~
+
+Create Interaction Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordCreateInteractionResponse
+
+Get Original Interaction Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetOriginalInteractionResponse
+
+Edit Original Interaction Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordEditOriginalInteractionResponse
+
+Delete Original Interaction Response
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteOriginalInteractionResponse
+
+Create Followup Message
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordCreateFollowupMessage
+
+Get Followup Message
+^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetFollowupMessage
+
+Edit Followup Message
+^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordEditFollowupMessage
+
+Delete Followup Message
+^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteFollowupMessage
 
 Audit Log
 ~~~~~~~~~
@@ -637,6 +808,74 @@ List Voice Regions
 
 .. doxygengroup:: DiscordListVoiceRegions
 
+Webhook
+~~~~~~~
+
+Create Webhook
+^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordCreateWebhook
+
+Get Channel Webhooks
+^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetChannelWebhooks
+
+Get Guild Webhooks
+^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetGuildWebhooks
+
+Get Webhook
+^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetWebhook
+
+Get Webhook with Token
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetWebhookWithToken
+
+Modify Webhook
+^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordModifyWebhook
+
+Modify Webhook with Token
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordModifyWebhookWithToken
+
+Delete Webhook
+^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteWebhook
+
+Delete Webhook with Token
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteWebhookWithToken
+
+Execute Webhook
+^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordExecuteWebhook
+
+Get Webhook Message
+^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordGetWebhookMessage
+
+Edit Webhook Message
+^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordEditWebhookMessage
+
+Delete Webhook Message
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordDeleteWebhookMessage
+
 Gateway
 ~~~~~~~
 
@@ -650,8 +889,8 @@ Get Gateway Bot
 
 .. doxygengroup:: DiscordGetGatewayBot
 
-Misc
-~~~~
+Miscellaneous
+~~~~~~~~~~~~~
 
 Channel
 ^^^^^^^
