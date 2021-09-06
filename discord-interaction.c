@@ -79,7 +79,7 @@ discord_edit_original_interaction_response(
   const u64_snowflake_t interaction_id,
   const char interaction_token[],
   struct discord_edit_original_interaction_response_params *params,
-  struct discord_message *p_message)
+  struct discord_interaction_response *p_response)
 {
   if (!interaction_id) {
     log_error("Missing 'interaction_id'");
@@ -95,8 +95,8 @@ discord_edit_original_interaction_response(
   }
 
   struct ua_resp_handle resp_handle = {
-    .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = &p_message
+    .ok_cb = p_response ? &discord_interaction_response_from_json_v : NULL,
+    .ok_obj = &p_response
   };
 
   if (!params->file) // content-type is application/json

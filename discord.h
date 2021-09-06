@@ -1132,6 +1132,23 @@ ORCAcode discord_create_interaction_response(struct discord *client, const u64_s
 ORCAcode discord_get_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_interaction_response *p_response);
 /** @} DiscordGetOriginalInteractionResponse */
 
+/** @defgroup DiscordEditOriginalInteractionResponse
+ * @brief @b PATCH /webhooks/{interaction.id}/{interaction.token}/messages/@original
+ *
+ * Edit the initial Interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-original-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @param params request parameters
+ * @param p_response the interaction response object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_edit_original_interaction_response_params *params, struct discord_interaction_response *p_response);
+/** @} DiscordEditOriginalInteractionResponse */
+
 /** @defgroup DiscordDeleteOriginalInteractionResponse
  * @brief @b DELETE /webhooks/{interaction.id}/{interaction.token}/messages/@original
  *
@@ -1146,6 +1163,74 @@ ORCAcode discord_get_original_interaction_response(struct discord *client, const
  */
 ORCAcode discord_delete_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[]);
 /** @} DiscordDeleteOriginalInteractionResponse */
+
+/** @defgroup DiscordCreateFollowupMessage
+ * @brief @b POST /webhooks/{interaction.id}/{interaction.token}
+ *
+ * Create a followup message for an Interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#create-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], struct discord_create_followup_message_params *params, struct discord_webhook *p_webhook);
+/** @} DiscordCreateFollowupMessage */
+
+/** @defgroup DiscordGetFollowupMessage
+ * @brief @b GET /webhooks/{interaction.id}/{interaction.token}/messages/{message.id}
+ *
+ * Returns a followup message for an interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#get-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param message_id the unique id of the message
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id, struct discord_message *p_message);
+/** @} DiscordGetFollowupMessage */
+
+/** @defgroup DiscordEditFollowupMessage
+ * @brief @b PATCH /webhooks/{application.id}/{interaction.token}/messages/{message.id}
+ *
+ * Edits a followup message for an interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param message_id the unique id of the message
+ * @param params request parameters
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id, struct discord_edit_followup_message_params *params, struct discord_message *p_message);
+/** @} DiscordEditFollowupMessage */
+
+/** @defgroup DiscordDeleteFollowupMessage
+ * @brief @b DELETE /webhooks/{application.id}/{interaction.token}/messages/{message.id}
+ *
+ * Edits a followup message for an interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param message_id the unique id of the message
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_delete_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id);
+/** @} DiscordDeleteFollowupMessage */
 
 
 /** @defgroup DiscordGetGuildAuditLog 
