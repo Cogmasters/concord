@@ -51,12 +51,26 @@ void log_on_application_command_delete(
   log_info("Application Command %s deleted", cmd->name);
 }
 
-void log_on_interaction_create(
+void on_interaction_create(
   struct discord *client,
   const struct discord_user *bot,
   const struct discord_interaction *interaction)
 {
   log_info("Interaction %"PRIu64" received", interaction->id);
+
+  struct discord_interaction_response params = {
+    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE, // 4
+    .data = &(struct discord_interaction_callback_data){
+      .content = "Hello World!",
+      .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL // 1 << 6
+    }
+  };
+
+  ORCAcode code;
+  code = discord_create_interaction_response(client, interaction->id, interaction->token, &params, NULL);
+  if (code) {
+    log_error("%s", discord_strerror(code, client));
+  }
 }
 
 void* read_input(void *p_client)
@@ -225,7 +239,7 @@ int main(int argc, char *argv[])
   discord_set_on_application_command_create(client, &log_on_application_command_create);
   discord_set_on_application_command_update(client, &log_on_application_command_update);
   discord_set_on_application_command_delete(client, &log_on_application_command_delete);
-  discord_set_on_interaction_create(client, &log_on_interaction_create);
+  discord_set_on_interaction_create(client, &on_interaction_create);
 
   printf("\n\nThis bot demonstrates how easy it is to create/update/delete application commands\n"
          "1. Input a valid application id from https://discord.com/developers/applications\n"
