@@ -6,11 +6,6 @@
 #include "types.h"
 #include "logconf.h"
 
-/* Github error codes */
-#define ORCA_GITHUB_JSON        1
-#define ORCA_GITHUB_BAD_AUTH    2
-#define ORCA_GITHUB_NOT_STARRED 404
-
 #include "specs-code/github/one-specs.h"
 
 /* This limit is fairly arbitrary, find the maximum at a later time. */

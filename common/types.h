@@ -30,6 +30,21 @@ typedef int ORCAcode;             ///< the error code datatype
 #define ORCA_BAD_JSON          -6 ///< internal failure when encoding or decoding JSON
 /** @} OrcaCodes */
 
+/** @defgroup OrcaDiscordCodes
+ *  @see discord_strerror()
+ *  @{ */
+#define ORCA_DISCORD_JSON_CODE  1 ///< Received a JSON error message
+#define ORCA_DISCORD_BAD_AUTH   2 ///< Bad authentication token
+#define ORCA_DISCORD_RATELIMIT  3 ///< Being ratelimited
+#define ORCA_DISCORD_CONNECTION 4 ///< Couldn't establish connection to Discord
+/** @} OrcaDiscordCodes */
+
+/* Github error codes */
+#define ORCA_GITHUB_JSON        1
+#define ORCA_GITHUB_BAD_AUTH    2
+#define ORCA_GITHUB_NOT_STARRED 404
+
+
 /** @defgroup OrcaLimits
  *  @brief Limits discovered across the web
  *  @todo add reference links

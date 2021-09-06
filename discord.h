@@ -21,12 +21,6 @@
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 #define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
 
-/* ERROR CODES @ see discord_strerror() */
-#define ORCA_DISCORD_JSON_CODE  1 ///< Received a JSON error message
-#define ORCA_DISCORD_BAD_AUTH   2 ///< Bad authentication token
-#define ORCA_DISCORD_RATELIMIT  3 ///< Being ratelimited
-#define ORCA_DISCORD_CONNECTION 4 ///< Couldn't establish connection to Discord
-
 /* FORWARD DECLARATIONS */
 struct discord;
 struct discord_voice_cbs;
@@ -1179,6 +1173,7 @@ ORCAcode discord_delete_original_interaction_response(struct discord *client, co
  * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
  */
 ORCAcode discord_create_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], struct discord_create_followup_message_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_create_followup_message_params
 /** @} DiscordCreateFollowupMessage */
 
 /** @defgroup DiscordGetFollowupMessage
@@ -1214,6 +1209,7 @@ ORCAcode discord_get_followup_message(struct discord *client, const u64_snowflak
  * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
  */
 ORCAcode discord_edit_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id, struct discord_edit_followup_message_params *params, struct discord_message *p_message);
+/// @struct discord_edit_followup_message_params
 /** @} DiscordEditFollowupMessage */
 
 /** @defgroup DiscordDeleteFollowupMessage
