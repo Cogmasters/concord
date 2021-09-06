@@ -12,13 +12,18 @@
 void
 discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token)
 {
-  if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
-    token->start = NULL;
-  }
-  ASSERT_S(NULL != token->start, "Missing bot token");
-
   adapter->ua = ua_init(config);
   ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
+
+  adapter->ratelimit = calloc(1, sizeof *adapter->ratelimit);
+  if (pthread_mutex_init(&adapter->ratelimit->lock, NULL))
+    ERR("Couldn't initialize pthread mutex");
+
+  if (!token->size) { // is a webhook only client
+    logconf_add_id(config, adapter->ua, "DISCORD_WEBHOOK");
+    return; /* EARLY RETURN */
+  }
+
   logconf_add_id(config, adapter->ua, "DISCORD_HTTP");
 
   char auth[128];
@@ -26,10 +31,6 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
   ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
 
   ua_reqheader_add(adapter->ua, "Authorization", auth);
-
-  adapter->ratelimit = calloc(1, sizeof *adapter->ratelimit);
-  if (pthread_mutex_init(&adapter->ratelimit->lock, NULL))
-    ERR("Couldn't initialize pthread mutex");
 }
 
 void
@@ -121,10 +122,16 @@ discord_adapter_run(
         case HTTP_NOT_FOUND:
         case HTTP_BAD_REQUEST:
             keepalive = false; 
+            code = ORCA_DISCORD_JSON_CODE;
             break;
         case HTTP_UNAUTHORIZED:
+            keepalive = false;
+            log_fatal("UNAUTHORIZED: Please provide a valid authentication token");
+            code = ORCA_DISCORD_BAD_AUTH;
+            break;
         case HTTP_METHOD_NOT_ALLOWED:
-            ERR("Aborting after %s received", http_code_print(httpcode));
+            keepalive = false;
+            log_fatal("METHOD_NOT_ALLOWED: The server couldn't recognize the received HTTP method");
             break;
         case HTTP_TOO_MANY_REQUESTS: {
             char message[256]="";
@@ -157,5 +164,5 @@ discord_adapter_run(
 
   va_end(args);
 
-  return (code == ORCA_HTTP_CODE) ? ORCA_DISCORD_JSON_CODE : code;
+  return code;
 }

@@ -21,8 +21,11 @@
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 #define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
 
-/* ERROR CODES */
-#define ORCA_DISCORD_JSON_CODE 1 ///< @see discord_strerror()
+/* ERROR CODES @ see discord_strerror() */
+#define ORCA_DISCORD_JSON_CODE  1 ///< Received a JSON error message
+#define ORCA_DISCORD_BAD_AUTH   2 ///< Bad authentication token
+#define ORCA_DISCORD_RATELIMIT  3 ///< Being ratelimited
+#define ORCA_DISCORD_CONNECTION 4 ///< Couldn't establish connection to Discord
 
 /* FORWARD DECLARATIONS */
 struct discord;
@@ -757,8 +760,9 @@ void discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *cal
  * @brief Start a connection to the Discord Gateway
  *
  * @param client the client created with discord_init()
+ * @return ORCAcode for how the run went, ORCA_OK means nothing out of the ordinary
  */
-void discord_run(struct discord *client);
+ORCAcode discord_run(struct discord *client);
 
 /**
  * @brief Keep some user arbitrary data, by associating it to the client

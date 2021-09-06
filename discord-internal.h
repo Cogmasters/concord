@@ -280,11 +280,12 @@ void discord_gateway_init(struct discord_gateway *gw, struct logconf *config, st
 void discord_gateway_cleanup(struct discord_gateway *gw);
 
 /**
- * @brief Start a Discord connection over WebSockets
+ * @brief Start a connection to the Discord Gateway
  *
  * @param gw the handle initialized with discord_gateway_init()
+ * @return ORCAcode for how the run went, ORCA_OK means nothing out of the ordinary
  */
-void discord_gateway_run(struct discord_gateway *gw);
+ORCAcode discord_gateway_run(struct discord_gateway *gw);
 
 /**
  * @brief Gracefully exits a ongoing Discord connection over WebSockets

@@ -1179,11 +1179,6 @@ static enum discord_event_handling_mode noop_event_handler(struct discord *a, st
 void
 discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)
 {
-  if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
-    token->start = NULL;
-  }
-  ASSERT_S(NULL != token->start, "Missing bot token");
-
   struct ws_callbacks cbs = {
     .data = gw,
     .on_connect = &on_connect_cb,
@@ -1224,8 +1219,11 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
   gw->user_cmd->event_handler = &noop_event_handler;
 
   discord_set_presence(_CLIENT(gw), NULL, "online", false);
-  discord_get_current_user(_CLIENT(gw), &gw->bot);
-  sb_discord_get_current_user(_CLIENT(gw), &gw->sb_bot);
+
+  if (token->size) {
+    discord_get_current_user(_CLIENT(gw), &gw->bot);
+    sb_discord_get_current_user(_CLIENT(gw), &gw->sb_bot);
+  }
 
   struct sized_buffer default_prefix = logconf_get_field(config, "discord.default_prefix");
   if (default_prefix.size) {
@@ -1248,27 +1246,24 @@ void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
   ws_cleanup(gw->ws);
-
   free(gw->reconnect);
   free(gw->status);
-
   // @todo Add a bitfield in generated structures to ignore freeing strings unless set ( useful for structures created via xxx_from_json() )
 #if 0
   discord_gateway_identify_cleanup(&gw->id);
 #else
-  free(gw->id.token);
+  if (gw->id.token)
+    free(gw->id.token);
   free(gw->id.properties);
   free(gw->id.presence);
 #endif
   if (gw->session.url)
     free(gw->session.url);
   discord_user_cleanup(&gw->bot);
-  free(gw->sb_bot.start);
-
+  if (gw->sb_bot.start)
+    free(gw->sb_bot.start);
   free(gw->payload);
-
   free(gw->hbeat);
-
   if (gw->user_cmd->pool)
     free(gw->user_cmd->pool);
   free(gw->user_cmd);
@@ -1277,13 +1272,14 @@ discord_gateway_cleanup(struct discord_gateway *gw)
 /*
  * the event loop to serve the events sent by Discord
  */
-static void
+static ORCAcode
 event_loop(struct discord_gateway *gw) 
 {
   // get gateway bot info
   struct sized_buffer json={0};
   if (discord_get_gateway_bot(_CLIENT(gw), &json)) {
-    ERR("Couldn't retrieve Gateway Bot information");
+    log_fatal("Couldn't retrieve Gateway Bot information");
+    return ORCA_DISCORD_BAD_AUTH;
   }
 
   json_extract(json.start, json.size,
@@ -1309,7 +1305,7 @@ event_loop(struct discord_gateway *gw)
     log_fatal("Reach sessions threshold (%d),"
               "Please wait %d seconds and try again",
               gw->session.start_limit.total, gw->session.start_limit.reset_after/1000);
-    return;
+    return ORCA_DISCORD_RATELIMIT;
   }
 
   bool is_running=false;
@@ -1329,23 +1325,29 @@ event_loop(struct discord_gateway *gw)
     (*gw->user_cmd->cbs.on_idle)(_CLIENT(gw), &gw->bot);
   }
   gw->status->is_ready = false;
+
+  return ORCA_OK;
 }
 
 /*
  * Discord's ws is not reliable. This function is responsible for
  * reconnection/resume/exit
  */
-void
+ORCAcode
 discord_gateway_run(struct discord_gateway *gw)
 {
-  while (gw->reconnect->attempt < gw->reconnect->threshold) {
-    event_loop(gw);
+  ORCAcode code;
+  while (gw->reconnect->attempt < gw->reconnect->threshold) 
+  {
+    code = event_loop(gw);
+    if (code != ORCA_OK) return code;
+
     log_debug("after event_loop: "
               "reconnect->attempt:%d, reconnect->enable:%d, status->is_resumable:%d",
               gw->reconnect->attempt, gw->reconnect->enable, gw->status->is_resumable);
     if (!gw->reconnect->enable) {
       log_warn("Discord Gateway Shutdown");
-      return; /* EARLY RETURN */
+      return code; /* EARLY RETURN */
     }
     ++gw->reconnect->attempt;
     log_info("Reconnect attempt #%d", gw->reconnect->attempt);
@@ -1356,6 +1358,7 @@ discord_gateway_run(struct discord_gateway *gw)
   gw->reconnect->attempt = 0;
   log_fatal("Could not reconnect to Discord Gateway after %d tries",
             gw->reconnect->threshold);
+  return ORCA_DISCORD_CONNECTION;
 }
 
 void

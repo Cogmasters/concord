@@ -11,16 +11,9 @@
 static void
 _discord_init(struct discord *new_client)
 {
-  discord_adapter_init(
-    &new_client->adapter, 
-    new_client->config, 
-    &new_client->token);
-  discord_gateway_init(
-    &new_client->gw, 
-    new_client->config,
-    &new_client->token);
+  discord_adapter_init(&new_client->adapter, new_client->config, &new_client->token);
+  discord_gateway_init(&new_client->gw, new_client->config, &new_client->token);
   discord_voice_connections_init(new_client);
-
   new_client->is_original = true;
 }
 
@@ -33,7 +26,7 @@ discord_init(const char token[])
 
   new_client->token = (struct sized_buffer){
     .start = (char*)token,
-    .size = cee_str_bounds_check(token, 128) // avoid overflow
+    .size = token ? cee_str_bounds_check(token, 128) : 0
   };
 
   _discord_init(new_client);
@@ -49,6 +42,10 @@ discord_config_init(const char config_file[])
   logconf_setup(new_client->config, config_file);
 
   new_client->token = logconf_get_field(new_client->config, "discord.token");
+  if (STRNEQ("YOUR-BOT-TOKEN", new_client->token.start, new_client->token.size)) {
+    memset(&new_client->token, 0, sizeof new_client->token);
+
+  }
 
   _discord_init(new_client);
 
@@ -107,6 +104,12 @@ discord_strerror(ORCAcode code, struct discord *client)
   case ORCA_DISCORD_JSON_CODE:
       if (client) return client->adapter.err.jsonstr;
       return "Discord JSON Error Code: Failed request";
+  case ORCA_DISCORD_BAD_AUTH:
+      return "Discord Bad Authentication: Bad authentication token";
+  case ORCA_DISCORD_RATELIMIT:
+      return "Discord Ratelimit: You are being ratelimited";
+  case ORCA_DISCORD_CONNECTION:
+      return "Discord Connection: Couldn't establish a connection to discord";
   }
 }
 
@@ -213,9 +216,9 @@ discord_set_on_ready(struct discord *client, discord_idle_cb callback) {
   client->gw.user_cmd->cbs.on_ready = callback;
 }
 
-void
+ORCAcode
 discord_run(struct discord *client) {
-  discord_gateway_run(&client->gw);
+  return discord_gateway_run(&client->gw);
 }
 
 void 
