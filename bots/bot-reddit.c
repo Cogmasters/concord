@@ -48,20 +48,22 @@ embed_reddit_search_result(
   char keywords[])
 {
   struct sized_buffer resp_body={0};
-  { // anonymous block
-    struct reddit_search_params params = { 
-      .q = (keywords && *keywords) ? keywords : NULL,
-      .before = (before && *before) ? before : NULL,
-      .after = (after && *after) ? after : NULL,
-      .sort = (sort && *sort) ? sort : NULL
-    };
+  ORCAcode code;
 
-    if (subreddits && *subreddits)
-      params.restrict_sr = true;
-    else
-      subreddits = "all";
-    reddit_search(BOT.R.client, &params, subreddits, &resp_body);
-  }
+  if (!subreddits || !*subreddits)
+    subreddits = "all";
+
+  code = reddit_search(
+           BOT.R.client, 
+           &(struct reddit_search_params){
+            .q = (keywords && *keywords) ? keywords : NULL,
+            .before = (before && *before) ? before : NULL,
+            .after = (after && *after) ? after : NULL,
+            .sort = (sort && *sort) ? sort : NULL,
+            .restrict_sr = (strcmp(subreddits, "all") != 0)
+           }, 
+           subreddits, 
+           &resp_body);
 
   struct discord_embed *embed = malloc(sizeof *embed);
   discord_embed_init(embed);

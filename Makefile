@@ -259,15 +259,15 @@ all_api_libs : $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT) $(LIBSLACK) $(LIBADDONS)
 
 # API libraries compilation
 $(LIBDISCORD) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(DISCORD_OBJS) | $(LIBDIR)
-	$(AR) -cvq $@ $^
+	$(AR) -cqsv $@ $?
 $(LIBGITHUB) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(GITHUB_OBJS) | $(LIBDIR)
-	$(AR) -cvq $@ $^
+	$(AR) -cqsv $@ $?
 $(LIBREDDIT) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(REDDIT_OBJS) | $(LIBDIR)
-	$(AR) -cvq $@ $^
+	$(AR) -cqsv $@ $?
 $(LIBSLACK) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(SLACK_OBJS) | $(LIBDIR)
-	$(AR) -cvq $@ $^
+	$(AR) -cqsv $@ $?
 $(LIBADDONS) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(ADDONS_OBJS) | $(LIBDIR)
-	$(AR) -cvq $@ $^
+	$(AR) -cqsv $@ $?
 
 mujs:
 	$(MAKE) -C mujs

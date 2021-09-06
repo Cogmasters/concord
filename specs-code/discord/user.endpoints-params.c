@@ -17,8 +17,9 @@ void discord_modify_current_user_params_from_json(char *json, size_t len, struct
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_current_user_params *p = *pp;
+  discord_modify_current_user_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
@@ -154,8 +155,9 @@ void discord_create_group_dm_params_from_json(char *json, size_t len, struct dis
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_group_dm_params *p = *pp;
+  discord_create_group_dm_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 

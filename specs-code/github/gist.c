@@ -17,8 +17,9 @@ void github_gist_from_json(char *json, size_t len, struct github_gist **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct github_gist *p = *pp;
+  github_gist_init(p);
   r=json_extract(json, len, 
   /* specs/github/gist.json:12:28
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */

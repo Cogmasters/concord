@@ -17,8 +17,9 @@ void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct 
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_emoji_params *p = *pp;
+  discord_create_guild_emoji_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/emoji.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
@@ -177,8 +178,9 @@ void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct 
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_emoji_params *p = *pp;
+  discord_modify_guild_emoji_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/emoji.endpoints-params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */

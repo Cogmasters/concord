@@ -17,8 +17,9 @@ void discord_get_invite_params_from_json(char *json, size_t len, struct discord_
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_get_invite_params *p = *pp;
+  discord_get_invite_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */

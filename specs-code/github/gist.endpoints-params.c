@@ -17,8 +17,9 @@ void github_gist_create_params_from_json(char *json, size_t len, struct github_g
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct github_gist_create_params *p = *pp;
+  github_gist_create_params_init(p);
   r=json_extract(json, len, 
   /* specs/github/gist.endpoints-params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */

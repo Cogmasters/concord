@@ -47,8 +47,7 @@ void* read_input(void *p_client)
       }
     }
     else { /* reset active chat */
-      struct discord_channel dm_channel;
-      discord_channel_init(&dm_channel);
+      struct discord_channel dm_channel={0};
 
       discord_create_dm(client, recipient_id, &dm_channel);
       dm_channel_id = dm_channel.id;

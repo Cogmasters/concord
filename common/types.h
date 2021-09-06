@@ -22,11 +22,12 @@ typedef uint64_t u64_snowflake_t; ///< snowflake datatype
  *  @{ */
 typedef int ORCAcode;             ///< the error code datatype
 #define ORCA_OK                 0 ///< request was a success
-#define ORCA_NO_RESPONSE       -1 ///< failure connecting to API's url
-#define ORCA_UNUSUAL_HTTP_CODE -2 ///< received a non-standard http code
-#define ORCA_MISSING_PARAMETER -3 ///< missing a mandatory function parameter
-#define ORCA_BAD_PARAMETER     -4 ///< unexpected value for parameter
-#define ORCA_BAD_JSON          -5 ///< internal failure when encoding or decoding JSON
+#define ORCA_HTTP_CODE         -1 ///< request wasn't succesful (2xx)
+#define ORCA_NO_RESPONSE       -2 ///< failure connecting to API's url
+#define ORCA_UNUSUAL_HTTP_CODE -3 ///< received a non-standard http code
+#define ORCA_MISSING_PARAMETER -4 ///< missing a mandatory function parameter
+#define ORCA_BAD_PARAMETER     -5 ///< unexpected value for parameter
+#define ORCA_BAD_JSON          -6 ///< internal failure when encoding or decoding JSON
 /** @} OrcaCodes */
 
 /** @defgroup OrcaLimits
@@ -39,10 +40,12 @@ typedef int ORCAcode;             ///< the error code datatype
 #define ORCA_LIMITS_REGION 16 + 1
 /** @} OrcaLimits */
 
-/* Github error codes */
-#define ORCA_GITHUB_JSON     1
-#define ORCA_GITHUB_BAD_AUTH 2
-#define ORCA_GITHUB_NOT_STARRED 404
+/**
+ * @brief Return a generic meaning for ORCAcode
+ * @param code the ORCAcode to be explained
+ * @return a string containing the code meaning
+ */
+const char* orca_strerror(ORCAcode code);
 
 #ifdef __cplusplus
 }

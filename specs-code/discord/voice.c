@@ -17,8 +17,9 @@ void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_voice_state *p = *pp;
+  discord_voice_state_init(p);
   r=json_extract(json, len, 
   /* specs/discord/voice.json:12:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -325,8 +326,6 @@ void discord_voice_state_init(struct discord_voice_state *p) {
 
   /* specs/discord/voice.json:15:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
-  p->member = malloc(sizeof *p->member);
-  discord_guild_member_init(p->member);
 
   /* specs/discord/voice.json:16:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
@@ -378,8 +377,9 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_voice_region *p = *pp;
+  discord_voice_region_init(p);
   r=json_extract(json, len, 
   /* specs/discord/voice.json:32:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */

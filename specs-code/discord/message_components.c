@@ -17,8 +17,9 @@ void discord_component_from_json(char *json, size_t len, struct discord_componen
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_component *p = *pp;
+  discord_component_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:12:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
@@ -111,7 +112,7 @@ static void discord_component_use_default_inject_settings(struct discord_compone
 
   /* specs/discord/message_components.json:13:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"a developer-defined identifier for the component, max 100 characters"}' */
-  if (strlen(p->custom_id) != 0)
+  if (*p->custom_id)
     p->__M.arg_switches[1] = p->custom_id;
 
   /* specs/discord/message_components.json:14:18
@@ -126,7 +127,7 @@ static void discord_component_use_default_inject_settings(struct discord_compone
 
   /* specs/discord/message_components.json:16:18
      '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  if (strlen(p->label) != 0)
+  if (*p->label)
     p->__M.arg_switches[4] = p->label;
 
   /* specs/discord/message_components.json:17:18
@@ -146,7 +147,7 @@ static void discord_component_use_default_inject_settings(struct discord_compone
 
   /* specs/discord/message_components.json:20:18
      '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  if (strlen(p->placeholder) != 0)
+  if (*p->placeholder)
     p->__M.arg_switches[8] = p->placeholder;
 
   /* specs/discord/message_components.json:21:18
@@ -345,8 +346,6 @@ void discord_component_init(struct discord_component *p) {
 
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  p->emoji = malloc(sizeof *p->emoji);
-  discord_emoji_init(p->emoji);
 
   /* specs/discord/message_components.json:18:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
@@ -389,12 +388,28 @@ size_t discord_component_list_to_json(char *str, size_t len, struct discord_comp
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_component_types_list_free_v(void **p) {
+  discord_component_types_list_free((enum discord_component_types**)p);
+}
+
+void discord_component_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_component_types_list_from_json(str, len, (enum discord_component_types ***)p);
+}
+
+size_t discord_component_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_component_types_list_to_json(str, len, (enum discord_component_types **)p);
+}
+
 enum discord_component_types discord_component_types_eval(char *s){
   if(strcasecmp("ACTION_ROW", s) == 0) return DISCORD_COMPONENT_ACTION_ROW;
   if(strcasecmp("BUTTON", s) == 0) return DISCORD_COMPONENT_BUTTON;
   if(strcasecmp("SELECT_MENU", s) == 0) return DISCORD_COMPONENT_SELECT_MENU;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_component_types_print(enum discord_component_types v){
 
   switch (v) {
@@ -405,17 +420,35 @@ char* discord_component_types_print(enum discord_component_types v){
 
   return NULL;
 }
-bool discord_component_types_cmp(enum discord_component_types v, char *s) {
-  enum discord_component_types v1 = discord_component_types_eval(s);
-  return v == v1;
+
+void discord_component_types_list_free(enum discord_component_types **p) {
+  ntl_free((void**)p, NULL);
 }
+
+void discord_component_types_list_from_json(char *str, size_t len, enum discord_component_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_component_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_component_types_list_to_json(char *str, size_t len, enum discord_component_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_button_from_json(char *json, size_t len, struct discord_button **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_button *p = *pp;
+  discord_button_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:44:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
@@ -483,7 +516,7 @@ static void discord_button_use_default_inject_settings(struct discord_button *p)
 
   /* specs/discord/message_components.json:46:18
      '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  if (strlen(p->label) != 0)
+  if (*p->label)
     p->__M.arg_switches[2] = p->label;
 
   /* specs/discord/message_components.json:47:18
@@ -493,7 +526,7 @@ static void discord_button_use_default_inject_settings(struct discord_button *p)
 
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  if (strlen(p->custom_id) != 0)
+  if (*p->custom_id)
     p->__M.arg_switches[4] = p->custom_id;
 
   /* specs/discord/message_components.json:49:18
@@ -634,8 +667,6 @@ void discord_button_init(struct discord_button *p) {
 
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  p->emoji = malloc(sizeof *p->emoji);
-  discord_emoji_init(p->emoji);
 
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
@@ -669,6 +700,21 @@ size_t discord_button_list_to_json(char *str, size_t len, struct discord_button 
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_button_styles_list_free_v(void **p) {
+  discord_button_styles_list_free((enum discord_button_styles**)p);
+}
+
+void discord_button_styles_list_from_json_v(char *str, size_t len, void *p) {
+  discord_button_styles_list_from_json(str, len, (enum discord_button_styles ***)p);
+}
+
+size_t discord_button_styles_list_to_json_v(char *str, size_t len, void *p){
+  return discord_button_styles_list_to_json(str, len, (enum discord_button_styles **)p);
+}
+
 enum discord_button_styles discord_button_styles_eval(char *s){
   if(strcasecmp("PRIMARY", s) == 0) return DISCORD_BUTTON_PRIMARY;
   if(strcasecmp("SECONDARY", s) == 0) return DISCORD_BUTTON_SECONDARY;
@@ -677,6 +723,7 @@ enum discord_button_styles discord_button_styles_eval(char *s){
   if(strcasecmp("LINK", s) == 0) return DISCORD_BUTTON_LINK;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_button_styles_print(enum discord_button_styles v){
 
   switch (v) {
@@ -689,17 +736,35 @@ char* discord_button_styles_print(enum discord_button_styles v){
 
   return NULL;
 }
-bool discord_button_styles_cmp(enum discord_button_styles v, char *s) {
-  enum discord_button_styles v1 = discord_button_styles_eval(s);
-  return v == v1;
+
+void discord_button_styles_list_free(enum discord_button_styles **p) {
+  ntl_free((void**)p, NULL);
 }
+
+void discord_button_styles_list_from_json(char *str, size_t len, enum discord_button_styles ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_button_styles);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_button_styles **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_select_menu *p = *pp;
+  discord_select_menu_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:73:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
@@ -762,7 +827,7 @@ static void discord_select_menu_use_default_inject_settings(struct discord_selec
 
   /* specs/discord/message_components.json:74:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  if (strlen(p->custom_id) != 0)
+  if (*p->custom_id)
     p->__M.arg_switches[1] = p->custom_id;
 
   /* specs/discord/message_components.json:75:18
@@ -771,7 +836,7 @@ static void discord_select_menu_use_default_inject_settings(struct discord_selec
 
   /* specs/discord/message_components.json:76:18
      '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  if (strlen(p->placeholder) != 0)
+  if (*p->placeholder)
     p->__M.arg_switches[3] = p->placeholder;
 
   /* specs/discord/message_components.json:77:18
@@ -950,8 +1015,9 @@ void discord_select_option_from_json(char *json, size_t len, struct discord_sele
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_select_option *p = *pp;
+  discord_select_option_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:88:18
      '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */
@@ -997,17 +1063,17 @@ static void discord_select_option_use_default_inject_settings(struct discord_sel
   p->__M.enable_arg_switches = true;
   /* specs/discord/message_components.json:88:18
      '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */
-  if (strlen(p->label) != 0)
+  if (*p->label)
     p->__M.arg_switches[0] = p->label;
 
   /* specs/discord/message_components.json:89:18
      '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"the dev define value of the option, max 100 characters"}' */
-  if (strlen(p->value) != 0)
+  if (*p->value)
     p->__M.arg_switches[1] = p->value;
 
   /* specs/discord/message_components.json:90:18
      '{"name":"description", "type":{"base":"char", "dec":"[50+1]"}, "inject_if_not":"", "option":true, "comment":"a additional description of the option, max 50 characters"}' */
-  if (strlen(p->description) != 0)
+  if (*p->description)
     p->__M.arg_switches[2] = p->description;
 
   /* specs/discord/message_components.json:91:18
@@ -1128,8 +1194,6 @@ void discord_select_option_init(struct discord_select_option *p) {
 
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
-  p->emoji = malloc(sizeof *p->emoji);
-  discord_emoji_init(p->emoji);
 
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */

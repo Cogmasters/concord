@@ -17,8 +17,9 @@ void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_lo
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log *p = *pp;
+  discord_audit_log_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" } }' */
@@ -197,6 +198,21 @@ size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audi
 
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_audit_log_events_list_free_v(void **p) {
+  discord_audit_log_events_list_free((enum discord_audit_log_events**)p);
+}
+
+void discord_audit_log_events_list_from_json_v(char *str, size_t len, void *p) {
+  discord_audit_log_events_list_from_json(str, len, (enum discord_audit_log_events ***)p);
+}
+
+size_t discord_audit_log_events_list_to_json_v(char *str, size_t len, void *p){
+  return discord_audit_log_events_list_to_json(str, len, (enum discord_audit_log_events **)p);
+}
+
 enum discord_audit_log_events discord_audit_log_events_eval(char *s){
   if(strcasecmp("GUILD_UPDATE", s) == 0) return DISCORD_AUDIT_LOG_GUILD_UPDATE;
   if(strcasecmp("CHANNEL_CREATE", s) == 0) return DISCORD_AUDIT_LOG_CHANNEL_CREATE;
@@ -234,6 +250,7 @@ enum discord_audit_log_events discord_audit_log_events_eval(char *s){
   if(strcasecmp("INTEGRATION_DELETE", s) == 0) return DISCORD_AUDIT_LOG_INTEGRATION_DELETE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_audit_log_events_print(enum discord_audit_log_events v){
 
   switch (v) {
@@ -275,17 +292,35 @@ char* discord_audit_log_events_print(enum discord_audit_log_events v){
 
   return NULL;
 }
-bool discord_audit_log_events_cmp(enum discord_audit_log_events v, char *s) {
-  enum discord_audit_log_events v1 = discord_audit_log_events_eval(s);
-  return v == v1;
+
+void discord_audit_log_events_list_free(enum discord_audit_log_events **p) {
+  ntl_free((void**)p, NULL);
 }
+
+void discord_audit_log_events_list_from_json(char *str, size_t len, enum discord_audit_log_events ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_audit_log_events);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum discord_audit_log_events **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_entry *p = *pp;
+  discord_audit_log_entry_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:68:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}}' */
@@ -532,8 +567,9 @@ void discord_audit_log_entry_optional_info_from_json(char *json, size_t len, str
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_entry_optional_info *p = *pp;
+  discord_audit_log_entry_optional_info_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:84:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
@@ -804,8 +840,9 @@ void discord_audit_log_change_from_json(char *json, size_t len, struct discord_a
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_change *p = *pp;
+  discord_audit_log_change_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:101:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*"}}' */
@@ -963,8 +1000,9 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_audit_log_change_key *p = *pp;
+  discord_audit_log_change_key_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:113:18
      '{"name":"name", "type": {"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */

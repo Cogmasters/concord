@@ -19,10 +19,11 @@ void on_list(
   if (msg->author->bot) return;
 
   NTL_T(struct discord_emoji) emojis=NULL;
-  discord_list_guild_emojis(client, msg->guild_id, &emojis);
+  ORCAcode code;
+  code = discord_list_guild_emojis(client, msg->guild_id, &emojis);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  if (!emojis) {
+  if (code != ORCA_OK || !emojis) {
     sprintf(text, "No guild emojis found.");
   }
   else {
@@ -70,8 +71,7 @@ void on_get(
     sprintf(text, "Missing 'emoji_id'");
   }
   else {
-    struct discord_emoji emoji;
-    discord_emoji_init(&emoji);
+    struct discord_emoji emoji={0};
 
     discord_get_guild_emoji(client, msg->guild_id, emoji_id, &emoji);
     if (emoji.id)
@@ -106,10 +106,6 @@ int main(int argc, char *argv[])
   discord_set_prefix(client, "emoji.");
   discord_set_on_command(client, "list", &on_list);
   discord_set_on_command(client, "get", &on_get);
-#if 0
-  discord_set_on_command(client, "modify", &on_modify);
-  discord_set_on_command(client, "delete", &on_delete);
-#endif
 
   printf("\n\n This bot demonstrates how easy it is to create/delete emojis\n"
          "1. Type 'emoji.list' to get a list of server emojis\n"

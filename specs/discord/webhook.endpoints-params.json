@@ -19,9 +19,19 @@
       "struct":"params",
       "fields":
       [
-        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" },
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" },
         { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" },
-        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the new channel id this webhook should be moved to" }
+        { "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }
+      ]
+    },
+    {
+      "title":"Modify Webhook with Token",
+      "namespace": ["modify_webhook_with_token"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" },
+        { "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }
       ]
     },
     {
@@ -31,41 +41,17 @@
       "fields":
       [
         
-        { "name": "wait", "type":{ "base":"bool"}, "loc":"query",
-          "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)",
-          "required":"one of content, file, embeds"
-        },
-        { "name": "content", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"the message contents (up to 2000 characters)",
-          "required":false
-        },
-        { "name": "username", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"override the default username of the webhook",
-          "required":false
-        },
-        { "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"override the default avatar of the webhook" },
-        { "name": "tts", "type":{ "base":"bool" }, 
-          "comment":"true if this is a TTS message",
-          "required":false
-        },
-        { "name": "file", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"the contents of the file being sent",
-          "required":"one of content, file, embeds"
-        },
-        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, 
-          "comment":"embedded rich content",
-          "required":"one of content, file, embeds"
-        },
-        { "name": "payload_json", "type":{ "base":"char", "dec":"*" }, 
-          "comment":"See message create",
-          "required":"multipart/form-data only"
-        },
-        { "name": "allowed_mentions", 
-          "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" },
-          "comment":"allowed mentions for the message",
-          "required":"false"
-        }
+        { "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" },
+        { "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 },
+        { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null },
+        { "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null },
+        { "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null },
+        { "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false },
+        { "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null },
+        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null },
+        { "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null },
+        { "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null },
+        { "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }
       ]
     },
     {
@@ -74,11 +60,14 @@
       "struct":"params",
       "fields":
       [
-        { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars" },
-        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects" },
-        { "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message" }
+        { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null },
+        { "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null },
+        { "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null },
+        { "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null },
+        { "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null },
+        { "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null },
+        { "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }
       ]
     }
   ]
 }
-

@@ -106,8 +106,6 @@ extern void discord_component_from_json_v(char *json, size_t len, void *pp);
 extern void discord_component_from_json(char *json, size_t len, struct discord_component **pp);
 extern size_t discord_component_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_component_to_json(char *json, size_t len, struct discord_component *p);
-extern size_t discord_component_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_component_to_query(char *json, size_t len, struct discord_component *p);
 extern void discord_component_list_free_v(void **p);
 extern void discord_component_list_free(struct discord_component **p);
 extern void discord_component_list_from_json_v(char *str, size_t len, void *p);
@@ -130,7 +128,6 @@ extern size_t discord_component_list_to_json(char *str, size_t len, struct disco
 
  *   * :code:`char* discord_component_types_print(enum discord_component_types code)`
  *   * :code:`enum discord_component_types discord_component_types_eval(char *code_as_str)`
- *   * :code:`bool discord_component_types_cmp(enum discord_component_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_component_types {
@@ -140,7 +137,12 @@ enum discord_component_types {
 };
 extern char* discord_component_types_print(enum discord_component_types);
 extern enum discord_component_types discord_component_types_eval(char*);
-extern bool discord_component_types_cmp(enum discord_component_types, char*);
+extern void discord_component_types_list_free_v(void **p);
+extern void discord_component_types_list_free(enum discord_component_types **p);
+extern void discord_component_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_component_types_list_from_json(char *str, size_t len, enum discord_component_types ***p);
+extern size_t discord_component_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_component_types_list_to_json(char *str, size_t len, enum discord_component_types **p);
 
 // Button Structure
 // defined at specs/discord/message_components.json:41:22
@@ -223,8 +225,6 @@ extern void discord_button_from_json_v(char *json, size_t len, void *pp);
 extern void discord_button_from_json(char *json, size_t len, struct discord_button **pp);
 extern size_t discord_button_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_button_to_json(char *json, size_t len, struct discord_button *p);
-extern size_t discord_button_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_button_to_query(char *json, size_t len, struct discord_button *p);
 extern void discord_button_list_free_v(void **p);
 extern void discord_button_list_free(struct discord_button **p);
 extern void discord_button_list_from_json_v(char *str, size_t len, void *p);
@@ -247,7 +247,6 @@ extern size_t discord_button_list_to_json(char *str, size_t len, struct discord_
 
  *   * :code:`char* discord_button_styles_print(enum discord_button_styles code)`
  *   * :code:`enum discord_button_styles discord_button_styles_eval(char *code_as_str)`
- *   * :code:`bool discord_button_styles_cmp(enum discord_button_styles code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_button_styles {
@@ -259,7 +258,12 @@ enum discord_button_styles {
 };
 extern char* discord_button_styles_print(enum discord_button_styles);
 extern enum discord_button_styles discord_button_styles_eval(char*);
-extern bool discord_button_styles_cmp(enum discord_button_styles, char*);
+extern void discord_button_styles_list_free_v(void **p);
+extern void discord_button_styles_list_free(enum discord_button_styles **p);
+extern void discord_button_styles_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_button_styles_list_from_json(char *str, size_t len, enum discord_button_styles ***p);
+extern size_t discord_button_styles_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_button_styles **p);
 
 // Select Menu Structure
 // defined at specs/discord/message_components.json:70:22
@@ -342,8 +346,6 @@ extern void discord_select_menu_from_json_v(char *json, size_t len, void *pp);
 extern void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp);
 extern size_t discord_select_menu_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_select_menu_to_json(char *json, size_t len, struct discord_select_menu *p);
-extern size_t discord_select_menu_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_select_menu_to_query(char *json, size_t len, struct discord_select_menu *p);
 extern void discord_select_menu_list_free_v(void **p);
 extern void discord_select_menu_list_free(struct discord_select_menu **p);
 extern void discord_select_menu_list_from_json_v(char *str, size_t len, void *p);
@@ -424,8 +426,6 @@ extern void discord_select_option_from_json_v(char *json, size_t len, void *pp);
 extern void discord_select_option_from_json(char *json, size_t len, struct discord_select_option **pp);
 extern size_t discord_select_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_select_option_to_json(char *json, size_t len, struct discord_select_option *p);
-extern size_t discord_select_option_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_select_option_to_query(char *json, size_t len, struct discord_select_option *p);
 extern void discord_select_option_list_free_v(void **p);
 extern void discord_select_option_list_free(struct discord_select_option **p);
 extern void discord_select_option_list_from_json_v(char *str, size_t len, void *p);

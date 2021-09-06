@@ -261,13 +261,12 @@ void on_command(
   update_last_tick_ms(&tick_ms);
 
   /* Initialize embed struct that will be loaded to  */
-  struct discord_embed new_embed;
-  discord_embed_init(&new_embed);
-
+  struct discord_embed new_embed = {
+    .timestamp = cee_timestamp_ms(),
+    .color = 15844367 // gold
+  };
   /* Set embed fields */
   strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
-  new_embed.timestamp = cee_timestamp_ms();
-  new_embed.color = 15844367; //gold
   discord_embed_set_footer(&new_embed, 
       "designed & built by https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);
@@ -320,9 +319,9 @@ int main(int argc, char *argv[])
   assert(NULL != client);
 
   /* Initialize ELITEBGS User Agent (share discord logconf) */
-  g_elitebgs_ua = ua_init(&client->config);
+  g_elitebgs_ua = ua_init(client->config);
   ua_set_url(g_elitebgs_ua, ELITEBGS_API_URL);
-  logconf_add_id(&client->config, g_elitebgs_ua, "ELITEBGS_HTTP");
+  logconf_add_id(client->config, g_elitebgs_ua, "ELITEBGS_HTTP");
 
   /* Set discord callbacks */
   discord_set_on_ready(client, &on_ready);

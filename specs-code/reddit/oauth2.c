@@ -17,8 +17,9 @@ void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct reddit_access_token_params *p = *pp;
+  reddit_access_token_params_init(p);
   r=json_extract(json, len, 
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */

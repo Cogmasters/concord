@@ -140,7 +140,7 @@ on_speaking(struct discord_voice *vc)
   (*client->voice_cbs.on_speaking) (
       client,
       vc,
-      vc->p_client->gw.bot,
+      &vc->p_client->gw.bot,
       user_id,
       speaking,
       delay,
@@ -172,7 +172,7 @@ on_client_disconnect(struct discord_voice *vc)
   (*client->voice_cbs.on_client_disconnect)(
       client,
       vc,
-      client->gw.bot,
+      &client->gw.bot,
       user_id);
 }
 
@@ -191,7 +191,7 @@ on_codec(struct discord_voice *vc)
   (*client->voice_cbs.on_codec)(
       client,
       vc,
-      client->gw.bot,
+      &client->gw.bot,
       audio_codec,
       video_codec);
 }
@@ -351,7 +351,7 @@ _discord_voice_init(
   new_vc->p_client = client;
   new_vc->guild_id = guild_id;
   new_vc->channel_id = channel_id;
-  new_vc->bot_id = client->gw.bot->id;
+  new_vc->bot_id = client->gw.bot.id;
   if (NULL == new_vc->ws) {
     struct ws_callbacks cbs = {
       .data = new_vc,
@@ -359,7 +359,7 @@ _discord_voice_init(
       .on_text = &on_text_cb,
       .on_close = &on_close_cb
     };
-    new_vc->ws = ws_init(&cbs, &new_vc->p_client->config);
+    new_vc->ws = ws_init(&cbs, new_vc->p_client->config);
     new_vc->reconnect.threshold = 5; /** hard limit for now */
     new_vc->reconnect.enable = true;
   }
@@ -407,7 +407,7 @@ recycle_active_vc(
 
   char tag[64];
   snprintf(tag, sizeof tag, "VC_%"PRIu64, guild_id);
-  logconf_add_id(&vc->p_client->config, vc->ws, tag);
+  logconf_add_id(vc->p_client->config, vc->ws, tag);
 }
 
 static void
@@ -569,7 +569,7 @@ event_loop(struct discord_voice *vc)
       vc->hbeat.tstamp = ws_timestamp(vc->ws); //update heartbeat timestamp
     }
     if (client->voice_cbs.on_idle)
-      (*client->voice_cbs.on_idle)(client, vc, vc->p_client->gw.bot);
+      (*client->voice_cbs.on_idle)(client, vc, &vc->p_client->gw.bot);
   }
   vc->is_ready = false;
 }
@@ -694,8 +694,8 @@ static void noop_on_udp_server_connected(struct discord_voice *a) { return; }
 void 
 discord_voice_connections_init(struct discord *client) 
 {
-  client->gw.cbs.on_voice_state_update = noop_voice_state_update_cb;
-  client->gw.cbs.on_voice_server_update = noop_voice_server_update_cb;
+  client->gw.user_cmd->cbs.on_voice_state_update = noop_voice_state_update_cb;
+  client->gw.user_cmd->cbs.on_voice_server_update = noop_voice_server_update_cb;
 
   client->voice_cbs.on_idle = noop_idle_cb;
   client->voice_cbs.on_ready = noop_on_ready;

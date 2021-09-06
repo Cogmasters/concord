@@ -21,28 +21,35 @@
         ? curl_easy_strerror(ecode)                        \
         : conn->errbuf)
 
-
 struct user_agent {
+  /**
+   * whether this is the original user agent or a clone
+   */
+  bool is_original;
   /** 
    * the user agent request header
    */
   struct curl_slist *req_header;
   /**
-   * a pool of connectors for easy reuse
+   * a pool of connection nodes for easy reuse
    * @note conns are wrappers around basic CURL functionalities,
    *        each active conn is responsible for a HTTP request
    */
-  struct _ua_conn **conn_pool;
-  size_t num_conn;
+  struct {
+    struct _ua_conn **pool;
+    size_t amt; ///< amount of connections node in pool
+  } *conn;
   /** 
    * the base_url for every conn
    */
-  char base_url[UA_MAX_URL_LEN];
+  struct sized_buffer base_url;
   /**
-   * lock every active conn from conn_pool until timestamp
+   * synchronize conn pool and shared ratelimiting
    */
-  uint64_t blockuntil_tstamp;
-  pthread_mutex_t lock;
+  struct {
+    uint64_t        blockuntil_tstamp; ///< lock every active conn from conn_pool until timestamp
+    pthread_mutex_t lock;
+  } *shared;
   /**
    * struct used for logging
    */
@@ -60,8 +67,8 @@ struct user_agent {
    *        way of sending MIME type data 
    * @see ua_curl_mime_setopt()
    */
-  void *data2;
-  curl_mime *mime; 
+  void       *data2;
+  curl_mime  *mime; 
   curl_mime* (*mime_cb)(CURL *ehandle, void *data2);
 };
 
@@ -362,7 +369,7 @@ static struct _ua_conn*
 conn_init(struct user_agent *ua)
 {
   struct _ua_conn *new_conn = calloc(1, sizeof(struct _ua_conn));
-  snprintf(new_conn->tag, sizeof(new_conn->tag), "%s#%zu", logconf_tag(ua->p_config, ua), ua->num_conn);
+  snprintf(new_conn->tag, sizeof(new_conn->tag), "%s#%zu", logconf_tag(ua->p_config, ua), ua->conn->amt);
 
   CURL *new_ehandle = curl_easy_init(); // will be assigned to new_conn
 
@@ -427,26 +434,26 @@ conn_reset(struct _ua_conn *conn)
 static struct _ua_conn*
 get_conn(struct user_agent *ua)
 {
-  pthread_mutex_lock(&ua->lock);
+  pthread_mutex_lock(&ua->shared->lock);
   struct _ua_conn *ret_conn=NULL;
 
   size_t i=0;
-  while (i < ua->num_conn) {
-    if (!ua->conn_pool[i]->is_busy) {
-      ret_conn = ua->conn_pool[i];
+  while (i < ua->conn->amt) {
+    if (!ua->conn->pool[i]->is_busy) {
+      ret_conn = ua->conn->pool[i];
       break; /* EARLY BREAK */
     }
     ++i;
   }
   if (!ret_conn) { // no available conn, create new
-    ++ua->num_conn;
-    ua->conn_pool = realloc(ua->conn_pool, \
-                        ua->num_conn * sizeof *ua->conn_pool);
-    ret_conn = ua->conn_pool[ua->num_conn-1] = conn_init(ua);
+    ++ua->conn->amt;
+    ua->conn->pool = realloc(ua->conn->pool, \
+                        ua->conn->amt * sizeof *ua->conn->pool);
+    ret_conn = ua->conn->pool[ua->conn->amt-1] = conn_init(ua);
   }
   VASSERT_S(NULL != ret_conn, "[%s] (Internal error) Couldn't fetch conn", logconf_tag(ua->p_config, ua));
   ret_conn->is_busy = true;
-  pthread_mutex_unlock(&ua->lock);
+  pthread_mutex_unlock(&ua->shared->lock);
   return ret_conn;
 }
 
@@ -454,6 +461,8 @@ struct user_agent*
 ua_init(struct logconf *config) 
 {
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
+  new_ua->conn = calloc(1, sizeof *new_ua->conn);
+  new_ua->shared = calloc(1, sizeof *new_ua->shared);
 
   // default header
   ua_reqheader_add(new_ua, "User-Agent", "orca (http://github.com/cee-studio/orca)");
@@ -463,35 +472,75 @@ ua_init(struct logconf *config)
   logconf_add_id(config, new_ua, "USER_AGENT");
   new_ua->p_config = config;
 
-  if (pthread_mutex_init(&new_ua->lock, NULL))
+  if (pthread_mutex_init(&new_ua->shared->lock, NULL))
     ERR("[%s] Couldn't initialize mutex", logconf_tag(new_ua->p_config, new_ua));
 
+  new_ua->is_original = true;
+
   return new_ua;
+}
+
+struct user_agent*
+ua_clone(struct user_agent *orig_ua) 
+{
+  struct user_agent *clone_ua = malloc(sizeof(struct user_agent));
+
+  pthread_mutex_lock(&orig_ua->shared->lock);
+  memcpy(clone_ua, orig_ua, sizeof(struct user_agent));
+
+  // copy orig_ua header into clone_ua
+  struct curl_slist *orig_node = orig_ua->req_header;
+  clone_ua->req_header = curl_slist_append(NULL, orig_node->data);
+  while (NULL != orig_node->next) {
+    orig_node = orig_node->next;
+    curl_slist_append(clone_ua->req_header, orig_node->data);
+  }
+
+  // use a different base_url context than the original
+  clone_ua->base_url.size = asprintf(&clone_ua->base_url.start, "%.*s",
+                              (int)orig_ua->base_url.size, orig_ua->base_url.start);
+
+  pthread_mutex_unlock(&orig_ua->shared->lock);
+
+  clone_ua->is_original = false;
+
+  return clone_ua;
 }
 
 void
 ua_cleanup(struct user_agent *ua)
 {
   curl_slist_free_all(ua->req_header);
-  if (ua->conn_pool) {
-    for (size_t i=0; i < ua->num_conn; ++i)
-      conn_cleanup(ua->conn_pool[i]);
-    free(ua->conn_pool);
+
+  if (ua->base_url.start) {
+    free(ua->base_url.start);
   }
-  pthread_mutex_destroy(&ua->lock);
+
+  if (ua->is_original) 
+  {
+    if (ua->conn->pool) {
+      for (size_t i=0; i < ua->conn->amt; ++i)
+        conn_cleanup(ua->conn->pool[i]);
+      free(ua->conn->pool);
+    }
+    free(ua->conn);
+
+    pthread_mutex_destroy(&ua->shared->lock);
+    free(ua->shared);
+  }
+
   free(ua);
 }
 
-char*
+const char*
 ua_get_url(struct user_agent *ua) {
-  return ua->base_url;
+  return ua->base_url.start;
 }
 
 void
-ua_set_url(struct user_agent *ua, const char base_url[])
-{
-  int ret = snprintf(ua->base_url, sizeof(ua->base_url), "%s", base_url);
-  ASSERT_S(ret < sizeof(ua->base_url), "Out of bounds write attempt");
+ua_set_url(struct user_agent *ua, const char *base_url) {
+  if (ua->base_url.start) free(ua->base_url.start);
+  ua->base_url.size = asprintf(&ua->base_url.start, "%s", base_url);
 }
 
 /* set specific http method used for the request */
@@ -532,7 +581,7 @@ set_method(
       curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       break;
   default:
-      ERR("[%s] Unknown http method (code: %d)", method, conn->tag);
+      ERR("[%s] Unknown http method (code: %d)", conn->tag, method);
   }
   
   //set ptr to payload that will be sent via POST/PUT/PATCH
@@ -543,27 +592,41 @@ set_method(
 static void
 set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list args)
 {
-  //create the url route
-  char url_route[UA_MAX_URL_LEN];
-  int ret = vsnprintf(url_route, sizeof(url_route), endpoint, args);
-  ASSERT_S(ret < sizeof(url_route), "oob write of url_route");
+  size_t url_len = 1 + ua->base_url.size;
 
-  ret = snprintf(conn->info.req_url, sizeof(conn->info.req_url), "%s%s", ua->base_url, url_route);
-  ASSERT_S(ret < sizeof(conn->info.req_url), "Out of bounds write attempt");
+  va_list tmp;
+  va_copy (tmp, args);
+  url_len += 1 + vsnprintf(NULL, 0, endpoint, tmp);
+  va_end(tmp);
 
-  CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url);
+  if (url_len > conn->info.req_url.size) {
+    void *tmp = realloc(conn->info.req_url.start, url_len);
+    ASSERT_S(NULL != tmp, "Couldn't increase buffer's length");
+
+    conn->info.req_url = (struct sized_buffer){
+      .start = tmp,
+      .size  = url_len
+    };
+  }
+
+  size_t ret = snprintf(conn->info.req_url.start, conn->info.req_url.size, "%.*s", (int)ua->base_url.size, ua->base_url.start);
+  ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
+  ret += vsnprintf(conn->info.req_url.start+ret, conn->info.req_url.size-ret, endpoint, args);
+  ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
+
+  CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url.start);
   CURLE_CHECK(conn, ecode);
 
-  log_trace("[%s] Request URL: %s", conn->tag, conn->info.req_url);
+  log_trace("[%s] Request URL: %s", conn->tag, conn->info.req_url.start);
 }
 
 static int
 send_request(struct user_agent *ua, struct _ua_conn *conn)
 {
-  pthread_mutex_lock(&ua->lock);
+  pthread_mutex_lock(&ua->shared->lock);
   
   // enforces global ratelimiting with ua_block_ms();
-  cee_sleep_ms(ua->blockuntil_tstamp - cee_timestamp_ms());
+  cee_sleep_ms(ua->shared->blockuntil_tstamp - cee_timestamp_ms());
   CURLcode ecode;
   
   ecode = curl_easy_perform(conn->ehandle);
@@ -596,7 +659,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
     (struct sized_buffer){conn->info.resp_body.buf, conn->info.resp_body.length},
     "HTTP_RCV_%s(%d)", http_code_print(httpcode), httpcode);
 
-  pthread_mutex_unlock(&ua->lock);
+  pthread_mutex_unlock(&ua->shared->lock);
 
   return httpcode;
 }
@@ -633,7 +696,7 @@ perform_request(
           resp_handle->err_obj);
       }
     }
-    return conn->info.httpcode;
+    return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 400) {
     log_error("[%s] "ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
@@ -658,7 +721,7 @@ perform_request(
           resp_handle->err_obj);
       }
     }
-    return conn->info.httpcode;
+    return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 300) {
     log_warn("[%s] "ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
@@ -667,7 +730,7 @@ perform_request(
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
         conn->info.loginfo.counter);
-    return conn->info.httpcode;
+    return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 200) {
     log_info("[%s] "ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
@@ -708,9 +771,7 @@ perform_request(
         conn->tag);
     return ORCA_NO_RESPONSE;
   }
-  log_error("[%s] Unusual HTTP response code: %d", 
-      conn->tag, 
-      conn->info.httpcode);
+  log_error("[%s] Unusual HTTP response code: %d", conn->tag, conn->info.httpcode);
   return ORCA_UNUSUAL_HTTP_CODE;
 }
 
@@ -718,9 +779,9 @@ perform_request(
 void
 ua_block_ms(struct user_agent *ua, const uint64_t wait_ms) 
 {
-  pthread_mutex_lock(&ua->lock);
-  ua->blockuntil_tstamp = cee_timestamp_ms() + wait_ms;
-  pthread_mutex_unlock(&ua->lock);
+  pthread_mutex_lock(&ua->shared->lock);
+  ua->shared->blockuntil_tstamp = cee_timestamp_ms() + wait_ms;
+  pthread_mutex_unlock(&ua->shared->lock);
 }
 
 /* template function for performing requests */
@@ -748,7 +809,7 @@ ua_vrun(
     ua->p_config, 
     &conn->info.loginfo,
     ua,
-    conn->info.req_url, 
+    conn->info.req_url.start, 
     (struct sized_buffer){buf, sizeof(buf)},
     *req_body,
     "HTTP_SEND_%s", method_str);
@@ -761,13 +822,15 @@ ua_vrun(
   set_method(ua, conn, http_method, req_body); //set the request method
   ORCAcode code = perform_request(ua, conn, resp_handle);
 
-  pthread_mutex_lock(&ua->lock);
+  pthread_mutex_lock(&ua->shared->lock);
   if (info) {
     memcpy(info, &conn->info, sizeof(struct ua_info));
     asprintf(&info->resp_body.buf, "%.*s", \
         (int)conn->info.resp_body.length, conn->info.resp_body.buf);
     asprintf(&info->resp_header.buf, "%.*s", \
         (int)conn->info.resp_header.length, conn->info.resp_header.buf);
+    asprintf(&info->req_url.start, "%.*s", \
+        (int)conn->info.req_url.size, conn->info.req_url.start);
   }
 
   conn_reset(conn); // reset for next iteration
@@ -775,7 +838,7 @@ ua_vrun(
     curl_mime_free(ua->mime); 
     ua->mime = NULL;
   }
-  pthread_mutex_unlock(&ua->lock);
+  pthread_mutex_unlock(&ua->shared->lock);
 
   return code;
 }
@@ -806,6 +869,8 @@ ua_run(
 void
 ua_info_cleanup(struct ua_info *info) 
 {
+  if (info->req_url.start)
+    free(info->req_url.start);
   if (info->resp_body.buf)
     free(info->resp_body.buf);
   if (info->resp_header.buf)

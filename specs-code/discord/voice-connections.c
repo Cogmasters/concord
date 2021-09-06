@@ -14,6 +14,21 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_voice_close_opcodes_list_free_v(void **p) {
+  discord_voice_close_opcodes_list_free((enum discord_voice_close_opcodes**)p);
+}
+
+void discord_voice_close_opcodes_list_from_json_v(char *str, size_t len, void *p) {
+  discord_voice_close_opcodes_list_from_json(str, len, (enum discord_voice_close_opcodes ***)p);
+}
+
+size_t discord_voice_close_opcodes_list_to_json_v(char *str, size_t len, void *p){
+  return discord_voice_close_opcodes_list_to_json(str, len, (enum discord_voice_close_opcodes **)p);
+}
+
 enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char *s){
   if(strcasecmp("CLOSE_REASON_UNKNOWN_OPCODE", s) == 0) return DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE;
   if(strcasecmp("CLOSE_REASON_DECODE_ERROR", s) == 0) return DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR;
@@ -29,6 +44,7 @@ enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char *s){
   if(strcasecmp("CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE", s) == 0) return DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes v){
 
   switch (v) {
@@ -48,11 +64,43 @@ char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes v){
 
   return NULL;
 }
-bool discord_voice_close_opcodes_cmp(enum discord_voice_close_opcodes v, char *s) {
-  enum discord_voice_close_opcodes v1 = discord_voice_close_opcodes_eval(s);
-  return v == v1;
+
+void discord_voice_close_opcodes_list_free(enum discord_voice_close_opcodes **p) {
+  ntl_free((void**)p, NULL);
 }
 
+void discord_voice_close_opcodes_list_from_json(char *str, size_t len, enum discord_voice_close_opcodes ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_voice_close_opcodes);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_voice_close_opcodes_list_to_json(char *str, size_t len, enum discord_voice_close_opcodes **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_voice_opcodes_list_free_v(void **p) {
+  discord_voice_opcodes_list_free((enum discord_voice_opcodes**)p);
+}
+
+void discord_voice_opcodes_list_from_json_v(char *str, size_t len, void *p) {
+  discord_voice_opcodes_list_from_json(str, len, (enum discord_voice_opcodes ***)p);
+}
+
+size_t discord_voice_opcodes_list_to_json_v(char *str, size_t len, void *p){
+  return discord_voice_opcodes_list_to_json(str, len, (enum discord_voice_opcodes **)p);
+}
 
 enum discord_voice_opcodes discord_voice_opcodes_eval(char *s){
   if(strcasecmp("IDENTIFY", s) == 0) return DISCORD_VOICE_IDENTIFY;
@@ -69,6 +117,7 @@ enum discord_voice_opcodes discord_voice_opcodes_eval(char *s){
   if(strcasecmp("CODEC", s) == 0) return DISCORD_VOICE_CODEC;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_voice_opcodes_print(enum discord_voice_opcodes v){
 
   switch (v) {
@@ -88,11 +137,43 @@ char* discord_voice_opcodes_print(enum discord_voice_opcodes v){
 
   return NULL;
 }
-bool discord_voice_opcodes_cmp(enum discord_voice_opcodes v, char *s) {
-  enum discord_voice_opcodes v1 = discord_voice_opcodes_eval(s);
-  return v == v1;
+
+void discord_voice_opcodes_list_free(enum discord_voice_opcodes **p) {
+  ntl_free((void**)p, NULL);
 }
 
+void discord_voice_opcodes_list_from_json(char *str, size_t len, enum discord_voice_opcodes ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_voice_opcodes);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum discord_voice_opcodes **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
+
+
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_voice_speaking_flags_list_free_v(void **p) {
+  discord_voice_speaking_flags_list_free((enum discord_voice_speaking_flags**)p);
+}
+
+void discord_voice_speaking_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_voice_speaking_flags_list_from_json(str, len, (enum discord_voice_speaking_flags ***)p);
+}
+
+size_t discord_voice_speaking_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_voice_speaking_flags_list_to_json(str, len, (enum discord_voice_speaking_flags **)p);
+}
 
 enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *s){
   if(strcasecmp("MICROPHONE", s) == 0) return DISCORD_VOICE_MICROPHONE;
@@ -100,6 +181,7 @@ enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *s){
   if(strcasecmp("PRIORITY", s) == 0) return DISCORD_VOICE_PRIORITY;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags v){
 
   switch (v) {
@@ -110,7 +192,24 @@ char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags v){
 
   return NULL;
 }
-bool discord_voice_speaking_flags_cmp(enum discord_voice_speaking_flags v, char *s) {
-  enum discord_voice_speaking_flags v1 = discord_voice_speaking_flags_eval(s);
-  return v == v1;
+
+void discord_voice_speaking_flags_list_free(enum discord_voice_speaking_flags **p) {
+  ntl_free((void**)p, NULL);
 }
+
+void discord_voice_speaking_flags_list_from_json(char *str, size_t len, enum discord_voice_speaking_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_voice_speaking_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, enum discord_voice_speaking_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+

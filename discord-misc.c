@@ -12,6 +12,32 @@ struct msg {
   bool matched;
 };
 
+// defined at dicord-internal.h
+curl_mime*
+discord_file_to_mime(CURL *ehandle, void *p_file) 
+{
+  struct discord_file *file = p_file;
+
+  curl_mime *mime = curl_mime_init(ehandle);
+  curl_mimepart *part = curl_mime_addpart(mime);
+
+  if (file->content) {
+    if (!file->name) { // set a default name
+      file->name = "a.out";
+    }
+    curl_mime_data(part, file->content, file->size);
+    curl_mime_filename(part, file->name);
+    curl_mime_type(part, "application/octet-stream");
+  }
+  else { //file->name exists 
+    curl_mime_filedata(part, file->name);
+  }
+
+  curl_mime_name(part, "file");
+
+  return mime;
+}
+
 ORCAcode
 discord_delete_messages_by_author_id(
   struct discord *client, 
@@ -82,28 +108,22 @@ discord_embed_set_footer(
     return;
   }
 
-  if (embed->footer) {
+  if (embed->footer)
     discord_embed_footer_cleanup(embed->footer);
-    free(embed->footer);
-  }
+  else
+    embed->footer = malloc(sizeof *embed->footer);
+  discord_embed_footer_init(embed->footer);
 
-  struct discord_embed_footer *new_footer = malloc(sizeof *new_footer);
-  discord_embed_footer_init(new_footer);
-
-  strncpy(new_footer->text, text, DISCORD_EMBED_FOOTER_TEXT_LEN);
+  strncpy(embed->footer->text, text, DISCORD_EMBED_FOOTER_TEXT_LEN);
   if (icon_url)
-    asprintf(&new_footer->icon_url, "%s", icon_url);
+    asprintf(&embed->footer->icon_url, "%s", icon_url);
   if (proxy_icon_url)
-    asprintf(&new_footer->proxy_icon_url, "%s", proxy_icon_url);
-
-  embed->footer = new_footer;
+    asprintf(&embed->footer->proxy_icon_url, "%s", proxy_icon_url);
 }
 
 
-void discord_embed_set_title(
-  struct discord_embed *embed, 
-  char format[], 
-  ...)
+void 
+discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 {
   va_list args;
   va_start(args, format);
@@ -119,24 +139,20 @@ discord_embed_set_thumbnail(
   int height, 
   int width)
 {
-  if (embed->thumbnail) {
+  if (embed->thumbnail)
     discord_embed_thumbnail_cleanup(embed->thumbnail);
-    free(embed->thumbnail);
-  }
-
-  struct discord_embed_thumbnail *new_thumbnail = malloc(sizeof *new_thumbnail);
-  discord_embed_thumbnail_init(new_thumbnail);
+  else
+    embed->thumbnail = malloc(sizeof *embed->thumbnail);
+  discord_embed_thumbnail_init(embed->thumbnail);
 
   if (url)
-    asprintf(&new_thumbnail->url, "%s", url);
+    asprintf(&embed->thumbnail->url, "%s", url);
   if (proxy_url)
-    asprintf(&new_thumbnail->proxy_url, "%s", proxy_url);
+    asprintf(&embed->thumbnail->proxy_url, "%s", proxy_url);
   if (height)
-    new_thumbnail->height = height;
+    embed->thumbnail->height = height;
   if (width)
-    new_thumbnail->width = width;
-
-  embed->thumbnail = new_thumbnail;
+    embed->thumbnail->width = width;
 }
 
 void
@@ -147,24 +163,20 @@ discord_embed_set_image(
   int height, 
   int width)
 {
-  if (embed->image) {
+  if (embed->image)
     discord_embed_image_cleanup(embed->image);
-    free(embed->image);
-  }
-
-  struct discord_embed_image *new_image = malloc(sizeof *new_image);
-  discord_embed_image_init(new_image);
+  else
+    embed->image = malloc(sizeof *embed->image);
+  discord_embed_image_init(embed->image);
 
   if (url)
-    asprintf(&new_image->url, "%s", url);
+    asprintf(&embed->image->url, "%s", url);
   if (proxy_url)
-    asprintf(&new_image->proxy_url, "%s", proxy_url);
+    asprintf(&embed->image->proxy_url, "%s", proxy_url);
   if (height)
-    new_image->height = height;
+    embed->image->height = height;
   if (width)
-    new_image->width = width;
-
-  embed->image = new_image;
+    embed->image->width = width;
 }
 
 void
@@ -175,43 +187,35 @@ discord_embed_set_video(
   int height, 
   int width)
 {
-  if (embed->video) {
+  if (embed->video)
     discord_embed_video_cleanup(embed->video);
-    free(embed->video);
-  }
-
-  struct discord_embed_video *new_video = malloc(sizeof *new_video);
-  discord_embed_video_init(new_video);
+  else
+    embed->video = malloc(sizeof *embed->video);
+  discord_embed_video_init(embed->video);
 
   if (url)
-    asprintf(&new_video->url, "%s", url);
+    asprintf(&embed->video->url, "%s", url);
   if (proxy_url)
-    asprintf(&new_video->proxy_url, "%s", proxy_url);
+    asprintf(&embed->video->proxy_url, "%s", proxy_url);
   if (height)
-    new_video->height = height;
+    embed->video->height = height;
   if (width)
-    new_video->width = width;
-
-  embed->video = new_video;
+    embed->video->width = width;
 }
 
 void
 discord_embed_set_provider(struct discord_embed *embed, char name[], char url[])
 {
-  if (embed->provider) {
+  if (embed->provider)
     discord_embed_provider_cleanup(embed->provider);
-    free(embed->provider);
-  }
-
-  struct discord_embed_provider *new_provider = malloc(sizeof *new_provider);
-  discord_embed_provider_init(new_provider);
+  else
+    embed->provider = malloc(sizeof *embed->provider);
+  discord_embed_provider_init(embed->provider);
 
   if (url)
-    asprintf(&new_provider->url, "%s", url);
+    asprintf(&embed->provider->url, "%s", url);
   if (!IS_EMPTY_STRING(name))
-    strncpy(new_provider->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
-
-  embed->provider = new_provider;
+    strncpy(embed->provider->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
 }
 
 void
@@ -222,24 +226,21 @@ discord_embed_set_author(
   char icon_url[], 
   char proxy_icon_url[])
 {
-  if (embed->author) {
+  if (embed->author)
     discord_embed_author_cleanup(embed->author);
-    free(embed->author);
-  }
-
-  struct discord_embed_author *new_author = malloc(sizeof *new_author);
-  discord_embed_author_init(new_author);
+  else
+    embed->author = malloc(sizeof *embed->author);
+  discord_embed_author_init(embed->author);
 
   if (!IS_EMPTY_STRING(name))
-    strncpy(new_author->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
+    strncpy(embed->author->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
 
   if (url)
-    asprintf(&new_author->url, "%s", url);
+    asprintf(&embed->author->url, "%s", url);
   if (icon_url)
-    asprintf(&new_author->icon_url, "%s", icon_url);
+    asprintf(&embed->author->icon_url, "%s", icon_url);
   if (proxy_icon_url)
-    asprintf(&new_author->proxy_icon_url, "%s", proxy_icon_url);
-  embed->author = new_author;
+    asprintf(&embed->author->proxy_icon_url, "%s", proxy_icon_url);
 }
 
 void
@@ -258,10 +259,7 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
     return;
   }
 
-  struct discord_embed_field field;
-  discord_embed_field_init(&field);
-
-  field.Inline = Inline;
+  struct discord_embed_field field = { .Inline = Inline };
 
   size_t ret;
   if (!(ret = cee_str_bounds_check(name, sizeof(field.name)))) {
@@ -302,14 +300,12 @@ discord_overwrite_append(
     return;
   }
 
-  struct discord_channel_overwrite new_overwrite;
-  discord_channel_overwrite_init(&new_overwrite);
-
-  new_overwrite.id = id;
-  new_overwrite.type = type;
-  new_overwrite.allow = allow;
-  new_overwrite.deny = deny;
-
+  struct discord_channel_overwrite new_overwrite = {
+    .id = id,
+    .type = type,
+    .allow = allow,
+    .deny = deny
+  };
   ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_channel_overwrite), &new_overwrite);
 }
 

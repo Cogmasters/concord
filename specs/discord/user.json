@@ -1,5 +1,4 @@
 {
-    "title":"User Object",
     "namespace": ["discord"],
     "comment": "https://discord.com/developers/docs/resources/user",
     "defs":

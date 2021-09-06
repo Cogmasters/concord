@@ -36,40 +36,52 @@
  */
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t id;
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" }' */
+  u64_snowflake_t id; ///< the id of the webhook
 
   /* specs/discord/webhook.json:13:20
-     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }}' */
-  enum discord_webhook_types type;
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }, "comment":"the type of the webhook" }' */
+  enum discord_webhook_types type; ///< the type of the webhook
 
   /* specs/discord/webhook.json:14:20
-     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t guild_id;
+     '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the guild id this webhook is for, if any", "inject_if_not":0 }' */
+  u64_snowflake_t guild_id; ///< the guild id this webhook is for, if any
 
   /* specs/discord/webhook.json:15:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t channel_id;
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the channel id this webhook is for, if any", "inject_if_not":0 }' */
+  u64_snowflake_t channel_id; ///< the channel id this webhook is for, if any
 
   /* specs/discord/webhook.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-  struct discord_user *user;
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null }' */
+  struct discord_user *user; ///< the user this webhook was created by (not returned when getting a webhook with its token
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]", "comment":"the default name of the webhook", "inject_if_not":"" }}' */
   char name[DISCORD_WEBHOOK_NAME_LEN];
 
   /* specs/discord/webhook.json:18:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *avatar; ///< @todo fixed size limit
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"the default user avatar has of the webhook", "inject_if_not":null }' */
+  char *avatar; ///< the default user avatar has of the webhook
 
   /* specs/discord/webhook.json:19:20
-     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *token; ///< @todo fixed size limit
+     '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"the secure token of the webhook (returned for Incoming Webhooks)", "inject_if_not":null }' */
+  char *token; ///< the secure token of the webhook (returned for Incoming Webhooks)
 
   /* specs/discord/webhook.json:20:20
-     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t application_id;
+     '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the bot/OAuth2 application that created this webhook", "inject_if_not":0 }' */
+  u64_snowflake_t application_id; ///< the bot/OAuth2 application that created this webhook
+
+  /* specs/discord/webhook.json:21:20
+     '{ "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null }' */
+  struct discord_guild *source_guild; ///< the guild of the channel that this webhook is following (returned for Channel Follower Webhook)
+
+  /* specs/discord/webhook.json:22:20
+     '{ "name": "source_channel", "type":{ "base":"struct discord_channel", "dec":"*" }, "comment":"the channel that this webhook is following (returned for Channel Follower Webhooks)", "inject_if_not":null }' */
+  struct discord_channel *source_channel; ///< the channel that this webhook is following (returned for Channel Follower Webhooks)
+
+  /* specs/discord/webhook.json:23:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }' */
+  char *url; ///< the url used for executing the webhook (returned by the webhooks OAuth2 flow)
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -80,9 +92,9 @@ struct discord_webhook {
     bool enable_arg_switches;
     bool enable_record_defined;
     bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
+    void *arg_switches[12];
+    void *record_defined[12];
+    void *record_null[12];
   } __M; // metadata
 /// @endcond
 };
@@ -94,8 +106,6 @@ extern void discord_webhook_from_json_v(char *json, size_t len, void *pp);
 extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp);
 extern size_t discord_webhook_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p);
-extern size_t discord_webhook_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_webhook_to_query(char *json, size_t len, struct discord_webhook *p);
 extern void discord_webhook_list_free_v(void **p);
 extern void discord_webhook_list_free(struct discord_webhook **p);
 extern void discord_webhook_list_from_json_v(char *str, size_t len, void *p);
@@ -105,7 +115,7 @@ extern size_t discord_webhook_list_to_json(char *str, size_t len, struct discord
 
 
 // Webhook Types
-// defined at specs/discord/webhook.json:23:5
+// defined at specs/discord/webhook.json:26:5
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
  *
@@ -118,13 +128,18 @@ extern size_t discord_webhook_list_to_json(char *str, size_t len, struct discord
 
  *   * :code:`char* discord_webhook_types_print(enum discord_webhook_types code)`
  *   * :code:`enum discord_webhook_types discord_webhook_types_eval(char *code_as_str)`
- *   * :code:`bool discord_webhook_types_cmp(enum discord_webhook_types code, char *code_as_str)`
  * @endverbatim
  */
 enum discord_webhook_types {
-  DISCORD_WEBHOOK_INCOMING = 1,
-  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2,
+  DISCORD_WEBHOOK_INCOMING = 1, ///< Incoming Webhooks can post messages to channels with a generated token
+  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2, ///< Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels
+  DISCORD_WEBHOOK_APPLICATION = 3, ///< Application webhooks are webhooks used with interactions
 };
 extern char* discord_webhook_types_print(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_eval(char*);
-extern bool discord_webhook_types_cmp(enum discord_webhook_types, char*);
+extern void discord_webhook_types_list_free_v(void **p);
+extern void discord_webhook_types_list_free(enum discord_webhook_types **p);
+extern void discord_webhook_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_webhook_types_list_from_json(char *str, size_t len, enum discord_webhook_types ***p);
+extern size_t discord_webhook_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_webhook_types_list_to_json(char *str, size_t len, enum discord_webhook_types **p);

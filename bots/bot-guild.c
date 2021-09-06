@@ -47,16 +47,15 @@ void on_create(
 {
   if (msg->author->bot) return;
 
-  struct discord_guild guild;
-  discord_guild_init(&guild);
+  struct discord_guild guild={0};
 
   ORCAcode code;
-  {
-    struct discord_create_guild_params params = { 
-      .name = *msg->content ? msg->content : "TestGuild" 
-    };
-    code = discord_create_guild(client, &params, &guild);
-  }
+  code = discord_create_guild(
+           client, 
+           &(struct discord_create_guild_params){ 
+             .name = *msg->content ? msg->content : "TestGuild" 
+           }, 
+           &guild);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK == code)
@@ -64,7 +63,7 @@ void on_create(
   else
     sprintf(text, "Couldn't create guild.");
 
-  struct discord_create_message_params params={ .content = text };
+  struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   discord_guild_cleanup(&guild);
@@ -82,15 +81,19 @@ void on_modify(
   sscanf(msg->content, "%"SCNu64" %s", &guild_id, guild_name);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  struct discord_guild guild;
-  discord_guild_init(&guild);
-  {
-    struct discord_modify_guild_params params = { .name = guild_name };
-    if (ORCA_OK == discord_modify_guild(client, guild_id, &params, &guild))
-      sprintf(text, "Renamed guild to %s.", guild.name);
-    else
-      sprintf(text, "Couldn't rename guild.");
-  }
+  struct discord_guild guild={0};
+
+  ORCAcode code;
+  code = discord_modify_guild(
+           client, 
+           guild_id, 
+           &(struct discord_modify_guild_params){ .name = guild_name }, 
+           &guild);
+
+  if (ORCA_OK == code)
+    sprintf(text, "Renamed guild to %s.", guild.name);
+  else
+    sprintf(text, "Couldn't rename guild.");
 
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
@@ -131,8 +134,7 @@ void on_role_create(
     sprintf(text, "Couldn't create role `%s`", name);
   }
   else {
-    struct discord_permissions_role role;
-    discord_permissions_role_init(&role);
+    struct discord_permissions_role role={0};
 
     struct discord_create_guild_role_params params = { .name = name };
     if (ORCA_OK == discord_create_guild_role(client, msg->guild_id, &params, &role))
@@ -230,10 +232,11 @@ void on_role_list(
   if (msg->author->bot) return;
 
   NTL_T(struct discord_permissions_role) roles=NULL;
-  discord_get_guild_roles(client, msg->guild_id, &roles);
+  ORCAcode code;
+  code = discord_get_guild_roles(client, msg->guild_id, &roles);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  if (!roles) {
+  if (code != ORCA_OK || !roles) {
     sprintf(text, "No guild roles found.");
   }
   else {
@@ -242,7 +245,7 @@ void on_role_list(
     char *prev;
     for (size_t i=0; roles[i]; ++i) {
       prev = cur;
-      cur += snprintf(cur, end-cur, \
+      cur += snprintf(cur, end-cur,
               "<@&%"PRIu64">(%"PRIu64")\n", roles[i]->id, roles[i]->id);
 
       if (cur >= end) { // to make sure no role is skipped
@@ -276,8 +279,7 @@ void on_member_get(
     sprintf(text, "Invalid format for `guild.member_get <user_id>`");
   }
   else {
-    struct discord_guild_member member;
-    discord_guild_member_init(&member);
+    struct discord_guild_member member={0};
 
     if (ORCA_OK == discord_get_guild_member(client, msg->guild_id, msg->author->id, &member))
       sprintf(text, "Member <@%"PRIu64"> found!", user_id);
@@ -325,13 +327,16 @@ void on_member_search(
 
   NTL_T(struct discord_guild_member) members=NULL;
   ORCAcode code;
-  {
-    struct discord_search_guild_members_params params = { .query = msg->content };
-    code = discord_search_guild_members(client, msg->guild_id, &params, &members);
-  }
+  code = discord_search_guild_members(
+           client, 
+           msg->guild_id, 
+           &(struct discord_search_guild_members_params){
+             .query = msg->content
+           }, 
+           &members);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  if (ORCA_OK != code) {
+  if (ORCA_OK != code || !members) {
     sprintf(text, "No members matching '%s' found.", msg->content);
   }
   else {

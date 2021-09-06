@@ -64,8 +64,6 @@ extern void discord_get_invite_params_from_json_v(char *json, size_t len, void *
 extern void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params **pp);
 extern size_t discord_get_invite_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_invite_params_to_json(char *json, size_t len, struct discord_get_invite_params *p);
-extern size_t discord_get_invite_params_to_query_v(char *json, size_t len, void *p);
-extern size_t discord_get_invite_params_to_query(char *json, size_t len, struct discord_get_invite_params *p);
 extern void discord_get_invite_params_list_free_v(void **p);
 extern void discord_get_invite_params_list_free(struct discord_get_invite_params **p);
 extern void discord_get_invite_params_list_from_json_v(char *str, size_t len, void *p);

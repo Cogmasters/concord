@@ -76,8 +76,6 @@ extern void reddit_access_token_params_from_json_v(char *json, size_t len, void 
 extern void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_access_token_params **pp);
 extern size_t reddit_access_token_params_to_json_v(char *json, size_t len, void *p);
 extern size_t reddit_access_token_params_to_json(char *json, size_t len, struct reddit_access_token_params *p);
-extern size_t reddit_access_token_params_to_query_v(char *json, size_t len, void *p);
-extern size_t reddit_access_token_params_to_query(char *json, size_t len, struct reddit_access_token_params *p);
 extern void reddit_access_token_params_list_free_v(void **p);
 extern void reddit_access_token_params_list_free(struct reddit_access_token_params **p);
 extern void reddit_access_token_params_list_from_json_v(char *str, size_t len, void *p);

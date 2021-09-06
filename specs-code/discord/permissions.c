@@ -14,6 +14,21 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_permissions_bitwise_flags_list_free_v(void **p) {
+  discord_permissions_bitwise_flags_list_free((enum discord_permissions_bitwise_flags**)p);
+}
+
+void discord_permissions_bitwise_flags_list_from_json_v(char *str, size_t len, void *p) {
+  discord_permissions_bitwise_flags_list_from_json(str, len, (enum discord_permissions_bitwise_flags ***)p);
+}
+
+size_t discord_permissions_bitwise_flags_list_to_json_v(char *str, size_t len, void *p){
+  return discord_permissions_bitwise_flags_list_to_json(str, len, (enum discord_permissions_bitwise_flags **)p);
+}
+
 enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(char *s){
   if(strcasecmp("ZERO", s) == 0) return DISCORD_PERMISSIONS_ZERO;
   if(strcasecmp("CREATE_INSTANT_INVITE", s) == 0) return DISCORD_PERMISSIONS_CREATE_INSTANT_INVITE;
@@ -49,6 +64,7 @@ enum discord_permissions_bitwise_flags discord_permissions_bitwise_flags_eval(ch
   if(strcasecmp("MANAGE_EMOJIS", s) == 0) return DISCORD_PERMISSIONS_MANAGE_EMOJIS;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_flags v){
 
   switch (v) {
@@ -88,17 +104,35 @@ char* discord_permissions_bitwise_flags_print(enum discord_permissions_bitwise_f
 
   return NULL;
 }
-bool discord_permissions_bitwise_flags_cmp(enum discord_permissions_bitwise_flags v, char *s) {
-  enum discord_permissions_bitwise_flags v1 = discord_permissions_bitwise_flags_eval(s);
-  return v & v1;
+
+void discord_permissions_bitwise_flags_list_free(enum discord_permissions_bitwise_flags **p) {
+  ntl_free((void**)p, NULL);
 }
+
+void discord_permissions_bitwise_flags_list_from_json(char *str, size_t len, enum discord_permissions_bitwise_flags ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_permissions_bitwise_flags);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_permissions_bitwise_flags_list_to_json(char *str, size_t len, enum discord_permissions_bitwise_flags **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_permissions_role_from_json(char *json, size_t len, struct discord_permissions_role **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_permissions_role *p = *pp;
+  discord_permissions_role_init(p);
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:52:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -363,8 +397,6 @@ void discord_permissions_role_init(struct discord_permissions_role *p) {
 
   /* specs/discord/permissions.json:60:20
      '{ "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}' */
-  p->tags = malloc(sizeof *p->tags);
-  discord_permissions_role_tags_init(p->tags);
 
 }
 void discord_permissions_role_list_free(struct discord_permissions_role **p) {
@@ -392,8 +424,9 @@ void discord_permissions_role_tags_from_json(char *json, size_t len, struct disc
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_permissions_role_tags *p = *pp;
+  discord_permissions_role_tags_init(p);
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:70:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */

@@ -14,10 +14,26 @@
 #include "discord.h"
 
 
+typedef void (*vfvp)(void *);
+typedef void (*vfcpsvp)(char *, size_t, void *);
+typedef size_t (*sfcpsvp)(char *, size_t, void *);
+void discord_invite_target_user_types_list_free_v(void **p) {
+  discord_invite_target_user_types_list_free((enum discord_invite_target_user_types**)p);
+}
+
+void discord_invite_target_user_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_invite_target_user_types_list_from_json(str, len, (enum discord_invite_target_user_types ***)p);
+}
+
+size_t discord_invite_target_user_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_invite_target_user_types_list_to_json(str, len, (enum discord_invite_target_user_types **)p);
+}
+
 enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *s){
   if(strcasecmp("STREAM", s) == 0) return DISCORD_INVITE_STREAM;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
+
 char* discord_invite_target_user_types_print(enum discord_invite_target_user_types v){
 
   switch (v) {
@@ -26,17 +42,35 @@ char* discord_invite_target_user_types_print(enum discord_invite_target_user_typ
 
   return NULL;
 }
-bool discord_invite_target_user_types_cmp(enum discord_invite_target_user_types v, char *s) {
-  enum discord_invite_target_user_types v1 = discord_invite_target_user_types_eval(s);
-  return v == v1;
+
+void discord_invite_target_user_types_list_free(enum discord_invite_target_user_types **p) {
+  ntl_free((void**)p, NULL);
 }
+
+void discord_invite_target_user_types_list_from_json(char *str, size_t len, enum discord_invite_target_user_types ***p)
+{
+  struct ntl_deserializer d;
+  memset(&d, 0, sizeof(d));
+  d.elem_size = sizeof(enum discord_invite_target_user_types);
+  d.init_elem = NULL;
+  d.elem_from_buf = ja_u64_from_json_v;
+  d.ntl_recipient_p= (void***)p;
+  extract_ntl_from_json2(str, len, &d);
+}
+
+size_t discord_invite_target_user_types_list_to_json(char *str, size_t len, enum discord_invite_target_user_types **p)
+{
+  return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
+}
+
 
 void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_invite *p = *pp;
+  discord_invite_init(p);
   r=json_extract(json, len, 
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
@@ -270,23 +304,15 @@ void discord_invite_init(struct discord_invite *p) {
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
-  p->guild = malloc(sizeof *p->guild);
-  discord_guild_init(p->guild);
 
   /* specs/discord/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
-  p->channel = malloc(sizeof *p->channel);
-  discord_channel_init(p->channel);
 
   /* specs/discord/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
-  p->inviter = malloc(sizeof *p->inviter);
-  discord_user_init(p->inviter);
 
   /* specs/discord/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  p->target_user = malloc(sizeof *p->target_user);
-  discord_user_init(p->target_user);
 
   /* specs/discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
@@ -323,8 +349,9 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_invite_metadata *p = *pp;
+  discord_invite_metadata_init(p);
   r=json_extract(json, len, 
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */

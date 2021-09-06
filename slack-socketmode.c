@@ -244,22 +244,19 @@ refresh_connection(struct slack_sm *sm)
   slack_apps_connections_open(sm->p_client, &resp_body);
 
   bool status=false;
-  char base_url[UA_MAX_URL_LEN]="";
+  char *base_url=NULL;
   struct sized_buffer messages={0};
   json_extract(resp_body.start, resp_body.size, 
-    "(ok):b, (url):s, (response_metadata.messages):T",
-    &status, base_url, &messages);
+    "(ok):b, (url):?s, (response_metadata.messages):T",
+    &status, &base_url, &messages);
 
   VASSERT_S(true == status,
       "Couldn't fetch connections for websockets:\n\t\tMessage: %.*s", 
       (int)messages.size, messages.start);
 
-#if 0 // enable this to test reconnect
-  size_t len = strlen(base_url);
-  snprintf(base_url+len, sizeof(base_url)-len, "&debug_reconnects=true");
-#endif
   ws_set_url(sm->p_client->sm.ws, base_url, NULL);
 
+  free(base_url);
   free(resp_body.start);
 }
 

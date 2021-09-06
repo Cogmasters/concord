@@ -21,6 +21,12 @@
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 #define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
 
+/* ERROR CODES @ see discord_strerror() */
+#define ORCA_DISCORD_JSON_CODE  1 ///< Received a JSON error message
+#define ORCA_DISCORD_BAD_AUTH   2 ///< Bad authentication token
+#define ORCA_DISCORD_RATELIMIT  3 ///< Being ratelimited
+#define ORCA_DISCORD_CONNECTION 4 ///< Couldn't establish connection to Discord
+
 /* FORWARD DECLARATIONS */
 struct discord;
 struct discord_voice_cbs;
@@ -104,6 +110,22 @@ typedef void (*discord_event_raw_cb)(
     struct sized_buffer *event_data);
 /** @} DiscordCallbacksGeneral */
 
+/** @defgroup DiscordCallbacksApplicationCommand
+ *  @brief Application Command event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#commands 
+ *  @{ */
+/**
+ * @brief Application Command Create/Update/Delete callback
+ *
+ * @see discord_set_on_application_command_create() 
+ *      discord_set_on_application_command_update() 
+ *      discord_set_on_application_command_delete() 
+ */
+typedef void (*discord_application_command_cb)(
+    struct discord *client, const struct discord_user *bot,
+    const struct discord_application_command *app_cmd);
+/** @} DiscordCallbacksApplicationCommand */
+
 /** @defgroup DiscordCallbacksChannel
  *  @brief Channel-event callbacks
  *  @see https://discord.com/developers/docs/topics/gateway#channels 
@@ -183,6 +205,19 @@ typedef void (*discord_guild_ban_cb)(
     const u64_snowflake_t guild_id, 
     const struct discord_user *user);
 /** @} DiscordCallbacksGuild */
+
+/** @defgroup DiscordCallbacksInteraction
+ *  @brief Interaction-event callbacks
+ *  @see https://discord.com/developers/docs/topics/gateway#interactions
+ *  @{ */
+/**
+ * @brief Interaction Create callback
+ * @see discord_set_on_interaction_create() 
+ */
+typedef void (*discord_interaction_cb)(
+    struct discord *client, const struct discord_user *bot,
+    const struct discord_interaction *interaction);
+/** @} DiscordCallbacksInteraction */
 
 /** @defgroup DiscordCallbacksMessage
  *  @brief Message-event callbacks
@@ -288,84 +323,6 @@ typedef void (*discord_voice_server_update_cb)(
 /** @} DiscordCallbacksVoice */
 
 
-/**
- * @todo make this specs generated code
- * @see https://discord.com/developers/docs/topics/gateway#get-gateway-bot-json-response
- * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object
- */
-struct discord_session {
-  char url[1024]; ///< The WSS URL that can be used for connecting to the gateway
-  int shards; ///< The recommended number of shards to use when connecting
-  
-  int total; ///< the total number of session starts the current user is allowed
-  int remaining; ///< the remaining number of session starts the current user is allowed
-  int reset_after; ///< the number of milliseconds after which the limit resets
-  int max_concurrency; ///< the number of identify requests allowed per 5 seconds
-
-  int concurrent; ///< active concurrent sessions
-  u64_unix_ms_t identify_tstamp; ///< timestamp of last succesful identify request
-
-  u64_unix_ms_t event_tstamp; ///< timestamp of last succesful event timestamp in ms (resets every 60s)
-
-  int event_count; ///< event counter to avoid reaching limit of 120 events per 60 sec
-};
-
-/**
- * @todo make this specs generated code
- */
-struct discord_get_channel_messages_params {
-  u64_snowflake_t around;
-  u64_snowflake_t before;
-  u64_snowflake_t after;
-  int limit; // max number of messages (1-100)
-};
-
-/**
- * @todo make this specs generated code
- * @warning content-type sent is @p application/json, UNLESS any 
- *        @p multipart/form-data parameter is set
- */
-struct discord_create_message_params {
-  // common to @b application/json and @b multipart/form-data parameters
-  char *content; ///< the content of the message being sent
-  bool tts; ///< enable/disable text-to-speech
-  
-  // parameters for @b application/json
-  NTL_T(struct discord_embed) embeds;
-  struct discord_embed *embed; ///< deprecated
-  struct discord_channel_allowed_mentions *allowed_mentions;
-  struct discord_message_reference *message_reference;
-  NTL_T(struct discord_component) components;
-  
-  // parameters for @b multipart/form-data
-  // @note if just name field is set, will search for file in working directory
-  struct { // FILE STRUCT
-    char *name; ///< the name of the file being sent
-    char *content; ///< the contents of the file being sent (optional)
-    size_t size; ///< the size of the file being sent (if content is set)
-  } file;
-  char *payload_json;
-};
-
-/** 
- * @todo make this specs generated code
- */
-struct discord_edit_message_params {
-  char *content;
-  struct discord_embed *embed;
-  enum discord_message_flags_code *flags;
-  struct discord_channel_allowed_mentions *allowed_mentions;
-};
-
-/**
- * @todo this can become specs generated code
- */
-struct discord_list_guild_members_params {
-  int limit; ///< the number of members to return (1-1000)
-  u64_snowflake_t after; ///< the highest user id in the previous page
-};
-
-
  /* * * * * * * * * * * * * * * */
 /* * * * CLIENT FUNCTIONS * * * */
 
@@ -378,6 +335,15 @@ void discord_global_init();
  * @brief Free resources of globals used by discord.h
  */
 void discord_global_cleanup();
+
+/**
+ * @brief Return the meaning of ORCAcode
+ * @note if the client parameter is provided, the raw JSON error string will be given for ORCA_DISCORD_JSON_CODE code
+ * @param code the ORCAcode to be explained
+ * @param client the client created with discord_init(), NULL for generic error descriptions
+ * @return a string containing the code meaning
+ */
+const char* discord_strerror(ORCAcode code, struct discord *client);
 
 /**
  * @brief Create a Discord Client handle by its token
@@ -394,6 +360,17 @@ struct discord* discord_init(const char token[]);
  * @return the newly created Discord Client handle
  */
 struct discord* discord_config_init(const char config_file[]);
+
+/**
+ * @brief Clone a discord client
+ *
+ * This is useful in a multithreading scenario. For example, making
+ *        sure each client instance has its own shared url, headers,
+ *        return codes.
+ * @param orig_client the original client created with discord_init()
+ * @return the original client clone
+ */
+struct discord* discord_clone(const struct discord *orig_client);
 
 /**
  * @brief Free a Discord Client handle
@@ -533,6 +510,91 @@ void discord_set_on_event_raw(struct discord *client, discord_event_raw_cb callb
 void discord_set_on_idle(struct discord *client, discord_idle_cb callback);
 
 /**
+ * @brief Set a callback that triggers when the client is ready
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_ready(struct discord *client, discord_idle_cb callback);
+/**
+ * @brief Set a callback that triggers when a applicat command is created
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ */
+void discord_set_on_application_command_create(struct discord *client, discord_application_command_cb callback);
+/**
+ * @brief Set a callback that triggers when a applicat command is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ */
+void discord_set_on_application_command_update(struct discord *client, discord_application_command_cb callback);
+/**
+ * @brief Set a callback that triggers when a applicat command is deleted
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ */
+void discord_set_on_application_command_delete(struct discord *client, discord_application_command_cb callback);
+/**
+ * @brief Set a callback that triggers when a channel is created
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_channel_create(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when a channel is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_channel_update(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when a channel is deleted
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_channel_delete(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when some channel pins are updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_channel_pins_update(struct discord *client, discord_channel_pins_update_cb callback);
+/**
+ * @brief Set a callback that triggers when a thread is created
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_thread_create(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when a thread is updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_thread_update(struct discord *client, discord_channel_cb callback);
+/**
+ * @brief Set a callback that triggers when a thread is deleted
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback triggerable
+ */
+void discord_set_on_thread_delete(struct discord *client, discord_channel_cb callback);
+/**
  * @brief Set a callback that triggers when a guild role is created
  *
  * @param client the client created with discord_init()
@@ -597,61 +659,13 @@ void discord_set_on_guild_ban_add(struct discord *client, discord_guild_ban_cb c
  */
 void discord_set_on_guild_ban_remove(struct discord *client, discord_guild_ban_cb callback);
 /**
- * @brief Set a callback that triggers when a channel is created
+ * @brief Set a callback that triggers when a interaction is created
  *
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
  */
-void discord_set_on_channel_create(struct discord *client, discord_channel_cb callback);
-/**
- * @brief Set a callback that triggers when a channel is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_channel_update(struct discord *client, discord_channel_cb callback);
-/**
- * @brief Set a callback that triggers when a channel is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_channel_delete(struct discord *client, discord_channel_cb callback);
-/**
- * @brief Set a callback that triggers when some channel pins are updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_channel_pins_update(struct discord *client, discord_channel_pins_update_cb callback);
-/**
- * @brief Set a callback that triggers when a thread is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_thread_create(struct discord *client, discord_channel_cb callback);
-/**
- * @brief Set a callback that triggers when a thread is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_thread_update(struct discord *client, discord_channel_cb callback);
-/**
- * @brief Set a callback that triggers when a thread is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_thread_delete(struct discord *client, discord_channel_cb callback);
+void
+discord_set_on_interaction_create(struct discord *client, discord_interaction_cb callback);
 /**
  * @brief Set a callback that triggers when a message is created
  *
@@ -719,14 +733,6 @@ void discord_set_on_message_reaction_remove_all(struct discord *client, discord_
  */
 void discord_set_on_message_reaction_remove_emoji(struct discord *client, discord_message_reaction_remove_emoji_cb callback);
 /**
- * @brief Set a callback that triggers when the client is ready
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback triggerable
- */
-void discord_set_on_ready(struct discord *client, discord_idle_cb callback);
-/**
  * @brief Set a callback that triggers when a voice state is updated
  *
  * @param client the client created with discord_init()
@@ -754,8 +760,9 @@ void discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *cal
  * @brief Start a connection to the Discord Gateway
  *
  * @param client the client created with discord_init()
+ * @return ORCAcode for how the run went, ORCA_OK means nothing out of the ordinary
  */
-void discord_run(struct discord *client);
+ORCAcode discord_run(struct discord *client);
 
 /**
  * @brief Keep some user arbitrary data, by associating it to the client
@@ -803,6 +810,428 @@ void discord_set_presence(struct discord *client, struct discord_gateway_activit
 
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */
+
+/** @defgroup DiscordGetGlobalApplicationCommands 
+ * @brief @b GET /applications/{application.id}/commands
+ *
+ * Fetch all of the global commands for your application. Returns an array of application command objects.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-global-application-commands
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param p_app_cmds the null-terminated array of application command objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_global_application_commands(struct discord *client, const u64_snowflake_t application_id, NTL_T(struct discord_application_command) *p_app_cmds);
+/** @} DiscordGetGlobalApplicationCommands */
+
+/** @defgroup DiscordCreateGlobalApplicationCommand 
+ * @brief @b POST /applications/{application.id}/commands
+ *
+ * Create a new global command. New global commands will be available in all guilds after 1 hour.
+ * @see https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param params request parameters
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_global_application_command(struct discord *client, const u64_snowflake_t application_id, struct discord_create_global_application_command_params *params, struct discord_application_command *p_app_cmd);
+/// @struct discord_create_global_application_command_params
+/** @} DiscordCreateGlobalApplicationCommand */
+
+/** @defgroup DiscordGetGlobalApplicationCommand
+ * @brief @b GET /applications/{application.id}/commands/{command.id}
+ *
+ * Fetch a global command for your application. Returns an application command object.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-global-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param command_id the registered command id
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_global_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t command_id, struct discord_application_command *p_app_cmd);
+/** @} DiscordGetGlobalApplicationCommand */
+
+/** @defgroup DiscordEditGlobalApplicationCommand
+ * @brief @b PATCH /applications/{application.id}/commands/{command.id}
+ *
+ * Edit a global command. Updates will be available in all guilds 
+ * after 1 hour. Returns an application command object.
+ * @see https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param command_id the registered command id
+ * @param params request parameters
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_global_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t command_id, struct discord_edit_global_application_command_params *params, struct discord_application_command *p_app_cmd);
+/// @struct discord_edit_global_application_command_params
+/** @} DiscordEditGlobalApplicationCommand */
+
+/** @defgroup DiscordDeleteGlobalApplicationCommand
+ * @brief @b DELETE /applications/{application.id}/commands/{command.id}
+ *
+ * Deletes a global command.
+ * @see https://discord.com/developers/docs/interactions/application-commands#delete-global-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param command_id the registered command id
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_delete_global_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t command_id);
+/** @} DiscordDeleteGlobalApplicationCommand */
+
+/** @defgroup DiscordBulkOverwriteGlobalApplicationCommand
+ * @brief @b PUT /applications/{application.id}/commands
+ *
+ * Takes a list of application commands, overwriting existing commands 
+ * that are registered globally for this application. Updates will be 
+ * available in all guilds after 1 hour. Returns a list of application 
+ * command objects. Commands that do not already exist will count 
+ * toward daily application command create limits.
+ * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+ * @warning This will overwrite all types of application commands: slash commands, user commands, and message commands.
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param params the request parameters, a list of application commands
+ * @param p_app_cmds the null-terminated array of application command objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_bulk_overwrite_global_application_command(struct discord *client, const u64_snowflake_t application_id, NTL_T(struct discord_application_command) params, NTL_T(struct discord_application_command) *p_app_cmds);
+/** @} DiscordBulkOverwriteGlobalApplicationCommand */
+
+/** @defgroup DiscordGetGuildApplicationCommands 
+ * @brief @b GET /applications/{application.id}/guilds/{guilds.id}/commands
+ *
+ * Fetch all of the guild commands for your application for a specific guild. Returns an array of application command objects.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-guild-application-commands
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the commands are located
+ * @param p_app_cmds the null-terminated array of application command objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_guild_application_commands(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, NTL_T(struct discord_application_command) *p_app_cmds);
+/** @} DiscordGetGuildApplicationCommands */
+
+/** @defgroup DiscordCreateGuildApplicationCommand 
+ * @brief @b POST /applications/{application.id}/guilds/{guild.id}/commands
+ *
+ * Create a new guild command. New guild commands will be available in 
+ * the guild immediately. Returns an application command object. If 
+ * the command did not already exist, it will count toward daily 
+ * application command create limits.
+ * @see https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
+ * @note Creating a command with the same name as an existing command for your application will overwrite the old command.
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the command is located
+ * @param params request parameters
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_guild_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, struct discord_create_guild_application_command_params *params, struct discord_application_command *p_app_cmd);
+/// @struct discord_create_guild_application_command_params
+/** @} DiscordCreateGuildApplicationCommand */
+
+/** @defgroup DiscordGetGuildApplicationCommand
+ * @brief @b GET /applications/{application.id}/guilds/{guild.id}/commands/{command.id}
+ *
+ * Fetch a guild command for your application. Returns an application command object.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-guild-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the command is located
+ * @param command_id the registered command id
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_guild_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, const u64_snowflake_t command_id, struct discord_application_command *p_app_cmd);
+/** @} DiscordGetGuildApplicationCommand */
+
+/** @defgroup DiscordEditGuildApplicationCommand
+ * @brief @b PATCH /applications/{application.id}/guilds/{guild.id}/commands/{command.id}
+ *
+ * Edit a guild command. Updates for guild commands will be available
+ * immediately. Returns an application command object.
+ * @see https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the command is located
+ * @param command_id the registered command id
+ * @param params request parameters
+ * @param p_app_cmd the application command object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_guild_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, const u64_snowflake_t command_id, struct discord_edit_guild_application_command_params *params, struct discord_application_command *p_app_cmd);
+/// @struct discord_edit_guild_application_command_params
+/** @} DiscordEditGuildApplicationCommand */
+
+/** @defgroup DiscordDeleteGuildApplicationCommand
+ * @brief @b DELETE /applications/{application.id}/guilds/{guild.id}/commands/{command.id}
+ *
+ * Deletes a guild command.
+ * @see https://discord.com/developers/docs/interactions/application-commands#delete-guild-application-command
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the command is located
+ * @param command_id the registered command id
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_delete_guild_application_command(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, const u64_snowflake_t command_id);
+/** @} DiscordDeleteGuildApplicationCommand */
+
+/** @defgroup DiscordBulkOverwriteGuildApplicationCommand
+ * @brief @b PUT /applications/{application.id}/guilds/{guild.id}/commands
+ *
+ * Takes a list of application commands, overwriting existing commands 
+ * for the guild. Returns a list of application command objects.
+ * @see https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
+ * @warning This will overwrite all types of application commands: slash commands, user commands, and message commands.
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the commands are located
+ * @param params the request parameters, a list of application commands
+ * @param p_app_cmds the null-terminated array of application command objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_bulk_overwrite_global_application_command(struct discord *client, const u64_snowflake_t application_id, NTL_T(struct discord_application_command) params, NTL_T(struct discord_application_command) *p_app_cmds);
+/** @} DiscordBulkOverwriteGuildApplicationCommand */
+
+/** @defgroup DiscordGetGuildApplicationCommandPermissions
+ * @brief @b GET /applications/{application.id}/guilds/{guild.id}/commands/permissions
+ *
+ * Fetches command permissions for all commands for your application in a guild. Returns an array of guild application command permissions objects.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-guild-application-command-permissions
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the commands are located
+ * @param p_permissions the null-terminated array of guild application command permissions objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_guild_application_command_permissions(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_application_command_permissions) *p_permissions);
+/** @} DiscordGetGuildApplicationCommandPermissions */
+
+/** @defgroup DiscordGetApplicationCommandPermissions
+ * @brief @b GET /applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions
+ *
+ * Fetches command permissions for a specific command for your application in a guild. Returns a guild application command permissions object.
+ * @see https://discord.com/developers/docs/interactions/application-commands#get-application-command-permissions
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the command is located
+ * @param command_id the registered command id
+ * @param p_permissions the application command permissions object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_application_command_permissions(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, const u64_snowflake_t command_id, struct discord_guild_application_command_permissions *p_permissions);
+/** @} DiscordGetApplicationCommandPermissions */
+
+/** @defgroup DiscordEditApplicationCommandPermissions
+ * @brief @b PUT /applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions
+ *
+ * Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command. Returns a guild application command permissions object.
+ * @see https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the commands are located
+ * @param command_id the registered command id
+ * @param params the request parameters
+ * @param p_permissions the application command permissions object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_application_command_permissions(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, const u64_snowflake_t command_id, struct discord_edit_application_command_permissions_params *params, struct discord_guild_application_command_permissions *p_permissions);
+/// @struct discord_edit_application_command_permissions_params
+/** @} DiscordEditApplicationCommandPermissions */
+
+/** @defgroup DiscordBatchEditApplicationCommandPermissions
+ * @brief @b PUT /applications/{application.id}/guilds/{guild.id}/commands/permissions
+ *
+ * Batch edits permissions for all commands in a guild. Takes an array 
+ * of partial guild application command permissions objects including 
+ * id and permissions.  
+ * You can only add up to 10 permission overwrites for a command.  
+ * Returns an array of GuildApplicationCommandPermissions objects.
+ * @see https://discord.com/developers/docs/interactions/application-commands#batch-edit-application-command-permissions
+ * @warning This will overwrite all types of application commands: slash commands, user commands, and message commands.
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the parent application
+ * @param guild_id the guild where the commands are located
+ * @param params the request parameters, a list of guild application commands permissions
+ * @param p_permissions the null-terminated array of guild application command permissions objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_batch_edit_application_command_permissions(struct discord *client, const u64_snowflake_t application_id, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_application_command_permissions) params, NTL_T(struct discord_guild_application_command_permissions) *p_permissions);
+/** @} DiscordBatchEditApplicationCommandPermissions */
+
+
+/** @defgroup DiscordCreateInteractionResponse
+ * @brief @b POST /interactions/{interaction.id}/{interaction.token}/callback
+ *
+ * Create a response to an Interaction from the gateway. Takes an interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#create-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @param params the request parameters
+ * @param p_response the interaction response object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_interaction_response *params, struct discord_interaction_response *p_response);
+/** @} DiscordCreateInteractionResponse */
+
+/** @defgroup DiscordGetOriginalInteractionResponse
+ * @brief @b GET /webhooks/{interaction.id}/{interaction.token}/messages/@original
+ *
+ * Returns the initial Interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#get-original-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @param p_response the interaction response object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_interaction_response *p_response);
+/** @} DiscordGetOriginalInteractionResponse */
+
+/** @defgroup DiscordEditOriginalInteractionResponse
+ * @brief @b PATCH /webhooks/{interaction.id}/{interaction.token}/messages/@original
+ *
+ * Edit the initial Interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-original-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @param params request parameters
+ * @param p_response the interaction response object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[], struct discord_edit_original_interaction_response_params *params, struct discord_interaction_response *p_response);
+/** @} DiscordEditOriginalInteractionResponse */
+
+/** @defgroup DiscordDeleteOriginalInteractionResponse
+ * @brief @b DELETE /webhooks/{interaction.id}/{interaction.token}/messages/@original
+ *
+ * Delete the initial Interaction response.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#delete-original-interaction-response
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param interaction_id the unique id of the interaction
+ * @param interaction_token the unique token of the interaction
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_delete_original_interaction_response(struct discord *client, const u64_snowflake_t interaction_id, const char interaction_token[]);
+/** @} DiscordDeleteOriginalInteractionResponse */
+
+/** @defgroup DiscordCreateFollowupMessage
+ * @brief @b POST /webhooks/{interaction.id}/{interaction.token}
+ *
+ * Create a followup message for an Interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#create-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_create_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], struct discord_create_followup_message_params *params, struct discord_webhook *p_webhook);
+/** @} DiscordCreateFollowupMessage */
+
+/** @defgroup DiscordGetFollowupMessage
+ * @brief @b GET /webhooks/{interaction.id}/{interaction.token}/messages/{message.id}
+ *
+ * Returns a followup message for an interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#get-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param message_id the unique id of the message
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_get_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id, struct discord_message *p_message);
+/** @} DiscordGetFollowupMessage */
+
+/** @defgroup DiscordEditFollowupMessage
+ * @brief @b PATCH /webhooks/{application.id}/{interaction.token}/messages/{message.id}
+ *
+ * Edits a followup message for an interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param message_id the unique id of the message
+ * @param params request parameters
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_edit_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id, struct discord_edit_followup_message_params *params, struct discord_message *p_message);
+/** @} DiscordEditFollowupMessage */
+
+/** @defgroup DiscordDeleteFollowupMessage
+ * @brief @b DELETE /webhooks/{application.id}/{interaction.token}/messages/{message.id}
+ *
+ * Edits a followup message for an interaction.
+ * @see https://discord.com/developers/docs/interactions/receiving-and-responding#edit-followup-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param application_id the unique id of the application
+ * @param interaction_token the unique token of the interaction
+ * @param message_id the unique id of the message
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ */
+ORCAcode discord_delete_followup_message(struct discord *client, const u64_snowflake_t application_id, const char interaction_token[], const u64_snowflake_t message_id);
+/** @} DiscordDeleteFollowupMessage */
+
 
 /** @defgroup DiscordGetGuildAuditLog 
  * @brief @b GET /guilds/{guild.id}/audit-logs
@@ -1411,14 +1840,226 @@ ORCAcode discord_list_voice_regions(struct discord *client, NTL_T(struct discord
 /** @} DiscordListVoiceRegions */
 
 
+/** @defgroup DiscordCreateWebhook
+ * @brief @b POST /channels/{channel.id}/webhooks
+ *
+ * Create a new webhook. Requires the MANAGE_WEBHOOKS permission. Returns a webhook object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#create-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the webhook belongs to
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_create_webhook(struct discord *client, const u64_snowflake_t channel_id, struct discord_create_webhook_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_create_webhook_params
+/** @} DiscordCreateWebhook */
+
+/** @defgroup DiscordGetChannelWebhooks
+ * @brief @b GET /channels/{channel.id}/webhooks
+ *
+ * Returns a list of channel webhook objects. Requires the MANAGE_WEBHOOKS permission.
+ * @see https://discord.com/developers/docs/resources/webhook#get-channel-webhooks
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param channel_id the channel that the webhooks belongs to
+ * @param p_webhooks a null-terminated list of webhook objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_channel_webhooks(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_webhook) *p_webhooks);
+/** @} DiscordGetChannelWebhooks */
+
+/** @defgroup DiscordGetGuildWebhooks
+ * @brief @b GET /guilds/{guild.id}/webhooks
+ *
+ * Returns a list of guild webhook objects. Requires the MANAGE_WEBHOOKS permission.
+ * @see https://discord.com/developers/docs/resources/webhook#get-guild-webhooks
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the guild that the webhooks belongs to
+ * @param p_webhooks a null-terminated list of webhook objects if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_guild_webhooks(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_webhook) *p_webhooks);
+/** @} DiscordGetGuildWebhooks */
+
+/** @defgroup DiscordGetWebhook
+ * @brief @b GET /webhooks/{webhook.id}
+ *
+ * Returns the new webhook object for the given id.
+ * @see https://discord.com/developers/docs/resources/webhook#get-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_webhook(struct discord *client, const u64_snowflake_t webhook_id, struct discord_webhook *p_webhook);
+/** @} DiscordGetWebhook */
+
+/** @defgroup DiscordGetWebhookWithToken
+ * @brief @b GET /webhooks/{webhook.id}/{webhook.token}
+ *
+ * Same discord_get_webhook(), except this call does not require authentication and returns no user in the webhook object
+ * @see https://discord.com/developers/docs/resources/webhook#get-webhook-with-token
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_webhook_with_token(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], struct discord_webhook *p_webhook);
+/** @} DiscordGetWebhookWithToken */
+
+/** @defgroup DiscordModifyWebhook
+ * @brief @b PATCH /webhooks/{webhook.id}
+ *
+ * Modify a webhook. Requires the MANAGE_WEBHOOKS permission. Returns the updated webhook object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#modify-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_modify_webhook(struct discord *client, const u64_snowflake_t webhook_id, struct discord_modify_webhook_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_modify_webhook_params
+/** @} DiscordModifyWebhook */
+
+/** @defgroup DiscordModifyWebhookWithToken
+ * @brief @b PATCH /webhooks/{webhook.id}/{webhook.token}
+ *
+ * Same discord_modify_webhook(), except this call does not require authentication and returns no user in the webhook object
+ * @see https://discord.com/developers/docs/resources/webhook#modify-webhook-with-token
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_modify_webhook_with_token(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], struct discord_modify_webhook_with_token_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_modify_webhook_with_token_params
+/** @} DiscordModifyWebhookWithToken */
+
+/** @defgroup DiscordDeleteWebhook
+ * @brief @b DELETE /webhooks/{webhook.id}
+ *
+ * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission.
+ * @see https://discord.com/developers/docs/resources/webhook#delete-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_delete_webhook(struct discord *client, const u64_snowflake_t webhook_id);
+/** @} DiscordDeleteWebhook */
+
+/** @defgroup DiscordDeleteWebhookWithToken
+ * @brief @b DELETE /webhooks/{webhook.id}/{webhook.token}
+ *
+ * Same discord_delete_webhook(), except this call does not require authentication.
+ * @see https://discord.com/developers/docs/resources/webhook#delete-webhook-with-token
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_delete_webhook_with_token(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[]);
+/** @} DiscordDeleteWebhookWithToken */
+
+/** @defgroup DiscordExecuteWebhook
+ * @brief @b POST /webhooks/{webhook.id}/{webhook.token}
+ *
+ * @see https://discord.com/developers/docs/resources/webhook#execute-webhook
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param params request parameters
+ * @param p_webhook the webhook object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_execute_webhook(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], struct discord_execute_webhook_params *params, struct discord_webhook *p_webhook);
+/// @struct discord_execute_webhook_params
+/** @} DiscordExecuteWebhook */
+
+/** @defgroup DiscordGetWebhookMessage
+ * @brief @b GET /webhooks/{webhook.id}/{webhook.token}/messages/{message.id}
+ *
+ * Returns a previously-sent webhook message from the same token. Returns a message object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#get-webhook-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param message_id the message the webhook belongs to
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_get_webhook_message(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], const u64_snowflake_t message_id, struct discord_message *p_message);
+/** @} DiscordGetWebhookMessage */
+
+/** @defgroup DiscordEditWebhookMessage
+ * @brief @b PATCH /webhooks/{webhook.id}/{webhook.token}/messages/{message.id}
+ *
+ * Edits a previously-sent webhook message from the same token. Returns a message object on success.
+ * @see https://discord.com/developers/docs/resources/webhook#edit-webhook-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param message_id the message the webhook belongs to
+ * @param params request parameters
+ * @param p_message the message object if succesful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_edit_webhook_message(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], const u64_snowflake_t message_id, struct discord_edit_webhook_message_params *params, struct discord_message *p_message);
+/// @struct discord_edit_webhook_message_params
+/** @} DiscordEditWebhookMessage */
+
+/** @defgroup DiscordDeleteWebhookMessage
+ * @brief @b DELETE /webhooks/{webhook.id}/{webhook.token}/messages/{message.id}
+ *
+ * Deletes a message that was created by the webhook. Returns a 204 NO CONTENT response on success.
+ * @see https://discord.com/developers/docs/resources/webhook#delete-webhook-message
+ *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param webhook_id the webhook itself
+ * @param webhook_token the webhook token
+ * @param message_id the message the webhook belongs to
+ * @return ORCAcode for how the transfer went, ORCA_OK means a succesful request
+ *  @{ */
+ORCAcode discord_delete_webhook_message(struct discord *client, const u64_snowflake_t webhook_id, const char webhook_token[], const u64_snowflake_t message_id);
+/** @} DiscordDeleteWebhookMessage */
+
+
 /** @defgroup DiscordGetGateway
  *  @{ */
-ORCAcode discord_get_gateway(struct discord *client, struct discord_session *p_session);
+ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *p_json);
 /** @} DiscordGetGateway */
 
 /** @defgroup DiscordGetGatewayBot
  *  @{ */
-ORCAcode discord_get_gateway_bot(struct discord *client, struct discord_session *p_session);
+ORCAcode discord_get_gateway_bot(struct discord *client, struct sized_buffer *p_json);
 /** @} DiscordGetGatewayBot */
 
 

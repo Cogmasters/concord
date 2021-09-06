@@ -17,8 +17,9 @@ void reddit_search_params_from_json(char *json, size_t len, struct reddit_search
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct reddit_search_params *p = *pp;
+  reddit_search_params_init(p);
   r=json_extract(json, len, 
   /* specs/reddit/search.json:13:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */

@@ -7,8 +7,7 @@
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
-  log_info("Ban-Bot succesfully connected to Discord as %s#%s!",
-      bot->username, bot->discriminator);
+  log_info("Ban-Bot succesfully connected to Discord as %s#%s!", bot->username, bot->discriminator);
 }
 
 void on_guild_ban_add(
@@ -17,9 +16,11 @@ void on_guild_ban_add(
     const u64_snowflake_t guild_id,
     const struct discord_user *user)
 {
-  struct discord_channel general;
-  discord_channel_init(&general);
-  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general);
+  struct discord_channel general={0};
+  if (discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general)) {
+    log_error("Couldn't fetch channel at position 0");
+    return;
+  }
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been banned.", user->username);
@@ -34,9 +35,11 @@ void on_guild_ban_remove(
     const u64_snowflake_t guild_id,
     const struct discord_user *user)
 {
-  struct discord_channel general;
-  discord_channel_init(&general);
-  discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general);
+  struct discord_channel general={0};
+  if (discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general)) {
+    log_error("Couldn't fetch channel at position 0");
+    return;
+  }
 
   char text[128];
   snprintf(text, sizeof(text), "User `%s` has been unbanned.", user->username);
@@ -56,8 +59,8 @@ void on_ban(
     .limit = 1000,
     .after = 0
   };
-  discord_list_guild_members(client, msg->guild_id, &params, &members);
-  if (!members) return;
+  ORCAcode code = discord_list_guild_members(client, msg->guild_id, &params, &members);
+  if (code != ORCA_OK || !members) return;
 
   // get username and discriminator of the to be banned user
   char username[128]="";
@@ -91,8 +94,10 @@ void on_unban(
 {
   // get banned list
   NTL_T(struct discord_guild_ban) bans=NULL;
-  discord_get_guild_bans(client, msg->guild_id, &bans);
-  if (!bans) return;
+
+  ORCAcode code;
+  code = discord_get_guild_bans(client, msg->guild_id, &bans);
+  if (code != ORCA_OK || !bans) return;
 
   // get username and discriminator of the to be banned user
   char username[128]="";

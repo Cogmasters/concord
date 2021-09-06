@@ -17,8 +17,9 @@ void discord_create_guild_from_guild_template_params_from_json(char *json, size_
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_from_guild_template_params *p = *pp;
+  discord_create_guild_from_guild_template_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
@@ -154,8 +155,9 @@ void discord_create_guild_template_params_from_json(char *json, size_t len, stru
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_guild_template_params *p = *pp;
+  discord_create_guild_template_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
@@ -291,8 +293,9 @@ void discord_modify_guild_template_params_from_json(char *json, size_t len, stru
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_guild_template_params *p = *pp;
+  discord_modify_guild_template_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */

@@ -17,8 +17,9 @@ void github_user_from_json(char *json, size_t len, struct github_user **pp)
 {
   static size_t ret=0; // used for debugging
   size_t r=0;
-  if (!*pp) *pp = calloc(1, sizeof **pp);
+  if (!*pp) *pp = malloc(sizeof **pp);
   struct github_user *p = *pp;
+  github_user_init(p);
   r=json_extract(json, len, 
   /* specs/github/user.json:12:28
      '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */

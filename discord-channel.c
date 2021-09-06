@@ -163,32 +163,6 @@ discord_get_channel_message(
            "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
-//@todo this is a temporary solution
-static curl_mime*
-curl_mime_cb(CURL *ehandle, void *data) 
-{
-  struct discord_create_message_params *params = data;
-
-  curl_mime *mime = curl_mime_init(ehandle);
-  curl_mimepart *part = curl_mime_addpart(mime);
-
-  if (params->file.content) {
-    if (!params->file.name) { // set a default name
-      params->file.name = "a.out";
-    }
-    curl_mime_data(part, params->file.content, params->file.size);
-    curl_mime_filename(part, params->file.name);
-    curl_mime_type(part, "application/octet-stream");
-  }
-  else { //params->filename exists 
-    curl_mime_filedata(part, params->file.name);
-  }
-
-  curl_mime_name(part, "file");
-
-  return mime;
-}
-
 ORCAcode
 discord_create_message(
   struct discord *client, 
@@ -210,92 +184,35 @@ discord_create_message(
     .ok_obj = &p_message
   };
 
-  ORCAcode code;
-  if (!params->file.name && !params->file.content)
-  {  // content-type is application/json
-    if (!params->embed) {
-      if (IS_EMPTY_STRING(params->content)) {
-        log_error("Missing 'content'");
-        return ORCA_BAD_PARAMETER;
-      }
-      if (!cee_str_bounds_check(params->content, DISCORD_MAX_MESSAGE_LEN)) {
-        log_error("Content length exceeds %d characters threshold (%zu)",
-            DISCORD_MAX_MESSAGE_LEN, strlen(params->content));
-        return ORCA_BAD_PARAMETER;
-      }
-    }
+  if (!params->file) // content-type is application/json
+  {
+    char payload[16384]; ///< @todo dynamic buffer
+    size_t ret = discord_create_message_params_to_json(payload, sizeof(payload), params);
 
-    void *A[8]={0}; // pointer availability array
-    if (params->content)
-      A[0] = (void *)params->content;
-    if (true == params->tts)
-      A[2] = (void *)&params->tts;
-    if (params->embed)
-      A[3] = (void *)params->embed;
-    if (params->embeds)
-      A[4] = (void *)params->embeds;
-    /* @todo change current A[4] to A[5]
-    if (params->allowed_mentions)
-      A[5] = (void *)params->allowed_mentions;
-    */
-    if (params->message_reference)
-      A[5] = (void *)params->message_reference;
-    if (params->components)
-      A[6] = (void *)params->components;
-
-    char *payload=NULL;
-    size_t ret = json_ainject(&payload,
-                  "(content):s"
-                  "(tts):b"
-                  "(embed):F"
-                  "(embeds):F"
-                  /* @todo
-                  "(allowed_mentions):F"
-                  */
-                  "(message_reference):F"
-                  "(components):F"
-                  "@arg_switches",
-                  params->content,
-                  &params->tts,
-                  &discord_embed_to_json, params->embed,
-                  &discord_embed_list_to_json, params->embeds,
-                  /* @todo
-                  params->allowed_mentions,
-                  */
-                  &discord_message_reference_to_json, params->message_reference,
-                  &discord_component_list_to_json, params->components,
-                  A, sizeof(A));
-
-    if (!payload) {
-      log_error("Couldn't create JSON Payload");
-      return ORCA_BAD_JSON;
-    }
-
-    code = discord_adapter_run( 
+    return discord_adapter_run( 
              &client->adapter,
              &resp_handle,
              &(struct sized_buffer){ payload, ret },
              HTTP_POST, 
              "/channels/%"PRIu64"/messages", channel_id);
-
-    free(payload);
   }
-  else 
-  { // content-type is multipart/form-data
-    ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
 
-    ua_curl_mime_setopt(client->adapter.ua, params, &curl_mime_cb);
+  // content-type is multipart/form-data
+  ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
+  ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
 
-    code = discord_adapter_run( 
-             &client->adapter,
-             &resp_handle,
-             NULL,
-             HTTP_MIMEPOST, 
-             "/channels/%"PRIu64"/messages", channel_id);
+  ORCAcode code;
+  code = discord_adapter_run( 
+           &client->adapter,
+           &resp_handle,
+           NULL,
+           HTTP_MIMEPOST, 
+           "/channels/%"PRIu64"/messages", channel_id);
 
-    //set back to default
-    ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
-  }
+  //set back to default
+  ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
+  ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
+
   return code;
 }
 
@@ -614,32 +531,10 @@ discord_edit_message(
     return ORCA_MISSING_PARAMETER;
   }
 
-  void *A[4]={}; // pointer availability array
-  A[0] = params->content;
-  A[1] = params->embed;
-  A[2] = params->flags;
-//A[3] = params->allowed_mentions;
+  char payload[16384]; ///< @todo dynamic buffer
+  size_t ret = discord_edit_message_params_to_json(payload, sizeof(payload), params);
 
-  char *payload=NULL;
-  size_t ret = json_ainject(&payload, 
-                "(content):s"
-                "(embed):F"
-                "(flags):d"
-              //"(allowed_mentions):F"
-                "@arg_switches",
-                params->content,
-                &discord_embed_to_json, params->embed,
-                params->flags,
-              //&allowed_mentions_to_json, params->allowed_mentions,
-                A, sizeof(A));
-
-  if (!payload) {
-    log_error("Couldn't create JSON Payload");
-    return ORCA_BAD_JSON;
-  }
-
-  ORCAcode code;
-  code = discord_adapter_run(
+  return discord_adapter_run(
            &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = p_message ? &discord_message_from_json_v : NULL,
@@ -649,10 +544,6 @@ discord_edit_message(
            HTTP_PATCH,
            "/channels/%"PRIu64"/messages/%"PRIu64, 
            channel_id, message_id);
-
-  free(payload);
-
-  return code;
 }
 
 ORCAcode

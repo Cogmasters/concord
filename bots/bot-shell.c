@@ -14,8 +14,7 @@ struct {
   char *discriminator;
 } SUDO;
 
-void 
-on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   log_info("Shell-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
@@ -54,9 +53,11 @@ void on_less_like(
     return; // EARLY RETURN IF NOT SUDO USER
   }
 
-  struct discord_create_message_params params={};
+  struct discord_create_message_params params={0};
   if (*msg->content)
-    params.file.name = msg->content;
+    params.file = &(struct discord_file){
+      .name = msg->content
+    };
   else
     params.content = "No file specified";
 
@@ -87,7 +88,6 @@ on_default(
     len = strlen(msg->content);
   }
 
-  struct discord_create_message_params params = {};
   FILE *fp = popen(msg->content, "r");
   if (NULL == fp) {
     printf("Failed to run command");
@@ -95,25 +95,31 @@ on_default(
   }
 
   const size_t MAX_FSIZE = 5e6; // 5 mb
-  char *path = (char*)malloc(MAX_FSIZE);
-  char *pathtmp = (char*)malloc(MAX_FSIZE);
+  char *path = (char*)calloc(1, MAX_FSIZE);
+  char *pathtmp = (char*)calloc(1, MAX_FSIZE);
 
   while (NULL != fgets(path, MAX_FSIZE, fp)) {
     strncat(pathtmp, path, MAX_FSIZE-1);
   }
 
-  size_t fsize = strlen(pathtmp);
-  if (fsize > DISCORD_MAX_MESSAGE_LEN) { // MAX MESSAGE LEN is 2000 bytes
-    params.file.content = pathtmp;
-    params.file.size = fsize;
-  }
-  else {
-    params.content = pathtmp;
-  }
+  const size_t fsize = strlen(pathtmp);
+  struct discord_create_message_params params;
+  if (fsize > DISCORD_MAX_MESSAGE_LEN) // MAX MESSAGE LEN is 2000 bytes
+    params = (struct discord_create_message_params){
+      .file = &(struct discord_file){
+        .content = pathtmp,
+        .size = fsize
+      }
+    };
+  else
+    params = (struct discord_create_message_params){
+      .content = pathtmp
+    };
+  discord_create_message(client, msg->channel_id, &params, NULL);
 
   pclose(fp);
-
-  discord_create_message(client, msg->channel_id, &params, NULL);
+  free(path);
+  free(pathtmp);
 }
 
 int main(int argc, char *argv[])
