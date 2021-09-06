@@ -12,6 +12,32 @@ struct msg {
   bool matched;
 };
 
+// defined at dicord-internal.h
+curl_mime*
+discord_file_to_mime(CURL *ehandle, void *p_file) 
+{
+  struct discord_file *file = p_file;
+
+  curl_mime *mime = curl_mime_init(ehandle);
+  curl_mimepart *part = curl_mime_addpart(mime);
+
+  if (file->content) {
+    if (!file->name) { // set a default name
+      file->name = "a.out";
+    }
+    curl_mime_data(part, file->content, file->size);
+    curl_mime_filename(part, file->name);
+    curl_mime_type(part, "application/octet-stream");
+  }
+  else { //file->name exists 
+    curl_mime_filedata(part, file->name);
+  }
+
+  curl_mime_name(part, "file");
+
+  return mime;
+}
+
 ORCAcode
 discord_delete_messages_by_author_id(
   struct discord *client, 

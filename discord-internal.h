@@ -343,4 +343,7 @@ struct discord_event_cxt {
   bool is_main_thread;
 };
 
+/* MISCELLANEOUS */
+curl_mime* discord_file_to_mime(CURL *ehandle, void *p_file);
+
 #endif // DISCORD_INTERNAL_H

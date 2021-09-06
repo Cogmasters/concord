@@ -163,32 +163,6 @@ discord_get_channel_message(
            "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
-//@todo this is a temporary solution
-static curl_mime*
-curl_mime_cb(CURL *ehandle, void *data) 
-{
-  struct discord_create_message_params *params = data;
-
-  curl_mime *mime = curl_mime_init(ehandle);
-  curl_mimepart *part = curl_mime_addpart(mime);
-
-  if (params->file->content) {
-    if (!params->file->name) { // set a default name
-      params->file->name = "a.out";
-    }
-    curl_mime_data(part, params->file->content, params->file->size);
-    curl_mime_filename(part, params->file->name);
-    curl_mime_type(part, "application/octet-stream");
-  }
-  else { //params->filename exists 
-    curl_mime_filedata(part, params->file->name);
-  }
-
-  curl_mime_name(part, "file");
-
-  return mime;
-}
-
 ORCAcode
 discord_create_message(
   struct discord *client, 
@@ -210,23 +184,8 @@ discord_create_message(
     .ok_obj = &p_message
   };
 
-  if (!params->file 
-      || (IS_EMPTY_STRING(params->file->name) 
-          && IS_EMPTY_STRING(params->file->content)))
-  {  // content-type is application/json
-    if (!params->embed) {
-      if (IS_EMPTY_STRING(params->content)) {
-        log_error("Missing 'params.content'");
-        return ORCA_BAD_PARAMETER;
-      }
-      if (!cee_str_bounds_check(params->content, DISCORD_MAX_MESSAGE_LEN)) {
-        log_error("Content length exceeds %d characters threshold (%zu)",
-            DISCORD_MAX_MESSAGE_LEN, strlen(params->content));
-        return ORCA_BAD_PARAMETER;
-      }
-    }
-
-    params->payload_json = NULL; // disable just incase
+  if (!params->file) // content-type is application/json
+  {
     char payload[16384]; ///< @todo dynamic buffer
     size_t ret = discord_create_message_params_to_json(payload, sizeof(payload), params);
 
@@ -240,7 +199,7 @@ discord_create_message(
 
   // content-type is multipart/form-data
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
-  ua_curl_mime_setopt(client->adapter.ua, params, &curl_mime_cb);
+  ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
 
   ORCAcode code;
   code = discord_adapter_run( 
