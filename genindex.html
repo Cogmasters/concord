@@ -744,6 +744,32 @@
 </li>
       <li><a href="apis/discord.html#c.discord_create_followup_message">discord_create_followup_message (C function)</a>
 </li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params">discord_create_followup_message_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.allowed_mentions">discord_create_followup_message_params.allowed_mentions (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.avatar_url">discord_create_followup_message_params.avatar_url (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.components">discord_create_followup_message_params.components (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.content">discord_create_followup_message_params.content (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.embeds">discord_create_followup_message_params.embeds (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.file">discord_create_followup_message_params.file (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.flags">discord_create_followup_message_params.flags (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.payload_json">discord_create_followup_message_params.payload_json (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.thread_id">discord_create_followup_message_params.thread_id (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.tts">discord_create_followup_message_params.tts (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.username">discord_create_followup_message_params.username (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_create_followup_message_params.wait">discord_create_followup_message_params.wait (C var)</a>
+</li>
       <li><a href="apis/discord.html#c.discord_create_global_application_command">discord_create_global_application_command (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_create_global_application_command_params">discord_create_global_application_command_params (C struct)</a>
@@ -949,6 +975,22 @@
       <li><a href="apis/discord.html#c.discord_edit_channel_permissions_params.type">discord_edit_channel_permissions_params.type (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_edit_followup_message">discord_edit_followup_message (C function)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params">discord_edit_followup_message_params (C struct)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.allowed_mentions">discord_edit_followup_message_params.allowed_mentions (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.attachments">discord_edit_followup_message_params.attachments (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.components">discord_edit_followup_message_params.components (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.content">discord_edit_followup_message_params.content (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.embeds">discord_edit_followup_message_params.embeds (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.file">discord_edit_followup_message_params.file (C var)</a>
+</li>
+      <li><a href="apis/discord.html#c.discord_edit_followup_message_params.payload_json">discord_edit_followup_message_params.payload_json (C var)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_edit_global_application_command">discord_edit_global_application_command (C function)</a>
 </li>
@@ -1502,6 +1544,8 @@
 </li>
       <li><a href="apis/discord.html#c.discord_get_global_application_command">discord_get_global_application_command (C function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apis/discord.html#c.discord_get_global_application_commands">discord_get_global_application_commands (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild">discord_get_guild (C function)</a>
@@ -1524,8 +1568,6 @@
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild_audit_log_params.user_id">discord_get_guild_audit_log_params.user_id (C var)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apis/discord.html#c.discord_get_guild_ban">discord_get_guild_ban (C function)</a>
 </li>
       <li><a href="apis/discord.html#c.discord_get_guild_bans">discord_get_guild_bans (C function)</a>
@@ -2900,16 +2942,24 @@
 </li>
       <li><a href="common/types.html#c.ORCA_BAD_PARAMETER">ORCA_BAD_PARAMETER (C macro)</a>
 </li>
+      <li><a href="common/types.html#c.ORCA_DISCORD_BAD_AUTH">ORCA_DISCORD_BAD_AUTH (C macro)</a>
+</li>
+      <li><a href="common/types.html#c.ORCA_DISCORD_CONNECTION">ORCA_DISCORD_CONNECTION (C macro)</a>
+</li>
+      <li><a href="common/types.html#c.ORCA_DISCORD_JSON_CODE">ORCA_DISCORD_JSON_CODE (C macro)</a>
+</li>
+      <li><a href="common/types.html#c.ORCA_DISCORD_RATELIMIT">ORCA_DISCORD_RATELIMIT (C macro)</a>
+</li>
       <li><a href="common/types.html#c.ORCA_HTTP_CODE">ORCA_HTTP_CODE (C macro)</a>
 </li>
       <li><a href="common/types.html#c.ORCA_LIMITS_EMAIL">ORCA_LIMITS_EMAIL (C macro)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common/types.html#c.ORCA_LIMITS_LOCALE">ORCA_LIMITS_LOCALE (C macro)</a>
 </li>
       <li><a href="common/types.html#c.ORCA_LIMITS_REGION">ORCA_LIMITS_REGION (C macro)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="common/types.html#c.ORCA_LIMITS_SHA256">ORCA_LIMITS_SHA256 (C macro)</a>
 </li>
       <li><a href="common/types.html#c.ORCA_MISSING_PARAMETER">ORCA_MISSING_PARAMETER (C macro)</a>
