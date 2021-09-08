@@ -456,10 +456,8 @@ void load_BOT(const char config_file[])
         &search_reddit_cb);
   }
 
-#if 0
   ja_str_list_free(ja_q);
   ja_str_list_free(ja_sr);
-#endif
 }
 
 void cleanup_BOT()
