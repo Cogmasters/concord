@@ -62,6 +62,6 @@ jobs:
           echo "Building"
           make all
           echo "Building example bots"
-          make bots
+          make examples
           echo "Building test files"
           make test
