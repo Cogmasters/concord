@@ -86,6 +86,12 @@ Receiving and Responding
 Resources
 ~~~~~~~~~
 
+Application
+^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/application.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
 Audit Log
 ^^^^^^^^^
 
