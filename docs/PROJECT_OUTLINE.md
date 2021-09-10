@@ -3,7 +3,7 @@ An explanation of important folders for developers who would like to contribute 
 
 | directory            | meaning                                                              |
 |----------------------|:---------------------------------------------------------------------|
-| bots/                | Example bots for new users                                           |
+| examples/            | Example bots for new users                                           |
 | common/              | The backbone to wrap APIs using Orca                                 |
 | docs/                | Guidelines, roadmap, and other important information regarding Orca  |
 | licenses/            | License for Orca, and some other libraries used by Orca              |

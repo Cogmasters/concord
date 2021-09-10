@@ -98,7 +98,7 @@ int main() {
   discord_run(client);
 }
 ```
-*This is a minimalistic example, refer to `bots/` for a better overview.*
+*This is a minimalistic example, refer to `examples/` for a better overview.*
 
 ## Get started with bot-echo
 
@@ -109,8 +109,8 @@ int main() {
    about how to get your bot token and it to a server.
 2. Invite your bot to a testing server. We can invite your
    bot to our testing servers at our [Discord Server](https://discord.gg/2jfycwXVM3).
-3. Run `make bots`
-4. Go to `bots/` folder and run `./bot-echo.out`
+3. Run `make examples`
+4. Go to `examples/` folder and run `./bot-echo.out`
 
 ### Test bot-echo
 Type a message in any channel the bot is part of.

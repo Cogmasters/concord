@@ -61,9 +61,9 @@ LIBGITHUB  := $(LIBADDONS) $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBADDONS) $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBADDONS) $(LIBDIR)/libslack.a
 
-BOTS_DIR   := bots
-BOTS_SRC   := $(wildcard $(BOTS_DIR)/bot-*.c)
-BOTS_EXES  := $(patsubst %.c, %.out, $(BOTS_SRC))
+EXAMPLES_DIR   := examples
+EXAMPLES_SRC   := $(wildcard $(EXAMPLES_DIR)/bot-*.c)
+EXAMPLES_EXES  := $(patsubst %.c, %.out, $(EXAMPLES_SRC))
 
 BOTX_DIR  := botx
 BOTX_SRC  := $(wildcard $(BOTX_DIR)/bot-*.c)
@@ -91,9 +91,9 @@ ifeq ($(addons),1)
 	LIBADDONS       := $(LIBDIR)/libaddons.a
 
 	# include addon flags
-	BOTS_EXES    += $(ADDONS_BOTS_SRC:%.c=%.out)
-	LIBS_LDFLAGS += -laddons
-	CFLAGS       += -I./add-ons
+	EXAMPLES_EXES += $(ADDONS_BOTS_SRC:%.c=%.out)
+	LIBS_LDFLAGS  += -laddons
+	CFLAGS        += -I./add-ons
 endif
 
 ifeq ($(BEARSSL),1)
@@ -137,7 +137,7 @@ $(SPECSDEPS_OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(BOTS_DIR)/%.out: $(BOTS_DIR)/%.c
+$(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 %.out: %.c mujs all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
@@ -173,7 +173,7 @@ $(SPECSDEPS_OBJS): | $(SPECSDEPS_OBJDIR)
 echo:
 	@ echo CC: $(CC)
 	@ echo PREFIX: $(PREFIX)
-	@ echo BOTS_EXES: $(BOTS_EXES)
+	@ echo EXAMPLES_EXES: $(EXAMPLES_EXES)
 	@ echo SPECS_JSON: $(SPECS_JSON)
 	@ echo SPECSDEPS_OBJS: $(SPECSDEPS_OBJS)
 	@ echo SPECSDEPS_OBJDIR: $(SPECSDEPS_OBJDIR)
@@ -230,9 +230,9 @@ specs-gen.out: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)
 	mkdir -p bin
 	mv $@ ./bin
 
-bots:
+examples:
 	@ $(MAKE) all
-	@ $(MAKE) $(BOTS_EXES)
+	@ $(MAKE) $(EXAMPLES_EXES)
 
 $(CEE_UTILS_DIR):
 	if [[ ! -d $@ ]]; then                \
@@ -292,7 +292,7 @@ specs_clean :
 specsdeps_clean :
 	rm -rf $(SPECSDEPS_OBJDIR) bin/*
 clean : 
-	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(BOTS_DIR)/*.out
+	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(EXAMPLES_DIR)/*.out
 	rm -rf $(BOTX_DIR)/*.bx
 	$(MAKE) -C mujs clean
 	rm -rf $(LIBDIR)
@@ -301,5 +301,5 @@ purge : clean
 	rm -rf $(SPECSDEPS_OBJDIR)
 	rm -rf $(CEE_UTILS_DIR)
 
-.PHONY : all install clean purge mujs bots botx
+.PHONY : all install clean purge mujs examples botx
 .ONESHELL :

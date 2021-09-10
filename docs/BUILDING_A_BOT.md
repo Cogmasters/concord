@@ -64,7 +64,7 @@ int main()
 
 # Setting up the bot settings
 
-You can set it automatically by initializing it with the bot.config file located at orca/bots folder. Simply give the file path as a parameter of discord_config_init(), as following:
+You can set it automatically by initializing it with the bot.config file located at orca/examples folder. Simply give the file path as a parameter of discord_config_init(), as following:
 ```c
   struct discord *client = discord_config_init("bot.config");
 ```
@@ -149,7 +149,7 @@ discord_run(client);
 
 Use `make bot` for compiling the source code.
 
-Then run the bot going to the `bots` folder and typing `./bot-ping-pong.out` on your terminal.
+Then run the bot going to the `examples` folder and typing `./bot-ping-pong.out` on your terminal.
 
 #### Testing the bot
 Type "ping" or "pong" in any public channel that the bot is part of.

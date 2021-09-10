@@ -38,7 +38,7 @@ Writing docs is dead boring and one of the big problems with many open source pr
 
 ### Test Cases
 
-Thorougly test your patch before sending a PR for approval. If you are implementing a missing feature to one of our wrapped APIs, you can write or update one of the example bots from `bots/` folder, alternatively, you can write a test to the `test/` folder.
+Thorougly test your patch before sending a PR for approval. If you are implementing a missing feature to one of our wrapped APIs, you can write or update one of the example bots from `examples/` folder, alternatively, you can write a test to the `test/` folder.
 
 ## Sharing Your Changes
 
@@ -98,7 +98,7 @@ this fork from your git command line
 ```
 git clone https://github.com/cee-studio/orca.git
 cd orca
-cp bots/bot.config .cee-contributor
+cp examples/bot.config .cee-contributor
 ```
 It is important that you clone from this repo, NOT from your fork.
 
