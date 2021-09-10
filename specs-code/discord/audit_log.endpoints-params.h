@@ -33,20 +33,20 @@
  */
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:10:20
-     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
-  u64_snowflake_t user_id;
+     '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log for actions made by a user", "inject_if_not":0 }' */
+  u64_snowflake_t user_id; ///< filter the log for actions made by a user
 
   /* specs/discord/audit_log.endpoints-params.json:11:20
-     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "inject_if_not":0 }' */
-  enum discord_audit_log_events action_type;
+     '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "comment":"the type of audit log event", "inject_if_not":0 }' */
+  enum discord_audit_log_events action_type; ///< the type of audit log event
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
-  u64_snowflake_t before;
+     '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log before a certain entry id", "inject_if_not":0 }' */
+  u64_snowflake_t before; ///< filter the log before a certain entry id
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
-     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
-  int limit;
+     '{ "name": "limit", "type":{ "base":"int" }, "default_value":50, "comment":"how many entries are returned (default 50, minimum 1, maximum 100)", "inject_if_not":0 }' */
+  int limit; ///< how many entries are returned (default 50, minimum 1, maximum 100)
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

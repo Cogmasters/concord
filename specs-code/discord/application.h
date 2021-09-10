@@ -5,10 +5,10 @@
  */
 
 
-// Identify Structure
+// Application Structure
 // defined at specs/discord/application.json:9:22
 /**
- * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
+ * @see https://discord.com/developers/docs/resources/application#application-object-application-structure
  *
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -19,22 +19,22 @@
 
  *   * Initializer:
 
- *     * :code:`void discord_application_identify_init(struct discord_application_identify *)`
+ *     * :code:`void discord_application_init(struct discord_application *)`
  *   * Cleanup:
 
- *     * :code:`void discord_application_identify_cleanup(struct discord_application_identify *)`
- *     * :code:`void discord_application_identify_list_free(struct discord_application_identify **)`
+ *     * :code:`void discord_application_cleanup(struct discord_application *)`
+ *     * :code:`void discord_application_list_free(struct discord_application **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_identify_from_json(char *rbuf, size_t len, struct discord_application_identify **)`
- *     * :code:`void discord_application_identify_list_from_json(char *rbuf, size_t len, struct discord_application_identify ***)`
+ *     * :code:`void discord_application_from_json(char *rbuf, size_t len, struct discord_application **)`
+ *     * :code:`void discord_application_list_from_json(char *rbuf, size_t len, struct discord_application ***)`
  *   * JSON Encoder:
 
- *     * :code:`void discord_application_identify_to_json(char *wbuf, size_t len, struct discord_application_identify *)`
- *     * :code:`void discord_application_identify_list_to_json(char *wbuf, size_t len, struct discord_application_identify **)`
+ *     * :code:`void discord_application_to_json(char *wbuf, size_t len, struct discord_application *)`
+ *     * :code:`void discord_application_list_to_json(char *wbuf, size_t len, struct discord_application **)`
  * @endverbatim
  */
-struct discord_application_identify {
+struct discord_application {
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
   u64_snowflake_t id; ///< the id of the app
@@ -106,20 +106,20 @@ struct discord_application_identify {
   } __M; // metadata
 /// @endcond
 };
-extern void discord_application_identify_cleanup_v(void *p);
-extern void discord_application_identify_cleanup(struct discord_application_identify *p);
-extern void discord_application_identify_init_v(void *p);
-extern void discord_application_identify_init(struct discord_application_identify *p);
-extern void discord_application_identify_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_identify_from_json(char *json, size_t len, struct discord_application_identify **pp);
-extern size_t discord_application_identify_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_application_identify_to_json(char *json, size_t len, struct discord_application_identify *p);
-extern void discord_application_identify_list_free_v(void **p);
-extern void discord_application_identify_list_free(struct discord_application_identify **p);
-extern void discord_application_identify_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_application_identify_list_from_json(char *str, size_t len, struct discord_application_identify ***p);
-extern size_t discord_application_identify_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_application_identify_list_to_json(char *str, size_t len, struct discord_application_identify **p);
+extern void discord_application_cleanup_v(void *p);
+extern void discord_application_cleanup(struct discord_application *p);
+extern void discord_application_init_v(void *p);
+extern void discord_application_init(struct discord_application *p);
+extern void discord_application_from_json_v(char *json, size_t len, void *pp);
+extern void discord_application_from_json(char *json, size_t len, struct discord_application **pp);
+extern size_t discord_application_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_application_to_json(char *json, size_t len, struct discord_application *p);
+extern void discord_application_list_free_v(void **p);
+extern void discord_application_list_free(struct discord_application **p);
+extern void discord_application_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_application_list_from_json(char *str, size_t len, struct discord_application ***p);
+extern size_t discord_application_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_application_list_to_json(char *str, size_t len, struct discord_application **p);
 
 
 // Application Flags

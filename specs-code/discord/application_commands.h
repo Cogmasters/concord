@@ -40,7 +40,7 @@ struct discord_application_command {
   u64_snowflake_t id; ///< unique id of the command
 
   /* specs/discord/application_commands.json:13:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "option":true, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
   enum discord_application_command_types type; ///< the type of the command, defaults 1 if not set
 
   /* specs/discord/application_commands.json:14:18
@@ -48,7 +48,7 @@ struct discord_application_command {
   u64_snowflake_t application_id; ///< unique id of the parent application
 
   /* specs/discord/application_commands.json:15:18
-     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"guild id of the command, if not global","inject_if_not":0}' */
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
   u64_snowflake_t guild_id; ///< guild id of the command, if not global
 
   /* specs/discord/application_commands.json:16:18
@@ -60,11 +60,11 @@ struct discord_application_command {
   char description[100+1]; ///< 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands
 
   /* specs/discord/application_commands.json:18:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command", "inject_if_not":null}' */
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   struct discord_application_command_option **options; ///< the parameters for the command
 
   /* specs/discord/application_commands.json:19:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "option":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+     '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
 
   // The following is metadata used to 
@@ -98,7 +98,7 @@ extern size_t discord_application_command_list_to_json_v(char *str, size_t len, 
 extern size_t discord_application_command_list_to_json(char *str, size_t len, struct discord_application_command **p);
 
 
-// Application Command Type
+// Application Command Types
 // defined at specs/discord/application_commands.json:22:5
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types
@@ -171,15 +171,15 @@ struct discord_application_command_option {
   char description[100+1]; ///< 1-100 character description
 
   /* specs/discord/application_commands.json:44:18
-     '{"name":"required", "type":{"base":"bool"}, "option":true, "comment":"if the paramter is required or optional -- default false"}' */
-  bool required; ///< if the paramter is required or optional -- default false
+     '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
+  bool required; ///< if the parameter is required or optional -- default false
 
   /* specs/discord/application_commands.json:45:18
-     '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "option":true, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
+     '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
   struct discord_application_command_option_choice **choices; ///< choices for string and int types for the user to pick from
 
   /* specs/discord/application_commands.json:46:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "option":true, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
   struct discord_application_command_option **options; ///< if the option is a subcommand or subcommand group type, this nested options will be the parameters
 
   // The following is metadata used to 
@@ -539,7 +539,7 @@ struct discord_application_command_interaction_data_option {
   enum discord_application_command_option_types value; ///< the value of the pair
 
   /* specs/discord/application_commands.json:125:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
+     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
   struct discord_application_command_interaction_data_option **options; ///< present if this option is a group or subcommand
 
   // The following is metadata used to 
