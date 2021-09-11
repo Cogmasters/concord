@@ -48,15 +48,15 @@ jobs:
 
       - name: Dependencies
         run: |
-          echo "Installing build-essential"
-          sudo apt-get install -y build-essential 
+          echo "Installing build-essential and wget"
+          sudo apt-get install -y build-essential wget
           echo "Installing libcurl and libssl"
           sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 
       - name: Run Makefile
         run: |
-          echo "Cloning cee-utils"
-          git clone https://github.com/cee-studio/cee-utils
+          echo "Cleanup existing files to start fresh"
+          make purge
           echo "Generating specs code"
           make specs_gen
           echo "Building"

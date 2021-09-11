@@ -42,12 +42,11 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 ### Install dependencies:
 #### For Ubuntu and Debian
 
-The only dependencies are curl-7.64.0 or higher built with OpenSSL, and wget for 
-fetching [cee-utils](https://github.com/cee-studio/cee-utils) files.
+The only dependencies are `curl-7.64.0` or higher built with OpenSSL, and `wget` that will 
+be used by the Makefile for fetching [cee-utils](https://github.com/cee-studio/cee-utils) files.
 ```
-sudo apt-get install -y build-essential
+sudo apt-get install -y build-essential wget
 sudo apt-get install -y libcurl4-openssl-dev libssl-dev
-sudo apt-get install -y wget
 ```
 
 #### For Void Linux
@@ -55,8 +54,8 @@ sudo apt-get install -y wget
 Void Linux does not seem to come with the header files necessary for libcurl to run, so
 you will need to install them through the `libcurl-devel` package.
 ```
-sudo xbps-install -S libcurl-devel
 sudo xbps-install -S wget
+sudo xbps-install -S libcurl-devel
 ```
 
 ### Compile
