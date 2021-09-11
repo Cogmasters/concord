@@ -486,7 +486,7 @@ int main(int argc, char *argv[])
   if (argc > 1)
     config_file = argv[1];
   else
-    config_file = "bot.config";
+    config_file = "../config.json";
 
   printf("\n\nThis bot demonstrates how easy it is to have two distinct"
          " APIs interacting with eachother (Reddit + Discord).\n"

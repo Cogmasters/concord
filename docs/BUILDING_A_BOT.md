@@ -4,7 +4,7 @@ Building a bot is pretty simple with this library, but there are some basic thin
 
 1. Make sure you have all the build dependencies. The dependencies are listed in the [README](/README.md) of this project.
 
-2. Make sure that you have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on building a bot. Put your bot token in `bot.config`, replacing the `YOUR-BOT-TOKEN` with your own token. We will be using this file as needed.
+2. Make sure that you have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on building a bot. Put your bot token in `config.json`, replacing the `YOUR-BOT-TOKEN` with your own token. We will be using this file as needed.
 
 # Ping-pong bot code
 
@@ -49,7 +49,7 @@ void on_pong(
 int main()
 {
   discord_global_init();
-  struct discord *client = discord_config_init("bot.config");
+  struct discord *client = discord_config_init("config.json");
 
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "ping", &on_ping);
@@ -64,9 +64,9 @@ int main()
 
 # Setting up the bot settings
 
-You can set it automatically by initializing it with the bot.config file located at orca/examples folder. Simply give the file path as a parameter of discord_config_init(), as following:
+You can set it automatically by initializing it with the config.json file located at orca/examples folder. Simply give the file path as a parameter of discord_config_init(), as following:
 ```c
-  struct discord *client = discord_config_init("bot.config");
+  struct discord *client = discord_config_init("config.json");
 ```
 Or you can initialize directly with discord_init() by giving it the bot token, like so:
 ```c

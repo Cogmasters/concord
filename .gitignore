@@ -7,7 +7,7 @@
 *~
 .idea
 cmake-build-debug
-*botdev.config
+*dev.json
 obj
 lib
 dump.*

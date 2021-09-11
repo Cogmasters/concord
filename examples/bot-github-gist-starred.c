@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         printf("bot-github-gist-starred: too many parameters");
     }
 
-    struct github *client = github_config_init("bot.config", NULL);
+    struct github *client = github_config_init("../config.json", NULL);
     int is_starred = github_gist_is_starred(client, argv[1]);
 
     if(is_starred == ORCA_OK) {

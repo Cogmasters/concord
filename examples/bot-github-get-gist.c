@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
         printf("bot-github-get-gist: too many parameters");
     }
 
-    struct github *client = github_config_init("bot.config", NULL);
+    struct github *client = github_config_init("../config.json", NULL);
     struct github_gist gist;
 
     github_get_gist(client, argv[1], &gist);

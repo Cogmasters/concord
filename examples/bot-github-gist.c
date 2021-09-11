@@ -17,7 +17,7 @@ void print_usage()
 
 int main(int argc, char *argv[])
 {
-    struct github *client = github_config_init("bot.config", NULL);
+    struct github *client = github_config_init("../config.json", NULL);
 
     if (argc == 1) {
         print_usage();

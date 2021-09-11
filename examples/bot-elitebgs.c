@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
   if (argc > 1)
     config_file = argv[1];
   else
-    config_file = "bot.config";
+    config_file = "../config.json";
 
   /* Initialize Discord User Agent */
   discord_global_init();

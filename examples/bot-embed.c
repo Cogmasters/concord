@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
   if (argc > 1)
     config_file = argv[1];
   else
-    config_file = "bot.config";
+    config_file = "../config.json";
 
   discord_global_init();
   struct discord *client = discord_config_init(config_file);
