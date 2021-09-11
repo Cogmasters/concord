@@ -6,7 +6,7 @@ Building a bot is pretty simple using orca, but there are some basic things shou
 
 2. You should have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by replacing `YOUR-BOT-TOKEN` with it.
 
-3. Make sure you are inside of the folder `my_bot`.
+3. Make sure you are inside of the folder `my_bot`, here you have the option to edit `myBot.c` or start your own from scratch.
 
 
 # Ping-Pong Bot Source Code
@@ -145,6 +145,7 @@ discord_cleanup(client);
 ```bash
 $ make
 ```
+*Note: The preset Makefile will compile each file with a `.c` from the `my_bot` folder separately.* 
 
 ### As a standalone executable
 
