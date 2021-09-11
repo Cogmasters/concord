@@ -76,7 +76,7 @@ int main() {
 
 * Install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 * **Make sure you are in your Linux $HOME folder before proceeding!**
-  Continue to [On Linux][#on-linux] and follow the steps of building on your Linux's distribution of choice.
+* Continue to [On Linux](#on-linux) and follow the steps of building on your Linux's distribution of choice.
 
 ### On Linux
 
@@ -123,20 +123,20 @@ $ make
 ### Configuring orca
 
 The following outlines the default fields of `config.json`
-```json
+```js
 {
-  "logging": { /* logging directives */
-    "level": "trace", /* trace, debug, info, warn, error, fatal */
-    "filename": "bot.log", /* the output file */
-    "quiet": false, /* change to true to disable logs in console */
-    "overwrite": false, /* overwrite existing file with "filename" */
-    "use_color": true, /* log with color */
+  "logging": { // logging directives
+    "level": "trace", // trace, debug, info, warn, error, fatal
+    "filename": "bot.log", // the output file
+    "quiet": false, // change to true to disable logs in console
+    "overwrite": false, // overwrite existing file with "filename"
+    "use_color": true, // log with color
     "http": {
-      "enable": true, /* generate http specific logging */
-      "filename": "http.log" /* the output file */
+      "enable": true, // generate http specific logging
+      "filename": "http.log" // the output file
     }
   },
-  ... /* API specific directives (discord, slack, github, etc) */
+  ... // API specific directives (discord, slack, github, etc)
 }
 ```
 
