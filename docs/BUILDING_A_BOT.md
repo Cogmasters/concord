@@ -16,7 +16,7 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 #include <orca/discord.h>
 
 
-void on_ready(struct discord *client, const struct discord_user *me) {
+void on_ready(struct discord *client, const struct discord_user *bot) {
   log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
