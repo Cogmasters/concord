@@ -5,7 +5,7 @@
   </p>
   <br />
   <p>
-    Easy to use, easy to deploy, easy to debug.
+    Easy to reason, easy to debug, easy to use.
   </p>
   <p>
     Join our Discord server: <a href="https://discord.gg/2jfycwXVM3"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
@@ -25,66 +25,36 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 
 ### Design
 
-- Easy to use for the end users: we provide internal synchronization
-  so that the user may provide scalability to his applications without
-  having to excessively worry about race-conditions. All transfers made
-  with Orca are thread-safe by nature.
-
 - Easy to reason about the code: we use the most native data structures,
    the simplest algorithms, and intuitive interfaces.
 
 - Easy to debug (networking and logic) errors: extensive assertion 
   and logging facilities.
 
-- Superior reliability.
+- Easy to use for the end users: we provide internal synchronization
+  so that the user may provide scalability to his applications without
+  having to excessively worry about race-conditions. All transfers made
+  with Orca are thread-safe by nature.
 
-## Build
-### Install dependencies:
-#### For Ubuntu and Debian
-
-The only dependencies are `curl-7.64.0` or higher built with OpenSSL, and `wget` that will 
-be used by the Makefile for fetching [cee-utils](https://github.com/cee-studio/cee-utils) files.
-```
-sudo apt-get install -y build-essential wget
-sudo apt-get install -y libcurl4-openssl-dev libssl-dev
-```
-
-#### For Void Linux
-
-Void Linux does not seem to come with the header files necessary for libcurl to run, so
-you will need to install them through the `libcurl-devel` package.
-```
-sudo xbps-install -S wget
-sudo xbps-install -S libcurl-devel
-```
-
-### Compile
-
-```
-make
-sudo make install
-```
-
-#### Standalone executable
-```
-gcc myBot.c -o myBot.out -ldiscord -lcurl -lcrypto -lpthread -lm
-```
-
-### For Windows
-
-* If you do not have Ubuntu or Debian but have Windows 10, you can install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-
-## Example usage
+### Minimal Discord example
 
 ```c
 #include <string.h> // strcmp()
 #include <orca/discord.h>
 
-void on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(
+  struct discord *client, 
+  const struct discord_user *bot) 
+{
   log_info("Logged in as %s!", bot->username);
 }
 
-void on_message(struct discord *client, const struct discord_user *bot, const struct discord_message *msg) {
+void on_message(
+  struct discord *client, 
+  const struct discord_user *bot, 
+  const struct discord_message *msg)
+{
+  // if message content equals "ping", then reply with "pong"
   if (0 == strcmp(msg->content, "ping")) {
     struct discord_create_message_params params = { .content = "pong" };
     discord_create_message(client, msg->channel_id, &params, NULL);
@@ -100,40 +70,131 @@ int main() {
 ```
 *This is a minimalistic example, refer to `examples/` for a better overview.*
 
-## Get started with bot-echo
+## Build Instructions
 
-1. Get your bot token and paste it in `bot.config`, 
+### On Windows
+
+* Install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+* **Make sure you are in your Linux $HOME folder before proceeding!**
+  Continue to [On Linux][#on-linux] and follow the steps of building on your Linux's distribution of choice.
+
+### On Linux
+
+The only dependencies are `curl-7.64.0` or higher built with OpenSSL, and `wget` that will 
+be used by the Makefile for fetching [cee-utils](https://github.com/cee-studio/cee-utils) files.
+
+#### For Ubuntu and Debian
+
+```bash
+$ sudo apt-get install -y build-essential wget
+$ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
+```
+
+#### For Void Linux
+
+Void Linux does not seem to come with the header files necessary for libcurl to run, so
+you will need to install them through the `libcurl-devel` package.
+
+```bash
+$ sudo xbps-install -S wget
+$ sudo xbps-install -S libcurl-devel
+```
+
+
+## Getting Started
+
+### Setting up your environment
+
+#### Clone orca into your workspace
+
+```bash
+$ git clone https://github.com/cee-studio/orca.git
+$ cd orca
+```
+
+#### Build orca
+
+Run the following to build orca's source code
+
+```bash
+$ make
+```
+
+### Configuring orca
+
+The following outlines the default fields of `config.json`
+```json
+{
+  "logging": { /* logging directives */
+    "level": "trace", /* trace, debug, info, warn, error, fatal */
+    "filename": "bot.log", /* the output file */
+    "quiet": false, /* change to true to disable logs in console */
+    "overwrite": false, /* overwrite existing file with "filename" */
+    "use_color": true, /* log with color */
+    "http": {
+      "enable": true, /* generate http specific logging */
+      "filename": "http.log" /* the output file */
+    }
+  },
+  ... /* API specific directives (discord, slack, github, etc) */
+}
+```
+
+### Test Echo-Bot
+
+1. Get your bot token and paste it in `config.json`, 
    replacing `YOUR-BOT-TOKEN` with it. There are 
    well written instructions from the 
    [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
    about how to get your bot token and it to a server.
-2. Invite your bot to a testing server. We can invite your
-   bot to our testing servers at our [Discord Server](https://discord.gg/2jfycwXVM3).
-3. Run `make examples`
-4. Go to `examples/` folder and run `./bot-echo.out`
+2. Run `make examples`
+3. Go to the `examples/` folder and run `./bot-echo.out`
 
-### Test bot-echo
+#### Get Echo-Bot Response
+
 Type a message in any channel the bot is part of.
 
-### Terminate bot-echo
-Close the Terminal or type `Ctrl-C` to kill the process.
+#### Terminate Echo-Bot
 
-## Debug Memory Errors
+With `Ctrl-C` or by closing the Terminal to kill the process.
+
+### Create your first bot
+
+Move to `my_bot` folder, it is a special folder for you to get started using orca without the need
+of installing it. There you will find a preset `Makefile` to help you get started.
+
+We have a detailed guide on writing your first bot [here](docs/BUILDING_A_BOT.md).
+
+## Installing orca
+
+In case setting your bot inside of the `my_bot` folder doesn't cut the cake for you, you can install orca as follows:
+```bash
+$ sudo make install
+```
+
+For the installed headers, they should be prefixed by `orca/` like so:
+```c
+#include <orca/discord.h>
+#include <orca/github.h>
+```
+
+## Debugging Memory Errors
+
 * The recommended method: 
-  Using SaiphC to build your bot, and run the executable.  All runtime memory errors will be reported. 
-  The [instruction](docs/SAIPHC.md) to use SaiphC to build bots.
+  Use [SaiphC](docs/SAIPHC.md) to build your bot and run the generated executable. All runtime memory errors will be reported. 
 
 * Using valgrind, which is more convenient but cannot report all runtime memory errors. 
-```
-valgrind ./myBot.out 
+```bash
+$ valgrind ./myBot.out 
 ```
 
 ## Links
 
 - [Documentation](https://cee-studio.github.io/orca/)
-- [How to make a bot](docs/BUILDING_A_BOT.md)
+- [Create your first bot](docs/BUILDING_A_BOT.md)
 - [Contributing](docs/CONTRIBUTING.md)
 - [Discord Server](https://discord.gg/2jfycwXVM3)
+- [Debbuging with SaiphC](docs/SAIPHC.md)
 
 ## Contributing
 Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).
