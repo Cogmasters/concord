@@ -145,7 +145,7 @@ discord_cleanup(client);
 ```bash
 $ make
 ```
-*Note: The preset Makefile will compile each file with a `.c` from the `my_bot` folder separately.* 
+*Note: The preset Makefile will compile each file from the `my_bot` folder containing `.c` extension separately.* 
 
 ### As a standalone executable
 
