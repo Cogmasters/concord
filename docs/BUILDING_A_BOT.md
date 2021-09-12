@@ -2,8 +2,8 @@
 
 Some basic things you should have covered before proceeding:
 
-1. Make sure you have all of the necessary dependencies. The dependencies cane be found in the [Build Instructions](/README.md#build-instructions).
-2. You should have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by assigning it to discord's "token" field.
+1. Make sure you have all of the necessary dependencies. The dependencies can be found at the [Build Instructions](/README.md#build-instructions).
+2. You should have a bot token. If you do not then [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by assigning it to discord's "token" field.
 3. Make sure `my_bot/` is your working directory, here you have the option to edit `myBot.c` or start your own `.c` file from scratch.
 
 
