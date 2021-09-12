@@ -36,7 +36,7 @@ Orca's implementation has minimum external dependencies to make bot deployment d
   having to excessively worry about race-conditions. All transfers made
   with Orca are thread-safe by nature.
 
-### Minimal Discord example
+### Minimal example
 
 ```c
 #include <string.h> // strcmp()
@@ -76,33 +76,26 @@ int main() {
 
 * Install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 * **Make sure you are in your Linux $HOME folder before proceeding!**
-* Continue to [On Linux](#on-linux) and follow the steps of building on your Linux's distribution of choice.
+* Continue on to [On Linux](#on-linux) and follow your distro's building steps.
 
 ### On Linux
 
 The only dependencies are `curl-7.64.0` or higher built with OpenSSL, and `wget` that will 
 be used by the Makefile for fetching [cee-utils](https://github.com/cee-studio/cee-utils) files.
 
-#### For Ubuntu and Debian
+#### Ubuntu and Debian
 
 ```bash
 $ sudo apt-get install -y build-essential wget
 $ sudo apt-get install -y libcurl4-openssl-dev libssl-dev
 ```
 
-#### For Void Linux
-
-Void Linux does not seem to come with the header files necessary for libcurl to run, so
-you will need to install them through the `libcurl-devel` package.
+#### Void Linux
 
 ```bash
 $ sudo xbps-install -S wget
 $ sudo xbps-install -S libcurl-devel
 ```
-
-
-## Getting Started
-
 ### Setting up your environment
 
 #### Clone orca into your workspace
@@ -112,9 +105,7 @@ $ git clone https://github.com/cee-studio/orca.git
 $ cd orca
 ```
 
-#### Build orca
-
-Run the following to build orca's source code
+#### Compile orca
 
 ```bash
 $ make
@@ -125,14 +116,14 @@ $ make
 The following outlines the default fields of `config.json`
 ```js
 {
-  "logging": { // logging directives
-    "level": "trace", // trace, debug, info, warn, error, fatal
-    "filename": "bot.log", // the output file
-    "quiet": false, // change to true to disable logs in console
-    "overwrite": false, // overwrite existing file with "filename"
-    "use_color": true, // log with color
+  "logging": {               // logging directives
+    "level": "trace",        // trace, debug, info, warn, error, fatal
+    "filename": "bot.log",   // the output file
+    "quiet": false,          // change to true to disable logs in console
+    "overwrite": false,      // overwrite existing file with "filename"
+    "use_color": true,       // log with color
     "http": {
-      "enable": true, // generate http specific logging
+      "enable": true,        // generate http specific logging
       "filename": "http.log" // the output file
     }
   },
@@ -142,37 +133,35 @@ The following outlines the default fields of `config.json`
 
 ### Test Echo-Bot
 
-1. Get your bot token and paste it in `config.json`, 
-   replacing `YOUR-BOT-TOKEN` with it. There are 
+1. Get your bot token and add it to `config.json`, 
+   by assigning it to discord's "token" field. There are 
    well written instructions from the 
    [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
-   about how to get your bot token and it to a server.
+   about how to get your bot token and adding it to a server.
 2. Run `make examples`
 3. Go to the `examples/` folder and run `./bot-echo.out`
 
 #### Get Echo-Bot Response
 
-Type a message in any channel the bot is part of.
+Type a message in any channel the bot has access to, the bot should echo it.
 
 #### Terminate Echo-Bot
 
-With `Ctrl-C` or by closing the Terminal to kill the process.
+With `Ctrl-C` or by closing the Terminal.
 
 ### Create your first bot
 
-Move to `my_bot` folder, it is a special folder for you to get started using orca without the need
-of installing it. There you will find a preset `Makefile` to help you get started.
-
-We have a detailed guide on writing your first bot [here](docs/BUILDING_A_BOT.md).
+* Head to `my_bot/`, a special folder set-up for your convenience. There you will also find a preset `Makefile` and `myBot.c` that can be edited at will.
+* Read our guide on how to [build your first bot](docs/BUILDING_A_BOT.md).
 
 ## Installing orca
 
-In case setting your bot inside of the `my_bot` folder doesn't cut the cake for you, you can install orca as follows:
+In case the `my_bot/` folder doesn't cut the cake, its possible to install orca as follows:
 ```bash
 $ sudo make install
 ```
 
-For the installed headers, they should be prefixed by `orca/` like so:
+Installed headers must be prefixed with `orca/` like so:
 ```c
 #include <orca/discord.h>
 #include <orca/github.h>
@@ -183,9 +172,10 @@ For the installed headers, they should be prefixed by `orca/` like so:
 * The recommended method: 
   Use [SaiphC](docs/SAIPHC.md) to build your bot and run the generated executable. All runtime memory errors will be reported. 
 
-* Using valgrind, which is more convenient but cannot report all runtime memory errors. 
+* The convenient method:
+  Using valgrind which cannot report all runtime memory errors. 
 ```bash
-$ valgrind ./myBot.out 
+$ valgrind ./myBot.out
 ```
 
 ## Links
