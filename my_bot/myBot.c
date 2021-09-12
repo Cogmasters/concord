@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <string.h> // strcmp()
-#include <orca/discord.h>
+#include "discord.h"
 
 
 void on_ready(
