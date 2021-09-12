@@ -1,12 +1,10 @@
-# Building a Discord Bot
+# Building your first bot
 
-Building a bot is pretty simple using orca, but there are some basic things should have covered before starting:
+Some basic things you should have covered before proceeding:
 
-1. Make sure you have built all dependencies. The dependencies are listed in the [README](/README.md) of this project.
-
-2. You should have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by replacing `YOUR-BOT-TOKEN` with it.
-
-3. Make sure you are inside of the folder `my_bot`, here you have the option to edit `myBot.c` or start your own from scratch.
+1. Make sure you have all of the necessary dependencies. The dependencies cane be found in the [Build Instructions](/README.md#build-instructions).
+2. You should have a bot token. If you do not [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by assigning it to discord's "token" field.
+3. Make sure `my_bot/` is your working directory, here you have the option to edit `myBot.c` or start your own `.c` file from scratch.
 
 
 # Ping-Pong Bot Source Code
@@ -65,13 +63,13 @@ int main()
 }
 ```
 
-## Initializing your bot client
+## Initialize the bot
 
 You can initialize the bot by providing a `config.json` file:
 ```c
-struct discord *client = discord_config_init("config.json");
+struct discord *client = discord_config_init("../config.json");
 ```
-Or if you do not wish to rely on `config.json`, you can initialize by providing the token directly to `discord_init()`:
+You can also initialize it by providing the token directly to `discord_init()`:
 ```c
 struct discord *client = discord_init(BOT_TOKEN);
 ```
@@ -94,7 +92,7 @@ Returns [struct discord](https://cee-studio.github.io/orca/apis/discord.html?hig
 |:----------------|:--------------------------|
 |char[]| the bot token string|
 
-## Starting the bot
+## Start the bot
 
 ```c
 discord_set_on_ready(client, &on_ready);
@@ -110,7 +108,7 @@ discord_run(client);
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
 |struct discord| the client stucture |
-|on\_idle\_cb \*callback| the callback to run when the READY event is triggered |
+|discord\_on\_idle\_cb \*callback| the callback to run when the READY event is triggered |
 
 ### [discord\_set\_on\_command()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_command)
 `discord_set_on_command(struct discord*, char[], discord_message_cb*)`: runs callback when a command prefix is detected on chat
@@ -129,7 +127,7 @@ discord_run(client);
 |struct discord| the client stucture  |
 
 
-## Cleaning up the bot
+## Clean up the bot
 
 ```c
 discord_cleanup(client);
@@ -138,14 +136,14 @@ discord_cleanup(client);
 ### [discord\_cleanup()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_cleanup)
 `discord_cleanup(struct discord*)`: cleanup client initialized by `discord_init()` or `discord_config_init()`
 
-## Building the bot
+## Compile the bot
 
-### With the preset Makefile
+### Using the preset Makefile
 
 ```bash
 $ make
 ```
-*Note: The preset Makefile will compile each file from the `my_bot` folder containing `.c` extension separately.* 
+*Note: The preset Makefile will separately compile each file from the `my_bot` folder that has a `.c` extension.* 
 
 ### As a standalone executable
 
@@ -153,18 +151,18 @@ $ make
 $ gcc myBot.c -o myBot.out -ldiscord -lcurl -lcrypto -lpthread -lm
 ```
 
-## Running the bot
+## Execute the bot
 
-Simply run the generated executable as such:
+Simply run the generated executable like so:
 
 ```bash
 $ ./myBot.out
 ```
 
-### Get the bot's response
+### Test the bot
 
-By heading to a channel of which your bot has access and type "ping" or "pong" to test it.
+By heading to a channel of which your bot has access and then type "ping" or "pong".
 
 ### Terminate the bot
 
-With `Ctrl-C` or by closing the Terminal to kill the process.
+With `Ctrl-C` or by closing the Terminal.
