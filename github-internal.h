@@ -16,7 +16,7 @@ struct github_adapter {
   struct user_agent *ua;
 };
 
-void github_adapter_init(struct github_adapter *adapter, struct logconf *config, struct github_presets *presets);
+void github_adapter_init(struct github_adapter *adapter, struct logconf *conf, struct github_presets *presets);
 
 ORCAcode github_adapter_run(
   struct github_adapter *adapter,
@@ -26,7 +26,7 @@ ORCAcode github_adapter_run(
   char endpoint[], ...);
 
 struct github {
-  struct logconf config;
+  struct logconf conf;
   struct github_adapter adapter;
   struct github_presets presets;
 };

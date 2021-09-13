@@ -261,7 +261,7 @@ refresh_connection(struct slack_sm *sm)
 }
 
 void
-slack_sm_init(struct slack_sm *sm, struct logconf *config)
+slack_sm_init(struct slack_sm *sm, struct logconf *conf)
 {
   ASSERT_S(NULL != sm->p_client, "Not meant to be called standalone");
 
@@ -271,8 +271,8 @@ slack_sm_init(struct slack_sm *sm, struct logconf *config)
     .on_text = &on_text_cb,
     .on_close = &on_close_cb
   };
-  sm->ws = ws_init(&cbs, config);
-  logconf_add_id(config, sm->ws, "SLACK_SOCKETMODE");
+  sm->ws = ws_init(&cbs, conf);
+  logconf_branch(&sm->conf, conf, "SLACK_SOCKETMODE");
 
   sm->event_handler = &noop_event_handler;
 

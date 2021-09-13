@@ -11,7 +11,7 @@
 
 #define CURLE_CHECK(ws, ecode)                             \
   VASSERT_S(CURLE_OK == ecode, "[%s] (CURLE code: %d) %s", \
-      ws->tag,                                             \
+      ws->conf.id,                                             \
       ecode,                                               \
       IS_EMPTY_STRING(ws->errbuf)                          \
         ? curl_easy_strerror(ecode)                        \
@@ -19,7 +19,7 @@
 
 #define CURLM_CHECK(ws, mcode)                             \
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", \
-      ws->tag,                                             \
+      ws->conf.id,                                             \
       mcode,                                               \
       curl_multi_strerror(mcode))
 
@@ -76,16 +76,10 @@ struct websockets {
   char errbuf[CURL_ERROR_SIZE];
 
   /**
-   * A unique tag to identify this WebSockets client
-   *        for logging purposes
-   */
-  char *tag;
-
-  /**
    * The logconf structure for logging facility
    * @see logconf.h
    */
-  struct logconf *p_config;
+  struct logconf conf;
 
   pthread_mutex_t lock;
   /*
@@ -236,22 +230,22 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
   switch (status) {
   case WS_DISCONNECTED:
       VASSERT_S(WS_DISCONNECTING == ws->status, \
-          "[%s] (Internal Error) Disconnect abruptly (Current status: %s)", ws->tag, _ws_status_print(ws->status));
-      log_debug("[%s] Change status to WS_DISCONNECTED", ws->tag);
+          "[%s] (Internal Error) Disconnect abruptly (Current status: %s)", ws->conf.id, _ws_status_print(ws->status));
+      logconf_debug(&ws->conf, "Change status to WS_DISCONNECTED");
       break;
   case WS_CONNECTED:
       VASSERT_S(WS_CONNECTING == ws->status, \
-          "[%s] Missing ws_start() before the event loop (Current status: %s)", ws->tag, _ws_status_print(ws->status));
-      log_debug("[%s] Change status to WS_CONNECTED", ws->tag);
+          "[%s] Missing ws_start() before the event loop (Current status: %s)", ws->conf.id, _ws_status_print(ws->status));
+      logconf_debug(&ws->conf, "Change status to WS_CONNECTED");
       break;
   case WS_DISCONNECTING:
-      log_debug("[%s] Change status to WS_DISCONNECTING", ws->tag);
+      logconf_debug(&ws->conf, "Change status to WS_DISCONNECTING");
       break;
   case WS_CONNECTING: /* triggered at ws_start() */
-      log_debug("[%s] Change status to WS_CONNECTING", ws->tag);
+      logconf_debug(&ws->conf, "Change status to WS_CONNECTING");
       break;
   default:
-      ERR("[%s] Unknown ws_status (code: %d)", ws->tag, status);
+      ERR("[%s] Unknown ws_status (code: %d)", ws->conf.id, status);
       break;
   }
   ws->status = status;
@@ -272,16 +266,15 @@ cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 
   _ws_set_status(ws, WS_CONNECTED);
 
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)ws_protocols, strlen(ws_protocols)},
     "WS_RCV_CONNECT");
 
-  log_trace("[%s] "ANSICOLOR("RCV", ANSI_FG_YELLOW)" CONNECT (WS-Protocols: '%s') [@@@_%zu_@@@]", ws->tag, ws_protocols, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" CONNECT (WS-Protocols: '%s') [@@@_%zu_@@@]", ws_protocols, ws->info.loginfo.counter);
 
   (*ws->cbs.on_connect)(ws->cbs.data, ws, &ws->info, ws_protocols);
 }
@@ -293,16 +286,15 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
 
   _ws_set_status(ws, WS_DISCONNECTING);
 
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_CLOSE(%d)", cwscode);
 
-  log_trace("[%s] "ANSICOLOR("RCV", ANSI_FG_YELLOW)" CLOSE(%d) (%zu bytes) [@@@_%zu_@@@]", ws->tag, cwscode, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" CLOSE(%d) (%zu bytes) [@@@_%zu_@@@]", cwscode, len, ws->info.loginfo.counter);
 
   (*ws->cbs.on_close)(ws->cbs.data, ws, &ws->info, cwscode, reason, len);
   ws->action = WS_ACTION_END_CLOSE;
@@ -315,16 +307,15 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
 {
   struct websockets *ws = p_ws;
 
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)text, len},
     "WS_RCV_TEXT");
 
-  log_trace("[%s] "ANSICOLOR("RCV", ANSI_FG_YELLOW)" TEXT (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" TEXT (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   (*ws->cbs.on_text)(ws->cbs.data, ws, &ws->info, text, len);
 }
@@ -334,16 +325,15 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
 {
   struct websockets *ws = p_ws;
 
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)mem, len},
     "WS_RCV_BINARY");
 
-  log_trace("[%s] "ANSICOLOR("RCV", ANSI_FG_YELLOW)" BINARY (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" BINARY (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   (*ws->cbs.on_binary)(ws->cbs.data, ws, &ws->info, mem, len);
 }
@@ -354,16 +344,15 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
   struct websockets *ws = p_ws;
 
 #if 0
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PING");
 
-  log_trace("[%s] "ANSICOLOR("RCV", ANSI_FG_YELLOW)" PING (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" PING (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
 
   (*ws->cbs.on_ping)(ws->cbs.data, ws, &ws->info, reason, len);
@@ -375,16 +364,15 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
   struct websockets *ws = p_ws;
 
 #if 0
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PONG");
 
-  log_trace("[%s] "ANSICOLOR("RCV", ANSI_FG_YELLOW)" PONG (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" PONG (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
 
   (*ws->cbs.on_pong)(ws->cbs.data, ws, &ws->info, reason, len);
@@ -401,7 +389,7 @@ _ws_check_action_cb(void *p_userdata, curl_off_t dltotal, curl_off_t dlnow, curl
   pthread_mutex_lock(&ws->lock);
   switch (ws->action) {
   case WS_ACTION_BEGIN_CLOSE:
-      log_warn("Received pending %s, closing the connection ...", ws_close_opcode_print(ws->pending_close.code));
+      logconf_warn(&ws->conf, "Received pending %s, closing the connection ...", ws_close_opcode_print(ws->pending_close.code));
       _ws_close(ws, ws->pending_close.code, ws->pending_close.reason);
   /* fall-through */
   case WS_ACTION_NONE:
@@ -463,29 +451,28 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
 static bool 
 _ws_close(struct websockets *ws, enum ws_close_reason code, const char reason[])
 {
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, strlen(reason)},
     "WS_SEND_CLOSE(%d)", code);
 
-  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" CLOSE (%s) [@@@_%zu_@@@]", ws->tag, reason, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" CLOSE (%s) [@@@_%zu_@@@]", reason, ws->info.loginfo.counter);
 
   if (WS_DISCONNECTED == ws->status) {
-    log_warn("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND CLOSE : Connection already closed [@@@_%zu_@@@]", ws->tag, ws->info.loginfo.counter);
+    logconf_warn(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND CLOSE : Connection already closed [@@@_%zu_@@@]", ws->info.loginfo.counter);
     return false;
   }
   if (WS_DISCONNECTING == ws->status) {
-    log_warn("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND CLOSE : Close already taking place [@@@_%zu_@@@]", ws->tag, ws->info.loginfo.counter);
+    logconf_warn(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND CLOSE : Close already taking place [@@@_%zu_@@@]", ws->info.loginfo.counter);
     return false;
   }
   _ws_set_status_nolock(ws, WS_DISCONNECTING);
 
   if (!cws_close(ws->ehandle, (enum cws_close_reason)code, reason, SIZE_MAX)) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND CLOSE(%d): %s [@@@_%zu_@@@]", ws->tag, code, reason, ws->info.loginfo.counter);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND CLOSE(%d): %s [@@@_%zu_@@@]", code, reason, ws->info.loginfo.counter);
     return false;
   }
   return true;
@@ -520,12 +507,12 @@ noop_on_close(void *a, struct websockets *b, struct ws_info *info, enum ws_close
 {return;}
 
 struct websockets*
-ws_init(struct ws_callbacks *cbs, struct logconf *config)
+ws_init(struct ws_callbacks *cbs, struct logconf *conf)
 {
   struct websockets *new_ws = calloc(1, sizeof *new_ws);
   new_ws->mhandle = curl_multi_init();
-  logconf_add_id(config, new_ws, new_ws->tag = "WEBSOCKETS");
-  new_ws->p_config = config;
+
+  logconf_branch(&new_ws->conf, conf, "WEBSOCKETS");
 
   new_ws->cbs = *cbs;
   // use noop callbacks for missing callbacks
@@ -537,7 +524,7 @@ ws_init(struct ws_callbacks *cbs, struct logconf *config)
   if (!new_ws->cbs.on_close) new_ws->cbs.on_close = &noop_on_close;
 
   if (pthread_mutex_init(&new_ws->lock, NULL))
-    ERR("[%s] Couldn't initialize pthread mutex", new_ws->tag);
+    ERR("[%s] Couldn't initialize pthread mutex", new_ws->conf.id);
 
   return new_ws;
 }
@@ -548,16 +535,16 @@ ws_set_url(struct websockets *ws, const char base_url[], const char ws_protocols
   pthread_mutex_lock(&ws->lock);
 
   if (IS_EMPTY_STRING(ws->base_url))
-    log_debug("[%s] Websockets new URL: %s", ws->tag, base_url);
+    logconf_debug(&ws->conf, "Websockets new URL: %s", base_url);
   else
-    log_debug("[%s] \n\tWebSockets redirecting:\n\tfrom: %s\n\tto: %s", ws->tag, ws->base_url, base_url);
+    logconf_debug(&ws->conf, "WebSockets redirecting:\n\tfrom: %s\n\tto: %s", ws->base_url, base_url);
 
   int ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
-  VASSERT_S(ret < sizeof(ws->base_url), "[%s] Out of bounds write attempt", ws->tag);
+  VASSERT_S(ret < sizeof(ws->base_url), "[%s] Out of bounds write attempt", ws->conf.id);
 
   if (!IS_EMPTY_STRING(ws_protocols)) {
     ret = snprintf(ws->protocols, sizeof(ws->protocols), "%s", ws_protocols);
-    VASSERT_S(ret < sizeof(ws->protocols), "[%s] Out of bounds write attempt", ws->tag);
+    VASSERT_S(ret < sizeof(ws->protocols), "[%s] Out of bounds write attempt", ws->conf.id);
   }
 
   pthread_mutex_unlock(&ws->lock);
@@ -578,26 +565,25 @@ ws_send_binary(struct websockets *ws, struct ws_info *info, const char msg[], si
 {
   VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
 
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     NULL,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)msg, msglen},
     "WS_SEND_BINARY");
 
-  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" BINARY (%zu bytes) [@@@_%zu_@@@]", ws->tag, msglen, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" BINARY (%zu bytes) [@@@_%zu_@@@]", msglen, ws->info.loginfo.counter);
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND BINARY : No active connection [@@@_%zu_@@@]", ws->tag, ws->info.loginfo.counter);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND BINARY : No active connection [@@@_%zu_@@@]", ws->info.loginfo.counter);
     return false;
   }
 
   if (info) *info = ws->info;
 
   if (!cws_send(ws->ehandle, false, msg, msglen)) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND BINARY [@@@_%zu_@@@]", ws->tag, ws->info.loginfo.counter);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND BINARY [@@@_%zu_@@@]", ws->info.loginfo.counter);
     return false;
   }
   return true;
@@ -608,26 +594,25 @@ ws_send_text(struct websockets *ws, struct ws_info *info, const char text[], siz
 {
   VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
 
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     NULL,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)text, len},
     "WS_SEND_TEXT");
 
-  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" TEXT (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" TEXT (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND TEXT : No active connection [@@@_%zu_@@@]", ws->tag, ws->info.loginfo.counter);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND TEXT : No active connection [@@@_%zu_@@@]", ws->info.loginfo.counter);
     return false;
   }
 
   if (info) *info = ws->info;
 
   if (!cws_send(ws->ehandle, true, text, len)) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND TEXT [@@@_%zu_@@@]", ws->tag, ws->info.loginfo.counter);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND TEXT [@@@_%zu_@@@]", ws->info.loginfo.counter);
     return false;
   }
   return true;
@@ -637,25 +622,24 @@ bool
 ws_ping(struct websockets *ws, struct ws_info *info, const char *reason, size_t len)
 {
 #if 0 // disabled because this creates too many entries
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_PING");
 
-  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" PING (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" PING (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PING : No active connection", ws->tag);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PING : No active connection");
     return false;
   }
 
   if (!cws_ping(ws->ehandle, reason, len)) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PING.", ws->tag);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PING.");
     return false;
   }
   return true;
@@ -665,25 +649,24 @@ bool
 ws_pong(struct websockets *ws, struct ws_info *info, const char *reason, size_t len)
 {
 #if 0 // disabled because this creates too many entries
-  log_http(
-    ws->p_config, 
+  logconf_http(
+    &ws->conf, 
     &ws->info.loginfo,
-    ws,
     ws->base_url, 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_PONG");
 
-  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" PONG (%zu bytes) [@@@_%zu_@@@]", ws->tag, len, ws->info.loginfo.counter);
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" PONG (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
 
   if (WS_CONNECTED != ws->status) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PONG : No active connection", ws->tag);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PONG : No active connection");
     return false;
   }
 
   if (!cws_pong(ws->ehandle, reason, len)) {
-    log_error("[%s] "ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PONG.", ws->tag);
+    logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PONG.");
     return false;
   }
   return true;
@@ -693,14 +676,13 @@ void
 ws_start(struct websockets *ws) 
 {
   ws->tid = pthread_self(); // save the starting thread
-  ws->tag = logconf_tag(ws->p_config, ws);
   memset(&ws->pending_close, 0, sizeof ws->pending_close);
   ws->action = WS_ACTION_NONE;
 
   VASSERT_S(false == ws_is_alive(ws), \
-      "[%s] Please shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->tag, _ws_status_print(ws->status));
+      "[%s] Please shutdown current WebSockets connection before calling ws_start() (Current status: %s)", ws->conf.id, _ws_status_print(ws->status));
   VASSERT_S(NULL == ws->ehandle, \
-      "[%s] (Internal error) Attempt to reconnect without properly closing the connection", ws->tag);
+      "[%s] (Internal error) Attempt to reconnect without properly closing the connection", ws->conf.id);
   ws->ehandle = _ws_cws_new(ws, ws->protocols);
   curl_multi_add_handle(ws->mhandle, ws->ehandle);
   _ws_set_status(ws, WS_CONNECTING);  
@@ -751,22 +733,21 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
       switch (ecode) {
       case CURLE_OK:
       case CURLE_ABORTED_BY_CALLBACK: // _ws_check_action_cb()
-          log_info("[%s] Disconnected gracefully", ws->tag);
+          logconf_info(&ws->conf, "Disconnected gracefully");
           break;
       case CURLE_READ_ERROR:
       default:
-          log_error("[%s] (CURLE code: %d) %s",
-              ws->tag,
+          logconf_error(&ws->conf, "(CURLE code: %d) %s",
               ecode, 
               IS_EMPTY_STRING(ws->errbuf) 
                   ? curl_easy_strerror(ecode) 
                   : ws->errbuf);
-          log_error("[%s] Disconnected abruptly", ws->tag);
+          logconf_error(&ws->conf, "Disconnected abruptly");
           break;
       }
     }
     else {
-      log_warn("[%s] Exit before establishing a connection", ws->tag);
+      logconf_warn(&ws->conf, "Exit before establishing a connection");
     }
     
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
@@ -806,7 +787,7 @@ ws_is_functional(struct websockets *ws) {
 void 
 ws_close(struct websockets *ws, const enum ws_close_reason code, const char reason[], const size_t len)
 {
-  log_warn("Attempting to close WebSockets connection with %s : %.*s", ws_close_opcode_print(code), (int)len, reason);
+  logconf_warn(&ws->conf, "Attempting to close WebSockets connection with %s : %.*s", ws_close_opcode_print(code), (int)len, reason);
 
   pthread_mutex_lock(&ws->lock);
   ws->action = WS_ACTION_BEGIN_CLOSE;

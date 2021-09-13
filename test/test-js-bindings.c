@@ -12,7 +12,7 @@ const char *g_config_file;
 void js_request(js_State *J)
 {
   struct logconf config={0};
-  logconf_setup(&config, NULL);
+  logconf_setup(&config, "JS_TEST", NULL);
 
   struct user_agent *ua = ua_init(&config);
   ua_set_url(ua, "http://www.example.com/");

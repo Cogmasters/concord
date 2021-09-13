@@ -12,11 +12,11 @@
 
 
 void
-slack_webapi_init(struct slack_webapi *webapi, struct logconf *config, struct sized_buffer *token)
+slack_webapi_init(struct slack_webapi *webapi, struct logconf *conf, struct sized_buffer *token)
 {
-  webapi->ua = ua_init(config);
+  webapi->ua = ua_init(conf);
   ua_set_url(webapi->ua, SLACK_BASE_API_URL);
-  logconf_add_id(config, webapi->ua, "SLACK_WEBAPI");
+  logconf_branch(&webapi->conf, conf, "SLACK_WEBAPI");
 
   if (STRNEQ("YOUR-BOT-TOKEN", token->start, token->size)) {
     token->start = NULL;

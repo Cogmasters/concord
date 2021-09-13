@@ -92,7 +92,9 @@ new_UserAgent(js_State *J)
   static _Bool first_run=0;
 
   if (!first_run) {
-    logconf_setup(&config, g_config_file);
+    FILE *fp = fopen(g_config_file, "rb");
+    logconf_setup(&config, "JS_UserAgent", fp);
+    fclose(fp);
     first_run = 1;
   }
 

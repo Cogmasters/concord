@@ -13,11 +13,13 @@
 
 struct slack_webapi {
   struct user_agent *ua;
+  struct logconf conf;
+
   struct slack *p_client;
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
-void slack_webapi_init(struct slack_webapi *webapi, struct logconf *config, struct sized_buffer *token);
+void slack_webapi_init(struct slack_webapi *webapi, struct logconf *conf, struct sized_buffer *token);
 void slack_webapi_cleanup(struct slack_webapi *webapi);
 
 ORCAcode slack_webapi_run(
@@ -28,6 +30,8 @@ ORCAcode slack_webapi_run(
 
 struct slack_sm {
   struct websockets *ws;
+  struct logconf conf;
+
   bool is_ready;
 
   struct { /* SOCKETMODE HEARTBEAT STRUCT */
@@ -53,7 +57,7 @@ struct slack_sm {
 };
 
 /* SOCKET MODE PRIVATE FUNCTIONS */
-void slack_sm_init(struct slack_sm *sm, struct logconf *config);
+void slack_sm_init(struct slack_sm *sm, struct logconf *conf);
 void slack_sm_cleanup(struct slack_sm *sm);
 
 struct slack {
@@ -63,7 +67,7 @@ struct slack {
   struct slack_webapi webapi;
   struct slack_sm sm;
 
-  struct logconf config;
+  struct logconf conf;
 };
 
 struct slack_event_cxt {

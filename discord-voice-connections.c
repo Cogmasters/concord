@@ -359,7 +359,7 @@ _discord_voice_init(
       .on_text = &on_text_cb,
       .on_close = &on_close_cb
     };
-    new_vc->ws = ws_init(&cbs, new_vc->p_client->config);
+    new_vc->ws = ws_init(&cbs, new_vc->p_client->conf);
     new_vc->reconnect.threshold = 5; /** hard limit for now */
     new_vc->reconnect.enable = true;
   }
@@ -405,9 +405,11 @@ recycle_active_vc(
   vc->guild_id = guild_id;
   vc->shutdown = false;
 
+#if 0
   char tag[64];
   snprintf(tag, sizeof tag, "VC_%"PRIu64, guild_id);
-  logconf_add_id(vc->p_client->config, vc->ws, tag);
+  logconf_branch(&vc->config, vc->p_client->config, tag);
+#endif
 }
 
 static void

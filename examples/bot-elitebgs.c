@@ -319,9 +319,8 @@ int main(int argc, char *argv[])
   assert(NULL != client);
 
   /* Initialize ELITEBGS User Agent (share discord logconf) */
-  g_elitebgs_ua = ua_init(client->config);
+  g_elitebgs_ua = ua_init(client->conf);
   ua_set_url(g_elitebgs_ua, ELITEBGS_API_URL);
-  logconf_add_id(client->config, g_elitebgs_ua, "ELITEBGS_HTTP");
 
   /* Set discord callbacks */
   discord_set_on_ready(client, &on_ready);

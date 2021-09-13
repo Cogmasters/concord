@@ -8,7 +8,8 @@
     "http": {
       "enable": true,
       "filename": "http.log"
-    }
+    },
+    "disable_modules": ["WEBSOCKETS", "USER_AGENT"]
   },
   "discord": {
     "token": "YOUR-BOT-TOKEN",

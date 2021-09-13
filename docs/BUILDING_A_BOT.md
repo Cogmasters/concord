@@ -138,18 +138,10 @@ discord_cleanup(client);
 
 ## Compile the bot
 
-### Using the preset Makefile
-
 ```bash
 $ make
 ```
 *Note: The preset Makefile will separately compile each file from the `my_bot` folder that has a `.c` extension.* 
-
-### As a standalone executable
-
-```bash
-$ gcc myBot.c -o myBot.out -ldiscord -lcurl -lcrypto -lpthread -lm
-```
 
 ## Execute the bot
 

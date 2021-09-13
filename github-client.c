@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <errno.h>
 
 #include "cee-utils.h"
 #include "cee-utils/ntl.h"
@@ -89,7 +90,7 @@ github_init(const char username[], const char token[], const char repo_config[])
 {
   struct github *new_client = calloc(1, sizeof *new_client);
 
-  logconf_setup(&new_client->config, NULL);
+  logconf_setup(&new_client->conf, "GITHUB", NULL);
 
   _github_presets_init(
     &new_client->presets,
@@ -97,7 +98,7 @@ github_init(const char username[], const char token[], const char repo_config[])
     strdup(token),
     repo_config);
 
-  github_adapter_init(&new_client->adapter, &new_client->config, &new_client->presets);
+  github_adapter_init(&new_client->adapter, &new_client->conf, &new_client->presets);
 
   return new_client;
 }
@@ -107,11 +108,16 @@ github_config_init(const char config_file[], const char repo_config[])
 {
   struct github *new_client = calloc(1, sizeof *new_client);
 
-  logconf_setup(&new_client->config, config_file);
+  FILE *fp = fopen(config_file, "rb");
+  VASSERT_S(fp != NULL, "Couldn't open '%s': %s", config_file, strerror(errno));
+
+  logconf_setup(&new_client->conf, "GITHUB", fp);
+
+  fclose(fp);
 
   struct sized_buffer t_username, t_token;
-  t_username = logconf_get_field(&new_client->config, "github.username");
-  t_token = logconf_get_field(&new_client->config, "github.token");
+  t_username = logconf_get_field(&new_client->conf, "github.username");
+  t_token = logconf_get_field(&new_client->conf, "github.token");
 
   char *username, *token;
   asprintf(&username, "%.*s", (int)t_username.size, t_username.start);
@@ -123,7 +129,7 @@ github_config_init(const char config_file[], const char repo_config[])
     token,
     repo_config);
 
-  github_adapter_init(&new_client->adapter, &new_client->config, &new_client->presets);
+  github_adapter_init(&new_client->adapter, &new_client->conf, &new_client->presets);
 
   return new_client;
 }

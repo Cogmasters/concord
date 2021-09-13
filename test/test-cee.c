@@ -12,7 +12,6 @@ int commit(char *base_url, struct logconf *config)
 {
   struct user_agent *data = ua_init(config);
   ua_set_url(data, base_url);
-  logconf_add_id(config, data, "CEE_HTTP");
 
   curl_global_init(CURL_GLOBAL_ALL);
   struct sized_buffer body = {.start = "{ }", .size = 3};
@@ -38,8 +37,10 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  struct logconf config={0};
-  logconf_setup(&config, config_file);
+  struct logconf config;
+  FILE *fp = fopen(config_file, "rb");
+  logconf_setup(&config, "CEE_HTTP", fp);
+  fclose(fp);
 
   commit("https://cee.studio", &config);
 

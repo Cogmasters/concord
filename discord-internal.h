@@ -34,6 +34,7 @@
  */
 struct discord_adapter {
   struct user_agent *ua; ///< The user agent handle for performing requests
+  struct logconf conf; ///< store conf file contents and sync logging between clients
 
   struct { ///< Ratelimiting structure
     struct discord_bucket *buckets; ///< Endpoint/routes discovered, check a endpoint/bucket match with tree search functions
@@ -51,10 +52,10 @@ struct discord_adapter {
  * @brief Initialize the fields of a Discord Adapter handle
  *
  * @param adapter a pointer to the allocated handle
- * @param config optional pointer to a pre-initialized logconf
+ * @param conf optional pointer to a pre-initialized logconf
  * @param token the bot token
  */
-void discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token);
+void discord_adapter_init(struct discord_adapter *adapter, struct logconf *conf, struct sized_buffer *token);
 
 /**
  * @brief Free a Discord Adapter handle
@@ -208,6 +209,7 @@ struct discord_gateway_cbs {
  */
 struct discord_gateway {
   struct websockets *ws; ///< the websockets handle that connects to Discord
+  struct logconf conf; ///< store conf file contents and sync logging between clients
 
   struct { ///< Reconnect structure
     bool enable; ///< will attempt reconnecting if true
@@ -267,10 +269,10 @@ struct discord_gateway {
  * @brief Initialize the fields of Discord Gateway handle
  *
  * @param gw a pointer to the allocated handle
- * @param config optional pointer to a initialized logconf
+ * @param conf optional pointer to a initialized logconf
  * @param token the bot token
  */
-void discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token);
+void discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct sized_buffer *token);
 
 /**
  * @brief Free a Discord Gateway handle
@@ -310,7 +312,7 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  * Used to access/perform public functions from discord.h 
  *
  * - Initializer:
- *   - discord_init(), discord_config_init()
+ *   - discord_init(), discord_conf_init()
  * - Cleanup:
  *   - discord_cleanup()
  *
@@ -321,8 +323,9 @@ struct discord {
   /// @privatesection
   bool is_original; ///< whether this is the original client or a clone
 
+  struct logconf *conf; ///< store conf file contents and sync logging between clients
+
   struct sized_buffer token;   ///< the bot token
-  struct logconf      *config; ///< store config file contents and sync logging between clients
 
   struct discord_adapter adapter; ///< the HTTP adapter for performing requests
   struct discord_gateway gw;      ///< the WebSockets handle for establishing a connection to Discord

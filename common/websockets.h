@@ -116,7 +116,7 @@ struct ws_callbacks {
  * @brief Create a new (CURL-based) WebSockets handle
  *
  * @param cbs set of functions to call back when server report events.
- * @param config optional pointer to a pre-initialized logconf 
+ * @param config optional parent logconf struct
  * @return newly created WebSockets handle, free with ws_cleanup()
  */
 struct websockets* ws_init(struct ws_callbacks *cbs, struct logconf *config);

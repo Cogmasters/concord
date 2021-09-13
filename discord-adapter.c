@@ -10,9 +10,9 @@
 
 
 void
-discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, struct sized_buffer *token)
+discord_adapter_init(struct discord_adapter *adapter, struct logconf *conf, struct sized_buffer *token)
 {
-  adapter->ua = ua_init(config);
+  adapter->ua = ua_init(conf);
   ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
 
   adapter->ratelimit = calloc(1, sizeof *adapter->ratelimit);
@@ -20,11 +20,10 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *config, st
     ERR("Couldn't initialize pthread mutex");
 
   if (!token->size) { // is a webhook only client
-    logconf_add_id(config, adapter->ua, "DISCORD_WEBHOOK");
+    logconf_branch(&adapter->conf, conf, "DISCORD_WEBHOOK");
     return; /* EARLY RETURN */
   }
-
-  logconf_add_id(config, adapter->ua, "DISCORD_HTTP");
+  logconf_branch(&adapter->conf, conf, "DISCORD_HTTP");
 
   char auth[128];
   int ret = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
@@ -55,7 +54,7 @@ json_error_cb(char *str, size_t len, void *p_adapter)
 
   json_extract(str, len, "(message):.*s (code):d", 
       sizeof(message), message, &adapter->err.jsoncode);
-  log_error(ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
+  logconf_error(&adapter->conf, ANSICOLOR("(JSON Error %d) %s", ANSI_BG_RED)
             " - See Discord's JSON Error Codes\n\t\t%.*s",
             adapter->err.jsoncode, message, (int)len, str);
 
@@ -126,12 +125,12 @@ discord_adapter_run(
             break;
         case HTTP_UNAUTHORIZED:
             keepalive = false;
-            log_fatal("UNAUTHORIZED: Please provide a valid authentication token");
+            logconf_fatal(&adapter->conf, "UNAUTHORIZED: Please provide a valid authentication token");
             code = ORCA_DISCORD_BAD_AUTH;
             break;
         case HTTP_METHOD_NOT_ALLOWED:
             keepalive = false;
-            log_fatal("METHOD_NOT_ALLOWED: The server couldn't recognize the received HTTP method");
+            logconf_fatal(&adapter->conf, "METHOD_NOT_ALLOWED: The server couldn't recognize the received HTTP method");
             break;
         case HTTP_TOO_MANY_REQUESTS: {
             char message[256]="";
@@ -143,7 +142,7 @@ discord_adapter_run(
                         message, &retry_after);
 
             if (retry_after >= 0) { // retry after attribute received
-              log_warn("GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
+              logconf_warn(&adapter->conf, "GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
               ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
             }
             else { // no retry after included, we should abort

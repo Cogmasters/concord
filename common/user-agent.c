@@ -15,7 +15,7 @@
 
 #define CURLE_CHECK(conn, ecode)                           \
   VASSERT_S(CURLE_OK == ecode, "[%s] (CURLE code: %d) %s", \
-      conn->tag,                                           \
+      conn->conf->id,                                      \
       ecode,                                               \
       IS_EMPTY_STRING(conn->errbuf)                        \
         ? curl_easy_strerror(ecode)                        \
@@ -50,10 +50,9 @@ struct user_agent {
     uint64_t        blockuntil_tstamp; ///< lock every active conn from conn_pool until timestamp
     pthread_mutex_t lock;
   } *shared;
-  /**
-   * struct used for logging
-   */
-  struct logconf *p_config;
+
+  struct logconf conf; ///< used for logging
+
   /**
    * user arbitrary data accessed by setopt_cb
    * @see ua_curl_easy_setopt()
@@ -73,6 +72,7 @@ struct user_agent {
 };
 
 struct _ua_conn {
+  struct logconf *conf; // ptr to struct user_agent conf
   struct ua_info info;
   /** 
    * the curl's easy handle used to perform requests
@@ -88,10 +88,6 @@ struct _ua_conn {
    * @see https://curl.se/libcurl/c/CURLOPT_ERRORBUFFER.html
    */
   char errbuf[CURL_ERROR_SIZE];
-  /**
-   * unique identification tag for logging purposes
-   */
-  char tag[32];
 };
 
 const char*
@@ -261,7 +257,7 @@ ua_reqheader_del(struct user_agent *ua, const char field[])
     node = node->next;
   } while (node != NULL);
 
-  log_warn("[%s] Couldn't find field '%s' in existing request header", logconf_tag(ua->p_config, ua), field);
+  logconf_warn(&ua->conf, "Couldn't find field '%s' in existing request header", field);
 }
 
 char*
@@ -271,7 +267,7 @@ ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize)
   size_t ret=0;
   while (NULL != node) {
     ret += snprintf(buf+ret, bufsize-ret, "%s\r\n", node->data);
-    VASSERT_S(ret < bufsize, "[%s] Out of bounds write attempt", logconf_tag(ua->p_config, ua));
+    VASSERT_S(ret < bufsize, "[%s] Out of bounds write attempt", ua->conf.id);
     node = node->next;
   }
   if (!ret) return NULL;
@@ -369,7 +365,7 @@ static struct _ua_conn*
 conn_init(struct user_agent *ua)
 {
   struct _ua_conn *new_conn = calloc(1, sizeof(struct _ua_conn));
-  snprintf(new_conn->tag, sizeof(new_conn->tag), "%s#%zu", logconf_tag(ua->p_config, ua), ua->conn->amt);
+  new_conn->conf = &ua->conf;
 
   CURL *new_ehandle = curl_easy_init(); // will be assigned to new_conn
 
@@ -451,14 +447,14 @@ get_conn(struct user_agent *ua)
                         ua->conn->amt * sizeof *ua->conn->pool);
     ret_conn = ua->conn->pool[ua->conn->amt-1] = conn_init(ua);
   }
-  VASSERT_S(NULL != ret_conn, "[%s] (Internal error) Couldn't fetch conn", logconf_tag(ua->p_config, ua));
+  VASSERT_S(NULL != ret_conn, "[%s] (Internal error) Couldn't fetch conn", ua->conf.id);
   ret_conn->is_busy = true;
   pthread_mutex_unlock(&ua->shared->lock);
   return ret_conn;
 }
 
 struct user_agent*
-ua_init(struct logconf *config) 
+ua_init(struct logconf *conf) 
 {
   struct user_agent *new_ua = calloc(1, sizeof *new_ua);
   new_ua->conn = calloc(1, sizeof *new_ua->conn);
@@ -469,11 +465,12 @@ ua_init(struct logconf *config)
   ua_reqheader_add(new_ua, "Content-Type", "application/json");
   ua_reqheader_add(new_ua, "Accept", "application/json");
 
-  logconf_add_id(config, new_ua, "USER_AGENT");
-  new_ua->p_config = config;
+  logconf_branch(&new_ua->conf, conf, "USER_AGENT");
 
-  if (pthread_mutex_init(&new_ua->shared->lock, NULL))
-    ERR("[%s] Couldn't initialize mutex", logconf_tag(new_ua->p_config, new_ua));
+  if (pthread_mutex_init(&new_ua->shared->lock, NULL)) {
+    logconf_fatal(&new_ua->conf, "Couldn't initialize mutex");
+    ABORT();
+  }
 
   new_ua->is_original = true;
 
@@ -527,6 +524,7 @@ ua_cleanup(struct user_agent *ua)
 
     pthread_mutex_destroy(&ua->shared->lock);
     free(ua->shared);
+    logconf_cleanup(&ua->conf);
   }
 
   free(ua);
@@ -581,7 +579,8 @@ set_method(
       curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "PUT");
       break;
   default:
-      ERR("[%s] Unknown http method (code: %d)", conn->tag, method);
+      logconf_fatal(conn->conf, "Unknown http method (code: %d)", method);
+      ABORT();
   }
   
   //set ptr to payload that will be sent via POST/PUT/PATCH
@@ -617,7 +616,7 @@ set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list a
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url.start);
   CURLE_CHECK(conn, ecode);
 
-  log_trace("[%s] Request URL: %s", conn->tag, conn->info.req_url.start);
+  logconf_trace(conn->conf, "Request URL: %s", conn->info.req_url.start);
 }
 
 static int
@@ -650,10 +649,9 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
   ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
   CURLE_CHECK(conn, ecode);
 
-  log_http(
-    ua->p_config, 
+  logconf_http(
+    &ua->conf, 
     &conn->info.loginfo,
-    ua,
     resp_url, 
     (struct sized_buffer){conn->info.resp_header.buf, conn->info.resp_header.length},
     (struct sized_buffer){conn->info.resp_body.buf, conn->info.resp_body.length},
@@ -674,8 +672,7 @@ perform_request(
 
   /* triggers response related callbacks */
   if (conn->info.httpcode >= 500 && conn->info.httpcode < 600) {
-    log_error("[%s] "ANSICOLOR("SERVER ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->tag,
+    logconf_error(conn->conf, ANSICOLOR("SERVER ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->info.httpcode,
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
@@ -699,8 +696,7 @@ perform_request(
     return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 400) {
-    log_error("[%s] "ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->tag,
+    logconf_error(conn->conf, ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->info.httpcode,
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
@@ -724,8 +720,7 @@ perform_request(
     return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 300) {
-    log_warn("[%s] "ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->tag,
+    logconf_warn(conn->conf, ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->info.httpcode,
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
@@ -733,8 +728,7 @@ perform_request(
     return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 200) {
-    log_info("[%s] "ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->tag,
+    logconf_info(conn->conf, ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->info.httpcode,
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
@@ -758,8 +752,7 @@ perform_request(
     return ORCA_OK;
   }
   if (conn->info.httpcode >= 100) {
-    log_info("[%s] "ANSICOLOR("INFO", ANSI_FG_GRAY)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->tag,
+    logconf_info(conn->conf, ANSICOLOR("INFO", ANSI_FG_GRAY)" (%d)%s - %s [@@@_%zu_@@@]",
         conn->info.httpcode,
         http_code_print(conn->info.httpcode),
         http_reason_print(conn->info.httpcode),
@@ -767,11 +760,10 @@ perform_request(
     return conn->info.httpcode;
   }
   if (!conn->info.httpcode) {
-    log_error("[%s] No http response received by libcurl", 
-        conn->tag);
+    logconf_error(conn->conf, "No http response received by libcurl");
     return ORCA_NO_RESPONSE;
   }
-  log_error("[%s] Unusual HTTP response code: %d", conn->tag, conn->info.httpcode);
+  logconf_error(conn->conf, "Unusual HTTP response code: %d", conn->info.httpcode);
   return ORCA_UNUSUAL_HTTP_CODE;
 }
 
@@ -805,19 +797,16 @@ ua_vrun(
   char buf[1024]="";
   ua_reqheader_str(ua, buf, sizeof(buf));
 
-  log_http(
-    ua->p_config, 
+  logconf_http(
+    &ua->conf, 
     &conn->info.loginfo,
-    ua,
     conn->info.req_url.start, 
     (struct sized_buffer){buf, sizeof(buf)},
     *req_body,
     "HTTP_SEND_%s", method_str);
 
-  log_trace("[%s] "ANSICOLOR("SEND", ANSI_FG_GREEN)" %s [@@@_%zu_@@@]", 
-      conn->tag,
-      method_str,
-      conn->info.loginfo.counter);
+  logconf_trace(conn->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" %s [@@@_%zu_@@@]", 
+      method_str, conn->info.loginfo.counter);
 
   set_method(ua, conn, http_method, req_body); //set the request method
   ORCAcode code = perform_request(ua, conn, resp_handle);

@@ -27,7 +27,7 @@ ORCAcode
 discord_get_gateway(struct discord *client, struct sized_buffer *p_json)
 {
   if (!p_json) {
-    log_error("Missing 'p_json'");
+    logconf_error(client->conf, "Missing 'p_json'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -46,7 +46,7 @@ ORCAcode
 discord_get_gateway_bot(struct discord *client, struct sized_buffer *p_json)
 {
   if (!p_json) {
-    log_error("Missing 'p_json'");
+    logconf_error(client->conf, "Missing 'p_json'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -104,7 +104,7 @@ send_resume(struct discord_gateway *gw)
   struct ws_info info={0};
   ws_send_text(gw->ws, &info, payload, ret);
 
-  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" RESUME (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
+  logconf_info(&gw->conf, ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" RESUME (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
 }
 
 static void
@@ -130,7 +130,7 @@ send_identify(struct discord_gateway *gw)
   struct ws_info info={0};
   ws_send_text(gw->ws, &info, payload, ret);
 
-  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" IDENTIFY (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
+  logconf_info(&gw->conf, ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" IDENTIFY (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
   
   //get timestamp for this identify
   gw->session.identify_tstamp = ws_timestamp(gw->ws);
@@ -728,7 +728,7 @@ dispatch_run(void *p_cxt)
   if (pthread_detach(cxt->tid))
     ERR("Couldn't detach thread");
 
-  log_info("Thread "ANSICOLOR("starts", ANSI_FG_RED)" to serve %s",
+  logconf_info(&cxt->p_gw->conf, "Thread "ANSICOLOR("starts", ANSI_FG_RED)" to serve %s",
            cxt->event_name);
 
   (*cxt->on_event)(cxt->p_gw, &cxt->data);
@@ -739,7 +739,7 @@ dispatch_run(void *p_cxt)
       &cxt->p_gw->sb_bot, 
       &cxt->data);
 
-  log_info("Thread "ANSICOLOR("exits", ANSI_FG_RED)" from serving %s",
+  logconf_info(&cxt->p_gw->conf, "Thread "ANSICOLOR("exits", ANSI_FG_RED)" from serving %s",
            cxt->event_name);
 
   free(cxt->event_name);
@@ -773,7 +773,7 @@ on_dispatch(struct discord_gateway *gw)
   enum discord_gateway_events event = get_dispatch_event(gw->payload->event_name);
   switch(event) {
   case DISCORD_GATEWAY_EVENTS_READY:
-      log_info("Succesfully started a Discord session!");
+      logconf_info(&gw->conf, "Succesfully started a Discord session!");
       json_extract(gw->payload->event_data.start, gw->payload->event_data.size, "(session_id):s", gw->session_id);
       ASSERT_S(!IS_EMPTY_STRING(gw->session_id), "Missing session_id from READY event");
 
@@ -783,7 +783,7 @@ on_dispatch(struct discord_gateway *gw)
         on_event = &on_ready;
       break;
   case DISCORD_GATEWAY_EVENTS_RESUMED:
-      log_info("Succesfully resumed a Discord session!");
+      logconf_info(&gw->conf, "Succesfully resumed a Discord session!");
       gw->status->is_ready = true;
       gw->reconnect->attempt = 0;
       /// @todo add callback
@@ -968,7 +968,7 @@ on_dispatch(struct discord_gateway *gw)
       /// @todo implement
       break;
   default:
-      log_warn("Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
+      logconf_warn(&gw->conf, "Expected unimplemented GATEWAY_DISPATCH event (code: %d)", event);
       break;
   }
 
@@ -1022,9 +1022,9 @@ on_invalid_session(struct discord_gateway *gw)
   gw->reconnect->enable = true;
 
   if (gw->status->is_resumable)
-    log_info("Session is resumable");
+    logconf_info(&gw->conf, "Session is resumable");
   else
-    log_info("Session is not resumable");
+    logconf_info(&gw->conf, "Session is not resumable");
 
   ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }
@@ -1044,12 +1044,14 @@ on_heartbeat_ack(struct discord_gateway *gw)
 {
   // get request / response interval in milliseconds
   gw->hbeat->ping_ms = cee_timestamp_ms() - gw->hbeat->tstamp;
-  log_trace("PING: %d ms", gw->hbeat->ping_ms);
+  logconf_trace(&gw->conf, "PING: %d ms", gw->hbeat->ping_ms);
 }
 
 static void
-on_connect_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *ws_protocols) {
-  log_info("Connected, WS-Protocols: '%s'", ws_protocols);
+on_connect_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *ws_protocols) 
+{
+  struct discord_gateway *gw = p_gw;
+  logconf_info(&gw->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
 static void
@@ -1058,11 +1060,11 @@ on_close_cb(void *p_gw, struct websockets *ws, struct ws_info *info, enum ws_clo
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode = (enum discord_gateway_close_opcodes)wscode;
 
-  log_warn(ANSICOLOR("CLOSE %s",ANSI_FG_RED)" (code: %4d, %zu bytes): '%.*s'", 
+  logconf_warn(&gw->conf, ANSICOLOR("CLOSE %s",ANSI_FG_RED)" (code: %4d, %zu bytes): '%.*s'", 
       close_opcode_print(opcode), opcode, len, (int)len, reason);
 
   if (gw->status->shutdown) {
-    log_warn("Gateway was shutdown");
+    logconf_warn(&gw->conf, "Gateway was shutdown");
     gw->reconnect->enable = false;
     gw->status->is_resumable = false;
     return;
@@ -1082,7 +1084,7 @@ on_close_cb(void *p_gw, struct websockets *ws, struct ws_info *info, enum ws_clo
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-      log_warn("Gateway was shutdown");
+      logconf_warn(&gw->conf, "Gateway was shutdown");
       gw->status->is_resumable = false;
       gw->reconnect->enable = false;
       break;
@@ -1094,13 +1096,13 @@ on_close_cb(void *p_gw, struct websockets *ws, struct ws_info *info, enum ws_clo
 #endif
       }
       else {
-        log_warn("Gateway will attempt to reconnect and start a new session");
+        logconf_warn(&gw->conf, "Gateway will attempt to reconnect and start a new session");
         gw->status->is_resumable = false;
         gw->reconnect->enable = true;
       }
       break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
-      log_warn("Gateway will attempt to reconnect and resume current session");
+      logconf_warn(&gw->conf, "Gateway will attempt to reconnect and resume current session");
       gw->reconnect->enable = true;
       gw->status->is_resumable = false;
       break;
@@ -1124,7 +1126,7 @@ on_text_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *
     gw->payload->seq = seq;
   }
 
-  log_trace(ANSICOLOR("RCV", ANSI_FG_BRIGHT_YELLOW)" %s%s%s (%zu bytes) [@@@_%zu_@@@]", 
+  logconf_trace(&gw->conf, ANSICOLOR("RCV", ANSI_FG_BRIGHT_YELLOW)" %s%s%s (%zu bytes) [@@@_%zu_@@@]", 
             opcode_print(gw->payload->opcode), 
             (*gw->payload->event_name) ? " -> " : "",
             gw->payload->event_name,
@@ -1148,7 +1150,7 @@ on_text_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *
       on_heartbeat_ack(gw);
       break;
   default:
-      log_error("Not yet implemented Gateway Event (code: %d)", gw->payload->opcode);
+      logconf_error(&gw->conf, "Not yet implemented Gateway Event (code: %d)", gw->payload->opcode);
       break;
   }
 }
@@ -1166,7 +1168,7 @@ send_heartbeat(struct discord_gateway *gw)
   struct ws_info info={0};
   ws_send_text(gw->ws, &info, payload, ret);
 
-  log_info(ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
+  logconf_info(&gw->conf, ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter);
 }
 
 static void noop_idle_cb(struct discord *a, const struct discord_user *b)
@@ -1177,7 +1179,7 @@ static enum discord_event_handling_mode noop_event_handler(struct discord *a, st
 { return DISCORD_EVENT_MAIN_THREAD; }
 
 void
-discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct sized_buffer *token)
+discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct sized_buffer *token)
 {
   struct ws_callbacks cbs = {
     .data = gw,
@@ -1186,8 +1188,8 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
     .on_close = &on_close_cb
   };
 
-  gw->ws = ws_init(&cbs, config);
-  logconf_add_id(config, gw->ws, "DISCORD_GATEWAY");
+  gw->ws = ws_init(&cbs, conf);
+  logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
   gw->reconnect = malloc(sizeof *gw->reconnect);
   gw->reconnect->enable = true;
@@ -1225,7 +1227,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *config, struct 
     sb_discord_get_current_user(_CLIENT(gw), &gw->sb_bot);
   }
 
-  struct sized_buffer default_prefix = logconf_get_field(config, "discord.default_prefix");
+  struct sized_buffer default_prefix = logconf_get_field(conf, "discord.default_prefix");
   if (default_prefix.size) {
     bool enable_prefix=false;
     static char prefix[64]="";
@@ -1278,7 +1280,7 @@ event_loop(struct discord_gateway *gw)
   // get gateway bot info
   struct sized_buffer json={0};
   if (discord_get_gateway_bot(_CLIENT(gw), &json)) {
-    log_fatal("Couldn't retrieve Gateway Bot information");
+    logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
     return ORCA_DISCORD_BAD_AUTH;
   }
 
@@ -1302,7 +1304,7 @@ event_loop(struct discord_gateway *gw)
   ws_start(gw->ws);
 
   if (!gw->session.start_limit.remaining) {
-    log_fatal("Reach sessions threshold (%d),"
+    logconf_fatal(&gw->conf, "Reach sessions threshold (%d),"
               "Please wait %d seconds and try again",
               gw->session.start_limit.total, gw->session.start_limit.reset_after/1000);
     return ORCA_DISCORD_RATELIMIT;
@@ -1342,21 +1344,18 @@ discord_gateway_run(struct discord_gateway *gw)
     code = event_loop(gw);
     if (code != ORCA_OK) return code;
 
-    log_debug("after event_loop: "
-              "reconnect->attempt:%d, reconnect->enable:%d, status->is_resumable:%d",
-              gw->reconnect->attempt, gw->reconnect->enable, gw->status->is_resumable);
     if (!gw->reconnect->enable) {
-      log_warn("Discord Gateway Shutdown");
+      logconf_warn(&gw->conf, "Discord Gateway Shutdown");
       return code; /* EARLY RETURN */
     }
     ++gw->reconnect->attempt;
-    log_info("Reconnect attempt #%d", gw->reconnect->attempt);
+    logconf_info(&gw->conf, "Reconnect attempt #%d", gw->reconnect->attempt);
   }
   // reset if set
   gw->status->is_resumable = false;
   gw->reconnect->enable = false;
   gw->reconnect->attempt = 0;
-  log_fatal("Could not reconnect to Discord Gateway after %d tries",
+  logconf_fatal(&gw->conf, "Could not reconnect to Discord Gateway after %d tries",
             gw->reconnect->threshold);
   return ORCA_DISCORD_CONNECTION;
 }

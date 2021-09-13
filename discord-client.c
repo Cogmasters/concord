@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h> /* isgraph() */
+#include <errno.h>
 
 #include "discord.h"
 #include "discord-internal.h"
@@ -11,8 +12,8 @@
 static void
 _discord_init(struct discord *new_client)
 {
-  discord_adapter_init(&new_client->adapter, new_client->config, &new_client->token);
-  discord_gateway_init(&new_client->gw, new_client->config, &new_client->token);
+  discord_adapter_init(&new_client->adapter, new_client->conf, &new_client->token);
+  discord_gateway_init(&new_client->gw, new_client->conf, &new_client->token);
   discord_voice_connections_init(new_client);
   new_client->is_original = true;
 }
@@ -21,8 +22,8 @@ struct discord*
 discord_init(const char token[])
 {
   struct discord *new_client = calloc(1, sizeof *new_client);
-  new_client->config = calloc(1, sizeof *new_client->config);
-  logconf_setup(new_client->config, NULL);
+  new_client->conf = calloc(1, sizeof *new_client->conf);
+  logconf_setup(new_client->conf, "DISCORD", NULL);
 
   new_client->token = (struct sized_buffer){
     .start = (char*)token,
@@ -38,10 +39,16 @@ struct discord*
 discord_config_init(const char config_file[])
 {
   struct discord *new_client = calloc(1, sizeof *new_client);
-  new_client->config = calloc(1, sizeof *new_client->config);
-  logconf_setup(new_client->config, config_file);
+  new_client->conf = calloc(1, sizeof *new_client->conf);
 
-  new_client->token = logconf_get_field(new_client->config, "discord.token");
+  FILE *fp = fopen(config_file, "rb");
+  VASSERT_S(fp != NULL, "Couldn't open '%s': %s", config_file, strerror(errno));
+
+  logconf_setup(new_client->conf, "DISCORD", fp);
+
+  fclose(fp);
+
+  new_client->token = logconf_get_field(new_client->conf, "discord.token");
   if (STRNEQ("YOUR-BOT-TOKEN", new_client->token.start, new_client->token.size)) {
     memset(&new_client->token, 0, sizeof new_client->token);
 
@@ -70,10 +77,10 @@ void
 discord_cleanup(struct discord *client)
 {
   if (client->is_original) {
-    logconf_cleanup(client->config);
+    logconf_cleanup(client->conf);
     discord_adapter_cleanup(&client->adapter);
     discord_gateway_cleanup(&client->gw);
-    free(client->config);
+    free(client->conf);
   }
   else {
     ua_cleanup(client->adapter.ua);

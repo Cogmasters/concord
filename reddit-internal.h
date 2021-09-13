@@ -15,11 +15,12 @@
 
 struct reddit_adapter {
   struct user_agent *ua;
+  struct logconf conf;
   struct reddit *p_client;
 };
 
 /* ADAPTER PRIVATE FUNCTIONS */
-void reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *config);
+void reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *conf);
 void reddit_adapter_cleanup(struct reddit_adapter *adapter);
 
 ORCAcode reddit_adapter_run(
@@ -35,7 +36,7 @@ struct reddit {
   struct sized_buffer client_secret;
 
   struct reddit_adapter adapter;
-  struct logconf config;
+  struct logconf conf;
 };
 
 #endif // REDDIT_INTERNAL_H
