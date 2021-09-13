@@ -40,28 +40,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: ./orca-docs/docs/build/html
-
-  test-build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Dependencies
-        run: |
-          echo "Installing build-essential and wget"
-          sudo apt-get install -y build-essential wget
-          echo "Installing libcurl and libssl"
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev
-
-      - name: Run Makefile
-        run: |
-          echo "Cleanup existing files to start fresh"
-          make purge
-          echo "Generating specs code"
-          make specs_gen
-          echo "Building"
-          make all
-          echo "Building example bots"
-          make examples
-          echo "Building test files"
-          make test

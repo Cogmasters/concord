@@ -1,0 +1,40 @@
+name: test build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Dependencies
+        run: |
+          echo "Installing build-essential and wget"
+          sudo apt-get install -y build-essential wget
+          echo "Installing libcurl and libssl"
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev
+
+      - name: Run Makefile
+        run: |
+          echo "Cleanup"
+          make purge
+          echo "Generating specs code"
+          make specs_gen
+          echo "Building"
+          make all
+          echo "Building example bots"
+          make examples
+          echo "Building test files"
+          make test
+
+      - name: Run Makefile with parallelism
+        run: |
+          echo "Cleanup"
+          make clean
+          echo "Building with parallelism"
+          make examples -j$(nproc)
+          make test -j$(nproc)
