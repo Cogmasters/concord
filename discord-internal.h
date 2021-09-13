@@ -312,7 +312,7 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  * Used to access/perform public functions from discord.h 
  *
  * - Initializer:
- *   - discord_init(), discord_conf_init()
+ *   - discord_init(), discord_config_init()
  * - Cleanup:
  *   - discord_cleanup()
  *
