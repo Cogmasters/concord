@@ -2,9 +2,9 @@
 
 Some basic things you should have covered before proceeding:
 
-1. Make sure you have all of the necessary dependencies. The dependencies can be found at the [Build Instructions](/README.md#build-instructions).
-2. You should have a bot token. If you do not then [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by assigning it to discord's "token" field.
-3. Make sure `my_bot/` is your working directory, here you have the option to edit `myBot.c` or start your own `.c` file from scratch.
+1. All of the necessary dependencies. The dependencies can be found at the [Build Instructions](/README.md#build-instructions).
+2. A bot token. [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token) has instructions on how to get one. Add your token to `config.json` by assigning it to discord's "token" field.
+3. `my_bot/` is your working directory. Here you have the option of editing `myBot.c` or start one from scratch.
 
 
 # Ping-Pong Bot Source Code
@@ -103,29 +103,28 @@ discord_run(client);
 ```
 
 ### [discord\_set\_on\_ready()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_ready)
-`discord_set_on_ready(struct discord*, discord_on_idle_cb*)`: calls `on_ready` callback when the connection is succesfully established
+`discord_set_on_ready(struct discord*, discord_idle_cb*)`: calls `on_ready` callback when the connection is succesfully established
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|struct discord| the client stucture |
-|discord\_on\_idle\_cb \*callback| the callback to run when the READY event is triggered |
+|[struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)| the client stucture |
+|[discord\_idle\_cb](https://cee-studio.github.io/orca/apis/discord.html#c.discord_idle_cb)\*| the callback to run when the READY event is triggered |
 
 ### [discord\_set\_on\_command()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_command)
 `discord_set_on_command(struct discord*, char[], discord_message_cb*)`: runs callback when a command prefix is detected on chat
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|struct discord| the client stucture |
+|[struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)| the client stucture |
 |char[]| The chat command expected to trigger a callback response |
-|discord\_message\_cb\*| the message type function callback to run when its corresponding event is triggered (see discord-common.h for discord\_message\_cb definitions) |
+|[discord\_message\_cb](https://cee-studio.github.io/orca/apis/discord.html#c.discord_message_cb)\*| the message type function callback to run when its corresponding event is triggered |
 
 ### [discord\_run()](https://cee-studio.github.io/orca/apis/discord.html#c.discord_run)
 `discord_run(struct discord*)`: establishes a connection to Discord, run until error or shutdown
 
 |Member Parameters|Description                |
 |:----------------|:--------------------------|
-|struct discord| the client stucture  |
-
+|[struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)| the client stucture |
 
 ## Clean up the bot
 
@@ -141,7 +140,7 @@ discord_cleanup(client);
 ```bash
 $ make
 ```
-*Note: The preset Makefile will separately compile each file from the `my_bot` folder that has a `.c` extension.* 
+*Note: The preset Makefile will separately compile each file from the `my_bot` folder with `.c` extension.* 
 
 ## Execute the bot
 
@@ -153,8 +152,8 @@ $ ./myBot.out
 
 ### Test the bot
 
-By heading to a channel of which your bot has access and then type "ping" or "pong".
+By heading to a channel your bot has access to and then type "ping" or "pong".
 
 ### Terminate the bot
 
-With `Ctrl-C` or by closing the Terminal.
+With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
