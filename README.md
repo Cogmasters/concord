@@ -17,7 +17,7 @@
 Orca is implemented in plain C, its symbols are organized to be easily matched to the documentation of the API being covered.
 
 This is done in order to:
-* Reduce the need of thoroughly documenting every Orca API
+* Minimize the need of thoroughly documenting every Orca API.
 * Reduce our user's cognitive burden of having to read both Orca API documentation and supported REST API documentations. 
 * The codebase becomes easier to navigate.
 
@@ -25,16 +25,14 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 
 ### Design
 
-- Easy to reason about the code: we use the most native data structures,
+- Easy to reason about the code: the most native data structures,
    the simplest algorithms, and intuitive interfaces.
 
 - Easy to debug (networking and logic) errors: extensive assertion 
   and logging facilities.
 
-- Easy to use for the end users: we provide internal synchronization
-  so that the user may provide scalability to his applications without
-  having to excessively worry about race-conditions. All transfers made
-  with Orca are thread-safe by nature.
+- Easy to use for the end users: highly scalable, all transfers made with
+  Orca are thread-safe.
 
 ### Minimal example
 
@@ -54,7 +52,7 @@ void on_message(
   const struct discord_user *bot, 
   const struct discord_message *msg)
 {
-  // if message content equals "ping", then reply with "pong"
+  // if message content equals 'ping', then bot responds with 'pong'
   if (0 == strcmp(msg->content, "ping")) {
     struct discord_create_message_params params = { .content = "pong" };
     discord_create_message(client, msg->channel_id, &params, NULL);
@@ -68,7 +66,7 @@ int main() {
   discord_run(client);
 }
 ```
-*This is a minimalistic example, refer to `examples/` for a better overview.*
+*This is a minimalistic example, refer to [`examples/`](examples/) for a better overview.*
 
 ## Build Instructions
 
@@ -76,7 +74,7 @@ int main() {
 
 * Install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 * **Make sure you are in your Linux $HOME folder before proceeding!**
-* Continue on to [On Linux](#on-linux) and follow your distro's building steps.
+* Continue to [On Linux](#on-linux) and follow your distro's building steps.
 
 ### On Linux
 
@@ -139,30 +137,37 @@ The following outlines the default fields of `config.json`
    well written instructions from the 
    [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
    about how to get your bot token and adding it to a server.
-2. Run `make examples`
-3. Go to the `examples/` folder and run `./bot-echo.out`
+2. Build example executables:
+   ```bash
+   $ make examples
+   ```
+3. Run Echo-Bot:
+   ```bash
+   $ cd examples
+   $ ./bot-echo.out
+   ```
 
 #### Get Echo-Bot Response
 
-Type a message in any channel the bot has access to, the bot should echo it.
+Type a message in any channel the bot is part of and the bot should send an echo response in return.
 
 #### Terminate Echo-Bot
 
-With `Ctrl-C` or by closing the Terminal.
+With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
 ### Create your first bot
 
-* Head to `my_bot/`, a special folder set-up for your convenience. There you will also find a preset `Makefile` and `myBot.c` that can be edited at will.
-* Read our guide on how to [build your first bot](docs/BUILDING_A_BOT.md).
+* Head to `my_bot/`, a special folder set-up for your convenience that may be modified freely.
+* Read our guide for [building your first bot](docs/BUILDING_A_BOT.md).
 
 ## Installing orca
 
-In case the `my_bot/` folder doesn't cut the cake, its possible to install orca as follows:
+Orca can be installed in case developing inside of `my_bot/` doesn't suit your needs:
 ```bash
 $ sudo make install
 ```
 
-Installed headers must be prefixed with `orca/` like so:
+Included headers must be `orca/` prefixed:
 ```c
 #include <orca/discord.h>
 #include <orca/github.h>
@@ -188,7 +193,7 @@ $ valgrind ./myBot.out
 ## Links
 
 - [Documentation](https://cee-studio.github.io/orca/)
-- [Create your first bot](docs/BUILDING_A_BOT.md)
+- [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Contributing](docs/CONTRIBUTING.md)
 - [Discord Server](https://discord.gg/2jfycwXVM3)
 - [Debbuging with SaiphC](docs/SAIPHC.md)
