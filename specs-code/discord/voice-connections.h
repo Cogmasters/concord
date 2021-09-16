@@ -18,36 +18,36 @@
 
  *     **Methods**
 
- *   * :code:`char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes code)`
- *   * :code:`enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char *code_as_str)`
+ *   * :code:`char* discord_voice_close_event_codes_print(enum discord_voice_close_event_codes code)`
+ *   * :code:`enum discord_voice_close_event_codes discord_voice_close_event_codes_eval(char *code_as_str)`
  * @endverbatim
  */
-enum discord_voice_close_opcodes {
-  DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE = 4001,
-  DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR = 4002,
-  DISCORD_VOICE_CLOSE_REASON_NOT_AUTHENTICATED = 4003,
-  DISCORD_VOICE_CLOSE_REASON_AUTHENTICATION_FAILED = 4004,
-  DISCORD_VOICE_CLOSE_REASON_ALREADY_AUTHENTICATED = 4005,
-  DISCORD_VOICE_CLOSE_REASON_INVALID_SESSION = 4006,
-  DISCORD_VOICE_CLOSE_REASON_SESSION_TIMED_OUT = 4009,
-  DISCORD_VOICE_CLOSE_REASON_SERVER_NOT_FOUND = 4011,
-  DISCORD_VOICE_CLOSE_REASON_UNKNOWN_PROTOCOL = 4012,
-  DISCORD_VOICE_CLOSE_REASON_DISCONNECTED = 4014,
-  DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH = 4015,
-  DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE = 4016,
+enum discord_voice_close_event_codes {
+  DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_OPCODE = 4001,
+  DISCORD_VOICE_CLOSE_EVENT_DECODE_ERROR = 4002,
+  DISCORD_VOICE_CLOSE_EVENT_NOT_AUTHENTICATED = 4003,
+  DISCORD_VOICE_CLOSE_EVENT_AUTHENTICATION_FAILED = 4004,
+  DISCORD_VOICE_CLOSE_EVENT_ALREADY_AUTHENTICATED = 4005,
+  DISCORD_VOICE_CLOSE_EVENT_INVALID_SESSION = 4006,
+  DISCORD_VOICE_CLOSE_EVENT_SESSION_TIMED_OUT = 4009,
+  DISCORD_VOICE_CLOSE_EVENT_SERVER_NOT_FOUND = 4011,
+  DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_PROTOCOL = 4012,
+  DISCORD_VOICE_CLOSE_EVENT_DISCONNECTED = 4014,
+  DISCORD_VOICE_CLOSE_EVENT_SERVER_CRASH = 4015,
+  DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_ENCRYPTION_MODE = 4016,
 };
-extern char* discord_voice_close_opcodes_print(enum discord_voice_close_opcodes);
-extern enum discord_voice_close_opcodes discord_voice_close_opcodes_eval(char*);
-extern void discord_voice_close_opcodes_list_free_v(void **p);
-extern void discord_voice_close_opcodes_list_free(enum discord_voice_close_opcodes **p);
-extern void discord_voice_close_opcodes_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_voice_close_opcodes_list_from_json(char *str, size_t len, enum discord_voice_close_opcodes ***p);
-extern size_t discord_voice_close_opcodes_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_voice_close_opcodes_list_to_json(char *str, size_t len, enum discord_voice_close_opcodes **p);
+extern char* discord_voice_close_event_codes_print(enum discord_voice_close_event_codes);
+extern enum discord_voice_close_event_codes discord_voice_close_event_codes_eval(char*);
+extern void discord_voice_close_event_codes_list_free_v(void **p);
+extern void discord_voice_close_event_codes_list_free(enum discord_voice_close_event_codes **p);
+extern void discord_voice_close_event_codes_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_close_event_codes_list_from_json(char *str, size_t len, enum discord_voice_close_event_codes ***p);
+extern size_t discord_voice_close_event_codes_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_close_event_codes_list_to_json(char *str, size_t len, enum discord_voice_close_event_codes **p);
 
 
 // Voice Opcodes
-// defined at specs/discord/voice-connections.json:26:5
+// defined at specs/discord/voice-connections.json:27:5
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
  *
@@ -87,7 +87,7 @@ extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum dis
 
 
 // Voice Speaking Flags
-// defined at specs/discord/voice-connections.json:46:5
+// defined at specs/discord/voice-connections.json:48:5
 /**
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  *

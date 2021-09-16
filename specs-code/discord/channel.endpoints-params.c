@@ -49,7 +49,7 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(user_limit):d,"
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
                 "(permission_overwrites):F,"
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
@@ -100,8 +100,8 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->user_limit,
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
-                discord_channel_overwrite_list_from_json, &p->permission_overwrites,
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+                discord_overwrite_list_from_json, &p->permission_overwrites,
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 cee_strtoull, &p->parent_id,
@@ -174,7 +174,7 @@ static void discord_modify_channel_params_use_default_inject_settings(struct dis
     p->__M.arg_switches[8] = &p->user_limit;
 
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
   if (p->permission_overwrites != NULL)
     p->__M.arg_switches[9] = p->permission_overwrites;
 
@@ -243,7 +243,7 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(user_limit):d,"
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
                 "(permission_overwrites):F,"
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
@@ -292,8 +292,8 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->user_limit,
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
-                discord_channel_overwrite_list_to_json, p->permission_overwrites,
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+                discord_overwrite_list_to_json, p->permission_overwrites,
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
                 cee_ulltostr, &p->parent_id,
@@ -381,9 +381,9 @@ void discord_modify_channel_params_cleanup(struct discord_modify_channel_params 
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
   // p->user_limit is a scalar
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
   if (d->permission_overwrites)
-    discord_channel_overwrite_list_free(d->permission_overwrites);
+    discord_overwrite_list_free(d->permission_overwrites);
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
   // p->parent_id is a scalar
@@ -435,7 +435,7 @@ void discord_modify_channel_params_init(struct discord_modify_channel_params *p)
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0 }' */
 
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
 
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
@@ -498,7 +498,7 @@ void discord_create_message_params_from_json(char *json, size_t len, struct disc
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
                 "(embed):F,"
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
@@ -525,8 +525,8 @@ void discord_create_message_params_from_json(char *json, size_t len, struct disc
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
                 discord_embed_from_json, &p->embed,
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_from_json, &p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
                 discord_message_reference_from_json, &p->message_reference,
@@ -576,7 +576,7 @@ static void discord_create_message_params_use_default_inject_settings(struct dis
     p->__M.arg_switches[5] = p->payload_json;
 
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (p->allowed_mentions != NULL)
     p->__M.arg_switches[6] = p->allowed_mentions;
 
@@ -615,7 +615,7 @@ size_t discord_create_message_params_to_json(char *json, size_t len, struct disc
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
                 "(embed):F,"
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
@@ -640,8 +640,8 @@ size_t discord_create_message_params_to_json(char *json, size_t len, struct disc
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
                 discord_embed_to_json, p->embed,
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_to_json, p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_to_json, p->allowed_mentions,
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
                 discord_message_reference_to_json, p->message_reference,
@@ -717,9 +717,9 @@ void discord_create_message_params_cleanup(struct discord_create_message_params 
   if (d->payload_json)
     free(d->payload_json);
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (d->allowed_mentions) {
-    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    discord_allowed_mentions_cleanup(d->allowed_mentions);
     free(d->allowed_mentions);
   }
   /* specs/discord/channel.endpoints-params.json:43:20
@@ -759,7 +759,7 @@ void discord_create_message_params_init(struct discord_create_message_params *p)
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
 
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
 
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
@@ -1049,10 +1049,10 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
   discord_edit_channel_permissions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 "(allow):s_as_hex_uint,"
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 "(deny):s_as_hex_uint,"
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -1061,10 +1061,10 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
                 "@record_defined"
                 "@record_null",
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->allow,
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->deny,
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -1079,11 +1079,11 @@ static void discord_edit_channel_permissions_params_use_default_inject_settings(
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   p->__M.arg_switches[0] = &p->allow;
 
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   p->__M.arg_switches[1] = &p->deny;
 
   /* specs/discord/channel.endpoints-params.json:78:20
@@ -1098,20 +1098,20 @@ size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, s
   discord_edit_channel_permissions_params_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 "(allow):s_as_hex_uint,"
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 "(deny):s_as_hex_uint,"
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->allow,
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->deny,
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -1155,10 +1155,10 @@ size_t discord_edit_channel_permissions_params_list_to_json_v(char *str, size_t 
 
 void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *d) {
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   // p->allow is a scalar
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   // p->deny is a scalar
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -1168,10 +1168,10 @@ void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel
 void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *p) {
   memset(p, 0, sizeof(struct discord_edit_channel_permissions_params));
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
 
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
 
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -1219,10 +1219,10 @@ void discord_edit_message_params_from_json(char *json, size_t len, struct discor
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
                 "(flags):d,"
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -1243,11 +1243,11 @@ void discord_edit_message_params_from_json(char *json, size_t len, struct discor
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
                 &p->flags,
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_from_json, &p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-                discord_channel_attachment_list_from_json, &p->attachments,
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_attachment_list_from_json, &p->attachments,
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_from_json, &p->components,
@@ -1291,12 +1291,12 @@ static void discord_edit_message_params_use_default_inject_settings(struct disco
     p->__M.arg_switches[5] = p->payload_json;
 
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (p->allowed_mentions != NULL)
     p->__M.arg_switches[6] = p->allowed_mentions;
 
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (p->attachments != NULL)
     p->__M.arg_switches[7] = p->attachments;
 
@@ -1325,10 +1325,10 @@ size_t discord_edit_message_params_to_json(char *json, size_t len, struct discor
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
                 "(flags):d,"
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -1347,11 +1347,11 @@ size_t discord_edit_message_params_to_json(char *json, size_t len, struct discor
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
                 &p->flags,
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_to_json, p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_to_json, p->allowed_mentions,
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-                discord_channel_attachment_list_to_json, p->attachments,
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_attachment_list_to_json, p->attachments,
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_to_json, p->components,
@@ -1421,15 +1421,15 @@ void discord_edit_message_params_cleanup(struct discord_edit_message_params *d) 
   if (d->payload_json)
     free(d->payload_json);
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (d->allowed_mentions) {
-    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    discord_allowed_mentions_cleanup(d->allowed_mentions);
     free(d->allowed_mentions);
   }
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (d->attachments)
-    discord_channel_attachment_list_free(d->attachments);
+    discord_attachment_list_free(d->attachments);
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   if (d->components)
@@ -1457,10 +1457,10 @@ void discord_edit_message_params_init(struct discord_edit_message_params *p) {
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
 
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
 
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
 
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */

@@ -128,7 +128,7 @@ close_existing_sessions(
   /* @sqlite simply fetching a database row by the user_id should be enough to get a ongoing session */
 
   /* Check if user already has a session role assigned to */
-  NTL_T(struct discord_permissions_role) rls = NULL;
+  NTL_T(struct discord_role) rls = NULL;
   discord_get_guild_roles(client, guild_id, &rls);
 
   for (size_t i=0; rls[i]; ++i) {
@@ -152,7 +152,7 @@ close_existing_sessions(
     }
   }
 
-  discord_permissions_role_list_free(rls);
+  discord_role_list_free(rls);
 }
 
 u64_snowflake_t
@@ -172,15 +172,19 @@ create_session_channel(
     &params1.permission_overwrites,
     guild_id, // @everyone role id is the same as guild id
     0, // role type
-    DISCORD_PERMISSIONS_ZERO, //Allow
-    DISCORD_PERMISSIONS_ADD_REACTIONS | DISCORD_PERMISSIONS_VIEW_CHANNEL | DISCORD_PERMISSIONS_SEND_MESSAGES); //Deny
+    DISCORD_BITWISE_PERMISSION_ZERO, //Allow
+    DISCORD_BITWISE_PERMISSION_ADD_REACTIONS //Deny
+    | DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL 
+    | DISCORD_BITWISE_PERMISSION_SEND_MESSAGES);
 
   discord_overwrite_append(
     &params1.permission_overwrites,
     member->user->id,
     1, // user type
-    DISCORD_PERMISSIONS_ADD_REACTIONS | DISCORD_PERMISSIONS_VIEW_CHANNEL | DISCORD_PERMISSIONS_SEND_MESSAGES, //Allow
-    DISCORD_PERMISSIONS_ZERO); //Deny
+    DISCORD_BITWISE_PERMISSION_ADD_REACTIONS //Allow
+    | DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL 
+    | DISCORD_BITWISE_PERMISSION_SEND_MESSAGES,
+    DISCORD_BITWISE_PERMISSION_ZERO); //Deny
 
   discord_create_guild_channel(client, guild_id, &params1, &ch);
   
@@ -211,7 +215,7 @@ add_session_role(
   snprintf(text, sizeof(text), \
     "TMP%" PRIu64 "_%" PRIu64, member->user->id, channel_id);
 
-  struct discord_permissions_role ret_role={0};
+  struct discord_role ret_role={0};
   struct discord_create_guild_role_params params2 = {
     .name = text
   };

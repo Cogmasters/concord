@@ -23,20 +23,20 @@
         {"type":{"base":"int"}, "name":"afk_timeout"},
         {"type":{"base":"bool"}, "name":"widget_enabled", "option":true},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id", "option":true},
-        {"type":{"base":"int", "int_alias":"enum discord_guild_verification_level"}, "name":"verification_level"},
-        {"type":{"base":"int", "int_alias":"enum discord_guild_default_message_notification_level"}, 
+        {"type":{"base":"int", "int_alias":"enum discord_verification_level"}, "name":"verification_level"},
+        {"type":{"base":"int", "int_alias":"enum discord_default_message_notification_level"}, 
               "name":"default_message_notifications"},
-        {"type":{"base":"int", "int_alias":"enum discord_guild_explicit_content_filter_level"},
+        {"type":{"base":"int", "int_alias":"enum discord_explicit_content_filter_level"},
               "name":"explicit_content_filter"},
         {"type":{"base":"struct discord_permissions_role", "dec":"ntl"}, "name":"roles", "todo":true, 
               "comment":"array of role objects"},
         {"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"},
         {"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
               "comment":"array of guild feature strings"},
-        {"type":{"base":"int", "int_alias":"enum discord_guild_mfa_level"}, "name":"mfa_level"},
+        {"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"},
-        {"type":{"base":"int", "int_alias":"enum discord_guild_system_channel_flags"}, "name":"system_channel_flags"}, 
+        {"type":{"base":"int", "int_alias":"enum discord_system_channel_flags"}, "name":"system_channel_flags"}, 
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"},
         {"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true},
         {"type":{"base":"bool"}, "name":"large", "option":true},
@@ -54,7 +54,7 @@
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"vanity_url"},
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"description"}, 
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"banner"},
-        {"type":{"base":"int", "int_alias":"enum discord_guild_premium_tier"}, "name":"premium_tier"},
+        {"type":{"base":"int", "int_alias":"enum discord_premium_tier"}, "name":"premium_tier"},
         {"type":{"base":"int"}, "name":"premium_subscription_count", "option":true},
         {"type":{"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}, "name":"preferred_locale"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
@@ -62,13 +62,12 @@
         {"type":{"base":"int"}, "name":"max_video_channel_users", "option":true},
         {"type":{"base":"int"}, "name":"approximate_member_count", "option":true},
         {"type":{"base":"int"}, "name":"approximate_presence_count", "option":true},
-        {"type":{"base":"struct discord_guild_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}
+        {"type":{"base":"struct discord_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}
       ]
     },
     {
       "title":"Default Message Notification Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level",
-      "namespace": ["guild"],
       "enum": "default_message_notification_level",
       "items": [
         {"name":"ALL_MESSAGES", "value":0},
@@ -78,7 +77,6 @@
     {
       "title":"Explicit Content Filter Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level",
-      "namespace":["guild"],
       "enum": "explicit_content_filter_level",
       "items": [
         {"name":"DISABLED", "value":0},
@@ -89,7 +87,6 @@
     {
       "title": "MFA Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-mfa-level",
-      "namespace":["guild"],
       "enum": "mfa_level",
       "items": [
         {"name":"DISCORD_MFA_NONE", "value":0},
@@ -99,7 +96,6 @@
     {
       "title": "Verification Level",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-verification-level",
-      "namespace":["guild"],
       "enum": "verification_level",
       "items": [
         {"name":"DISCORD_VL_NONE", "value":0},
@@ -112,7 +108,6 @@
     {
       "title": "Premium Tier",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-premium-tier",
-      "namespace":["guild"],
       "enum": "premium_tier",
       "items": [
         {"name":"DISCORD_PREMIUM_NONE", "value":0},
@@ -124,7 +119,6 @@
     {
       "title":"System Channel Flags",
       "comment": "https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags",
-      "namespace":["guild"],
       "enum": "system_channel_flags",
       "items": [
         {"name":"SUPRESS_JOIN_NOTIFICATIONS", "value":1, "comment":"1<<0"},
@@ -157,8 +151,7 @@
     {
       "title":"Unavailable Guild Object",
       "comment": "https://discord.com/developers/docs/resources/guild#unavailable-guild-object",
-      "namespace":["guild"],
-      "struct": "unavailable",
+      "struct": "unavailable_guild",
       "fields": [
         {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
         {"name":"unavailable", "type":{"base":"bool"}}
@@ -213,7 +206,6 @@
     {
       "title":"Integration Structure",
       "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-structure",
-      "namespace": ["guild"],
       "struct":"integration",
       "fields":
       [
@@ -224,20 +216,20 @@
         { "name": "syncing", "type":{ "base":"bool"}},
         { "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
         { "name": "enable_emotions", "type":{ "base":"bool"}},
-        { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_guild_integration_expire_behaviors"}},
+        { "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_integration_expire_behaviors"}},
         { "name": "expire_grace_period", "type":{ "base":"int"}},
         { "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true},
-        { "name": "account", "type":{ "base":"struct discord_guild_integration_account", "dec":"*"}},
+        { "name": "account", "type":{ "base":"struct discord_integration_account", "dec":"*"}},
         { "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}},
         { "name": "subscriber_count", "type":{ "base":"int"}},
         { "name": "revoked", "type":{ "base":"bool"}},
-        { "name": "application", "type":{ "base":"struct discord_guild_integration_application", "dec":"*" }}
+        { "name": "application", "type":{ "base":"struct discord_integration_application", "dec":"*" }}
       ]
     },
     {
       "title": "Integration Expire Behaviors",
       "comment": "https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors",
-      "namespace": ["guild","integration"],
+      "namespace": ["integration"],
       "enum": "expire_behaviors",
       "items": [
         {"name":"REMOVE_ROLE", "value":0},
@@ -247,7 +239,7 @@
     {
       "title":"Integration Account Structure",
       "comment":"https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure",
-      "namespace": ["guild","integration"],
+      "namespace": ["integration"],
       "struct":"account",
       "fields": [
         { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -257,7 +249,7 @@
     {
       "title":"Integration Application Object",
       "comment":"https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure",
-      "namespace": ["guild","integration"],
+      "namespace": ["integration"],
       "struct":"application",
       "fields": [
         { "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
@@ -271,7 +263,6 @@
     {
       "title":"Ban Structure",
       "comment": "https://discord.com/developers/docs/resources/guild#ban-object",
-      "namespace": ["guild"],
       "struct":"ban",
       "fields":
       [
@@ -282,18 +273,17 @@
     {
       "title":"Welcome Screen Structure",
       "comment":"https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure",
-      "namespace":["guild"],
       "struct":"welcome_screen",
       "fields":
       [
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "welcome_channels", "type":{ "base":"struct discord_guild_welcome_screen_channel", "dec":"ntl" }, "todo":false }
+        { "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "todo":false }
       ]
     },
     {
       "title":"Welcome Screen Channel Structure",
       "comment":"https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure",
-      "namespace":["guild","welcome_screen"],
+      "namespace":["welcome_screen"],
       "struct":"channel",
       "fields":
       [

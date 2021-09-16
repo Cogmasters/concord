@@ -59,8 +59,8 @@
       {
           "title":"Visbility Types",
           "comment":"https://discord.com/developers/docs/resources/user#connection-object-visibility-types",
-          "namespace": ["user","connection"],
-          "enum":"visibility_types",
+          "namespace": ["visibility"],
+          "enum":"types",
           "items":
           [
             {"name":"NONE", "value":0},
@@ -77,11 +77,11 @@
             { "name": "name", "type":{ "base":"char", "dec":"*"}},
             { "name": "type", "type":{ "base":"char", "dec":"*"}},
             { "name": "revoked", "type":{ "base":"bool"}},
-            { "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}},
+            { "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}},
             { "name": "verified", "type":{ "base":"bool" }},
             { "name": "friend_sync", "type":{ "base":"bool" }},
             { "name": "show_activity", "type":{ "base":"bool" }},
-            { "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}
+            { "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}
           ]
       }
     ]

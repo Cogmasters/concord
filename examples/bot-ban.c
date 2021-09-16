@@ -93,7 +93,7 @@ void on_unban(
     const struct discord_message *msg)
 {
   // get banned list
-  NTL_T(struct discord_guild_ban) bans=NULL;
+  NTL_T(struct discord_ban) bans=NULL;
 
   ORCAcode code;
   code = discord_get_guild_bans(client, msg->guild_id, &bans);
@@ -121,7 +121,7 @@ void on_unban(
   snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
   discord_remove_guild_ban(client, msg->guild_id, target->id, reason);
 
-  discord_guild_ban_list_free(bans);
+  discord_ban_list_free(bans);
 }
 
 int main(int argc, char *argv[])

@@ -12,7 +12,7 @@
         {"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" }, "comment":"list of webhooks found in the audit log", "inject_if_not":null },
         {"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}, "comment":"list of users found in the audit log", "inject_if_not":null},
         {"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null},
-        {"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null},
+        {"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null},
         {"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}
       ]
     },
@@ -138,8 +138,8 @@
         {"name":"explicit_content_filter", "type": {"base":"int"}, "comment":"change in whose messages are scanned and deleted for explicit content in the server", "inject_if_not":0 },
         {"name":"default_message_notifications", "type": {"base":"int"}, "comment":"default message notification level changed", "inject_if_not":0 },
         {"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}, "comment":"guild invite vanity url changed", "inject_if_not":null },
-        {"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null },
-        {"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null },
+        {"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null },
+        {"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null },
         {"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 },
         {"name":"widget_enabled", "type": {"base":"bool"}, "comment":"server widget enabled/disable"},
         {"name":"widget_channel_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"channel id of the server widget changed", "inject_if_not":0 },
@@ -147,7 +147,7 @@
         {"name":"position", "type": {"base":"int"}, "comment":"text or voice channel position changed"},
         {"name":"topic", "type": {"base":"char", "dec":"*"}, "comment":"text or voice chanenl position changed", "inject_if_not":null },
         {"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" },
-        {"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" },
+        {"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" },
         {"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" },
         {"name":"application_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"application id of the added or removed webhook or bot", "inject_if_not":0 },
         {"name":"rate_limit_per_user", "type": {"base":"int"}, "comment":"amount of seconds a user has to wait before sending another message changed" },

@@ -449,14 +449,14 @@ discord_replace_presence(struct discord *client, struct discord_gateway_status_u
 void
 discord_set_presence(
   struct discord *client, 
-  struct discord_gateway_activity *activity, // can be safely free'd
+  struct discord_activity *activity, // can be safely free'd
   char status[], 
   bool afk)
 {
   struct discord_gateway_status_update *presence = client->gw.id.presence;
 
   if (activity) {
-    ntl_append2((ntl_t*)&presence->activities, sizeof(struct discord_gateway_activity), activity);
+    ntl_append2((ntl_t*)&presence->activities, sizeof(struct discord_activity), activity);
   }
   if (status) {
     int ret = snprintf(presence->status, sizeof(presence->status), "%s", status);

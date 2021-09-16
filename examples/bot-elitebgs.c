@@ -333,8 +333,8 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   /* Set bot presence activity */
-  struct discord_gateway_activity *new_activity = malloc(sizeof *new_activity);
-  discord_gateway_activity_init(new_activity);
+  struct discord_activity *new_activity = malloc(sizeof *new_activity);
+  discord_activity_init(new_activity);
 
   strcpy(new_activity->name, "cee.dev");
   new_activity->type = 0; // Playing

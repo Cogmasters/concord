@@ -523,50 +523,50 @@ size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p)
 typedef void (*vfvp)(void *);
 typedef void (*vfcpsvp)(char *, size_t, void *);
 typedef size_t (*sfcpsvp)(char *, size_t, void *);
-void discord_user_connection_visibility_types_list_free_v(void **p) {
-  discord_user_connection_visibility_types_list_free((enum discord_user_connection_visibility_types**)p);
+void discord_visibility_types_list_free_v(void **p) {
+  discord_visibility_types_list_free((enum discord_visibility_types**)p);
 }
 
-void discord_user_connection_visibility_types_list_from_json_v(char *str, size_t len, void *p) {
-  discord_user_connection_visibility_types_list_from_json(str, len, (enum discord_user_connection_visibility_types ***)p);
+void discord_visibility_types_list_from_json_v(char *str, size_t len, void *p) {
+  discord_visibility_types_list_from_json(str, len, (enum discord_visibility_types ***)p);
 }
 
-size_t discord_user_connection_visibility_types_list_to_json_v(char *str, size_t len, void *p){
-  return discord_user_connection_visibility_types_list_to_json(str, len, (enum discord_user_connection_visibility_types **)p);
+size_t discord_visibility_types_list_to_json_v(char *str, size_t len, void *p){
+  return discord_visibility_types_list_to_json(str, len, (enum discord_visibility_types **)p);
 }
 
-enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *s){
-  if(strcasecmp("NONE", s) == 0) return DISCORD_USER_CONNECTION_NONE;
-  if(strcasecmp("EVERYONE", s) == 0) return DISCORD_USER_CONNECTION_EVERYONE;
+enum discord_visibility_types discord_visibility_types_eval(char *s){
+  if(strcasecmp("NONE", s) == 0) return DISCORD_VISIBILITY_NONE;
+  if(strcasecmp("EVERYONE", s) == 0) return DISCORD_VISIBILITY_EVERYONE;
   ERR("'%s' doesn't match any known enumerator.", s);
 }
 
-char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types v){
+char* discord_visibility_types_print(enum discord_visibility_types v){
 
   switch (v) {
-  case DISCORD_USER_CONNECTION_NONE: return "NONE";
-  case DISCORD_USER_CONNECTION_EVERYONE: return "EVERYONE";
+  case DISCORD_VISIBILITY_NONE: return "NONE";
+  case DISCORD_VISIBILITY_EVERYONE: return "EVERYONE";
   }
 
   return NULL;
 }
 
-void discord_user_connection_visibility_types_list_free(enum discord_user_connection_visibility_types **p) {
+void discord_visibility_types_list_free(enum discord_visibility_types **p) {
   ntl_free((void**)p, NULL);
 }
 
-void discord_user_connection_visibility_types_list_from_json(char *str, size_t len, enum discord_user_connection_visibility_types ***p)
+void discord_visibility_types_list_from_json(char *str, size_t len, enum discord_visibility_types ***p)
 {
   struct ntl_deserializer d;
   memset(&d, 0, sizeof(d));
-  d.elem_size = sizeof(enum discord_user_connection_visibility_types);
+  d.elem_size = sizeof(enum discord_visibility_types);
   d.init_elem = NULL;
   d.elem_from_buf = ja_u64_from_json_v;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
-size_t discord_user_connection_visibility_types_list_to_json(char *str, size_t len, enum discord_user_connection_visibility_types **p)
+size_t discord_visibility_types_list_to_json(char *str, size_t len, enum discord_visibility_types **p)
 {
   return ntl_to_buf(str, len, (void **)p, NULL, ja_u64_to_json_v);
 }
@@ -593,7 +593,7 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
                 "(revoked):b,"
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
                 "(integrations):F,"
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
@@ -605,7 +605,7 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
                 "(show_activity):b,"
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 "(visibility):d,"
                 "@arg_switches:b"
                 "@record_defined"
@@ -623,8 +623,8 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
                 &p->revoked,
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
-                discord_guild_integration_list_from_json, &p->integrations,
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
+                discord_integration_list_from_json, &p->integrations,
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
                 &p->verified,
@@ -635,7 +635,7 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
                 &p->show_activity,
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 &p->visibility,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
@@ -663,7 +663,7 @@ static void discord_connection_use_default_inject_settings(struct discord_connec
   p->__M.arg_switches[3] = &p->revoked;
 
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
   p->__M.arg_switches[4] = p->integrations;
 
   /* specs/discord/user.json:81:24
@@ -679,7 +679,7 @@ static void discord_connection_use_default_inject_settings(struct discord_connec
   p->__M.arg_switches[7] = &p->show_activity;
 
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
   p->__M.arg_switches[8] = &p->visibility;
 
 }
@@ -702,7 +702,7 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
                 "(revoked):b,"
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
                 "(integrations):F,"
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
@@ -714,7 +714,7 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
                 "(show_activity):b,"
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 "(visibility):d,"
                 "@arg_switches:b",
   /* specs/discord/user.json:76:24
@@ -730,8 +730,8 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
                 &p->revoked,
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
-                discord_guild_integration_list_to_json, p->integrations,
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
+                discord_integration_list_to_json, p->integrations,
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
                 &p->verified,
@@ -742,7 +742,7 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
                 &p->show_activity,
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 &p->visibility,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -798,9 +798,9 @@ void discord_connection_cleanup(struct discord_connection *d) {
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
   // p->revoked is a scalar
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
   if (d->integrations)
-    discord_guild_integration_list_free(d->integrations);
+    discord_integration_list_free(d->integrations);
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   // p->verified is a scalar
@@ -811,7 +811,7 @@ void discord_connection_cleanup(struct discord_connection *d) {
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
   // p->show_activity is a scalar
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
   // p->visibility is a scalar
 }
 
@@ -830,7 +830,7 @@ void discord_connection_init(struct discord_connection *p) {
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
 
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
 
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
@@ -842,7 +842,7 @@ void discord_connection_init(struct discord_connection *p) {
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
 
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
 
 }
 void discord_connection_list_free(struct discord_connection **p) {

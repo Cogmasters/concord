@@ -124,7 +124,7 @@ send_identify(struct discord_gateway *gw)
   size_t ret = json_inject(payload, sizeof(payload), 
                 "(op):2" // IDENTIFY OPCODE
                 "(d):F",
-                &discord_gateway_identify_to_json_v, &gw->id);
+                &discord_identify_to_json_v, &gw->id);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   struct ws_info info={0};
@@ -216,36 +216,36 @@ get_dispatch_event(char event_name[])
 static void
 on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_permissions_role *role=NULL;
+  struct discord_role *role=NULL;
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(role):F", 
     &guild_id,
-    &discord_permissions_role_from_json, &role);
+    &discord_role_from_json, &role);
 
   _ON(guild_role_create, guild_id, role);
 
-  discord_permissions_role_cleanup(role);
+  discord_role_cleanup(role);
   free(role);
 }
 
 static void
 on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord_permissions_role *role=NULL;
+  struct discord_role *role=NULL;
 
   u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size,
     "(guild_id):s_as_u64"
     "(role):F", 
     &guild_id,
-    &discord_permissions_role_from_json, &role);
+    &discord_role_from_json, &role);
 
   _ON(guild_role_update, guild_id, role);
 
-  discord_permissions_role_cleanup(role);
+  discord_role_cleanup(role);
   free(role);
 }
 
@@ -1198,12 +1198,12 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
 
   gw->status = calloc(1, sizeof *gw->status);
 
-  gw->id = (struct discord_gateway_identify){
+  gw->id = (struct discord_identify){
     .token      = strndup(token->start, token->size),
-    .properties = malloc(sizeof(struct discord_gateway_identify_connection)),
+    .properties = malloc(sizeof(struct discord_identify_connection)),
     .presence   = malloc(sizeof(struct discord_gateway_status_update))
   };
-  *gw->id.properties = (struct discord_gateway_identify_connection){
+  *gw->id.properties = (struct discord_identify_connection){
     .os      = "POSIX", 
     .browser = "orca", 
     .device  = "orca"
@@ -1252,7 +1252,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
   free(gw->status);
   // @todo Add a bitfield in generated structures to ignore freeing strings unless set ( useful for structures created via xxx_from_json() )
 #if 0
-  discord_gateway_identify_cleanup(&gw->id);
+  discord_identify_cleanup(&gw->id);
 #else
   if (gw->id.token)
     free(gw->id.token);

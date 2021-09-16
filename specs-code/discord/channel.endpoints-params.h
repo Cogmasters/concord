@@ -70,8 +70,8 @@ struct discord_modify_channel_params {
   int user_limit;
 
   /* specs/discord/channel.endpoints-params.json:21:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
-  struct discord_channel_overwrite **permission_overwrites;
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null }' */
+  struct discord_overwrite **permission_overwrites;
 
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
@@ -180,8 +180,8 @@ struct discord_create_message_params {
   char *payload_json; ///< JSON encoded body of non-file params
 
   /* specs/discord/channel.endpoints-params.json:42:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
@@ -394,12 +394,12 @@ extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, s
  */
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:76:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
-  enum discord_permissions_bitwise_flags allow; ///< permission bit set
+     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+  enum discord_bitwise_permission_flags allow; ///< permission bit set
 
   /* specs/discord/channel.endpoints-params.json:77:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, "comment":"permission bit set" }' */
-  enum discord_permissions_bitwise_flags deny; ///< permission bit set
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+  enum discord_bitwise_permission_flags deny; ///< permission bit set
 
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -488,12 +488,12 @@ struct discord_edit_message_params {
   char *payload_json; ///< JSON encoded body of non-file params
 
   /* specs/discord/channel.endpoints-params.json:93:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
   /* specs/discord/channel.endpoints-params.json:94:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_channel_attachment **attachments; ///< attached files to keep
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_attachment **attachments; ///< attached files to keep
 
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */

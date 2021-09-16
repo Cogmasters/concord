@@ -510,7 +510,7 @@ ORCAcode
 discord_get_guild_bans(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
-  NTL_T(struct discord_guild_ban) *p_bans)
+  NTL_T(struct discord_ban) *p_bans)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -524,7 +524,7 @@ discord_get_guild_bans(
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){ 
-             .ok_cb = &discord_guild_ban_list_from_json_v, 
+             .ok_cb = &discord_ban_list_from_json_v, 
              .ok_obj = p_bans 
            },
            NULL,
@@ -537,7 +537,7 @@ discord_get_guild_ban(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
-  struct discord_guild_ban *p_ban)
+  struct discord_ban *p_ban)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -555,7 +555,7 @@ discord_get_guild_ban(
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = &discord_guild_ban_from_json_v, 
+             .ok_cb = &discord_ban_from_json_v, 
              .ok_obj = &p_ban
            },
            NULL,
@@ -651,7 +651,7 @@ ORCAcode
 discord_get_guild_roles(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
-  NTL_T(struct discord_permissions_role) *p_roles)
+  NTL_T(struct discord_role) *p_roles)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -665,7 +665,7 @@ discord_get_guild_roles(
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = &discord_permissions_role_list_from_json_v, 
+             .ok_cb = &discord_role_list_from_json_v, 
              .ok_obj = p_roles 
            },
            NULL,
@@ -678,7 +678,7 @@ discord_create_guild_role(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
   struct discord_create_guild_role_params *params, 
-  struct discord_permissions_role *p_role)
+  struct discord_role *p_role)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -691,7 +691,7 @@ discord_create_guild_role(
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL, 
+             .ok_cb = p_role ? &discord_role_from_json_v : NULL, 
              .ok_obj = &p_role
            },
            &(struct sized_buffer){ payload, ret },
@@ -704,7 +704,7 @@ discord_modify_guild_role_positions(
   struct discord *client, 
   const u64_snowflake_t guild_id,
   NTL_T(struct discord_modify_guild_role_positions_params) params,
-  NTL_T(struct discord_permissions_role) *p_roles)
+  NTL_T(struct discord_role) *p_roles)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -721,7 +721,7 @@ discord_modify_guild_role_positions(
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = p_roles ? &discord_permissions_role_list_from_json_v : NULL, 
+             .ok_cb = p_roles ? &discord_role_list_from_json_v : NULL, 
              .ok_obj = p_roles 
            },
            &(struct sized_buffer){ payload, ret },
@@ -735,7 +735,7 @@ discord_modify_guild_role(
   const u64_snowflake_t guild_id,
   const u64_snowflake_t role_id,
   struct discord_modify_guild_role_params *params,
-  struct discord_permissions_role *p_role)
+  struct discord_role *p_role)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -755,7 +755,7 @@ discord_modify_guild_role(
   return discord_adapter_run( 
            &client->adapter,
            &(struct ua_resp_handle){
-             .ok_cb = p_role ? &discord_permissions_role_from_json_v : NULL, 
+             .ok_cb = p_role ? &discord_role_from_json_v : NULL, 
              .ok_obj = &p_role
            },
            &(struct sized_buffer){ payload, ret },

@@ -35,7 +35,7 @@
          "option":true, "inject_if_not":0 },
         {"type":{"base":"int"}, "name":"position",
          "option":true, "inject_if_not":0 },
-        {"type":{"base":"struct discord_channel_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
+        {"type":{"base":"struct discord_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }, 
         {"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name", 
          "option":true, "inject_if_not":null},
@@ -196,9 +196,9 @@
          {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"},
          {"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"},
          {"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true },
-         {"type":{"base":"struct discord_channel_attachment", "dec":"ntl"}, "name":"attachments"},
+         {"type":{"base":"struct discord_attachment", "dec":"ntl"}, "name":"attachments"},
          {"type":{"base":"struct discord_embed", "dec":"ntl"}, "name":"embeds"},
-         {"type":{"base":"struct discord_channel_reaction","dec":"ntl"}, "name":"reactions", "option":true },
+         {"type":{"base":"struct discord_reaction","dec":"ntl"}, "name":"reactions", "option":true },
          {"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true },
          {"type":{"base":"bool"}, "name":"pinned"},
          {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true },
@@ -218,7 +218,6 @@
     {
       "title":"Followed Channel Structure",
       "comment":"https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure",
-      "namespace":["channel"], 
       "struct":"followed_channel",
       "fields":
       [
@@ -229,7 +228,6 @@
     {
       "title":"Reaction Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure",
-      "namespace":["channel"], 
       "struct":"reaction",
       "fields":
       [
@@ -240,15 +238,14 @@
     },
     {
       "title":"Overwrite Structure",
-      "namespace":["channel"],
       "struct":"overwrite",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "type", "type":{ "base":"int" }},
-        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"},
-        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags"}, 
+        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}
       ]
     },
@@ -282,7 +279,6 @@
     {
       "title":"Attachment Strcture",
       "comment":"https://discord.com/developers/docs/resources/channel#attachment-object",
-      "namespace":["channel"], 
       "struct":"attachment",
       "fields":
       [
@@ -311,7 +307,6 @@
     {
       "title":"Allowed Mentions Structure",
       "comment": "https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure",
-      "namespace":["channel"], 
       "struct":"allowed_mentions",
       "fields":
       [

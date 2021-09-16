@@ -22,9 +22,9 @@ opcode_print(enum discord_voice_opcodes opcode)
 }
 
 static const char*
-close_opcode_print(enum discord_voice_close_opcodes opcode)
+close_opcode_print(enum discord_voice_close_event_codes opcode)
 {
-  const char *str = discord_voice_close_opcodes_print(opcode);
+  const char *str = discord_voice_close_event_codes_print(opcode);
   if (str) return str;
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;
@@ -213,7 +213,7 @@ static void
 on_close_cb(void *p_vc, struct websockets *ws, struct ws_info *info, enum ws_close_reason wscode, const char *reason, size_t len)
 {
   struct discord_voice *vc = p_vc;
-  enum discord_voice_close_opcodes opcode = (enum discord_voice_close_opcodes)wscode;
+  enum discord_voice_close_event_codes opcode = (enum discord_voice_close_event_codes)wscode;
 
   log_warn("on_close_cb:" ANSICOLOR("%s",ANSI_FG_RED)" (code: %4d) : %zd bytes,"
                                                      "REASON: '%s'",
@@ -227,22 +227,22 @@ on_close_cb(void *p_vc, struct websockets *ws, struct ws_info *info, enum ws_clo
   }
 
   switch (opcode) {
-  case DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH:
+  case DISCORD_VOICE_CLOSE_EVENT_SERVER_CRASH:
       vc->is_resumable = true;
       vc->reconnect.enable = true;
       break;
-  case DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE:
-  case DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR:
-  case DISCORD_VOICE_CLOSE_REASON_NOT_AUTHENTICATED:
-  case DISCORD_VOICE_CLOSE_REASON_AUTHENTICATION_FAILED:
-  case DISCORD_VOICE_CLOSE_REASON_ALREADY_AUTHENTICATED:
-  case DISCORD_VOICE_CLOSE_REASON_SERVER_NOT_FOUND:
-  case DISCORD_VOICE_CLOSE_REASON_UNKNOWN_PROTOCOL:
-  case DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE:
+  case DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_OPCODE:
+  case DISCORD_VOICE_CLOSE_EVENT_DECODE_ERROR:
+  case DISCORD_VOICE_CLOSE_EVENT_NOT_AUTHENTICATED:
+  case DISCORD_VOICE_CLOSE_EVENT_AUTHENTICATION_FAILED:
+  case DISCORD_VOICE_CLOSE_EVENT_ALREADY_AUTHENTICATED:
+  case DISCORD_VOICE_CLOSE_EVENT_SERVER_NOT_FOUND:
+  case DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_PROTOCOL:
+  case DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_ENCRYPTION_MODE:
       vc->is_resumable = false;
       vc->reconnect.enable = false;
       break;
-  case DISCORD_VOICE_CLOSE_REASON_DISCONNECTED:
+  case DISCORD_VOICE_CLOSE_EVENT_DISCONNECTED:
       vc->is_resumable = false;
       vc->reconnect.enable = true;
       break;
@@ -256,8 +256,8 @@ on_close_cb(void *p_vc, struct websockets *ws, struct ws_info *info, enum ws_clo
         vc->reconnect.enable = false;
       }
       break;
-  case DISCORD_VOICE_CLOSE_REASON_SESSION_TIMED_OUT:
-  case DISCORD_VOICE_CLOSE_REASON_INVALID_SESSION:
+  case DISCORD_VOICE_CLOSE_EVENT_SESSION_TIMED_OUT:
+  case DISCORD_VOICE_CLOSE_EVENT_INVALID_SESSION:
       vc->is_resumable = false;
       vc->reconnect.enable = true;
       break;

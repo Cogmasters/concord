@@ -199,22 +199,22 @@ extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_us
 
  *     **Methods**
 
- *   * :code:`char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types code)`
- *   * :code:`enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char *code_as_str)`
+ *   * :code:`char* discord_visibility_types_print(enum discord_visibility_types code)`
+ *   * :code:`enum discord_visibility_types discord_visibility_types_eval(char *code_as_str)`
  * @endverbatim
  */
-enum discord_user_connection_visibility_types {
-  DISCORD_USER_CONNECTION_NONE = 0,
-  DISCORD_USER_CONNECTION_EVERYONE = 1,
+enum discord_visibility_types {
+  DISCORD_VISIBILITY_NONE = 0,
+  DISCORD_VISIBILITY_EVERYONE = 1,
 };
-extern char* discord_user_connection_visibility_types_print(enum discord_user_connection_visibility_types);
-extern enum discord_user_connection_visibility_types discord_user_connection_visibility_types_eval(char*);
-extern void discord_user_connection_visibility_types_list_free_v(void **p);
-extern void discord_user_connection_visibility_types_list_free(enum discord_user_connection_visibility_types **p);
-extern void discord_user_connection_visibility_types_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_user_connection_visibility_types_list_from_json(char *str, size_t len, enum discord_user_connection_visibility_types ***p);
-extern size_t discord_user_connection_visibility_types_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_user_connection_visibility_types_list_to_json(char *str, size_t len, enum discord_user_connection_visibility_types **p);
+extern char* discord_visibility_types_print(enum discord_visibility_types);
+extern enum discord_visibility_types discord_visibility_types_eval(char*);
+extern void discord_visibility_types_list_free_v(void **p);
+extern void discord_visibility_types_list_free(enum discord_visibility_types **p);
+extern void discord_visibility_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_visibility_types_list_from_json(char *str, size_t len, enum discord_visibility_types ***p);
+extern size_t discord_visibility_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_visibility_types_list_to_json(char *str, size_t len, enum discord_visibility_types **p);
 
 // Connection Structure
 // defined at specs/discord/user.json:73:28
@@ -263,8 +263,8 @@ struct discord_connection {
   bool revoked;
 
   /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_guild_integration", "dec":"ntl"}}' */
-  struct discord_guild_integration **integrations;
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
+  struct discord_integration **integrations;
 
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
@@ -279,8 +279,8 @@ struct discord_connection {
   bool show_activity;
 
   /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_user_connection_visibility_types" }}' */
-  enum discord_user_connection_visibility_types visibility;
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
+  enum discord_visibility_types visibility;
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

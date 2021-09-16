@@ -161,7 +161,7 @@ typedef void (*discord_channel_pins_update_cb)(
 typedef void (*discord_guild_role_cb)(
     struct discord *client, const struct discord_user *bot,
     const u64_snowflake_t guild_id,
-    const struct discord_permissions_role *role);
+    const struct discord_role *role);
 /**
  * @brief Guild Role Delete callback
  * @see discord_set_on_guild_role_delete() 
@@ -799,7 +799,7 @@ void discord_replace_presence(struct discord *client, struct discord_gateway_sta
  * @param status either "idle","dnd","online", or "offline"
  * @param afk TRUE or FALSE
  */
-void discord_set_presence(struct discord *client, struct discord_gateway_activity *activity, char status[], bool afk);
+void discord_set_presence(struct discord *client, struct discord_activity *activity, char status[], bool afk);
 
 
  /* * * * * * * * * * * * * * * * */
@@ -1727,12 +1727,12 @@ ORCAcode discord_remove_guild_member(struct discord *client, const u64_snowflake
 
 /** @defgroup DiscordGetGuildBans
  *  @{ */
-ORCAcode discord_get_guild_bans(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_guild_ban) *p_bans);
+ORCAcode discord_get_guild_bans(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_ban) *p_bans);
 /** @} DiscordGetGuildBans */
 
 /** @defgroup DiscordGetGuildBan
  *  @{ */
-ORCAcode discord_get_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_ban *p_ban);
+ORCAcode discord_get_guild_ban(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_ban *p_ban);
 /** @} DiscordGetGuildBan */
 
 /** @defgroup DiscordCreateGuildBan
@@ -1747,24 +1747,24 @@ ORCAcode discord_remove_guild_ban(struct discord *client, const u64_snowflake_t 
 
 /** @defgroup DiscordGetGuildRoles
  *  @{ */
-ORCAcode discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_permissions_role) *p_roles);
+ORCAcode discord_get_guild_roles(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_role) *p_roles);
 /** @} DiscordGetGuildRoles */
 
 /** @defgroup DiscordCreateGuildRole
  *  @{ */
-ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_permissions_role *p_role);
+ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_role_params *params, struct discord_role *p_role);
 /// @struct discord_create_guild_role_params
 /** @} DiscordCreateGuildRole */
 
 /** @defgroup DiscordModifyGuildRolePositions
  *  @{ */
-ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_permissions_role) *p_roles);
+ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_role) *p_roles);
 /// @struct discord_modify_guild_role_positions_params
 /** @} DiscordModifyGuildRolePositions */
 
 /** @defgroup DiscordModifyGuildRole
  *  @{ */
-ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_permissions_role *p_role);
+ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_role *p_role);
 /// @struct discord_modify_guild_role_params
 /** @} DiscordModifyGuildRole */
 
@@ -2076,7 +2076,7 @@ void discord_embed_add_field(struct discord_embed *embed, char name[], char valu
 
 /** @defgroup DiscordMiscChannel
  *  @{ */
-void discord_overwrite_append(NTL_T(struct discord_channel_overwrite) *permission_overwrites, u64_snowflake_t id, int type, enum discord_permissions_bitwise_flags allow, enum discord_permissions_bitwise_flags deny);
+void discord_overwrite_append(NTL_T(struct discord_overwrite) *permission_overwrites, u64_snowflake_t id, int type, enum discord_bitwise_permission_flags allow, enum discord_bitwise_permission_flags deny);
 ORCAcode discord_get_channel_at_pos(struct discord *client, const u64_snowflake_t guild_id, const enum discord_channel_types type, const size_t position, struct discord_channel *p_channel);
 ORCAcode discord_delete_messages_by_author_id(struct discord *client, u64_snowflake_t channel_id, u64_snowflake_t author_id);
 /** @} DiscordMiscChannel */

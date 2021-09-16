@@ -31,7 +31,7 @@ void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_lo
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
                 "(audit_log_entries):F,"
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
                 "(integrations):F,"
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
@@ -49,8 +49,8 @@ void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_lo
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
                 discord_audit_log_entry_list_from_json, &p->audit_log_entries,
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
-                discord_guild_integration_list_from_json, &p->integrations,
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+                discord_integration_list_from_json, &p->integrations,
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
                 discord_channel_list_from_json, &p->threads,
@@ -79,7 +79,7 @@ static void discord_audit_log_use_default_inject_settings(struct discord_audit_l
     p->__M.arg_switches[2] = p->audit_log_entries;
 
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
   if (p->integrations != NULL)
     p->__M.arg_switches[3] = p->integrations;
 
@@ -105,7 +105,7 @@ size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_lo
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
                 "(audit_log_entries):F,"
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
                 "(integrations):F,"
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
@@ -121,8 +121,8 @@ size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_lo
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
                 discord_audit_log_entry_list_to_json, p->audit_log_entries,
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
-                discord_guild_integration_list_to_json, p->integrations,
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+                discord_integration_list_to_json, p->integrations,
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
                 discord_channel_list_to_json, p->threads,
@@ -177,9 +177,9 @@ void discord_audit_log_cleanup(struct discord_audit_log *d) {
   if (d->audit_log_entries)
     discord_audit_log_entry_list_free(d->audit_log_entries);
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
   if (d->integrations)
-    discord_guild_integration_list_free(d->integrations);
+    discord_integration_list_free(d->integrations);
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
   if (d->threads)
@@ -198,7 +198,7 @@ void discord_audit_log_init(struct discord_audit_log *p) {
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
 
   /* specs/discord/audit_log.json:15:18
-     '{"name":"integrations", "type": { "base":"struct discord_guild_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
+     '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
 
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
@@ -1124,10 +1124,10 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}, "comment":"guild invite vanity url changed", "inject_if_not":null }' */
                 "(vanity_url_code):?s,"
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
                 "($add):F,"
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
                 "($remove):F,"
   /* specs/discord/audit_log.json:143:18
      '{"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 }' */
@@ -1151,7 +1151,7 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" }' */
                 "(bitrate):d,"
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
                 "(permission_overwrites):F,"
   /* specs/discord/audit_log.json:151:18
      '{"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" }' */
@@ -1318,11 +1318,11 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}, "comment":"guild invite vanity url changed", "inject_if_not":null }' */
                 &p->vanity_url_code,
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
-                discord_permissions_role_list_from_json, &p->add,
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+                discord_role_list_from_json, &p->add,
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
-                discord_permissions_role_list_from_json, &p->remove,
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+                discord_role_list_from_json, &p->remove,
   /* specs/discord/audit_log.json:143:18
      '{"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 }' */
                 &p->prune_delete_days,
@@ -1345,8 +1345,8 @@ void discord_audit_log_change_key_from_json(char *json, size_t len, struct disco
      '{"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" }' */
                 &p->bitrate,
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
-                discord_channel_overwrite_list_from_json, &p->permission_overwrites,
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+                discord_overwrite_list_from_json, &p->permission_overwrites,
   /* specs/discord/audit_log.json:151:18
      '{"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" }' */
                 &p->nsfw,
@@ -1554,12 +1554,12 @@ static void discord_audit_log_change_key_use_default_inject_settings(struct disc
     p->__M.arg_switches[17] = p->vanity_url_code;
 
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
   if (p->add != NULL)
     p->__M.arg_switches[18] = p->add;
 
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
   if (p->remove != NULL)
     p->__M.arg_switches[19] = p->remove;
 
@@ -1596,7 +1596,7 @@ static void discord_audit_log_change_key_use_default_inject_settings(struct disc
   p->__M.arg_switches[26] = &p->bitrate;
 
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
   p->__M.arg_switches[27] = p->permission_overwrites;
 
   /* specs/discord/audit_log.json:151:18
@@ -1812,10 +1812,10 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}, "comment":"guild invite vanity url changed", "inject_if_not":null }' */
                 "(vanity_url_code):s,"
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
                 "($add):F,"
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
                 "($remove):F,"
   /* specs/discord/audit_log.json:143:18
      '{"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 }' */
@@ -1839,7 +1839,7 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" }' */
                 "(bitrate):d,"
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
                 "(permission_overwrites):F,"
   /* specs/discord/audit_log.json:151:18
      '{"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" }' */
@@ -2004,11 +2004,11 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}, "comment":"guild invite vanity url changed", "inject_if_not":null }' */
                 p->vanity_url_code,
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
-                discord_permissions_role_list_to_json, p->add,
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+                discord_role_list_to_json, p->add,
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
-                discord_permissions_role_list_to_json, p->remove,
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+                discord_role_list_to_json, p->remove,
   /* specs/discord/audit_log.json:143:18
      '{"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 }' */
                 &p->prune_delete_days,
@@ -2031,8 +2031,8 @@ size_t discord_audit_log_change_key_to_json(char *json, size_t len, struct disco
      '{"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" }' */
                 &p->bitrate,
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
-                discord_channel_overwrite_list_to_json, p->permission_overwrites,
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+                discord_overwrite_list_to_json, p->permission_overwrites,
   /* specs/discord/audit_log.json:151:18
      '{"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" }' */
                 &p->nsfw,
@@ -2236,13 +2236,13 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
   if (d->vanity_url_code)
     free(d->vanity_url_code);
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
   if (d->add)
-    discord_permissions_role_list_free(d->add);
+    discord_role_list_free(d->add);
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
   if (d->remove)
-    discord_permissions_role_list_free(d->remove);
+    discord_role_list_free(d->remove);
   /* specs/discord/audit_log.json:143:18
      '{"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 }' */
   // p->prune_delete_days is a scalar
@@ -2266,9 +2266,9 @@ void discord_audit_log_change_key_cleanup(struct discord_audit_log_change_key *d
      '{"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" }' */
   // p->bitrate is a scalar
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
   if (d->permission_overwrites)
-    discord_channel_overwrite_list_free(d->permission_overwrites);
+    discord_overwrite_list_free(d->permission_overwrites);
   /* specs/discord/audit_log.json:151:18
      '{"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" }' */
   // p->nsfw is a scalar
@@ -2443,10 +2443,10 @@ void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p) {
      '{"name":"vanity_url_code", "type": {"base":"char", "dec":"*"}, "comment":"guild invite vanity url changed", "inject_if_not":null }' */
 
   /* specs/discord/audit_log.json:141:18
-     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_permissions_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
+     '{"name":"add", "json_key":"$add", "type": {"base":"struct discord_role", "dec":"ntl" }, "comment":"new role added", "inject_if_not":null }' */
 
   /* specs/discord/audit_log.json:142:18
-     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_permissions_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
+     '{"name":"remove", "json_key":"$remove", "type": {"base":"struct discord_role", "dec":"ntl"}, "comment":"role removed", "inject_if_not":null }' */
 
   /* specs/discord/audit_log.json:143:18
      '{"name":"prune_delete_days", "type": {"base":"int"}, "comment":"change in number of days after which inactive and role-unassigned members are kicked", "inject_if_not":0 }' */
@@ -2470,7 +2470,7 @@ void discord_audit_log_change_key_init(struct discord_audit_log_change_key *p) {
      '{"name":"bitrate", "type": {"base":"int"}, "comment":"voice channel bitrate changed" }' */
 
   /* specs/discord/audit_log.json:150:18
-     '{"name":"permission_overwrites", "type": {"base":"struct discord_channel_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
+     '{"name":"permission_overwrites", "type": {"base":"struct discord_overwrite", "dec":"ntl"}, "comment":"permissions on a channel changed" }' */
 
   /* specs/discord/audit_log.json:151:18
      '{"name":"nsfw", "type": {"base":"bool"}, "comment":"channel nsfw restriction changed" }' */

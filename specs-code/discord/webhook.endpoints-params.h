@@ -272,8 +272,8 @@ struct discord_execute_webhook_params {
   char *payload_json; ///< JSON encoded body of non-file params
 
   /* specs/discord/webhook.endpoints-params.json:53:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-  struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
   /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
@@ -354,12 +354,12 @@ struct discord_edit_webhook_message_params {
   char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
 
   /* specs/discord/webhook.endpoints-params.json:67:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_channel_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
 
   /* specs/discord/webhook.endpoints-params.json:68:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_channel_attachment **attachments; ///< attached files to keep
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_attachment **attachments; ///< attached files to keep
 
   /* specs/discord/webhook.endpoints-params.json:69:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */

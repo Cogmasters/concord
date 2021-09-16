@@ -285,11 +285,11 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
 
 void
 discord_overwrite_append(
-  NTL_T(struct discord_channel_overwrite) *permission_overwrites, 
+  NTL_T(struct discord_overwrite) *permission_overwrites, 
   u64_snowflake_t id, 
   int type, 
-  enum discord_permissions_bitwise_flags allow, 
-  enum discord_permissions_bitwise_flags deny)
+  enum discord_bitwise_permission_flags allow, 
+  enum discord_bitwise_permission_flags deny)
 {
   if (!id) {
     log_error("Missing 'id'");
@@ -300,13 +300,13 @@ discord_overwrite_append(
     return;
   }
 
-  struct discord_channel_overwrite new_overwrite = {
+  struct discord_overwrite new_overwrite = {
     .id = id,
     .type = type,
     .allow = allow,
     .deny = deny
   };
-  ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_channel_overwrite), &new_overwrite);
+  ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_overwrite), &new_overwrite);
 }
 
 //@todo create some manner of copying a struct, including its pointer fields

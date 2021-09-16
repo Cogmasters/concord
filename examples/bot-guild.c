@@ -17,7 +17,7 @@ void on_log_role_create(
   struct discord *client,
   const struct discord_user *bot,
   const u64_snowflake_t guild_id,
-  const struct discord_permissions_role *role)
+  const struct discord_role *role)
 {
   log_warn("Role (%"PRIu64") created", role->id);
 }
@@ -26,7 +26,7 @@ void on_log_role_update(
   struct discord *client,
   const struct discord_user *bot,
   const u64_snowflake_t guild_id,
-  const struct discord_permissions_role *role)
+  const struct discord_role *role)
 {
   log_warn("Role (%"PRIu64") updated", role->id);
 }
@@ -134,7 +134,7 @@ void on_role_create(
     sprintf(text, "Couldn't create role `%s`", name);
   }
   else {
-    struct discord_permissions_role role={0};
+    struct discord_role role={0};
 
     struct discord_create_guild_role_params params = { .name = name };
     if (ORCA_OK == discord_create_guild_role(client, msg->guild_id, &params, &role))
@@ -142,7 +142,7 @@ void on_role_create(
     else
       sprintf(text, "Couldn't create role `%s`", name);
 
-    discord_permissions_role_cleanup(&role);
+    discord_role_cleanup(&role);
   }
 
   struct discord_create_message_params params = { .content = text };
@@ -231,7 +231,7 @@ void on_role_list(
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_permissions_role) roles=NULL;
+  NTL_T(struct discord_role) roles=NULL;
   ORCAcode code;
   code = discord_get_guild_roles(client, msg->guild_id, &roles);
 
@@ -258,7 +258,7 @@ void on_role_list(
         continue;
       }
     }
-    discord_permissions_role_list_free(roles);
+    discord_role_list_free(roles);
   }
 
   struct discord_create_message_params params = { .content = text };

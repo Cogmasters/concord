@@ -188,8 +188,8 @@ struct discord_modify_guild_params {
   u64_snowflake_t system_channel_id; ///< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome
 
   /* specs/discord/guild.endpoints-params.json:44:20
-     '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_guild_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
-  enum discord_guild_system_channel_flags system_channel_flags; ///< system channel flags
+     '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
+  enum discord_system_channel_flags system_channel_flags; ///< system channel flags
 
   /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}' */
@@ -298,8 +298,8 @@ struct discord_create_guild_channel_params {
   int position;
 
   /* specs/discord/guild.endpoints-params.json:65:20
-     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_channel_overwrite", "dec":"ntl" }, "inject_if_not":null}' */
-  struct discord_channel_overwrite **permission_overwrites;
+     '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null}' */
+  struct discord_overwrite **permission_overwrites;
 
   /* specs/discord/guild.endpoints-params.json:66:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
@@ -734,8 +734,8 @@ struct discord_create_guild_role_params {
   char *name;
 
   /* specs/discord/guild.endpoints-params.json:135:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "inject_if_not":0}' */
-  enum discord_permissions_bitwise_flags permissions;
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+  enum discord_bitwise_permission_flags permissions;
 
   /* specs/discord/guild.endpoints-params.json:136:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -878,8 +878,8 @@ struct discord_modify_guild_role_params {
   char *name; ///< name of the role
 
   /* specs/discord/guild.endpoints-params.json:158:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_permissions_bitwise_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  enum discord_permissions_bitwise_flags permissions; ///< bitwise value of the enabled/disabled permissions
+     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+  enum discord_bitwise_permission_flags permissions; ///< bitwise value of the enabled/disabled permissions
 
   /* specs/discord/guild.endpoints-params.json:159:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */

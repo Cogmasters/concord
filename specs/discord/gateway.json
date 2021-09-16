@@ -136,12 +136,11 @@
     {
       "title":"Identify Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-structure",
-      "namespace": ["gateway"],
       "struct":"identify",
       "fields":
       [
         { "name":"token","type":{"base":"char", "dec":"*"}},
-        { "name":"properties","type":{"base":"struct discord_gateway_identify_connection", "dec":"*"}},
+        { "name":"properties","type":{"base":"struct discord_identify_connection", "dec":"*"}},
         { "name":"compress","type":{"base":"bool"}},
         { "name":"large_threshold","type":{"base":"int"}},
         { "name":"guild_subscriptions","type":{"base":"bool"}},
@@ -159,7 +158,7 @@
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
           "option":true, "inject_if_not":0 },
-        { "name":"activities","type":{"base":"struct discord_gateway_activity", "dec":"ntl"}, 
+        { "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, 
           "option":true, "inject_if_not":null},
         { "name":"status","type":{"base":"char", "dec":"[16]"}},
         { "name":"afk","type":{"base":"bool"}} 
@@ -168,7 +167,7 @@
     {
       "title": "Identify Connection Properties",
       "comment": "https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties",
-      "namespace": ["gateway", "identify"],
+      "namespace": ["identify"],
       "struct":"connection",
       "fields":
       [
@@ -180,7 +179,6 @@
     {
       "title":"Activity Structure",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure",
-      "namespace": ["gateway"],
       "struct":"activity",
       "fields":
       [
@@ -203,7 +201,7 @@
     {
       "title":"Activity Types",
       "comment": "https://discord.com/developers/docs/topics/gateway#activity-object-activity-types",
-      "namespace": ["gateway","activity"],
+      "namespace": ["activity"],
       "enum":"types",
       "items":
       [

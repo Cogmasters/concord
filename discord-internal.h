@@ -223,8 +223,8 @@ struct discord_gateway {
     bool shutdown;     ///< if true shutdown websockets connection as soon as possible
   } *status;
 
-  struct discord_gateway_identify id;              ///< the info sent for connection authentication
-  char                            session_id[512]; ///< the session id (for resuming lost connections)
+  struct discord_identify id;              ///< the info sent for connection authentication
+  char                    session_id[512]; ///< the session id (for resuming lost connections)
   struct {
     char *url;
     int shards;

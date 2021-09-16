@@ -1,12 +1,13 @@
 {
-  "namespace": ["discord", "permissions"],
+  "namespace": ["discord"],
   "comment": "https://discord.com/developers/docs/topics/permissions",
   "defs":
   [
     {
       "title":"Bitwise Permission Flags",
       "bitwise":true,
-      "enum":"bitwise_flags",
+      "namespace": ["bitwise", "permission"],
+      "enum":"flags",
       "items":
       [
         {"name": "ZERO", "value":0x00000000, "comment":"No permission bits"},
@@ -57,7 +58,7 @@
         { "name": "permissions", "type":{ "base":"char", "dec":"*" }},
         { "name": "managed", "type":{ "base":"bool" }},
         { "name": "mentionable", "type":{ "base":"bool" }},
-        { "name": "tags", "type":{"base":"struct discord_permissions_role_tags", "dec":"*"}}
+        { "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}
       ]
     },
     {

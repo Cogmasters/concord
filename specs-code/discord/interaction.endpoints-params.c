@@ -31,10 +31,10 @@ void discord_edit_original_interaction_response_params_from_json(char *json, siz
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 "(payload_json):?s,"
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -52,11 +52,11 @@ void discord_edit_original_interaction_response_params_from_json(char *json, siz
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 &p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_from_json, &p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-                discord_channel_attachment_list_from_json, &p->attachments,
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_attachment_list_from_json, &p->attachments,
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_from_json, &p->components,
@@ -90,12 +90,12 @@ static void discord_edit_original_interaction_response_params_use_default_inject
     p->__M.arg_switches[3] = p->payload_json;
 
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (p->allowed_mentions != NULL)
     p->__M.arg_switches[4] = p->allowed_mentions;
 
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (p->attachments != NULL)
     p->__M.arg_switches[5] = p->attachments;
 
@@ -121,10 +121,10 @@ size_t discord_edit_original_interaction_response_params_to_json(char *json, siz
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 "(payload_json):s,"
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -140,11 +140,11 @@ size_t discord_edit_original_interaction_response_params_to_json(char *json, siz
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_to_json, p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_to_json, p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-                discord_channel_attachment_list_to_json, p->attachments,
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_attachment_list_to_json, p->attachments,
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_to_json, p->components,
@@ -203,15 +203,15 @@ void discord_edit_original_interaction_response_params_cleanup(struct discord_ed
   if (d->payload_json)
     free(d->payload_json);
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (d->allowed_mentions) {
-    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    discord_allowed_mentions_cleanup(d->allowed_mentions);
     free(d->allowed_mentions);
   }
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (d->attachments)
-    discord_channel_attachment_list_free(d->attachments);
+    discord_attachment_list_free(d->attachments);
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   if (d->components)
@@ -233,10 +233,10 @@ void discord_edit_original_interaction_response_params_init(struct discord_edit_
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
 
   /* specs/discord/interaction.endpoints-params.json:16:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
 
   /* specs/discord/interaction.endpoints-params.json:17:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
 
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -290,7 +290,7 @@ void discord_create_followup_message_params_from_json(char *json, size_t len, st
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
                 "(payload_json):?s,"
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
@@ -320,8 +320,8 @@ void discord_create_followup_message_params_from_json(char *json, size_t len, st
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
                 &p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-                discord_channel_allowed_mentions_from_json, &p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+                discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
                 discord_component_list_from_json, &p->components,
@@ -382,7 +382,7 @@ static void discord_create_followup_message_params_use_default_inject_settings(s
     p->__M.arg_switches[8] = p->payload_json;
 
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   if (p->allowed_mentions != NULL)
     p->__M.arg_switches[9] = p->allowed_mentions;
 
@@ -422,7 +422,7 @@ size_t discord_create_followup_message_params_to_json(char *json, size_t len, st
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
                 "(payload_json):s,"
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
@@ -450,8 +450,8 @@ size_t discord_create_followup_message_params_to_json(char *json, size_t len, st
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
                 p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-                discord_channel_allowed_mentions_to_json, p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+                discord_allowed_mentions_to_json, p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
                 discord_component_list_to_json, p->components,
@@ -532,9 +532,9 @@ void discord_create_followup_message_params_cleanup(struct discord_create_follow
   if (d->payload_json)
     free(d->payload_json);
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   if (d->allowed_mentions) {
-    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    discord_allowed_mentions_cleanup(d->allowed_mentions);
     free(d->allowed_mentions);
   }
   /* specs/discord/interaction.endpoints-params.json:38:20
@@ -576,7 +576,7 @@ void discord_create_followup_message_params_init(struct discord_create_followup_
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
 
   /* specs/discord/interaction.endpoints-params.json:37:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
 
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
@@ -624,10 +624,10 @@ void discord_edit_followup_message_params_from_json(char *json, size_t len, stru
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 "(payload_json):?s,"
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -645,11 +645,11 @@ void discord_edit_followup_message_params_from_json(char *json, size_t len, stru
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 &p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_from_json, &p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-                discord_channel_attachment_list_from_json, &p->attachments,
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_attachment_list_from_json, &p->attachments,
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_from_json, &p->components,
@@ -683,12 +683,12 @@ static void discord_edit_followup_message_params_use_default_inject_settings(str
     p->__M.arg_switches[3] = p->payload_json;
 
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (p->allowed_mentions != NULL)
     p->__M.arg_switches[4] = p->allowed_mentions;
 
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (p->attachments != NULL)
     p->__M.arg_switches[5] = p->attachments;
 
@@ -714,10 +714,10 @@ size_t discord_edit_followup_message_params_to_json(char *json, size_t len, stru
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 "(payload_json):s,"
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
                 "(allowed_mentions):F,"
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
@@ -733,11 +733,11 @@ size_t discord_edit_followup_message_params_to_json(char *json, size_t len, stru
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
                 p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_channel_allowed_mentions_to_json, p->allowed_mentions,
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+                discord_allowed_mentions_to_json, p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-                discord_channel_attachment_list_to_json, p->attachments,
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+                discord_attachment_list_to_json, p->attachments,
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_to_json, p->components,
@@ -796,15 +796,15 @@ void discord_edit_followup_message_params_cleanup(struct discord_edit_followup_m
   if (d->payload_json)
     free(d->payload_json);
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   if (d->allowed_mentions) {
-    discord_channel_allowed_mentions_cleanup(d->allowed_mentions);
+    discord_allowed_mentions_cleanup(d->allowed_mentions);
     free(d->allowed_mentions);
   }
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (d->attachments)
-    discord_channel_attachment_list_free(d->attachments);
+    discord_attachment_list_free(d->attachments);
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   if (d->components)
@@ -826,10 +826,10 @@ void discord_edit_followup_message_params_init(struct discord_edit_followup_mess
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
 
   /* specs/discord/interaction.endpoints-params.json:52:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_channel_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
 
   /* specs/discord/interaction.endpoints-params.json:53:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_channel_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
 
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
