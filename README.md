@@ -192,11 +192,12 @@ $ valgrind ./myBot.out
 
 ## Links
 
+- [Discord Server](https://discord.gg/2jfycwXVM3)
 - [Documentation](https://cee-studio.github.io/orca/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
-- [Contributing](docs/CONTRIBUTING.md)
-- [Discord Server](https://discord.gg/2jfycwXVM3)
 - [Debbuging with SaiphC](docs/SAIPHC.md)
+- [Internals](docs/INTERNALS.md)
+- [Contributing](docs/CONTRIBUTING.md)
 
 ## Contributing
 Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).
