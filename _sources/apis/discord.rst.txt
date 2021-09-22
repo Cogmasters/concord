@@ -670,6 +670,11 @@ Get Guild Member
 
 .. doxygengroup:: DiscordGetGuildMember
 
+List Guild Members
+^^^^^^^^^^^^^^^^^^
+
+.. doxygengroup:: DiscordListGuildMembers
+
 Search Guild Members
 ^^^^^^^^^^^^^^^^^^^^
 

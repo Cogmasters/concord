@@ -812,6 +812,11 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#list-guild-members">
+       List Guild Members
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#search-guild-members">
        Search Guild Members
       </a>
@@ -3674,13 +3679,13 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_audit_log_change.new_value">
-<span class="target" id="structdiscord__audit__log__change_1af6876412183dc2f3f5a954673f15a5c6"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">new_value</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.new_value" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__audit__log__change_1aab430d94640f6931bd8419f5b18e24f3"></span><a class="reference internal" href="../common/types.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">new_value</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.new_value" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>new value of the key </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_audit_log_change.old_value">
-<span class="target" id="structdiscord__audit__log__change_1a8a6cd5ae90693fa8d4d93edb5cc1eaac"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">old_value</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.old_value" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__audit__log__change_1ae324b29e4d22bdd453bfffc8de7e1094"></span><a class="reference internal" href="../common/types.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">old_value</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.old_value" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>old value of the key </p>
 </dd></dl>
 
@@ -3688,428 +3693,6 @@
 <dt class="sig sig-object c" id="c.discord_audit_log_change.key">
 <span class="target" id="structdiscord__audit__log__change_1a353fd1bc6b11e724bed00dfda37bcd3d"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.key" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>name of audit log change key </p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key">
-<span class="target" id="structdiscord__audit__log__change__key"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_audit_log_change_key</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key" title="Permalink to this definition">¶</a><br /></dt>
-<dd><em>#include &lt;audit_log.h&gt;</em><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
-</div>
-<ul class="simple">
-<li><p>Initializer:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_init(struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">*)</span></code></p></li>
-</ul>
-</li>
-<li><p>Cleanup:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_cleanup(struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_list_free(struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Decoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">**)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">***)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Encoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_key_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change_key</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-</ul>
-</div>
-</p>
- <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key">https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key</a></p>
-</dd>
-</dl>
-</p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.name">
-<span class="target" id="structdiscord__audit__log__change__key_1aa04f9e14c2382392a753a31dd092d458"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.name" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>name changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.description">
-<span class="target" id="structdiscord__audit__log__change__key_1a25d60cc5f2d12b7aa6ddd2d6a8462652"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>description changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.icon_hash">
-<span class="target" id="structdiscord__audit__log__change__key_1a02cd4997b3cd7b77701a2a1ada55ab71"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">icon_hash</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_SHA256" title="ORCA_LIMITS_SHA256"><span class="n"><span class="pre">ORCA_LIMITS_SHA256</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.icon_hash" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>icon changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.splash_hash">
-<span class="target" id="structdiscord__audit__log__change__key_1a9e7994d9f11b8e08c2b994e0aecc48a4"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">splash_hash</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_SHA256" title="ORCA_LIMITS_SHA256"><span class="n"><span class="pre">ORCA_LIMITS_SHA256</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.splash_hash" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>invite splash page artwork changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.discovery_splash_hash">
-<span class="target" id="structdiscord__audit__log__change__key_1af5722aabe0d9040b9d542fa22eeadd55"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discovery_splash_hash</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_SHA256" title="ORCA_LIMITS_SHA256"><span class="n"><span class="pre">ORCA_LIMITS_SHA256</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.discovery_splash_hash" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>discovery splash changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.banner_hash">
-<span class="target" id="structdiscord__audit__log__change__key_1a2fc0112d3e95aadf80b5ec8f4cc69bf2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">banner_hash</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_SHA256" title="ORCA_LIMITS_SHA256"><span class="n"><span class="pre">ORCA_LIMITS_SHA256</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.banner_hash" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>guild banned changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.owner_id">
-<span class="target" id="structdiscord__audit__log__change__key_1ada7d0f0194f3074db48fb67e039dc780"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">owner_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.owner_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>owner changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.region">
-<span class="target" id="structdiscord__audit__log__change__key_1a306004ff125cc6b9e1a64efc46c6f836"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">region</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_REGION" title="ORCA_LIMITS_REGION"><span class="n"><span class="pre">ORCA_LIMITS_REGION</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.region" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>region changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.preferred_locale">
-<span class="target" id="structdiscord__audit__log__change__key_1a82250946227d1bdf582c54aeba8252c5"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">preferred_locale</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_LOCALE" title="ORCA_LIMITS_LOCALE"><span class="n"><span class="pre">ORCA_LIMITS_LOCALE</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.preferred_locale" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>preferred locale changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.afk_channel_id">
-<span class="target" id="structdiscord__audit__log__change__key_1aa81a74976092bb86a5bc501ed741909d"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk_channel_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.afk_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>afk channel changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.afk_timeout">
-<span class="target" id="structdiscord__audit__log__change__key_1a2c7a9d59d3a89956926f603f404676b1"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk_timeout</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.afk_timeout" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>afk timeout duration changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.rules_channel_id">
-<span class="target" id="structdiscord__audit__log__change__key_1a7fc2468410ffc8724fbf8ea639f22434"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rules_channel_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.rules_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>id of the rules channel changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.public_updates_channel_id">
-<span class="target" id="structdiscord__audit__log__change__key_1ac79b344934cd83b8d7650457c6d56404"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">public_updates_channel_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.public_updates_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>id of the public updates channel changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.mfa_level">
-<span class="target" id="structdiscord__audit__log__change__key_1a773c7fc8c8176b3b3e7d52205475112c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mfa_level</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.mfa_level" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>two-factor auth requirement changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.verification_level">
-<span class="target" id="structdiscord__audit__log__change__key_1aa26d28cdaf525795b3dbd4bb50d0ce0e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">verification_level</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.verification_level" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>required verification level changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.explicit_content_filter">
-<span class="target" id="structdiscord__audit__log__change__key_1a191fb87e9431296c0022f6524e48a72d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">explicit_content_filter</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.explicit_content_filter" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>change in whose messages are scanned and deleted for explicit content in the server </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.default_message_notifications">
-<span class="target" id="structdiscord__audit__log__change__key_1ab04d04185207b459fb7bf959f45f111b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_message_notifications</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.default_message_notifications" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>default message notification level changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.vanity_url_code">
-<span class="target" id="structdiscord__audit__log__change__key_1aad4105dde6be33f18d2a5c5023c83ea3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">vanity_url_code</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.vanity_url_code" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>guild invite vanity url changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.add">
-<span class="target" id="structdiscord__audit__log__change__key_1a940c70071450a25b6f5707a49de47006"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">add</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.add" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>new role added </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.remove">
-<span class="target" id="structdiscord__audit__log__change__key_1a34008e0a5a2376efeba8a77e7862a87d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">remove</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.remove" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>role removed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.prune_delete_days">
-<span class="target" id="structdiscord__audit__log__change__key_1a3781ee712f5bf8609ad298270b9c2860"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prune_delete_days</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.prune_delete_days" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>change in number of days after which inactive and role-unassigned members are kicked </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.widget_enabled">
-<span class="target" id="structdiscord__audit__log__change__key_1a192871c6943d965a21b71a5decf93412"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">widget_enabled</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.widget_enabled" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>server widget enabled/disable </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.widget_channel_id">
-<span class="target" id="structdiscord__audit__log__change__key_1ac58c05e139889b1172bb00ba2ae8ff65"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">widget_channel_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.widget_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>channel id of the server widget changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.system_channel_id">
-<span class="target" id="structdiscord__audit__log__change__key_1a73ca284c1afec7b3403dd475717dbeec"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">system_channel_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.system_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>id of the system channel changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.position">
-<span class="target" id="structdiscord__audit__log__change__key_1adda021def0f1b2009a4db88d8dac916d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.position" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>text or voice channel position changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.topic">
-<span class="target" id="structdiscord__audit__log__change__key_1a72582c5ba4f838044bdf88f6b4d3563c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">topic</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.topic" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>text or voice chanenl position changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.bitrate">
-<span class="target" id="structdiscord__audit__log__change__key_1a8624c197f00968c5e239247f31c32efe"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bitrate</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.bitrate" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>voice channel bitrate changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.permission_overwrites">
-<span class="target" id="structdiscord__audit__log__change__key_1a76df9937682f033403d46fca8c7053e8"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_overwrite" title="discord_overwrite"><span class="n"><span class="pre">discord_overwrite</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">permission_overwrites</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.permission_overwrites" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>permissions on a channel changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.nsfw">
-<span class="target" id="structdiscord__audit__log__change__key_1a3dd775e4673665dd9988f4fc4fb58329"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nsfw</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.nsfw" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>channel nsfw restriction changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.application_id">
-<span class="target" id="structdiscord__audit__log__change__key_1a8bae11e6839697f248865febfc8a8079"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.application_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>application id of the added or removed webhook or bot </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.rate_limit_per_user">
-<span class="target" id="structdiscord__audit__log__change__key_1a63e8f14e7521d646151aa98037d03558"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rate_limit_per_user</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.rate_limit_per_user" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>amount of seconds a user has to wait before sending another message changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.permissions">
-<span class="target" id="structdiscord__audit__log__change__key_1ae574d46cd6b23ee866ab2f91918df090"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">permissions</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.permissions" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>permissions for a role changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.color">
-<span class="target" id="structdiscord__audit__log__change__key_1a40641a72b101ea84d05a2ea1b3db82d0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">color</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.color" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>role color changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.hoist">
-<span class="target" id="structdiscord__audit__log__change__key_1a1a62c2d7774ac38cc407dbb644648f6f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hoist</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.hoist" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>role is now diplayed/no longer displayed separate from online users </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.mentionable">
-<span class="target" id="structdiscord__audit__log__change__key_1aea77f5988ccab06ee758ea95afe0afd1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mentionable</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.mentionable" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>role is now mentionable/unmentionable </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.allow">
-<span class="target" id="structdiscord__audit__log__change__key_1a3ab72b42a04486d92090acd99f73e4ff"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">allow</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.allow" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>a permission on a text or voice channel was allowed for a role </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.deny">
-<span class="target" id="structdiscord__audit__log__change__key_1a17844cf7c099a0e9b5edada62d373dfa"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">deny</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.deny" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>a permission on a text or voice channel was denied for a role </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.code">
-<span class="target" id="structdiscord__audit__log__change__key_1aed5b018c1014ab95597f6bb102199298"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.code" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>invite code changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.channel_id">
-<span class="target" id="structdiscord__audit__log__change__key_1affb89819c507949bfc321106a8a75230"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>channel for invite code changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.inviter_id">
-<span class="target" id="structdiscord__audit__log__change__key_1a9b2339cc30e5936cb875db975c8a1b62"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">inviter_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.inviter_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>person who created invite code changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.max_uses">
-<span class="target" id="structdiscord__audit__log__change__key_1ad22167ff347b9f6f0f41140fa53f93fa"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_uses</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.max_uses" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>change to max number of times invite codes can be used </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.uses">
-<span class="target" id="structdiscord__audit__log__change__key_1a0d4fdd418d85219daa818041d43f4681"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uses</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.uses" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>number of times invite code used changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.max_age">
-<span class="target" id="structdiscord__audit__log__change__key_1a8d4527544adf6adfc6aca514330ea7af"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_age</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.max_age" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>how long invite code lasts changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.temporary">
-<span class="target" id="structdiscord__audit__log__change__key_1aad5c9e4063202f3667856d7ace6976aa"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">temporary</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.temporary" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>invite code is temporary/never expires </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.deaf">
-<span class="target" id="structdiscord__audit__log__change__key_1ac36f7723be803a901fd5833330e08877"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deaf</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.deaf" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>user server deafened/undefeaned </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.mute">
-<span class="target" id="structdiscord__audit__log__change__key_1a0eea22827f494b26e1a5d0590975b78e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mute</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.mute" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>user server muted/unmuted </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.nick">
-<span class="target" id="structdiscord__audit__log__change__key_1aab11d96709d19422f62cc8ade5a72e27"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nick</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.nick" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>user nickname/changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.avatar_hash">
-<span class="target" id="structdiscord__audit__log__change__key_1ad587032a64a57e4c3c36db8eb7309fe1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">avatar_hash</span></span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../common/types.html#c.ORCA_LIMITS_SHA256" title="ORCA_LIMITS_SHA256"><span class="n"><span class="pre">ORCA_LIMITS_SHA256</span></span></a><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_audit_log_change_key.avatar_hash" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>user avatar changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.id">
-<span class="target" id="structdiscord__audit__log__change__key_1a35415113dfb8f5a788b3bbca59d95227"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>the id of the changed entity - sometimes used in conjunction with other keys </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.enable_emotions">
-<span class="target" id="structdiscord__audit__log__change__key_1a4eafa3ed7445ed4cbead63377ac9f5f7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enable_emotions</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.enable_emotions" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>integration emoticons enabled/disabled </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.expire_behavior">
-<span class="target" id="structdiscord__audit__log__change__key_1a5268d276bdc9969b71f1a1cac72de127"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">expire_behavior</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.expire_behavior" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>integration expiring subscriber behavior changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.expire_grace_period">
-<span class="target" id="structdiscord__audit__log__change__key_1ae962bbe3b319067b81b71ed9bde0a8ed"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">expire_grace_period</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.expire_grace_period" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>integration expire grace period changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.user_limit">
-<span class="target" id="structdiscord__audit__log__change__key_1a27a39e398bc3c9ac3651bfd15549860e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">user_limit</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.user_limit" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>new user limit in a voice channel </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.privacy_level">
-<span class="target" id="structdiscord__audit__log__change__key_1aa4c8d1fe8b5a274bc474266ab3e22ed0"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">privacy_level</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.privacy_level" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>privacy level of stage instance changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.tags">
-<span class="target" id="structdiscord__audit__log__change__key_1aa2530fc6447235b1bf894c33b1579163"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tags</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.tags" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>related emoji of sticker changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.format_type">
-<span class="target" id="structdiscord__audit__log__change__key_1a3c135efe289bf0fca9b98bbf0194c1d4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format_type</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.format_type" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>format type of sticker changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.asset">
-<span class="target" id="structdiscord__audit__log__change__key_1afa1651cca939f56208d83e64c056d278"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">asset</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.asset" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>empty string </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.available">
-<span class="target" id="structdiscord__audit__log__change__key_1aa5ebc5afeac0b8c7a2507545764e72d7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">available</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.available" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>availability of sticker changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.guild_id">
-<span class="target" id="structdiscord__audit__log__change__key_1ad28bd3679e40a3067edc8290ffc59cec"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.guild_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>guild sticker is in changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.archived">
-<span class="target" id="structdiscord__audit__log__change__key_1a13a9c70b050d363fcffc498d655dede1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">archived</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.archived" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>thread is now archived/unarchived </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.locked">
-<span class="target" id="structdiscord__audit__log__change__key_1a0bf6fb8d15ecddf8cdc6a1d71bc6eb54"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">locked</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.locked" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>thread is now locked/unlocked </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.auto_archive_duration">
-<span class="target" id="structdiscord__audit__log__change__key_1a144a533242d2335e79848a0a25c3b25b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">auto_archive_duration</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.auto_archive_duration" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>auto archive duration changed </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_audit_log_change_key.default_auto_archive_duration">
-<span class="target" id="structdiscord__audit__log__change__key_1aa98a5b5be648014bedc7d0d4b8d86fa5"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_auto_archive_duration</span></span></span><a class="headerlink" href="#c.discord_audit_log_change_key.default_auto_archive_duration" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>default auto archive duration for newly created threads changed </p>
 </dd></dl>
 
 </div>
@@ -15170,6 +14753,74 @@
 <dd></dd></dl>
 
 </div>
+</dd></dl>
+
+</div>
+<div class="section" id="list-guild-members">
+<h4>List Guild Members<a class="headerlink" href="#list-guild-members" title="Permalink to this headline">¶</a></h4>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__DiscordListGuildMembers"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordListGuildMembers</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_list_guild_members">
+<span class="target" id="group__DiscordListGuildMembers_1gae24c74da44dc06efb796f16d8d9b5259"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_list_guild_members</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_list_guild_members_params" title="discord_list_guild_members_params"><span class="n"><span class="pre">discord_list_guild_members_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_members</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_list_guild_members" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_list_guild_members_params">
+<span class="target" id="structdiscord__list__guild__members__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_list_guild_members_params</span></span></span><a class="headerlink" href="#c.discord_list_guild_members_params" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;guild.endpoints-params.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_init(struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_cleanup(struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_list_free(struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_list_guild_members_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_list_guild_members_params</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_list_guild_members_params.limit">
+<span class="target" id="structdiscord__list__guild__members__params_1a9aaad1b32dfe0d79c3402711716c9856"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">limit</span></span></span><a class="headerlink" href="#c.discord_list_guild_members_params.limit" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>max numbers of members to return (1-1000) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_list_guild_members_params.after">
+<span class="target" id="structdiscord__list__guild__members__params_1a365fe17fca1305512fb92321e35f11b8"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">after</span></span></span><a class="headerlink" href="#c.discord_list_guild_members_params.after" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the highest user id in the previous page </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div>
