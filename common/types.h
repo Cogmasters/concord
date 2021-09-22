@@ -14,6 +14,7 @@ extern "C" {
  *  @{ */
 typedef uint64_t u64_unix_ms_t;   ///< unix time in ms
 typedef uint64_t u64_snowflake_t; ///< snowflake datatype
+typedef char json_char_t; ///< raw json string
 /** @} OrcaTypes */
 
 /** @defgroup OrcaCodes
