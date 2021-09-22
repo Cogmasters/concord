@@ -7,6 +7,7 @@
 #include <locale.h>
 
 #include "discord.h"
+#include "cJSON.h"
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
@@ -43,51 +44,49 @@ void on_log_guild_member_remove(
   log_info("%s#%s left guild %"PRIu64, user->username, user->discriminator, guild_id);
 }
 
-void on_get_my_audit_log(
+void on_audit_channel_create(
     struct discord *client,
     const struct discord_user *bot,
     const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  int event=0;
-  if (*msg->content) {
-    sscanf(msg->content, "%d", &event);
+  struct discord_audit_log audit_log;
+  discord_audit_log_init(&audit_log);
+
+  ORCAcode code;
+  code = discord_get_guild_audit_log(
+           client,
+           msg->guild_id,
+           &(struct discord_get_guild_audit_log_params){
+             .user_id = msg->author->id,
+             .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE
+           },
+           &audit_log);
+
+  if (!audit_log.audit_log_entries) {
+    goto _error;
+  }
+  struct discord_audit_log_entry *entry = audit_log.audit_log_entries[0];
+
+  if (code != ORCA_OK) {
+    log_error("%s", discord_strerror(code, client));
+    goto _error;
+  }
+  if (!entry->user_id || !entry->target_id) {
+    goto _error;
   }
 
-  struct discord_audit_log audit_log={0};
-  {
-    struct discord_get_guild_audit_log_params params = {
-      .user_id = msg->author->id,
-      .action_type = (enum discord_audit_log_events)event
-    };
-    if (discord_get_guild_audit_log(client, msg->guild_id, &params, &audit_log)) {
-      log_error("Couldn't retrieve audit log");
-      return;
-    }
-  }
-
-  char audit_json[4096];
-  size_t size = discord_audit_log_to_json(audit_json, sizeof(audit_json), &audit_log);
-
-  struct discord_create_message_params params;
-  if (size) {
-    params = (struct discord_create_message_params){
-      .file = &(struct discord_file){
-        .name = "audit.json",
-        .content = audit_json,
-        .size = size
-      }
-    };
-  }
-  else {
-    params = (struct discord_create_message_params){
-      .content = "Couldn't retrieve any results."
-    };
-  }
+  char text[1028]; // should be large enough
+  sprintf(text, "<@!%"PRIu64"> has created <#%s>!", entry->user_id, entry->target_id);
+  struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
+  return;
+
+_error:
   discord_audit_log_cleanup(&audit_log);
+  log_error("Couldn't retrieve audit log");
 }
 
 int main(int argc, char *argv[])
@@ -111,11 +110,11 @@ int main(int argc, char *argv[])
   discord_set_on_guild_member_update(client, &on_log_guild_member_update);
   discord_set_on_guild_member_remove(client, &on_log_guild_member_remove);
 
-  discord_set_on_command(client, "!my_audit", &on_get_my_audit_log);
+  discord_set_on_command(client, "!last_channel", &on_audit_channel_create);
 
   printf("\n\nThis bot demonstrates how easy it is to log"
          " for certain events.\n"
-         "1. Type '!my_audit <event_value>' to check your most recent audit from event\n"
+         "1. Type '!last_channel' to check the most recent channel created by you\n"
          "\tsee: https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
