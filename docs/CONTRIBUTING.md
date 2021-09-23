@@ -16,7 +16,7 @@ When changing existing source code, you do not alter the copyright of the origin
 
 ### What To Read
 
-Source code and the [project outline](PROJECT_OUTLINE.md) for help navigating the codebase.
+Source code, the [project outline](PROJECT_OUTLINE.md) and [internals](INTERNALS.md).
 
 ## Write a good patch
 
