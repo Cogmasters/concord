@@ -73,7 +73,7 @@
       "fields":
       [
         {"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"},
-        {"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}
+        {"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}
       ]
     },
     {
