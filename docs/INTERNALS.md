@@ -10,7 +10,7 @@ and as a result, write your own API endpoint. <!-- This guide will assist you wi
 
 Before starting make sure you have followed the [build instructions](../README.md#build-instructions)!
 
-# About Orca
+## About Orca
 
 Orca is a collection of REST API wrappers that are written in C. Orca currently 
 covers the Discord API (and GitHub, Reddit, and Slack to some degree).
@@ -29,16 +29,15 @@ one have to address many things modern languages would take for granted, such as
 encoding or decoding of an object with JSON. For this purpose we created our own specs
 for wrapping and generating API objects.
 
-- `specs/`
-  This is the folder we write our specs for code-generation, it contains multiple
-  JSON templates that cane be parsed by `specs/specs-gen.c`. To generate code from
+- `specs/`: This is the folder we write our specs for code-generation, it contains multiple
+  JSON templates that are parsed by `specs/specs-gen.c`. To generate code from
   scratch simply run `make specs_gen`, the code will be placed inside of `specs-code/`.
 
 ## Examples
 
-The `examples/` folder is where place our up-to-date bot examples. 
+The `examples/` folder is where we place our up-to-date bot examples. 
 
-When adding a new feature, it is encouraged that the contributor writes an example bot 
+When adding a new feature it is encouraged that the contributor writes an example bot 
 to demonstrate said feature, as a sort of makeshift test for other users and developers.
 
 ## APIs source-code

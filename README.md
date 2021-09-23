@@ -195,7 +195,7 @@ $ valgrind ./myBot.out
 - [Discord Server](https://discord.gg/nBUqrWf)
 - [Documentation](https://cee-studio.github.io/orca/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
-- [Debbuging with SaiphC](docs/SAIPHC.md)
+- [Debuging with SaiphC](docs/SAIPHC.md)
 - [Internals](docs/INTERNALS.md)
 - [Contributing](docs/CONTRIBUTING.md)
 
