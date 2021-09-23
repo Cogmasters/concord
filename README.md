@@ -8,7 +8,7 @@
     Easy to reason, easy to debug, easy to use.
   </p>
   <p>
-    Join our Discord server: <a href="https://discord.gg/2jfycwXVM3"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
+    Join our Discord server: <a href="https://discord.gg/nBUqrWf"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a>
   </p>
 </div>
 
@@ -192,7 +192,7 @@ $ valgrind ./myBot.out
 
 ## Links
 
-- [Discord Server](https://discord.gg/2jfycwXVM3)
+- [Discord Server](https://discord.gg/nBUqrWf)
 - [Documentation](https://cee-studio.github.io/orca/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Debbuging with SaiphC](docs/SAIPHC.md)
