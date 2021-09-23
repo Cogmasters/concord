@@ -285,8 +285,8 @@ struct discord_application_command_option_choice {
   char name[100+1]; ///< 1-100 character choice name
 
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
-  char value[100+1]; ///< value of choice, up to 100 characters
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
+  json_char_t* value; ///< value of choice, up to 100 characters if string
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected

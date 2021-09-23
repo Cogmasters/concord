@@ -649,8 +649,8 @@ void discord_application_command_option_choice_from_json(char *json, size_t len,
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 "(name):s,"
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
-                "(value):s,"
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
+                "(value):F,"
                 "@arg_switches:b"
                 "@record_defined"
                 "@record_null",
@@ -658,8 +658,8 @@ void discord_application_command_option_choice_from_json(char *json, size_t len,
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 p->name,
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
-                p->value,
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
+                cee_strndup, &p->value,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
                 p->__M.record_defined, sizeof(p->__M.record_defined),
                 p->__M.record_null, sizeof(p->__M.record_null));
@@ -674,7 +674,7 @@ static void discord_application_command_option_choice_use_default_inject_setting
   p->__M.arg_switches[0] = p->name;
 
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
   p->__M.arg_switches[1] = p->value;
 
 }
@@ -688,14 +688,14 @@ size_t discord_application_command_option_choice_to_json(char *json, size_t len,
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 "(name):s,"
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 "(value):s,"
                 "@arg_switches:b",
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 p->name,
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 p->value,
                 p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
   return r;
@@ -739,8 +739,9 @@ void discord_application_command_option_choice_cleanup(struct discord_applicatio
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
   // p->name is a scalar
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
-  // p->value is a scalar
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
+  if (d->value)
+    free(d->value);
 }
 
 void discord_application_command_option_choice_init(struct discord_application_command_option_choice *p) {
@@ -749,7 +750,7 @@ void discord_application_command_option_choice_init(struct discord_application_c
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
 
   /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "comment":"value of choice, up to 100 characters"}' */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
 
 }
 void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **p) {
