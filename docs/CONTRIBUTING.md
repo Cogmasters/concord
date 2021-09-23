@@ -6,7 +6,7 @@ This document intention is to provide guidelines on how to best contribute to th
 
 ### Join the Community
 
-Skip over to our [Discord Server](https://discord.gg/Q4Ub3wuF), we will be more than happy to assist you!
+Skip over to our [Discord Server](https://discord.gg/nBUqrWf), we will be more than happy to assist you!
 
 ### License and copyright
 
