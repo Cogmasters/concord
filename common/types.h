@@ -10,16 +10,34 @@ extern "C" {
 #endif // __cplusplus
 
 /** @defgroup OrcaTypes
- *  @brief Commonly used datatypes with various APIs
+ *  @brief Commonly used datatypes across various APIs
+ *
+ *  @note these datatypes are typedefs of C primitives,
+ *          its purpose is to facilitate identification
+ *          and "intent of use".
  *  @{ */
-typedef uint64_t u64_unix_ms_t;   ///< unix time in ms
-typedef uint64_t u64_snowflake_t; ///< snowflake datatype
-typedef char json_char_t; ///< raw json string
+/**
+ * @brief Unix time in milliseconds
+ */
+typedef uint64_t u64_unix_ms_t;
+/**
+ * @brief Snowflake datatype
+ *
+ * Used in APIs such as Twitter and Discord for their unique IDs
+ */
+typedef uint64_t u64_snowflake_t;
+/**
+ * @brief Raw JSON string
+ *
+ * Useful for dynamically typed fields, a `json_char_t` string should
+ *        be used to keep a raw JSON value, which can then be parsed 
+ *        with the assistance of a JSON library such as cJSON.
+ */
+typedef char json_char_t;
 /** @} OrcaTypes */
 
 /** @defgroup OrcaCodes
  *  @brief Error code returned by Orca REST functions
- *  @todo add origins links
  *  @{ */
 typedef int ORCAcode;             ///< the error code datatype
 #define ORCA_OK                 0 ///< request was a success
@@ -48,7 +66,6 @@ typedef int ORCAcode;             ///< the error code datatype
 
 /** @defgroup OrcaLimits
  *  @brief Limits discovered across the web
- *  @todo add reference links
  *  @{ */
 #define ORCA_LIMITS_SHA256 1024 + 1
 #define ORCA_LIMITS_LOCALE 16 + 1
