@@ -14,8 +14,5 @@ An explanation of important folders for developers who would like to contribute 
 | specs/reddit/        | Information to generate Reddit-specific types and structures         |
 | specs/github/        | Information to generate github-specific types and structures         |
 | specs-code/          | Where files generated from ``specs/`` are dumped to                  |
-| specs-code/discord/  | Discord-specific files generated from ``specs/discord`` are put here |
-| specs-code/reddit/   | Reddit-specific files generated from ``specs/reddit`` are put here   |
-| specs-code/github/   | Reddit-specific files generated from ``specs/github`` are put here   |
 | test/                | Tests to make sure Orca is running smoothly are put here             |
 
