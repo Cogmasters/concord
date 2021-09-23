@@ -220,25 +220,32 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__OrcaTypes"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaTypes</span></span></dt>
-<dd><p>Commonly used datatypes with various APIs. </p>
+<dd><p>Commonly used datatypes across various APIs. </p>
+<p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>these datatypes are typedefs of C primitives, its purpose is to facilitate identification and “intent of use”. </p>
+</div>
+</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
 <dl class="c type">
 <dt class="sig sig-object c" id="c.u64_unix_ms_t">
 <span class="target" id="group__OrcaTypes_1ga8c10c2449cb2148f47b8a032af96dd60"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u64_unix_ms_t</span></span></span><a class="headerlink" href="#c.u64_unix_ms_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>unix time in ms </p>
+<dd><p>Unix time in milliseconds. </p>
 </dd></dl>
 
 <dl class="c type">
 <dt class="sig sig-object c" id="c.u64_snowflake_t">
 <span class="target" id="group__OrcaTypes_1ga2aca4957fe0e14f7ab03fdaeb17d8fb9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u64_snowflake_t</span></span></span><a class="headerlink" href="#c.u64_snowflake_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>snowflake datatype </p>
+<dd><p>Snowflake datatype. </p>
+<p>Used in APIs such as Twitter and Discord for their unique IDs </p>
 </dd></dl>
 
 <dl class="c type">
 <dt class="sig sig-object c" id="c.json_char_t">
 <span class="target" id="group__OrcaTypes_1gaaf31a611b5cb25698db0f44636b31311"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">json_char_t</span></span></span><a class="headerlink" href="#c.json_char_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>raw json string </p>
+<dd><p>Raw JSON string. </p>
+<p>Useful for dynamically typed fields, a <code class="docutils literal notranslate"><span class="pre">json_char_t</span></code> string should be used to keep a raw JSON value, which can then be parsed with the assistance of a JSON library such as cJSON. </p>
 </dd></dl>
 
 </div>
@@ -253,13 +260,6 @@
 <dt class="sig sig-object cpp">
 <span class="target" id="group__OrcaCodes"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaCodes</span></span></dt>
 <dd><p>Error code returned by Orca REST functions. </p>
-<p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>add origins links</p>
-</dd></dl>
-
-</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
 <dl class="c macro">
@@ -364,13 +364,6 @@
 <dt class="sig sig-object cpp">
 <span class="target" id="group__OrcaLimits"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">OrcaLimits</span></span></dt>
 <dd><p>Limits discovered across the web. </p>
-<p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>add reference links</p>
-</dd></dl>
-
-</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
 <dl class="c macro">
