@@ -59,20 +59,20 @@ void on_audit_channel_create(
            client,
            msg->guild_id,
            &(struct discord_get_guild_audit_log_params){
-             .user_id = msg->author->id,
+             .user_id = msg->guild_id,
              .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE
            },
            &audit_log);
-
-  if (!audit_log.audit_log_entries) {
-    goto _error;
-  }
-  struct discord_audit_log_entry *entry = audit_log.audit_log_entries[0];
 
   if (code != ORCA_OK) {
     log_error("%s", discord_strerror(code, client));
     goto _error;
   }
+  if (!audit_log.audit_log_entries) {
+    goto _error;
+  }
+
+  struct discord_audit_log_entry *entry = audit_log.audit_log_entries[0];
   if (!entry->user_id || !entry->target_id) {
     goto _error;
   }
