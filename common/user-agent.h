@@ -53,79 +53,45 @@ typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 typedef void (cxt_load_obj_cb)(void * cxt, char *str, size_t len, void *p_obj);
 
 struct ua_resp_handle {
-  void *cxt; // the context for cxt_ok_cb;
+  void *cxt; ///< the context for cxt_ok_cb;
 
   load_obj_cb *ok_cb;
-  void *ok_obj; // the pointer to be passed to ok_cb
+  void *ok_obj; ///< the pointer to be passed to ok_cb
 
   load_obj_cb *err_cb;
-  void *err_obj; // the pointer to be passed to err_cb
+  void *err_obj; ///< the pointer to be passed to err_cb
 
-  cxt_load_obj_cb *cxt_ok_cb; // ok call back with an execution context
-  cxt_load_obj_cb *cxt_err_cb; // err call back with an execution context
+  cxt_load_obj_cb *cxt_ok_cb;  ///< ok callback with an execution context
+  cxt_load_obj_cb *cxt_err_cb; ///< err callback with an execution context
 };
 
 struct ua_resp_header {
-  /**
-   * the api response header and its length
-   */
-  char *buf;
-  size_t length;
-  /**
-   * the real size occupied in memory by 'buf'
-   */
-  size_t bufsize;
+  char *buf;      ///< response header buffer
+  size_t length;  ///< response header string length
+  size_t bufsize; ///< real size occupied in memory by buffer
 
-  /**
-   * index and size of individual field and values
-   *        from 'buf'
-   */
-  struct {
+  struct {  ///< array of header field/value pairs
     struct {
-      uintptr_t idx;
-      size_t size;
+      uintptr_t idx; ///< offset index of 'buf' for the start of field or value
+      size_t size;   ///< length of individual field or value
     } field, value;
   } pairs[UA_MAX_HEADER_SIZE];
-  /**
-   * amount of field/value pairs
-   */
-  int size;
+  int size; ///< number of elements initialized in `pairs`
 };
 
 struct ua_resp_body {
-  /**
-   * the api response string and its length
-   */
-  char *buf;
-  size_t length;
-  /**
-   * the real size occupied in memory by 'buf'
-   */
-  size_t bufsize;
+  char *buf;      ///< response body buffer
+  size_t length;  ///< response body string length
+  size_t bufsize; ///< real size occupied in memory by buffer
 };
 
 struct ua_info {
-  struct loginfo loginfo;
-  /**
-   * The HTTP response code
-   */
-  int httpcode;
-  /** 
-   * request's url
-   */
-  struct sized_buffer req_url;
-  /** 
-   * timestamp of when its request completed
-   */
-  uint64_t req_tstamp;
-  /**
-   * the key/field response header
-   */
-  struct ua_resp_header resp_header;
-  /**
-   * the response body
-   */
-  struct ua_resp_body resp_body;
+  struct loginfo loginfo;            ///< logging informational
+  int httpcode;                      ///< the HTTP response code
+  struct sized_buffer req_url;       ///< request URL
+  uint64_t req_tstamp;               ///< timestamp of when the request completed
+  struct ua_resp_header resp_header; ///< the response header
+  struct ua_resp_body resp_body;     ///< the response body
 };
 
 const char* http_code_print(int httpcode);

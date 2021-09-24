@@ -461,7 +461,7 @@ ua_init(struct logconf *conf)
   new_ua->shared = calloc(1, sizeof *new_ua->shared);
 
   // default header
-  ua_reqheader_add(new_ua, "User-Agent", "orca (http://github.com/cee-studio/orca)");
+  ua_reqheader_add(new_ua, "User-Agent", "Orca (https://github.com/cee-studio/orca)");
   ua_reqheader_add(new_ua, "Content-Type", "application/json");
   ua_reqheader_add(new_ua, "Accept", "application/json");
 
@@ -594,7 +594,7 @@ set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list a
   size_t url_len = 1 + ua->base_url.size;
 
   va_list tmp;
-  va_copy (tmp, args);
+  va_copy(tmp, args);
   url_len += 1 + vsnprintf(NULL, 0, endpoint, tmp);
   va_end(tmp);
 
@@ -632,7 +632,7 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
 #ifdef BEARSSL
   if (CURLE_READ_ERROR == ecode 
       && 0 == strcmp(conn->errbuf, "SSL: EOF without close notify"))
-    log_warn("The remote server closes connection without terminating ssl");
+    logconf_warn(conn->conf, "The remote server closes connection without terminating SSL");
   else
     CURLE_CHECK(conn, ecode);
 #else
