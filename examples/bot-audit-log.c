@@ -59,7 +59,7 @@ void on_audit_channel_create(
            client,
            msg->guild_id,
            &(struct discord_get_guild_audit_log_params){
-             .user_id = msg->guild_id,
+             .user_id = msg->author->id,
              .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE
            },
            &audit_log);
