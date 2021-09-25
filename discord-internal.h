@@ -33,10 +33,10 @@
  *   - discord_adapter_cleanup()
  */
 struct discord_adapter {
+  struct logconf conf; ///< DISCORD_HTTP or DISCORD_WEBHOOK logging module
   struct user_agent *ua; ///< The user agent handle for performing requests
-  struct logconf conf; ///< store conf file contents and sync logging between clients
-
   struct { ///< Ratelimiting structure
+    struct logconf conf; ///< DISCORD_RATELIMIT logging module
     struct discord_bucket *buckets; ///< Endpoint/routes discovered, check a endpoint/bucket match with tree search functions
     pthread_mutex_t lock;           ///< Mutex used when adding to or searching for buckets
   } *ratelimit;
@@ -118,9 +118,10 @@ void discord_buckets_cleanup(struct discord_adapter *adapter);
  *
  * Check if connections from a bucket hit its threshold, and lock every connection
  *        associated with the bucket until cooldown time elapses
- * @param bucket check if a cooldown is necessary
+ * @param adapter the client adapter containinig every bucket found
+ * @param bucket check if bucket expects a cooldown before performing a request
  */
-void discord_bucket_try_cooldown(struct discord_bucket *bucket);
+void discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_bucket *bucket);
 
 /**
  * @brief Get existing bucket with @p route
@@ -208,8 +209,8 @@ struct discord_gateway_cbs {
  * @note A wrapper over struct websockets
  */
 struct discord_gateway {
+  struct logconf conf; ///< DISCORD_GATEWAY logging module
   struct websockets *ws; ///< the websockets handle that connects to Discord
-  struct logconf conf; ///< store conf file contents and sync logging between clients
 
   struct { ///< Reconnect structure
     bool enable; ///< will attempt reconnecting if true
@@ -321,9 +322,9 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  */
 struct discord {
   /// @privatesection
+  struct logconf *conf; ///< DISCORD LOGGING MODULE
+  
   bool is_original; ///< whether this is the original client or a clone
-
-  struct logconf *conf; ///< store conf file contents and sync logging between clients
 
   struct sized_buffer token;   ///< the bot token
 

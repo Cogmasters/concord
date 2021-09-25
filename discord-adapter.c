@@ -19,17 +19,19 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *conf, stru
   if (pthread_mutex_init(&adapter->ratelimit->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
 
-  if (!token->size) { // is a webhook only client
+  logconf_branch(&adapter->ratelimit->conf, conf, "DISCORD_RATELIMIT");
+  if (!token->size) { // no token means a webhook-only client
     logconf_branch(&adapter->conf, conf, "DISCORD_WEBHOOK");
-    return; /* EARLY RETURN */
   }
-  logconf_branch(&adapter->conf, conf, "DISCORD_HTTP");
+  else {
+    logconf_branch(&adapter->conf, conf, "DISCORD_HTTP");
 
-  char auth[128];
-  int ret = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
-  ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
+    char auth[128];
+    int ret = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
+    ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
 
-  ua_reqheader_add(adapter->ua, "Authorization", auth);
+    ua_reqheader_add(adapter->ua, "Authorization", auth);
+  }
 }
 
 void
@@ -100,7 +102,7 @@ discord_adapter_run(
   do {
     ua_info_cleanup(&adapter->err.info);
 
-    discord_bucket_try_cooldown(bucket);
+    discord_bucket_try_cooldown(adapter, bucket);
 
     code = ua_vrun(
       adapter->ua,
