@@ -191,8 +191,8 @@ struct discord_interaction_data {
   char *custom_id; ///< the custom id of the component
 
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-  struct discord_select_option **values; ///< the values the user selected
+     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+  json_char_t* values; ///< the values the user selected
 
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
