@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h> /* PRIu64 */
 #include <assert.h>
 
 #include "discord.h"
 #include "cee-utils.h"
+
 
 char JSON_STRING[] = \
 "[\n"
@@ -214,6 +216,39 @@ void on_dynamic_init(
   discord_component_list_free(components);
 }
 
+void on_interaction_create(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_interaction *interaction)
+{
+  log_info("Interaction %"PRIu64" received", interaction->id);
+
+  if (!interaction->data || !interaction->data->values)
+    return;
+
+  char text[1024];
+  snprintf(text, sizeof(text), 
+      "So you have chosen:\n"
+      "```json\n"
+      "%s\n"
+      "```", 
+      interaction->data->values);
+
+  struct discord_interaction_response params = {
+    .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE, // 4
+    .data = &(struct discord_interaction_callback_data){
+      .content = text,
+      .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL // 1 << 6
+    }
+  };
+
+  ORCAcode code;
+  code = discord_create_interaction_response(client, interaction->id, interaction->token, &params, NULL);
+  if (code) {
+    log_error("%s", discord_strerror(code, client));
+  }
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -232,6 +267,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "from_json_init", &on_from_json_init);
   discord_set_on_command(client, "designated_init", &on_designated_init);
   discord_set_on_command(client, "dynamic_init", &on_dynamic_init);
+  discord_set_on_interaction_create(client, &on_interaction_create);
 
   printf("\n\nThis bot demonstrates how to load message components"
          " with three different methods.\n"
