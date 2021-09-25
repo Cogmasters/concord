@@ -29,9 +29,9 @@ typedef uint64_t u64_snowflake_t;
 /**
  * @brief Raw JSON string
  *
- * Useful for dynamically typed fields, a `json_char_t` string should
- *        be used to keep a raw JSON value, which can then be parsed 
- *        with the assistance of a JSON library such as cJSON.
+ * Used for fields that have dynamic or unreliable types. A string made out of 
+ *        `json_char_t` should be used to keep a raw JSON, which can then be parsed
+ *        with the assistance of a JSON library.
  */
 typedef char json_char_t;
 /** @} OrcaTypes */
