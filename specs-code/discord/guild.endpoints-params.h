@@ -58,8 +58,8 @@ struct discord_create_guild_params {
   int explicit_content_filter; ///< explicit content filter level
 
   /* specs/discord/guild.endpoints-params.json:18:20
-     '{ "name": "roles", "type":{ "base":"int" }, "todo":true, "comment":"new guild roles" }' */
-  // @todo roles new guild roles;
+     '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"new guild roles" }' */
+  struct discord_role **roles; ///< new guild roles
 
   /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
@@ -204,8 +204,8 @@ struct discord_modify_guild_params {
   char *preferred_locale; ///< the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US"
 
   /* specs/discord/guild.endpoints-params.json:48:18
-     '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true, "comment":"array of guild feature strings"}' */
-  // @todo features array of guild feature strings;
+     '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "comment":"array of guild feature strings"}' */
+  ja_str **features; ///< array of guild feature strings
 
   /* specs/discord/guild.endpoints-params.json:49:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */

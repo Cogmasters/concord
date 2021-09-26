@@ -144,12 +144,12 @@ extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct dis
  */
 struct discord_voice_region {
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
-  char *id; ///< @todo fixed size limit
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
+  char *id;
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
-  char *name; ///< @todo fixed size limit
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
+  char *name;
 
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */

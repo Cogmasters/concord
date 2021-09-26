@@ -466,13 +466,21 @@ struct discord_identify;
 
 // defined at specs/discord/gateway.json:156:22
 /**
- * @brief Gateway Status Update Structure
+ * @brief Gateway Voice State Update Structure
  *
- * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
+ * @see https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure
  */
-struct discord_gateway_status_update;
+struct discord_voice_state_status;
 
-// defined at specs/discord/gateway.json:171:22
+// defined at specs/discord/gateway.json:169:22
+/**
+ * @brief Gateway Presence Update Structure
+ *
+ * @see https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure
+ */
+struct discord_presence_status;
+
+// defined at specs/discord/gateway.json:182:22
 /**
  * @brief Identify Connection Properties
  *
@@ -480,7 +488,7 @@ struct discord_gateway_status_update;
  */
 struct discord_identify_connection;
 
-// defined at specs/discord/gateway.json:182:22
+// defined at specs/discord/gateway.json:193:22
 /**
  * @brief Activity Structure
  *
@@ -490,7 +498,7 @@ struct discord_activity;
 
 
 
-// defined at specs/discord/gateway.json:219:22
+// defined at specs/discord/gateway.json:224:22
 /**
  * @brief Session Start Limit Structure
  *
@@ -644,7 +652,7 @@ struct discord_guild;
 
 
 
-// defined at specs/discord/guild.json:154:23
+// defined at specs/discord/guild.json:150:23
 /**
  * @brief Unavailable Guild Object
  *
@@ -652,7 +660,7 @@ struct discord_guild;
  */
 struct discord_unavailable_guild;
 
-// defined at specs/discord/guild.json:164:23
+// defined at specs/discord/guild.json:160:23
 /**
  * @brief Guild Preview Object
  *
@@ -660,7 +668,7 @@ struct discord_unavailable_guild;
  */
 struct discord_guild_preview;
 
-// defined at specs/discord/guild.json:182:23
+// defined at specs/discord/guild.json:178:23
 /**
  * @brief Guild Widget Object
  *
@@ -668,7 +676,7 @@ struct discord_guild_preview;
  */
 struct discord_guild_widget;
 
-// defined at specs/discord/guild.json:192:22
+// defined at specs/discord/guild.json:188:22
 /**
  * @brief Guild Member Structure
  *
@@ -676,7 +684,7 @@ struct discord_guild_widget;
  */
 struct discord_guild_member;
 
-// defined at specs/discord/guild.json:209:22
+// defined at specs/discord/guild.json:205:22
 /**
  * @brief Integration Structure
  *
@@ -686,7 +694,7 @@ struct discord_integration;
 
 
 
-// defined at specs/discord/guild.json:243:22
+// defined at specs/discord/guild.json:239:22
 /**
  * @brief Integration Account Structure
  *
@@ -694,7 +702,7 @@ struct discord_integration;
  */
 struct discord_integration_account;
 
-// defined at specs/discord/guild.json:253:22
+// defined at specs/discord/guild.json:249:22
 /**
  * @brief Integration Application Object
  *
@@ -702,7 +710,7 @@ struct discord_integration_account;
  */
 struct discord_integration_application;
 
-// defined at specs/discord/guild.json:266:22
+// defined at specs/discord/guild.json:262:22
 /**
  * @brief Ban Structure
  *
@@ -710,7 +718,7 @@ struct discord_integration_application;
  */
 struct discord_ban;
 
-// defined at specs/discord/guild.json:276:22
+// defined at specs/discord/guild.json:272:22
 /**
  * @brief Welcome Screen Structure
  *
@@ -718,7 +726,7 @@ struct discord_ban;
  */
 struct discord_welcome_screen;
 
-// defined at specs/discord/guild.json:287:22
+// defined at specs/discord/guild.json:283:22
 /**
  * @brief Welcome Screen Channel Structure
  *
@@ -1604,7 +1612,7 @@ extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum di
 
 
 // Activity Types
-// defined at specs/discord/gateway.json:201:5
+// defined at specs/discord/gateway.json:206:5
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
@@ -1641,7 +1649,7 @@ extern size_t discord_activity_types_list_to_json(char *str, size_t len, enum di
 
 
 // Default Message Notification Level
-// defined at specs/discord/guild.json:68:5
+// defined at specs/discord/guild.json:64:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
  *
@@ -1671,7 +1679,7 @@ extern size_t discord_default_message_notification_level_list_to_json(char *str,
 
 
 // Explicit Content Filter Level
-// defined at specs/discord/guild.json:77:5
+// defined at specs/discord/guild.json:73:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
  *
@@ -1702,7 +1710,7 @@ extern size_t discord_explicit_content_filter_level_list_to_json(char *str, size
 
 
 // MFA Level
-// defined at specs/discord/guild.json:87:5
+// defined at specs/discord/guild.json:83:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
  *
@@ -1732,7 +1740,7 @@ extern size_t discord_mfa_level_list_to_json(char *str, size_t len, enum discord
 
 
 // Verification Level
-// defined at specs/discord/guild.json:96:5
+// defined at specs/discord/guild.json:92:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-verification-level
  *
@@ -1765,7 +1773,7 @@ extern size_t discord_verification_level_list_to_json(char *str, size_t len, enu
 
 
 // Premium Tier
-// defined at specs/discord/guild.json:108:5
+// defined at specs/discord/guild.json:104:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
  *
@@ -1797,7 +1805,7 @@ extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum disc
 
 
 // System Channel Flags
-// defined at specs/discord/guild.json:119:5
+// defined at specs/discord/guild.json:115:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags
  *
@@ -1827,7 +1835,7 @@ extern size_t discord_system_channel_flags_list_to_json(char *str, size_t len, e
 
 
 // Guild Features
-// defined at specs/discord/guild.json:128:5
+// defined at specs/discord/guild.json:124:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-features
  *
@@ -1870,7 +1878,7 @@ extern size_t discord_guild_features_list_to_json(char *str, size_t len, enum di
 
 
 // Integration Expire Behaviors
-// defined at specs/discord/guild.json:229:5
+// defined at specs/discord/guild.json:225:5
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors
  *
@@ -6048,36 +6056,35 @@ struct discord_modify_guild_emoji_params {
  */
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
-  u64_snowflake_t id;
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
+  u64_snowflake_t id; ///< emoji id
 
   /* specs/discord/emoji.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
-  char *name;
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
+  char *name; ///< emoji name
 
   /* specs/discord/emoji.json:14:20
-     '{ "name": "roles", "type":{ "base":"struct discord_permissions_role", "dec":"ntl"}, "option":true,
-          "todo":true }' */
-  // @todo roles (null);
+     '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
+  struct discord_role **roles; ///< roles allowed to use this emoji
+
+  /* specs/discord/emoji.json:15:20
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
+  struct discord_user *user; ///< user that created this emoji
 
   /* specs/discord/emoji.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }' */
-  struct discord_user *user;
+     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
+  bool require_colons; ///< whether this emoji must be wrapped in colons
 
   /* specs/discord/emoji.json:17:20
-     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}' */
-  bool require_colons;
+     '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
+  bool managed; ///< whether this emoji is managed
 
   /* specs/discord/emoji.json:18:20
-     '{ "name": "managed", "type":{ "base":"bool" }, "option":true}' */
-  bool managed;
+     '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
+  bool animated; ///< whether this emoji is animated
 
   /* specs/discord/emoji.json:19:20
-     '{ "name": "animated", "type":{ "base":"bool" }, "option":true}' */
-  bool animated;
-
-  /* specs/discord/emoji.json:20:20
-     '{ "name": "available", "type":{ "base":"bool" }, "option":true}' */
+     '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
   bool available;
 
   // The following is metadata used to 
@@ -6160,8 +6167,8 @@ struct discord_identify {
   // @todo shard (null);
 
   /* specs/discord/gateway.json:148:19
-     '{ "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}}' */
-  struct discord_gateway_status_update *presence;
+     '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
+  struct discord_presence_status *presence;
 
   /* specs/discord/gateway.json:149:19
      '{ "name":"intents","type":{"base":"int"}}' */
@@ -6183,10 +6190,10 @@ struct discord_identify {
 /// @endcond
 };
 
-// Gateway Status Update Structure
+// Gateway Voice State Update Structure
 // defined at specs/discord/gateway.json:156:22
 /**
- * @see https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure
+ * @see https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure
  *
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6197,39 +6204,99 @@ struct discord_identify {
 
  *   * Initializer:
 
- *     * :code:`void discord_gateway_status_update_init(struct discord_gateway_status_update *)`
+ *     * :code:`void discord_voice_state_status_init(struct discord_voice_state_status *)`
  *   * Cleanup:
 
- *     * :code:`void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *)`
- *     * :code:`void discord_gateway_status_update_list_free(struct discord_gateway_status_update **)`
+ *     * :code:`void discord_voice_state_status_cleanup(struct discord_voice_state_status *)`
+ *     * :code:`void discord_voice_state_status_list_free(struct discord_voice_state_status **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_gateway_status_update_from_json(char *rbuf, size_t len, struct discord_gateway_status_update **)`
- *     * :code:`void discord_gateway_status_update_list_from_json(char *rbuf, size_t len, struct discord_gateway_status_update ***)`
+ *     * :code:`void discord_voice_state_status_from_json(char *rbuf, size_t len, struct discord_voice_state_status **)`
+ *     * :code:`void discord_voice_state_status_list_from_json(char *rbuf, size_t len, struct discord_voice_state_status ***)`
  *   * JSON Encoder:
 
- *     * :code:`void discord_gateway_status_update_to_json(char *wbuf, size_t len, struct discord_gateway_status_update *)`
- *     * :code:`void discord_gateway_status_update_list_to_json(char *wbuf, size_t len, struct discord_gateway_status_update **)`
+ *     * :code:`void discord_voice_state_status_to_json(char *wbuf, size_t len, struct discord_voice_state_status *)`
+ *     * :code:`void discord_voice_state_status_list_to_json(char *wbuf, size_t len, struct discord_voice_state_status **)`
  * @endverbatim
  */
-struct discord_gateway_status_update {
+struct discord_voice_state_status {
   /* specs/discord/gateway.json:159:19
-     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }' */
-  u64_unix_ms_t since;
+     '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
+  u64_snowflake_t guild_id; ///< id of the guild
+
+  /* specs/discord/gateway.json:160:19
+     '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
+  u64_snowflake_t channel_id; ///< id of the voice channel client wants to join (null if disconnecting)
 
   /* specs/discord/gateway.json:161:19
-     '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null}' */
-  struct discord_activity **activities;
+     '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
+  bool self_mute; ///< is the client muted
 
-  /* specs/discord/gateway.json:163:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}}' */
-  char status[16];
+  /* specs/discord/gateway.json:162:19
+     '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
+  bool self_deaf; ///< is the client deafened
 
-  /* specs/discord/gateway.json:164:19
-     '{ "name":"afk","type":{"base":"bool"}}' */
-  bool afk;
+  // The following is metadata used to 
+  // 1. control which field should be extracted/injected
+  // 2. record which field is presented(defined) in JSON
+  // 3. record which field is null in JSON
+/// @cond DOXYGEN_SHOULD_SKIP_THIS
+  struct {
+    bool enable_arg_switches;
+    bool enable_record_defined;
+    bool enable_record_null;
+    void *arg_switches[4];
+    void *record_defined[4];
+    void *record_null[4];
+  } __M; // metadata
+/// @endcond
+};
+
+// Gateway Presence Update Structure
+// defined at specs/discord/gateway.json:169:22
+/**
+ * @see https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure
+ *
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_presence_status_init(struct discord_presence_status *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_presence_status_cleanup(struct discord_presence_status *)`
+ *     * :code:`void discord_presence_status_list_free(struct discord_presence_status **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_presence_status_from_json(char *rbuf, size_t len, struct discord_presence_status **)`
+ *     * :code:`void discord_presence_status_list_from_json(char *rbuf, size_t len, struct discord_presence_status ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_presence_status_to_json(char *wbuf, size_t len, struct discord_presence_status *)`
+ *     * :code:`void discord_presence_status_list_to_json(char *wbuf, size_t len, struct discord_presence_status **)`
+ * @endverbatim
+ */
+struct discord_presence_status {
+  /* specs/discord/gateway.json:172:19
+     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
+  u64_unix_ms_t since; ///< unix time (in milliseconds) of when the client went idle, or null if the client is not idle
+
+  /* specs/discord/gateway.json:173:19
+     '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
+  struct discord_activity **activities; ///< the user's activities
+
+  /* specs/discord/gateway.json:174:19
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
+  char status[16]; ///< the user's new status
+
+  /* specs/discord/gateway.json:175:19
+     '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
+  bool afk; ///< whether or not the client is afk
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -6248,7 +6315,7 @@ struct discord_gateway_status_update {
 };
 
 // Identify Connection Properties
-// defined at specs/discord/gateway.json:171:22
+// defined at specs/discord/gateway.json:182:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
@@ -6277,17 +6344,17 @@ struct discord_gateway_status_update {
  * @endverbatim
  */
 struct discord_identify_connection {
-  /* specs/discord/gateway.json:174:19
-     '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}}' */
-  char *os;
+  /* specs/discord/gateway.json:185:19
+     '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
+  char *os; ///< your operating system
 
-  /* specs/discord/gateway.json:175:19
-     '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}}' */
-  char *browser;
+  /* specs/discord/gateway.json:186:19
+     '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
+  char *browser; ///< your library name
 
-  /* specs/discord/gateway.json:176:19
-     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}' */
-  char *device;
+  /* specs/discord/gateway.json:187:19
+     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
+  char *device; ///< your library name
 
   // The following is metadata used to 
   // 1. control which field should be extracted/injected
@@ -6306,7 +6373,7 @@ struct discord_identify_connection {
 };
 
 // Activity Structure
-// defined at specs/discord/gateway.json:182:22
+// defined at specs/discord/gateway.json:193:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
@@ -6335,42 +6402,36 @@ struct discord_identify_connection {
  * @endverbatim
  */
 struct discord_activity {
-  /* specs/discord/gateway.json:185:19
+  /* specs/discord/gateway.json:196:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
   char name[512];
 
-  /* specs/discord/gateway.json:186:19
+  /* specs/discord/gateway.json:197:19
      '{ "name":"type","type":{"base":"int"}}' */
   int type;
 
-  /* specs/discord/gateway.json:187:19
-     '{ "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""}' */
+  /* specs/discord/gateway.json:198:19
+     '{ "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""}' */
   char *url;
 
-  /* specs/discord/gateway.json:189:19
-     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 }' */
+  /* specs/discord/gateway.json:199:19
+     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 }' */
   u64_unix_ms_t created_at;
 
-  /* specs/discord/gateway.json:191:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 }' */
+  /* specs/discord/gateway.json:200:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t application_id;
 
-  /* specs/discord/gateway.json:193:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}' */
+  /* specs/discord/gateway.json:201:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *details;
 
-  /* specs/discord/gateway.json:195:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null}' */
+  /* specs/discord/gateway.json:202:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *state;
 
-  /* specs/discord/gateway.json:197:19
-     '{ "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}' */
+  /* specs/discord/gateway.json:203:19
+     '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
   bool instance;
 
   // The following is metadata used to 
@@ -6392,7 +6453,7 @@ struct discord_activity {
 
 
 // Session Start Limit Structure
-// defined at specs/discord/gateway.json:219:22
+// defined at specs/discord/gateway.json:224:22
 /**
  * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure
  *
@@ -6421,19 +6482,19 @@ struct discord_activity {
  * @endverbatim
  */
 struct discord_session_start_limit {
-  /* specs/discord/gateway.json:222:19
+  /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
   int total; ///< the total number of session starts the current user is allowed
 
-  /* specs/discord/gateway.json:223:19
+  /* specs/discord/gateway.json:228:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
   int remaining; ///< the remaining number of session starts the current user is allowed
 
-  /* specs/discord/gateway.json:224:19
+  /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
   int reset_after; ///< the number of milliseconds after which the limit resets
 
-  /* specs/discord/gateway.json:225:19
+  /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
   int max_concurrency; ///< the number of identify requests allowed per 5 seconds
 
@@ -6642,16 +6703,16 @@ struct discord_modify_guild_template_params {
  */
 struct discord_guild_template {
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *code; ///< @todo find fixed size limit
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
+  char *code;
 
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *name; ///< @todo find fixed size limit
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
+  char *name;
 
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
-  char *description; ///< @todo find fixed size limit
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
+  char *description;
 
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */
@@ -6755,8 +6816,8 @@ struct discord_create_guild_params {
   int explicit_content_filter; ///< explicit content filter level
 
   /* specs/discord/guild.endpoints-params.json:18:20
-     '{ "name": "roles", "type":{ "base":"int" }, "todo":true, "comment":"new guild roles" }' */
-  // @todo roles new guild roles;
+     '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"new guild roles" }' */
+  struct discord_role **roles; ///< new guild roles
 
   /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
@@ -6887,8 +6948,8 @@ struct discord_modify_guild_params {
   char *preferred_locale; ///< the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US"
 
   /* specs/discord/guild.endpoints-params.json:48:18
-     '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "todo":true, "comment":"array of guild feature strings"}' */
-  // @todo features array of guild feature strings;
+     '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "comment":"array of guild feature strings"}' */
+  ja_str **features; ///< array of guild feature strings
 
   /* specs/discord/guild.endpoints-params.json:49:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
@@ -7679,125 +7740,121 @@ struct discord_guild {
               "name":"explicit_content_filter"}' */
   enum discord_explicit_content_filter_level explicit_content_filter;
 
-  /* specs/discord/guild.json:31:82
-     '{"type":{"base":"struct discord_permissions_role", "dec":"ntl"}, "name":"roles", "todo":true, 
-              "comment":"array of role objects"}' */
-  // @todo roles array of role objects;
+  /* specs/discord/guild.json:31:70
+     '{"type":{"base":"struct discord_role", "dec":"ntl"}, "name":"roles", "comment":"array of role objects", "inject_if_not":null }' */
+  struct discord_role **roles; ///< array of role objects
 
-  /* specs/discord/guild.json:33:71
+  /* specs/discord/guild.json:32:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
   struct discord_emoji **emojis;
 
-  /* specs/discord/guild.json:34:57
-     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
-              "comment":"array of guild feature strings"}' */
-  // @todo features array of guild feature strings;
+  /* specs/discord/guild.json:33:57
+     '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "comment":"array of guild feature strings", "inject_if_not":null }' */
+  ja_str **features; ///< array of guild feature strings
 
-  /* specs/discord/guild.json:36:79
+  /* specs/discord/guild.json:34:79
      '{"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"}' */
   enum discord_mfa_level mfa_level;
 
-  /* specs/discord/guild.json:37:95
+  /* specs/discord/guild.json:35:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}' */
   u64_snowflake_t application_id;
 
-  /* specs/discord/guild.json:38:95
+  /* specs/discord/guild.json:36:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"}' */
   u64_snowflake_t system_channel_id;
 
-  /* specs/discord/guild.json:39:90
+  /* specs/discord/guild.json:37:90
      '{"type":{"base":"int", "int_alias":"enum discord_system_channel_flags"}, "name":"system_channel_flags"}' */
   enum discord_system_channel_flags system_channel_flags;
 
-  /* specs/discord/guild.json:40:95
+  /* specs/discord/guild.json:38:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}' */
   u64_snowflake_t rules_channel_id;
 
-  /* specs/discord/guild.json:41:76
+  /* specs/discord/guild.json:39:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true}' */
   u64_unix_ms_t joined_at;
 
-  /* specs/discord/guild.json:42:42
+  /* specs/discord/guild.json:40:42
      '{"type":{"base":"bool"}, "name":"large", "option":true}' */
   bool large;
 
-  /* specs/discord/guild.json:43:42
+  /* specs/discord/guild.json:41:42
      '{"type":{"base":"bool"}, "name":"unavailable", "option":true}' */
   bool unavailable;
 
-  /* specs/discord/guild.json:44:41
+  /* specs/discord/guild.json:42:41
      '{"type":{"base":"int"}, "name":"member_count", "option":true}' */
   int member_count;
 
-  /* specs/discord/guild.json:45:71
-     '{"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
-         "comment":"array of partial voice state objects"}' */
-  // @todo voice_states array of partial voice state objects;
+  /* specs/discord/guild.json:43:77
+     '{"type":{"base":"struct discord_voice_state", "dec":"ntl"}, "name":"voice_states", "comment":"array of partial voice state objects", "inject_if_not":null }' */
+  struct discord_voice_state **voice_states; ///< array of partial voice state objects
 
-  /* specs/discord/guild.json:47:78
+  /* specs/discord/guild.json:44:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
   struct discord_guild_member **members;
 
-  /* specs/discord/guild.json:48:73
+  /* specs/discord/guild.json:45:73
      '{"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}' */
   struct discord_channel **channels; ///< array of channel objects
 
-  /* specs/discord/guild.json:50:41
-     '{"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
-         "comment":"array of partial presence update objects"}' */
-  // @todo presences array of partial presence update objects;
+  /* specs/discord/guild.json:47:81
+     '{"type":{"base":"struct discord_presence_status", "dec":"ntl"}, "name":"presences", "option":true, "comment":"array of partial presence update objects", "inject_if_not":null }' */
+  struct discord_presence_status **presences; ///< array of partial presence update objects
 
-  /* specs/discord/guild.json:52:41
+  /* specs/discord/guild.json:48:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
   int max_presences;
 
-  /* specs/discord/guild.json:53:41
+  /* specs/discord/guild.json:49:41
      '{"type":{"base":"int"}, "name":"max_members", "option":true}' */
   int max_members;
 
-  /* specs/discord/guild.json:54:70
+  /* specs/discord/guild.json:50:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"vanity_url"}' */
   char *vanity_url;
 
-  /* specs/discord/guild.json:55:70
+  /* specs/discord/guild.json:51:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"description"}' */
   char *description;
 
-  /* specs/discord/guild.json:56:70
+  /* specs/discord/guild.json:52:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"banner"}' */
   char *banner;
 
-  /* specs/discord/guild.json:57:82
+  /* specs/discord/guild.json:53:82
      '{"type":{"base":"int", "int_alias":"enum discord_premium_tier"}, "name":"premium_tier"}' */
   enum discord_premium_tier premium_tier;
 
-  /* specs/discord/guild.json:58:41
+  /* specs/discord/guild.json:54:41
      '{"type":{"base":"int"}, "name":"premium_subscription_count", "option":true}' */
   int premium_subscription_count;
 
-  /* specs/discord/guild.json:59:72
+  /* specs/discord/guild.json:55:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_LOCALE]"}, "name":"preferred_locale"}' */
   char preferred_locale[ORCA_LIMITS_LOCALE];
 
-  /* specs/discord/guild.json:61:27
+  /* specs/discord/guild.json:57:27
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
          "name":"public_updates_channel_id"}' */
   u64_snowflake_t public_updates_channel_id;
 
-  /* specs/discord/guild.json:62:41
+  /* specs/discord/guild.json:58:41
      '{"type":{"base":"int"}, "name":"max_video_channel_users", "option":true}' */
   int max_video_channel_users;
 
-  /* specs/discord/guild.json:63:41
+  /* specs/discord/guild.json:59:41
      '{"type":{"base":"int"}, "name":"approximate_member_count", "option":true}' */
   int approximate_member_count;
 
-  /* specs/discord/guild.json:64:41
+  /* specs/discord/guild.json:60:41
      '{"type":{"base":"int"}, "name":"approximate_presence_count", "option":true}' */
   int approximate_presence_count;
 
-  /* specs/discord/guild.json:65:78
+  /* specs/discord/guild.json:61:78
      '{"type":{"base":"struct discord_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}' */
   struct discord_welcome_screen *welcome_screen;
 
@@ -7832,7 +7889,7 @@ struct discord_guild {
 
 
 // Unavailable Guild Object
-// defined at specs/discord/guild.json:154:23
+// defined at specs/discord/guild.json:150:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
  *
@@ -7861,11 +7918,11 @@ struct discord_guild {
  * @endverbatim
  */
 struct discord_unavailable_guild {
-  /* specs/discord/guild.json:156:18
+  /* specs/discord/guild.json:152:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:157:18
+  /* specs/discord/guild.json:153:18
      '{"name":"unavailable", "type":{"base":"bool"}}' */
   bool unavailable;
 
@@ -7886,7 +7943,7 @@ struct discord_unavailable_guild {
 };
 
 // Guild Preview Object
-// defined at specs/discord/guild.json:164:23
+// defined at specs/discord/guild.json:160:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
  *
@@ -7915,43 +7972,43 @@ struct discord_unavailable_guild {
  * @endverbatim
  */
 struct discord_guild_preview {
-  /* specs/discord/guild.json:166:18
+  /* specs/discord/guild.json:162:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:167:18
+  /* specs/discord/guild.json:163:18
      '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
   char name[DISCORD_MAX_NAME_LEN];
 
-  /* specs/discord/guild.json:168:18
+  /* specs/discord/guild.json:164:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
   char *icon;
 
-  /* specs/discord/guild.json:169:18
+  /* specs/discord/guild.json:165:18
      '{"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}}' */
   char *splash;
 
-  /* specs/discord/guild.json:170:18
+  /* specs/discord/guild.json:166:18
      '{"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}}' */
   char *discovery_splash;
 
-  /* specs/discord/guild.json:171:18
+  /* specs/discord/guild.json:167:18
      '{"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}}' */
   struct discord_emoji **emojis;
 
-  /* specs/discord/guild.json:172:18
-     '{"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}}' */
-  // @todo features (null);
+  /* specs/discord/guild.json:168:18
+     '{"name":"features", "type":{"base":"ja_str", "dec":"ntl"}}' */
+  ja_str **features;
 
-  /* specs/discord/guild.json:173:18
+  /* specs/discord/guild.json:169:18
      '{"name":"approximate_member_count", "type":{"base":"int"}}' */
   int approximate_member_count;
 
-  /* specs/discord/guild.json:174:18
+  /* specs/discord/guild.json:170:18
      '{"name":"approximate_presence_count", "type":{"base":"int"}}' */
   int approximate_presence_count;
 
-  /* specs/discord/guild.json:175:18
+  /* specs/discord/guild.json:171:18
      '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   char description[DISCORD_MAX_DESCRIPTION_LEN];
 
@@ -7972,7 +8029,7 @@ struct discord_guild_preview {
 };
 
 // Guild Widget Object
-// defined at specs/discord/guild.json:182:23
+// defined at specs/discord/guild.json:178:23
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
  *
@@ -8001,11 +8058,11 @@ struct discord_guild_preview {
  * @endverbatim
  */
 struct discord_guild_widget {
-  /* specs/discord/guild.json:184:18
+  /* specs/discord/guild.json:180:18
      '{"name":"enabled", "type":{"base":"bool"}}' */
   bool enabled;
 
-  /* specs/discord/guild.json:185:18
+  /* specs/discord/guild.json:181:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}}' */
   u64_snowflake_t channel_id;
 
@@ -8026,7 +8083,7 @@ struct discord_guild_widget {
 };
 
 // Guild Member Structure
-// defined at specs/discord/guild.json:192:22
+// defined at specs/discord/guild.json:188:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
  *
@@ -8055,39 +8112,39 @@ struct discord_guild_widget {
  * @endverbatim
  */
 struct discord_guild_member {
-  /* specs/discord/guild.json:195:20
+  /* specs/discord/guild.json:191:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
   struct discord_user *user;
 
-  /* specs/discord/guild.json:196:20
+  /* specs/discord/guild.json:192:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
   char nick[DISCORD_MAX_NAME_LEN];
 
-  /* specs/discord/guild.json:197:20
+  /* specs/discord/guild.json:193:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
   ja_u64 **roles; ///< array of role object ids
 
-  /* specs/discord/guild.json:198:20
+  /* specs/discord/guild.json:194:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   u64_unix_ms_t joined_at;
 
-  /* specs/discord/guild.json:199:20
+  /* specs/discord/guild.json:195:20
      '{ "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   u64_unix_ms_t premium_since;
 
-  /* specs/discord/guild.json:200:20
+  /* specs/discord/guild.json:196:20
      '{ "name": "deaf", "type":{ "base":"bool" }}' */
   bool deaf;
 
-  /* specs/discord/guild.json:201:20
+  /* specs/discord/guild.json:197:20
      '{ "name": "mute", "type":{ "base":"bool" }}' */
   bool mute;
 
-  /* specs/discord/guild.json:202:20
+  /* specs/discord/guild.json:198:20
      '{ "name": "pending", "type":{ "base":"bool" }, "option":true}' */
   bool pending;
 
-  /* specs/discord/guild.json:203:20
+  /* specs/discord/guild.json:199:20
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}' */
   char *permissions;
 
@@ -8108,7 +8165,7 @@ struct discord_guild_member {
 };
 
 // Integration Structure
-// defined at specs/discord/guild.json:209:22
+// defined at specs/discord/guild.json:205:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
  *
@@ -8137,63 +8194,63 @@ struct discord_guild_member {
  * @endverbatim
  */
 struct discord_integration {
-  /* specs/discord/guild.json:212:20
+  /* specs/discord/guild.json:208:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:213:20
+  /* specs/discord/guild.json:209:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/guild.json:214:20
+  /* specs/discord/guild.json:210:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*"}}' */
   char *type;
 
-  /* specs/discord/guild.json:215:20
+  /* specs/discord/guild.json:211:20
      '{ "name": "enabled", "type":{ "base":"bool"}}' */
   bool enabled;
 
-  /* specs/discord/guild.json:216:20
+  /* specs/discord/guild.json:212:20
      '{ "name": "syncing", "type":{ "base":"bool"}}' */
   bool syncing;
 
-  /* specs/discord/guild.json:217:20
+  /* specs/discord/guild.json:213:20
      '{ "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
   u64_snowflake_t role_id;
 
-  /* specs/discord/guild.json:218:20
+  /* specs/discord/guild.json:214:20
      '{ "name": "enable_emotions", "type":{ "base":"bool"}}' */
   bool enable_emotions;
 
-  /* specs/discord/guild.json:219:20
+  /* specs/discord/guild.json:215:20
      '{ "name": "expire_behavior", "type":{ "base":"int", "int_alias":"enum discord_integration_expire_behaviors"}}' */
   enum discord_integration_expire_behaviors expire_behavior;
 
-  /* specs/discord/guild.json:220:20
+  /* specs/discord/guild.json:216:20
      '{ "name": "expire_grace_period", "type":{ "base":"int"}}' */
   int expire_grace_period;
 
-  /* specs/discord/guild.json:221:20
+  /* specs/discord/guild.json:217:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true}' */
   struct discord_user *user;
 
-  /* specs/discord/guild.json:222:20
+  /* specs/discord/guild.json:218:20
      '{ "name": "account", "type":{ "base":"struct discord_integration_account", "dec":"*"}}' */
   struct discord_integration_account *account;
 
-  /* specs/discord/guild.json:223:20
+  /* specs/discord/guild.json:219:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
   u64_unix_ms_t synced_at;
 
-  /* specs/discord/guild.json:224:20
+  /* specs/discord/guild.json:220:20
      '{ "name": "subscriber_count", "type":{ "base":"int"}}' */
   int subscriber_count;
 
-  /* specs/discord/guild.json:225:20
+  /* specs/discord/guild.json:221:20
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
   bool revoked;
 
-  /* specs/discord/guild.json:226:20
+  /* specs/discord/guild.json:222:20
      '{ "name": "application", "type":{ "base":"struct discord_integration_application", "dec":"*" }}' */
   struct discord_integration_application *application;
 
@@ -8216,7 +8273,7 @@ struct discord_integration {
 
 
 // Integration Account Structure
-// defined at specs/discord/guild.json:243:22
+// defined at specs/discord/guild.json:239:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
  *
@@ -8245,11 +8302,11 @@ struct discord_integration {
  * @endverbatim
  */
 struct discord_integration_account {
-  /* specs/discord/guild.json:245:19
+  /* specs/discord/guild.json:241:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:246:19
+  /* specs/discord/guild.json:242:19
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
@@ -8270,7 +8327,7 @@ struct discord_integration_account {
 };
 
 // Integration Application Object
-// defined at specs/discord/guild.json:253:22
+// defined at specs/discord/guild.json:249:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
  *
@@ -8299,27 +8356,27 @@ struct discord_integration_account {
  * @endverbatim
  */
 struct discord_integration_application {
-  /* specs/discord/guild.json:255:19
+  /* specs/discord/guild.json:251:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:256:19
+  /* specs/discord/guild.json:252:19
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.json:257:19
+  /* specs/discord/guild.json:253:19
      '{ "name":"icon", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
   char icon[ORCA_LIMITS_SHA256];
 
-  /* specs/discord/guild.json:258:19
+  /* specs/discord/guild.json:254:19
      '{ "name":"description", "type":{ "base":"char", "dec":"*" }}' */
   char *description;
 
-  /* specs/discord/guild.json:259:19
+  /* specs/discord/guild.json:255:19
      '{ "name":"summary", "type":{ "base":"char", "dec":"*" }}' */
   char *summary;
 
-  /* specs/discord/guild.json:260:19
+  /* specs/discord/guild.json:256:19
      '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
   struct discord_user *bot;
 
@@ -8340,7 +8397,7 @@ struct discord_integration_application {
 };
 
 // Ban Structure
-// defined at specs/discord/guild.json:266:22
+// defined at specs/discord/guild.json:262:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
  *
@@ -8369,11 +8426,11 @@ struct discord_integration_application {
  * @endverbatim
  */
 struct discord_ban {
-  /* specs/discord/guild.json:269:20
+  /* specs/discord/guild.json:265:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
   char reason[DISCORD_MAX_REASON_LEN];
 
-  /* specs/discord/guild.json:270:20
+  /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
   struct discord_user *user; ///< partial user object
 
@@ -8394,7 +8451,7 @@ struct discord_ban {
 };
 
 // Welcome Screen Structure
-// defined at specs/discord/guild.json:276:22
+// defined at specs/discord/guild.json:272:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
  *
@@ -8423,12 +8480,12 @@ struct discord_ban {
  * @endverbatim
  */
 struct discord_welcome_screen {
-  /* specs/discord/guild.json:279:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *description; ///< @todo fixed size limit
+  /* specs/discord/guild.json:275:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
+  char *description;
 
-  /* specs/discord/guild.json:280:20
-     '{ "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "todo":false }' */
+  /* specs/discord/guild.json:276:20
+     '{ "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "inject_if_not":null }' */
   struct discord_welcome_screen_channel **welcome_channels;
 
   // The following is metadata used to 
@@ -8448,7 +8505,7 @@ struct discord_welcome_screen {
 };
 
 // Welcome Screen Channel Structure
-// defined at specs/discord/guild.json:287:22
+// defined at specs/discord/guild.json:283:22
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
  *
@@ -8477,19 +8534,19 @@ struct discord_welcome_screen {
  * @endverbatim
  */
 struct discord_welcome_screen_channel {
-  /* specs/discord/guild.json:290:20
+  /* specs/discord/guild.json:286:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t channel_id;
 
-  /* specs/discord/guild.json:291:20
+  /* specs/discord/guild.json:287:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
   char *description;
 
-  /* specs/discord/guild.json:292:20
+  /* specs/discord/guild.json:288:20
      '{ "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t emoji_id;
 
-  /* specs/discord/guild.json:293:20
+  /* specs/discord/guild.json:289:20
      '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}' */
   char *emoji_name;
 
@@ -9140,8 +9197,8 @@ struct discord_interaction_callback_data {
   struct discord_embed **embeds; ///< support up to 10 embeds
 
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
-  // @todo allowed_mentions allowed mentions object;
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions object
 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
@@ -9256,8 +9313,8 @@ struct discord_get_invite_params {
  */
 struct discord_invite {
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *code; ///< @todo fixed size limit
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
+  char *code;
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
@@ -10123,8 +10180,8 @@ struct discord_user {
  */
 struct discord_connection {
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *id; ///< @todo fixed size limit
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
+  char *id;
 
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
@@ -10307,12 +10364,12 @@ struct discord_voice_state {
  */
 struct discord_voice_region {
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
-  char *id; ///< @todo fixed size limit
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
+  char *id;
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
-  char *name; ///< @todo fixed size limit
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
+  char *name;
 
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */
@@ -11627,20 +11684,35 @@ extern void discord_identify_list_from_json(char *str, size_t len, struct discor
 extern size_t discord_identify_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_identify_list_to_json(char *str, size_t len, struct discord_identify **p);
 
-extern void discord_gateway_status_update_cleanup_v(void *p);
-extern void discord_gateway_status_update_cleanup(struct discord_gateway_status_update *p);
-extern void discord_gateway_status_update_init_v(void *p);
-extern void discord_gateway_status_update_init(struct discord_gateway_status_update *p);
-extern void discord_gateway_status_update_from_json_v(char *json, size_t len, void *pp);
-extern void discord_gateway_status_update_from_json(char *json, size_t len, struct discord_gateway_status_update **pp);
-extern size_t discord_gateway_status_update_to_json_v(char *json, size_t len, void *p);
-extern size_t discord_gateway_status_update_to_json(char *json, size_t len, struct discord_gateway_status_update *p);
-extern void discord_gateway_status_update_list_free_v(void **p);
-extern void discord_gateway_status_update_list_free(struct discord_gateway_status_update **p);
-extern void discord_gateway_status_update_list_from_json_v(char *str, size_t len, void *p);
-extern void discord_gateway_status_update_list_from_json(char *str, size_t len, struct discord_gateway_status_update ***p);
-extern size_t discord_gateway_status_update_list_to_json_v(char *str, size_t len, void *p);
-extern size_t discord_gateway_status_update_list_to_json(char *str, size_t len, struct discord_gateway_status_update **p);
+extern void discord_voice_state_status_cleanup_v(void *p);
+extern void discord_voice_state_status_cleanup(struct discord_voice_state_status *p);
+extern void discord_voice_state_status_init_v(void *p);
+extern void discord_voice_state_status_init(struct discord_voice_state_status *p);
+extern void discord_voice_state_status_from_json_v(char *json, size_t len, void *pp);
+extern void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status **pp);
+extern size_t discord_voice_state_status_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord_voice_state_status *p);
+extern void discord_voice_state_status_list_free_v(void **p);
+extern void discord_voice_state_status_list_free(struct discord_voice_state_status **p);
+extern void discord_voice_state_status_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_voice_state_status_list_from_json(char *str, size_t len, struct discord_voice_state_status ***p);
+extern size_t discord_voice_state_status_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_voice_state_status_list_to_json(char *str, size_t len, struct discord_voice_state_status **p);
+
+extern void discord_presence_status_cleanup_v(void *p);
+extern void discord_presence_status_cleanup(struct discord_presence_status *p);
+extern void discord_presence_status_init_v(void *p);
+extern void discord_presence_status_init(struct discord_presence_status *p);
+extern void discord_presence_status_from_json_v(char *json, size_t len, void *pp);
+extern void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status **pp);
+extern size_t discord_presence_status_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_presence_status_to_json(char *json, size_t len, struct discord_presence_status *p);
+extern void discord_presence_status_list_free_v(void **p);
+extern void discord_presence_status_list_free(struct discord_presence_status **p);
+extern void discord_presence_status_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_presence_status_list_from_json(char *str, size_t len, struct discord_presence_status ***p);
+extern size_t discord_presence_status_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_presence_status_list_to_json(char *str, size_t len, struct discord_presence_status **p);
 
 extern void discord_identify_connection_cleanup_v(void *p);
 extern void discord_identify_connection_cleanup(struct discord_identify_connection *p);

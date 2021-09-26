@@ -1293,7 +1293,8 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
                 "(embeds):F,"
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+                "(allowed_mentions):F,"
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 "(flags):d,"
@@ -1313,7 +1314,8 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
                 discord_embed_list_from_json, &p->embeds,
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+                discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 &p->flags,
@@ -1344,7 +1346,9 @@ static void discord_interaction_callback_data_use_default_inject_settings(struct
     p->__M.arg_switches[2] = p->embeds;
 
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+  if (p->allowed_mentions != NULL)
+    p->__M.arg_switches[3] = p->allowed_mentions;
 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
@@ -1373,7 +1377,8 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
                 "(embeds):F,"
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+                "(allowed_mentions):F,"
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 "(flags):d,"
@@ -1391,7 +1396,8 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
                 discord_embed_list_to_json, p->embeds,
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+                discord_allowed_mentions_to_json, p->allowed_mentions,
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 &p->flags,
@@ -1448,8 +1454,11 @@ void discord_interaction_callback_data_cleanup(struct discord_interaction_callba
   if (d->embeds)
     discord_embed_list_free(d->embeds);
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
-  // @todo p->(null)
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+  if (d->allowed_mentions) {
+    discord_allowed_mentions_cleanup(d->allowed_mentions);
+    free(d->allowed_mentions);
+  }
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
   // p->flags is a scalar
@@ -1471,7 +1480,7 @@ void discord_interaction_callback_data_init(struct discord_interaction_callback_
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
 
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */

@@ -581,7 +581,7 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
   discord_connection_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 "(id):?s,"
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
@@ -611,7 +611,7 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
                 "@record_defined"
                 "@record_null",
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 &p->id,
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
@@ -647,7 +647,7 @@ static void discord_connection_use_default_inject_settings(struct discord_connec
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[0] = p->id;
 
   /* specs/discord/user.json:77:24
@@ -690,7 +690,7 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
   discord_connection_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 "(id):s,"
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
@@ -718,7 +718,7 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
                 "(visibility):d,"
                 "@arg_switches:b",
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 p->id,
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
@@ -783,7 +783,7 @@ size_t discord_connection_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_connection_cleanup(struct discord_connection *d) {
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
   if (d->id)
     free(d->id);
   /* specs/discord/user.json:77:24
@@ -818,7 +818,7 @@ void discord_connection_cleanup(struct discord_connection *d) {
 void discord_connection_init(struct discord_connection *p) {
   memset(p, 0, sizeof(struct discord_connection));
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */

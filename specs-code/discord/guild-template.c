@@ -22,13 +22,13 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
   discord_guild_template_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
                 "(code):?s,"
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 "(name):?s,"
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 "(description):?s,"
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */
@@ -58,13 +58,13 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
                 "@record_defined"
                 "@record_null",
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
                 &p->code,
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 &p->name,
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 &p->description,
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */
@@ -100,15 +100,15 @@ static void discord_guild_template_use_default_inject_settings(struct discord_gu
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
   p->__M.arg_switches[0] = p->code;
 
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[2] = p->description;
 
   /* specs/discord/guild-template.json:15:20
@@ -151,13 +151,13 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
   discord_guild_template_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
                 "(code):s,"
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 "(name):s,"
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 "(description):s,"
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */
@@ -185,13 +185,13 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
                 "(is_dirty):b,"
                 "@arg_switches:b",
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
                 p->code,
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 p->name,
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 p->description,
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */
@@ -256,15 +256,15 @@ size_t discord_guild_template_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_guild_template_cleanup(struct discord_guild_template *d) {
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
   if (d->code)
     free(d->code);
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   if (d->name)
     free(d->name);
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
   if (d->description)
     free(d->description);
   /* specs/discord/guild-template.json:15:20
@@ -302,13 +302,13 @@ void discord_guild_template_cleanup(struct discord_guild_template *d) {
 void discord_guild_template_init(struct discord_guild_template *p) {
   memset(p, 0, sizeof(struct discord_guild_template));
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
 
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
 
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */

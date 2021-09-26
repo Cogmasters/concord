@@ -528,8 +528,8 @@ struct discord_interaction_callback_data {
   struct discord_embed **embeds; ///< support up to 10 embeds
 
   /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null, "todo": true}' */
-  // @todo allowed_mentions allowed mentions object;
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions object
 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */

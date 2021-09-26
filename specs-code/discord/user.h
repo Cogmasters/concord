@@ -247,8 +247,8 @@ extern size_t discord_visibility_types_list_to_json(char *str, size_t len, enum 
  */
 struct discord_connection {
   /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *id; ///< @todo fixed size limit
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
+  char *id;
 
   /* specs/discord/user.json:77:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */

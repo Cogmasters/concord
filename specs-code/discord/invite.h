@@ -65,8 +65,8 @@ extern size_t discord_invite_target_user_types_list_to_json(char *str, size_t le
  */
 struct discord_invite {
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
-  char *code; ///< @todo fixed size limit
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
+  char *code;
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */

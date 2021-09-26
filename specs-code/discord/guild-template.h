@@ -36,16 +36,16 @@
  */
 struct discord_guild_template {
   /* specs/discord/guild-template.json:12:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *code; ///< @todo find fixed size limit
+     '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
+  char *code;
 
   /* specs/discord/guild-template.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"@todo find fixed size limit"}' */
-  char *name; ///< @todo find fixed size limit
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
+  char *name;
 
   /* specs/discord/guild-template.json:14:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment": "@todo find fixed size limit"}' */
-  char *description; ///< @todo find fixed size limit
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
+  char *description;
 
   /* specs/discord/guild-template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */

@@ -36,36 +36,35 @@
  */
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
-  u64_snowflake_t id;
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
+  u64_snowflake_t id; ///< emoji id
 
   /* specs/discord/emoji.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
-  char *name;
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
+  char *name; ///< emoji name
 
   /* specs/discord/emoji.json:14:20
-     '{ "name": "roles", "type":{ "base":"struct discord_permissions_role", "dec":"ntl"}, "option":true,
-          "todo":true }' */
-  // @todo roles (null);
+     '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
+  struct discord_role **roles; ///< roles allowed to use this emoji
+
+  /* specs/discord/emoji.json:15:20
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
+  struct discord_user *user; ///< user that created this emoji
 
   /* specs/discord/emoji.json:16:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true }' */
-  struct discord_user *user;
+     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
+  bool require_colons; ///< whether this emoji must be wrapped in colons
 
   /* specs/discord/emoji.json:17:20
-     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true}' */
-  bool require_colons;
+     '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
+  bool managed; ///< whether this emoji is managed
 
   /* specs/discord/emoji.json:18:20
-     '{ "name": "managed", "type":{ "base":"bool" }, "option":true}' */
-  bool managed;
+     '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
+  bool animated; ///< whether this emoji is animated
 
   /* specs/discord/emoji.json:19:20
-     '{ "name": "animated", "type":{ "base":"bool" }, "option":true}' */
-  bool animated;
-
-  /* specs/discord/emoji.json:20:20
-     '{ "name": "available", "type":{ "base":"bool" }, "option":true}' */
+     '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
   bool available;
 
   // The following is metadata used to 

@@ -73,7 +73,7 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp
   discord_invite_init(p);
   r=json_extract(json, len, 
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
                 "(code):?s,"
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
@@ -100,7 +100,7 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp
                 "@record_defined"
                 "@record_null",
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
                 &p->code,
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
@@ -133,7 +133,7 @@ static void discord_invite_use_default_inject_settings(struct discord_invite *p)
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[0] = p->code;
 
   /* specs/discord/invite.json:23:20
@@ -172,7 +172,7 @@ size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p)
   discord_invite_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
                 "(code):s,"
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
@@ -197,7 +197,7 @@ size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p)
                 "(approximate_member_count):d,"
                 "@arg_switches:b",
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
                 p->code,
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
@@ -259,7 +259,7 @@ size_t discord_invite_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_invite_cleanup(struct discord_invite *d) {
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
   if (d->code)
     free(d->code);
   /* specs/discord/invite.json:23:20
@@ -300,7 +300,7 @@ void discord_invite_cleanup(struct discord_invite *d) {
 void discord_invite_init(struct discord_invite *p) {
   memset(p, 0, sizeof(struct discord_invite));
   /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"}' */
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */

@@ -382,10 +382,10 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
   discord_voice_region_init(p);
   r=json_extract(json, len, 
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 "(id):?s,"
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):?s,"
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */
@@ -403,10 +403,10 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
                 "@record_defined"
                 "@record_null",
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 &p->id,
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->name,
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */
@@ -430,11 +430,11 @@ static void discord_voice_region_use_default_inject_settings(struct discord_voic
 {
   p->__M.enable_arg_switches = true;
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[0] = p->id;
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   p->__M.arg_switches[1] = p->name;
 
   /* specs/discord/voice.json:36:20
@@ -461,10 +461,10 @@ size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice
   discord_voice_region_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 "(id):s,"
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):s,"
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */
@@ -480,10 +480,10 @@ size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice
                 "(custom):b,"
                 "@arg_switches:b",
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 p->id,
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */
@@ -536,11 +536,11 @@ size_t discord_voice_region_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_voice_region_cleanup(struct discord_voice_region *d) {
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
   if (d->id)
     free(d->id);
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   if (d->name)
     free(d->name);
   /* specs/discord/voice.json:36:20
@@ -560,10 +560,10 @@ void discord_voice_region_cleanup(struct discord_voice_region *d) {
 void discord_voice_region_init(struct discord_voice_region *p) {
   memset(p, 0, sizeof(struct discord_voice_region));
   /* specs/discord/voice.json:34:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/voice.json:35:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" }' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/voice.json:36:20
      '{ "name": "vip", "type":{ "base":"bool" }}' */
