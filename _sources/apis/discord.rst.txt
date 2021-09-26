@@ -209,7 +209,13 @@ Initialization / Cleanup
 .. doxygenfunction:: discord_config_init
 .. doxygenfunction:: discord_clone
 .. doxygenfunction:: discord_cleanup
+
+Connecting
+^^^^^^^^^^
+
 .. doxygenfunction:: discord_run
+.. doxygenfunction:: discord_shutdown
+.. doxygenfunction:: discord_reconnect
 
 Error Handling
 ^^^^^^^^^^^^^^

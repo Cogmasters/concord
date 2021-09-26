@@ -365,6 +365,11 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#connecting">
+       Connecting
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#error-handling">
        Error Handling
       </a>
@@ -10075,6 +10080,9 @@
 </dl>
 </dd></dl>
 
+</div>
+<div class="section" id="connecting">
+<h4>Connecting<a class="headerlink" href="#connecting" title="Permalink to this headline">¶</a></h4>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_run">
 <span class="target" id="discord_8h_1ab7988ee40a818de5f17e302981dfbbc7"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_run</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_run" title="Permalink to this definition">¶</a><br /></dt>
@@ -10087,6 +10095,33 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>ORCAcode for how the run went, ORCA_OK means nothing out of the ordinary </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_shutdown">
+<span class="target" id="discord_8h_1a3e522caa529dd26e03d75a6482e7aaa1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_shutdown</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_shutdown" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gracefully shutdown a ongoing Discord connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_reconnect">
+<span class="target" id="discord_8h_1a6accf8c8d133a8b676b6838da2912f94"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_reconnect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">resume</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_reconnect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gracefully reconnects a ongoing Discord connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>resume</strong> – true to attempt to resume to previous session, false restart a fresh session </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
