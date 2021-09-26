@@ -3057,6 +3057,12 @@
 </dd></dl>
 
 <dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.allowed_mentions">
+<span class="target" id="structdiscord__interaction__callback__data_1ab6f652e5917f332c855beb91835a6956"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_allowed_mentions" title="discord_allowed_mentions"><span class="n"><span class="pre">discord_allowed_mentions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">allowed_mentions</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.allowed_mentions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>allowed mentions object </p>
+</dd></dl>
+
+<dl class="c var">
 <dt class="sig sig-object c" id="c.discord_interaction_callback_data.flags">
 <span class="target" id="structdiscord__interaction__callback__data_1af69f7a2c147342e1a83ff4d2cee9d1b4"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_callback_data_flags" title="discord_interaction_callback_data_flags"><span class="n"><span class="pre">discord_interaction_callback_data_flags</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.flags" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>interaction application command callback data flags </p>
@@ -5984,32 +5990,44 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.id">
 <span class="target" id="structdiscord__emoji_1a712b9dea3254c2ee86db7d3e9f1a82b7"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_emoji.id" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>emoji id </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.name">
 <span class="target" id="structdiscord__emoji_1a7d50b95159ac0cfcf44fc33b4f139584"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_emoji.name" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>emoji name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.roles">
+<span class="target" id="structdiscord__emoji_1a85011a843a4dbbf8c7e79dee2b583e8d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_emoji.roles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>roles allowed to use this emoji </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.user">
 <span class="target" id="structdiscord__emoji_1a2f8f871daa760513aca81c79f0c9ad82"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user</span></span></span><a class="headerlink" href="#c.discord_emoji.user" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>user that created this emoji </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.require_colons">
 <span class="target" id="structdiscord__emoji_1ad8658066357ed9c6c3664ea7e1a2c9c5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">require_colons</span></span></span><a class="headerlink" href="#c.discord_emoji.require_colons" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>whether this emoji must be wrapped in colons </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.managed">
 <span class="target" id="structdiscord__emoji_1aba042a755ea1b4f4b83c88d360dde1c2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">managed</span></span></span><a class="headerlink" href="#c.discord_emoji.managed" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>whether this emoji is managed </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.animated">
 <span class="target" id="structdiscord__emoji_1af1cc053f3d90ba95d9a115555a56e926"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">animated</span></span></span><a class="headerlink" href="#c.discord_emoji.animated" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>whether this emoji is animated </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_emoji.available">
@@ -6154,9 +6172,21 @@
 <dd></dd></dl>
 
 <dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild.roles">
+<span class="target" id="structdiscord__guild_1a581d91ae529a29285a9e315215552daf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_guild.roles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>array of role objects </p>
+</dd></dl>
+
+<dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild.emojis">
 <span class="target" id="structdiscord__guild_1a06b154313aa74e10b1d1fd9ccf9b798f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emojis</span></span></span><a class="headerlink" href="#c.discord_guild.emojis" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild.features">
+<span class="target" id="structdiscord__guild_1a61dc9764f8c4099a4c5839f727b8d100"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">features</span></span></span><a class="headerlink" href="#c.discord_guild.features" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>array of guild feature strings </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild.mfa_level">
@@ -6204,6 +6234,12 @@
 <dd></dd></dl>
 
 <dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild.voice_states">
+<span class="target" id="structdiscord__guild_1a7009cdaef09ecb0027e41046fe5b2c46"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_voice_state" title="discord_voice_state"><span class="n"><span class="pre">discord_voice_state</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">voice_states</span></span></span><a class="headerlink" href="#c.discord_guild.voice_states" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>array of partial voice state objects </p>
+</dd></dl>
+
+<dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild.members">
 <span class="target" id="structdiscord__guild_1a23e7368b9fde69866345df2ebb1a07b6"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">members</span></span></span><a class="headerlink" href="#c.discord_guild.members" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
@@ -6212,6 +6248,12 @@
 <dt class="sig sig-object c" id="c.discord_guild.channels">
 <span class="target" id="structdiscord__guild_1a94f196f955f8a33c2c95ff63f1253caf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channels</span></span></span><a class="headerlink" href="#c.discord_guild.channels" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>array of channel objects </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild.presences">
+<span class="target" id="structdiscord__guild_1a42d4df0b366597622aecdb8ef5ea1913"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">presences</span></span></span><a class="headerlink" href="#c.discord_guild.presences" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>array of partial presence update objects </p>
 </dd></dl>
 
 <dl class="c var">
@@ -6405,6 +6447,11 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_preview.emojis">
 <span class="target" id="structdiscord__guild__preview_1a0fe113d62fa723cf9c368c3c4d56fbb2"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emojis</span></span></span><a class="headerlink" href="#c.discord_guild_preview.emojis" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_preview.features">
+<span class="target" id="structdiscord__guild__preview_1a90414c3b618545b37d5fc79071029739"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">features</span></span></span><a class="headerlink" href="#c.discord_guild_preview.features" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -6915,14 +6962,7 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_welcome_screen.description">
 <span class="target" id="structdiscord__welcome__screen_1a01a098c7a8e159379706baa8bff639fa"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_welcome_screen.description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_welcome_screen.welcome_channels">
@@ -7396,38 +7436,17 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_template.code">
 <span class="target" id="structdiscord__guild__template_1ab6a27fdfb28f97baa5c3c339ded79f48"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.discord_guild_template.code" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>find fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_template.name">
 <span class="target" id="structdiscord__guild__template_1ac615fec06acb4b34e707487aadc54dea"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_guild_template.name" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>find fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_template.description">
 <span class="target" id="structdiscord__guild__template_1ade4f6580395e4d2c8228e2861487300c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_guild_template.description" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>find fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_guild_template.usage_count">
@@ -7524,14 +7543,7 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_invite.code">
 <span class="target" id="structdiscord__invite_1a935de1f04625fa8c0afccee06ea1a468"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.discord_invite.code" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_invite.guild">
@@ -7829,14 +7841,7 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_connection.id">
 <span class="target" id="structdiscord__connection_1a4b496c3d16bd5814650882fdb67b9f6f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_connection.id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_connection.name">
@@ -8201,26 +8206,12 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_voice_region.id">
 <span class="target" id="structdiscord__voice__region_1a51158e72f6e56f36691a71217a2df8bd"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_voice_region.id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_voice_region.name">
 <span class="target" id="structdiscord__voice__region_1a791ed00d6b4d227387eb9db38ae08de1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_voice_region.name" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><dl>
-<dt class="sig sig-object cpp">
-<em><span class="pre">Todo:</span></em></dt>
-<dd><p>fixed size limit </p>
-</dd></dl>
-
-</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_voice_region.vip">
@@ -8489,7 +8480,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_identify.presence">
-<span class="target" id="structdiscord__identify_1a0566f94b300b27e35113a16e34e264ff"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_status_update" title="discord_gateway_status_update"><span class="n"><span class="pre">discord_gateway_status_update</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">presence</span></span></span><a class="headerlink" href="#c.discord_identify.presence" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__identify_1aa071bf6a9f039916871222a2b515b222"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">presence</span></span></span><a class="headerlink" href="#c.discord_identify.presence" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -8501,8 +8492,8 @@
 </dd></dl>
 
 <dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_gateway_status_update">
-<span class="target" id="structdiscord__gateway__status__update"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_gateway_status_update</span></span></span><a class="headerlink" href="#c.discord_gateway_status_update" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.discord_voice_state_status">
+<span class="target" id="structdiscord__voice__state__status"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_voice_state_status</span></span></span><a class="headerlink" href="#c.discord_voice_state_status" title="Permalink to this definition">¶</a><br /></dt>
 <dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
 <div class="header docutils container">
 <p><strong>Methods</strong></p>
@@ -8510,56 +8501,128 @@
 <ul class="simple">
 <li><p>Initializer:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_init(struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_init(struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
 </ul>
 </li>
 <li><p>Cleanup:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_cleanup(struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_list_free(struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_cleanup(struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_list_free(struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">**)</span></code></p></li>
 </ul>
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">**)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">***)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
 <li><p>JSON Encoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_gateway_status_update_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_gateway_status_update</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">**)</span></code></p></li>
 </ul>
 </li>
 </ul>
 </div>
 </p>
  <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure">https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure</a></p>
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure">https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure</a></p>
 </dd>
 </dl>
 </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
-<dt class="sig sig-object c" id="c.discord_gateway_status_update.since">
-<span class="target" id="structdiscord__gateway__status__update_1a31a6636b5022bbaebfe8f0829a9cc62f"></span><a class="reference internal" href="../common/types.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">since</span></span></span><a class="headerlink" href="#c.discord_gateway_status_update.since" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object c" id="c.discord_voice_state_status.guild_id">
+<span class="target" id="structdiscord__voice__state__status_1a2a19af9fa2bc90e9df771a3c7c784a83"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the guild </p>
+</dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c" id="c.discord_gateway_status_update.activities">
-<span class="target" id="structdiscord__gateway__status__update_1abd6771d02f89dd35134446b6c16602ea"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_activity" title="discord_activity"><span class="n"><span class="pre">discord_activity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">activities</span></span></span><a class="headerlink" href="#c.discord_gateway_status_update.activities" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object c" id="c.discord_voice_state_status.channel_id">
+<span class="target" id="structdiscord__voice__state__status_1a6c8cf606145bef4bc81bb481e563badc"></span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_id</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the voice channel client wants to join (null if disconnecting) </p>
+</dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c" id="c.discord_gateway_status_update.status">
-<span class="target" id="structdiscord__gateway__status__update_1abaa788d062d5305975ec4da347173336"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_gateway_status_update.status" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object c" id="c.discord_voice_state_status.self_mute">
+<span class="target" id="structdiscord__voice__state__status_1acffac0020e7cf5a5236b30762fc5e4af"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">self_mute</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.self_mute" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>is the client muted </p>
+</dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c" id="c.discord_gateway_status_update.afk">
-<span class="target" id="structdiscord__gateway__status__update_1ad83cf32f2bdb5fb6940cc30a1100bd8a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk</span></span></span><a class="headerlink" href="#c.discord_gateway_status_update.afk" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dt class="sig sig-object c" id="c.discord_voice_state_status.self_deaf">
+<span class="target" id="structdiscord__voice__state__status_1abae385a955254c1194138bc1e3e03bb0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">self_deaf</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.self_deaf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>is the client deafened </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_presence_status">
+<span class="target" id="structdiscord__presence__status"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_presence_status</span></span></span><a class="headerlink" href="#c.discord_presence_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_init(struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_cleanup(struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_list_free(struct</span> <span class="pre">discord_presence_status</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure">https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.since">
+<span class="target" id="structdiscord__presence__status_1ae5af85cd50c1b02c68c33afa7eeb9082"></span><a class="reference internal" href="../common/types.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">since</span></span></span><a class="headerlink" href="#c.discord_presence_status.since" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unix time (in milliseconds) of when the client went idle, or null if the client is not idle </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.activities">
+<span class="target" id="structdiscord__presence__status_1aaee9ae76e624ee7a171b24d3e42edc4f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_activity" title="discord_activity"><span class="n"><span class="pre">discord_activity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">activities</span></span></span><a class="headerlink" href="#c.discord_presence_status.activities" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user’s activities </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.status">
+<span class="target" id="structdiscord__presence__status_1accc4a1b7072b477654c7bbc8e2bc5d4b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_presence_status.status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user’s new status </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.afk">
+<span class="target" id="structdiscord__presence__status_1a76f53a68cafc75caad9fbbeeb7826e4c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk</span></span></span><a class="headerlink" href="#c.discord_presence_status.afk" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether or not the client is afk </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -8608,17 +8671,20 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_identify_connection.os">
 <span class="target" id="structdiscord__identify__connection_1a96bf7d3ae400d16f5c4ee8638c224375"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">os</span></span></span><a class="headerlink" href="#c.discord_identify_connection.os" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>your operating system </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_identify_connection.browser">
 <span class="target" id="structdiscord__identify__connection_1a71d8334b8cbab862792aedfa6d5543d3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">browser</span></span></span><a class="headerlink" href="#c.discord_identify_connection.browser" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>your library name </p>
+</dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_identify_connection.device">
 <span class="target" id="structdiscord__identify__connection_1aa5328c579b99763a7ff3b27bfafb9867"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device</span></span></span><a class="headerlink" href="#c.discord_identify_connection.device" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>your library name </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -10870,8 +10936,8 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_replace_presence">
-<span class="target" id="discord_8h_1ac29f8303759532bce1df09376a80e6ab"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_replace_presence</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_status_update" title="discord_gateway_status_update"><span class="n"><span class="pre">discord_gateway_status_update</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_replace_presence" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Replace the Client presence with a struct <a class="reference internal" href="#structdiscord__gateway__status__update"><span class="std std-ref">discord_gateway_status_update</span></a>. </p>
+<span class="target" id="discord_8h_1ac6e4d6978d2073ca7d473733aea09f4f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_replace_presence</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_replace_presence" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Replace the Client presence with a struct <a class="reference internal" href="#structdiscord__presence__status"><span class="std std-ref">discord_presence_status</span></a>. </p>
 <p><dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a58cceb04ce0b7e029bfe151034451939"><span class="std std-ref">discord_set_presence()</span></a> </p>
 </dd>
@@ -14332,6 +14398,12 @@
 </dd></dl>
 
 <dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_guild_params.roles">
+<span class="target" id="structdiscord__create__guild__params_1ae41ff67a231227644e4f81da1b8cac2f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.roles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>new guild roles </p>
+</dd></dl>
+
+<dl class="c var">
 <dt class="sig sig-object c" id="c.discord_create_guild_params.channels">
 <span class="target" id="structdiscord__create__guild__params_1a9961a2dd1b3a565f7a6d3da49d58c154"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channels</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.channels" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>array of partial channel objects </p>
@@ -14543,6 +14615,12 @@
 <dt class="sig sig-object c" id="c.discord_modify_guild_params.preferred_locale">
 <span class="target" id="structdiscord__modify__guild__params_1add12f32109c87e369c64d6be7dfe7ca1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">preferred_locale</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.preferred_locale" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to “en-US” </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_modify_guild_params.features">
+<span class="target" id="structdiscord__modify__guild__params_1ac13d687da3a66047723ab4b7a07196f1"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">features</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.features" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>array of guild feature strings </p>
 </dd></dl>
 
 <dl class="c var">
