@@ -798,13 +798,6 @@ void* discord_set_data(struct discord *client, void *data);
 void* discord_get_data(struct discord *client);
 
 /**
- * @brief Replace the Client presence with a struct discord_presence_status
- *
- * @note discord_set_presence() is a more comprehensible alternative
- * @see discord_set_presence()
- */
-
-/**
  * @brief Set the Client presence state
  *
  * @param client the client created with discord_init()
