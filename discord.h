@@ -759,6 +759,22 @@ void discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *cal
 ORCAcode discord_run(struct discord *client);
 
 /**
+ * @brief Gracefully shutdown a ongoing Discord connection
+ *
+ * @param client the client created with discord_init()
+ */
+void discord_shutdown(struct discord *client);
+
+/**
+ * @brief Gracefully reconnects a ongoing Discord connection
+ *
+ * @param client the client created with discord_init()
+ * @param resume true to attempt to resume to previous session,
+ *        false restart a fresh session
+ */
+void discord_reconnect(struct discord *client, bool resume);
+
+/**
  * @brief Keep some user arbitrary data, by associating it to the client
  *
  * @param client the client created with discord_init()

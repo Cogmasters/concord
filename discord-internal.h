@@ -291,7 +291,7 @@ void discord_gateway_cleanup(struct discord_gateway *gw);
 ORCAcode discord_gateway_run(struct discord_gateway *gw);
 
 /**
- * @brief Gracefully exits a ongoing Discord connection over WebSockets
+ * @brief Gracefully shutdown a ongoing Discord connection over WebSockets
  *
  * @param gw the handle initialized with discord_gateway_init()
  */

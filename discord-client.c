@@ -228,6 +228,16 @@ discord_run(struct discord *client) {
   return discord_gateway_run(&client->gw);
 }
 
+void
+discord_shutdown(struct discord *client) {
+  return discord_gateway_shutdown(&client->gw);
+}
+
+void
+discord_reconnect(struct discord *client, bool resume) {
+  return discord_gateway_reconnect(&client->gw, resume);
+}
+
 void 
 discord_set_on_guild_role_create(struct discord *client, discord_guild_role_cb callback) {
   client->gw.user_cmd->cbs.on_guild_role_create = callback;
