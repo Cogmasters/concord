@@ -333,12 +333,17 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   /* Set bot presence activity */
-  struct discord_activity *new_activity = malloc(sizeof *new_activity);
-  discord_activity_init(new_activity);
-
-  strcpy(new_activity->name, "cee.dev");
-  new_activity->type = 0; // Playing
-  discord_set_presence(client, new_activity, "online", false);
+  struct discord_presence_status new_presence = {
+    .status = "online",
+    .since  = cee_timestamp_ms(),
+  };
+  discord_presence_add_activity(&new_presence,
+    &(struct discord_activity){
+      .name = "cee.dev",
+      .type = 0 // Playing
+    })
+  ;
+  discord_set_presence(client, &new_presence);
 
   /* Start a connection to Discord */
   discord_run(client);

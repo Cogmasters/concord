@@ -800,22 +800,18 @@ void* discord_get_data(struct discord *client);
 /**
  * @brief Replace the Client presence with a struct discord_presence_status
  *
- * @param client the client created with discord_init()
- * @param presence the presence to replace the client's
  * @note discord_set_presence() is a more comprehensible alternative
  * @see discord_set_presence()
  */
-void discord_replace_presence(struct discord *client, struct discord_presence_status *presence);
 
 /**
- * @brief Modify the Client presence state
+ * @brief Set the Client presence state
  *
  * @param client the client created with discord_init()
- * @param activity the user current activities
- * @param status either "idle","dnd","online", or "offline"
- * @param afk TRUE or FALSE
+ * @param presence overwrite client's presence with it
+ * @see discord_presence_add_activity()
  */
-void discord_set_presence(struct discord *client, struct discord_activity *activity, char status[], bool afk);
+void discord_set_presence(struct discord *client, struct discord_presence_status *presence);
 
 
  /* * * * * * * * * * * * * * * * */
@@ -2101,5 +2097,16 @@ ORCAcode discord_delete_messages_by_author_id(struct discord *client, u64_snowfl
  *  @{ */
 ORCAcode discord_disconnect_guild_member(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t user_id, struct discord_guild_member *p_member);
 /** @} DiscordMiscGuild */
+
+/** @defgroup DiscordMiscGateway
+ *  @{ */
+/**
+ * @brief Helper function to add presence activities
+ *
+ * This function is a wrapper over ntl_append2()
+ * @see discord_set_presence()
+ */
+void discord_presence_add_activity(struct discord_presence_status *presence, struct discord_activity *activity);
+/** @} DiscordMiscGateway */
 
 #endif // DISCORD_H

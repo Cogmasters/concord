@@ -446,32 +446,7 @@ discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callback
 }
 
 void
-discord_replace_presence(struct discord *client, struct discord_presence_status *presence)
-{
-  if (NULL == presence) return;
-
+discord_set_presence(struct discord *client, struct discord_presence_status *presence) {
   discord_presence_status_cleanup(client->gw.id.presence);
-  free(client->gw.id.presence);
-
-  client->gw.id.presence = presence;
-}
-
-void
-discord_set_presence(
-  struct discord *client, 
-  struct discord_activity *activity, // can be safely free'd
-  char status[], 
-  bool afk)
-{
-  struct discord_presence_status *presence = client->gw.id.presence;
-
-  if (activity) {
-    ntl_append2((ntl_t*)&presence->activities, sizeof(struct discord_activity), activity);
-  }
-  if (status) {
-    int ret = snprintf(presence->status, sizeof(presence->status), "%s", status);
-    ASSERT_S(ret < sizeof(presence->status), "Out of bounds write attempt");
-  }
-
-  presence->afk = afk;
+  memcpy(client->gw.id.presence, presence, sizeof(struct discord_presence_status));
 }

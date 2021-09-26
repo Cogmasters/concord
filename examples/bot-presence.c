@@ -23,8 +23,9 @@ load_presence_from_json(struct discord *client, char filename[])
   struct discord_presence_status *presence=NULL;
   discord_presence_status_from_json(json_payload, len, &presence);
 
-  discord_replace_presence(client, presence);
+  discord_set_presence(client, presence);
 
+  free(presence);
   free(json_payload);
 }
 

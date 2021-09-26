@@ -1208,9 +1208,15 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
     .browser = "orca", 
     .device  = "orca"
   };
-  *gw->id.presence = (struct discord_presence_status){
-    .since = cee_timestamp_ms()
-  };
+
+  discord_set_presence(_CLIENT(gw), 
+    &(struct discord_presence_status){
+      .activities = NULL,
+      .status     = "online",
+      .afk        = false,
+      .since      = cee_timestamp_ms()
+    })
+  ;
 
   gw->payload = calloc(1, sizeof *gw->payload);
   gw->hbeat = calloc(1, sizeof *gw->hbeat);
@@ -1219,8 +1225,6 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
   gw->user_cmd->cbs.on_idle = &noop_idle_cb;
   gw->user_cmd->cbs.on_event_raw = &noop_event_raw_cb;
   gw->user_cmd->event_handler = &noop_event_handler;
-
-  discord_set_presence(_CLIENT(gw), NULL, "online", false);
 
   if (token->size) {
     discord_get_current_user(_CLIENT(gw), &gw->bot);

@@ -377,3 +377,8 @@ discord_disconnect_guild_member(
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
+
+void
+discord_presence_add_activity(struct discord_presence_status *presence, struct discord_activity *activity) {
+  ntl_append2((ntl_t*)&presence->activities, sizeof(struct discord_activity), activity);
+}
