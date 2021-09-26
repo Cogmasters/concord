@@ -73,7 +73,7 @@
           "struct":"connection",
           "fields":
           [
-            { "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
+            { "name": "id", "type":{ "base":"char", "dec":"*" }},
             { "name": "name", "type":{ "base":"char", "dec":"*"}},
             { "name": "type", "type":{ "base":"char", "dec":"*"}},
             { "name": "revoked", "type":{ "base":"bool"}},

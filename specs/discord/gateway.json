@@ -145,23 +145,34 @@
         { "name":"large_threshold","type":{"base":"int"}},
         { "name":"guild_subscriptions","type":{"base":"bool"}},
         { "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true},
-        { "name":"presence","type":{"base":"struct discord_gateway_status_update", "dec":"*"}},
+        { "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}},
         { "name":"intents","type":{"base":"int"}}
       ]
     },
     {
-      "title":"Gateway Status Update Structure",
-      "comment": "https://discord.com/developers/docs/topics/gateway#update-status-gateway-status-update-structure",
-      "namespace": ["gateway"],
-      "struct":"status_update",
+      "title":"Gateway Voice State Update Structure",
+      "comment": "https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure",
+      "namespace": ["voice_state"],
+      "struct":"status",
       "fields":
       [
-        { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 },
-        { "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, 
-          "option":true, "inject_if_not":null},
-        { "name":"status","type":{"base":"char", "dec":"[16]"}},
-        { "name":"afk","type":{"base":"bool"}} 
+        { "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 },
+        { "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 },
+        { "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"},
+        { "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"} 
+      ]
+    },
+    {
+      "title":"Gateway Presence Update Structure",
+      "comment": "https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure",
+      "namespace": ["presence"],
+      "struct":"status",
+      "fields":
+      [
+        { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 },
+        { "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null},
+        { "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" },
+        { "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}
       ]
     },
     {
@@ -171,9 +182,9 @@
       "struct":"connection",
       "fields":
       [
-        { "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}},
-        { "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}},
-        { "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}}
+        { "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null },
+        { "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null },
+        { "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }
       ]
     },
     {
@@ -184,18 +195,12 @@
       [
         { "name":"name","type":{"base":"char", "dec":"[512]"}},
         { "name":"type","type":{"base":"int"}},
-        { "name":"url","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":""},
-        { "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"},
-          "option":true, "inject_if_not":0 },
-        { "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" },
-          "option":true, "inject_if_not":0 },
-        { "name":"details","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null},
-        { "name":"state","type":{"base":"char", "dec":"*"},
-          "option":true, "inject_if_not":null},
-        { "name":"instance","type":{"base":"bool"},
-          "option":true, "inject_if_not":false}
+        { "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""},
+        { "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 },
+        { "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 },
+        { "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
+        { "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
+        { "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}
       ]
     },
     {

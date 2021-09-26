@@ -31,8 +31,8 @@
       "struct":"region",
       "fields":
       [
-        { "name": "id", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" },
-        { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit" },
+        { "name": "id", "type":{ "base":"char", "dec":"*" }},
+        { "name": "name", "type":{ "base":"char", "dec":"*" }},
         { "name": "vip", "type":{ "base":"bool" }},
         { "name": "optimal", "type":{ "base":"bool" }},
         { "name": "deprecated", "type":{ "base":"bool" }},

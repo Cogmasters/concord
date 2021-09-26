@@ -28,11 +28,9 @@
               "name":"default_message_notifications"},
         {"type":{"base":"int", "int_alias":"enum discord_explicit_content_filter_level"},
               "name":"explicit_content_filter"},
-        {"type":{"base":"struct discord_permissions_role", "dec":"ntl"}, "name":"roles", "todo":true, 
-              "comment":"array of role objects"},
+        {"type":{"base":"struct discord_role", "dec":"ntl"}, "name":"roles", "comment":"array of role objects", "inject_if_not":null },
         {"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"},
-        {"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "todo":true, 
-              "comment":"array of guild feature strings"},
+        {"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "comment":"array of guild feature strings", "inject_if_not":null },
         {"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"},
@@ -42,13 +40,11 @@
         {"type":{"base":"bool"}, "name":"large", "option":true},
         {"type":{"base":"bool"}, "name":"unavailable", "option":true},
         {"type":{"base":"int"}, "name":"member_count", "option":true},
-        {"type":{"base":"struct discord_voice", "dec":"ntl"}, "name":"voice_states", "todo":true, 
-         "comment":"array of partial voice state objects"},
+        {"type":{"base":"struct discord_voice_state", "dec":"ntl"}, "name":"voice_states", "comment":"array of partial voice state objects", "inject_if_not":null },
         {"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true},
         {"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"},
-        {"type":{"base":"int"}, "name":"presences", "todo":true, "option":true,
-         "comment":"array of partial presence update objects"},
+        {"type":{"base":"struct discord_presence_status", "dec":"ntl"}, "name":"presences", "option":true, "comment":"array of partial presence update objects", "inject_if_not":null },
         {"type":{"base":"int"}, "name":"max_presences", "option":true},
         {"type":{"base":"int"}, "name":"max_members", "option":true},
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"vanity_url"},
@@ -169,7 +165,7 @@
         {"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"emojis", "type":{"base":"struct discord_emoji", "dec":"ntl"}},
-        {"name":"features", "todo":true, "type":{"base":"char", "dec":"ntl"}},
+        {"name":"features", "type":{"base":"ja_str", "dec":"ntl"}},
         {"name":"approximate_member_count", "type":{"base":"int"}},
         {"name":"approximate_presence_count", "type":{"base":"int"}},
         {"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}
@@ -276,8 +272,8 @@
       "struct":"welcome_screen",
       "fields":
       [
-        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
-        { "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "todo":false }
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
+        { "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "inject_if_not":null }
       ]
     },
     {

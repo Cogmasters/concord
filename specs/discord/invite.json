@@ -19,7 +19,7 @@
       "struct":"invite",
       "fields":
       [
-        { "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"@todo fixed size limit"},
+        { "name": "code", "type":{ "base":"char", "dec":"*" }},
         { "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"},
         { "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"},
         { "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}},

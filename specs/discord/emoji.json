@@ -9,15 +9,14 @@
       "struct":"emoji",
       "fields":
       [
-        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}},
-        { "name": "name", "type":{ "base":"char", "dec":"*"}},
-        { "name": "roles", "type":{ "base":"struct discord_permissions_role", "dec":"ntl"}, "option":true,
-          "todo":true },
-        { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true },
-        { "name": "require_colons", "type":{ "base":"bool" }, "option":true},
-        { "name": "managed", "type":{ "base":"bool" }, "option":true},
-        { "name": "animated", "type":{ "base":"bool" }, "option":true},
-        { "name": "available", "type":{ "base":"bool" }, "option":true}
+        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"},
+        { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"},
+        { "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" },
+        { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" },
+        { "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" },
+        { "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" },
+        { "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" },
+        { "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }
       ]
     }
   ]
