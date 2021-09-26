@@ -20,8 +20,8 @@ load_presence_from_json(struct discord *client, char filename[])
   size_t len;
   char *json_payload = cee_load_whole_file(filename, &len);
 
-  struct discord_gateway_status_update *presence=NULL;
-  discord_gateway_status_update_from_json(json_payload, len, &presence);
+  struct discord_presence_status *presence=NULL;
+  discord_presence_status_from_json(json_payload, len, &presence);
 
   discord_replace_presence(client, presence);
 

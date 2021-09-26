@@ -446,11 +446,11 @@ discord_set_voice_cbs(struct discord *client, struct discord_voice_cbs *callback
 }
 
 void
-discord_replace_presence(struct discord *client, struct discord_gateway_status_update *presence)
+discord_replace_presence(struct discord *client, struct discord_presence_status *presence)
 {
   if (NULL == presence) return;
 
-  discord_gateway_status_update_cleanup(client->gw.id.presence);
+  discord_presence_status_cleanup(client->gw.id.presence);
   free(client->gw.id.presence);
 
   client->gw.id.presence = presence;
@@ -463,7 +463,7 @@ discord_set_presence(
   char status[], 
   bool afk)
 {
-  struct discord_gateway_status_update *presence = client->gw.id.presence;
+  struct discord_presence_status *presence = client->gw.id.presence;
 
   if (activity) {
     ntl_append2((ntl_t*)&presence->activities, sizeof(struct discord_activity), activity);

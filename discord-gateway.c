@@ -1201,14 +1201,14 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
   gw->id = (struct discord_identify){
     .token      = strndup(token->start, token->size),
     .properties = malloc(sizeof(struct discord_identify_connection)),
-    .presence   = malloc(sizeof(struct discord_gateway_status_update))
+    .presence   = malloc(sizeof(struct discord_presence_status))
   };
   *gw->id.properties = (struct discord_identify_connection){
     .os      = "POSIX", 
     .browser = "orca", 
     .device  = "orca"
   };
-  *gw->id.presence = (struct discord_gateway_status_update){
+  *gw->id.presence = (struct discord_presence_status){
     .since = cee_timestamp_ms()
   };
 
