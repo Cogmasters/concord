@@ -1088,6 +1088,11 @@
        Embed
       </a>
      </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id22">
+       Gateway
+      </a>
+     </li>
     </ul>
    </li>
   </ul>
@@ -10935,39 +10940,29 @@
 </dd></dl>
 
 <dl class="c function">
-<dt class="sig sig-object c" id="c.discord_replace_presence">
-<span class="target" id="discord_8h_1ac6e4d6978d2073ca7d473733aea09f4f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_replace_presence</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_replace_presence" title="Permalink to this definition">¶</a><br /></dt>
+<dt class="sig sig-object c" id="c.discord_set_presence">
+<span class="target" id="discord_8h_1a85aa60632cd13ca917521c5166902719"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_presence</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_presence" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Replace the Client presence with a struct <a class="reference internal" href="#structdiscord__presence__status"><span class="std std-ref">discord_presence_status</span></a>. </p>
+<p>
+Set the Client presence state<dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a85aa60632cd13ca917521c5166902719"><span class="std std-ref">discord_set_presence()</span></a></p>
+</dd>
+</dl>
+</p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a58cceb04ce0b7e029bfe151034451939"><span class="std std-ref">discord_set_presence()</span></a> </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__DiscordMiscGateway_1ga98855f8e8996b75d6ec46f6278404940"><span class="std std-ref">discord_presence_add_activity()</span></a> </p>
 </dd>
 </dl>
 </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#discord_8h_1a58cceb04ce0b7e029bfe151034451939"><span class="std std-ref">discord_set_presence()</span></a> is a more comprehensible alternative </p>
+<p><a class="reference internal" href="#discord_8h_1a85aa60632cd13ca917521c5166902719"><span class="std std-ref">discord_set_presence()</span></a> is a more comprehensible alternative </p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
-<li><p><strong>presence</strong> – the presence to replace the client’s </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="c function">
-<dt class="sig sig-object c" id="c.discord_set_presence">
-<span class="target" id="discord_8h_1a58cceb04ce0b7e029bfe151034451939"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_presence</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_activity" title="discord_activity"><span class="n"><span class="pre">discord_activity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">activity</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">afk</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_presence" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Modify the Client presence state. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
-<li><p><strong>activity</strong> – the user current activities </p></li>
-<li><p><strong>status</strong> – either “idle”,”dnd”,”online”, or “offline” </p></li>
-<li><p><strong>afk</strong> – TRUE or FALSE </p></li>
+<li><p><strong>presence</strong> – overwrite client’s presence with it </p></li>
 </ul>
 </dd>
 </dl>
@@ -16840,6 +16835,28 @@
 <dt class="sig sig-object c" id="c.discord_embed_add_field">
 <span class="target" id="group__DiscordMiscEmbed_1gab038095175d60499df67139b6e7f8852"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_add_field</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">Inline</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_add_field" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="id22">
+<h4>Gateway<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__DiscordMiscGateway"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordMiscGateway</span></span></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_presence_add_activity">
+<span class="target" id="group__DiscordMiscGateway_1ga98855f8e8996b75d6ec46f6278404940"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_presence_add_activity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_activity" title="discord_activity"><span class="n"><span class="pre">discord_activity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">activity</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_presence_add_activity" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper function to add presence activities. </p>
+<p>This function is a wrapper over ntl_append2() <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a85aa60632cd13ca917521c5166902719"><span class="std std-ref">discord_set_presence()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
 
 </div>
 </dd></dl>
