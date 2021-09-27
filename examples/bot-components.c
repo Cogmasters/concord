@@ -226,13 +226,16 @@ void on_interaction_create(
   if (!interaction->data || !interaction->data->values)
     return;
 
-  char text[1024];
+  char values[1024]={0};
+  ja_str_list_to_json(values, sizeof(values), interaction->data->values);
+
+  char text[DISCORD_MAX_MESSAGE_LEN];
   snprintf(text, sizeof(text), 
       "So you have chosen:\n"
       "```json\n"
       "%s\n"
       "```", 
-      interaction->data->values);
+      values);
 
   struct discord_interaction_response params = {
     .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE, // 4
