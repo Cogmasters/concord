@@ -427,7 +427,7 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
                 "(custom_id):?s,"
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
                 "(values):F,"
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
@@ -454,8 +454,8 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
                 &p->custom_id,
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-                cee_strndup, &p->values,
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+                ja_str_list_from_json, &p->values,
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
                 cee_strtoull, &p->target_id,
@@ -496,7 +496,7 @@ static void discord_interaction_data_use_default_inject_settings(struct discord_
     p->__M.arg_switches[5] = p->custom_id;
 
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
   if (p->values != NULL)
     p->__M.arg_switches[6] = p->values;
 
@@ -531,8 +531,8 @@ size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_i
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
                 "(custom_id):s,"
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-                "(values):s,"
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+                "(values):F,"
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
                 "(target_id):|F|,"
@@ -556,8 +556,8 @@ size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_i
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
                 p->custom_id,
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-                p->values,
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+                ja_str_list_to_json, p->values,
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
                 cee_ulltostr, &p->target_id,
@@ -624,9 +624,9 @@ void discord_interaction_data_cleanup(struct discord_interaction_data *d) {
   if (d->custom_id)
     free(d->custom_id);
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
   if (d->values)
-    free(d->values);
+    ja_str_list_free(d->values);
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
   // p->target_id is a scalar
@@ -653,7 +653,7 @@ void discord_interaction_data_init(struct discord_interaction_data *p) {
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
 
   /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
 
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
