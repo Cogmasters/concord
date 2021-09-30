@@ -72,7 +72,7 @@ int main() {
 
 ### On Windows
 
-* Install WSL2 and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+* Install **WSL2** and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 * **Make sure you are in your Linux $HOME folder before proceeding!**
 * Continue to [On Linux](#on-linux) and follow your distro's building steps.
 
