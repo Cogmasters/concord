@@ -16,26 +16,6 @@
 
 /* This method is disabled at specs/discord/misc.json:8:30 */
 
-static void discord_file_use_default_inject_settings(struct discord_file *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/misc.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"the name of the file being sent", "inject_if_not":null }' */
-  if (p->name != NULL)
-    p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/misc.json:12:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  if (p->content != NULL)
-    p->__M.arg_switches[1] = p->content;
-
-  /* specs/discord/misc.json:13:20
-     '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
-  if (p->size != 0)
-    p->__M.arg_switches[2] = &p->size;
-
-}
-
 
 /* This method is disabled at specs/discord/misc.json:8:30 */
 
@@ -67,7 +47,7 @@ void discord_file_cleanup(struct discord_file *d) {
     free(d->content);
   /* specs/discord/misc.json:13:20
      '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
-  // p->size is a scalar
+  /* p->size is a scalar */
 }
 
 void discord_file_init(struct discord_file *p) {

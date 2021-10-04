@@ -351,9 +351,8 @@ cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PING");
-
-  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" PING (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" PING (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   (*ws->cbs.on_ping)(ws->cbs.data, ws, &ws->info, reason, len);
 }
@@ -371,9 +370,8 @@ cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_RCV_PONG");
-
-  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" PONG (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
+  logconf_trace(&ws->conf, ANSICOLOR("RCV", ANSI_FG_YELLOW)" PONG (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   (*ws->cbs.on_pong)(ws->cbs.data, ws, &ws->info, reason, len);
 }
@@ -629,9 +627,8 @@ ws_ping(struct websockets *ws, struct ws_info *info, const char *reason, size_t 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_PING");
-
-  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" PING (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" PING (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   if (WS_CONNECTED != ws->status) {
     logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PING : No active connection");
@@ -656,9 +653,8 @@ ws_pong(struct websockets *ws, struct ws_info *info, const char *reason, size_t 
     (struct sized_buffer){"", 0},
     (struct sized_buffer){(char*)reason, len},
     "WS_SEND_PONG");
-
-  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" PONG (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 #endif
+  logconf_trace(&ws->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" PONG (%zu bytes) [@@@_%zu_@@@]", len, ws->info.loginfo.counter);
 
   if (WS_CONNECTED != ws->status) {
     logconf_error(&ws->conf, ANSICOLOR("Failed", ANSI_FG_RED)" at SEND PONG : No active connection");

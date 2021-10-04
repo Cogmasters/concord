@@ -15,7 +15,7 @@
 
 void github_gist_from_json(char *json, size_t len, struct github_gist **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct github_gist *p = *pp;
@@ -42,12 +42,7 @@ void github_gist_from_json(char *json, size_t len, struct github_gist **pp)
   /* specs/github/gist.json:18:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}}' */
                 "(description):?s,"
-  /* specs/github/gist.json:19:28
-     '{ "name": "comments", "type":{ "base":"int"}}' */
-                "(comments):d,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(comments):d,",
   /* specs/github/gist.json:12:28
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */
                 &p->url,
@@ -71,54 +66,46 @@ void github_gist_from_json(char *json, size_t len, struct github_gist **pp)
                 &p->description,
   /* specs/github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
-                &p->comments,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->comments);
   ret = r;
-}
-
-static void github_gist_use_default_inject_settings(struct github_gist *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/github/gist.json:12:28
-     '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[0] = p->url;
-
-  /* specs/github/gist.json:13:28
-     '{ "name": "id", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[1] = p->id;
-
-  /* specs/github/gist.json:14:28
-     '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[2] = p->node_id;
-
-  /* specs/github/gist.json:15:28
-     '{ "name": "html_url", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[3] = p->html_url;
-
-  /* specs/github/gist.json:16:28
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[4] = p->created_at;
-
-  /* specs/github/gist.json:17:28
-     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[5] = p->updated_at;
-
-  /* specs/github/gist.json:18:28
-     '{ "name": "description", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[6] = p->description;
-
-  /* specs/github/gist.json:19:28
-     '{ "name": "comments", "type":{ "base":"int"}}' */
-  p->__M.arg_switches[7] = &p->comments;
-
 }
 
 size_t github_gist_to_json(char *json, size_t len, struct github_gist *p)
 {
   size_t r;
-  github_gist_use_default_inject_settings(p);
+  void *arg_switches[8]={NULL};
+  /* specs/github/gist.json:12:28
+     '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[0] = p->url;
+
+  /* specs/github/gist.json:13:28
+     '{ "name": "id", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[1] = p->id;
+
+  /* specs/github/gist.json:14:28
+     '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[2] = p->node_id;
+
+  /* specs/github/gist.json:15:28
+     '{ "name": "html_url", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[3] = p->html_url;
+
+  /* specs/github/gist.json:16:28
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[4] = p->created_at;
+
+  /* specs/github/gist.json:17:28
+     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[5] = p->updated_at;
+
+  /* specs/github/gist.json:18:28
+     '{ "name": "description", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[6] = p->description;
+
+  /* specs/github/gist.json:19:28
+     '{ "name": "comments", "type":{ "base":"int"}}' */
+  arg_switches[7] = &p->comments;
+
   r=json_inject(json, len, 
   /* specs/github/gist.json:12:28
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */
@@ -169,7 +156,7 @@ size_t github_gist_to_json(char *json, size_t len, struct github_gist *p)
   /* specs/github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
                 &p->comments,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -237,7 +224,7 @@ void github_gist_cleanup(struct github_gist *d) {
     free(d->description);
   /* specs/github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
-  // p->comments is a scalar
+  /* p->comments is a scalar */
 }
 
 void github_gist_init(struct github_gist *p) {

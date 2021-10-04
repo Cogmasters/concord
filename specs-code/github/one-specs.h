@@ -5,7 +5,7 @@
  */
 
 
-// defined at specs/github/gist.endpoints-params.json:10:32
+/* defined at specs/github/gist.endpoints-params.json:10:32 */
 /**
  * @brief Gist Create
  *
@@ -14,15 +14,23 @@
 struct github_gist_create_params;
 /* This file is generated from specs/github/gist.json, Please don't edit it. */
 
-// defined at specs/github/gist.json:9:33
+/* defined at specs/github/gist.json:9:33 */
 /**
  * @brief Gist Structure
  *
  */
 struct github_gist;
+/* This file is generated from specs/github/repository.json, Please don't edit it. */
+
+/* defined at specs/github/repository.json:9:33 */
+/**
+ * @brief Topic Structure
+ *
+ */
+struct github_topic;
 /* This file is generated from specs/github/user.json, Please don't edit it. */
 
-// defined at specs/github/user.json:9:33
+/* defined at specs/github/user.json:9:33 */
 /**
  * @brief User Structure
  *
@@ -30,11 +38,12 @@ struct github_gist;
 struct github_user;
 /* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/github/gist.json, Please don't edit it. */
+/* This file is generated from specs/github/repository.json, Please don't edit it. */
 /* This file is generated from specs/github/user.json, Please don't edit it. */
 /* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
 
-// Gist Create
-// defined at specs/github/gist.endpoints-params.json:10:32
+/* Gist Create */
+/* defined at specs/github/gist.endpoints-params.json:10:32 */
 /**
  * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
  *
@@ -79,25 +88,11 @@ struct github_gist_create_params {
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
   char *public;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/github/gist.json, Please don't edit it. */
 
-// Gist Structure
-// defined at specs/github/gist.json:9:33
+/* Gist Structure */
+/* defined at specs/github/gist.json:9:33 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -156,25 +151,46 @@ struct github_gist {
      '{ "name": "comments", "type":{ "base":"int"}}' */
   int comments;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
+};
+/* This file is generated from specs/github/repository.json, Please don't edit it. */
+
+/* Topic Structure */
+/* defined at specs/github/repository.json:9:33 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void github_topic_init(struct github_topic *)`
+ *   * Cleanup:
+
+ *     * :code:`void github_topic_cleanup(struct github_topic *)`
+ *     * :code:`void github_topic_list_free(struct github_topic **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void github_topic_from_json(char *rbuf, size_t len, struct github_topic **)`
+ *     * :code:`void github_topic_list_from_json(char *rbuf, size_t len, struct github_topic ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void github_topic_to_json(char *wbuf, size_t len, struct github_topic *)`
+ *     * :code:`void github_topic_list_to_json(char *wbuf, size_t len, struct github_topic **)`
+ * @endverbatim
+ */
+struct github_topic {
+  /* specs/github/repository.json:12:28
+     '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
+  ja_str **names;
+
 };
 /* This file is generated from specs/github/user.json, Please don't edit it. */
 
-// User Structure
-// defined at specs/github/user.json:9:33
+/* User Structure */
+/* defined at specs/github/user.json:9:33 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -285,20 +301,6 @@ struct github_user {
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
   char *updated_at;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[21];
-    void *record_defined[21];
-    void *record_null[21];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
 
@@ -332,6 +334,22 @@ extern void github_gist_list_from_json_v(char *str, size_t len, void *p);
 extern void github_gist_list_from_json(char *str, size_t len, struct github_gist ***p);
 extern size_t github_gist_list_to_json_v(char *str, size_t len, void *p);
 extern size_t github_gist_list_to_json(char *str, size_t len, struct github_gist **p);
+/* This file is generated from specs/github/repository.json, Please don't edit it. */
+
+extern void github_topic_cleanup_v(void *p);
+extern void github_topic_cleanup(struct github_topic *p);
+extern void github_topic_init_v(void *p);
+extern void github_topic_init(struct github_topic *p);
+extern void github_topic_from_json_v(char *json, size_t len, void *pp);
+extern void github_topic_from_json(char *json, size_t len, struct github_topic **pp);
+extern size_t github_topic_to_json_v(char *json, size_t len, void *p);
+extern size_t github_topic_to_json(char *json, size_t len, struct github_topic *p);
+extern void github_topic_list_free_v(void **p);
+extern void github_topic_list_free(struct github_topic **p);
+extern void github_topic_list_from_json_v(char *str, size_t len, void *p);
+extern void github_topic_list_from_json(char *str, size_t len, struct github_topic ***p);
+extern size_t github_topic_list_to_json_v(char *str, size_t len, void *p);
+extern size_t github_topic_list_to_json(char *str, size_t len, struct github_topic **p);
 /* This file is generated from specs/github/user.json, Please don't edit it. */
 
 extern void github_user_cleanup_v(void *p);

@@ -15,7 +15,7 @@
 
 void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct reddit_search_params *p = *pp;
@@ -57,12 +57,7 @@ void reddit_search_params_from_json(char *json, size_t len, struct reddit_search
   /* specs/reddit/search.json:24:20
      '{ "name": "t", "type":{ "base":"char", "dec":"*" }, "comment":"one of(hour, day, week, month, year, all)"}' */
                 "(t):?s,"
-  /* specs/reddit/search.json:25:20
-     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
-                "(type):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(type):?s,",
   /* specs/reddit/search.json:13:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
                 &p->after,
@@ -101,74 +96,66 @@ void reddit_search_params_from_json(char *json, size_t len, struct reddit_search
                 &p->t,
   /* specs/reddit/search.json:25:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
-                &p->type,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->type);
   ret = r;
-}
-
-static void reddit_search_params_use_default_inject_settings(struct reddit_search_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/reddit/search.json:13:20
-     '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
-  p->__M.arg_switches[0] = p->after;
-
-  /* specs/reddit/search.json:14:20
-     '{ "name": "before", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
-  p->__M.arg_switches[1] = p->before;
-
-  /* specs/reddit/search.json:15:20
-     '{ "name": "category", "type":{ "base":"char", "dec":"*" }, "comment":"a string no longer than 5 character"}' */
-  p->__M.arg_switches[2] = p->category;
-
-  /* specs/reddit/search.json:16:20
-     '{ "name": "count", "type":{ "base":"int" }, "comment":"a positive integer (default: 0)"}' */
-  p->__M.arg_switches[3] = &p->count;
-
-  /* specs/reddit/search.json:17:20
-     '{ "name": "include_facets", "type":{ "base":"bool" }, "comment":"boolean value"}' */
-  p->__M.arg_switches[4] = &p->include_facets;
-
-  /* specs/reddit/search.json:18:20
-     '{ "name": "limit", "type":{ "base":"int" }, "comment":"the maximum number of items desired (default: 25, maximum: 100)"}' */
-  p->__M.arg_switches[5] = &p->limit;
-
-  /* specs/reddit/search.json:19:20
-     '{ "name": "q", "type":{ "base":"char", "dec":"*" }, "comment":"a string no longer than 512 characters"}' */
-  p->__M.arg_switches[6] = p->q;
-
-  /* specs/reddit/search.json:20:20
-     '{ "name": "restrict_sr", "type":{ "base":"bool" }, "comment":"boolean value"}' */
-  p->__M.arg_switches[7] = &p->restrict_sr;
-
-  /* specs/reddit/search.json:21:20
-     '{ "name": "show", "type":{ "base":"char", "dec":"*" }, "comment":"(optional)the string all"}' */
-  p->__M.arg_switches[8] = p->show;
-
-  /* specs/reddit/search.json:22:20
-     '{ "name": "sort", "type":{ "base":"char", "dec":"*" }, "comment":"one of(relevance, hot, top, new, comments)"}' */
-  p->__M.arg_switches[9] = p->sort;
-
-  /* specs/reddit/search.json:23:20
-     '{ "name": "sr_detail", "type":{ "base":"char", "dec":"*" }, "comment":"expand subreddits"}' */
-  p->__M.arg_switches[10] = p->sr_detail;
-
-  /* specs/reddit/search.json:24:20
-     '{ "name": "t", "type":{ "base":"char", "dec":"*" }, "comment":"one of(hour, day, week, month, year, all)"}' */
-  p->__M.arg_switches[11] = p->t;
-
-  /* specs/reddit/search.json:25:20
-     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
-  p->__M.arg_switches[12] = p->type;
-
 }
 
 size_t reddit_search_params_to_json(char *json, size_t len, struct reddit_search_params *p)
 {
   size_t r;
-  reddit_search_params_use_default_inject_settings(p);
+  void *arg_switches[13]={NULL};
+  /* specs/reddit/search.json:13:20
+     '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
+  arg_switches[0] = p->after;
+
+  /* specs/reddit/search.json:14:20
+     '{ "name": "before", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
+  arg_switches[1] = p->before;
+
+  /* specs/reddit/search.json:15:20
+     '{ "name": "category", "type":{ "base":"char", "dec":"*" }, "comment":"a string no longer than 5 character"}' */
+  arg_switches[2] = p->category;
+
+  /* specs/reddit/search.json:16:20
+     '{ "name": "count", "type":{ "base":"int" }, "comment":"a positive integer (default: 0)"}' */
+  arg_switches[3] = &p->count;
+
+  /* specs/reddit/search.json:17:20
+     '{ "name": "include_facets", "type":{ "base":"bool" }, "comment":"boolean value"}' */
+  arg_switches[4] = &p->include_facets;
+
+  /* specs/reddit/search.json:18:20
+     '{ "name": "limit", "type":{ "base":"int" }, "comment":"the maximum number of items desired (default: 25, maximum: 100)"}' */
+  arg_switches[5] = &p->limit;
+
+  /* specs/reddit/search.json:19:20
+     '{ "name": "q", "type":{ "base":"char", "dec":"*" }, "comment":"a string no longer than 512 characters"}' */
+  arg_switches[6] = p->q;
+
+  /* specs/reddit/search.json:20:20
+     '{ "name": "restrict_sr", "type":{ "base":"bool" }, "comment":"boolean value"}' */
+  arg_switches[7] = &p->restrict_sr;
+
+  /* specs/reddit/search.json:21:20
+     '{ "name": "show", "type":{ "base":"char", "dec":"*" }, "comment":"(optional)the string all"}' */
+  arg_switches[8] = p->show;
+
+  /* specs/reddit/search.json:22:20
+     '{ "name": "sort", "type":{ "base":"char", "dec":"*" }, "comment":"one of(relevance, hot, top, new, comments)"}' */
+  arg_switches[9] = p->sort;
+
+  /* specs/reddit/search.json:23:20
+     '{ "name": "sr_detail", "type":{ "base":"char", "dec":"*" }, "comment":"expand subreddits"}' */
+  arg_switches[10] = p->sr_detail;
+
+  /* specs/reddit/search.json:24:20
+     '{ "name": "t", "type":{ "base":"char", "dec":"*" }, "comment":"one of(hour, day, week, month, year, all)"}' */
+  arg_switches[11] = p->t;
+
+  /* specs/reddit/search.json:25:20
+     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
+  arg_switches[12] = p->type;
+
   r=json_inject(json, len, 
   /* specs/reddit/search.json:13:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
@@ -249,7 +236,7 @@ size_t reddit_search_params_to_json(char *json, size_t len, struct reddit_search
   /* specs/reddit/search.json:25:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
                 p->type,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -301,20 +288,20 @@ void reddit_search_params_cleanup(struct reddit_search_params *d) {
     free(d->category);
   /* specs/reddit/search.json:16:20
      '{ "name": "count", "type":{ "base":"int" }, "comment":"a positive integer (default: 0)"}' */
-  // p->count is a scalar
+  /* p->count is a scalar */
   /* specs/reddit/search.json:17:20
      '{ "name": "include_facets", "type":{ "base":"bool" }, "comment":"boolean value"}' */
-  // p->include_facets is a scalar
+  /* p->include_facets is a scalar */
   /* specs/reddit/search.json:18:20
      '{ "name": "limit", "type":{ "base":"int" }, "comment":"the maximum number of items desired (default: 25, maximum: 100)"}' */
-  // p->limit is a scalar
+  /* p->limit is a scalar */
   /* specs/reddit/search.json:19:20
      '{ "name": "q", "type":{ "base":"char", "dec":"*" }, "comment":"a string no longer than 512 characters"}' */
   if (d->q)
     free(d->q);
   /* specs/reddit/search.json:20:20
      '{ "name": "restrict_sr", "type":{ "base":"bool" }, "comment":"boolean value"}' */
-  // p->restrict_sr is a scalar
+  /* p->restrict_sr is a scalar */
   /* specs/reddit/search.json:21:20
      '{ "name": "show", "type":{ "base":"char", "dec":"*" }, "comment":"(optional)the string all"}' */
   if (d->show)

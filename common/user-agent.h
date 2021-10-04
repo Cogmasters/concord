@@ -10,7 +10,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif // __cplusplus
+#endif /* __cplusplus */
 
 #include <stdint.h> /* uint64_t */
 #include <curl/curl.h> 
@@ -18,9 +18,9 @@ extern "C" {
 #include "types.h" /* ORCAcode */
 #include "logconf.h" /* logging facilities */
 
-struct user_agent; // forward declaration
+struct user_agent; /* forward declaration */
 
-//possible http methods
+/*possible http methods */
 enum http_method {
   HTTP_INVALID = -1,
   HTTP_DELETE, 
@@ -48,50 +48,50 @@ https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
 
 #define UA_MAX_HEADER_SIZE 100 + 1
 
-//callback for object to be loaded by api response
+/*callback for object to be loaded by api response */
 typedef void (load_obj_cb)(char *str, size_t len, void *p_obj);
 typedef void (cxt_load_obj_cb)(void * cxt, char *str, size_t len, void *p_obj);
 
 struct ua_resp_handle {
-  void *cxt; ///< the context for cxt_ok_cb;
+  void *cxt; /**< the context for cxt_ok_cb; */
 
   load_obj_cb *ok_cb;
-  void *ok_obj; ///< the pointer to be passed to ok_cb
+  void *ok_obj; /**< the pointer to be passed to ok_cb */
 
   load_obj_cb *err_cb;
-  void *err_obj; ///< the pointer to be passed to err_cb
+  void *err_obj; /**< the pointer to be passed to err_cb */
 
-  cxt_load_obj_cb *cxt_ok_cb;  ///< ok callback with an execution context
-  cxt_load_obj_cb *cxt_err_cb; ///< err callback with an execution context
+  cxt_load_obj_cb *cxt_ok_cb;  /**< ok callback with an execution context */
+  cxt_load_obj_cb *cxt_err_cb; /**< err callback with an execution context */
 };
 
 struct ua_resp_header {
-  char *buf;      ///< response header buffer
-  size_t length;  ///< response header string length
-  size_t bufsize; ///< real size occupied in memory by buffer
+  char *buf;      /**< response header buffer */
+  size_t length;  /**< response header string length */
+  size_t bufsize; /**< real size occupied in memory by buffer */
 
-  struct {  ///< array of header field/value pairs
+  struct {  /**< array of header field/value pairs */
     struct {
-      uintptr_t idx; ///< offset index of 'buf' for the start of field or value
-      size_t size;   ///< length of individual field or value
+      uintptr_t idx; /**< offset index of 'buf' for the start of field or value */
+      size_t size;   /**< length of individual field or value */
     } field, value;
   } pairs[UA_MAX_HEADER_SIZE];
-  int size; ///< number of elements initialized in `pairs`
+  int size; /**< number of elements initialized in `pairs` */
 };
 
 struct ua_resp_body {
-  char *buf;      ///< response body buffer
-  size_t length;  ///< response body string length
-  size_t bufsize; ///< real size occupied in memory by buffer
+  char *buf;      /**< response body buffer */
+  size_t length;  /**< response body string length */
+  size_t bufsize; /**< real size occupied in memory by buffer */
 };
 
 struct ua_info {
-  struct loginfo loginfo;            ///< logging informational
-  int httpcode;                      ///< the HTTP response code
-  struct sized_buffer req_url;       ///< request URL
-  uint64_t req_tstamp;               ///< timestamp of when the request completed
-  struct ua_resp_header resp_header; ///< the response header
-  struct ua_resp_body resp_body;     ///< the response body
+  struct loginfo loginfo;            /**< logging informational */
+  int httpcode;                      /**< the HTTP response code */
+  struct sized_buffer req_url;       /**< request URL */
+  uint64_t req_tstamp;               /**< timestamp of when the request completed */
+  struct ua_resp_header resp_header; /**< the response header */
+  struct ua_resp_body resp_body;     /**< the response body */
 };
 
 const char* http_code_print(int httpcode);
@@ -104,7 +104,7 @@ void ua_reqheader_del(struct user_agent *ua, const char field[]);
 char* ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize);
 
 void ua_curl_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
-void ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); // @todo this is temporary
+void ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); /* @todo this is temporary */
 
 struct user_agent* ua_init(struct logconf *config);
 struct user_agent* ua_clone(struct user_agent *orig_ua);
@@ -132,6 +132,6 @@ struct sized_buffer ua_info_get_resp_body(struct ua_info *info);
 
 #ifdef __cplusplus
 }
-#endif // __cplusplus
+#endif /* __cplusplus */
 
-#endif // USER_AGENT_H
+#endif /* USER_AGENT_H */

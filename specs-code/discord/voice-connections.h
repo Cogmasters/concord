@@ -6,8 +6,8 @@
 
 
 
-// Voice Close Event Codes
-// defined at specs/discord/voice-connections.json:6:5
+/* Voice Close Event Codes */
+/* defined at specs/discord/voice-connections.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes
  *
@@ -46,8 +46,8 @@ extern size_t discord_voice_close_event_codes_list_to_json_v(char *str, size_t l
 extern size_t discord_voice_close_event_codes_list_to_json(char *str, size_t len, enum discord_voice_close_event_codes **p);
 
 
-// Voice Opcodes
-// defined at specs/discord/voice-connections.json:27:5
+/* Voice Opcodes */
+/* defined at specs/discord/voice-connections.json:27:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
  *
@@ -86,8 +86,8 @@ extern size_t discord_voice_opcodes_list_to_json_v(char *str, size_t len, void *
 extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum discord_voice_opcodes **p);
 
 
-// Voice Speaking Flags
-// defined at specs/discord/voice-connections.json:48:5
+/* Voice Speaking Flags */
+/* defined at specs/discord/voice-connections.json:48:5 */
 /**
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  *
@@ -103,9 +103,9 @@ extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum dis
  * @endverbatim
  */
 enum discord_voice_speaking_flags {
-  DISCORD_VOICE_MICROPHONE = 1, ///< 1 << 0
-  DISCORD_VOICE_SOUNDSHARE = 2, ///< 1 << 1
-  DISCORD_VOICE_PRIORITY = 4, ///< 1 << 2
+  DISCORD_VOICE_MICROPHONE = 1, /** 1 << 0 */
+  DISCORD_VOICE_SOUNDSHARE = 2, /** 1 << 1 */
+  DISCORD_VOICE_PRIORITY = 4, /** 1 << 2 */
 };
 extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
 extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);

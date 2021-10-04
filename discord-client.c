@@ -120,13 +120,11 @@ discord_strerror(ORCAcode code, struct discord *client)
   }
 }
 
-//@todo make this thread safe
 void*
 discord_set_data(struct discord *client, void *data) {
   return client->data = data;
 }
 
-//@todo make this thread safe
 void*
 discord_get_data(struct discord *client) {
   return client->data;

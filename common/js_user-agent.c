@@ -13,7 +13,7 @@
 
 #include "js_user-agent.h"
 
-// @todo shouldn't be a dependency
+/* @todo shouldn't be a dependency */
 extern const char* g_config_file;
 
 int debug_stack=0;
@@ -103,7 +103,7 @@ new_UserAgent(js_State *J)
     char *tmp = (char*)js_tostring(J, 1);
 
     char *url=NULL;
-    if ('<' == *tmp) // remove enclosing '< >' from string
+    if ('<' == *tmp) /* remove enclosing '< >' from string */
       asprintf(&url, "%.*s", (int)(strlen(tmp+1)-1), tmp+1); 
     else
       asprintf(&url, "%s", tmp); 
@@ -132,7 +132,7 @@ UserAgent_prototype_run(js_State *J)
     js_pushstring(J, info.req_url.start);
     js_setproperty(J, -2, "requestUrl");
 
-    char aux[64]; // convert timestamp to string
+    char aux[64]; /* convert timestamp to string */
     snprintf(aux, sizeof(aux), "%"PRIu64, info.req_tstamp);
     js_pushstring(J, aux);
     js_setproperty(J, -2, "requestTimestamp");
@@ -157,7 +157,7 @@ UserAgent_prototype_string(js_State *J)
   jsua_log("original response >>>:%.*s\n", (int)resp_body.size, resp_body.start);
   json_string_unescape(&new_resp_body.start, &new_resp_body.size, resp_body.start, resp_body.size);
   jsua_log("unescaped response >>>:%.*s\n", (int)new_resp_body.size, new_resp_body.start);
-  js_pushstring(J, new_resp_body.start); // this will make a new copy
+  js_pushstring(J, new_resp_body.start); /* this will make a new copy */
 
   ua_info_cleanup(&info);
 }
@@ -191,24 +191,24 @@ static void
 jsua_ua_init(js_State *J)
 {
   js_getglobal(J, "Object"); 
-  // UserAgent.prototype.[[Prototype]] = Object.prototype
+  /* UserAgent.prototype.[[Prototype]] = Object.prototype */
   js_getproperty(J, -1, "prototype");
-  // UserAgent.prototype.[[UserData]] = null
+  /* UserAgent.prototype.[[UserData]] = null */
   js_newuserdata(J, "UserAgent", NULL, NULL);
   {
-    // UserAgent.prototype.run = function() { ... }
+    /* UserAgent.prototype.run = function() { ... } */
     js_newcfunction(J, &UserAgent_prototype_run, "UserAgent.prototype.run", 1);
     js_defproperty(J, -2, "run", JS_DONTENUM);
 
-    // UserAgent.prototype.string = function() { ... }
+    /* UserAgent.prototype.string = function() { ... } */
     js_newcfunction(J, &UserAgent_prototype_string, "UserAgent.prototype.string", 1);
     js_defproperty(J, -2, "string", JS_DONTENUM);
 
-    // UserAgent.prototype.addHeader = function() { ... }
+    /* UserAgent.prototype.addHeader = function() { ... } */
     js_newcfunction(J, &UserAgent_prototype_addHeader, "UserAgent.prototype.addHeader", 2);
     js_defproperty(J, -2, "addHeader", JS_DONTENUM);
 
-    // UserAgent.prototype.setUrl = function() { ... }
+    /* UserAgent.prototype.setUrl = function() { ... } */
     js_newcfunction(J, &UserAgent_prototype_setUrl, "UserAgent.prototype.setUrl", 2);
     js_defproperty(J, -2, "setUrl", JS_DONTENUM);
   }
@@ -220,17 +220,17 @@ void jsua_init(js_State *J)
 {
   jsua_logger(J);
 
-  // declare common functions
+  /* declare common functions */
   js_newcfunction(J, jsua_print, "print", 1);
   js_setglobal(J, "print"); 
 
-  // declare UserAgent Object
+  /* declare UserAgent Object */
   jsua_ua_init(J);
 
-  // declare common Error prototypes
+  /* declare common Error prototypes */
   js_dostring(J, stacktrace_js);
 
-  // declare from common files
+  /* declare from common files */
 #ifdef JSUA_IMPORT
   js_dofile(J, JSUA_IMPORT);
 #endif
@@ -253,7 +253,7 @@ jsua_run(js_State *J, struct user_agent *ua, struct ua_info *p_info)
     req_body.size = strlen(req_body.start);
   }
 
-  // @todo map Error codes to JS Error objects
+  /* @todo map Error codes to JS Error objects */
   return ua_run(
           ua, 
           p_info, 

@@ -5,8 +5,8 @@
  */
 
 
-// Emoji Structure
-// defined at specs/discord/emoji.json:9:22
+/* Emoji Structure */
+/* defined at specs/discord/emoji.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
  *
@@ -37,50 +37,36 @@
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-  u64_snowflake_t id; ///< emoji id
+  u64_snowflake_t id; /** emoji id */
 
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
-  char *name; ///< emoji name
+  char *name; /** emoji name */
 
   /* specs/discord/emoji.json:14:20
      '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
-  struct discord_role **roles; ///< roles allowed to use this emoji
+  struct discord_role **roles; /** roles allowed to use this emoji */
 
   /* specs/discord/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
-  struct discord_user *user; ///< user that created this emoji
+  struct discord_user *user; /** user that created this emoji */
 
   /* specs/discord/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
-  bool require_colons; ///< whether this emoji must be wrapped in colons
+  bool require_colons; /** whether this emoji must be wrapped in colons */
 
   /* specs/discord/emoji.json:17:20
      '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
-  bool managed; ///< whether this emoji is managed
+  bool managed; /** whether this emoji is managed */
 
   /* specs/discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
-  bool animated; ///< whether this emoji is animated
+  bool animated; /** whether this emoji is animated */
 
   /* specs/discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
   bool available;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_emoji_cleanup_v(void *p);
 extern void discord_emoji_cleanup(struct discord_emoji *p);

@@ -14,6 +14,15 @@
       ]
     },
     {
+      "title":"Create DM",
+      "namespace": ["create_dm"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }
+      ]
+    },
+    {
       "title":"Create Group DM",
       "namespace": ["create_group_dm"],
       "struct":"params",

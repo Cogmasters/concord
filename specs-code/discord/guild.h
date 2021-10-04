@@ -5,8 +5,8 @@
  */
 
 
-// Guild Structure
-// defined at specs/discord/guild.json:9:22
+/* Guild Structure */
+/* defined at specs/discord/guild.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
  *
@@ -107,7 +107,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:31:70
      '{"type":{"base":"struct discord_role", "dec":"ntl"}, "name":"roles", "comment":"array of role objects", "inject_if_not":null }' */
-  struct discord_role **roles; ///< array of role objects
+  struct discord_role **roles; /** array of role objects */
 
   /* specs/discord/guild.json:32:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
@@ -115,7 +115,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:33:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "comment":"array of guild feature strings", "inject_if_not":null }' */
-  ja_str **features; ///< array of guild feature strings
+  ja_str **features; /** array of guild feature strings */
 
   /* specs/discord/guild.json:34:79
      '{"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"}' */
@@ -155,7 +155,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:43:77
      '{"type":{"base":"struct discord_voice_state", "dec":"ntl"}, "name":"voice_states", "comment":"array of partial voice state objects", "inject_if_not":null }' */
-  struct discord_voice_state **voice_states; ///< array of partial voice state objects
+  struct discord_voice_state **voice_states; /** array of partial voice state objects */
 
   /* specs/discord/guild.json:44:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
@@ -164,11 +164,11 @@ struct discord_guild {
   /* specs/discord/guild.json:45:73
      '{"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}' */
-  struct discord_channel **channels; ///< array of channel objects
+  struct discord_channel **channels; /** array of channel objects */
 
   /* specs/discord/guild.json:47:81
      '{"type":{"base":"struct discord_presence_status", "dec":"ntl"}, "name":"presences", "option":true, "comment":"array of partial presence update objects", "inject_if_not":null }' */
-  struct discord_presence_status **presences; ///< array of partial presence update objects
+  struct discord_presence_status **presences; /** array of partial presence update objects */
 
   /* specs/discord/guild.json:48:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
@@ -223,20 +223,6 @@ struct discord_guild {
      '{"type":{"base":"struct discord_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}' */
   struct discord_welcome_screen *welcome_screen;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[46];
-    void *record_defined[46];
-    void *record_null[46];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_guild_cleanup_v(void *p);
 extern void discord_guild_cleanup(struct discord_guild *p);
@@ -254,8 +240,8 @@ extern size_t discord_guild_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_list_to_json(char *str, size_t len, struct discord_guild **p);
 
 
-// Default Message Notification Level
-// defined at specs/discord/guild.json:64:5
+/* Default Message Notification Level */
+/* defined at specs/discord/guild.json:64:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
  *
@@ -284,8 +270,8 @@ extern size_t discord_default_message_notification_level_list_to_json_v(char *st
 extern size_t discord_default_message_notification_level_list_to_json(char *str, size_t len, enum discord_default_message_notification_level **p);
 
 
-// Explicit Content Filter Level
-// defined at specs/discord/guild.json:73:5
+/* Explicit Content Filter Level */
+/* defined at specs/discord/guild.json:73:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
  *
@@ -315,8 +301,8 @@ extern size_t discord_explicit_content_filter_level_list_to_json_v(char *str, si
 extern size_t discord_explicit_content_filter_level_list_to_json(char *str, size_t len, enum discord_explicit_content_filter_level **p);
 
 
-// MFA Level
-// defined at specs/discord/guild.json:83:5
+/* MFA Level */
+/* defined at specs/discord/guild.json:83:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
  *
@@ -345,8 +331,8 @@ extern size_t discord_mfa_level_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_mfa_level_list_to_json(char *str, size_t len, enum discord_mfa_level **p);
 
 
-// Verification Level
-// defined at specs/discord/guild.json:92:5
+/* Verification Level */
+/* defined at specs/discord/guild.json:92:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-verification-level
  *
@@ -378,8 +364,8 @@ extern size_t discord_verification_level_list_to_json_v(char *str, size_t len, v
 extern size_t discord_verification_level_list_to_json(char *str, size_t len, enum discord_verification_level **p);
 
 
-// Premium Tier
-// defined at specs/discord/guild.json:104:5
+/* Premium Tier */
+/* defined at specs/discord/guild.json:104:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
  *
@@ -410,8 +396,8 @@ extern size_t discord_premium_tier_list_to_json_v(char *str, size_t len, void *p
 extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum discord_premium_tier **p);
 
 
-// System Channel Flags
-// defined at specs/discord/guild.json:115:5
+/* System Channel Flags */
+/* defined at specs/discord/guild.json:115:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags
  *
@@ -427,8 +413,8 @@ extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum disc
  * @endverbatim
  */
 enum discord_system_channel_flags {
-  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, ///< 1<<0
-  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, ///< 1<<1
+  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, /** 1<<0 */
+  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, /** 1<<1 */
 };
 extern char* discord_system_channel_flags_print(enum discord_system_channel_flags);
 extern enum discord_system_channel_flags discord_system_channel_flags_eval(char*);
@@ -440,8 +426,8 @@ extern size_t discord_system_channel_flags_list_to_json_v(char *str, size_t len,
 extern size_t discord_system_channel_flags_list_to_json(char *str, size_t len, enum discord_system_channel_flags **p);
 
 
-// Guild Features
-// defined at specs/discord/guild.json:124:5
+/* Guild Features */
+/* defined at specs/discord/guild.json:124:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-features
  *
@@ -482,8 +468,8 @@ extern void discord_guild_features_list_from_json(char *str, size_t len, enum di
 extern size_t discord_guild_features_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_features_list_to_json(char *str, size_t len, enum discord_guild_features **p);
 
-// Unavailable Guild Object
-// defined at specs/discord/guild.json:150:23
+/* Unavailable Guild Object */
+/* defined at specs/discord/guild.json:150:23 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
  *
@@ -520,20 +506,6 @@ struct discord_unavailable_guild {
      '{"name":"unavailable", "type":{"base":"bool"}}' */
   bool unavailable;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_unavailable_guild_cleanup_v(void *p);
 extern void discord_unavailable_guild_cleanup(struct discord_unavailable_guild *p);
@@ -550,8 +522,8 @@ extern void discord_unavailable_guild_list_from_json(char *str, size_t len, stru
 extern size_t discord_unavailable_guild_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_unavailable_guild_list_to_json(char *str, size_t len, struct discord_unavailable_guild **p);
 
-// Guild Preview Object
-// defined at specs/discord/guild.json:160:23
+/* Guild Preview Object */
+/* defined at specs/discord/guild.json:160:23 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
  *
@@ -620,20 +592,6 @@ struct discord_guild_preview {
      '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   char description[DISCORD_MAX_DESCRIPTION_LEN];
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[10];
-    void *record_defined[10];
-    void *record_null[10];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_guild_preview_cleanup_v(void *p);
 extern void discord_guild_preview_cleanup(struct discord_guild_preview *p);
@@ -650,8 +608,8 @@ extern void discord_guild_preview_list_from_json(char *str, size_t len, struct d
 extern size_t discord_guild_preview_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_preview_list_to_json(char *str, size_t len, struct discord_guild_preview **p);
 
-// Guild Widget Object
-// defined at specs/discord/guild.json:178:23
+/* Guild Widget Object */
+/* defined at specs/discord/guild.json:178:23 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
  *
@@ -688,20 +646,6 @@ struct discord_guild_widget {
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}}' */
   u64_snowflake_t channel_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_guild_widget_cleanup_v(void *p);
 extern void discord_guild_widget_cleanup(struct discord_guild_widget *p);
@@ -718,8 +662,8 @@ extern void discord_guild_widget_list_from_json(char *str, size_t len, struct di
 extern size_t discord_guild_widget_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_widget_list_to_json(char *str, size_t len, struct discord_guild_widget **p);
 
-// Guild Member Structure
-// defined at specs/discord/guild.json:188:22
+/* Guild Member Structure */
+/* defined at specs/discord/guild.json:188:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
  *
@@ -758,7 +702,7 @@ struct discord_guild_member {
 
   /* specs/discord/guild.json:193:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
-  ja_u64 **roles; ///< array of role object ids
+  ja_u64 **roles; /** array of role object ids */
 
   /* specs/discord/guild.json:194:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -784,20 +728,6 @@ struct discord_guild_member {
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}' */
   char *permissions;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_guild_member_cleanup_v(void *p);
 extern void discord_guild_member_cleanup(struct discord_guild_member *p);
@@ -814,8 +744,8 @@ extern void discord_guild_member_list_from_json(char *str, size_t len, struct di
 extern size_t discord_guild_member_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_guild_member_list_to_json(char *str, size_t len, struct discord_guild_member **p);
 
-// Integration Structure
-// defined at specs/discord/guild.json:205:22
+/* Integration Structure */
+/* defined at specs/discord/guild.json:205:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
  *
@@ -904,20 +834,6 @@ struct discord_integration {
      '{ "name": "application", "type":{ "base":"struct discord_integration_application", "dec":"*" }}' */
   struct discord_integration_application *application;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[15];
-    void *record_defined[15];
-    void *record_null[15];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_integration_cleanup_v(void *p);
 extern void discord_integration_cleanup(struct discord_integration *p);
@@ -935,8 +851,8 @@ extern size_t discord_integration_list_to_json_v(char *str, size_t len, void *p)
 extern size_t discord_integration_list_to_json(char *str, size_t len, struct discord_integration **p);
 
 
-// Integration Expire Behaviors
-// defined at specs/discord/guild.json:225:5
+/* Integration Expire Behaviors */
+/* defined at specs/discord/guild.json:225:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors
  *
@@ -964,8 +880,8 @@ extern void discord_integration_expire_behaviors_list_from_json(char *str, size_
 extern size_t discord_integration_expire_behaviors_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_integration_expire_behaviors_list_to_json(char *str, size_t len, enum discord_integration_expire_behaviors **p);
 
-// Integration Account Structure
-// defined at specs/discord/guild.json:239:22
+/* Integration Account Structure */
+/* defined at specs/discord/guild.json:239:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
  *
@@ -1002,20 +918,6 @@ struct discord_integration_account {
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_integration_account_cleanup_v(void *p);
 extern void discord_integration_account_cleanup(struct discord_integration_account *p);
@@ -1032,8 +934,8 @@ extern void discord_integration_account_list_from_json(char *str, size_t len, st
 extern size_t discord_integration_account_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_integration_account_list_to_json(char *str, size_t len, struct discord_integration_account **p);
 
-// Integration Application Object
-// defined at specs/discord/guild.json:249:22
+/* Integration Application Object */
+/* defined at specs/discord/guild.json:249:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
  *
@@ -1086,20 +988,6 @@ struct discord_integration_application {
      '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
   struct discord_user *bot;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[6];
-    void *record_defined[6];
-    void *record_null[6];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_integration_application_cleanup_v(void *p);
 extern void discord_integration_application_cleanup(struct discord_integration_application *p);
@@ -1116,8 +1004,8 @@ extern void discord_integration_application_list_from_json(char *str, size_t len
 extern size_t discord_integration_application_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_integration_application_list_to_json(char *str, size_t len, struct discord_integration_application **p);
 
-// Ban Structure
-// defined at specs/discord/guild.json:262:22
+/* Ban Structure */
+/* defined at specs/discord/guild.json:262:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
  *
@@ -1152,22 +1040,8 @@ struct discord_ban {
 
   /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *user; ///< partial user object
+  struct discord_user *user; /** partial user object */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_ban_cleanup_v(void *p);
 extern void discord_ban_cleanup(struct discord_ban *p);
@@ -1184,8 +1058,8 @@ extern void discord_ban_list_from_json(char *str, size_t len, struct discord_ban
 extern size_t discord_ban_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_ban_list_to_json(char *str, size_t len, struct discord_ban **p);
 
-// Welcome Screen Structure
-// defined at specs/discord/guild.json:272:22
+/* Welcome Screen Structure */
+/* defined at specs/discord/guild.json:272:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
  *
@@ -1222,20 +1096,6 @@ struct discord_welcome_screen {
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "inject_if_not":null }' */
   struct discord_welcome_screen_channel **welcome_channels;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_welcome_screen_cleanup_v(void *p);
 extern void discord_welcome_screen_cleanup(struct discord_welcome_screen *p);
@@ -1252,8 +1112,8 @@ extern void discord_welcome_screen_list_from_json(char *str, size_t len, struct 
 extern size_t discord_welcome_screen_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_welcome_screen_list_to_json(char *str, size_t len, struct discord_welcome_screen **p);
 
-// Welcome Screen Channel Structure
-// defined at specs/discord/guild.json:283:22
+/* Welcome Screen Channel Structure */
+/* defined at specs/discord/guild.json:283:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
  *
@@ -1298,20 +1158,6 @@ struct discord_welcome_screen_channel {
      '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}' */
   char *emoji_name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_welcome_screen_channel_cleanup_v(void *p);
 extern void discord_welcome_screen_channel_cleanup(struct discord_welcome_screen_channel *p);

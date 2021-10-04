@@ -137,16 +137,15 @@ discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
 }
 
 ORCAcode 
-discord_create_dm(struct discord *client, const u64_snowflake_t recipient_id, struct discord_channel *p_dm_channel)
+discord_create_dm(struct discord *client, struct discord_create_dm_params *params, struct discord_channel *p_dm_channel)
 {
-  if (!recipient_id) {
-    log_error("Missing 'recipient_id'");
+  if (!params) {
+    log_error("Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[256];
-  size_t ret = json_inject(payload, sizeof(payload), \
-      "(recipient_id):s_as_u64", &recipient_id);
+  char payload[128];
+  size_t ret = discord_create_dm_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
            &client->adapter,

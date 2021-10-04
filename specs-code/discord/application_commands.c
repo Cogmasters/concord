@@ -15,7 +15,7 @@
 
 void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command *p = *pp;
@@ -42,12 +42,7 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
-  /* specs/discord/application_commands.json:19:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-                "(default_permission):b,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(default_permission):b,",
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
                 cee_strtoull, &p->id,
@@ -71,57 +66,49 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
                 discord_application_command_option_list_from_json, &p->options,
   /* specs/discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-                &p->default_permission,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->default_permission);
   ret = r;
-}
-
-static void discord_application_command_use_default_inject_settings(struct discord_application_command *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/application_commands.json:12:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/application_commands.json:13:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
-  if (p->type != 0)
-    p->__M.arg_switches[1] = &p->type;
-
-  /* specs/discord/application_commands.json:14:18
-     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-  p->__M.arg_switches[2] = &p->application_id;
-
-  /* specs/discord/application_commands.json:15:18
-     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-  if (p->guild_id != 0)
-    p->__M.arg_switches[3] = &p->guild_id;
-
-  /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-  p->__M.arg_switches[4] = p->name;
-
-  /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-  p->__M.arg_switches[5] = p->description;
-
-  /* specs/discord/application_commands.json:18:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  if (p->options != NULL)
-    p->__M.arg_switches[6] = p->options;
-
-  /* specs/discord/application_commands.json:19:18
-     '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  p->__M.arg_switches[7] = &p->default_permission;
-
 }
 
 size_t discord_application_command_to_json(char *json, size_t len, struct discord_application_command *p)
 {
   size_t r;
-  discord_application_command_use_default_inject_settings(p);
+  void *arg_switches[8]={NULL};
+  /* specs/discord/application_commands.json:12:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/application_commands.json:13:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
+  if (p->type != 0)
+    arg_switches[1] = &p->type;
+
+  /* specs/discord/application_commands.json:14:18
+     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
+  arg_switches[2] = &p->application_id;
+
+  /* specs/discord/application_commands.json:15:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
+  if (p->guild_id != 0)
+    arg_switches[3] = &p->guild_id;
+
+  /* specs/discord/application_commands.json:16:18
+     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
+  arg_switches[4] = p->name;
+
+  /* specs/discord/application_commands.json:17:18
+     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+  arg_switches[5] = p->description;
+
+  /* specs/discord/application_commands.json:18:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
+  if (p->options != NULL)
+    arg_switches[6] = p->options;
+
+  /* specs/discord/application_commands.json:19:18
+     '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
+  arg_switches[7] = &p->default_permission;
+
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
@@ -172,7 +159,7 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
   /* specs/discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 &p->default_permission,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -212,29 +199,29 @@ size_t discord_application_command_list_to_json_v(char *str, size_t len, void *p
 void discord_application_command_cleanup(struct discord_application_command *d) {
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/application_commands.json:13:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-  // p->application_id is a scalar
+  /* p->application_id is a scalar */
   /* specs/discord/application_commands.json:15:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-  // p->guild_id is a scalar
+  /* p->guild_id is a scalar */
   /* specs/discord/application_commands.json:16:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-  // p->name is a scalar
+  /* p->name is a scalar */
   /* specs/discord/application_commands.json:17:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-  // p->description is a scalar
+  /* p->description is a scalar */
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   if (d->options)
     discord_application_command_option_list_free(d->options);
   /* specs/discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  // p->default_permission is a scalar
+  /* p->default_permission is a scalar */
 }
 
 void discord_application_command_init(struct discord_application_command *p) {
@@ -342,7 +329,7 @@ size_t discord_application_command_types_list_to_json(char *str, size_t len, enu
 
 void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_option *p = *pp;
@@ -363,12 +350,7 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
   /* specs/discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
                 "(choices):F,"
-  /* specs/discord/application_commands.json:46:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
-                "(options):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(options):F,",
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 &p->type,
@@ -386,48 +368,40 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
                 discord_application_command_option_choice_list_from_json, &p->choices,
   /* specs/discord/application_commands.json:46:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
-                discord_application_command_option_list_from_json, &p->options,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_application_command_option_list_from_json, &p->options);
   ret = r;
-}
-
-static void discord_application_command_option_use_default_inject_settings(struct discord_application_command_option *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/application_commands.json:41:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  p->__M.arg_switches[0] = &p->type;
-
-  /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  p->__M.arg_switches[2] = p->description;
-
-  /* specs/discord/application_commands.json:44:18
-     '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
-  p->__M.arg_switches[3] = &p->required;
-
-  /* specs/discord/application_commands.json:45:18
-     '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
-  if (p->choices != NULL)
-    p->__M.arg_switches[4] = p->choices;
-
-  /* specs/discord/application_commands.json:46:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
-  if (p->options != NULL)
-    p->__M.arg_switches[5] = p->options;
-
 }
 
 size_t discord_application_command_option_to_json(char *json, size_t len, struct discord_application_command_option *p)
 {
   size_t r;
-  discord_application_command_option_use_default_inject_settings(p);
+  void *arg_switches[6]={NULL};
+  /* specs/discord/application_commands.json:41:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
+  arg_switches[0] = &p->type;
+
+  /* specs/discord/application_commands.json:42:18
+     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+  arg_switches[1] = p->name;
+
+  /* specs/discord/application_commands.json:43:18
+     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+  arg_switches[2] = p->description;
+
+  /* specs/discord/application_commands.json:44:18
+     '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
+  arg_switches[3] = &p->required;
+
+  /* specs/discord/application_commands.json:45:18
+     '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
+  if (p->choices != NULL)
+    arg_switches[4] = p->choices;
+
+  /* specs/discord/application_commands.json:46:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
+  if (p->options != NULL)
+    arg_switches[5] = p->options;
+
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
@@ -466,7 +440,7 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
   /* specs/discord/application_commands.json:46:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
                 discord_application_command_option_list_to_json, p->options,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -506,16 +480,16 @@ size_t discord_application_command_option_list_to_json_v(char *str, size_t len, 
 void discord_application_command_option_cleanup(struct discord_application_command_option *d) {
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/application_commands.json:42:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  // p->name is a scalar
+  /* p->name is a scalar */
   /* specs/discord/application_commands.json:43:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  // p->description is a scalar
+  /* p->description is a scalar */
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
-  // p->required is a scalar
+  /* p->required is a scalar */
   /* specs/discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
   if (d->choices)
@@ -639,7 +613,7 @@ size_t discord_application_command_option_types_list_to_json(char *str, size_t l
 
 void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_option_choice *p = *pp;
@@ -648,41 +622,28 @@ void discord_application_command_option_choice_from_json(char *json, size_t len,
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 "(name):s,"
-  /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
-                "(value):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(value):F,",
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 p->name,
   /* specs/discord/application_commands.json:76:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
-                cee_strndup, &p->value,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                cee_strndup, &p->value);
   ret = r;
-}
-
-static void discord_application_command_option_choice_use_default_inject_settings(struct discord_application_command_option_choice *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/application_commands.json:75:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/application_commands.json:76:18
-     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
-  p->__M.arg_switches[1] = p->value;
-
 }
 
 size_t discord_application_command_option_choice_to_json(char *json, size_t len, struct discord_application_command_option_choice *p)
 {
   size_t r;
-  discord_application_command_option_choice_use_default_inject_settings(p);
+  void *arg_switches[2]={NULL};
+  /* specs/discord/application_commands.json:75:18
+     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
+  arg_switches[0] = p->name;
+
+  /* specs/discord/application_commands.json:76:18
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
+  arg_switches[1] = p->value;
+
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
@@ -697,7 +658,7 @@ size_t discord_application_command_option_choice_to_json(char *json, size_t len,
   /* specs/discord/application_commands.json:76:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 p->value,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -737,7 +698,7 @@ size_t discord_application_command_option_choice_list_to_json_v(char *str, size_
 void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *d) {
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-  // p->name is a scalar
+  /* p->name is a scalar */
   /* specs/discord/application_commands.json:76:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
   if (d->value)
@@ -776,7 +737,7 @@ size_t discord_application_command_option_choice_list_to_json(char *str, size_t 
 
 void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_guild_application_command_permissions *p = *pp;
@@ -791,12 +752,7 @@ void discord_guild_application_command_permissions_from_json(char *json, size_t 
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
                 "(guild_id):F,"
-  /* specs/discord/application_commands.json:89:18
-     '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-                "(permissions):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(permissions):F,",
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
                 cee_strtoull, &p->id,
@@ -808,38 +764,30 @@ void discord_guild_application_command_permissions_from_json(char *json, size_t 
                 cee_strtoull, &p->guild_id,
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-                discord_application_command_permissions_list_from_json, &p->permissions,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_application_command_permissions_list_from_json, &p->permissions);
   ret = r;
-}
-
-static void discord_guild_application_command_permissions_use_default_inject_settings(struct discord_guild_application_command_permissions *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/application_commands.json:86:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/application_commands.json:87:18
-     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-  p->__M.arg_switches[1] = &p->application_id;
-
-  /* specs/discord/application_commands.json:88:18
-     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-  p->__M.arg_switches[2] = &p->guild_id;
-
-  /* specs/discord/application_commands.json:89:18
-     '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-  p->__M.arg_switches[3] = p->permissions;
-
 }
 
 size_t discord_guild_application_command_permissions_to_json(char *json, size_t len, struct discord_guild_application_command_permissions *p)
 {
   size_t r;
-  discord_guild_application_command_permissions_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/discord/application_commands.json:86:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/application_commands.json:87:18
+     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
+  arg_switches[1] = &p->application_id;
+
+  /* specs/discord/application_commands.json:88:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
+  arg_switches[2] = &p->guild_id;
+
+  /* specs/discord/application_commands.json:89:18
+     '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
+  arg_switches[3] = p->permissions;
+
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
@@ -866,7 +814,7 @@ size_t discord_guild_application_command_permissions_to_json(char *json, size_t 
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 discord_application_command_permissions_list_to_json, p->permissions,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -906,13 +854,13 @@ size_t discord_guild_application_command_permissions_list_to_json_v(char *str, s
 void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *d) {
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/application_commands.json:87:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-  // p->application_id is a scalar
+  /* p->application_id is a scalar */
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-  // p->guild_id is a scalar
+  /* p->guild_id is a scalar */
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
   if (d->permissions)
@@ -957,7 +905,7 @@ size_t discord_guild_application_command_permissions_list_to_json(char *str, siz
 
 void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_permissions *p = *pp;
@@ -969,12 +917,7 @@ void discord_application_command_permissions_from_json(char *json, size_t len, s
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
                 "(type):d,"
-  /* specs/discord/application_commands.json:101:18
-     '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-                "(permission):b,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(permission):b,",
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
                 cee_strtoull, &p->id,
@@ -983,34 +926,26 @@ void discord_application_command_permissions_from_json(char *json, size_t len, s
                 &p->type,
   /* specs/discord/application_commands.json:101:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-                &p->permission,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->permission);
   ret = r;
-}
-
-static void discord_application_command_permissions_use_default_inject_settings(struct discord_application_command_permissions *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/application_commands.json:99:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/application_commands.json:100:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
-  p->__M.arg_switches[1] = &p->type;
-
-  /* specs/discord/application_commands.json:101:18
-     '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-  p->__M.arg_switches[2] = &p->permission;
-
 }
 
 size_t discord_application_command_permissions_to_json(char *json, size_t len, struct discord_application_command_permissions *p)
 {
   size_t r;
-  discord_application_command_permissions_use_default_inject_settings(p);
+  void *arg_switches[3]={NULL};
+  /* specs/discord/application_commands.json:99:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/application_commands.json:100:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
+  arg_switches[1] = &p->type;
+
+  /* specs/discord/application_commands.json:101:18
+     '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
+  arg_switches[2] = &p->permission;
+
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
@@ -1031,7 +966,7 @@ size_t discord_application_command_permissions_to_json(char *json, size_t len, s
   /* specs/discord/application_commands.json:101:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
                 &p->permission,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1071,13 +1006,13 @@ size_t discord_application_command_permissions_list_to_json_v(char *str, size_t 
 void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *d) {
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/application_commands.json:101:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-  // p->permission is a scalar
+  /* p->permission is a scalar */
 }
 
 void discord_application_command_permissions_init(struct discord_application_command_permissions *p) {
@@ -1168,7 +1103,7 @@ size_t discord_application_command_permission_types_list_to_json(char *str, size
 
 void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_application_command_interaction_data_option *p = *pp;
@@ -1183,12 +1118,7 @@ void discord_application_command_interaction_data_option_from_json(char *json, s
   /* specs/discord/application_commands.json:124:18
      '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
                 "(value):d,"
-  /* specs/discord/application_commands.json:125:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
-                "(options):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(options):F,",
   /* specs/discord/application_commands.json:122:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
                 &p->name,
@@ -1200,39 +1130,31 @@ void discord_application_command_interaction_data_option_from_json(char *json, s
                 &p->value,
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
-                discord_application_command_interaction_data_option_list_from_json, &p->options,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_application_command_interaction_data_option_list_from_json, &p->options);
   ret = r;
-}
-
-static void discord_application_command_interaction_data_option_use_default_inject_settings(struct discord_application_command_interaction_data_option *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/application_commands.json:122:18
-     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/application_commands.json:123:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  p->__M.arg_switches[1] = &p->type;
-
-  /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  p->__M.arg_switches[2] = &p->value;
-
-  /* specs/discord/application_commands.json:125:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
-  if (p->options != NULL)
-    p->__M.arg_switches[3] = p->options;
-
 }
 
 size_t discord_application_command_interaction_data_option_to_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p)
 {
   size_t r;
-  discord_application_command_interaction_data_option_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/discord/application_commands.json:122:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
+  arg_switches[0] = p->name;
+
+  /* specs/discord/application_commands.json:123:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
+  arg_switches[1] = &p->type;
+
+  /* specs/discord/application_commands.json:124:18
+     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
+  arg_switches[2] = &p->value;
+
+  /* specs/discord/application_commands.json:125:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
+  if (p->options != NULL)
+    arg_switches[3] = p->options;
+
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:122:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
@@ -1259,7 +1181,7 @@ size_t discord_application_command_interaction_data_option_to_json(char *json, s
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
                 discord_application_command_interaction_data_option_list_to_json, p->options,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1303,10 +1225,10 @@ void discord_application_command_interaction_data_option_cleanup(struct discord_
     free(d->name);
   /* specs/discord/application_commands.json:123:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/application_commands.json:124:18
      '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  // p->value is a scalar
+  /* p->value is a scalar */
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
   if (d->options)

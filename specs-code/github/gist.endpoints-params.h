@@ -5,8 +5,8 @@
  */
 
 
-// Gist Create
-// defined at specs/github/gist.endpoints-params.json:10:32
+/* Gist Create */
+/* defined at specs/github/gist.endpoints-params.json:10:32 */
 /**
  * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
  *
@@ -51,20 +51,6 @@ struct github_gist_create_params {
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
   char *public;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void github_gist_create_params_cleanup_v(void *p);
 extern void github_gist_create_params_cleanup(struct github_gist_create_params *p);

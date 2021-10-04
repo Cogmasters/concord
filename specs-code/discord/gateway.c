@@ -399,7 +399,7 @@ size_t discord_gateway_events_list_to_json(char *str, size_t len, enum discord_g
 
 void discord_identify_from_json(char *json, size_t len, struct discord_identify **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_identify *p = *pp;
@@ -425,12 +425,7 @@ void discord_identify_from_json(char *json, size_t len, struct discord_identify 
   /* specs/discord/gateway.json:148:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
                 "(presence):F,"
-  /* specs/discord/gateway.json:149:19
-     '{ "name":"intents","type":{"base":"int"}}' */
-                "(intents):d,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(intents):d,",
   /* specs/discord/gateway.json:142:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
                 &p->token,
@@ -453,53 +448,45 @@ void discord_identify_from_json(char *json, size_t len, struct discord_identify 
                 discord_presence_status_from_json, &p->presence,
   /* specs/discord/gateway.json:149:19
      '{ "name":"intents","type":{"base":"int"}}' */
-                &p->intents,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->intents);
   ret = r;
 }
 
-static void discord_identify_use_default_inject_settings(struct discord_identify *p)
+size_t discord_identify_to_json(char *json, size_t len, struct discord_identify *p)
 {
-  p->__M.enable_arg_switches = true;
+  size_t r;
+  void *arg_switches[8]={NULL};
   /* specs/discord/gateway.json:142:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[0] = p->token;
+  arg_switches[0] = p->token;
 
   /* specs/discord/gateway.json:143:19
      '{ "name":"properties","type":{"base":"struct discord_identify_connection", "dec":"*"}}' */
-  p->__M.arg_switches[1] = p->properties;
+  arg_switches[1] = p->properties;
 
   /* specs/discord/gateway.json:144:19
      '{ "name":"compress","type":{"base":"bool"}}' */
-  p->__M.arg_switches[2] = &p->compress;
+  arg_switches[2] = &p->compress;
 
   /* specs/discord/gateway.json:145:19
      '{ "name":"large_threshold","type":{"base":"int"}}' */
-  p->__M.arg_switches[3] = &p->large_threshold;
+  arg_switches[3] = &p->large_threshold;
 
   /* specs/discord/gateway.json:146:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
-  p->__M.arg_switches[4] = &p->guild_subscriptions;
+  arg_switches[4] = &p->guild_subscriptions;
 
   /* specs/discord/gateway.json:147:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
 
   /* specs/discord/gateway.json:148:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
-  p->__M.arg_switches[6] = p->presence;
+  arg_switches[6] = p->presence;
 
   /* specs/discord/gateway.json:149:19
      '{ "name":"intents","type":{"base":"int"}}' */
-  p->__M.arg_switches[7] = &p->intents;
+  arg_switches[7] = &p->intents;
 
-}
-
-size_t discord_identify_to_json(char *json, size_t len, struct discord_identify *p)
-{
-  size_t r;
-  discord_identify_use_default_inject_settings(p);
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:142:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
@@ -548,7 +535,7 @@ size_t discord_identify_to_json(char *json, size_t len, struct discord_identify 
   /* specs/discord/gateway.json:149:19
      '{ "name":"intents","type":{"base":"int"}}' */
                 &p->intents,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -598,16 +585,16 @@ void discord_identify_cleanup(struct discord_identify *d) {
   }
   /* specs/discord/gateway.json:144:19
      '{ "name":"compress","type":{"base":"bool"}}' */
-  // p->compress is a scalar
+  /* p->compress is a scalar */
   /* specs/discord/gateway.json:145:19
      '{ "name":"large_threshold","type":{"base":"int"}}' */
-  // p->large_threshold is a scalar
+  /* p->large_threshold is a scalar */
   /* specs/discord/gateway.json:146:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
-  // p->guild_subscriptions is a scalar
+  /* p->guild_subscriptions is a scalar */
   /* specs/discord/gateway.json:147:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
-  // @todo p->(null)
+  /* @todo p->(null) */
   /* specs/discord/gateway.json:148:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
   if (d->presence) {
@@ -616,7 +603,7 @@ void discord_identify_cleanup(struct discord_identify *d) {
   }
   /* specs/discord/gateway.json:149:19
      '{ "name":"intents","type":{"base":"int"}}' */
-  // p->intents is a scalar
+  /* p->intents is a scalar */
 }
 
 void discord_identify_init(struct discord_identify *p) {
@@ -669,7 +656,7 @@ size_t discord_identify_list_to_json(char *str, size_t len, struct discord_ident
 
 void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_voice_state_status *p = *pp;
@@ -684,12 +671,7 @@ void discord_voice_state_status_from_json(char *json, size_t len, struct discord
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
                 "(self_mute):b,"
-  /* specs/discord/gateway.json:162:19
-     '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-                "(self_deaf):b,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(self_deaf):b,",
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
                 cee_strtoull, &p->guild_id,
@@ -701,40 +683,32 @@ void discord_voice_state_status_from_json(char *json, size_t len, struct discord
                 &p->self_mute,
   /* specs/discord/gateway.json:162:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-                &p->self_deaf,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->self_deaf);
   ret = r;
-}
-
-static void discord_voice_state_status_use_default_inject_settings(struct discord_voice_state_status *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/gateway.json:159:19
-     '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-  if (p->guild_id != 0)
-    p->__M.arg_switches[0] = &p->guild_id;
-
-  /* specs/discord/gateway.json:160:19
-     '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-  if (p->channel_id != 0)
-    p->__M.arg_switches[1] = &p->channel_id;
-
-  /* specs/discord/gateway.json:161:19
-     '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
-  p->__M.arg_switches[2] = &p->self_mute;
-
-  /* specs/discord/gateway.json:162:19
-     '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-  p->__M.arg_switches[3] = &p->self_deaf;
-
 }
 
 size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord_voice_state_status *p)
 {
   size_t r;
-  discord_voice_state_status_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/discord/gateway.json:159:19
+     '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
+  if (p->guild_id != 0)
+    arg_switches[0] = &p->guild_id;
+
+  /* specs/discord/gateway.json:160:19
+     '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
+  if (p->channel_id != 0)
+    arg_switches[1] = &p->channel_id;
+
+  /* specs/discord/gateway.json:161:19
+     '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
+  arg_switches[2] = &p->self_mute;
+
+  /* specs/discord/gateway.json:162:19
+     '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
+  arg_switches[3] = &p->self_deaf;
+
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
@@ -761,7 +735,7 @@ size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord
   /* specs/discord/gateway.json:162:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
                 &p->self_deaf,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -801,16 +775,16 @@ size_t discord_voice_state_status_list_to_json_v(char *str, size_t len, void *p)
 void discord_voice_state_status_cleanup(struct discord_voice_state_status *d) {
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-  // p->guild_id is a scalar
+  /* p->guild_id is a scalar */
   /* specs/discord/gateway.json:160:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-  // p->channel_id is a scalar
+  /* p->channel_id is a scalar */
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
-  // p->self_mute is a scalar
+  /* p->self_mute is a scalar */
   /* specs/discord/gateway.json:162:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-  // p->self_deaf is a scalar
+  /* p->self_deaf is a scalar */
 }
 
 void discord_voice_state_status_init(struct discord_voice_state_status *p) {
@@ -851,7 +825,7 @@ size_t discord_voice_state_status_list_to_json(char *str, size_t len, struct dis
 
 void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_presence_status *p = *pp;
@@ -866,12 +840,7 @@ void discord_presence_status_from_json(char *json, size_t len, struct discord_pr
   /* specs/discord/gateway.json:174:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
                 "(status):s,"
-  /* specs/discord/gateway.json:175:19
-     '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-                "(afk):b,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(afk):b,",
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
                 cee_iso8601_to_unix_ms, &p->since,
@@ -883,41 +852,33 @@ void discord_presence_status_from_json(char *json, size_t len, struct discord_pr
                 p->status,
   /* specs/discord/gateway.json:175:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-                &p->afk,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->afk);
   ret = r;
-}
-
-static void discord_presence_status_use_default_inject_settings(struct discord_presence_status *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/gateway.json:172:19
-     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
-  if (p->since != 0)
-    p->__M.arg_switches[0] = &p->since;
-
-  /* specs/discord/gateway.json:173:19
-     '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
-  if (p->activities != NULL)
-    p->__M.arg_switches[1] = p->activities;
-
-  /* specs/discord/gateway.json:174:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  if (*p->status)
-    p->__M.arg_switches[2] = p->status;
-
-  /* specs/discord/gateway.json:175:19
-     '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-  p->__M.arg_switches[3] = &p->afk;
-
 }
 
 size_t discord_presence_status_to_json(char *json, size_t len, struct discord_presence_status *p)
 {
   size_t r;
-  discord_presence_status_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/discord/gateway.json:172:19
+     '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
+  if (p->since != 0)
+    arg_switches[0] = &p->since;
+
+  /* specs/discord/gateway.json:173:19
+     '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
+  if (p->activities != NULL)
+    arg_switches[1] = p->activities;
+
+  /* specs/discord/gateway.json:174:19
+     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
+  if (*p->status)
+    arg_switches[2] = p->status;
+
+  /* specs/discord/gateway.json:175:19
+     '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
+  arg_switches[3] = &p->afk;
+
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
@@ -944,7 +905,7 @@ size_t discord_presence_status_to_json(char *json, size_t len, struct discord_pr
   /* specs/discord/gateway.json:175:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
                 &p->afk,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -984,17 +945,17 @@ size_t discord_presence_status_list_to_json_v(char *str, size_t len, void *p){
 void discord_presence_status_cleanup(struct discord_presence_status *d) {
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
-  // p->since is a scalar
+  /* p->since is a scalar */
   /* specs/discord/gateway.json:173:19
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
   if (d->activities)
     discord_activity_list_free(d->activities);
   /* specs/discord/gateway.json:174:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  // p->status is a scalar
+  /* p->status is a scalar */
   /* specs/discord/gateway.json:175:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-  // p->afk is a scalar
+  /* p->afk is a scalar */
 }
 
 void discord_presence_status_init(struct discord_presence_status *p) {
@@ -1035,7 +996,7 @@ size_t discord_presence_status_list_to_json(char *str, size_t len, struct discor
 
 void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_identify_connection *p = *pp;
@@ -1047,12 +1008,7 @@ void discord_identify_connection_from_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:186:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
                 "($browser):?s,"
-  /* specs/discord/gateway.json:187:19
-     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-                "($device):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "($device):?s,",
   /* specs/discord/gateway.json:185:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
                 &p->os,
@@ -1061,37 +1017,29 @@ void discord_identify_connection_from_json(char *json, size_t len, struct discor
                 &p->browser,
   /* specs/discord/gateway.json:187:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-                &p->device,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->device);
   ret = r;
-}
-
-static void discord_identify_connection_use_default_inject_settings(struct discord_identify_connection *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/gateway.json:185:19
-     '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
-  if (p->os != NULL)
-    p->__M.arg_switches[0] = p->os;
-
-  /* specs/discord/gateway.json:186:19
-     '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  if (p->browser != NULL)
-    p->__M.arg_switches[1] = p->browser;
-
-  /* specs/discord/gateway.json:187:19
-     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  if (p->device != NULL)
-    p->__M.arg_switches[2] = p->device;
-
 }
 
 size_t discord_identify_connection_to_json(char *json, size_t len, struct discord_identify_connection *p)
 {
   size_t r;
-  discord_identify_connection_use_default_inject_settings(p);
+  void *arg_switches[3]={NULL};
+  /* specs/discord/gateway.json:185:19
+     '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
+  if (p->os != NULL)
+    arg_switches[0] = p->os;
+
+  /* specs/discord/gateway.json:186:19
+     '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
+  if (p->browser != NULL)
+    arg_switches[1] = p->browser;
+
+  /* specs/discord/gateway.json:187:19
+     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
+  if (p->device != NULL)
+    arg_switches[2] = p->device;
+
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:185:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
@@ -1112,7 +1060,7 @@ size_t discord_identify_connection_to_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:187:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
                 p->device,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1199,7 +1147,7 @@ size_t discord_identify_connection_list_to_json(char *str, size_t len, struct di
 
 void discord_activity_from_json(char *json, size_t len, struct discord_activity **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_activity *p = *pp;
@@ -1226,12 +1174,7 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
   /* specs/discord/gateway.json:202:19
      '{ "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(state):?s,"
-  /* specs/discord/gateway.json:203:19
-     '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
-                "(instance):b,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(instance):b,",
   /* specs/discord/gateway.json:196:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
                 p->name,
@@ -1255,60 +1198,52 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
                 &p->state,
   /* specs/discord/gateway.json:203:19
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
-                &p->instance,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->instance);
   ret = r;
-}
-
-static void discord_activity_use_default_inject_settings(struct discord_activity *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/gateway.json:196:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/gateway.json:197:19
-     '{ "name":"type","type":{"base":"int"}}' */
-  p->__M.arg_switches[1] = &p->type;
-
-  /* specs/discord/gateway.json:198:19
-     '{ "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""}' */
-  if (p->url && *p->url)
-    p->__M.arg_switches[2] = p->url;
-
-  /* specs/discord/gateway.json:199:19
-     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 }' */
-  if (p->created_at != 0)
-    p->__M.arg_switches[3] = &p->created_at;
-
-  /* specs/discord/gateway.json:200:19
-     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
-  if (p->application_id != 0)
-    p->__M.arg_switches[4] = &p->application_id;
-
-  /* specs/discord/gateway.json:201:19
-     '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
-  if (p->details != NULL)
-    p->__M.arg_switches[5] = p->details;
-
-  /* specs/discord/gateway.json:202:19
-     '{ "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
-  if (p->state != NULL)
-    p->__M.arg_switches[6] = p->state;
-
-  /* specs/discord/gateway.json:203:19
-     '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
-  if (p->instance != false)
-    p->__M.arg_switches[7] = &p->instance;
-
 }
 
 size_t discord_activity_to_json(char *json, size_t len, struct discord_activity *p)
 {
   size_t r;
-  discord_activity_use_default_inject_settings(p);
+  void *arg_switches[8]={NULL};
+  /* specs/discord/gateway.json:196:19
+     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
+  arg_switches[0] = p->name;
+
+  /* specs/discord/gateway.json:197:19
+     '{ "name":"type","type":{"base":"int"}}' */
+  arg_switches[1] = &p->type;
+
+  /* specs/discord/gateway.json:198:19
+     '{ "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""}' */
+  if (p->url && *p->url)
+    arg_switches[2] = p->url;
+
+  /* specs/discord/gateway.json:199:19
+     '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 }' */
+  if (p->created_at != 0)
+    arg_switches[3] = &p->created_at;
+
+  /* specs/discord/gateway.json:200:19
+     '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
+  if (p->application_id != 0)
+    arg_switches[4] = &p->application_id;
+
+  /* specs/discord/gateway.json:201:19
+     '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
+  if (p->details != NULL)
+    arg_switches[5] = p->details;
+
+  /* specs/discord/gateway.json:202:19
+     '{ "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
+  if (p->state != NULL)
+    arg_switches[6] = p->state;
+
+  /* specs/discord/gateway.json:203:19
+     '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
+  if (p->instance != false)
+    arg_switches[7] = &p->instance;
+
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:196:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
@@ -1359,7 +1294,7 @@ size_t discord_activity_to_json(char *json, size_t len, struct discord_activity 
   /* specs/discord/gateway.json:203:19
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 &p->instance,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1399,20 +1334,20 @@ size_t discord_activity_list_to_json_v(char *str, size_t len, void *p){
 void discord_activity_cleanup(struct discord_activity *d) {
   /* specs/discord/gateway.json:196:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
-  // p->name is a scalar
+  /* p->name is a scalar */
   /* specs/discord/gateway.json:197:19
      '{ "name":"type","type":{"base":"int"}}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/gateway.json:198:19
      '{ "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""}' */
   if (d->url)
     free(d->url);
   /* specs/discord/gateway.json:199:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 }' */
-  // p->created_at is a scalar
+  /* p->created_at is a scalar */
   /* specs/discord/gateway.json:200:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
-  // p->application_id is a scalar
+  /* p->application_id is a scalar */
   /* specs/discord/gateway.json:201:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (d->details)
@@ -1423,7 +1358,7 @@ void discord_activity_cleanup(struct discord_activity *d) {
     free(d->state);
   /* specs/discord/gateway.json:203:19
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
-  // p->instance is a scalar
+  /* p->instance is a scalar */
 }
 
 void discord_activity_init(struct discord_activity *p) {
@@ -1535,7 +1470,7 @@ size_t discord_activity_types_list_to_json(char *str, size_t len, enum discord_a
 
 void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_session_start_limit *p = *pp;
@@ -1550,12 +1485,7 @@ void discord_session_start_limit_from_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
                 "(reset_after):d,"
-  /* specs/discord/gateway.json:230:19
-     '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-                "(max_concurrency):d,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(max_concurrency):d,",
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
                 &p->total,
@@ -1567,42 +1497,34 @@ void discord_session_start_limit_from_json(char *json, size_t len, struct discor
                 &p->reset_after,
   /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-                &p->max_concurrency,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->max_concurrency);
   ret = r;
-}
-
-static void discord_session_start_limit_use_default_inject_settings(struct discord_session_start_limit *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/gateway.json:227:19
-     '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
-  if (p->total != 0)
-    p->__M.arg_switches[0] = &p->total;
-
-  /* specs/discord/gateway.json:228:19
-     '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
-  if (p->remaining != 0)
-    p->__M.arg_switches[1] = &p->remaining;
-
-  /* specs/discord/gateway.json:229:19
-     '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
-  if (p->reset_after != 0)
-    p->__M.arg_switches[2] = &p->reset_after;
-
-  /* specs/discord/gateway.json:230:19
-     '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-  if (p->max_concurrency != 0)
-    p->__M.arg_switches[3] = &p->max_concurrency;
-
 }
 
 size_t discord_session_start_limit_to_json(char *json, size_t len, struct discord_session_start_limit *p)
 {
   size_t r;
-  discord_session_start_limit_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/discord/gateway.json:227:19
+     '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
+  if (p->total != 0)
+    arg_switches[0] = &p->total;
+
+  /* specs/discord/gateway.json:228:19
+     '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
+  if (p->remaining != 0)
+    arg_switches[1] = &p->remaining;
+
+  /* specs/discord/gateway.json:229:19
+     '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
+  if (p->reset_after != 0)
+    arg_switches[2] = &p->reset_after;
+
+  /* specs/discord/gateway.json:230:19
+     '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
+  if (p->max_concurrency != 0)
+    arg_switches[3] = &p->max_concurrency;
+
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
@@ -1629,7 +1551,7 @@ size_t discord_session_start_limit_to_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
                 &p->max_concurrency,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1669,16 +1591,16 @@ size_t discord_session_start_limit_list_to_json_v(char *str, size_t len, void *p
 void discord_session_start_limit_cleanup(struct discord_session_start_limit *d) {
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
-  // p->total is a scalar
+  /* p->total is a scalar */
   /* specs/discord/gateway.json:228:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
-  // p->remaining is a scalar
+  /* p->remaining is a scalar */
   /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
-  // p->reset_after is a scalar
+  /* p->reset_after is a scalar */
   /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-  // p->max_concurrency is a scalar
+  /* p->max_concurrency is a scalar */
 }
 
 void discord_session_start_limit_init(struct discord_session_start_limit *p) {

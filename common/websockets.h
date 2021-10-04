@@ -7,7 +7,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif // __cplusplus
+#endif /* __cplusplus */
 
 #include "types.h" /* ORCAcode */
 #include "logconf.h" /* logging facilities */
@@ -27,8 +27,8 @@ struct websockets;
  * @brief Stores info on the latest transfer performed via websockets
  */
 struct ws_info {
-  struct loginfo loginfo; ///< logging info
-  ORCAcode code; ///< how the transfer went @todo implement
+  struct loginfo loginfo; /**< logging info */
+  ORCAcode code; /**< how the transfer went @todo implement */
 };
 
 /**
@@ -37,10 +37,10 @@ struct ws_info {
  * @see ws_get_status()
  */
 enum ws_status {
-  WS_DISCONNECTED = 0, ///< client disconnected from ws
-  WS_CONNECTED,        ///< client connected to ws
-  WS_DISCONNECTING,    ///< client in the process of disconnecting to ws
-  WS_CONNECTING,       ///< client in the process of connecting from ws
+  WS_DISCONNECTED = 0, /**< client disconnected from ws */
+  WS_CONNECTED,        /**< client connected to ws */
+  WS_DISCONNECTING,    /**< client in the process of disconnecting to ws */
+  WS_CONNECTING,       /**< client in the process of connecting from ws */
 };
 
 /** 
@@ -278,6 +278,6 @@ bool ws_same_thread(struct websockets *ws);
 
 #ifdef __cplusplus
 }
-#endif // __cplusplus
+#endif /* __cplusplus */
 
-#endif // WEBSOCKETS_H
+#endif /* WEBSOCKETS_H */

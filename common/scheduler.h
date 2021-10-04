@@ -5,7 +5,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif // __cplusplus
+#endif /* __cplusplus */
 
 struct task_s* task_init();
 void task_cleanup(struct task_s *task);
@@ -21,6 +21,6 @@ void task_stop(struct task_s *task);
 
 #ifdef __cplusplus
 }
-#endif // __cplusplus
+#endif /* __cplusplus */
 
-#endif // SCHEDULER_H
+#endif /* SCHEDULER_H */

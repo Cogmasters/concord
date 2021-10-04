@@ -226,7 +226,7 @@ void on_interaction_create(
   if (!interaction->data || !interaction->data->values)
     return;
 
-  char values[1024]={0};
+  char values[1024];
   ja_str_list_to_json(values, sizeof(values), interaction->data->values);
 
   char text[DISCORD_MAX_MESSAGE_LEN];

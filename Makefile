@@ -44,8 +44,8 @@ SLACK_SRC    := $(wildcard slack-*.c)
 SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs cflags
-LIBDISCORD_CFLAGS :=
-LIBGITHUB_CFLAG   :=
+LIBDISCORD_CFLAGS := -std=c89
+LIBGITHUB_CFLAGS  :=# -std=c89
 LIBREDDIT_CFLAGS  :=
 LIBSLACK_CFLAGS   :=
 
@@ -135,6 +135,14 @@ endef
 # generic compilation
 $(SPECSDEPS_OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+$(OBJDIR)/discord-%.o : discord-%.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBDISCORD_CFLAGS)
+$(OBJDIR)/github-%.o : github-%.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBGITHUB_CFLAGS)
+$(OBJDIR)/reddit-%.o : reddit-%.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBREDDIT_CFLAGS)
+$(OBJDIR)/slack-%.o : slack-%.c
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBSLACK_CFLAGS)
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c

@@ -5,8 +5,8 @@
  */
 
 
-// Voice State Structure
-// defined at specs/discord/voice.json:10:22
+/* Voice State Structure */
+/* defined at specs/discord/voice.json:10:22 */
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
  *
@@ -83,20 +83,6 @@ struct discord_voice_state {
      '{ "name": "supress", "type":{ "base":"bool" }}' */
   bool supress;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[12];
-    void *record_defined[12];
-    void *record_null[12];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_voice_state_cleanup_v(void *p);
 extern void discord_voice_state_cleanup(struct discord_voice_state *p);
@@ -113,8 +99,8 @@ extern void discord_voice_state_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_voice_state_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p);
 
-// Voice Region Structure
-// defined at specs/discord/voice.json:31:22
+/* Voice Region Structure */
+/* defined at specs/discord/voice.json:31:22 */
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
  *
@@ -167,20 +153,6 @@ struct discord_voice_region {
      '{ "name": "custom", "type":{ "base":"bool" }}' */
   bool custom;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[6];
-    void *record_defined[6];
-    void *record_null[6];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_voice_region_cleanup_v(void *p);
 extern void discord_voice_region_cleanup(struct discord_voice_region *p);

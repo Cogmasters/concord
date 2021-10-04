@@ -55,8 +55,8 @@ discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_buck
   pthread_mutex_lock(&bucket->lock);
   ++bucket->busy;
 
-  // wait for a while if busy requests reach threshold
-  /// @todo? add pthread_broadcast() to avoid zombie threads
+  /* wait for a while if busy requests reach threshold */
+  /** @todo? add pthread_broadcast() to avoid zombie threads */
   if (bucket->busy > bucket->remaining) {
     logconf_trace(&adapter->ratelimit->conf, 
       "[%.4s] Reach live transfers threshold (%d)\n"
@@ -77,7 +77,7 @@ discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_buck
 
   u64_unix_ms_t curr_tstamp = cee_timestamp_ms();
   int64_t delay_ms = (int64_t)(bucket->reset_tstamp - curr_tstamp);
-  if (delay_ms <= 0) { //no delay needed
+  if (delay_ms <= 0) { /*no delay needed */
     logconf_trace(&adapter->ratelimit->conf,
       "[%.4s] Skipping cooldown because current timestamp"
       " exceeds bucket reset timestamp\n\t"
@@ -89,13 +89,13 @@ discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_buck
     return; /* EARLY RETURN */
   }
 
-  if (delay_ms > bucket->reset_after_ms) //don't delay excessively
+  if (delay_ms > bucket->reset_after_ms) /*don't delay excessively */
     delay_ms = bucket->reset_after_ms;
 
   logconf_warn(&adapter->ratelimit->conf,
     "[%.4s] RATELIMITING (wait %"PRId64" ms)", bucket->hash, delay_ms);
 
-  cee_sleep_ms(delay_ms); //sleep for delay amount (if any)
+  cee_sleep_ms(delay_ms); /*sleep for delay amount (if any) */
 
   pthread_mutex_unlock(&bucket->lock);
 }
@@ -130,7 +130,7 @@ parse_ratelimits(struct discord_adapter *adapter, struct discord_bucket *bucket,
   {
     bucket->update_tstamp = info->req_tstamp;
 
-    struct sized_buffer value; // fetch header value as string
+    struct sized_buffer value; /* fetch header value as string */
     value = ua_info_respheader_field(info, "x-ratelimit-reset");
     if (value.size) bucket->reset_tstamp = 1000 * strtod(value.start, NULL);
     value = ua_info_respheader_field(info, "x-ratelimit-remaining");
@@ -169,7 +169,7 @@ match_route(struct discord_adapter *adapter, const char route[], ORCAcode code, 
   }
 
   struct discord_bucket *bucket=NULL, *iter, *tmp;
-  //attempt to match hash to client bucket hashes
+  /*attempt to match hash to client bucket hashes */
   HASH_ITER(hh, adapter->ratelimit->buckets, iter, tmp) {
     if (STRNEQ(iter->hash, hash.start, hash.size)) {
       bucket = iter;
@@ -178,7 +178,7 @@ match_route(struct discord_adapter *adapter, const char route[], ORCAcode code, 
   }
   if (!bucket) bucket = bucket_init(&hash, route);
 
-  //assign new route and update bucket ratelimit fields
+  /*assign new route and update bucket ratelimit fields */
   logconf_trace(&adapter->ratelimit->conf,
     "[%.4s] Assign new route '%s' to bucket", bucket->hash, bucket->route);
   HASH_ADD_STR(adapter->ratelimit->buckets, route, bucket);
@@ -194,6 +194,6 @@ discord_bucket_build(struct discord_adapter *adapter, struct discord_bucket *buc
    *  (will create a new bucket if it can't establish a route) */
   if (!bucket)
     match_route(adapter, route, code, info);
-  else // update the bucket rate limit values
+  else /* update the bucket rate limit values */
     parse_ratelimits(adapter, bucket, code, info);
 }

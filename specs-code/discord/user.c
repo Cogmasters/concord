@@ -143,7 +143,7 @@ size_t discord_user_premium_types_list_to_json(char *str, size_t len, enum disco
 
 void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_user *p = *pp;
@@ -185,12 +185,7 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
   /* specs/discord/user.json:55:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
                 "(premium_type):d,"
-  /* specs/discord/user.json:56:24
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-                "(public_flags):d,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(public_flags):d,",
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 cee_strtoull, &p->id,
@@ -229,74 +224,66 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
                 &p->premium_type,
   /* specs/discord/user.json:56:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-                &p->public_flags,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->public_flags);
   ret = r;
-}
-
-static void discord_user_use_default_inject_settings(struct discord_user *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/user.json:44:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/user.json:45:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
-  p->__M.arg_switches[1] = p->username;
-
-  /* specs/discord/user.json:46:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
-  p->__M.arg_switches[2] = p->discriminator;
-
-  /* specs/discord/user.json:47:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
-  p->__M.arg_switches[3] = p->avatar;
-
-  /* specs/discord/user.json:48:24
-     '{ "name": "bot", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[4] = &p->bot;
-
-  /* specs/discord/user.json:49:24
-     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[5] = &p->System;
-
-  /* specs/discord/user.json:50:24
-     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[6] = &p->mfa_enabled;
-
-  /* specs/discord/user.json:51:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
-  p->__M.arg_switches[7] = p->locale;
-
-  /* specs/discord/user.json:52:24
-     '{ "name": "verified", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[8] = &p->verified;
-
-  /* specs/discord/user.json:53:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
-  p->__M.arg_switches[9] = p->email;
-
-  /* specs/discord/user.json:54:24
-     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-  p->__M.arg_switches[10] = &p->flags;
-
-  /* specs/discord/user.json:55:24
-     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
-  p->__M.arg_switches[11] = &p->premium_type;
-
-  /* specs/discord/user.json:56:24
-     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-  p->__M.arg_switches[12] = &p->public_flags;
-
 }
 
 size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
 {
   size_t r;
-  discord_user_use_default_inject_settings(p);
+  void *arg_switches[13]={NULL};
+  /* specs/discord/user.json:44:24
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/user.json:45:24
+     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
+  arg_switches[1] = p->username;
+
+  /* specs/discord/user.json:46:24
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
+  arg_switches[2] = p->discriminator;
+
+  /* specs/discord/user.json:47:24
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
+  arg_switches[3] = p->avatar;
+
+  /* specs/discord/user.json:48:24
+     '{ "name": "bot", "type":{ "base":"bool" }}' */
+  arg_switches[4] = &p->bot;
+
+  /* specs/discord/user.json:49:24
+     '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}' */
+  arg_switches[5] = &p->System;
+
+  /* specs/discord/user.json:50:24
+     '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
+  arg_switches[6] = &p->mfa_enabled;
+
+  /* specs/discord/user.json:51:24
+     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
+  arg_switches[7] = p->locale;
+
+  /* specs/discord/user.json:52:24
+     '{ "name": "verified", "type":{ "base":"bool" }}' */
+  arg_switches[8] = &p->verified;
+
+  /* specs/discord/user.json:53:24
+     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
+  arg_switches[9] = p->email;
+
+  /* specs/discord/user.json:54:24
+     '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
+  arg_switches[10] = &p->flags;
+
+  /* specs/discord/user.json:55:24
+     '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
+  arg_switches[11] = &p->premium_type;
+
+  /* specs/discord/user.json:56:24
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
+  arg_switches[12] = &p->public_flags;
+
   r=json_inject(json, len, 
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
@@ -377,7 +364,7 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
   /* specs/discord/user.json:56:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
                 &p->public_flags,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -417,43 +404,43 @@ size_t discord_user_list_to_json_v(char *str, size_t len, void *p){
 void discord_user_cleanup(struct discord_user *d) {
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/user.json:45:24
      '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
-  // p->username is a scalar
+  /* p->username is a scalar */
   /* specs/discord/user.json:46:24
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
-  // p->discriminator is a scalar
+  /* p->discriminator is a scalar */
   /* specs/discord/user.json:47:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
-  // p->avatar is a scalar
+  /* p->avatar is a scalar */
   /* specs/discord/user.json:48:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
-  // p->bot is a scalar
+  /* p->bot is a scalar */
   /* specs/discord/user.json:49:24
      '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}' */
-  // p->System is a scalar
+  /* p->System is a scalar */
   /* specs/discord/user.json:50:24
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
-  // p->mfa_enabled is a scalar
+  /* p->mfa_enabled is a scalar */
   /* specs/discord/user.json:51:24
      '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
-  // p->locale is a scalar
+  /* p->locale is a scalar */
   /* specs/discord/user.json:52:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
-  // p->verified is a scalar
+  /* p->verified is a scalar */
   /* specs/discord/user.json:53:24
      '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
-  // p->email is a scalar
+  /* p->email is a scalar */
   /* specs/discord/user.json:54:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-  // p->flags is a scalar
+  /* p->flags is a scalar */
   /* specs/discord/user.json:55:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
-  // p->premium_type is a scalar
+  /* p->premium_type is a scalar */
   /* specs/discord/user.json:56:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-  // p->public_flags is a scalar
+  /* p->public_flags is a scalar */
 }
 
 void discord_user_init(struct discord_user *p) {
@@ -574,7 +561,7 @@ size_t discord_visibility_types_list_to_json(char *str, size_t len, enum discord
 
 void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_connection *p = *pp;
@@ -604,12 +591,7 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
   /* specs/discord/user.json:83:24
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
                 "(show_activity):b,"
-  /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
-                "(visibility):d,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(visibility):d,",
   /* specs/discord/user.json:76:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 &p->id,
@@ -636,58 +618,50 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
                 &p->show_activity,
   /* specs/discord/user.json:84:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
-                &p->visibility,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->visibility);
   ret = r;
-}
-
-static void discord_connection_use_default_inject_settings(struct discord_connection *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/user.json:76:24
-     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
-  p->__M.arg_switches[0] = p->id;
-
-  /* specs/discord/user.json:77:24
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/discord/user.json:78:24
-     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[2] = p->type;
-
-  /* specs/discord/user.json:79:24
-     '{ "name": "revoked", "type":{ "base":"bool"}}' */
-  p->__M.arg_switches[3] = &p->revoked;
-
-  /* specs/discord/user.json:80:24
-     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
-  p->__M.arg_switches[4] = p->integrations;
-
-  /* specs/discord/user.json:81:24
-     '{ "name": "verified", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[5] = &p->verified;
-
-  /* specs/discord/user.json:82:24
-     '{ "name": "friend_sync", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[6] = &p->friend_sync;
-
-  /* specs/discord/user.json:83:24
-     '{ "name": "show_activity", "type":{ "base":"bool" }}' */
-  p->__M.arg_switches[7] = &p->show_activity;
-
-  /* specs/discord/user.json:84:24
-     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
-  p->__M.arg_switches[8] = &p->visibility;
-
 }
 
 size_t discord_connection_to_json(char *json, size_t len, struct discord_connection *p)
 {
   size_t r;
-  discord_connection_use_default_inject_settings(p);
+  void *arg_switches[9]={NULL};
+  /* specs/discord/user.json:76:24
+     '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
+  arg_switches[0] = p->id;
+
+  /* specs/discord/user.json:77:24
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[1] = p->name;
+
+  /* specs/discord/user.json:78:24
+     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[2] = p->type;
+
+  /* specs/discord/user.json:79:24
+     '{ "name": "revoked", "type":{ "base":"bool"}}' */
+  arg_switches[3] = &p->revoked;
+
+  /* specs/discord/user.json:80:24
+     '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
+  arg_switches[4] = p->integrations;
+
+  /* specs/discord/user.json:81:24
+     '{ "name": "verified", "type":{ "base":"bool" }}' */
+  arg_switches[5] = &p->verified;
+
+  /* specs/discord/user.json:82:24
+     '{ "name": "friend_sync", "type":{ "base":"bool" }}' */
+  arg_switches[6] = &p->friend_sync;
+
+  /* specs/discord/user.json:83:24
+     '{ "name": "show_activity", "type":{ "base":"bool" }}' */
+  arg_switches[7] = &p->show_activity;
+
+  /* specs/discord/user.json:84:24
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
+  arg_switches[8] = &p->visibility;
+
   r=json_inject(json, len, 
   /* specs/discord/user.json:76:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
@@ -744,7 +718,7 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
   /* specs/discord/user.json:84:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 &p->visibility,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -796,23 +770,23 @@ void discord_connection_cleanup(struct discord_connection *d) {
     free(d->type);
   /* specs/discord/user.json:79:24
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
-  // p->revoked is a scalar
+  /* p->revoked is a scalar */
   /* specs/discord/user.json:80:24
      '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
   if (d->integrations)
     discord_integration_list_free(d->integrations);
   /* specs/discord/user.json:81:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
-  // p->verified is a scalar
+  /* p->verified is a scalar */
   /* specs/discord/user.json:82:24
      '{ "name": "friend_sync", "type":{ "base":"bool" }}' */
-  // p->friend_sync is a scalar
+  /* p->friend_sync is a scalar */
   /* specs/discord/user.json:83:24
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
-  // p->show_activity is a scalar
+  /* p->show_activity is a scalar */
   /* specs/discord/user.json:84:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
-  // p->visibility is a scalar
+  /* p->visibility is a scalar */
 }
 
 void discord_connection_init(struct discord_connection *p) {

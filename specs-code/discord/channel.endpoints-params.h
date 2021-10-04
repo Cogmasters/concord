@@ -5,8 +5,8 @@
  */
 
 
-// Modify Channel
-// defined at specs/discord/channel.endpoints-params.json:9:22
+/* Modify Channel */
+/* defined at specs/discord/channel.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -97,20 +97,6 @@ struct discord_modify_channel_params {
      '{ "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }' */
   bool locked;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[16];
-    void *record_defined[16];
-    void *record_null[16];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_modify_channel_params_cleanup_v(void *p);
 extern void discord_modify_channel_params_cleanup(struct discord_modify_channel_params *p);
@@ -127,8 +113,8 @@ extern void discord_modify_channel_params_list_from_json(char *str, size_t len, 
 extern size_t discord_modify_channel_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_channel_params_list_to_json(char *str, size_t len, struct discord_modify_channel_params **p);
 
-// Create Message
-// defined at specs/discord/channel.endpoints-params.json:33:22
+/* Create Message */
+/* defined at specs/discord/channel.endpoints-params.json:33:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -157,58 +143,44 @@ extern size_t discord_modify_channel_params_list_to_json(char *str, size_t len, 
 struct discord_create_message_params {
   /* specs/discord/channel.endpoints-params.json:36:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
-  char *content; ///< the message contents (up to 2000 characters)
+  char *content; /** the message contents (up to 2000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:37:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; ///< true if this is a TTS message
+  bool tts; /** true if this is a TTS message */
 
   /* specs/discord/channel.endpoints-params.json:38:20
      '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; ///< the contents of the file being sent
+  struct discord_file *file; /** the contents of the file being sent */
 
   /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< embedded rich content (up to 6000 characters)
+  struct discord_embed **embeds; /** embedded rich content (up to 6000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:40:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
-  struct discord_embed *embed; ///< embedded rich content, deprecated in favor of embeds
+  struct discord_embed *embed; /** embedded rich content, deprecated in favor of embeds */
 
   /* specs/discord/channel.endpoints-params.json:41:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params
+  char *payload_json; /** JSON encoded body of non-file params */
 
   /* specs/discord/channel.endpoints-params.json:42:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
-  struct discord_message_reference *message_reference; ///< include to make your message a reply
+  struct discord_message_reference *message_reference; /** include to make your message a reply */
 
   /* specs/discord/channel.endpoints-params.json:44:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
   /* specs/discord/channel.endpoints-params.json:45:20
      '{ "name": "sticker_ids", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"ids of up to 3 stickers in the server to send in the message", "inject_if_not":null }' */
-  ja_u64 **sticker_ids; ///< ids of up to 3 stickers in the server to send in the message
+  ja_u64 **sticker_ids; /** ids of up to 3 stickers in the server to send in the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[10];
-    void *record_defined[10];
-    void *record_null[10];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_create_message_params_cleanup_v(void *p);
 extern void discord_create_message_params_cleanup(struct discord_create_message_params *p);
@@ -225,8 +197,8 @@ extern void discord_create_message_params_list_from_json(char *str, size_t len, 
 extern size_t discord_create_message_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_message_params_list_to_json(char *str, size_t len, struct discord_create_message_params **p);
 
-// Get Channel Messages
-// defined at specs/discord/channel.endpoints-params.json:51:22
+/* Get Channel Messages */
+/* defined at specs/discord/channel.endpoints-params.json:51:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -255,34 +227,20 @@ extern size_t discord_create_message_params_list_to_json(char *str, size_t len, 
 struct discord_get_channel_messages_params {
   /* specs/discord/channel.endpoints-params.json:54:20
      '{ "name": "around", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages around this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t around; ///< get messages around this message ID
+  u64_snowflake_t around; /** get messages around this message ID */
 
   /* specs/discord/channel.endpoints-params.json:55:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages before this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t before; ///< get messages before this message ID
+  u64_snowflake_t before; /** get messages before this message ID */
 
   /* specs/discord/channel.endpoints-params.json:56:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages after this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t after; ///< get messages after this message ID
+  u64_snowflake_t after; /** get messages after this message ID */
 
   /* specs/discord/channel.endpoints-params.json:57:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
-  int limit; ///< max number of messages to return (1-100)
+  int limit; /** max number of messages to return (1-100) */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_get_channel_messages_params_cleanup_v(void *p);
 extern void discord_get_channel_messages_params_cleanup(struct discord_get_channel_messages_params *p);
@@ -299,8 +257,8 @@ extern void discord_get_channel_messages_params_list_from_json(char *str, size_t
 extern size_t discord_get_channel_messages_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_get_channel_messages_params_list_to_json(char *str, size_t len, struct discord_get_channel_messages_params **p);
 
-// Get Reactions
-// defined at specs/discord/channel.endpoints-params.json:63:22
+/* Get Reactions */
+/* defined at specs/discord/channel.endpoints-params.json:63:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -335,20 +293,6 @@ struct discord_get_reactions_params {
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
   int limit;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_get_reactions_params_cleanup_v(void *p);
 extern void discord_get_reactions_params_cleanup(struct discord_get_reactions_params *p);
@@ -365,8 +309,8 @@ extern void discord_get_reactions_params_list_from_json(char *str, size_t len, s
 extern size_t discord_get_reactions_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, struct discord_get_reactions_params **p);
 
-// Edit Channel Permissions
-// defined at specs/discord/channel.endpoints-params.json:73:22
+/* Edit Channel Permissions */
+/* defined at specs/discord/channel.endpoints-params.json:73:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -395,30 +339,16 @@ extern size_t discord_get_reactions_params_list_to_json(char *str, size_t len, s
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags allow; ///< permission bit set
+  enum discord_bitwise_permission_flags allow; /** permission bit set */
 
   /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags deny; ///< permission bit set
+  enum discord_bitwise_permission_flags deny; /** permission bit set */
 
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_edit_channel_permissions_params_cleanup_v(void *p);
 extern void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *p);
@@ -435,8 +365,8 @@ extern void discord_edit_channel_permissions_params_list_from_json(char *str, si
 extern size_t discord_edit_channel_permissions_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_edit_channel_permissions_params_list_to_json(char *str, size_t len, struct discord_edit_channel_permissions_params **p);
 
-// Edit Message
-// defined at specs/discord/channel.endpoints-params.json:84:22
+/* Edit Message */
+/* defined at specs/discord/channel.endpoints-params.json:84:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -465,54 +395,40 @@ extern size_t discord_edit_channel_permissions_params_list_to_json(char *str, si
 struct discord_edit_message_params {
   /* specs/discord/channel.endpoints-params.json:87:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
-  char *content; ///< the message contents (up to 2000 characters)
+  char *content; /** the message contents (up to 2000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:88:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< embedded rich content (up to 6000 characters)
+  struct discord_embed **embeds; /** embedded rich content (up to 6000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:89:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
-  struct discord_embed *embed; ///< embedded rich content, deprecated in favor of embeds
+  struct discord_embed *embed; /** embedded rich content, deprecated in favor of embeds */
 
   /* specs/discord/channel.endpoints-params.json:90:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
-  enum discord_message_flags flags; ///< edit the flags of a message
+  enum discord_message_flags flags; /** edit the flags of a message */
 
   /* specs/discord/channel.endpoints-params.json:91:20
      '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; ///< the contents of the file being sent
+  struct discord_file *file; /** the contents of the file being sent */
 
   /* specs/discord/channel.endpoints-params.json:92:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params
+  char *payload_json; /** JSON encoded body of non-file params */
 
   /* specs/discord/channel.endpoints-params.json:93:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/channel.endpoints-params.json:94:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; ///< attached files to keep
+  struct discord_attachment **attachments; /** attached files to keep */
 
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_edit_message_params_cleanup_v(void *p);
 extern void discord_edit_message_params_cleanup(struct discord_edit_message_params *p);
@@ -529,8 +445,8 @@ extern void discord_edit_message_params_list_from_json(char *str, size_t len, st
 extern size_t discord_edit_message_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_edit_message_params_list_to_json(char *str, size_t len, struct discord_edit_message_params **p);
 
-// Follow News Channel
-// defined at specs/discord/channel.endpoints-params.json:101:22
+/* Follow News Channel */
+/* defined at specs/discord/channel.endpoints-params.json:101:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -561,20 +477,6 @@ struct discord_follow_news_channel_params {
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   u64_snowflake_t webhook_channel_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[1];
-    void *record_defined[1];
-    void *record_null[1];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_follow_news_channel_params_cleanup_v(void *p);
 extern void discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *p);
@@ -591,8 +493,8 @@ extern void discord_follow_news_channel_params_list_from_json(char *str, size_t 
 extern size_t discord_follow_news_channel_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_follow_news_channel_params_list_to_json(char *str, size_t len, struct discord_follow_news_channel_params **p);
 
-// Create Channel Invite
-// defined at specs/discord/channel.endpoints-params.json:110:22
+/* Create Channel Invite */
+/* defined at specs/discord/channel.endpoints-params.json:110:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -647,20 +549,6 @@ struct discord_create_channel_invite_params {
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_application_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_create_channel_invite_params_cleanup_v(void *p);
 extern void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *p);
@@ -677,8 +565,8 @@ extern void discord_create_channel_invite_params_list_from_json(char *str, size_
 extern size_t discord_create_channel_invite_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_channel_invite_params_list_to_json(char *str, size_t len, struct discord_create_channel_invite_params **p);
 
-// Group DM Add Recipient
-// defined at specs/discord/channel.endpoints-params.json:125:22
+/* Group DM Add Recipient */
+/* defined at specs/discord/channel.endpoints-params.json:125:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -713,20 +601,6 @@ struct discord_group_dm_add_recipient_params {
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_group_dm_add_recipient_params_cleanup_v(void *p);
 extern void discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *p);
@@ -743,8 +617,8 @@ extern void discord_group_dm_add_recipient_params_list_from_json(char *str, size
 extern size_t discord_group_dm_add_recipient_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_group_dm_add_recipient_params_list_to_json(char *str, size_t len, struct discord_group_dm_add_recipient_params **p);
 
-// Start Thread with Message
-// defined at specs/discord/channel.endpoints-params.json:135:22
+/* Start Thread with Message */
+/* defined at specs/discord/channel.endpoints-params.json:135:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -779,20 +653,6 @@ struct discord_start_thread_with_message_params {
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_start_thread_with_message_params_cleanup_v(void *p);
 extern void discord_start_thread_with_message_params_cleanup(struct discord_start_thread_with_message_params *p);
@@ -809,8 +669,8 @@ extern void discord_start_thread_with_message_params_list_from_json(char *str, s
 extern size_t discord_start_thread_with_message_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_start_thread_with_message_params_list_to_json(char *str, size_t len, struct discord_start_thread_with_message_params **p);
 
-// Start Thread without Message
-// defined at specs/discord/channel.endpoints-params.json:145:22
+/* Start Thread without Message */
+/* defined at specs/discord/channel.endpoints-params.json:145:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -849,20 +709,6 @@ struct discord_start_thread_without_message_params {
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   enum discord_channel_types type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_start_thread_without_message_params_cleanup_v(void *p);
 extern void discord_start_thread_without_message_params_cleanup(struct discord_start_thread_without_message_params *p);
@@ -879,8 +725,8 @@ extern void discord_start_thread_without_message_params_list_from_json(char *str
 extern size_t discord_start_thread_without_message_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_start_thread_without_message_params_list_to_json(char *str, size_t len, struct discord_start_thread_without_message_params **p);
 
-// List Active Threads
-// defined at specs/discord/channel.endpoints-params.json:156:22
+/* List Active Threads */
+/* defined at specs/discord/channel.endpoints-params.json:156:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -919,20 +765,6 @@ struct discord_thread_response_body {
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   bool has_more;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_thread_response_body_cleanup_v(void *p);
 extern void discord_thread_response_body_cleanup(struct discord_thread_response_body *p);

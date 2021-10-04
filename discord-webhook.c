@@ -294,9 +294,9 @@ discord_execute_webhook(
     .ok_obj = &p_webhook
   };
 
-  if (!params->file) // content-type is application/json
+  if (!params->file) /* content-type is application/json */
   {
-    char payload[16384]; ///< @todo dynamic buffer
+    char payload[16384]; /**< @todo dynamic buffer */
     ret = discord_execute_webhook_params_to_json(payload, sizeof(payload), params);
 
     return discord_adapter_run(
@@ -308,7 +308,7 @@ discord_execute_webhook(
              webhook_id, webhook_token, *query ? "?" : "", query);
   }
 
-  // content-type is multipart/form-data
+  /* content-type is multipart/form-data */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
   ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
 
@@ -321,7 +321,7 @@ discord_execute_webhook(
            "/webhooks/%"PRIu64"/%s%s%s", 
            webhook_id, webhook_token, *query ? "?" : "", query);
 
-  //set back to default
+  /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
   ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 
@@ -396,9 +396,9 @@ discord_edit_webhook_message(
     .ok_obj = &p_message
   };
 
-  if (!params->file) // content-type is application/json
+  if (!params->file) /* content-type is application/json */
   {
-    char payload[16384]; ///< @todo dynamic buffer
+    char payload[16384]; /**< @todo dynamic buffer */
     size_t ret = discord_edit_webhook_message_params_to_json(payload, sizeof(payload), params);
 
     return discord_adapter_run(
@@ -410,7 +410,7 @@ discord_edit_webhook_message(
              webhook_id, webhook_token, message_id);
   }
 
-  // content-type is multipart/form-data
+  /* content-type is multipart/form-data */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
   ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
 
@@ -423,7 +423,7 @@ discord_edit_webhook_message(
            "/webhooks/%"PRIu64"/%s/messages/%"PRIu64, 
            webhook_id, webhook_token, message_id);
 
-  //set back to default
+  /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
   ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 

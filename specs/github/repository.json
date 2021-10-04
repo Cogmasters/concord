@@ -1,0 +1,16 @@
+{
+    "title":"Topics Object",
+    "namespace": ["github"],
+    "comment": "https://docs.github.com/en/rest/reference/repos#get-all-repository-topics",
+    "defs":
+    [
+        {
+            "title": "Topic Structure",
+            "struct": "topic",
+            "fields":
+            [
+                { "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}
+            ]
+        }
+    ]
+}

@@ -66,7 +66,7 @@ size_t discord_invite_target_user_types_list_to_json(char *str, size_t len, enum
 
 void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_invite *p = *pp;
@@ -93,12 +93,7 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp
   /* specs/discord/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
                 "(approximate_presence_count):d,"
-  /* specs/discord/invite.json:29:20
-     '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
-                "(approximate_member_count):d,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(approximate_member_count):d,",
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
                 &p->code,
@@ -122,54 +117,46 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp
                 &p->approximate_presence_count,
   /* specs/discord/invite.json:29:20
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
-                &p->approximate_member_count,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->approximate_member_count);
   ret = r;
-}
-
-static void discord_invite_use_default_inject_settings(struct discord_invite *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/invite.json:22:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
-  p->__M.arg_switches[0] = p->code;
-
-  /* specs/discord/invite.json:23:20
-     '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
-  p->__M.arg_switches[1] = p->guild;
-
-  /* specs/discord/invite.json:24:20
-     '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
-  p->__M.arg_switches[2] = p->channel;
-
-  /* specs/discord/invite.json:25:20
-     '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
-  p->__M.arg_switches[3] = p->inviter;
-
-  /* specs/discord/invite.json:26:20
-     '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  p->__M.arg_switches[4] = p->target_user;
-
-  /* specs/discord/invite.json:27:20
-     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
-  p->__M.arg_switches[5] = &p->target_user_type;
-
-  /* specs/discord/invite.json:28:20
-     '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
-  p->__M.arg_switches[6] = &p->approximate_presence_count;
-
-  /* specs/discord/invite.json:29:20
-     '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
-  p->__M.arg_switches[7] = &p->approximate_member_count;
-
 }
 
 size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p)
 {
   size_t r;
-  discord_invite_use_default_inject_settings(p);
+  void *arg_switches[8]={NULL};
+  /* specs/discord/invite.json:22:20
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
+  arg_switches[0] = p->code;
+
+  /* specs/discord/invite.json:23:20
+     '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
+  arg_switches[1] = p->guild;
+
+  /* specs/discord/invite.json:24:20
+     '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
+  arg_switches[2] = p->channel;
+
+  /* specs/discord/invite.json:25:20
+     '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
+  arg_switches[3] = p->inviter;
+
+  /* specs/discord/invite.json:26:20
+     '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
+  arg_switches[4] = p->target_user;
+
+  /* specs/discord/invite.json:27:20
+     '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
+  arg_switches[5] = &p->target_user_type;
+
+  /* specs/discord/invite.json:28:20
+     '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
+  arg_switches[6] = &p->approximate_presence_count;
+
+  /* specs/discord/invite.json:29:20
+     '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
+  arg_switches[7] = &p->approximate_member_count;
+
   r=json_inject(json, len, 
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
@@ -220,7 +207,7 @@ size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p)
   /* specs/discord/invite.json:29:20
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
                 &p->approximate_member_count,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -288,13 +275,13 @@ void discord_invite_cleanup(struct discord_invite *d) {
   }
   /* specs/discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
-  // p->target_user_type is a scalar
+  /* p->target_user_type is a scalar */
   /* specs/discord/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
-  // p->approximate_presence_count is a scalar
+  /* p->approximate_presence_count is a scalar */
   /* specs/discord/invite.json:29:20
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
-  // p->approximate_member_count is a scalar
+  /* p->approximate_member_count is a scalar */
 }
 
 void discord_invite_init(struct discord_invite *p) {
@@ -347,7 +334,7 @@ size_t discord_invite_list_to_json(char *str, size_t len, struct discord_invite 
 
 void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_invite_metadata *p = *pp;
@@ -365,12 +352,7 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
   /* specs/discord/invite.json:42:20
      '{ "name": "temporary", "type":{ "base":"int" }}' */
                 "(temporary):d,"
-  /* specs/discord/invite.json:43:20
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
-                "(created_at):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(created_at):F,",
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */
                 &p->user,
@@ -385,42 +367,34 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
                 &p->temporary,
   /* specs/discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
-                cee_iso8601_to_unix_ms, &p->created_at,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                cee_iso8601_to_unix_ms, &p->created_at);
   ret = r;
-}
-
-static void discord_invite_metadata_use_default_inject_settings(struct discord_invite_metadata *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/invite.json:39:20
-     '{ "name": "user", "type":{ "base":"int" }}' */
-  p->__M.arg_switches[0] = &p->user;
-
-  /* specs/discord/invite.json:40:20
-     '{ "name": "max_uses", "type":{ "base":"int" }}' */
-  p->__M.arg_switches[1] = &p->max_uses;
-
-  /* specs/discord/invite.json:41:20
-     '{ "name": "max_age", "type":{ "base":"int" }}' */
-  p->__M.arg_switches[2] = &p->max_age;
-
-  /* specs/discord/invite.json:42:20
-     '{ "name": "temporary", "type":{ "base":"int" }}' */
-  p->__M.arg_switches[3] = &p->temporary;
-
-  /* specs/discord/invite.json:43:20
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
-  p->__M.arg_switches[4] = &p->created_at;
-
 }
 
 size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_invite_metadata *p)
 {
   size_t r;
-  discord_invite_metadata_use_default_inject_settings(p);
+  void *arg_switches[5]={NULL};
+  /* specs/discord/invite.json:39:20
+     '{ "name": "user", "type":{ "base":"int" }}' */
+  arg_switches[0] = &p->user;
+
+  /* specs/discord/invite.json:40:20
+     '{ "name": "max_uses", "type":{ "base":"int" }}' */
+  arg_switches[1] = &p->max_uses;
+
+  /* specs/discord/invite.json:41:20
+     '{ "name": "max_age", "type":{ "base":"int" }}' */
+  arg_switches[2] = &p->max_age;
+
+  /* specs/discord/invite.json:42:20
+     '{ "name": "temporary", "type":{ "base":"int" }}' */
+  arg_switches[3] = &p->temporary;
+
+  /* specs/discord/invite.json:43:20
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
+  arg_switches[4] = &p->created_at;
+
   r=json_inject(json, len, 
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */
@@ -453,7 +427,7 @@ size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_in
   /* specs/discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
                 cee_unix_ms_to_iso8601, &p->created_at,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -493,19 +467,19 @@ size_t discord_invite_metadata_list_to_json_v(char *str, size_t len, void *p){
 void discord_invite_metadata_cleanup(struct discord_invite_metadata *d) {
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */
-  // p->user is a scalar
+  /* p->user is a scalar */
   /* specs/discord/invite.json:40:20
      '{ "name": "max_uses", "type":{ "base":"int" }}' */
-  // p->max_uses is a scalar
+  /* p->max_uses is a scalar */
   /* specs/discord/invite.json:41:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
-  // p->max_age is a scalar
+  /* p->max_age is a scalar */
   /* specs/discord/invite.json:42:20
      '{ "name": "temporary", "type":{ "base":"int" }}' */
-  // p->temporary is a scalar
+  /* p->temporary is a scalar */
   /* specs/discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
-  // p->created_at is a scalar
+  /* p->created_at is a scalar */
 }
 
 void discord_invite_metadata_init(struct discord_invite_metadata *p) {

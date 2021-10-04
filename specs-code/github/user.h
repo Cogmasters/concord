@@ -5,8 +5,8 @@
  */
 
 
-// User Structure
-// defined at specs/github/user.json:9:33
+/* User Structure */
+/* defined at specs/github/user.json:9:33 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -117,20 +117,6 @@ struct github_user {
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
   char *updated_at;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[21];
-    void *record_defined[21];
-    void *record_null[21];
-  } __M; // metadata
-/// @endcond
 };
 extern void github_user_cleanup_v(void *p);
 extern void github_user_cleanup(struct github_user *p);

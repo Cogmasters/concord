@@ -15,7 +15,7 @@
 
 void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_access_token_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct reddit_access_token_params *p = *pp;
@@ -33,12 +33,7 @@ void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_
   /* specs/reddit/oauth2.json:15:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"}' */
                 "(code):?s,"
-  /* specs/reddit/oauth2.json:16:20
-     '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
-                "(redirect_uri):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(redirect_uri):?s,",
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
                 &p->grant_type,
@@ -53,42 +48,34 @@ void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_
                 &p->code,
   /* specs/reddit/oauth2.json:16:20
      '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
-                &p->redirect_uri,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->redirect_uri);
   ret = r;
-}
-
-static void reddit_access_token_params_use_default_inject_settings(struct reddit_access_token_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/reddit/oauth2.json:12:20
-     '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
-  p->__M.arg_switches[0] = p->grant_type;
-
-  /* specs/reddit/oauth2.json:13:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"username for script app"}' */
-  p->__M.arg_switches[1] = p->username;
-
-  /* specs/reddit/oauth2.json:14:20
-     '{ "name": "password", "type":{ "base":"char", "dec":"*" }, "comment":"password for script app"}' */
-  p->__M.arg_switches[2] = p->password;
-
-  /* specs/reddit/oauth2.json:15:20
-     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"}' */
-  p->__M.arg_switches[3] = p->code;
-
-  /* specs/reddit/oauth2.json:16:20
-     '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
-  p->__M.arg_switches[4] = p->redirect_uri;
-
 }
 
 size_t reddit_access_token_params_to_json(char *json, size_t len, struct reddit_access_token_params *p)
 {
   size_t r;
-  reddit_access_token_params_use_default_inject_settings(p);
+  void *arg_switches[5]={NULL};
+  /* specs/reddit/oauth2.json:12:20
+     '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
+  arg_switches[0] = p->grant_type;
+
+  /* specs/reddit/oauth2.json:13:20
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"username for script app"}' */
+  arg_switches[1] = p->username;
+
+  /* specs/reddit/oauth2.json:14:20
+     '{ "name": "password", "type":{ "base":"char", "dec":"*" }, "comment":"password for script app"}' */
+  arg_switches[2] = p->password;
+
+  /* specs/reddit/oauth2.json:15:20
+     '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"}' */
+  arg_switches[3] = p->code;
+
+  /* specs/reddit/oauth2.json:16:20
+     '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
+  arg_switches[4] = p->redirect_uri;
+
   r=json_inject(json, len, 
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
@@ -121,7 +108,7 @@ size_t reddit_access_token_params_to_json(char *json, size_t len, struct reddit_
   /* specs/reddit/oauth2.json:16:20
      '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
                 p->redirect_uri,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 

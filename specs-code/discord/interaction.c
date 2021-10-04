@@ -15,7 +15,7 @@
 
 void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_interaction *p = *pp;
@@ -48,12 +48,7 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
   /* specs/discord/interaction.json:20:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
                 "(token):?s,"
-  /* specs/discord/interaction.json:21:18
-     '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
-                "(message):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(message):F,",
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
                 cee_strtoull, &p->id,
@@ -83,69 +78,61 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
                 &p->token,
   /* specs/discord/interaction.json:21:18
      '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
-                discord_message_from_json, &p->message,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_message_from_json, &p->message);
   ret = r;
-}
-
-static void discord_interaction_use_default_inject_settings(struct discord_interaction *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/interaction.json:12:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/interaction.json:13:18
-     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-  p->__M.arg_switches[1] = &p->application_id;
-
-  /* specs/discord/interaction.json:14:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  p->__M.arg_switches[2] = &p->type;
-
-  /* specs/discord/interaction.json:15:18
-     '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
-  if (p->data != NULL)
-    p->__M.arg_switches[3] = p->data;
-
-  /* specs/discord/interaction.json:16:18
-     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-  if (p->guild_id != 0)
-    p->__M.arg_switches[4] = &p->guild_id;
-
-  /* specs/discord/interaction.json:17:18
-     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-  if (p->channel_id != 0)
-    p->__M.arg_switches[5] = &p->channel_id;
-
-  /* specs/discord/interaction.json:18:18
-     '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
-  if (p->member != NULL)
-    p->__M.arg_switches[6] = p->member;
-
-  /* specs/discord/interaction.json:19:18
-     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
-  if (p->user != NULL)
-    p->__M.arg_switches[7] = p->user;
-
-  /* specs/discord/interaction.json:20:18
-     '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
-  if (p->token != NULL)
-    p->__M.arg_switches[8] = p->token;
-
-  /* specs/discord/interaction.json:21:18
-     '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
-  if (p->message != NULL)
-    p->__M.arg_switches[9] = p->message;
-
 }
 
 size_t discord_interaction_to_json(char *json, size_t len, struct discord_interaction *p)
 {
   size_t r;
-  discord_interaction_use_default_inject_settings(p);
+  void *arg_switches[10]={NULL};
+  /* specs/discord/interaction.json:12:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/interaction.json:13:18
+     '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
+  arg_switches[1] = &p->application_id;
+
+  /* specs/discord/interaction.json:14:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
+  arg_switches[2] = &p->type;
+
+  /* specs/discord/interaction.json:15:18
+     '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
+  if (p->data != NULL)
+    arg_switches[3] = p->data;
+
+  /* specs/discord/interaction.json:16:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
+  if (p->guild_id != 0)
+    arg_switches[4] = &p->guild_id;
+
+  /* specs/discord/interaction.json:17:18
+     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
+  if (p->channel_id != 0)
+    arg_switches[5] = &p->channel_id;
+
+  /* specs/discord/interaction.json:18:18
+     '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
+  if (p->member != NULL)
+    arg_switches[6] = p->member;
+
+  /* specs/discord/interaction.json:19:18
+     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
+  if (p->user != NULL)
+    arg_switches[7] = p->user;
+
+  /* specs/discord/interaction.json:20:18
+     '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
+  if (p->token != NULL)
+    arg_switches[8] = p->token;
+
+  /* specs/discord/interaction.json:21:18
+     '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
+  if (p->message != NULL)
+    arg_switches[9] = p->message;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
@@ -208,7 +195,7 @@ size_t discord_interaction_to_json(char *json, size_t len, struct discord_intera
   /* specs/discord/interaction.json:21:18
      '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
                 discord_message_to_json, p->message,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -248,13 +235,13 @@ size_t discord_interaction_list_to_json_v(char *str, size_t len, void *p){
 void discord_interaction_cleanup(struct discord_interaction *d) {
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/interaction.json:13:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-  // p->application_id is a scalar
+  /* p->application_id is a scalar */
   /* specs/discord/interaction.json:14:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/interaction.json:15:18
      '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
   if (d->data) {
@@ -263,10 +250,10 @@ void discord_interaction_cleanup(struct discord_interaction *d) {
   }
   /* specs/discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-  // p->guild_id is a scalar
+  /* p->guild_id is a scalar */
   /* specs/discord/interaction.json:17:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-  // p->channel_id is a scalar
+  /* p->channel_id is a scalar */
   /* specs/discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
   if (d->member) {
@@ -402,7 +389,7 @@ size_t discord_interaction_types_list_to_json(char *str, size_t len, enum discor
 
 void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_interaction_data *p = *pp;
@@ -429,12 +416,7 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
   /* specs/discord/interaction.json:49:18
      '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
                 "(values):F,"
-  /* specs/discord/interaction.json:50:18
-     '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-                "(target_id):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(target_id):F,",
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
                 cee_strtoull, &p->id,
@@ -458,59 +440,51 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
                 ja_str_list_from_json, &p->values,
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-                cee_strtoull, &p->target_id,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                cee_strtoull, &p->target_id);
   ret = r;
-}
-
-static void discord_interaction_data_use_default_inject_settings(struct discord_interaction_data *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/interaction.json:43:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/interaction.json:44:18
-     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/discord/interaction.json:45:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "comment":"the type of the invoked command"}' */
-  p->__M.arg_switches[2] = &p->type;
-
-  /* specs/discord/interaction.json:46:18
-     '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
-  if (p->resolved != NULL)
-    p->__M.arg_switches[3] = p->resolved;
-
-  /* specs/discord/interaction.json:47:18
-     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command, max 25", "inject_if_not":null}' */
-  if (p->options != NULL)
-    p->__M.arg_switches[4] = p->options;
-
-  /* specs/discord/interaction.json:48:18
-     '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
-  if (p->custom_id != NULL)
-    p->__M.arg_switches[5] = p->custom_id;
-
-  /* specs/discord/interaction.json:49:18
-     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-  if (p->values != NULL)
-    p->__M.arg_switches[6] = p->values;
-
-  /* specs/discord/interaction.json:50:18
-     '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-  if (p->target_id != 0)
-    p->__M.arg_switches[7] = &p->target_id;
-
 }
 
 size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_interaction_data *p)
 {
   size_t r;
-  discord_interaction_data_use_default_inject_settings(p);
+  void *arg_switches[8]={NULL};
+  /* specs/discord/interaction.json:43:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/interaction.json:44:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
+  arg_switches[1] = p->name;
+
+  /* specs/discord/interaction.json:45:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "comment":"the type of the invoked command"}' */
+  arg_switches[2] = &p->type;
+
+  /* specs/discord/interaction.json:46:18
+     '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
+  if (p->resolved != NULL)
+    arg_switches[3] = p->resolved;
+
+  /* specs/discord/interaction.json:47:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command, max 25", "inject_if_not":null}' */
+  if (p->options != NULL)
+    arg_switches[4] = p->options;
+
+  /* specs/discord/interaction.json:48:18
+     '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
+  if (p->custom_id != NULL)
+    arg_switches[5] = p->custom_id;
+
+  /* specs/discord/interaction.json:49:18
+     '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
+  if (p->values != NULL)
+    arg_switches[6] = p->values;
+
+  /* specs/discord/interaction.json:50:18
+     '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
+  if (p->target_id != 0)
+    arg_switches[7] = &p->target_id;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
@@ -561,7 +535,7 @@ size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_i
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
                 cee_ulltostr, &p->target_id,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -601,14 +575,14 @@ size_t discord_interaction_data_list_to_json_v(char *str, size_t len, void *p){
 void discord_interaction_data_cleanup(struct discord_interaction_data *d) {
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/interaction.json:44:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
   if (d->name)
     free(d->name);
   /* specs/discord/interaction.json:45:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "comment":"the type of the invoked command"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/interaction.json:46:18
      '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
   if (d->resolved) {
@@ -629,7 +603,7 @@ void discord_interaction_data_cleanup(struct discord_interaction_data *d) {
     ja_str_list_free(d->values);
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-  // p->target_id is a scalar
+  /* p->target_id is a scalar */
 }
 
 void discord_interaction_data_init(struct discord_interaction_data *p) {
@@ -682,7 +656,7 @@ size_t discord_interaction_data_list_to_json(char *str, size_t len, struct disco
 
 void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_resolved_data *p = *pp;
@@ -700,12 +674,7 @@ void discord_resolved_data_from_json(char *json, size_t len, struct discord_reso
   /* specs/discord/interaction.json:63:18
      '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
                 "(channels):F,"
-  /* specs/discord/interaction.json:64:18
-     '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
-                "(messages):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(messages):F,",
   /* specs/discord/interaction.json:60:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
                 ja_str_list_from_json, &p->users,
@@ -720,47 +689,39 @@ void discord_resolved_data_from_json(char *json, size_t len, struct discord_reso
                 ja_str_list_from_json, &p->channels,
   /* specs/discord/interaction.json:64:18
      '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
-                ja_str_list_from_json, &p->messages,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                ja_str_list_from_json, &p->messages);
   ret = r;
-}
-
-static void discord_resolved_data_use_default_inject_settings(struct discord_resolved_data *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/interaction.json:60:18
-     '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
-  if (p->users != NULL)
-    p->__M.arg_switches[0] = p->users;
-
-  /* specs/discord/interaction.json:61:18
-     '{"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null}' */
-  if (p->members != NULL)
-    p->__M.arg_switches[1] = p->members;
-
-  /* specs/discord/interaction.json:62:18
-     '{"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null}' */
-  if (p->roles != NULL)
-    p->__M.arg_switches[2] = p->roles;
-
-  /* specs/discord/interaction.json:63:18
-     '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
-  if (p->channels != NULL)
-    p->__M.arg_switches[3] = p->channels;
-
-  /* specs/discord/interaction.json:64:18
-     '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
-  if (p->messages != NULL)
-    p->__M.arg_switches[4] = p->messages;
-
 }
 
 size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_resolved_data *p)
 {
   size_t r;
-  discord_resolved_data_use_default_inject_settings(p);
+  void *arg_switches[5]={NULL};
+  /* specs/discord/interaction.json:60:18
+     '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
+  if (p->users != NULL)
+    arg_switches[0] = p->users;
+
+  /* specs/discord/interaction.json:61:18
+     '{"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null}' */
+  if (p->members != NULL)
+    arg_switches[1] = p->members;
+
+  /* specs/discord/interaction.json:62:18
+     '{"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null}' */
+  if (p->roles != NULL)
+    arg_switches[2] = p->roles;
+
+  /* specs/discord/interaction.json:63:18
+     '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
+  if (p->channels != NULL)
+    arg_switches[3] = p->channels;
+
+  /* specs/discord/interaction.json:64:18
+     '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
+  if (p->messages != NULL)
+    arg_switches[4] = p->messages;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:60:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
@@ -793,7 +754,7 @@ size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_reso
   /* specs/discord/interaction.json:64:18
      '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
                 ja_str_list_to_json, p->messages,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -894,7 +855,7 @@ size_t discord_resolved_data_list_to_json(char *str, size_t len, struct discord_
 
 void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_message_interaction *p = *pp;
@@ -909,12 +870,7 @@ void discord_message_interaction_from_json(char *json, size_t len, struct discor
   /* specs/discord/interaction.json:76:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
                 "(name):?s,"
-  /* specs/discord/interaction.json:77:18
-     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-                "(user):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(user):F,",
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
                 cee_strtoull, &p->id,
@@ -926,38 +882,30 @@ void discord_message_interaction_from_json(char *json, size_t len, struct discor
                 &p->name,
   /* specs/discord/interaction.json:77:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-                discord_user_from_json, &p->user,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_user_from_json, &p->user);
   ret = r;
-}
-
-static void discord_message_interaction_use_default_inject_settings(struct discord_message_interaction *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/interaction.json:74:18
-     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/interaction.json:75:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  p->__M.arg_switches[1] = &p->type;
-
-  /* specs/discord/interaction.json:76:18
-     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
-  p->__M.arg_switches[2] = p->name;
-
-  /* specs/discord/interaction.json:77:18
-     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-  p->__M.arg_switches[3] = p->user;
-
 }
 
 size_t discord_message_interaction_to_json(char *json, size_t len, struct discord_message_interaction *p)
 {
   size_t r;
-  discord_message_interaction_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/discord/interaction.json:74:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/interaction.json:75:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
+  arg_switches[1] = &p->type;
+
+  /* specs/discord/interaction.json:76:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
+  arg_switches[2] = p->name;
+
+  /* specs/discord/interaction.json:77:18
+     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
+  arg_switches[3] = p->user;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
@@ -984,7 +932,7 @@ size_t discord_message_interaction_to_json(char *json, size_t len, struct discor
   /* specs/discord/interaction.json:77:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
                 discord_user_to_json, p->user,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1024,10 +972,10 @@ size_t discord_message_interaction_list_to_json_v(char *str, size_t len, void *p
 void discord_message_interaction_cleanup(struct discord_message_interaction *d) {
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/interaction.json:75:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/interaction.json:76:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
   if (d->name)
@@ -1078,7 +1026,7 @@ size_t discord_message_interaction_list_to_json(char *str, size_t len, struct di
 
 void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_interaction_response *p = *pp;
@@ -1087,42 +1035,29 @@ void discord_interaction_response_from_json(char *json, size_t len, struct disco
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
                 "(type):d,"
-  /* specs/discord/interaction.json:88:18
-     '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-                "(data):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(data):F,",
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
                 &p->type,
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-                discord_interaction_callback_data_from_json, &p->data,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_interaction_callback_data_from_json, &p->data);
   ret = r;
-}
-
-static void discord_interaction_response_use_default_inject_settings(struct discord_interaction_response *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/interaction.json:87:18
-     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
-  p->__M.arg_switches[0] = &p->type;
-
-  /* specs/discord/interaction.json:88:18
-     '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-  if (p->data != NULL)
-    p->__M.arg_switches[1] = p->data;
-
 }
 
 size_t discord_interaction_response_to_json(char *json, size_t len, struct discord_interaction_response *p)
 {
   size_t r;
-  discord_interaction_response_use_default_inject_settings(p);
+  void *arg_switches[2]={NULL};
+  /* specs/discord/interaction.json:87:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
+  arg_switches[0] = &p->type;
+
+  /* specs/discord/interaction.json:88:18
+     '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
+  if (p->data != NULL)
+    arg_switches[1] = p->data;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
@@ -1137,7 +1072,7 @@ size_t discord_interaction_response_to_json(char *json, size_t len, struct disco
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
                 discord_interaction_callback_data_to_json, p->data,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1177,7 +1112,7 @@ size_t discord_interaction_response_list_to_json_v(char *str, size_t len, void *
 void discord_interaction_response_cleanup(struct discord_interaction_response *d) {
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
-  // p->type is a scalar
+  /* p->type is a scalar */
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
   if (d->data) {
@@ -1277,7 +1212,7 @@ size_t discord_interaction_callback_types_list_to_json(char *str, size_t len, en
 
 void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_interaction_callback_data *p = *pp;
@@ -1298,12 +1233,7 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 "(flags):d,"
-  /* specs/discord/interaction.json:117:18
-     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-                "(components):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(components):F,",
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
                 &p->tts,
@@ -1321,51 +1251,43 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
                 &p->flags,
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-                discord_component_list_from_json, &p->components,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_component_list_from_json, &p->components);
   ret = r;
-}
-
-static void discord_interaction_callback_data_use_default_inject_settings(struct discord_interaction_callback_data *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/interaction.json:112:18
-     '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
-  p->__M.arg_switches[0] = &p->tts;
-
-  /* specs/discord/interaction.json:113:18
-     '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
-  if (p->content != NULL)
-    p->__M.arg_switches[1] = p->content;
-
-  /* specs/discord/interaction.json:114:18
-     '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
-  if (p->embeds != NULL)
-    p->__M.arg_switches[2] = p->embeds;
-
-  /* specs/discord/interaction.json:115:18
-     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
-  if (p->allowed_mentions != NULL)
-    p->__M.arg_switches[3] = p->allowed_mentions;
-
-  /* specs/discord/interaction.json:116:18
-     '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
-  if (p->flags != 0)
-    p->__M.arg_switches[4] = &p->flags;
-
-  /* specs/discord/interaction.json:117:18
-     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-  if (p->components != NULL)
-    p->__M.arg_switches[5] = p->components;
-
 }
 
 size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct discord_interaction_callback_data *p)
 {
   size_t r;
-  discord_interaction_callback_data_use_default_inject_settings(p);
+  void *arg_switches[6]={NULL};
+  /* specs/discord/interaction.json:112:18
+     '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
+  arg_switches[0] = &p->tts;
+
+  /* specs/discord/interaction.json:113:18
+     '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
+  if (p->content != NULL)
+    arg_switches[1] = p->content;
+
+  /* specs/discord/interaction.json:114:18
+     '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
+  if (p->embeds != NULL)
+    arg_switches[2] = p->embeds;
+
+  /* specs/discord/interaction.json:115:18
+     '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
+  if (p->allowed_mentions != NULL)
+    arg_switches[3] = p->allowed_mentions;
+
+  /* specs/discord/interaction.json:116:18
+     '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
+  if (p->flags != 0)
+    arg_switches[4] = &p->flags;
+
+  /* specs/discord/interaction.json:117:18
+     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
+  if (p->components != NULL)
+    arg_switches[5] = p->components;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
@@ -1404,7 +1326,7 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
                 discord_component_list_to_json, p->components,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -1444,7 +1366,7 @@ size_t discord_interaction_callback_data_list_to_json_v(char *str, size_t len, v
 void discord_interaction_callback_data_cleanup(struct discord_interaction_callback_data *d) {
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
-  // p->tts is a scalar
+  /* p->tts is a scalar */
   /* specs/discord/interaction.json:113:18
      '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
   if (d->content)
@@ -1461,7 +1383,7 @@ void discord_interaction_callback_data_cleanup(struct discord_interaction_callba
   }
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
-  // p->flags is a scalar
+  /* p->flags is a scalar */
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
   if (d->components)

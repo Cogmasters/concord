@@ -15,7 +15,7 @@
 
 void github_user_from_json(char *json, size_t len, struct github_user **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct github_user *p = *pp;
@@ -81,12 +81,7 @@ void github_user_from_json(char *json, size_t len, struct github_user **pp)
   /* specs/github/user.json:31:28
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
                 "(created_at):?s,"
-  /* specs/github/user.json:32:28
-     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
-                "(updated_at):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(updated_at):?s,",
   /* specs/github/user.json:12:28
      '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */
                 &p->login,
@@ -149,106 +144,98 @@ void github_user_from_json(char *json, size_t len, struct github_user **pp)
                 &p->created_at,
   /* specs/github/user.json:32:28
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
-                &p->updated_at,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->updated_at);
   ret = r;
-}
-
-static void github_user_use_default_inject_settings(struct github_user *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/github/user.json:12:28
-     '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[0] = p->login;
-
-  /* specs/github/user.json:13:28
-     '{ "name": "id", "type":{ "base":"int"}}' */
-  p->__M.arg_switches[1] = &p->id;
-
-  /* specs/github/user.json:14:28
-     '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[2] = p->node_id;
-
-  /* specs/github/user.json:15:28
-     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[3] = p->avatar_url;
-
-  /* specs/github/user.json:16:28
-     '{ "name": "gravatar_id", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[4] = p->gravatar_id;
-
-  /* specs/github/user.json:17:28
-     '{ "name": "html_url", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[5] = p->html_url;
-
-  /* specs/github/user.json:18:28
-     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[6] = p->type;
-
-  /* specs/github/user.json:19:28
-     '{ "name": "site_admin", "type":{ "base":"bool"}}' */
-  p->__M.arg_switches[7] = &p->site_admin;
-
-  /* specs/github/user.json:20:28
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[8] = p->name;
-
-  /* specs/github/user.json:21:28
-     '{ "name": "company", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[9] = p->company;
-
-  /* specs/github/user.json:22:28
-     '{ "name": "blog", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[10] = p->blog;
-
-  /* specs/github/user.json:23:28
-     '{ "name": "location", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[11] = p->location;
-
-  /* specs/github/user.json:24:28
-     '{ "name": "email", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[12] = p->email;
-
-  /* specs/github/user.json:25:28
-     '{ "name": "hireable", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[13] = p->hireable;
-
-  /* specs/github/user.json:26:28
-     '{ "name": "bio", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[14] = p->bio;
-
-  /* specs/github/user.json:27:28
-     '{ "name": "public_repos", "type":{ "base":"int"}}' */
-  p->__M.arg_switches[15] = &p->public_repos;
-
-  /* specs/github/user.json:28:28
-     '{ "name": "public_gists", "type":{ "base":"int"}}' */
-  p->__M.arg_switches[16] = &p->public_gists;
-
-  /* specs/github/user.json:29:28
-     '{ "name": "followers", "type":{ "base":"int"}}' */
-  p->__M.arg_switches[17] = &p->followers;
-
-  /* specs/github/user.json:30:28
-     '{ "name": "following", "type":{ "base":"int"}}' */
-  p->__M.arg_switches[18] = &p->following;
-
-  /* specs/github/user.json:31:28
-     '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[19] = p->created_at;
-
-  /* specs/github/user.json:32:28
-     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
-  p->__M.arg_switches[20] = p->updated_at;
-
 }
 
 size_t github_user_to_json(char *json, size_t len, struct github_user *p)
 {
   size_t r;
-  github_user_use_default_inject_settings(p);
+  void *arg_switches[21]={NULL};
+  /* specs/github/user.json:12:28
+     '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[0] = p->login;
+
+  /* specs/github/user.json:13:28
+     '{ "name": "id", "type":{ "base":"int"}}' */
+  arg_switches[1] = &p->id;
+
+  /* specs/github/user.json:14:28
+     '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[2] = p->node_id;
+
+  /* specs/github/user.json:15:28
+     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[3] = p->avatar_url;
+
+  /* specs/github/user.json:16:28
+     '{ "name": "gravatar_id", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[4] = p->gravatar_id;
+
+  /* specs/github/user.json:17:28
+     '{ "name": "html_url", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[5] = p->html_url;
+
+  /* specs/github/user.json:18:28
+     '{ "name": "type", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[6] = p->type;
+
+  /* specs/github/user.json:19:28
+     '{ "name": "site_admin", "type":{ "base":"bool"}}' */
+  arg_switches[7] = &p->site_admin;
+
+  /* specs/github/user.json:20:28
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[8] = p->name;
+
+  /* specs/github/user.json:21:28
+     '{ "name": "company", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[9] = p->company;
+
+  /* specs/github/user.json:22:28
+     '{ "name": "blog", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[10] = p->blog;
+
+  /* specs/github/user.json:23:28
+     '{ "name": "location", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[11] = p->location;
+
+  /* specs/github/user.json:24:28
+     '{ "name": "email", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[12] = p->email;
+
+  /* specs/github/user.json:25:28
+     '{ "name": "hireable", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[13] = p->hireable;
+
+  /* specs/github/user.json:26:28
+     '{ "name": "bio", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[14] = p->bio;
+
+  /* specs/github/user.json:27:28
+     '{ "name": "public_repos", "type":{ "base":"int"}}' */
+  arg_switches[15] = &p->public_repos;
+
+  /* specs/github/user.json:28:28
+     '{ "name": "public_gists", "type":{ "base":"int"}}' */
+  arg_switches[16] = &p->public_gists;
+
+  /* specs/github/user.json:29:28
+     '{ "name": "followers", "type":{ "base":"int"}}' */
+  arg_switches[17] = &p->followers;
+
+  /* specs/github/user.json:30:28
+     '{ "name": "following", "type":{ "base":"int"}}' */
+  arg_switches[18] = &p->following;
+
+  /* specs/github/user.json:31:28
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[19] = p->created_at;
+
+  /* specs/github/user.json:32:28
+     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
+  arg_switches[20] = p->updated_at;
+
   r=json_inject(json, len, 
   /* specs/github/user.json:12:28
      '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */
@@ -377,7 +364,7 @@ size_t github_user_to_json(char *json, size_t len, struct github_user *p)
   /* specs/github/user.json:32:28
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
                 p->updated_at,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -421,7 +408,7 @@ void github_user_cleanup(struct github_user *d) {
     free(d->login);
   /* specs/github/user.json:13:28
      '{ "name": "id", "type":{ "base":"int"}}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/github/user.json:14:28
      '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
   if (d->node_id)
@@ -444,7 +431,7 @@ void github_user_cleanup(struct github_user *d) {
     free(d->type);
   /* specs/github/user.json:19:28
      '{ "name": "site_admin", "type":{ "base":"bool"}}' */
-  // p->site_admin is a scalar
+  /* p->site_admin is a scalar */
   /* specs/github/user.json:20:28
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   if (d->name)
@@ -475,16 +462,16 @@ void github_user_cleanup(struct github_user *d) {
     free(d->bio);
   /* specs/github/user.json:27:28
      '{ "name": "public_repos", "type":{ "base":"int"}}' */
-  // p->public_repos is a scalar
+  /* p->public_repos is a scalar */
   /* specs/github/user.json:28:28
      '{ "name": "public_gists", "type":{ "base":"int"}}' */
-  // p->public_gists is a scalar
+  /* p->public_gists is a scalar */
   /* specs/github/user.json:29:28
      '{ "name": "followers", "type":{ "base":"int"}}' */
-  // p->followers is a scalar
+  /* p->followers is a scalar */
   /* specs/github/user.json:30:28
      '{ "name": "following", "type":{ "base":"int"}}' */
-  // p->following is a scalar
+  /* p->following is a scalar */
   /* specs/github/user.json:31:28
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
   if (d->created_at)

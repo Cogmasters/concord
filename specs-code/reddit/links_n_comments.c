@@ -15,7 +15,7 @@
 
 void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct reddit_comment_params *p = *pp;
@@ -36,12 +36,7 @@ void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comme
   /* specs/reddit/links_n_comments.json:17:20
      '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
                 "(thing_id):?s,"
-  /* specs/reddit/links_n_comments.json:18:20
-     '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
-                "(uh):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(uh):?s,",
   /* specs/reddit/links_n_comments.json:13:20
      '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
                 &p->api_type,
@@ -59,46 +54,38 @@ void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comme
                 &p->thing_id,
   /* specs/reddit/links_n_comments.json:18:20
      '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
-                &p->uh,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->uh);
   ret = r;
-}
-
-static void reddit_comment_params_use_default_inject_settings(struct reddit_comment_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/reddit/links_n_comments.json:13:20
-     '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
-  p->__M.arg_switches[0] = p->api_type;
-
-  /* specs/reddit/links_n_comments.json:14:20
-     '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }' */
-  p->__M.arg_switches[1] = &p->return_rtjson;
-
-  /* specs/reddit/links_n_comments.json:15:20
-     '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }' */
-  p->__M.arg_switches[2] = p->richtext_json;
-
-  /* specs/reddit/links_n_comments.json:16:20
-     '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" }' */
-  p->__M.arg_switches[3] = p->text;
-
-  /* specs/reddit/links_n_comments.json:17:20
-     '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
-  p->__M.arg_switches[4] = p->thing_id;
-
-  /* specs/reddit/links_n_comments.json:18:20
-     '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
-  p->__M.arg_switches[5] = p->uh;
-
 }
 
 size_t reddit_comment_params_to_json(char *json, size_t len, struct reddit_comment_params *p)
 {
   size_t r;
-  reddit_comment_params_use_default_inject_settings(p);
+  void *arg_switches[6]={NULL};
+  /* specs/reddit/links_n_comments.json:13:20
+     '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
+  arg_switches[0] = p->api_type;
+
+  /* specs/reddit/links_n_comments.json:14:20
+     '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }' */
+  arg_switches[1] = &p->return_rtjson;
+
+  /* specs/reddit/links_n_comments.json:15:20
+     '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }' */
+  arg_switches[2] = p->richtext_json;
+
+  /* specs/reddit/links_n_comments.json:16:20
+     '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" }' */
+  arg_switches[3] = p->text;
+
+  /* specs/reddit/links_n_comments.json:17:20
+     '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
+  arg_switches[4] = p->thing_id;
+
+  /* specs/reddit/links_n_comments.json:18:20
+     '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
+  arg_switches[5] = p->uh;
+
   r=json_inject(json, len, 
   /* specs/reddit/links_n_comments.json:13:20
      '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
@@ -137,7 +124,7 @@ size_t reddit_comment_params_to_json(char *json, size_t len, struct reddit_comme
   /* specs/reddit/links_n_comments.json:18:20
      '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
                 p->uh,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -181,7 +168,7 @@ void reddit_comment_params_cleanup(struct reddit_comment_params *d) {
     free(d->api_type);
   /* specs/reddit/links_n_comments.json:14:20
      '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }' */
-  // p->return_rtjson is a scalar
+  /* p->return_rtjson is a scalar */
   /* specs/reddit/links_n_comments.json:15:20
      '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }' */
   if (d->richtext_json)

@@ -20,7 +20,7 @@ discord_adapter_init(struct discord_adapter *adapter, struct logconf *conf, stru
     ERR("Couldn't initialize pthread mutex");
 
   logconf_branch(&adapter->ratelimit->conf, conf, "DISCORD_RATELIMIT");
-  if (!token->size) { // no token means a webhook-only client
+  if (!token->size) { /* no token means a webhook-only client */
     logconf_branch(&adapter->conf, conf, "DISCORD_WEBHOOK");
   }
   else {
@@ -136,24 +136,24 @@ discord_adapter_run(
             break;
         case HTTP_TOO_MANY_REQUESTS: {
             char message[256]="";
-            double retry_after=-1; // seconds
+            double retry_after=-1; /* seconds */
 
             struct sized_buffer body = ua_info_get_resp_body(&adapter->err.info);
             json_extract(body.start, body.size,
                         "(message):s (retry_after):lf",
                         message, &retry_after);
 
-            if (retry_after >= 0) { // retry after attribute received
+            if (retry_after >= 0) { /* retry after attribute received */
               logconf_warn(&adapter->conf, "GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
               ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
             }
-            else { // no retry after included, we should abort
+            else { /* no retry after included, we should abort */
               ERR("(NO RETRY-AFTER INCLUDED) %s", message);
             }
            break; }
         default:
-            if (httpcode >= 500) // server related error, retry
-              ua_block_ms(adapter->ua, 5000); // wait for 5 seconds
+            if (httpcode >= 500) /* server related error, retry */
+              ua_block_ms(adapter->ua, 5000); /* wait for 5 seconds */
             break;
         }
     }

@@ -55,11 +55,14 @@ void on_ban(
 {
   // get member list
   NTL_T(struct discord_guild_member) members = NULL;
-  struct discord_list_guild_members_params params = {
-    .limit = 1000,
-    .after = 0
-  };
-  ORCAcode code = discord_list_guild_members(client, msg->guild_id, &params, &members);
+  ORCAcode code = discord_list_guild_members(
+                    client, 
+                    msg->guild_id, 
+                    &(struct discord_list_guild_members_params){
+                      .limit = 1000,
+                      .after = 0
+                    }, 
+                    &members);
   if (code != ORCA_OK || !members) return;
 
   // get username and discriminator of the to be banned user
@@ -82,7 +85,14 @@ void on_ban(
 
   char reason[128];
   snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
-  discord_create_guild_ban(client, msg->guild_id, target->id, 1, reason);
+  discord_create_guild_ban(
+    client, 
+    msg->guild_id, 
+    target->id, 
+    &(struct discord_create_guild_ban_params){
+      .delete_message_days = 1,
+      .reason = reason
+    });
 
   discord_guild_member_list_free(members);
 }
@@ -117,9 +127,7 @@ void on_unban(
   }
   if (!target) return; // member wasn't banned
 
-  char reason[128];
-  snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
-  discord_remove_guild_ban(client, msg->guild_id, target->id, reason);
+  discord_remove_guild_ban(client, msg->guild_id, target->id);
 
   discord_ban_list_free(bans);
 }

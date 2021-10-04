@@ -403,23 +403,32 @@ ORCAcode
 discord_modify_current_user_nick(
   struct discord *client,
   const u64_snowflake_t guild_id,
-  const char nick[])
+  struct discord_modify_current_user_nick_params *params,
+  struct discord_guild_member *p_member)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (IS_EMPTY_STRING(nick)) {
-    log_error("Missing 'nick'");
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params->nick) {
+    log_error("Missing 'params.nick'");
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
-  size_t ret = json_inject(payload, sizeof(payload), "(nick):s", nick);
+
+  char payload[512];
+  size_t ret = discord_modify_current_user_nick_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
            &client->adapter,
-           NULL,
+           &(struct ua_resp_handle){
+             .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL, 
+             .ok_obj = &p_member
+           },
            &(struct sized_buffer){ payload, ret },
            HTTP_PATCH,
            "/guilds/%"PRIu64"/members/@me/nick", guild_id);
@@ -568,8 +577,7 @@ discord_create_guild_ban(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
   const u64_snowflake_t user_id, 
-  int delete_message_days, 
-  const char reason[])
+  struct discord_create_guild_ban_params *params)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -579,31 +587,17 @@ discord_create_guild_ban(
     log_error("Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
-  if (delete_message_days < 0 || delete_message_days > 7) {
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (params->delete_message_days < 0 || params->delete_message_days > 7) {
     log_error("'delete_message_days' is outside the interval (0, 7)");
     return ORCA_BAD_PARAMETER;
   }
 
-  void *A[2]={0}; // pointer availability array.
-  A[0] = (void *)&delete_message_days;
-  if (!IS_EMPTY_STRING(reason)) {
-    if (!cee_str_bounds_check(reason, DISCORD_MAX_REASON_LEN)) {
-      log_error("Reason length exceeds %d characters threshold (%zu)",
-          DISCORD_MAX_REASON_LEN, strlen(reason));
-      return ORCA_BAD_PARAMETER;
-    }
-    A[1] = (void *)reason;
-  }
-
-
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
-  size_t ret = json_inject(payload, sizeof(payload),
-                        "(delete_message_days):d"
-                        "(reason):s"
-                        "@arg_switches",
-                        &delete_message_days,
-                        reason,
-                        A, sizeof(A));
+  char payload[256];
+  size_t ret = discord_create_guild_ban_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
            &client->adapter,
@@ -616,8 +610,7 @@ ORCAcode
 discord_remove_guild_ban(
   struct discord *client, 
   const u64_snowflake_t guild_id, 
-  const u64_snowflake_t user_id, 
-  const char reason[])
+  const u64_snowflake_t user_id)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -628,21 +621,10 @@ discord_remove_guild_ban(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN]="";
-  size_t ret=0;
-  if(!IS_EMPTY_STRING(reason)) {
-    if (!cee_str_bounds_check(reason, DISCORD_MAX_REASON_LEN)) {
-      log_error("Reason length exceeds %d characters threshold (%zu)",
-          DISCORD_MAX_REASON_LEN, strlen(reason));
-      return ORCA_BAD_PARAMETER;
-    }
-    ret = json_inject(payload, sizeof(payload), "(reason):s", reason);
-  }
-
   return discord_adapter_run( 
            &client->adapter,
            NULL,
-           &(struct sized_buffer){ payload, ret },
+           NULL,
            HTTP_DELETE, 
            "/guilds/%"PRIu64"/bans/%"PRIu64, guild_id, user_id);
 }

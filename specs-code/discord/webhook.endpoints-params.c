@@ -15,7 +15,7 @@
 
 void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_create_webhook_params *p = *pp;
@@ -24,42 +24,29 @@ void discord_create_webhook_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
                 "(name):?s,"
-  /* specs/discord/webhook.endpoints-params.json:13:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-                "(avatar):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(avatar):?s,",
   /* specs/discord/webhook.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
                 &p->name,
   /* specs/discord/webhook.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-                &p->avatar,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->avatar);
   ret = r;
-}
-
-static void discord_create_webhook_params_use_default_inject_settings(struct discord_create_webhook_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/webhook.endpoints-params.json:12:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
-  p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/webhook.endpoints-params.json:13:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  if (p->avatar != NULL)
-    p->__M.arg_switches[1] = p->avatar;
-
 }
 
 size_t discord_create_webhook_params_to_json(char *json, size_t len, struct discord_create_webhook_params *p)
 {
   size_t r;
-  discord_create_webhook_params_use_default_inject_settings(p);
+  void *arg_switches[2]={NULL};
+  /* specs/discord/webhook.endpoints-params.json:12:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
+  arg_switches[0] = p->name;
+
+  /* specs/discord/webhook.endpoints-params.json:13:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
+  if (p->avatar != NULL)
+    arg_switches[1] = p->avatar;
+
   r=json_inject(json, len, 
   /* specs/discord/webhook.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
@@ -74,7 +61,7 @@ size_t discord_create_webhook_params_to_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
                 p->avatar,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -154,7 +141,7 @@ size_t discord_create_webhook_params_list_to_json(char *str, size_t len, struct 
 
 void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_webhook_params *p = *pp;
@@ -166,12 +153,7 @@ void discord_modify_webhook_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.endpoints-params.json:23:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
                 "(avatar):?s,"
-  /* specs/discord/webhook.endpoints-params.json:24:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-                "(channel_id):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(channel_id):F,",
   /* specs/discord/webhook.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
                 &p->name,
@@ -180,37 +162,29 @@ void discord_modify_webhook_params_from_json(char *json, size_t len, struct disc
                 &p->avatar,
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-                cee_strtoull, &p->channel_id,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                cee_strtoull, &p->channel_id);
   ret = r;
-}
-
-static void discord_modify_webhook_params_use_default_inject_settings(struct discord_modify_webhook_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/webhook.endpoints-params.json:22:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
-  if (p->name != NULL)
-    p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/webhook.endpoints-params.json:23:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  if (p->avatar != NULL)
-    p->__M.arg_switches[1] = p->avatar;
-
-  /* specs/discord/webhook.endpoints-params.json:24:20
-     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-  if (p->channel_id != 0)
-    p->__M.arg_switches[2] = &p->channel_id;
-
 }
 
 size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct discord_modify_webhook_params *p)
 {
   size_t r;
-  discord_modify_webhook_params_use_default_inject_settings(p);
+  void *arg_switches[3]={NULL};
+  /* specs/discord/webhook.endpoints-params.json:22:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
+  if (p->name != NULL)
+    arg_switches[0] = p->name;
+
+  /* specs/discord/webhook.endpoints-params.json:23:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
+  if (p->avatar != NULL)
+    arg_switches[1] = p->avatar;
+
+  /* specs/discord/webhook.endpoints-params.json:24:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
+  if (p->channel_id != 0)
+    arg_switches[2] = &p->channel_id;
+
   r=json_inject(json, len, 
   /* specs/discord/webhook.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
@@ -231,7 +205,7 @@ size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
                 cee_ulltostr, &p->channel_id,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -279,7 +253,7 @@ void discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params 
     free(d->avatar);
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-  // p->channel_id is a scalar
+  /* p->channel_id is a scalar */
 }
 
 void discord_modify_webhook_params_init(struct discord_modify_webhook_params *p) {
@@ -317,7 +291,7 @@ size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, struct 
 
 void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_modify_webhook_with_token_params *p = *pp;
@@ -326,43 +300,30 @@ void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, 
   /* specs/discord/webhook.endpoints-params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
                 "(name):?s,"
-  /* specs/discord/webhook.endpoints-params.json:34:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-                "(avatar):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(avatar):?s,",
   /* specs/discord/webhook.endpoints-params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
                 &p->name,
   /* specs/discord/webhook.endpoints-params.json:34:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-                &p->avatar,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->avatar);
   ret = r;
-}
-
-static void discord_modify_webhook_with_token_params_use_default_inject_settings(struct discord_modify_webhook_with_token_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/webhook.endpoints-params.json:33:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
-  if (p->name != NULL)
-    p->__M.arg_switches[0] = p->name;
-
-  /* specs/discord/webhook.endpoints-params.json:34:20
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  if (p->avatar != NULL)
-    p->__M.arg_switches[1] = p->avatar;
-
 }
 
 size_t discord_modify_webhook_with_token_params_to_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p)
 {
   size_t r;
-  discord_modify_webhook_with_token_params_use_default_inject_settings(p);
+  void *arg_switches[2]={NULL};
+  /* specs/discord/webhook.endpoints-params.json:33:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
+  if (p->name != NULL)
+    arg_switches[0] = p->name;
+
+  /* specs/discord/webhook.endpoints-params.json:34:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
+  if (p->avatar != NULL)
+    arg_switches[1] = p->avatar;
+
   r=json_inject(json, len, 
   /* specs/discord/webhook.endpoints-params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
@@ -377,7 +338,7 @@ size_t discord_modify_webhook_with_token_params_to_json(char *json, size_t len, 
   /* specs/discord/webhook.endpoints-params.json:34:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
                 p->avatar,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -457,7 +418,7 @@ size_t discord_modify_webhook_with_token_params_list_to_json(char *str, size_t l
 
 void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_execute_webhook_params *p = *pp;
@@ -484,12 +445,7 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.endpoints-params.json:53:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
                 "(allowed_mentions):F,"
-  /* specs/discord/webhook.endpoints-params.json:54:20
-     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-                "(components):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(components):F,",
   /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
                 &p->content,
@@ -513,76 +469,68 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
                 discord_allowed_mentions_from_json, &p->allowed_mentions,
   /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-                discord_component_list_from_json, &p->components,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_component_list_from_json, &p->components);
   ret = r;
-}
-
-static void discord_execute_webhook_params_use_default_inject_settings(struct discord_execute_webhook_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/webhook.endpoints-params.json:44:20
-     '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
-  p->__M.arg_switches[0] = &p->wait;
-
-  /* specs/discord/webhook.endpoints-params.json:45:20
-     '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  if (p->thread_id != 0)
-    p->__M.arg_switches[1] = &p->thread_id;
-
-  /* specs/discord/webhook.endpoints-params.json:46:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
-  if (p->content != NULL)
-    p->__M.arg_switches[2] = p->content;
-
-  /* specs/discord/webhook.endpoints-params.json:47:20
-     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
-  if (p->username != NULL)
-    p->__M.arg_switches[3] = p->username;
-
-  /* specs/discord/webhook.endpoints-params.json:48:20
-     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
-  if (p->avatar_url != NULL)
-    p->__M.arg_switches[4] = p->avatar_url;
-
-  /* specs/discord/webhook.endpoints-params.json:49:20
-     '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  if (p->tts != false)
-    p->__M.arg_switches[5] = &p->tts;
-
-  /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  if (p->file != NULL)
-    p->__M.arg_switches[6] = p->file;
-
-  /* specs/discord/webhook.endpoints-params.json:51:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-  if (p->embeds != NULL)
-    p->__M.arg_switches[7] = p->embeds;
-
-  /* specs/discord/webhook.endpoints-params.json:52:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  if (p->payload_json != NULL)
-    p->__M.arg_switches[8] = p->payload_json;
-
-  /* specs/discord/webhook.endpoints-params.json:53:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-  if (p->allowed_mentions != NULL)
-    p->__M.arg_switches[9] = p->allowed_mentions;
-
-  /* specs/discord/webhook.endpoints-params.json:54:20
-     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-  if (p->components != NULL)
-    p->__M.arg_switches[10] = p->components;
-
 }
 
 size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct discord_execute_webhook_params *p)
 {
   size_t r;
-  discord_execute_webhook_params_use_default_inject_settings(p);
+  void *arg_switches[11]={NULL};
+  /* specs/discord/webhook.endpoints-params.json:44:20
+     '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
+  arg_switches[0] = &p->wait;
+
+  /* specs/discord/webhook.endpoints-params.json:45:20
+     '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
+  if (p->thread_id != 0)
+    arg_switches[1] = &p->thread_id;
+
+  /* specs/discord/webhook.endpoints-params.json:46:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
+  if (p->content != NULL)
+    arg_switches[2] = p->content;
+
+  /* specs/discord/webhook.endpoints-params.json:47:20
+     '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
+  if (p->username != NULL)
+    arg_switches[3] = p->username;
+
+  /* specs/discord/webhook.endpoints-params.json:48:20
+     '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
+  if (p->avatar_url != NULL)
+    arg_switches[4] = p->avatar_url;
+
+  /* specs/discord/webhook.endpoints-params.json:49:20
+     '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
+  if (p->tts != false)
+    arg_switches[5] = &p->tts;
+
+  /* specs/discord/webhook.endpoints-params.json:50:20
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
+  if (p->file != NULL)
+    arg_switches[6] = p->file;
+
+  /* specs/discord/webhook.endpoints-params.json:51:20
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
+  if (p->embeds != NULL)
+    arg_switches[7] = p->embeds;
+
+  /* specs/discord/webhook.endpoints-params.json:52:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
+  if (p->payload_json != NULL)
+    arg_switches[8] = p->payload_json;
+
+  /* specs/discord/webhook.endpoints-params.json:53:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
+  if (p->allowed_mentions != NULL)
+    arg_switches[9] = p->allowed_mentions;
+
+  /* specs/discord/webhook.endpoints-params.json:54:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
+  if (p->components != NULL)
+    arg_switches[10] = p->components;
+
   r=json_inject(json, len, 
   /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
@@ -633,7 +581,7 @@ size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
                 discord_component_list_to_json, p->components,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -673,10 +621,10 @@ size_t discord_execute_webhook_params_list_to_json_v(char *str, size_t len, void
 void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *d) {
   /* specs/discord/webhook.endpoints-params.json:44:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
-  // p->wait is a scalar
+  /* p->wait is a scalar */
   /* specs/discord/webhook.endpoints-params.json:45:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  // p->thread_id is a scalar
+  /* p->thread_id is a scalar */
   /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
   if (d->content)
@@ -691,7 +639,7 @@ void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_param
     free(d->avatar_url);
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  // p->tts is a scalar
+  /* p->tts is a scalar */
   /* specs/discord/webhook.endpoints-params.json:50:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
   if (d->file)
@@ -777,7 +725,7 @@ size_t discord_execute_webhook_params_list_to_json(char *str, size_t len, struct
 
 void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_edit_webhook_message_params *p = *pp;
@@ -798,12 +746,7 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   /* specs/discord/webhook.endpoints-params.json:68:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
-  /* specs/discord/webhook.endpoints-params.json:69:20
-     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-                "(components):F,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(components):F,",
   /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
                 &p->content,
@@ -821,57 +764,49 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
                 discord_attachment_list_from_json, &p->attachments,
   /* specs/discord/webhook.endpoints-params.json:69:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-                discord_component_list_from_json, &p->components,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                discord_component_list_from_json, &p->components);
   ret = r;
-}
-
-static void discord_edit_webhook_message_params_use_default_inject_settings(struct discord_edit_webhook_message_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/webhook.endpoints-params.json:63:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  if (p->content != NULL)
-    p->__M.arg_switches[0] = p->content;
-
-  /* specs/discord/webhook.endpoints-params.json:64:20
-     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  if (p->embeds != NULL)
-    p->__M.arg_switches[1] = p->embeds;
-
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  if (p->file != NULL)
-    p->__M.arg_switches[2] = p->file;
-
-  /* specs/discord/webhook.endpoints-params.json:66:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  if (p->payload_json != NULL)
-    p->__M.arg_switches[3] = p->payload_json;
-
-  /* specs/discord/webhook.endpoints-params.json:67:20
-     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  if (p->allowed_mentions != NULL)
-    p->__M.arg_switches[4] = p->allowed_mentions;
-
-  /* specs/discord/webhook.endpoints-params.json:68:20
-     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  if (p->attachments != NULL)
-    p->__M.arg_switches[5] = p->attachments;
-
-  /* specs/discord/webhook.endpoints-params.json:69:20
-     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  if (p->components != NULL)
-    p->__M.arg_switches[6] = p->components;
-
 }
 
 size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_edit_webhook_message_params *p)
 {
   size_t r;
-  discord_edit_webhook_message_params_use_default_inject_settings(p);
+  void *arg_switches[7]={NULL};
+  /* specs/discord/webhook.endpoints-params.json:63:20
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
+  if (p->content != NULL)
+    arg_switches[0] = p->content;
+
+  /* specs/discord/webhook.endpoints-params.json:64:20
+     '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
+  if (p->embeds != NULL)
+    arg_switches[1] = p->embeds;
+
+  /* specs/discord/webhook.endpoints-params.json:65:20
+     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
+  if (p->file != NULL)
+    arg_switches[2] = p->file;
+
+  /* specs/discord/webhook.endpoints-params.json:66:20
+     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
+  if (p->payload_json != NULL)
+    arg_switches[3] = p->payload_json;
+
+  /* specs/discord/webhook.endpoints-params.json:67:20
+     '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
+  if (p->allowed_mentions != NULL)
+    arg_switches[4] = p->allowed_mentions;
+
+  /* specs/discord/webhook.endpoints-params.json:68:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  if (p->attachments != NULL)
+    arg_switches[5] = p->attachments;
+
+  /* specs/discord/webhook.endpoints-params.json:69:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
+  if (p->components != NULL)
+    arg_switches[6] = p->components;
+
   r=json_inject(json, len, 
   /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
@@ -910,7 +845,7 @@ size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struc
   /* specs/discord/webhook.endpoints-params.json:69:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_to_json, p->components,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 

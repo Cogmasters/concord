@@ -12,7 +12,7 @@ struct msg {
   bool matched;
 };
 
-// defined at dicord-internal.h
+/* defined at dicord-internal.h */
 curl_mime*
 discord_file_to_mime(CURL *ehandle, void *p_file) 
 {
@@ -22,14 +22,14 @@ discord_file_to_mime(CURL *ehandle, void *p_file)
   curl_mimepart *part = curl_mime_addpart(mime);
 
   if (file->content) {
-    if (!file->name) { // set a default name
+    if (!file->name) { /* set a default name */
       file->name = "a.out";
     }
     curl_mime_data(part, file->content, file->size);
     curl_mime_filename(part, file->name);
     curl_mime_type(part, "application/octet-stream");
   }
-  else { //file->name exists 
+  else { /*file->name exists  */
     curl_mime_filedata(part, file->name);
   }
 
@@ -64,10 +64,11 @@ discord_delete_messages_by_author_id(
   }
 
   u64_unix_ms_t now = cee_timestamp_ms();
-
   NTL_T(u64_snowflake_t) list = NULL;
   int count=0;
-  for (int i=0; messages[i]; ++i) {
+  int i, j;
+
+  for (i=0; messages[i]; ++i) {
     if (now > messages[i]->timestamp && now - messages[i]->timestamp > 1209600000)
     {
       break;
@@ -81,7 +82,7 @@ discord_delete_messages_by_author_id(
   }
 
   list = (NTL_T(u64_snowflake_t))ntl_calloc(count, sizeof(u64_snowflake_t));
-  for (int i=0, j=0; messages[i] && j < count; ++i) {
+  for (i=0, j=0; messages[i] && j < count; ++i) {
     if (!author_id || author_id == messages[i]->author->id) {
       *list[j] = messages[i]->id;
       ++j;
@@ -309,7 +310,7 @@ discord_overwrite_append(
   ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_overwrite), &new_overwrite);
 }
 
-//@todo create some manner of copying a struct, including its pointer fields
+/*@todo create some manner of copying a struct, including its pointer fields */
 ORCAcode
 discord_get_channel_at_pos(
   struct discord *client, 
@@ -335,17 +336,17 @@ discord_get_channel_at_pos(
     return code;
   }
 
-  size_t j=0; // calculate position
-  for (size_t i=0; channels[i]; ++i) {
+  size_t i, j; /* calculate position */
+  for (i=0, j=0; channels[i]; ++i) {
     if (type == channels[i]->type && j++ == position) {
       memcpy(p_channel, channels[i], sizeof(struct discord_channel));
-      // avoid double freeing
+      /* avoid double freeing */
       memset(channels[i], 0, sizeof(struct discord_channel));
       break; /* EARLY BREAK */
     }
   }
   discord_channel_list_free(channels);
-  return code; // ORCA_OK
+  return code; /* ORCA_OK */
 }
 
 ORCAcode

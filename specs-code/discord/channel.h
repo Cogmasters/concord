@@ -6,8 +6,8 @@
 
 
 
-// Channel Types
-// defined at specs/discord/channel.json:6:5
+/* Channel Types */
+/* defined at specs/discord/channel.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-types
  *
@@ -44,8 +44,8 @@ extern void discord_channel_types_list_from_json(char *str, size_t len, enum dis
 extern size_t discord_channel_types_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_channel_types_list_to_json(char *str, size_t len, enum discord_channel_types **p);
 
-// Channel Structure
-// defined at specs/discord/channel.json:29:22
+/* Channel Structure */
+/* defined at specs/discord/channel.json:29:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
  *
@@ -163,20 +163,6 @@ struct discord_channel {
      '{"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}' */
   struct discord_message **messages;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[19];
-    void *record_defined[19];
-    void *record_null[19];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_channel_cleanup_v(void *p);
 extern void discord_channel_cleanup(struct discord_channel *p);
@@ -194,8 +180,8 @@ extern size_t discord_channel_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channel **p);
 
 
-// Message Sticker Format Types
-// defined at specs/discord/channel.json:66:5
+/* Message Sticker Format Types */
+/* defined at specs/discord/channel.json:66:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types
  *
@@ -224,8 +210,8 @@ extern void discord_message_sticker_format_types_list_from_json(char *str, size_
 extern size_t discord_message_sticker_format_types_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_sticker_format_types_list_to_json(char *str, size_t len, enum discord_message_sticker_format_types **p);
 
-// Message Sticker Structure
-// defined at specs/discord/channel.json:82:22
+/* Message Sticker Structure */
+/* defined at specs/discord/channel.json:82:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
  *
@@ -287,20 +273,6 @@ struct discord_message_sticker {
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
   enum discord_message_sticker_format_types type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_message_sticker_cleanup_v(void *p);
 extern void discord_message_sticker_cleanup(struct discord_message_sticker *p);
@@ -318,8 +290,8 @@ extern size_t discord_message_sticker_list_to_json_v(char *str, size_t len, void
 extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct discord_message_sticker **p);
 
 
-// Message Flags
-// defined at specs/discord/channel.json:95:5
+/* Message Flags */
+/* defined at specs/discord/channel.json:95:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-flags
  *
@@ -335,11 +307,11 @@ extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct
  * @endverbatim
  */
 enum discord_message_flags {
-  DISCORD_MESSAGE_CROSSPOSTED = 1, ///< 1<<0
-  DISCORD_MESSAGE_IS_CROSSPOST = 2, ///< 1<<1
-  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, ///< 1<<2
-  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, ///< 1<<3
-  DISCORD_MESSAGE_URGENT = 16, ///< 1<<4
+  DISCORD_MESSAGE_CROSSPOSTED = 1, /** 1<<0 */
+  DISCORD_MESSAGE_IS_CROSSPOST = 2, /** 1<<1 */
+  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, /** 1<<2 */
+  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, /** 1<<3 */
+  DISCORD_MESSAGE_URGENT = 16, /** 1<<4 */
 };
 extern char* discord_message_flags_print(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_eval(char*);
@@ -350,8 +322,8 @@ extern void discord_message_flags_list_from_json(char *str, size_t len, enum dis
 extern size_t discord_message_flags_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_flags_list_to_json(char *str, size_t len, enum discord_message_flags **p);
 
-// Message Reference Structure
-// defined at specs/discord/channel.json:112:22
+/* Message Reference Structure */
+/* defined at specs/discord/channel.json:112:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
  *
@@ -396,20 +368,6 @@ struct discord_message_reference {
      '{"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
   bool fail_if_not_exists;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_message_reference_cleanup_v(void *p);
 extern void discord_message_reference_cleanup(struct discord_message_reference *p);
@@ -426,8 +384,8 @@ extern void discord_message_reference_list_from_json(char *str, size_t len, stru
 extern size_t discord_message_reference_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_reference_list_to_json(char *str, size_t len, struct discord_message_reference **p);
 
-// Message Application Structure
-// defined at specs/discord/channel.json:124:22
+/* Message Application Structure */
+/* defined at specs/discord/channel.json:124:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
  *
@@ -476,20 +434,6 @@ struct discord_message_application {
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
   char *name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_message_application_cleanup_v(void *p);
 extern void discord_message_application_cleanup(struct discord_message_application *p);
@@ -507,8 +451,8 @@ extern size_t discord_message_application_list_to_json_v(char *str, size_t len, 
 extern size_t discord_message_application_list_to_json(char *str, size_t len, struct discord_message_application **p);
 
 
-// Message Activity Types
-// defined at specs/discord/channel.json:133:5
+/* Message Activity Types */
+/* defined at specs/discord/channel.json:133:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-types
  *
@@ -538,8 +482,8 @@ extern void discord_message_activity_types_list_from_json(char *str, size_t len,
 extern size_t discord_message_activity_types_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_activity_types_list_to_json(char *str, size_t len, enum discord_message_activity_types **p);
 
-// Message Activity Structure
-// defined at specs/discord/channel.json:149:22
+/* Message Activity Structure */
+/* defined at specs/discord/channel.json:149:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
  *
@@ -577,20 +521,6 @@ struct discord_message_activity {
          "option":true, "inject_if_not":null}' */
   char *party_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_message_activity_cleanup_v(void *p);
 extern void discord_message_activity_cleanup(struct discord_message_activity *p);
@@ -608,8 +538,8 @@ extern size_t discord_message_activity_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_message_activity_list_to_json(char *str, size_t len, struct discord_message_activity **p);
 
 
-// Message Types
-// defined at specs/discord/channel.json:156:5
+/* Message Types */
+/* defined at specs/discord/channel.json:156:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-types
  *
@@ -652,8 +582,8 @@ extern void discord_message_types_list_from_json(char *str, size_t len, enum dis
 extern size_t discord_message_types_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_types_list_to_json(char *str, size_t len, enum discord_message_types **p);
 
-// Message Structure
-// defined at specs/discord/channel.json:184:22
+/* Message Structure */
+/* defined at specs/discord/channel.json:184:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object
  *
@@ -700,7 +630,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:190:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  struct discord_guild_member *member; ///< partial guild member object
+  struct discord_guild_member *member; /** partial guild member object */
 
   /* specs/discord/channel.json:191:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
@@ -724,11 +654,11 @@ struct discord_message {
 
   /* specs/discord/channel.json:196:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
-  struct discord_user **mentions; ///< array of user objects, with an additional partial member field
+  struct discord_user **mentions; /** array of user objects, with an additional partial member field */
 
   /* specs/discord/channel.json:197:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
-  ja_u64 **mention_roles; ///< array of role object ids
+  ja_u64 **mention_roles; /** array of role object ids */
 
   /* specs/discord/channel.json:198:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
@@ -748,7 +678,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:202:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
-  char *nonce; ///< integer or string
+  char *nonce; /** integer or string */
 
   /* specs/discord/channel.json:203:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
@@ -780,42 +710,28 @@ struct discord_message {
 
   /* specs/discord/channel.json:210:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
-  struct discord_message *referenced_message; ///< this will cause recursive allocation if allocating as the parent
+  struct discord_message *referenced_message; /** this will cause recursive allocation if allocating as the parent */
 
   /* specs/discord/channel.json:211:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-  struct discord_message_interaction *interaction; ///< the message associated with the message_reference
+  struct discord_message_interaction *interaction; /** the message associated with the message_reference */
 
   /* specs/discord/channel.json:212:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-  struct discord_channel *thread; ///< the channel that was started from this message, includes thread member obejct
+  struct discord_channel *thread; /** the channel that was started from this message, includes thread member obejct */
 
   /* specs/discord/channel.json:213:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
-  struct discord_component **components; ///< sent if the message contains components like buttons, actions rows, or other interactive components
+  struct discord_component **components; /** sent if the message contains components like buttons, actions rows, or other interactive components */
 
   /* specs/discord/channel.json:214:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
-  struct discord_message_sticker **sticker_items; ///< sent if the message contains stickets
+  struct discord_message_sticker **sticker_items; /** sent if the message contains stickets */
 
   /* specs/discord/channel.json:215:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
-  struct discord_message_sticker **stickers; ///< [DEPRECATED] array of sticker objects
+  struct discord_message_sticker **stickers; /** [DEPRECATED] array of sticker objects */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[30];
-    void *record_defined[30];
-    void *record_null[30];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_message_cleanup_v(void *p);
 extern void discord_message_cleanup(struct discord_message *p);
@@ -832,8 +748,8 @@ extern void discord_message_list_from_json(char *str, size_t len, struct discord
 extern size_t discord_message_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_message_list_to_json(char *str, size_t len, struct discord_message **p);
 
-// Followed Channel Structure
-// defined at specs/discord/channel.json:221:22
+/* Followed Channel Structure */
+/* defined at specs/discord/channel.json:221:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
  *
@@ -870,20 +786,6 @@ struct discord_followed_channel {
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t webhook_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_followed_channel_cleanup_v(void *p);
 extern void discord_followed_channel_cleanup(struct discord_followed_channel *p);
@@ -900,8 +802,8 @@ extern void discord_followed_channel_list_from_json(char *str, size_t len, struc
 extern size_t discord_followed_channel_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_followed_channel_list_to_json(char *str, size_t len, struct discord_followed_channel **p);
 
-// Reaction Structure
-// defined at specs/discord/channel.json:231:22
+/* Reaction Structure */
+/* defined at specs/discord/channel.json:231:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
  *
@@ -940,22 +842,8 @@ struct discord_reaction {
 
   /* specs/discord/channel.json:236:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  struct discord_emoji *emoji; ///< partial emoji object
+  struct discord_emoji *emoji; /** partial emoji object */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_reaction_cleanup_v(void *p);
 extern void discord_reaction_cleanup(struct discord_reaction *p);
@@ -972,8 +860,8 @@ extern void discord_reaction_list_from_json(char *str, size_t len, struct discor
 extern size_t discord_reaction_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_reaction_list_to_json(char *str, size_t len, struct discord_reaction **p);
 
-// Overwrite Structure
-// defined at specs/discord/channel.json:241:22
+/* Overwrite Structure */
+/* defined at specs/discord/channel.json:241:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -1011,27 +899,13 @@ struct discord_overwrite {
   /* specs/discord/channel.json:246:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags allow; ///< permission bit set
+  enum discord_bitwise_permission_flags allow; /** permission bit set */
 
   /* specs/discord/channel.json:248:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags deny; ///< permission bit set
+  enum discord_bitwise_permission_flags deny; /** permission bit set */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_overwrite_cleanup_v(void *p);
 extern void discord_overwrite_cleanup(struct discord_overwrite *p);
@@ -1048,8 +922,8 @@ extern void discord_overwrite_list_from_json(char *str, size_t len, struct disco
 extern size_t discord_overwrite_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_overwrite_list_to_json(char *str, size_t len, struct discord_overwrite **p);
 
-// Thread Metadata Object
-// defined at specs/discord/channel.json:256:22
+/* Thread Metadata Object */
+/* defined at specs/discord/channel.json:256:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
  *
@@ -1098,20 +972,6 @@ struct discord_thread_metadata {
      '{ "name": "locked", "type":{ "base":"bool" }}' */
   bool locked;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_thread_metadata_cleanup_v(void *p);
 extern void discord_thread_metadata_cleanup(struct discord_thread_metadata *p);
@@ -1128,8 +988,8 @@ extern void discord_thread_metadata_list_from_json(char *str, size_t len, struct
 extern size_t discord_thread_metadata_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct discord_thread_metadata **p);
 
-// Thread Member Object
-// defined at specs/discord/channel.json:270:22
+/* Thread Member Object */
+/* defined at specs/discord/channel.json:270:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
  *
@@ -1174,20 +1034,6 @@ struct discord_thread_member {
      '{ "name": "flags", "type":{ "base":"int" }}' */
   int flags;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_thread_member_cleanup_v(void *p);
 extern void discord_thread_member_cleanup(struct discord_thread_member *p);
@@ -1204,8 +1050,8 @@ extern void discord_thread_member_list_from_json(char *str, size_t len, struct d
 extern size_t discord_thread_member_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct discord_thread_member **p);
 
-// Attachment Strcture
-// defined at specs/discord/channel.json:282:22
+/* Attachment Strcture */
+/* defined at specs/discord/channel.json:282:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  *
@@ -1262,20 +1108,6 @@ struct discord_attachment {
      '{ "name": "width", "type":{ "base":"int", "nullable":true }}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_attachment_cleanup_v(void *p);
 extern void discord_attachment_cleanup(struct discord_attachment *p);
@@ -1292,8 +1124,8 @@ extern void discord_attachment_list_from_json(char *str, size_t len, struct disc
 extern size_t discord_attachment_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_attachment_list_to_json(char *str, size_t len, struct discord_attachment **p);
 
-// Channel Mention Structure
-// defined at specs/discord/channel.json:298:22
+/* Channel Mention Structure */
+/* defined at specs/discord/channel.json:298:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
@@ -1338,20 +1170,6 @@ struct discord_channel_mention {
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_channel_mention_cleanup_v(void *p);
 extern void discord_channel_mention_cleanup(struct discord_channel_mention *p);
@@ -1368,8 +1186,8 @@ extern void discord_channel_mention_list_from_json(char *str, size_t len, struct
 extern size_t discord_channel_mention_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discord_channel_mention **p);
 
-// Allowed Mentions Structure
-// defined at specs/discord/channel.json:310:22
+/* Allowed Mentions Structure */
+/* defined at specs/discord/channel.json:310:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
@@ -1404,30 +1222,16 @@ struct discord_allowed_mentions {
 
   /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **roles; ///< list of snowflakes
+  ja_u64 **roles; /** list of snowflakes */
 
   /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **users; ///< list of snowflakes
+  ja_u64 **users; /** list of snowflakes */
 
   /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   bool replied_user;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_allowed_mentions_cleanup_v(void *p);
 extern void discord_allowed_mentions_cleanup(struct discord_allowed_mentions *p);
@@ -1444,8 +1248,8 @@ extern void discord_allowed_mentions_list_from_json(char *str, size_t len, struc
 extern size_t discord_allowed_mentions_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_allowed_mentions_list_to_json(char *str, size_t len, struct discord_allowed_mentions **p);
 
-// Embed Structure
-// defined at specs/discord/channel.json:322:22
+/* Embed Structure */
+/* defined at specs/discord/channel.json:322:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
@@ -1526,20 +1330,6 @@ struct discord_embed {
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_field **fields;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[13];
-    void *record_defined[13];
-    void *record_null[13];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_cleanup_v(void *p);
 extern void discord_embed_cleanup(struct discord_embed *p);
@@ -1556,8 +1346,8 @@ extern void discord_embed_list_from_json(char *str, size_t len, struct discord_e
 extern size_t discord_embed_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_embed **p);
 
-// Embed Thumbnail Structure
-// defined at specs/discord/channel.json:344:22
+/* Embed Thumbnail Structure */
+/* defined at specs/discord/channel.json:344:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
@@ -1602,20 +1392,6 @@ struct discord_embed_thumbnail {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_thumbnail_cleanup_v(void *p);
 extern void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *p);
@@ -1632,8 +1408,8 @@ extern void discord_embed_thumbnail_list_from_json(char *str, size_t len, struct
 extern size_t discord_embed_thumbnail_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct discord_embed_thumbnail **p);
 
-// Embed Video Structure
-// defined at specs/discord/channel.json:356:22
+/* Embed Video Structure */
+/* defined at specs/discord/channel.json:356:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
@@ -1678,20 +1454,6 @@ struct discord_embed_video {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_video_cleanup_v(void *p);
 extern void discord_embed_video_cleanup(struct discord_embed_video *p);
@@ -1708,8 +1470,8 @@ extern void discord_embed_video_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_embed_video_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct discord_embed_video **p);
 
-// Embed Image Structure
-// defined at specs/discord/channel.json:368:22
+/* Embed Image Structure */
+/* defined at specs/discord/channel.json:368:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
@@ -1754,20 +1516,6 @@ struct discord_embed_image {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_image_cleanup_v(void *p);
 extern void discord_embed_image_cleanup(struct discord_embed_image *p);
@@ -1784,8 +1532,8 @@ extern void discord_embed_image_list_from_json(char *str, size_t len, struct dis
 extern size_t discord_embed_image_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct discord_embed_image **p);
 
-// Embed Provider Structure
-// defined at specs/discord/channel.json:380:22
+/* Embed Provider Structure */
+/* defined at specs/discord/channel.json:380:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
@@ -1822,20 +1570,6 @@ struct discord_embed_provider {
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *url;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_provider_cleanup_v(void *p);
 extern void discord_embed_provider_cleanup(struct discord_embed_provider *p);
@@ -1852,8 +1586,8 @@ extern void discord_embed_provider_list_from_json(char *str, size_t len, struct 
 extern size_t discord_embed_provider_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct discord_embed_provider **p);
 
-// Embed Author Structure
-// defined at specs/discord/channel.json:390:22
+/* Embed Author Structure */
+/* defined at specs/discord/channel.json:390:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
@@ -1898,20 +1632,6 @@ struct discord_embed_author {
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_icon_url;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_author_cleanup_v(void *p);
 extern void discord_embed_author_cleanup(struct discord_embed_author *p);
@@ -1928,8 +1648,8 @@ extern void discord_embed_author_list_from_json(char *str, size_t len, struct di
 extern size_t discord_embed_author_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct discord_embed_author **p);
 
-// Embed Footer Structure
-// defined at specs/discord/channel.json:402:22
+/* Embed Footer Structure */
+/* defined at specs/discord/channel.json:402:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
@@ -1970,20 +1690,6 @@ struct discord_embed_footer {
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *proxy_icon_url;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_footer_cleanup_v(void *p);
 extern void discord_embed_footer_cleanup(struct discord_embed_footer *p);
@@ -2000,8 +1706,8 @@ extern void discord_embed_footer_list_from_json(char *str, size_t len, struct di
 extern size_t discord_embed_footer_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct discord_embed_footer **p);
 
-// Embed Field Structure
-// defined at specs/discord/channel.json:413:22
+/* Embed Field Structure */
+/* defined at specs/discord/channel.json:413:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
@@ -2042,20 +1748,6 @@ struct discord_embed_field {
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   bool Inline;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_embed_field_cleanup_v(void *p);
 extern void discord_embed_field_cleanup(struct discord_embed_field *p);

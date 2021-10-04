@@ -5,8 +5,8 @@
  */
 
 
-// Create Guild From Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:9:22
+/* Create Guild From Guild Template */
+/* defined at specs/discord/guild-template.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -35,26 +35,12 @@
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; ///< name of the guild
+  char *name; /** name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:13:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
-  char *icon; ///< base64 128x128 image for the guild icon
+  char *icon; /** base64 128x128 image for the guild icon */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_create_guild_from_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *p);
@@ -71,8 +57,8 @@ extern void discord_create_guild_from_guild_template_params_list_from_json(char 
 extern size_t discord_create_guild_from_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_guild_from_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_from_guild_template_params **p);
 
-// Create Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:19:22
+/* Create Guild Template */
+/* defined at specs/discord/guild-template.endpoints-params.json:19:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -101,26 +87,12 @@ extern size_t discord_create_guild_from_guild_template_params_list_to_json(char 
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; ///< name of the guild
+  char *name; /** name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:23:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
-  char *description; ///< description for the template (0-120) chars
+  char *description; /** description for the template (0-120) chars */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_create_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *p);
@@ -137,8 +109,8 @@ extern void discord_create_guild_template_params_list_from_json(char *str, size_
 extern size_t discord_create_guild_template_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_create_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_template_params **p);
 
-// Modify Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:29:22
+/* Modify Guild Template */
+/* defined at specs/discord/guild-template.endpoints-params.json:29:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -167,26 +139,12 @@ extern size_t discord_create_guild_template_params_list_to_json(char *str, size_
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; ///< name of the guild
+  char *name; /** name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:33:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
-  char *description; ///< description for the template (0-120) chars
+  char *description; /** description for the template (0-120) chars */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_modify_guild_template_params_cleanup_v(void *p);
 extern void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *p);

@@ -5,7 +5,7 @@
  */
 
 
-// defined at specs/discord/audit_log.endpoints-params.json:7:22
+/* defined at specs/discord/audit_log.endpoints-params.json:7:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -34,34 +34,20 @@
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log for actions made by a user", "inject_if_not":0 }' */
-  u64_snowflake_t user_id; ///< filter the log for actions made by a user
+  u64_snowflake_t user_id; /** filter the log for actions made by a user */
 
   /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "comment":"the type of audit log event", "inject_if_not":0 }' */
-  enum discord_audit_log_events action_type; ///< the type of audit log event
+  enum discord_audit_log_events action_type; /** the type of audit log event */
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log before a certain entry id", "inject_if_not":0 }' */
-  u64_snowflake_t before; ///< filter the log before a certain entry id
+  u64_snowflake_t before; /** filter the log before a certain entry id */
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "default_value":50, "comment":"how many entries are returned (default 50, minimum 1, maximum 100)", "inject_if_not":0 }' */
-  int limit; ///< how many entries are returned (default 50, minimum 1, maximum 100)
+  int limit; /** how many entries are returned (default 50, minimum 1, maximum 100) */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_get_guild_audit_log_params_cleanup_v(void *p);
 extern void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *p);

@@ -15,7 +15,7 @@
 
 void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct github_gist_create_params *p = *pp;
@@ -30,12 +30,7 @@ void github_gist_create_params_from_json(char *json, size_t len, struct github_g
   /* specs/github/gist.endpoints-params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
                 "(contents):?s,"
-  /* specs/github/gist.endpoints-params.json:16:28
-     '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
-                "(public):?s,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(public):?s,",
   /* specs/github/gist.endpoints-params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 &p->description,
@@ -47,38 +42,30 @@ void github_gist_create_params_from_json(char *json, size_t len, struct github_g
                 &p->contents,
   /* specs/github/gist.endpoints-params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
-                &p->public,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->public);
   ret = r;
-}
-
-static void github_gist_create_params_use_default_inject_settings(struct github_gist_create_params *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/github/gist.endpoints-params.json:13:28
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
-  p->__M.arg_switches[0] = p->description;
-
-  /* specs/github/gist.endpoints-params.json:14:28
-     '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
-  p->__M.arg_switches[1] = p->title;
-
-  /* specs/github/gist.endpoints-params.json:15:28
-     '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
-  p->__M.arg_switches[2] = p->contents;
-
-  /* specs/github/gist.endpoints-params.json:16:28
-     '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
-  p->__M.arg_switches[3] = p->public;
-
 }
 
 size_t github_gist_create_params_to_json(char *json, size_t len, struct github_gist_create_params *p)
 {
   size_t r;
-  github_gist_create_params_use_default_inject_settings(p);
+  void *arg_switches[4]={NULL};
+  /* specs/github/gist.endpoints-params.json:13:28
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
+  arg_switches[0] = p->description;
+
+  /* specs/github/gist.endpoints-params.json:14:28
+     '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
+  arg_switches[1] = p->title;
+
+  /* specs/github/gist.endpoints-params.json:15:28
+     '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
+  arg_switches[2] = p->contents;
+
+  /* specs/github/gist.endpoints-params.json:16:28
+     '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
+  arg_switches[3] = p->public;
+
   r=json_inject(json, len, 
   /* specs/github/gist.endpoints-params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
@@ -105,7 +92,7 @@ size_t github_gist_create_params_to_json(char *json, size_t len, struct github_g
   /* specs/github/gist.endpoints-params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 p->public,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 

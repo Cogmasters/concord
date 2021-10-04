@@ -126,6 +126,25 @@
       ]
     },
     {
+      "title":"Modify Current User Nick",
+      "namespace": ["modify_current_user_nick"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "nick", "type":{ "base":"char", "dec":"*" }}
+      ]
+    },
+    {
+      "title":"Create Guild Ban",
+      "namespace": ["create_guild_ban"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"},
+        { "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }
+      ]
+    },
+    {
       "title":"Create Guild Role",
       "namespace": ["create_guild_role"],
       "struct":"params",

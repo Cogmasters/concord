@@ -77,7 +77,7 @@ task_start(
   pthread_mutex_lock(&task->lock);
 
   task->keepalive = true;
-  // add values associated with task
+  /* add values associated with task */
   task->timeout_ms = timeout_ms;
   task->repeat_ms = repeat_ms;
   task->data = data;

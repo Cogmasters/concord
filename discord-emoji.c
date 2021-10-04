@@ -129,7 +129,7 @@ discord_modify_guild_emoji(
     return ORCA_MISSING_PARAMETER;
   }
 
-  void *A[2]={}; // pointer availability array
+  void *A[2]={}; /* pointer availability array */
   if (params->name)
     A[0] = params->name;
   if (params->roles)

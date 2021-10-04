@@ -5,7 +5,7 @@
  */
 
 
-// defined at specs/discord/application.json:9:22
+/* defined at specs/discord/application.json:9:22 */
 /**
  * @brief Application Structure
  *
@@ -16,7 +16,7 @@ struct discord_application;
 
 /* This file is generated from specs/discord/application_commands.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/application_commands.endpoints-params.json:10:22
+/* defined at specs/discord/application_commands.endpoints-params.json:10:22 */
 /**
  * @brief Create Global Application Command
  *
@@ -24,7 +24,7 @@ struct discord_application;
  */
 struct discord_create_global_application_command_params;
 
-// defined at specs/discord/application_commands.endpoints-params.json:24:23
+/* defined at specs/discord/application_commands.endpoints-params.json:24:23 */
 /**
  * @brief Edit Global Application Command
  *
@@ -32,7 +32,7 @@ struct discord_create_global_application_command_params;
  */
 struct discord_edit_global_application_command_params;
 
-// defined at specs/discord/application_commands.endpoints-params.json:37:23
+/* defined at specs/discord/application_commands.endpoints-params.json:37:23 */
 /**
  * @brief Create Guild Application Command
  *
@@ -40,7 +40,7 @@ struct discord_edit_global_application_command_params;
  */
 struct discord_create_guild_application_command_params;
 
-// defined at specs/discord/application_commands.endpoints-params.json:51:23
+/* defined at specs/discord/application_commands.endpoints-params.json:51:23 */
 /**
  * @brief Edit Guild Application Command
  *
@@ -48,7 +48,7 @@ struct discord_create_guild_application_command_params;
  */
 struct discord_edit_guild_application_command_params;
 
-// defined at specs/discord/application_commands.endpoints-params.json:64:23
+/* defined at specs/discord/application_commands.endpoints-params.json:64:23 */
 /**
  * @brief Edit Application Command Permissions
  *
@@ -57,7 +57,7 @@ struct discord_edit_guild_application_command_params;
 struct discord_edit_application_command_permissions_params;
 /* This file is generated from specs/discord/application_commands.json, Please don't edit it. */
 
-// defined at specs/discord/application_commands.json:9:22
+/* defined at specs/discord/application_commands.json:9:22 */
 /**
  * @brief Application Command Structure
  *
@@ -67,7 +67,7 @@ struct discord_application_command;
 
 
 
-// defined at specs/discord/application_commands.json:38:22
+/* defined at specs/discord/application_commands.json:38:22 */
 /**
  * @brief Application Command Option Structure
  *
@@ -77,7 +77,7 @@ struct discord_application_command_option;
 
 
 
-// defined at specs/discord/application_commands.json:72:22
+/* defined at specs/discord/application_commands.json:72:22 */
 /**
  * @brief Application Command Option Choice Structure
  *
@@ -85,7 +85,7 @@ struct discord_application_command_option;
  */
 struct discord_application_command_option_choice;
 
-// defined at specs/discord/application_commands.json:83:22
+/* defined at specs/discord/application_commands.json:83:22 */
 /**
  * @brief Guild Application Command Permissions Structure
  *
@@ -93,7 +93,7 @@ struct discord_application_command_option_choice;
  */
 struct discord_guild_application_command_permissions;
 
-// defined at specs/discord/application_commands.json:96:22
+/* defined at specs/discord/application_commands.json:96:22 */
 /**
  * @brief Application Command Permissions Structure
  *
@@ -103,7 +103,7 @@ struct discord_application_command_permissions;
 
 
 
-// defined at specs/discord/application_commands.json:119:22
+/* defined at specs/discord/application_commands.json:119:22 */
 /**
  * @brief Application Command Interaction Data Option Structure
  *
@@ -112,13 +112,13 @@ struct discord_application_command_permissions;
 struct discord_application_command_interaction_data_option;
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/audit_log.endpoints-params.json:7:22
+/* defined at specs/discord/audit_log.endpoints-params.json:7:22 */
 /**
  */
 struct discord_get_guild_audit_log_params;
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 
-// defined at specs/discord/audit_log.json:9:22
+/* defined at specs/discord/audit_log.json:9:22 */
 /**
  * @brief Audit Log Structure
  *
@@ -126,7 +126,7 @@ struct discord_get_guild_audit_log_params;
  */
 struct discord_audit_log;
 
-// defined at specs/discord/audit_log.json:23:22
+/* defined at specs/discord/audit_log.json:23:22 */
 /**
  * @brief Audit Log Entry Structure
  *
@@ -136,7 +136,7 @@ struct discord_audit_log_entry;
 
 
 
-// defined at specs/discord/audit_log.json:91:22
+/* defined at specs/discord/audit_log.json:91:22 */
 /**
  * @brief Optional Audit Entry Info Structure
  *
@@ -144,7 +144,7 @@ struct discord_audit_log_entry;
  */
 struct discord_optional_audit_entry_info;
 
-// defined at specs/discord/audit_log.json:108:22
+/* defined at specs/discord/audit_log.json:108:22 */
 /**
  * @brief Audit Log Change Structure
  *
@@ -153,84 +153,84 @@ struct discord_optional_audit_entry_info;
 struct discord_audit_log_change;
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/channel.endpoints-params.json:9:22
+/* defined at specs/discord/channel.endpoints-params.json:9:22 */
 /**
  * @brief Modify Channel
  *
  */
 struct discord_modify_channel_params;
 
-// defined at specs/discord/channel.endpoints-params.json:33:22
+/* defined at specs/discord/channel.endpoints-params.json:33:22 */
 /**
  * @brief Create Message
  *
  */
 struct discord_create_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:51:22
+/* defined at specs/discord/channel.endpoints-params.json:51:22 */
 /**
  * @brief Get Channel Messages
  *
  */
 struct discord_get_channel_messages_params;
 
-// defined at specs/discord/channel.endpoints-params.json:63:22
+/* defined at specs/discord/channel.endpoints-params.json:63:22 */
 /**
  * @brief Get Reactions
  *
  */
 struct discord_get_reactions_params;
 
-// defined at specs/discord/channel.endpoints-params.json:73:22
+/* defined at specs/discord/channel.endpoints-params.json:73:22 */
 /**
  * @brief Edit Channel Permissions
  *
  */
 struct discord_edit_channel_permissions_params;
 
-// defined at specs/discord/channel.endpoints-params.json:84:22
+/* defined at specs/discord/channel.endpoints-params.json:84:22 */
 /**
  * @brief Edit Message
  *
  */
 struct discord_edit_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:101:22
+/* defined at specs/discord/channel.endpoints-params.json:101:22 */
 /**
  * @brief Follow News Channel
  *
  */
 struct discord_follow_news_channel_params;
 
-// defined at specs/discord/channel.endpoints-params.json:110:22
+/* defined at specs/discord/channel.endpoints-params.json:110:22 */
 /**
  * @brief Create Channel Invite
  *
  */
 struct discord_create_channel_invite_params;
 
-// defined at specs/discord/channel.endpoints-params.json:125:22
+/* defined at specs/discord/channel.endpoints-params.json:125:22 */
 /**
  * @brief Group DM Add Recipient
  *
  */
 struct discord_group_dm_add_recipient_params;
 
-// defined at specs/discord/channel.endpoints-params.json:135:22
+/* defined at specs/discord/channel.endpoints-params.json:135:22 */
 /**
  * @brief Start Thread with Message
  *
  */
 struct discord_start_thread_with_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:145:22
+/* defined at specs/discord/channel.endpoints-params.json:145:22 */
 /**
  * @brief Start Thread without Message
  *
  */
 struct discord_start_thread_without_message_params;
 
-// defined at specs/discord/channel.endpoints-params.json:156:22
+/* defined at specs/discord/channel.endpoints-params.json:156:22 */
 /**
  * @brief List Active Threads
  *
@@ -240,7 +240,7 @@ struct discord_thread_response_body;
 
 
 
-// defined at specs/discord/channel.json:29:22
+/* defined at specs/discord/channel.json:29:22 */
 /**
  * @brief Channel Structure
  *
@@ -250,7 +250,7 @@ struct discord_channel;
 
 
 
-// defined at specs/discord/channel.json:82:22
+/* defined at specs/discord/channel.json:82:22 */
 /**
  * @brief Message Sticker Structure
  *
@@ -260,7 +260,7 @@ struct discord_message_sticker;
 
 
 
-// defined at specs/discord/channel.json:112:22
+/* defined at specs/discord/channel.json:112:22 */
 /**
  * @brief Message Reference Structure
  *
@@ -268,7 +268,7 @@ struct discord_message_sticker;
  */
 struct discord_message_reference;
 
-// defined at specs/discord/channel.json:124:22
+/* defined at specs/discord/channel.json:124:22 */
 /**
  * @brief Message Application Structure
  *
@@ -278,7 +278,7 @@ struct discord_message_application;
 
 
 
-// defined at specs/discord/channel.json:149:22
+/* defined at specs/discord/channel.json:149:22 */
 /**
  * @brief Message Activity Structure
  *
@@ -288,7 +288,7 @@ struct discord_message_activity;
 
 
 
-// defined at specs/discord/channel.json:184:22
+/* defined at specs/discord/channel.json:184:22 */
 /**
  * @brief Message Structure
  *
@@ -296,7 +296,7 @@ struct discord_message_activity;
  */
 struct discord_message;
 
-// defined at specs/discord/channel.json:221:22
+/* defined at specs/discord/channel.json:221:22 */
 /**
  * @brief Followed Channel Structure
  *
@@ -304,7 +304,7 @@ struct discord_message;
  */
 struct discord_followed_channel;
 
-// defined at specs/discord/channel.json:231:22
+/* defined at specs/discord/channel.json:231:22 */
 /**
  * @brief Reaction Structure
  *
@@ -312,14 +312,14 @@ struct discord_followed_channel;
  */
 struct discord_reaction;
 
-// defined at specs/discord/channel.json:241:22
+/* defined at specs/discord/channel.json:241:22 */
 /**
  * @brief Overwrite Structure
  *
  */
 struct discord_overwrite;
 
-// defined at specs/discord/channel.json:256:22
+/* defined at specs/discord/channel.json:256:22 */
 /**
  * @brief Thread Metadata Object
  *
@@ -327,7 +327,7 @@ struct discord_overwrite;
  */
 struct discord_thread_metadata;
 
-// defined at specs/discord/channel.json:270:22
+/* defined at specs/discord/channel.json:270:22 */
 /**
  * @brief Thread Member Object
  *
@@ -335,7 +335,7 @@ struct discord_thread_metadata;
  */
 struct discord_thread_member;
 
-// defined at specs/discord/channel.json:282:22
+/* defined at specs/discord/channel.json:282:22 */
 /**
  * @brief Attachment Strcture
  *
@@ -343,7 +343,7 @@ struct discord_thread_member;
  */
 struct discord_attachment;
 
-// defined at specs/discord/channel.json:298:22
+/* defined at specs/discord/channel.json:298:22 */
 /**
  * @brief Channel Mention Structure
  *
@@ -351,7 +351,7 @@ struct discord_attachment;
  */
 struct discord_channel_mention;
 
-// defined at specs/discord/channel.json:310:22
+/* defined at specs/discord/channel.json:310:22 */
 /**
  * @brief Allowed Mentions Structure
  *
@@ -359,7 +359,7 @@ struct discord_channel_mention;
  */
 struct discord_allowed_mentions;
 
-// defined at specs/discord/channel.json:322:22
+/* defined at specs/discord/channel.json:322:22 */
 /**
  * @brief Embed Structure
  *
@@ -367,7 +367,7 @@ struct discord_allowed_mentions;
  */
 struct discord_embed;
 
-// defined at specs/discord/channel.json:344:22
+/* defined at specs/discord/channel.json:344:22 */
 /**
  * @brief Embed Thumbnail Structure
  *
@@ -375,7 +375,7 @@ struct discord_embed;
  */
 struct discord_embed_thumbnail;
 
-// defined at specs/discord/channel.json:356:22
+/* defined at specs/discord/channel.json:356:22 */
 /**
  * @brief Embed Video Structure
  *
@@ -383,7 +383,7 @@ struct discord_embed_thumbnail;
  */
 struct discord_embed_video;
 
-// defined at specs/discord/channel.json:368:22
+/* defined at specs/discord/channel.json:368:22 */
 /**
  * @brief Embed Image Structure
  *
@@ -391,7 +391,7 @@ struct discord_embed_video;
  */
 struct discord_embed_image;
 
-// defined at specs/discord/channel.json:380:22
+/* defined at specs/discord/channel.json:380:22 */
 /**
  * @brief Embed Provider Structure
  *
@@ -399,7 +399,7 @@ struct discord_embed_image;
  */
 struct discord_embed_provider;
 
-// defined at specs/discord/channel.json:390:22
+/* defined at specs/discord/channel.json:390:22 */
 /**
  * @brief Embed Author Structure
  *
@@ -407,7 +407,7 @@ struct discord_embed_provider;
  */
 struct discord_embed_author;
 
-// defined at specs/discord/channel.json:402:22
+/* defined at specs/discord/channel.json:402:22 */
 /**
  * @brief Embed Footer Structure
  *
@@ -415,7 +415,7 @@ struct discord_embed_author;
  */
 struct discord_embed_footer;
 
-// defined at specs/discord/channel.json:413:22
+/* defined at specs/discord/channel.json:413:22 */
 /**
  * @brief Embed Field Structure
  *
@@ -424,14 +424,14 @@ struct discord_embed_footer;
 struct discord_embed_field;
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/emoji.endpoints-params.json:9:22
+/* defined at specs/discord/emoji.endpoints-params.json:9:22 */
 /**
  * @brief Create Guild Emoji
  *
  */
 struct discord_create_guild_emoji_params;
 
-// defined at specs/discord/emoji.endpoints-params.json:20:22
+/* defined at specs/discord/emoji.endpoints-params.json:20:22 */
 /**
  * @brief Modify Guild Emoji
  *
@@ -439,7 +439,7 @@ struct discord_create_guild_emoji_params;
 struct discord_modify_guild_emoji_params;
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 
-// defined at specs/discord/emoji.json:9:22
+/* defined at specs/discord/emoji.json:9:22 */
 /**
  * @brief Emoji Structure
  *
@@ -456,7 +456,7 @@ struct discord_emoji;
 
 
 
-// defined at specs/discord/gateway.json:139:22
+/* defined at specs/discord/gateway.json:139:22 */
 /**
  * @brief Identify Structure
  *
@@ -464,7 +464,7 @@ struct discord_emoji;
  */
 struct discord_identify;
 
-// defined at specs/discord/gateway.json:156:22
+/* defined at specs/discord/gateway.json:156:22 */
 /**
  * @brief Gateway Voice State Update Structure
  *
@@ -472,7 +472,7 @@ struct discord_identify;
  */
 struct discord_voice_state_status;
 
-// defined at specs/discord/gateway.json:169:22
+/* defined at specs/discord/gateway.json:169:22 */
 /**
  * @brief Gateway Presence Update Structure
  *
@@ -480,7 +480,7 @@ struct discord_voice_state_status;
  */
 struct discord_presence_status;
 
-// defined at specs/discord/gateway.json:182:22
+/* defined at specs/discord/gateway.json:182:22 */
 /**
  * @brief Identify Connection Properties
  *
@@ -488,7 +488,7 @@ struct discord_presence_status;
  */
 struct discord_identify_connection;
 
-// defined at specs/discord/gateway.json:193:22
+/* defined at specs/discord/gateway.json:193:22 */
 /**
  * @brief Activity Structure
  *
@@ -498,7 +498,7 @@ struct discord_activity;
 
 
 
-// defined at specs/discord/gateway.json:224:22
+/* defined at specs/discord/gateway.json:224:22 */
 /**
  * @brief Session Start Limit Structure
  *
@@ -507,21 +507,21 @@ struct discord_activity;
 struct discord_session_start_limit;
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/guild-template.endpoints-params.json:9:22
+/* defined at specs/discord/guild-template.endpoints-params.json:9:22 */
 /**
  * @brief Create Guild From Guild Template
  *
  */
 struct discord_create_guild_from_guild_template_params;
 
-// defined at specs/discord/guild-template.endpoints-params.json:19:22
+/* defined at specs/discord/guild-template.endpoints-params.json:19:22 */
 /**
  * @brief Create Guild Template
  *
  */
 struct discord_create_guild_template_params;
 
-// defined at specs/discord/guild-template.endpoints-params.json:29:22
+/* defined at specs/discord/guild-template.endpoints-params.json:29:22 */
 /**
  * @brief Modify Guild Template
  *
@@ -529,7 +529,7 @@ struct discord_create_guild_template_params;
 struct discord_modify_guild_template_params;
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
 
-// defined at specs/discord/guild-template.json:9:22
+/* defined at specs/discord/guild-template.json:9:22 */
 /**
  * @brief Guild Template Structure
  *
@@ -538,91 +538,105 @@ struct discord_modify_guild_template_params;
 struct discord_guild_template;
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/guild.endpoints-params.json:9:22
+/* defined at specs/discord/guild.endpoints-params.json:9:22 */
 /**
  * @brief Create Guild
  *
  */
 struct discord_create_guild_params;
 
-// defined at specs/discord/guild.endpoints-params.json:28:22
+/* defined at specs/discord/guild.endpoints-params.json:28:22 */
 /**
  * @brief Modify Guild
  *
  */
 struct discord_modify_guild_params;
 
-// defined at specs/discord/guild.endpoints-params.json:55:22
+/* defined at specs/discord/guild.endpoints-params.json:55:22 */
 /**
  * @brief Create Guild Channel
  *
  */
 struct discord_create_guild_channel_params;
 
-// defined at specs/discord/guild.endpoints-params.json:73:22
+/* defined at specs/discord/guild.endpoints-params.json:73:22 */
 /**
  * @brief Modify Guild Channel Positions
  *
  */
 struct discord_modify_guild_channel_positions_params;
 
-// defined at specs/discord/guild.endpoints-params.json:85:22
+/* defined at specs/discord/guild.endpoints-params.json:85:22 */
 /**
  * @brief List Guild Members
  *
  */
 struct discord_list_guild_members_params;
 
-// defined at specs/discord/guild.endpoints-params.json:95:22
+/* defined at specs/discord/guild.endpoints-params.json:95:22 */
 /**
  * @brief Search Guild Members
  *
  */
 struct discord_search_guild_members_params;
 
-// defined at specs/discord/guild.endpoints-params.json:105:22
+/* defined at specs/discord/guild.endpoints-params.json:105:22 */
 /**
  * @brief Add Guild Member
  *
  */
 struct discord_add_guild_member_params;
 
-// defined at specs/discord/guild.endpoints-params.json:118:22
+/* defined at specs/discord/guild.endpoints-params.json:118:22 */
 /**
  * @brief Modify Guild Member
  *
  */
 struct discord_modify_guild_member_params;
 
-// defined at specs/discord/guild.endpoints-params.json:131:22
+/* defined at specs/discord/guild.endpoints-params.json:131:22 */
+/**
+ * @brief Modify Current User Nick
+ *
+ */
+struct discord_modify_current_user_nick_params;
+
+/* defined at specs/discord/guild.endpoints-params.json:140:22 */
+/**
+ * @brief Create Guild Ban
+ *
+ */
+struct discord_create_guild_ban_params;
+
+/* defined at specs/discord/guild.endpoints-params.json:150:22 */
 /**
  * @brief Create Guild Role
  *
  */
 struct discord_create_guild_role_params;
 
-// defined at specs/discord/guild.endpoints-params.json:144:22
+/* defined at specs/discord/guild.endpoints-params.json:163:22 */
 /**
  * @brief Modify Guild Role Positions
  *
  */
 struct discord_modify_guild_role_positions_params;
 
-// defined at specs/discord/guild.endpoints-params.json:154:22
+/* defined at specs/discord/guild.endpoints-params.json:173:22 */
 /**
  * @brief Modify Guild Role
  *
  */
 struct discord_modify_guild_role_params;
 
-// defined at specs/discord/guild.endpoints-params.json:167:22
+/* defined at specs/discord/guild.endpoints-params.json:186:22 */
 /**
  * @brief Get Guild Prune Count
  *
  */
 struct discord_get_guild_prune_count_params;
 
-// defined at specs/discord/guild.endpoints-params.json:177:22
+/* defined at specs/discord/guild.endpoints-params.json:196:22 */
 /**
  * @brief Begin Guild Prune
  *
@@ -630,7 +644,7 @@ struct discord_get_guild_prune_count_params;
 struct discord_begin_guild_prune_params;
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 
-// defined at specs/discord/guild.json:9:22
+/* defined at specs/discord/guild.json:9:22 */
 /**
  * @brief Guild Structure
  *
@@ -652,7 +666,7 @@ struct discord_guild;
 
 
 
-// defined at specs/discord/guild.json:150:23
+/* defined at specs/discord/guild.json:150:23 */
 /**
  * @brief Unavailable Guild Object
  *
@@ -660,7 +674,7 @@ struct discord_guild;
  */
 struct discord_unavailable_guild;
 
-// defined at specs/discord/guild.json:160:23
+/* defined at specs/discord/guild.json:160:23 */
 /**
  * @brief Guild Preview Object
  *
@@ -668,7 +682,7 @@ struct discord_unavailable_guild;
  */
 struct discord_guild_preview;
 
-// defined at specs/discord/guild.json:178:23
+/* defined at specs/discord/guild.json:178:23 */
 /**
  * @brief Guild Widget Object
  *
@@ -676,7 +690,7 @@ struct discord_guild_preview;
  */
 struct discord_guild_widget;
 
-// defined at specs/discord/guild.json:188:22
+/* defined at specs/discord/guild.json:188:22 */
 /**
  * @brief Guild Member Structure
  *
@@ -684,7 +698,7 @@ struct discord_guild_widget;
  */
 struct discord_guild_member;
 
-// defined at specs/discord/guild.json:205:22
+/* defined at specs/discord/guild.json:205:22 */
 /**
  * @brief Integration Structure
  *
@@ -694,7 +708,7 @@ struct discord_integration;
 
 
 
-// defined at specs/discord/guild.json:239:22
+/* defined at specs/discord/guild.json:239:22 */
 /**
  * @brief Integration Account Structure
  *
@@ -702,7 +716,7 @@ struct discord_integration;
  */
 struct discord_integration_account;
 
-// defined at specs/discord/guild.json:249:22
+/* defined at specs/discord/guild.json:249:22 */
 /**
  * @brief Integration Application Object
  *
@@ -710,7 +724,7 @@ struct discord_integration_account;
  */
 struct discord_integration_application;
 
-// defined at specs/discord/guild.json:262:22
+/* defined at specs/discord/guild.json:262:22 */
 /**
  * @brief Ban Structure
  *
@@ -718,7 +732,7 @@ struct discord_integration_application;
  */
 struct discord_ban;
 
-// defined at specs/discord/guild.json:272:22
+/* defined at specs/discord/guild.json:272:22 */
 /**
  * @brief Welcome Screen Structure
  *
@@ -726,7 +740,7 @@ struct discord_ban;
  */
 struct discord_welcome_screen;
 
-// defined at specs/discord/guild.json:283:22
+/* defined at specs/discord/guild.json:283:22 */
 /**
  * @brief Welcome Screen Channel Structure
  *
@@ -735,21 +749,21 @@ struct discord_welcome_screen;
 struct discord_welcome_screen_channel;
 /* This file is generated from specs/discord/interaction.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/interaction.endpoints-params.json:9:22
+/* defined at specs/discord/interaction.endpoints-params.json:9:22 */
 /**
  * @brief Edit Original Interaction Response
  *
  */
 struct discord_edit_original_interaction_response_params;
 
-// defined at specs/discord/interaction.endpoints-params.json:24:22
+/* defined at specs/discord/interaction.endpoints-params.json:24:22 */
 /**
  * @brief Create Followup Message
  *
  */
 struct discord_create_followup_message_params;
 
-// defined at specs/discord/interaction.endpoints-params.json:45:22
+/* defined at specs/discord/interaction.endpoints-params.json:45:22 */
 /**
  * @brief Edit Followup Message
  *
@@ -757,7 +771,7 @@ struct discord_create_followup_message_params;
 struct discord_edit_followup_message_params;
 /* This file is generated from specs/discord/interaction.json, Please don't edit it. */
 
-// defined at specs/discord/interaction.json:9:22
+/* defined at specs/discord/interaction.json:9:22 */
 /**
  * @brief Interaction Structure
  *
@@ -767,7 +781,7 @@ struct discord_interaction;
 
 
 
-// defined at specs/discord/interaction.json:40:22
+/* defined at specs/discord/interaction.json:40:22 */
 /**
  * @brief Interaction Data Structure
  *
@@ -775,7 +789,7 @@ struct discord_interaction;
  */
 struct discord_interaction_data;
 
-// defined at specs/discord/interaction.json:57:22
+/* defined at specs/discord/interaction.json:57:22 */
 /**
  * @brief Resolved Data Structure
  *
@@ -783,7 +797,7 @@ struct discord_interaction_data;
  */
 struct discord_resolved_data;
 
-// defined at specs/discord/interaction.json:71:22
+/* defined at specs/discord/interaction.json:71:22 */
 /**
  * @brief Message Interaction Structure
  *
@@ -791,7 +805,7 @@ struct discord_resolved_data;
  */
 struct discord_message_interaction;
 
-// defined at specs/discord/interaction.json:84:22
+/* defined at specs/discord/interaction.json:84:22 */
 /**
  * @brief Interaction Response Structure
  *
@@ -801,7 +815,7 @@ struct discord_interaction_response;
 
 
 
-// defined at specs/discord/interaction.json:109:22
+/* defined at specs/discord/interaction.json:109:22 */
 /**
  * @brief Interaction Callback Data Structure
  *
@@ -812,7 +826,7 @@ struct discord_interaction_callback_data;
 
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/invite.endpoints-params.json:9:22
+/* defined at specs/discord/invite.endpoints-params.json:9:22 */
 /**
  * @brief Get Invite
  *
@@ -822,7 +836,7 @@ struct discord_get_invite_params;
 
 
 
-// defined at specs/discord/invite.json:19:22
+/* defined at specs/discord/invite.json:19:22 */
 /**
  * @brief Invite Structure
  *
@@ -830,7 +844,7 @@ struct discord_get_invite_params;
  */
 struct discord_invite;
 
-// defined at specs/discord/invite.json:36:22
+/* defined at specs/discord/invite.json:36:22 */
 /**
  * @brief Invite Metadata Structure
  *
@@ -839,7 +853,7 @@ struct discord_invite;
 struct discord_invite_metadata;
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 
-// defined at specs/discord/message_components.json:9:22
+/* defined at specs/discord/message_components.json:9:22 */
 /**
  * @brief Component Structure
  *
@@ -849,7 +863,7 @@ struct discord_component;
 
 
 
-// defined at specs/discord/message_components.json:41:22
+/* defined at specs/discord/message_components.json:41:22 */
 /**
  * @brief Button Structure
  *
@@ -859,7 +873,7 @@ struct discord_button;
 
 
 
-// defined at specs/discord/message_components.json:70:22
+/* defined at specs/discord/message_components.json:70:22 */
 /**
  * @brief Select Menu Structure
  *
@@ -867,7 +881,7 @@ struct discord_button;
  */
 struct discord_select_menu;
 
-// defined at specs/discord/message_components.json:85:22
+/* defined at specs/discord/message_components.json:85:22 */
 /**
  * @brief Select Option Structure
  *
@@ -876,7 +890,7 @@ struct discord_select_menu;
 struct discord_select_option;
 /* This file is generated from specs/discord/misc.json, Please don't edit it. */
 
-// defined at specs/discord/misc.json:7:22
+/* defined at specs/discord/misc.json:7:22 */
 /**
  * @brief Custom File Structure
  *
@@ -886,7 +900,7 @@ struct discord_file;
 
 
 
-// defined at specs/discord/permissions.json:50:22
+/* defined at specs/discord/permissions.json:50:22 */
 /**
  * @brief Role Structure
  *
@@ -894,7 +908,7 @@ struct discord_file;
  */
 struct discord_role;
 
-// defined at specs/discord/permissions.json:68:22
+/* defined at specs/discord/permissions.json:68:22 */
 /**
  * @brief Role Tags Structure
  *
@@ -903,14 +917,21 @@ struct discord_role;
 struct discord_role_tags;
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/user.endpoints-params.json:9:22
+/* defined at specs/discord/user.endpoints-params.json:9:22 */
 /**
  * @brief Modify Current User
  *
  */
 struct discord_modify_current_user_params;
 
-// defined at specs/discord/user.endpoints-params.json:19:22
+/* defined at specs/discord/user.endpoints-params.json:19:22 */
+/**
+ * @brief Create DM
+ *
+ */
+struct discord_create_dm_params;
+
+/* defined at specs/discord/user.endpoints-params.json:28:22 */
 /**
  * @brief Create Group DM
  *
@@ -922,7 +943,7 @@ struct discord_create_group_dm_params;
 
 
 
-// defined at specs/discord/user.json:41:28
+/* defined at specs/discord/user.json:41:28 */
 /**
  * @brief User Structure
  *
@@ -931,7 +952,7 @@ struct discord_user;
 
 
 
-// defined at specs/discord/user.json:73:28
+/* defined at specs/discord/user.json:73:28 */
 /**
  * @brief Connection Structure
  *
@@ -947,7 +968,7 @@ struct discord_connection;
 
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
 
-// defined at specs/discord/voice.json:10:22
+/* defined at specs/discord/voice.json:10:22 */
 /**
  * @brief Voice State Structure
  *
@@ -955,7 +976,7 @@ struct discord_connection;
  */
 struct discord_voice_state;
 
-// defined at specs/discord/voice.json:31:22
+/* defined at specs/discord/voice.json:31:22 */
 /**
  * @brief Voice Region Structure
  *
@@ -964,35 +985,35 @@ struct discord_voice_state;
 struct discord_voice_region;
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/webhook.endpoints-params.json:9:22
+/* defined at specs/discord/webhook.endpoints-params.json:9:22 */
 /**
  * @brief Create Webhook
  *
  */
 struct discord_create_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:19:22
+/* defined at specs/discord/webhook.endpoints-params.json:19:22 */
 /**
  * @brief Modify Webhook
  *
  */
 struct discord_modify_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:30:22
+/* defined at specs/discord/webhook.endpoints-params.json:30:22 */
 /**
  * @brief Modify Webhook with Token
  *
  */
 struct discord_modify_webhook_with_token_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:40:22
+/* defined at specs/discord/webhook.endpoints-params.json:40:22 */
 /**
  * @brief Execute Webhook
  *
  */
 struct discord_execute_webhook_params;
 
-// defined at specs/discord/webhook.endpoints-params.json:60:22
+/* defined at specs/discord/webhook.endpoints-params.json:60:22 */
 /**
  * @brief Edit Webhook Message
  *
@@ -1000,7 +1021,7 @@ struct discord_execute_webhook_params;
 struct discord_edit_webhook_message_params;
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 
-// defined at specs/discord/webhook.json:9:22
+/* defined at specs/discord/webhook.json:9:22 */
 /**
  * @brief Webhook Structure
  *
@@ -1012,8 +1033,8 @@ struct discord_webhook;
 /* This file is generated from specs/discord/application.json, Please don't edit it. */
 
 
-// Application Flags
-// defined at specs/discord/application.json:28:5
+/* Application Flags */
+/* defined at specs/discord/application.json:28:5 */
 /**
  * @see https://discord.com/developers/docs/resources/application#application-object-application-flags
  *
@@ -1029,12 +1050,12 @@ struct discord_webhook;
  * @endverbatim
  */
 enum discord_application_flags {
-  DISCORD_APPLICATION_GATEWAY_PRESENCE = 4096, ///< 1 << 12
-  DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED = 8192, ///< 1 << 13
-  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS = 16384, ///< 1 << 14
-  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED = 32768, ///< 1 << 15
-  DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT = 65536, ///< 1 << 16
-  DISCORD_APPLICATION_EMBEDDED = 131072, ///< 1 << 17
+  DISCORD_APPLICATION_GATEWAY_PRESENCE = 4096, /** 1 << 12 */
+  DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED = 8192, /** 1 << 13 */
+  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS = 16384, /** 1 << 14 */
+  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED = 32768, /** 1 << 15 */
+  DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT = 65536, /** 1 << 16 */
+  DISCORD_APPLICATION_EMBEDDED = 131072, /** 1 << 17 */
 };
 extern char* discord_application_flags_print(enum discord_application_flags);
 extern enum discord_application_flags discord_application_flags_eval(char*);
@@ -1048,8 +1069,8 @@ extern size_t discord_application_flags_list_to_json(char *str, size_t len, enum
 /* This file is generated from specs/discord/application_commands.json, Please don't edit it. */
 
 
-// Application Command Types
-// defined at specs/discord/application_commands.json:22:5
+/* Application Command Types */
+/* defined at specs/discord/application_commands.json:22:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types
  *
@@ -1065,9 +1086,9 @@ extern size_t discord_application_flags_list_to_json(char *str, size_t len, enum
  * @endverbatim
  */
 enum discord_application_command_types {
-  DISCORD_APPLICATION_COMMAND_CHAT_INPUT = 1, ///< Slash commands; a text-based command that shows up when a user types /
-  DISCORD_APPLICATION_COMMAND_USER = 2, ///< A UI-based command that shows up when you right click or tap on a user
-  DISCORD_APPLICATION_COMMAND_MESSAGE = 3, ///< A UI-based command that shows up when you right lick or tap on a message
+  DISCORD_APPLICATION_COMMAND_CHAT_INPUT = 1, /** Slash commands; a text-based command that shows up when a user types / */
+  DISCORD_APPLICATION_COMMAND_USER = 2, /** A UI-based command that shows up when you right click or tap on a user */
+  DISCORD_APPLICATION_COMMAND_MESSAGE = 3, /** A UI-based command that shows up when you right lick or tap on a message */
 };
 extern char* discord_application_command_types_print(enum discord_application_command_types);
 extern enum discord_application_command_types discord_application_command_types_eval(char*);
@@ -1079,8 +1100,8 @@ extern size_t discord_application_command_types_list_to_json_v(char *str, size_t
 extern size_t discord_application_command_types_list_to_json(char *str, size_t len, enum discord_application_command_types **p);
 
 
-// Application Command Option Type
-// defined at specs/discord/application_commands.json:49:5
+/* Application Command Option Type */
+/* defined at specs/discord/application_commands.json:49:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
  *
@@ -1099,13 +1120,13 @@ enum discord_application_command_option_types {
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND = 1,
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP = 2,
   DISCORD_APPLICATION_COMMAND_OPTION_STRING = 3,
-  DISCORD_APPLICATION_COMMAND_OPTION_INTEGER = 4, ///< Any integer between -2^53 and 2^53
+  DISCORD_APPLICATION_COMMAND_OPTION_INTEGER = 4, /** Any integer between -2^53 and 2^53 */
   DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN = 5,
   DISCORD_APPLICATION_COMMAND_OPTION_USER = 6,
-  DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL = 7, ///< Includes all channel types + categories
+  DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL = 7, /** Includes all channel types + categories */
   DISCORD_APPLICATION_COMMAND_OPTION_ROLE = 8,
-  DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE = 9, ///< Includes users and roles
-  DISCORD_APPLICATION_COMMAND_OPTION_NUMBER = 10, ///< Any double between -2^53 and 2^53
+  DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE = 9, /** Includes users and roles */
+  DISCORD_APPLICATION_COMMAND_OPTION_NUMBER = 10, /** Any double between -2^53 and 2^53 */
 };
 extern char* discord_application_command_option_types_print(enum discord_application_command_option_types);
 extern enum discord_application_command_option_types discord_application_command_option_types_eval(char*);
@@ -1117,8 +1138,8 @@ extern size_t discord_application_command_option_types_list_to_json_v(char *str,
 extern size_t discord_application_command_option_types_list_to_json(char *str, size_t len, enum discord_application_command_option_types **p);
 
 
-// Application Command Permission Type
-// defined at specs/discord/application_commands.json:104:5
+/* Application Command Permission Type */
+/* defined at specs/discord/application_commands.json:104:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type
  *
@@ -1149,8 +1170,8 @@ extern size_t discord_application_command_permission_types_list_to_json(char *st
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 
 
-// Audit Log Events
-// defined at specs/discord/audit_log.json:35:5
+/* Audit Log Events */
+/* defined at specs/discord/audit_log.json:35:5 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events
  *
@@ -1222,8 +1243,8 @@ extern size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum 
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 
 
-// Channel Types
-// defined at specs/discord/channel.json:6:5
+/* Channel Types */
+/* defined at specs/discord/channel.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-types
  *
@@ -1261,8 +1282,8 @@ extern size_t discord_channel_types_list_to_json_v(char *str, size_t len, void *
 extern size_t discord_channel_types_list_to_json(char *str, size_t len, enum discord_channel_types **p);
 
 
-// Message Sticker Format Types
-// defined at specs/discord/channel.json:66:5
+/* Message Sticker Format Types */
+/* defined at specs/discord/channel.json:66:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-format-types
  *
@@ -1292,8 +1313,8 @@ extern size_t discord_message_sticker_format_types_list_to_json_v(char *str, siz
 extern size_t discord_message_sticker_format_types_list_to_json(char *str, size_t len, enum discord_message_sticker_format_types **p);
 
 
-// Message Flags
-// defined at specs/discord/channel.json:95:5
+/* Message Flags */
+/* defined at specs/discord/channel.json:95:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-flags
  *
@@ -1309,11 +1330,11 @@ extern size_t discord_message_sticker_format_types_list_to_json(char *str, size_
  * @endverbatim
  */
 enum discord_message_flags {
-  DISCORD_MESSAGE_CROSSPOSTED = 1, ///< 1<<0
-  DISCORD_MESSAGE_IS_CROSSPOST = 2, ///< 1<<1
-  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, ///< 1<<2
-  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, ///< 1<<3
-  DISCORD_MESSAGE_URGENT = 16, ///< 1<<4
+  DISCORD_MESSAGE_CROSSPOSTED = 1, /** 1<<0 */
+  DISCORD_MESSAGE_IS_CROSSPOST = 2, /** 1<<1 */
+  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, /** 1<<2 */
+  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, /** 1<<3 */
+  DISCORD_MESSAGE_URGENT = 16, /** 1<<4 */
 };
 extern char* discord_message_flags_print(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_eval(char*);
@@ -1325,8 +1346,8 @@ extern size_t discord_message_flags_list_to_json_v(char *str, size_t len, void *
 extern size_t discord_message_flags_list_to_json(char *str, size_t len, enum discord_message_flags **p);
 
 
-// Message Activity Types
-// defined at specs/discord/channel.json:133:5
+/* Message Activity Types */
+/* defined at specs/discord/channel.json:133:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-types
  *
@@ -1357,8 +1378,8 @@ extern size_t discord_message_activity_types_list_to_json_v(char *str, size_t le
 extern size_t discord_message_activity_types_list_to_json(char *str, size_t len, enum discord_message_activity_types **p);
 
 
-// Message Types
-// defined at specs/discord/channel.json:156:5
+/* Message Types */
+/* defined at specs/discord/channel.json:156:5 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-types
  *
@@ -1405,8 +1426,8 @@ extern size_t discord_message_types_list_to_json(char *str, size_t len, enum dis
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 
 
-// Gateway Close Event Codes
-// defined at specs/discord/gateway.json:6:5
+/* Gateway Close Event Codes */
+/* defined at specs/discord/gateway.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
  *
@@ -1447,8 +1468,8 @@ extern size_t discord_gateway_close_opcodes_list_to_json_v(char *str, size_t len
 extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, enum discord_gateway_close_opcodes **p);
 
 
-// Gateway Intents
-// defined at specs/discord/gateway.json:29:5
+/* Gateway Intents */
+/* defined at specs/discord/gateway.json:29:5 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  *
@@ -1464,21 +1485,21 @@ extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, 
  * @endverbatim
  */
 enum discord_gateway_intents {
-  DISCORD_GATEWAY_GUILDS = 1, ///< 1 << 0
-  DISCORD_GATEWAY_GUILD_MEMBERS = 2, ///< 1 << 1
-  DISCORD_GATEWAY_GUILD_BANS = 4, ///< 1 << 2
-  DISCORD_GATEWAY_GUILD_EMOJIS = 8, ///< 1 << 3
-  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, ///< 1 << 4
-  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, ///< 1 << 5
-  DISCORD_GATEWAY_GUILD_INVITES = 64, ///< 1 << 6
-  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, ///< 1 << 7
-  DISCORD_GATEWAY_GUILD_PRESENCES = 256, ///< 1 << 8
-  DISCORD_GATEWAY_GUILD_MESSAGES = 512, ///< 1 << 9
-  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, ///< 1 << 10
-  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, ///< 1 << 11
-  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, ///< 1 << 12
-  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, ///< 1 << 13
-  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, ///< 1 << 14
+  DISCORD_GATEWAY_GUILDS = 1, /** 1 << 0 */
+  DISCORD_GATEWAY_GUILD_MEMBERS = 2, /** 1 << 1 */
+  DISCORD_GATEWAY_GUILD_BANS = 4, /** 1 << 2 */
+  DISCORD_GATEWAY_GUILD_EMOJIS = 8, /** 1 << 3 */
+  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, /** 1 << 4 */
+  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, /** 1 << 5 */
+  DISCORD_GATEWAY_GUILD_INVITES = 64, /** 1 << 6 */
+  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, /** 1 << 7 */
+  DISCORD_GATEWAY_GUILD_PRESENCES = 256, /** 1 << 8 */
+  DISCORD_GATEWAY_GUILD_MESSAGES = 512, /** 1 << 9 */
+  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, /** 1 << 10 */
+  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, /** 1 << 11 */
+  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, /** 1 << 12 */
+  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, /** 1 << 13 */
+  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, /** 1 << 14 */
 };
 extern char* discord_gateway_intents_print(enum discord_gateway_intents);
 extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
@@ -1490,8 +1511,8 @@ extern size_t discord_gateway_intents_list_to_json_v(char *str, size_t len, void
 extern size_t discord_gateway_intents_list_to_json(char *str, size_t len, enum discord_gateway_intents **p);
 
 
-// Gateway Opcodes
-// defined at specs/discord/gateway.json:53:5
+/* Gateway Opcodes */
+/* defined at specs/discord/gateway.json:53:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
  *
@@ -1529,8 +1550,8 @@ extern size_t discord_gateway_opcodes_list_to_json_v(char *str, size_t len, void
 extern size_t discord_gateway_opcodes_list_to_json(char *str, size_t len, enum discord_gateway_opcodes **p);
 
 
-// Gateway Events
-// defined at specs/discord/gateway.json:73:5
+/* Gateway Events */
+/* defined at specs/discord/gateway.json:73:5 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
  *
@@ -1611,8 +1632,8 @@ extern size_t discord_gateway_events_list_to_json_v(char *str, size_t len, void 
 extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum discord_gateway_events **p);
 
 
-// Activity Types
-// defined at specs/discord/gateway.json:206:5
+/* Activity Types */
+/* defined at specs/discord/gateway.json:206:5 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
@@ -1648,8 +1669,8 @@ extern size_t discord_activity_types_list_to_json(char *str, size_t len, enum di
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 
 
-// Default Message Notification Level
-// defined at specs/discord/guild.json:64:5
+/* Default Message Notification Level */
+/* defined at specs/discord/guild.json:64:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level
  *
@@ -1678,8 +1699,8 @@ extern size_t discord_default_message_notification_level_list_to_json_v(char *st
 extern size_t discord_default_message_notification_level_list_to_json(char *str, size_t len, enum discord_default_message_notification_level **p);
 
 
-// Explicit Content Filter Level
-// defined at specs/discord/guild.json:73:5
+/* Explicit Content Filter Level */
+/* defined at specs/discord/guild.json:73:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level
  *
@@ -1709,8 +1730,8 @@ extern size_t discord_explicit_content_filter_level_list_to_json_v(char *str, si
 extern size_t discord_explicit_content_filter_level_list_to_json(char *str, size_t len, enum discord_explicit_content_filter_level **p);
 
 
-// MFA Level
-// defined at specs/discord/guild.json:83:5
+/* MFA Level */
+/* defined at specs/discord/guild.json:83:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-mfa-level
  *
@@ -1739,8 +1760,8 @@ extern size_t discord_mfa_level_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_mfa_level_list_to_json(char *str, size_t len, enum discord_mfa_level **p);
 
 
-// Verification Level
-// defined at specs/discord/guild.json:92:5
+/* Verification Level */
+/* defined at specs/discord/guild.json:92:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-verification-level
  *
@@ -1772,8 +1793,8 @@ extern size_t discord_verification_level_list_to_json_v(char *str, size_t len, v
 extern size_t discord_verification_level_list_to_json(char *str, size_t len, enum discord_verification_level **p);
 
 
-// Premium Tier
-// defined at specs/discord/guild.json:104:5
+/* Premium Tier */
+/* defined at specs/discord/guild.json:104:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-premium-tier
  *
@@ -1804,8 +1825,8 @@ extern size_t discord_premium_tier_list_to_json_v(char *str, size_t len, void *p
 extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum discord_premium_tier **p);
 
 
-// System Channel Flags
-// defined at specs/discord/guild.json:115:5
+/* System Channel Flags */
+/* defined at specs/discord/guild.json:115:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-system-channel-flags
  *
@@ -1821,8 +1842,8 @@ extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum disc
  * @endverbatim
  */
 enum discord_system_channel_flags {
-  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, ///< 1<<0
-  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, ///< 1<<1
+  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, /** 1<<0 */
+  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, /** 1<<1 */
 };
 extern char* discord_system_channel_flags_print(enum discord_system_channel_flags);
 extern enum discord_system_channel_flags discord_system_channel_flags_eval(char*);
@@ -1834,8 +1855,8 @@ extern size_t discord_system_channel_flags_list_to_json_v(char *str, size_t len,
 extern size_t discord_system_channel_flags_list_to_json(char *str, size_t len, enum discord_system_channel_flags **p);
 
 
-// Guild Features
-// defined at specs/discord/guild.json:124:5
+/* Guild Features */
+/* defined at specs/discord/guild.json:124:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-features
  *
@@ -1877,8 +1898,8 @@ extern size_t discord_guild_features_list_to_json_v(char *str, size_t len, void 
 extern size_t discord_guild_features_list_to_json(char *str, size_t len, enum discord_guild_features **p);
 
 
-// Integration Expire Behaviors
-// defined at specs/discord/guild.json:225:5
+/* Integration Expire Behaviors */
+/* defined at specs/discord/guild.json:225:5 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-expire-behaviors
  *
@@ -1909,8 +1930,8 @@ extern size_t discord_integration_expire_behaviors_list_to_json(char *str, size_
 /* This file is generated from specs/discord/interaction.json, Please don't edit it. */
 
 
-// Interaction Type
-// defined at specs/discord/interaction.json:24:5
+/* Interaction Type */
+/* defined at specs/discord/interaction.json:24:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type
  *
@@ -1940,8 +1961,8 @@ extern size_t discord_interaction_types_list_to_json_v(char *str, size_t len, vo
 extern size_t discord_interaction_types_list_to_json(char *str, size_t len, enum discord_interaction_types **p);
 
 
-// Interaction Callback Type
-// defined at specs/discord/interaction.json:91:5
+/* Interaction Callback Type */
+/* defined at specs/discord/interaction.json:91:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type
  *
@@ -1957,11 +1978,11 @@ extern size_t discord_interaction_types_list_to_json(char *str, size_t len, enum
  * @endverbatim
  */
 enum discord_interaction_callback_types {
-  DISCORD_INTERACTION_CALLBACK_PONG = 1, ///< ACK a Ping
-  DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE = 4, ///< respond to a interaction with a message
-  DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5, ///< ACK an interaction and edit a response later, the user sees a loading state
-  DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE = 6, ///< for components, ACK an interaction and edit the original message later; the user does not see a loading state
-  DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE = 7, ///< for components, edit the message the component was attached to
+  DISCORD_INTERACTION_CALLBACK_PONG = 1, /** ACK a Ping */
+  DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE = 4, /** respond to a interaction with a message */
+  DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5, /** ACK an interaction and edit a response later, the user sees a loading state */
+  DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE = 6, /** for components, ACK an interaction and edit the original message later; the user does not see a loading state */
+  DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE = 7, /** for components, edit the message the component was attached to */
 };
 extern char* discord_interaction_callback_types_print(enum discord_interaction_callback_types);
 extern enum discord_interaction_callback_types discord_interaction_callback_types_eval(char*);
@@ -1973,8 +1994,8 @@ extern size_t discord_interaction_callback_types_list_to_json_v(char *str, size_
 extern size_t discord_interaction_callback_types_list_to_json(char *str, size_t len, enum discord_interaction_callback_types **p);
 
 
-// Interaction Callback Data Flags
-// defined at specs/discord/interaction.json:120:5
+/* Interaction Callback Data Flags */
+/* defined at specs/discord/interaction.json:120:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-flags
  *
@@ -1990,7 +2011,7 @@ extern size_t discord_interaction_callback_types_list_to_json(char *str, size_t 
  * @endverbatim
  */
 enum discord_interaction_callback_data_flags {
-  DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL = 64, ///< only the user receiving the message can see it
+  DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL = 64, /** only the user receiving the message can see it */
 };
 extern char* discord_interaction_callback_data_flags_print(enum discord_interaction_callback_data_flags);
 extern enum discord_interaction_callback_data_flags discord_interaction_callback_data_flags_eval(char*);
@@ -2004,8 +2025,8 @@ extern size_t discord_interaction_callback_data_flags_list_to_json(char *str, si
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 
 
-// Target User Types
-// defined at specs/discord/invite.json:6:5
+/* Target User Types */
+/* defined at specs/discord/invite.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
  *
@@ -2034,8 +2055,8 @@ extern size_t discord_invite_target_user_types_list_to_json(char *str, size_t le
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 
 
-// Component Types
-// defined at specs/discord/message_components.json:26:5
+/* Component Types */
+/* defined at specs/discord/message_components.json:26:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-types
  *
@@ -2065,8 +2086,8 @@ extern size_t discord_component_types_list_to_json_v(char *str, size_t len, void
 extern size_t discord_component_types_list_to_json(char *str, size_t len, enum discord_component_types **p);
 
 
-// Button Styles
-// defined at specs/discord/message_components.json:53:5
+/* Button Styles */
+/* defined at specs/discord/message_components.json:53:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
  *
@@ -2082,11 +2103,11 @@ extern size_t discord_component_types_list_to_json(char *str, size_t len, enum d
  * @endverbatim
  */
 enum discord_button_styles {
-  DISCORD_BUTTON_PRIMARY = 1, ///< blurple, requires custom_id
-  DISCORD_BUTTON_SECONDARY = 2, ///< grey, requires custom_id
-  DISCORD_BUTTON_SUCCESS = 3, ///< green, requires custom_id
-  DISCORD_BUTTON_DANGER = 4, ///< red, requires custom_id
-  DISCORD_BUTTON_LINK = 5, ///< grey, requires url
+  DISCORD_BUTTON_PRIMARY = 1, /** blurple, requires custom_id */
+  DISCORD_BUTTON_SECONDARY = 2, /** grey, requires custom_id */
+  DISCORD_BUTTON_SUCCESS = 3, /** green, requires custom_id */
+  DISCORD_BUTTON_DANGER = 4, /** red, requires custom_id */
+  DISCORD_BUTTON_LINK = 5, /** grey, requires url */
 };
 extern char* discord_button_styles_print(enum discord_button_styles);
 extern enum discord_button_styles discord_button_styles_eval(char*);
@@ -2100,8 +2121,8 @@ extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum dis
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
-// Bitwise Permission Flags
-// defined at specs/discord/permissions.json:6:5
+/* Bitwise Permission Flags */
+/* defined at specs/discord/permissions.json:6:5 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -2115,38 +2136,38 @@ extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum dis
  * @endverbatim
  */
 enum discord_bitwise_permission_flags {
-  DISCORD_BITWISE_PERMISSION_ZERO = 0, ///< No permission bits
-  DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE = 1, ///< Allows creation of instant invites  T, V
-  DISCORD_BITWISE_PERMISSION_KICK_MEMBERS = 2, ///< Allows kicking members
-  DISCORD_BITWISE_PERMISSION_BAN_MEMBERS = 4, ///< Allows banning members
-  DISCORD_BITWISE_PERMISSION_ADMINISTRATOR = 8, ///< Allows all permissions and bypasses channel permission overwrites   
-  DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS = 16, ///< Allows management and editing of channels   T, V
-  DISCORD_BITWISE_PERMISSION_MANAGE_GUILD = 32, ///< Allows management and editing of the guild  
-  DISCORD_BITWISE_PERMISSION_ADD_REACTIONS = 64, ///< Allows for the addition of reactions to messages    T
-  DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG = 128, ///< Allows for viewing of audit logs    
-  DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER = 256, ///< Allows for using priority speaker in a voice channel    V
-  DISCORD_BITWISE_PERMISSION_STREAM = 512, ///< Allows the user to go live  V
-  DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL = 1024, ///< Allows guild members to view a channel, which includes reading messages in text channels    T, V
-  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES = 2048, ///< Allows for sending messages in a channel    T
-  DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES = 4096, ///< Allows for sending of /tts messages T
-  DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES = 8192, ///< Allows for deletion of other users messages T
-  DISCORD_BITWISE_PERMISSION_EMBED_LINKS = 16384, ///< Links sent by users with this permission will be auto-embedded  T
-  DISCORD_BITWISE_PERMISSION_ATTACH_FILES = 32768, ///< Allows for uploading images and files   T
-  DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY = 65536, ///< Allows for reading of message history   T
-  DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE = 131072, ///< Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T
-  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS = 262144, ///< Allows the usage of custom emojis from other servers    T
-  DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS = 524288, ///< Allows for viewing guild insights   
-  DISCORD_BITWISE_PERMISSION_CONNECT = 1048576, ///< Allows for joining of a voice channel   V
-  DISCORD_BITWISE_PERMISSION_SPEAK = 2097152, ///< Allows for speaking in a voice channel  V
-  DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS = 4194304, ///< Allows for muting members in a voice channel    V
-  DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS = 8388608, ///< Allows for deafening of members in a voice channel  V
-  DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS = 16777216, ///< Allows for moving of members between voice channels V
-  DISCORD_BITWISE_PERMISSION_USE_VAD = 33554432, ///< Allows for using voice-activity-detection in a voice channel    V
-  DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME = 67108864, ///< Allows for modification of own nickname 
-  DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, ///< Allows for modification of other users nicknames    
-  DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, ///< Allows management and editing of roles  T, V
-  DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, ///< Allows management and editing of webhooks   T, V
-  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, ///< Allows management and editing of emojis
+  DISCORD_BITWISE_PERMISSION_ZERO = 0, /** No permission bits */
+  DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE = 1, /** Allows creation of instant invites  T, V */
+  DISCORD_BITWISE_PERMISSION_KICK_MEMBERS = 2, /** Allows kicking members */
+  DISCORD_BITWISE_PERMISSION_BAN_MEMBERS = 4, /** Allows banning members */
+  DISCORD_BITWISE_PERMISSION_ADMINISTRATOR = 8, /** Allows all permissions and bypasses channel permission overwrites    */
+  DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS = 16, /** Allows management and editing of channels   T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_GUILD = 32, /** Allows management and editing of the guild   */
+  DISCORD_BITWISE_PERMISSION_ADD_REACTIONS = 64, /** Allows for the addition of reactions to messages    T */
+  DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG = 128, /** Allows for viewing of audit logs     */
+  DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER = 256, /** Allows for using priority speaker in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_STREAM = 512, /** Allows the user to go live  V */
+  DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL = 1024, /** Allows guild members to view a channel, which includes reading messages in text channels    T, V */
+  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES = 2048, /** Allows for sending messages in a channel    T */
+  DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES = 4096, /** Allows for sending of /tts messages T */
+  DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES = 8192, /** Allows for deletion of other users messages T */
+  DISCORD_BITWISE_PERMISSION_EMBED_LINKS = 16384, /** Links sent by users with this permission will be auto-embedded  T */
+  DISCORD_BITWISE_PERMISSION_ATTACH_FILES = 32768, /** Allows for uploading images and files   T */
+  DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY = 65536, /** Allows for reading of message history   T */
+  DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE = 131072, /** Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T */
+  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS = 262144, /** Allows the usage of custom emojis from other servers    T */
+  DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS = 524288, /** Allows for viewing guild insights    */
+  DISCORD_BITWISE_PERMISSION_CONNECT = 1048576, /** Allows for joining of a voice channel   V */
+  DISCORD_BITWISE_PERMISSION_SPEAK = 2097152, /** Allows for speaking in a voice channel  V */
+  DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS = 4194304, /** Allows for muting members in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS = 8388608, /** Allows for deafening of members in a voice channel  V */
+  DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS = 16777216, /** Allows for moving of members between voice channels V */
+  DISCORD_BITWISE_PERMISSION_USE_VAD = 33554432, /** Allows for using voice-activity-detection in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME = 67108864, /** Allows for modification of own nickname  */
+  DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, /** Allows for modification of other users nicknames     */
+  DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, /** Allows management and editing of roles  T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, /** Allows management and editing of webhooks   T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, /** Allows management and editing of emojis */
 };
 extern char* discord_bitwise_permission_flags_print(enum discord_bitwise_permission_flags);
 extern enum discord_bitwise_permission_flags discord_bitwise_permission_flags_eval(char*);
@@ -2160,8 +2181,8 @@ extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t le
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 
 
-// User Flags
-// defined at specs/discord/user.json:6:7
+/* User Flags */
+/* defined at specs/discord/user.json:6:7 */
 /**
  * @see https://discord.com/developers/docs/resources/user#user-object-user-flags
  *
@@ -2177,19 +2198,19 @@ extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t le
  * @endverbatim
  */
 enum discord_user_flags {
-  DISCORD_USER_DISCORD_EMPLOYEE = 1, ///< 1 << 0
-  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, ///< 1 << 2
-  DISCORD_USER_HYPESQUAD_EVENTS = 4, ///< 1 << 3
-  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, ///< 1 << 4
-  DISCORD_USER_HOUSE_BRAVERY = 32, ///< 1 << 6
-  DISCORD_USER_HOUSE_BRILLIANCE = 64, ///< 1 << 7
-  DISCORD_USER_HOUSE_BALANCE = 128, ///< 1 << 8
-  DISCORD_USER_EARLY_SUPPORTER = 256, ///< 1 << 9
-  DISCORD_USER_TEAM_USER = 512, ///< 1 << 10
-  DISCORD_USER_SYSTEM = 4096, ///< 1 << 12
-  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, ///< 1 << 14
-  DISCORD_USER_VERIFIED_BOT = 65536, ///< 1 << 16
-  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, ///< 1 << 17
+  DISCORD_USER_DISCORD_EMPLOYEE = 1, /** 1 << 0 */
+  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, /** 1 << 2 */
+  DISCORD_USER_HYPESQUAD_EVENTS = 4, /** 1 << 3 */
+  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, /** 1 << 4 */
+  DISCORD_USER_HOUSE_BRAVERY = 32, /** 1 << 6 */
+  DISCORD_USER_HOUSE_BRILLIANCE = 64, /** 1 << 7 */
+  DISCORD_USER_HOUSE_BALANCE = 128, /** 1 << 8 */
+  DISCORD_USER_EARLY_SUPPORTER = 256, /** 1 << 9 */
+  DISCORD_USER_TEAM_USER = 512, /** 1 << 10 */
+  DISCORD_USER_SYSTEM = 4096, /** 1 << 12 */
+  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, /** 1 << 14 */
+  DISCORD_USER_VERIFIED_BOT = 65536, /** 1 << 16 */
+  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, /** 1 << 17 */
 };
 extern char* discord_user_flags_print(enum discord_user_flags);
 extern enum discord_user_flags discord_user_flags_eval(char*);
@@ -2201,8 +2222,8 @@ extern size_t discord_user_flags_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_user_flags_list_to_json(char *str, size_t len, enum discord_user_flags **p);
 
 
-// Premium Types
-// defined at specs/discord/user.json:28:7
+/* Premium Types */
+/* defined at specs/discord/user.json:28:7 */
 /**
  * @see https://discord.com/developers/docs/resources/user#user-object-premium-types
  *
@@ -2231,8 +2252,8 @@ extern size_t discord_user_premium_types_list_to_json_v(char *str, size_t len, v
 extern size_t discord_user_premium_types_list_to_json(char *str, size_t len, enum discord_user_premium_types **p);
 
 
-// Visbility Types
-// defined at specs/discord/user.json:59:7
+/* Visbility Types */
+/* defined at specs/discord/user.json:59:7 */
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-visibility-types
  *
@@ -2262,8 +2283,8 @@ extern size_t discord_visibility_types_list_to_json(char *str, size_t len, enum 
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 
 
-// Voice Close Event Codes
-// defined at specs/discord/voice-connections.json:6:5
+/* Voice Close Event Codes */
+/* defined at specs/discord/voice-connections.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes
  *
@@ -2302,8 +2323,8 @@ extern size_t discord_voice_close_event_codes_list_to_json_v(char *str, size_t l
 extern size_t discord_voice_close_event_codes_list_to_json(char *str, size_t len, enum discord_voice_close_event_codes **p);
 
 
-// Voice Opcodes
-// defined at specs/discord/voice-connections.json:27:5
+/* Voice Opcodes */
+/* defined at specs/discord/voice-connections.json:27:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
  *
@@ -2342,8 +2363,8 @@ extern size_t discord_voice_opcodes_list_to_json_v(char *str, size_t len, void *
 extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum discord_voice_opcodes **p);
 
 
-// Voice Speaking Flags
-// defined at specs/discord/voice-connections.json:48:5
+/* Voice Speaking Flags */
+/* defined at specs/discord/voice-connections.json:48:5 */
 /**
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  *
@@ -2359,9 +2380,9 @@ extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum dis
  * @endverbatim
  */
 enum discord_voice_speaking_flags {
-  DISCORD_VOICE_MICROPHONE = 1, ///< 1 << 0
-  DISCORD_VOICE_SOUNDSHARE = 2, ///< 1 << 1
-  DISCORD_VOICE_PRIORITY = 4, ///< 1 << 2
+  DISCORD_VOICE_MICROPHONE = 1, /** 1 << 0 */
+  DISCORD_VOICE_SOUNDSHARE = 2, /** 1 << 1 */
+  DISCORD_VOICE_PRIORITY = 4, /** 1 << 2 */
 };
 extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
 extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);
@@ -2376,8 +2397,8 @@ extern size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, e
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 
 
-// Webhook Types
-// defined at specs/discord/webhook.json:26:5
+/* Webhook Types */
+/* defined at specs/discord/webhook.json:26:5 */
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
  *
@@ -2393,9 +2414,9 @@ extern size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, e
  * @endverbatim
  */
 enum discord_webhook_types {
-  DISCORD_WEBHOOK_INCOMING = 1, ///< Incoming Webhooks can post messages to channels with a generated token
-  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2, ///< Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels
-  DISCORD_WEBHOOK_APPLICATION = 3, ///< Application webhooks are webhooks used with interactions
+  DISCORD_WEBHOOK_INCOMING = 1, /** Incoming Webhooks can post messages to channels with a generated token */
+  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2, /** Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels */
+  DISCORD_WEBHOOK_APPLICATION = 3, /** Application webhooks are webhooks used with interactions */
 };
 extern char* discord_webhook_types_print(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_eval(char*);
@@ -2407,8 +2428,8 @@ extern size_t discord_webhook_types_list_to_json_v(char *str, size_t len, void *
 extern size_t discord_webhook_types_list_to_json(char *str, size_t len, enum discord_webhook_types **p);
 /* This file is generated from specs/discord/application.json, Please don't edit it. */
 
-// Application Structure
-// defined at specs/discord/application.json:9:22
+/* Application Structure */
+/* defined at specs/discord/application.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/application#application-object-application-structure
  *
@@ -2439,81 +2460,67 @@ extern size_t discord_webhook_types_list_to_json(char *str, size_t len, enum dis
 struct discord_application {
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
-  u64_snowflake_t id; ///< the id of the app
+  u64_snowflake_t id; /** the id of the app */
 
   /* specs/discord/application.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"the name of the app" }' */
-  char *name; ///< the name of the app
+  char *name; /** the name of the app */
 
   /* specs/discord/application.json:14:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*"}, "comment":"the icon hash of the app", "inject_if_not":null }' */
-  char *icon; ///< the icon hash of the app
+  char *icon; /** the icon hash of the app */
 
   /* specs/discord/application.json:15:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "comment":"the description of the app" }' */
-  char *description; ///< the description of the app
+  char *description; /** the description of the app */
 
   /* specs/discord/application.json:16:20
      '{ "name": "rpc_origins", "type":{ "base":"ja_str", "dec":"ntl"}, "comment":"an array of rpc origin urls, if rpc is enabled", "inject_if_not":null }' */
-  ja_str **rpc_origins; ///< an array of rpc origin urls, if rpc is enabled
+  ja_str **rpc_origins; /** an array of rpc origin urls, if rpc is enabled */
 
   /* specs/discord/application.json:17:19
      '{ "name":"bot_public","type":{"base":"bool"}, "comment":"when false only app owner can join the app's bot to guilds"}' */
-  bool bot_public; ///< when false only app owner can join the app's bot to guilds
+  bool bot_public; /** when false only app owner can join the app's bot to guilds */
 
   /* specs/discord/application.json:18:19
      '{ "name":"bot_require_code_grant","type":{"base":"bool"}, "comment":"when true the app's bot will only join upon completion of the full oauth2 code grant flow"}' */
-  bool bot_require_code_grant; ///< when true the app's bot will only join upon completion of the full oauth2 code grant flow
+  bool bot_require_code_grant; /** when true the app's bot will only join upon completion of the full oauth2 code grant flow */
 
   /* specs/discord/application.json:19:20
      '{ "name": "term_of_service_url", "type":{ "base":"char", "dec":"*"}, "comment":"the url of the app's terms of service", "inject_if_not":null }' */
-  char *term_of_service_url; ///< the url of the app's terms of service
+  char *term_of_service_url; /** the url of the app's terms of service */
 
   /* specs/discord/application.json:20:20
      '{ "name": "privacy_policy_url", "type":{ "base":"char", "dec":"*"}, "comment":"the url of the app's privacy policy", "inject_if_not":null }' */
-  char *privacy_policy_url; ///< the url of the app's privacy policy
+  char *privacy_policy_url; /** the url of the app's privacy policy */
 
   /* specs/discord/application.json:21:19
      '{ "name":"team","type":{"base":"struct discord_team", "dec":"*"}, "comment":"if the application belongs to a team, this will be a list of the members of that team", "inject_if_not":null, "todo":true }' */
-  // @todo team if the application belongs to a team, this will be a list of the members of that team;
+  /* @todo team if the application belongs to a team, this will be a list of the members of that team; */
 
   /* specs/discord/application.json:22:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the guild on which it has been linked", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; ///< if this application is a game sold on Discord, this field will be the guild on which it has been linked
+  u64_snowflake_t guild_id; /** if this application is a game sold on Discord, this field will be the guild on which it has been linked */
 
   /* specs/discord/application.json:23:20
      '{ "name": "primary_sku_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the id of the \"Game SKU\" that is created, if exists", "inject_if_not":0 }' */
-  u64_snowflake_t primary_sku_id; ///< if this application is a game sold on Discord, this field will be the id of the "Game SKU" that is created, if exists
+  u64_snowflake_t primary_sku_id; /** if this application is a game sold on Discord, this field will be the id of the "Game SKU" that is created, if exists */
 
   /* specs/discord/application.json:24:20
      '{ "name": "slug", "type":{ "base":"char", "dec":"*"}, "comment":"if this application is a game sold on Discord, this field will be the URL slug that links to the store page", "inject_if_not":null }' */
-  char *slug; ///< if this application is a game sold on Discord, this field will be the URL slug that links to the store page
+  char *slug; /** if this application is a game sold on Discord, this field will be the URL slug that links to the store page */
 
   /* specs/discord/application.json:25:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_application_flags" }, "comment":"the application's public flags", "inject_if_not":0 }' */
-  enum discord_application_flags flags; ///< the application's public flags
+  enum discord_application_flags flags; /** the application's public flags */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[14];
-    void *record_defined[14];
-    void *record_null[14];
-  } __M; // metadata
-/// @endcond
 };
 
 
 /* This file is generated from specs/discord/application_commands.endpoints-params.json, Please don't edit it. */
 
-// Create Global Application Command
-// defined at specs/discord/application_commands.endpoints-params.json:10:22
+/* Create Global Application Command */
+/* defined at specs/discord/application_commands.endpoints-params.json:10:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
  *
@@ -2544,42 +2551,28 @@ struct discord_application {
 struct discord_create_global_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
-  char *name; ///< 1-32 lowercase character name
+  char *name; /** 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:14:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
-  char *description; ///< 1-100 character description
+  char *description; /** 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:15:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; ///< the parameters for the command
+  struct discord_application_command_option **options; /** the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:16:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
+  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
 
   /* specs/discord/application_commands.endpoints-params.json:17:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
   enum discord_application_command_types type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Global Application Command
-// defined at specs/discord/application_commands.endpoints-params.json:24:23
+/* Edit Global Application Command */
+/* defined at specs/discord/application_commands.endpoints-params.json:24:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
  *
@@ -2610,38 +2603,24 @@ struct discord_create_global_application_command_params {
 struct discord_edit_global_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
-  char *name; ///< 1-32 lowercase character name
+  char *name; /** 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:28:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
-  char *description; ///< 1-100 character description
+  char *description; /** 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:29:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; ///< the parameters for the command
+  struct discord_application_command_option **options; /** the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:30:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
+  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Guild Application Command
-// defined at specs/discord/application_commands.endpoints-params.json:37:23
+/* Create Guild Application Command */
+/* defined at specs/discord/application_commands.endpoints-params.json:37:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
  *
@@ -2672,42 +2651,28 @@ struct discord_edit_global_application_command_params {
 struct discord_create_guild_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:40:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
-  char *name; ///< 1-32 lowercase character name
+  char *name; /** 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:41:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
-  char *description; ///< 1-100 character description
+  char *description; /** 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:42:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; ///< the parameters for the command
+  struct discord_application_command_option **options; /** the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:43:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
+  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
 
   /* specs/discord/application_commands.endpoints-params.json:44:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
   enum discord_application_command_types type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Guild Application Command
-// defined at specs/discord/application_commands.endpoints-params.json:51:23
+/* Edit Guild Application Command */
+/* defined at specs/discord/application_commands.endpoints-params.json:51:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
  *
@@ -2738,38 +2703,24 @@ struct discord_create_guild_application_command_params {
 struct discord_edit_guild_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
-  char *name; ///< 1-32 lowercase character name
+  char *name; /** 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:55:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
-  char *description; ///< 1-100 character description
+  char *description; /** 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:56:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; ///< the parameters for the command
+  struct discord_application_command_option **options; /** the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:57:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
+  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Application Command Permissions
-// defined at specs/discord/application_commands.endpoints-params.json:64:23
+/* Edit Application Command Permissions */
+/* defined at specs/discord/application_commands.endpoints-params.json:64:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions
  *
@@ -2800,27 +2751,13 @@ struct discord_edit_guild_application_command_params {
 struct discord_edit_application_command_permissions_params {
   /* specs/discord/application_commands.endpoints-params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-  struct discord_application_command_permissions **permissions; ///< the permissions for the command in the guild
+  struct discord_application_command_permissions **permissions; /** the permissions for the command in the guild */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[1];
-    void *record_defined[1];
-    void *record_null[1];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/application_commands.json, Please don't edit it. */
 
-// Application Command Structure
-// defined at specs/discord/application_commands.json:9:22
+/* Application Command Structure */
+/* defined at specs/discord/application_commands.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
  *
@@ -2851,56 +2788,42 @@ struct discord_edit_application_command_permissions_params {
 struct discord_application_command {
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-  u64_snowflake_t id; ///< unique id of the command
+  u64_snowflake_t id; /** unique id of the command */
 
   /* specs/discord/application_commands.json:13:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
-  enum discord_application_command_types type; ///< the type of the command, defaults 1 if not set
+  enum discord_application_command_types type; /** the type of the command, defaults 1 if not set */
 
   /* specs/discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-  u64_snowflake_t application_id; ///< unique id of the parent application
+  u64_snowflake_t application_id; /** unique id of the parent application */
 
   /* specs/discord/application_commands.json:15:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-  u64_snowflake_t guild_id; ///< guild id of the command, if not global
+  u64_snowflake_t guild_id; /** guild id of the command, if not global */
 
   /* specs/discord/application_commands.json:16:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-  char name[32+1]; ///< 1-32 character name
+  char name[32+1]; /** 1-32 character name */
 
   /* specs/discord/application_commands.json:17:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-  char description[100+1]; ///< 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands
+  char description[100+1]; /** 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands */
 
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; ///< the parameters for the command
+  struct discord_application_command_option **options; /** the parameters for the command */
 
   /* specs/discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; ///< whether the command is enabled by default when the app is added to a guild
+  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Application Command Option Structure
-// defined at specs/discord/application_commands.json:38:22
+/* Application Command Option Structure */
+/* defined at specs/discord/application_commands.json:38:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
  *
@@ -2931,48 +2854,34 @@ struct discord_application_command {
 struct discord_application_command_option {
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  enum discord_application_command_option_types type; ///< value of application command option type
+  enum discord_application_command_option_types type; /** value of application command option type */
 
   /* specs/discord/application_commands.json:42:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  char name[32+1]; ///< 1-32 lowercase character
+  char name[32+1]; /** 1-32 lowercase character */
 
   /* specs/discord/application_commands.json:43:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  char description[100+1]; ///< 1-100 character description
+  char description[100+1]; /** 1-100 character description */
 
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
-  bool required; ///< if the parameter is required or optional -- default false
+  bool required; /** if the parameter is required or optional -- default false */
 
   /* specs/discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
-  struct discord_application_command_option_choice **choices; ///< choices for string and int types for the user to pick from
+  struct discord_application_command_option_choice **choices; /** choices for string and int types for the user to pick from */
 
   /* specs/discord/application_commands.json:46:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
-  struct discord_application_command_option **options; ///< if the option is a subcommand or subcommand group type, this nested options will be the parameters
+  struct discord_application_command_option **options; /** if the option is a subcommand or subcommand group type, this nested options will be the parameters */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[6];
-    void *record_defined[6];
-    void *record_null[6];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Application Command Option Choice Structure
-// defined at specs/discord/application_commands.json:72:22
+/* Application Command Option Choice Structure */
+/* defined at specs/discord/application_commands.json:72:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure
  *
@@ -3003,30 +2912,16 @@ struct discord_application_command_option {
 struct discord_application_command_option_choice {
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-  char name[100+1]; ///< 1-100 character choice name
+  char name[100+1]; /** 1-100 character choice name */
 
   /* specs/discord/application_commands.json:76:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
-  json_char_t* value; ///< value of choice, up to 100 characters if string
+  json_char_t* value; /** value of choice, up to 100 characters if string */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Guild Application Command Permissions Structure
-// defined at specs/discord/application_commands.json:83:22
+/* Guild Application Command Permissions Structure */
+/* defined at specs/discord/application_commands.json:83:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure
  *
@@ -3057,38 +2952,24 @@ struct discord_application_command_option_choice {
 struct discord_guild_application_command_permissions {
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  u64_snowflake_t id; ///< the id of the command
+  u64_snowflake_t id; /** the id of the command */
 
   /* specs/discord/application_commands.json:87:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-  u64_snowflake_t application_id; ///< the id of the parent application the command belongs to
+  u64_snowflake_t application_id; /** the id of the parent application the command belongs to */
 
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-  u64_snowflake_t guild_id; ///< the id of the guild
+  u64_snowflake_t guild_id; /** the id of the guild */
 
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-  struct discord_application_command_permissions **permissions; ///< the permissions for the command in the guild
+  struct discord_application_command_permissions **permissions; /** the permissions for the command in the guild */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Application Command Permissions Structure
-// defined at specs/discord/application_commands.json:96:22
+/* Application Command Permissions Structure */
+/* defined at specs/discord/application_commands.json:96:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure
  *
@@ -3119,36 +3000,22 @@ struct discord_guild_application_command_permissions {
 struct discord_application_command_permissions {
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  u64_snowflake_t id; ///< the id of the command
+  u64_snowflake_t id; /** the id of the command */
 
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
-  enum discord_application_command_permission_types type; ///< role or user
+  enum discord_application_command_permission_types type; /** role or user */
 
   /* specs/discord/application_commands.json:101:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-  bool permission; ///< true to allow, false, to disallow
+  bool permission; /** true to allow, false, to disallow */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Application Command Interaction Data Option Structure
-// defined at specs/discord/application_commands.json:119:22
+/* Application Command Interaction Data Option Structure */
+/* defined at specs/discord/application_commands.json:119:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure
  *
@@ -3179,38 +3046,24 @@ struct discord_application_command_permissions {
 struct discord_application_command_interaction_data_option {
   /* specs/discord/application_commands.json:122:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
-  char *name; ///< the name of the parameter
+  char *name; /** the name of the parameter */
 
   /* specs/discord/application_commands.json:123:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  enum discord_application_command_option_types type; ///< value of application command option type
+  enum discord_application_command_option_types type; /** value of application command option type */
 
   /* specs/discord/application_commands.json:124:18
      '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  enum discord_application_command_option_types value; ///< the value of the pair
+  enum discord_application_command_option_types value; /** the value of the pair */
 
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
-  struct discord_application_command_interaction_data_option **options; ///< present if this option is a group or subcommand
+  struct discord_application_command_interaction_data_option **options; /** present if this option is a group or subcommand */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
 
-// defined at specs/discord/audit_log.endpoints-params.json:7:22
+/* defined at specs/discord/audit_log.endpoints-params.json:7:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3239,39 +3092,25 @@ struct discord_application_command_interaction_data_option {
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log for actions made by a user", "inject_if_not":0 }' */
-  u64_snowflake_t user_id; ///< filter the log for actions made by a user
+  u64_snowflake_t user_id; /** filter the log for actions made by a user */
 
   /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "comment":"the type of audit log event", "inject_if_not":0 }' */
-  enum discord_audit_log_events action_type; ///< the type of audit log event
+  enum discord_audit_log_events action_type; /** the type of audit log event */
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log before a certain entry id", "inject_if_not":0 }' */
-  u64_snowflake_t before; ///< filter the log before a certain entry id
+  u64_snowflake_t before; /** filter the log before a certain entry id */
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "default_value":50, "comment":"how many entries are returned (default 50, minimum 1, maximum 100)", "inject_if_not":0 }' */
-  int limit; ///< how many entries are returned (default 50, minimum 1, maximum 100)
+  int limit; /** how many entries are returned (default 50, minimum 1, maximum 100) */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
 
-// Audit Log Structure
-// defined at specs/discord/audit_log.json:9:22
+/* Audit Log Structure */
+/* defined at specs/discord/audit_log.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
  *
@@ -3302,42 +3141,28 @@ struct discord_get_guild_audit_log_params {
 struct discord_audit_log {
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" }, "comment":"list of webhooks found in the audit log", "inject_if_not":null }' */
-  struct discord_webhook **webhooks; ///< list of webhooks found in the audit log
+  struct discord_webhook **webhooks; /** list of webhooks found in the audit log */
 
   /* specs/discord/audit_log.json:13:18
      '{"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}, "comment":"list of users found in the audit log", "inject_if_not":null}' */
-  struct discord_user **users; ///< list of users found in the audit log
+  struct discord_user **users; /** list of users found in the audit log */
 
   /* specs/discord/audit_log.json:14:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
-  struct discord_audit_log_entry **audit_log_entries; ///< list of audit log entries
+  struct discord_audit_log_entry **audit_log_entries; /** list of audit log entries */
 
   /* specs/discord/audit_log.json:15:18
      '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
-  struct discord_integration **integrations; ///< list of partial integration objects
+  struct discord_integration **integrations; /** list of partial integration objects */
 
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
-  struct discord_channel **threads; ///< list of threads found in the audit log
+  struct discord_channel **threads; /** list of threads found in the audit log */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Audit Log Entry Structure
-// defined at specs/discord/audit_log.json:23:22
+/* Audit Log Entry Structure */
+/* defined at specs/discord/audit_log.json:23:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
  *
@@ -3368,52 +3193,38 @@ struct discord_audit_log {
 struct discord_audit_log_entry {
   /* specs/discord/audit_log.json:26:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}, "comment":"id of the affected entity (webhook,user,role,etc.)", "inject_if_not":null }' */
-  char *target_id; ///< id of the affected entity (webhook,user,role,etc.)
+  char *target_id; /** id of the affected entity (webhook,user,role,etc.) */
 
   /* specs/discord/audit_log.json:27:18
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}, "comment":"changes made to the target_id", "inject_if_not":null }' */
-  struct discord_audit_log_change **changes; ///< changes made to the target_id
+  struct discord_audit_log_change **changes; /** changes made to the target_id */
 
   /* specs/discord/audit_log.json:28:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the user who made the changes", "inject_if_not":0 }' */
-  u64_snowflake_t user_id; ///< the user who made the changes
+  u64_snowflake_t user_id; /** the user who made the changes */
 
   /* specs/discord/audit_log.json:29:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 }' */
-  u64_snowflake_t id; ///< id of the entry
+  u64_snowflake_t id; /** id of the entry */
 
   /* specs/discord/audit_log.json:30:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 }' */
-  int action_type; ///< type of action that occured
+  int action_type; /** type of action that occured */
 
   /* specs/discord/audit_log.json:31:18
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
-  struct discord_optional_audit_entry_info **options; ///< additional info for certain action types
+  struct discord_optional_audit_entry_info **options; /** additional info for certain action types */
 
   /* specs/discord/audit_log.json:32:18
      '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-  char reason[DISCORD_MAX_REASON_LEN]; ///< the reason for the change
+  char reason[DISCORD_MAX_REASON_LEN]; /** the reason for the change */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Optional Audit Entry Info Structure
-// defined at specs/discord/audit_log.json:91:22
+/* Optional Audit Entry Info Structure */
+/* defined at specs/discord/audit_log.json:91:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
  *
@@ -3444,54 +3255,40 @@ struct discord_audit_log_entry {
 struct discord_optional_audit_entry_info {
   /* specs/discord/audit_log.json:94:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"number of days after which inactive members were kicked", "inject_if_not":null }' */
-  char *delete_member_days; ///< number of days after which inactive members were kicked
+  char *delete_member_days; /** number of days after which inactive members were kicked */
 
   /* specs/discord/audit_log.json:95:20
      '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"number of members removed by the prune", "inject_if_not":null }' */
-  char *members_removed; ///< number of members removed by the prune
+  char *members_removed; /** number of members removed by the prune */
 
   /* specs/discord/audit_log.json:96:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"channel in which the entities were targeted", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; ///< channel in which the entities were targeted
+  u64_snowflake_t channel_id; /** channel in which the entities were targeted */
 
   /* specs/discord/audit_log.json:97:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the message that was targeted", "inject_if_not":0 }' */
-  u64_snowflake_t message_id; ///< id of the message that was targeted
+  u64_snowflake_t message_id; /** id of the message that was targeted */
 
   /* specs/discord/audit_log.json:98:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"number of entities that were targeted", "inject_if_not":null }' */
-  char *count; ///< number of entities that were targeted
+  char *count; /** number of entities that were targeted */
 
   /* specs/discord/audit_log.json:99:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the ovewritten entity", "inject_if_not":0 }' */
-  u64_snowflake_t id; ///< id of the ovewritten entity
+  u64_snowflake_t id; /** id of the ovewritten entity */
 
   /* specs/discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
-  char *type; ///< type of overwritten entity - '0' for role or '1' for member
+  char *type; /** type of overwritten entity - '0' for role or '1' for member */
 
   /* specs/discord/audit_log.json:101:20
      '{ "name": "role_name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the role if type is '0' (not present if type is '1')", "inject_if_not":null }' */
-  char *role_name; ///< name of the role if type is '0' (not present if type is '1')
+  char *role_name; /** name of the role if type is '0' (not present if type is '1') */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
-// Audit Log Change Structure
-// defined at specs/discord/audit_log.json:108:22
+/* Audit Log Change Structure */
+/* defined at specs/discord/audit_log.json:108:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
  *
@@ -3522,35 +3319,21 @@ struct discord_optional_audit_entry_info {
 struct discord_audit_log_change {
   /* specs/discord/audit_log.json:111:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"new value of the key", "inject_if_not":null }' */
-  json_char_t* new_value; ///< new value of the key
+  json_char_t* new_value; /** new value of the key */
 
   /* specs/discord/audit_log.json:112:18
      '{"name":"old_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"old value of the key", "inject_if_not":null }' */
-  json_char_t* old_value; ///< old value of the key
+  json_char_t* old_value; /** old value of the key */
 
   /* specs/discord/audit_log.json:113:18
      '{"name":"key", "type":{"base":"char", "dec":"*"}, "comment":"name of audit log change key", "inject_if_not":null }' */
-  char *key; ///< name of audit log change key
+  char *key; /** name of audit log change key */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
 
-// Modify Channel
-// defined at specs/discord/channel.endpoints-params.json:9:22
+/* Modify Channel */
+/* defined at specs/discord/channel.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3641,24 +3424,10 @@ struct discord_modify_channel_params {
      '{ "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }' */
   bool locked;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[16];
-    void *record_defined[16];
-    void *record_null[16];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Message
-// defined at specs/discord/channel.endpoints-params.json:33:22
+/* Create Message */
+/* defined at specs/discord/channel.endpoints-params.json:33:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3687,62 +3456,48 @@ struct discord_modify_channel_params {
 struct discord_create_message_params {
   /* specs/discord/channel.endpoints-params.json:36:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
-  char *content; ///< the message contents (up to 2000 characters)
+  char *content; /** the message contents (up to 2000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:37:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; ///< true if this is a TTS message
+  bool tts; /** true if this is a TTS message */
 
   /* specs/discord/channel.endpoints-params.json:38:20
      '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; ///< the contents of the file being sent
+  struct discord_file *file; /** the contents of the file being sent */
 
   /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< embedded rich content (up to 6000 characters)
+  struct discord_embed **embeds; /** embedded rich content (up to 6000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:40:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
-  struct discord_embed *embed; ///< embedded rich content, deprecated in favor of embeds
+  struct discord_embed *embed; /** embedded rich content, deprecated in favor of embeds */
 
   /* specs/discord/channel.endpoints-params.json:41:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params
+  char *payload_json; /** JSON encoded body of non-file params */
 
   /* specs/discord/channel.endpoints-params.json:42:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
-  struct discord_message_reference *message_reference; ///< include to make your message a reply
+  struct discord_message_reference *message_reference; /** include to make your message a reply */
 
   /* specs/discord/channel.endpoints-params.json:44:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
   /* specs/discord/channel.endpoints-params.json:45:20
      '{ "name": "sticker_ids", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"ids of up to 3 stickers in the server to send in the message", "inject_if_not":null }' */
-  ja_u64 **sticker_ids; ///< ids of up to 3 stickers in the server to send in the message
+  ja_u64 **sticker_ids; /** ids of up to 3 stickers in the server to send in the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[10];
-    void *record_defined[10];
-    void *record_null[10];
-  } __M; // metadata
-/// @endcond
 };
 
-// Get Channel Messages
-// defined at specs/discord/channel.endpoints-params.json:51:22
+/* Get Channel Messages */
+/* defined at specs/discord/channel.endpoints-params.json:51:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3771,38 +3526,24 @@ struct discord_create_message_params {
 struct discord_get_channel_messages_params {
   /* specs/discord/channel.endpoints-params.json:54:20
      '{ "name": "around", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages around this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t around; ///< get messages around this message ID
+  u64_snowflake_t around; /** get messages around this message ID */
 
   /* specs/discord/channel.endpoints-params.json:55:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages before this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t before; ///< get messages before this message ID
+  u64_snowflake_t before; /** get messages before this message ID */
 
   /* specs/discord/channel.endpoints-params.json:56:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages after this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t after; ///< get messages after this message ID
+  u64_snowflake_t after; /** get messages after this message ID */
 
   /* specs/discord/channel.endpoints-params.json:57:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
-  int limit; ///< max number of messages to return (1-100)
+  int limit; /** max number of messages to return (1-100) */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Get Reactions
-// defined at specs/discord/channel.endpoints-params.json:63:22
+/* Get Reactions */
+/* defined at specs/discord/channel.endpoints-params.json:63:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3837,24 +3578,10 @@ struct discord_get_reactions_params {
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
   int limit;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Channel Permissions
-// defined at specs/discord/channel.endpoints-params.json:73:22
+/* Edit Channel Permissions */
+/* defined at specs/discord/channel.endpoints-params.json:73:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3883,34 +3610,20 @@ struct discord_get_reactions_params {
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags allow; ///< permission bit set
+  enum discord_bitwise_permission_flags allow; /** permission bit set */
 
   /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags deny; ///< permission bit set
+  enum discord_bitwise_permission_flags deny; /** permission bit set */
 
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Message
-// defined at specs/discord/channel.endpoints-params.json:84:22
+/* Edit Message */
+/* defined at specs/discord/channel.endpoints-params.json:84:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3939,58 +3652,44 @@ struct discord_edit_channel_permissions_params {
 struct discord_edit_message_params {
   /* specs/discord/channel.endpoints-params.json:87:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
-  char *content; ///< the message contents (up to 2000 characters)
+  char *content; /** the message contents (up to 2000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:88:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< embedded rich content (up to 6000 characters)
+  struct discord_embed **embeds; /** embedded rich content (up to 6000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:89:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
-  struct discord_embed *embed; ///< embedded rich content, deprecated in favor of embeds
+  struct discord_embed *embed; /** embedded rich content, deprecated in favor of embeds */
 
   /* specs/discord/channel.endpoints-params.json:90:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
-  enum discord_message_flags flags; ///< edit the flags of a message
+  enum discord_message_flags flags; /** edit the flags of a message */
 
   /* specs/discord/channel.endpoints-params.json:91:20
      '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; ///< the contents of the file being sent
+  struct discord_file *file; /** the contents of the file being sent */
 
   /* specs/discord/channel.endpoints-params.json:92:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params
+  char *payload_json; /** JSON encoded body of non-file params */
 
   /* specs/discord/channel.endpoints-params.json:93:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/channel.endpoints-params.json:94:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; ///< attached files to keep
+  struct discord_attachment **attachments; /** attached files to keep */
 
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 
-// Follow News Channel
-// defined at specs/discord/channel.endpoints-params.json:101:22
+/* Follow News Channel */
+/* defined at specs/discord/channel.endpoints-params.json:101:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4021,24 +3720,10 @@ struct discord_follow_news_channel_params {
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   u64_snowflake_t webhook_channel_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[1];
-    void *record_defined[1];
-    void *record_null[1];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Channel Invite
-// defined at specs/discord/channel.endpoints-params.json:110:22
+/* Create Channel Invite */
+/* defined at specs/discord/channel.endpoints-params.json:110:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4093,24 +3778,10 @@ struct discord_create_channel_invite_params {
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_application_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 
-// Group DM Add Recipient
-// defined at specs/discord/channel.endpoints-params.json:125:22
+/* Group DM Add Recipient */
+/* defined at specs/discord/channel.endpoints-params.json:125:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4145,24 +3816,10 @@ struct discord_group_dm_add_recipient_params {
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Start Thread with Message
-// defined at specs/discord/channel.endpoints-params.json:135:22
+/* Start Thread with Message */
+/* defined at specs/discord/channel.endpoints-params.json:135:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4197,24 +3854,10 @@ struct discord_start_thread_with_message_params {
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Start Thread without Message
-// defined at specs/discord/channel.endpoints-params.json:145:22
+/* Start Thread without Message */
+/* defined at specs/discord/channel.endpoints-params.json:145:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4253,24 +3896,10 @@ struct discord_start_thread_without_message_params {
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   enum discord_channel_types type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// List Active Threads
-// defined at specs/discord/channel.endpoints-params.json:156:22
+/* List Active Threads */
+/* defined at specs/discord/channel.endpoints-params.json:156:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4309,27 +3938,13 @@ struct discord_thread_response_body {
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   bool has_more;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/channel.json, Please don't edit it. */
 
 
 
-// Channel Structure
-// defined at specs/discord/channel.json:29:22
+/* Channel Structure */
+/* defined at specs/discord/channel.json:29:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-object-channel-structure
  *
@@ -4447,26 +4062,12 @@ struct discord_channel {
      '{"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}' */
   struct discord_message **messages;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[19];
-    void *record_defined[19];
-    void *record_null[19];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Message Sticker Structure
-// defined at specs/discord/channel.json:82:22
+/* Message Sticker Structure */
+/* defined at specs/discord/channel.json:82:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-sticker-structure
  *
@@ -4528,26 +4129,12 @@ struct discord_message_sticker {
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
   enum discord_message_sticker_format_types type;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Message Reference Structure
-// defined at specs/discord/channel.json:112:22
+/* Message Reference Structure */
+/* defined at specs/discord/channel.json:112:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure
  *
@@ -4592,24 +4179,10 @@ struct discord_message_reference {
      '{"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
   bool fail_if_not_exists;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Message Application Structure
-// defined at specs/discord/channel.json:124:22
+/* Message Application Structure */
+/* defined at specs/discord/channel.json:124:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-application-structure
  *
@@ -4658,26 +4231,12 @@ struct discord_message_application {
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
   char *name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Message Activity Structure
-// defined at specs/discord/channel.json:149:22
+/* Message Activity Structure */
+/* defined at specs/discord/channel.json:149:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object-message-activity-structure
  *
@@ -4715,26 +4274,12 @@ struct discord_message_activity {
          "option":true, "inject_if_not":null}' */
   char *party_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Message Structure
-// defined at specs/discord/channel.json:184:22
+/* Message Structure */
+/* defined at specs/discord/channel.json:184:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#message-object
  *
@@ -4781,7 +4326,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:190:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  struct discord_guild_member *member; ///< partial guild member object
+  struct discord_guild_member *member; /** partial guild member object */
 
   /* specs/discord/channel.json:191:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
@@ -4805,11 +4350,11 @@ struct discord_message {
 
   /* specs/discord/channel.json:196:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
-  struct discord_user **mentions; ///< array of user objects, with an additional partial member field
+  struct discord_user **mentions; /** array of user objects, with an additional partial member field */
 
   /* specs/discord/channel.json:197:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
-  ja_u64 **mention_roles; ///< array of role object ids
+  ja_u64 **mention_roles; /** array of role object ids */
 
   /* specs/discord/channel.json:198:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
@@ -4829,7 +4374,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:202:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
-  char *nonce; ///< integer or string
+  char *nonce; /** integer or string */
 
   /* specs/discord/channel.json:203:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
@@ -4861,46 +4406,32 @@ struct discord_message {
 
   /* specs/discord/channel.json:210:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
-  struct discord_message *referenced_message; ///< this will cause recursive allocation if allocating as the parent
+  struct discord_message *referenced_message; /** this will cause recursive allocation if allocating as the parent */
 
   /* specs/discord/channel.json:211:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-  struct discord_message_interaction *interaction; ///< the message associated with the message_reference
+  struct discord_message_interaction *interaction; /** the message associated with the message_reference */
 
   /* specs/discord/channel.json:212:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-  struct discord_channel *thread; ///< the channel that was started from this message, includes thread member obejct
+  struct discord_channel *thread; /** the channel that was started from this message, includes thread member obejct */
 
   /* specs/discord/channel.json:213:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
-  struct discord_component **components; ///< sent if the message contains components like buttons, actions rows, or other interactive components
+  struct discord_component **components; /** sent if the message contains components like buttons, actions rows, or other interactive components */
 
   /* specs/discord/channel.json:214:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
-  struct discord_message_sticker **sticker_items; ///< sent if the message contains stickets
+  struct discord_message_sticker **sticker_items; /** sent if the message contains stickets */
 
   /* specs/discord/channel.json:215:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
-  struct discord_message_sticker **stickers; ///< [DEPRECATED] array of sticker objects
+  struct discord_message_sticker **stickers; /** [DEPRECATED] array of sticker objects */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[30];
-    void *record_defined[30];
-    void *record_null[30];
-  } __M; // metadata
-/// @endcond
 };
 
-// Followed Channel Structure
-// defined at specs/discord/channel.json:221:22
+/* Followed Channel Structure */
+/* defined at specs/discord/channel.json:221:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#followed-channel-object-followed-channel-structure
  *
@@ -4937,24 +4468,10 @@ struct discord_followed_channel {
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t webhook_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Reaction Structure
-// defined at specs/discord/channel.json:231:22
+/* Reaction Structure */
+/* defined at specs/discord/channel.json:231:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#reaction-object-reaction-structure
  *
@@ -4993,26 +4510,12 @@ struct discord_reaction {
 
   /* specs/discord/channel.json:236:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  struct discord_emoji *emoji; ///< partial emoji object
+  struct discord_emoji *emoji; /** partial emoji object */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// Overwrite Structure
-// defined at specs/discord/channel.json:241:22
+/* Overwrite Structure */
+/* defined at specs/discord/channel.json:241:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -5050,31 +4553,17 @@ struct discord_overwrite {
   /* specs/discord/channel.json:246:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags allow; ///< permission bit set
+  enum discord_bitwise_permission_flags allow; /** permission bit set */
 
   /* specs/discord/channel.json:248:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags deny; ///< permission bit set
+  enum discord_bitwise_permission_flags deny; /** permission bit set */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Thread Metadata Object
-// defined at specs/discord/channel.json:256:22
+/* Thread Metadata Object */
+/* defined at specs/discord/channel.json:256:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
  *
@@ -5123,24 +4612,10 @@ struct discord_thread_metadata {
      '{ "name": "locked", "type":{ "base":"bool" }}' */
   bool locked;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Thread Member Object
-// defined at specs/discord/channel.json:270:22
+/* Thread Member Object */
+/* defined at specs/discord/channel.json:270:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
  *
@@ -5185,24 +4660,10 @@ struct discord_thread_member {
      '{ "name": "flags", "type":{ "base":"int" }}' */
   int flags;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Attachment Strcture
-// defined at specs/discord/channel.json:282:22
+/* Attachment Strcture */
+/* defined at specs/discord/channel.json:282:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  *
@@ -5259,24 +4720,10 @@ struct discord_attachment {
      '{ "name": "width", "type":{ "base":"int", "nullable":true }}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 
-// Channel Mention Structure
-// defined at specs/discord/channel.json:298:22
+/* Channel Mention Structure */
+/* defined at specs/discord/channel.json:298:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
@@ -5321,24 +4768,10 @@ struct discord_channel_mention {
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Allowed Mentions Structure
-// defined at specs/discord/channel.json:310:22
+/* Allowed Mentions Structure */
+/* defined at specs/discord/channel.json:310:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
@@ -5373,34 +4806,20 @@ struct discord_allowed_mentions {
 
   /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **roles; ///< list of snowflakes
+  ja_u64 **roles; /** list of snowflakes */
 
   /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **users; ///< list of snowflakes
+  ja_u64 **users; /** list of snowflakes */
 
   /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   bool replied_user;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Structure
-// defined at specs/discord/channel.json:322:22
+/* Embed Structure */
+/* defined at specs/discord/channel.json:322:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
@@ -5481,24 +4900,10 @@ struct discord_embed {
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_field **fields;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[13];
-    void *record_defined[13];
-    void *record_null[13];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Thumbnail Structure
-// defined at specs/discord/channel.json:344:22
+/* Embed Thumbnail Structure */
+/* defined at specs/discord/channel.json:344:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
@@ -5543,24 +4948,10 @@ struct discord_embed_thumbnail {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Video Structure
-// defined at specs/discord/channel.json:356:22
+/* Embed Video Structure */
+/* defined at specs/discord/channel.json:356:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
@@ -5605,24 +4996,10 @@ struct discord_embed_video {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Image Structure
-// defined at specs/discord/channel.json:368:22
+/* Embed Image Structure */
+/* defined at specs/discord/channel.json:368:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
@@ -5667,24 +5044,10 @@ struct discord_embed_image {
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Provider Structure
-// defined at specs/discord/channel.json:380:22
+/* Embed Provider Structure */
+/* defined at specs/discord/channel.json:380:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
@@ -5721,24 +5084,10 @@ struct discord_embed_provider {
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *url;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Author Structure
-// defined at specs/discord/channel.json:390:22
+/* Embed Author Structure */
+/* defined at specs/discord/channel.json:390:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
@@ -5783,24 +5132,10 @@ struct discord_embed_author {
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_icon_url;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Footer Structure
-// defined at specs/discord/channel.json:402:22
+/* Embed Footer Structure */
+/* defined at specs/discord/channel.json:402:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
@@ -5841,24 +5176,10 @@ struct discord_embed_footer {
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *proxy_icon_url;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// Embed Field Structure
-// defined at specs/discord/channel.json:413:22
+/* Embed Field Structure */
+/* defined at specs/discord/channel.json:413:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
@@ -5899,25 +5220,11 @@ struct discord_embed_field {
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   bool Inline;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/emoji.endpoints-params.json, Please don't edit it. */
 
-// Create Guild Emoji
-// defined at specs/discord/emoji.endpoints-params.json:9:22
+/* Create Guild Emoji */
+/* defined at specs/discord/emoji.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -5950,30 +5257,16 @@ struct discord_create_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
-  char *image; ///< Base64 Encoded Image Data
+  char *image; /** Base64 Encoded Image Data */
 
   /* specs/discord/emoji.endpoints-params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; ///< roles for which this emoji will be whitelisted
+  ja_u64 **roles; /** roles for which this emoji will be whitelisted */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild Emoji
-// defined at specs/discord/emoji.endpoints-params.json:20:22
+/* Modify Guild Emoji */
+/* defined at specs/discord/emoji.endpoints-params.json:20:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6006,27 +5299,13 @@ struct discord_modify_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; ///< roles for which this emoji will be whitelisted
+  ja_u64 **roles; /** roles for which this emoji will be whitelisted */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
 
-// Emoji Structure
-// defined at specs/discord/emoji.json:9:22
+/* Emoji Structure */
+/* defined at specs/discord/emoji.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
  *
@@ -6057,50 +5336,36 @@ struct discord_modify_guild_emoji_params {
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-  u64_snowflake_t id; ///< emoji id
+  u64_snowflake_t id; /** emoji id */
 
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
-  char *name; ///< emoji name
+  char *name; /** emoji name */
 
   /* specs/discord/emoji.json:14:20
      '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
-  struct discord_role **roles; ///< roles allowed to use this emoji
+  struct discord_role **roles; /** roles allowed to use this emoji */
 
   /* specs/discord/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
-  struct discord_user *user; ///< user that created this emoji
+  struct discord_user *user; /** user that created this emoji */
 
   /* specs/discord/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
-  bool require_colons; ///< whether this emoji must be wrapped in colons
+  bool require_colons; /** whether this emoji must be wrapped in colons */
 
   /* specs/discord/emoji.json:17:20
      '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
-  bool managed; ///< whether this emoji is managed
+  bool managed; /** whether this emoji is managed */
 
   /* specs/discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
-  bool animated; ///< whether this emoji is animated
+  bool animated; /** whether this emoji is animated */
 
   /* specs/discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
   bool available;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/gateway.json, Please don't edit it. */
 
@@ -6112,8 +5377,8 @@ struct discord_emoji {
 
 
 
-// Identify Structure
-// defined at specs/discord/gateway.json:139:22
+/* Identify Structure */
+/* defined at specs/discord/gateway.json:139:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
@@ -6164,7 +5429,7 @@ struct discord_identify {
 
   /* specs/discord/gateway.json:147:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
-  // @todo shard (null);
+  /* @todo shard (null); */
 
   /* specs/discord/gateway.json:148:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
@@ -6174,24 +5439,10 @@ struct discord_identify {
      '{ "name":"intents","type":{"base":"int"}}' */
   int intents;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
-// Gateway Voice State Update Structure
-// defined at specs/discord/gateway.json:156:22
+/* Gateway Voice State Update Structure */
+/* defined at specs/discord/gateway.json:156:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure
  *
@@ -6222,38 +5473,24 @@ struct discord_identify {
 struct discord_voice_state_status {
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; ///< id of the guild
+  u64_snowflake_t guild_id; /** id of the guild */
 
   /* specs/discord/gateway.json:160:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; ///< id of the voice channel client wants to join (null if disconnecting)
+  u64_snowflake_t channel_id; /** id of the voice channel client wants to join (null if disconnecting) */
 
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
-  bool self_mute; ///< is the client muted
+  bool self_mute; /** is the client muted */
 
   /* specs/discord/gateway.json:162:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-  bool self_deaf; ///< is the client deafened
+  bool self_deaf; /** is the client deafened */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Gateway Presence Update Structure
-// defined at specs/discord/gateway.json:169:22
+/* Gateway Presence Update Structure */
+/* defined at specs/discord/gateway.json:169:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure
  *
@@ -6284,38 +5521,24 @@ struct discord_voice_state_status {
 struct discord_presence_status {
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
-  u64_unix_ms_t since; ///< unix time (in milliseconds) of when the client went idle, or null if the client is not idle
+  u64_unix_ms_t since; /** unix time (in milliseconds) of when the client went idle, or null if the client is not idle */
 
   /* specs/discord/gateway.json:173:19
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
-  struct discord_activity **activities; ///< the user's activities
+  struct discord_activity **activities; /** the user's activities */
 
   /* specs/discord/gateway.json:174:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  char status[16]; ///< the user's new status
+  char status[16]; /** the user's new status */
 
   /* specs/discord/gateway.json:175:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-  bool afk; ///< whether or not the client is afk
+  bool afk; /** whether or not the client is afk */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Identify Connection Properties
-// defined at specs/discord/gateway.json:182:22
+/* Identify Connection Properties */
+/* defined at specs/discord/gateway.json:182:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
@@ -6346,34 +5569,20 @@ struct discord_presence_status {
 struct discord_identify_connection {
   /* specs/discord/gateway.json:185:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
-  char *os; ///< your operating system
+  char *os; /** your operating system */
 
   /* specs/discord/gateway.json:186:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  char *browser; ///< your library name
+  char *browser; /** your library name */
 
   /* specs/discord/gateway.json:187:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  char *device; ///< your library name
+  char *device; /** your library name */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// Activity Structure
-// defined at specs/discord/gateway.json:193:22
+/* Activity Structure */
+/* defined at specs/discord/gateway.json:193:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
@@ -6434,26 +5643,12 @@ struct discord_activity {
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
   bool instance;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Session Start Limit Structure
-// defined at specs/discord/gateway.json:224:22
+/* Session Start Limit Structure */
+/* defined at specs/discord/gateway.json:224:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure
  *
@@ -6484,39 +5679,25 @@ struct discord_activity {
 struct discord_session_start_limit {
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
-  int total; ///< the total number of session starts the current user is allowed
+  int total; /** the total number of session starts the current user is allowed */
 
   /* specs/discord/gateway.json:228:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
-  int remaining; ///< the remaining number of session starts the current user is allowed
+  int remaining; /** the remaining number of session starts the current user is allowed */
 
   /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
-  int reset_after; ///< the number of milliseconds after which the limit resets
+  int reset_after; /** the number of milliseconds after which the limit resets */
 
   /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-  int max_concurrency; ///< the number of identify requests allowed per 5 seconds
+  int max_concurrency; /** the number of identify requests allowed per 5 seconds */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
 
-// Create Guild From Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:9:22
+/* Create Guild From Guild Template */
+/* defined at specs/discord/guild-template.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6545,30 +5726,16 @@ struct discord_session_start_limit {
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; ///< name of the guild
+  char *name; /** name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:13:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
-  char *icon; ///< base64 128x128 image for the guild icon
+  char *icon; /** base64 128x128 image for the guild icon */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:19:22
+/* Create Guild Template */
+/* defined at specs/discord/guild-template.endpoints-params.json:19:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6597,30 +5764,16 @@ struct discord_create_guild_from_guild_template_params {
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; ///< name of the guild
+  char *name; /** name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:23:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
-  char *description; ///< description for the template (0-120) chars
+  char *description; /** description for the template (0-120) chars */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild Template
-// defined at specs/discord/guild-template.endpoints-params.json:29:22
+/* Modify Guild Template */
+/* defined at specs/discord/guild-template.endpoints-params.json:29:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6649,31 +5802,17 @@ struct discord_create_guild_template_params {
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; ///< name of the guild
+  char *name; /** name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:33:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
-  char *description; ///< description for the template (0-120) chars
+  char *description; /** description for the template (0-120) chars */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
 
-// Guild Template Structure
-// defined at specs/discord/guild-template.json:9:22
+/* Guild Template Structure */
+/* defined at specs/discord/guild-template.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure
  *
@@ -6746,25 +5885,11 @@ struct discord_guild_template {
      '{ "name": "is_dirty", "type":{ "base":"bool" }}' */
   bool is_dirty;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[11];
-    void *record_defined[11];
-    void *record_null[11];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
 
-// Create Guild
-// defined at specs/discord/guild.endpoints-params.json:9:22
+/* Create Guild */
+/* defined at specs/discord/guild.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6793,66 +5918,52 @@ struct discord_guild_template {
 struct discord_create_guild_params {
   /* specs/discord/guild.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
-  char *name; ///< name of the guild (2-100) characters
+  char *name; /** name of the guild (2-100) characters */
 
   /* specs/discord/guild.endpoints-params.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
-  char *region; ///< voice region id
+  char *region; /** voice region id */
 
   /* specs/discord/guild.endpoints-params.json:14:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
-  char *icon; ///< base64 128x1128 image for the guild icon
+  char *icon; /** base64 128x1128 image for the guild icon */
 
   /* specs/discord/guild.endpoints-params.json:15:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  int verification_level; ///< verification level
+  int verification_level; /** verification level */
 
   /* specs/discord/guild.endpoints-params.json:16:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  int default_message_notifications; ///< default message notification level
+  int default_message_notifications; /** default message notification level */
 
   /* specs/discord/guild.endpoints-params.json:17:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  int explicit_content_filter; ///< explicit content filter level
+  int explicit_content_filter; /** explicit content filter level */
 
   /* specs/discord/guild.endpoints-params.json:18:20
      '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"new guild roles" }' */
-  struct discord_role **roles; ///< new guild roles
+  struct discord_role **roles; /** new guild roles */
 
   /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
-  struct discord_channel **channels; ///< array of partial channel objects
+  struct discord_channel **channels; /** array of partial channel objects */
 
   /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  u64_snowflake_t afk_channel_id; ///< id for afk channel
+  u64_snowflake_t afk_channel_id; /** id for afk channel */
 
   /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  int afk_timeout; ///< afk timeout in seconds
+  int afk_timeout; /** afk timeout in seconds */
 
   /* specs/discord/guild.endpoints-params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; ///< the id of the channel where guild notices such as welcome messages and boost events are posted
+  u64_snowflake_t system_channel_id; /** the id of the channel where guild notices such as welcome messages and boost events are posted */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[11];
-    void *record_defined[11];
-    void *record_null[11];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild
-// defined at specs/discord/guild.endpoints-params.json:28:22
+/* Modify Guild */
+/* defined at specs/discord/guild.endpoints-params.json:28:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -6881,98 +5992,84 @@ struct discord_create_guild_params {
 struct discord_modify_guild_params {
   /* specs/discord/guild.endpoints-params.json:31:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
-  char *name; ///< name of the guild (2-100) characters
+  char *name; /** name of the guild (2-100) characters */
 
   /* specs/discord/guild.endpoints-params.json:32:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
-  char *region; ///< voice region id
+  char *region; /** voice region id */
 
   /* specs/discord/guild.endpoints-params.json:33:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  int verification_level; ///< verification level
+  int verification_level; /** verification level */
 
   /* specs/discord/guild.endpoints-params.json:34:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  int default_message_notifications; ///< default message notification level
+  int default_message_notifications; /** default message notification level */
 
   /* specs/discord/guild.endpoints-params.json:35:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  int explicit_content_filter; ///< explicit content filter level
+  int explicit_content_filter; /** explicit content filter level */
 
   /* specs/discord/guild.endpoints-params.json:36:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  u64_snowflake_t afk_channel_id; ///< id for afk channel
+  u64_snowflake_t afk_channel_id; /** id for afk channel */
 
   /* specs/discord/guild.endpoints-params.json:37:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  int afk_timeout; ///< afk timeout in seconds
+  int afk_timeout; /** afk timeout in seconds */
 
   /* specs/discord/guild.endpoints-params.json:38:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
-  char *icon; ///< base64 128x1128 image for the guild icon
+  char *icon; /** base64 128x1128 image for the guild icon */
 
   /* specs/discord/guild.endpoints-params.json:39:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}' */
-  u64_snowflake_t owner_id; ///< user id to transfer guild ownership to (must be owner)
+  u64_snowflake_t owner_id; /** user id to transfer guild ownership to (must be owner) */
 
   /* specs/discord/guild.endpoints-params.json:40:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}' */
-  char *splash; ///< base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature
+  char *splash; /** base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature */
 
   /* specs/discord/guild.endpoints-params.json:41:20
      '{ "name": "discovery_splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)"}' */
-  char *discovery_splash; ///< base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)
+  char *discovery_splash; /** base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature) */
 
   /* specs/discord/guild.endpoints-params.json:42:20
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"}' */
-  char *banner; ///< cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh
+  char *banner; /** cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh */
 
   /* specs/discord/guild.endpoints-params.json:43:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; ///< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome
+  u64_snowflake_t system_channel_id; /** cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome */
 
   /* specs/discord/guild.endpoints-params.json:44:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
-  enum discord_system_channel_flags system_channel_flags; ///< system channel flags
+  enum discord_system_channel_flags system_channel_flags; /** system channel flags */
 
   /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}' */
-  u64_snowflake_t rules_channel_id; ///< the id of the channel where Community guilds display rules and/or guidelines
+  u64_snowflake_t rules_channel_id; /** the id of the channel where Community guilds display rules and/or guidelines */
 
   /* specs/discord/guild.endpoints-params.json:46:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}' */
-  u64_snowflake_t public_updates_channel_id; ///< the id of the channel where admins and moderators of Community guilds receive notices from Discord
+  u64_snowflake_t public_updates_channel_id; /** the id of the channel where admins and moderators of Community guilds receive notices from Discord */
 
   /* specs/discord/guild.endpoints-params.json:47:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}' */
-  char *preferred_locale; ///< the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US"
+  char *preferred_locale; /** the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US" */
 
   /* specs/discord/guild.endpoints-params.json:48:18
      '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "comment":"array of guild feature strings"}' */
-  ja_str **features; ///< array of guild feature strings
+  ja_str **features; /** array of guild feature strings */
 
   /* specs/discord/guild.endpoints-params.json:49:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
-  char *description; ///< the description for the guild, if the guild is discoverable
+  char *description; /** the description for the guild, if the guild is discoverable */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[19];
-    void *record_defined[19];
-    void *record_null[19];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Guild Channel
-// defined at specs/discord/guild.endpoints-params.json:55:22
+/* Create Guild Channel */
+/* defined at specs/discord/guild.endpoints-params.json:55:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7039,24 +6136,10 @@ struct discord_create_guild_channel_params {
      '{ "name": "nsfw", "type":{ "base":"bool" }}' */
   bool nsfw;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[10];
-    void *record_defined[10];
-    void *record_null[10];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild Channel Positions
-// defined at specs/discord/guild.endpoints-params.json:73:22
+/* Modify Guild Channel Positions */
+/* defined at specs/discord/guild.endpoints-params.json:73:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7085,38 +6168,24 @@ struct discord_create_guild_channel_params {
 struct discord_modify_guild_channel_positions_params {
   /* specs/discord/guild.endpoints-params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
-  u64_snowflake_t id; ///< channel id
+  u64_snowflake_t id; /** channel id */
 
   /* specs/discord/guild.endpoints-params.json:77:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}' */
-  int position; ///< sorting position of the channel
+  int position; /** sorting position of the channel */
 
   /* specs/discord/guild.endpoints-params.json:78:20
      '{ "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"}' */
-  bool lock_permissions; ///< syncs the permission overwrites with the new parent, if moving to a new category
+  bool lock_permissions; /** syncs the permission overwrites with the new parent, if moving to a new category */
 
   /* specs/discord/guild.endpoints-params.json:79:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
-  u64_snowflake_t parent_id; ///< the new parent ID for the channel that is moved
+  u64_snowflake_t parent_id; /** the new parent ID for the channel that is moved */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// List Guild Members
-// defined at specs/discord/guild.endpoints-params.json:85:22
+/* List Guild Members */
+/* defined at specs/discord/guild.endpoints-params.json:85:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7145,30 +6214,16 @@ struct discord_modify_guild_channel_positions_params {
 struct discord_list_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:88:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
-  int limit; ///< max numbers of members to return (1-1000)
+  int limit; /** max numbers of members to return (1-1000) */
 
   /* specs/discord/guild.endpoints-params.json:89:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
-  u64_snowflake_t after; ///< the highest user id in the previous page
+  u64_snowflake_t after; /** the highest user id in the previous page */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Search Guild Members
-// defined at specs/discord/guild.endpoints-params.json:95:22
+/* Search Guild Members */
+/* defined at specs/discord/guild.endpoints-params.json:95:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7197,30 +6252,16 @@ struct discord_list_guild_members_params {
 struct discord_search_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
-  char *query; ///< Query string to match username(s) and nickname(s) against.
+  char *query; /** Query string to match username(s) and nickname(s) against. */
 
   /* specs/discord/guild.endpoints-params.json:99:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
-  int limit; ///< max number of members to return (1-1000)
+  int limit; /** max number of members to return (1-1000) */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Add Guild Member
-// defined at specs/discord/guild.endpoints-params.json:105:22
+/* Add Guild Member */
+/* defined at specs/discord/guild.endpoints-params.json:105:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7267,24 +6308,10 @@ struct discord_add_guild_member_params {
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool deaf;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild Member
-// defined at specs/discord/guild.endpoints-params.json:118:22
+/* Modify Guild Member */
+/* defined at specs/discord/guild.endpoints-params.json:118:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7331,24 +6358,82 @@ struct discord_modify_guild_member_params {
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
   u64_snowflake_t channel_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Guild Role
-// defined at specs/discord/guild.endpoints-params.json:131:22
+/* Modify Current User Nick */
+/* defined at specs/discord/guild.endpoints-params.json:131:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_current_user_nick_params_init(struct discord_modify_current_user_nick_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_current_user_nick_params_cleanup(struct discord_modify_current_user_nick_params *)`
+ *     * :code:`void discord_modify_current_user_nick_params_list_free(struct discord_modify_current_user_nick_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_current_user_nick_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params **)`
+ *     * :code:`void discord_modify_current_user_nick_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_current_user_nick_params_to_json(char *wbuf, size_t len, struct discord_modify_current_user_nick_params *)`
+ *     * :code:`void discord_modify_current_user_nick_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_user_nick_params **)`
+ * @endverbatim
+ */
+struct discord_modify_current_user_nick_params {
+  /* specs/discord/guild.endpoints-params.json:134:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
+  char *nick;
+
+};
+
+/* Create Guild Ban */
+/* defined at specs/discord/guild.endpoints-params.json:140:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_guild_ban_params_init(struct discord_create_guild_ban_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_guild_ban_params_cleanup(struct discord_create_guild_ban_params *)`
+ *     * :code:`void discord_create_guild_ban_params_list_free(struct discord_create_guild_ban_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_guild_ban_params_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params **)`
+ *     * :code:`void discord_create_guild_ban_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_guild_ban_params_to_json(char *wbuf, size_t len, struct discord_create_guild_ban_params *)`
+ *     * :code:`void discord_create_guild_ban_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_ban_params **)`
+ * @endverbatim
+ */
+struct discord_create_guild_ban_params {
+  /* specs/discord/guild.endpoints-params.json:143:20
+     '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
+  int delete_message_days; /** number of days to delete messages for(0-7) */
+
+  /* specs/discord/guild.endpoints-params.json:144:20
+     '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }' */
+  char *reason; /** reason for the ban (deprecated) */
+
+};
+
+/* Create Guild Role */
+/* defined at specs/discord/guild.endpoints-params.json:150:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7375,44 +6460,30 @@ struct discord_modify_guild_member_params {
  * @endverbatim
  */
 struct discord_create_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:134:20
+  /* specs/discord/guild.endpoints-params.json:153:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.endpoints-params.json:135:20
+  /* specs/discord/guild.endpoints-params.json:154:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
   enum discord_bitwise_permission_flags permissions;
 
-  /* specs/discord/guild.endpoints-params.json:136:20
+  /* specs/discord/guild.endpoints-params.json:155:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/guild.endpoints-params.json:137:20
+  /* specs/discord/guild.endpoints-params.json:156:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool hoist;
 
-  /* specs/discord/guild.endpoints-params.json:138:20
+  /* specs/discord/guild.endpoints-params.json:157:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mentionable;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild Role Positions
-// defined at specs/discord/guild.endpoints-params.json:144:22
+/* Modify Guild Role Positions */
+/* defined at specs/discord/guild.endpoints-params.json:163:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7439,32 +6510,18 @@ struct discord_create_guild_role_params {
  * @endverbatim
  */
 struct discord_modify_guild_role_positions_params {
-  /* specs/discord/guild.endpoints-params.json:147:20
+  /* specs/discord/guild.endpoints-params.json:166:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
-  u64_snowflake_t id; ///< role
+  u64_snowflake_t id; /** role */
 
-  /* specs/discord/guild.endpoints-params.json:148:20
+  /* specs/discord/guild.endpoints-params.json:167:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
-  int position; ///< sorting position of the role
+  int position; /** sorting position of the role */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Guild Role
-// defined at specs/discord/guild.endpoints-params.json:154:22
+/* Modify Guild Role */
+/* defined at specs/discord/guild.endpoints-params.json:173:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7491,44 +6548,30 @@ struct discord_modify_guild_role_positions_params {
  * @endverbatim
  */
 struct discord_modify_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:157:20
+  /* specs/discord/guild.endpoints-params.json:176:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
-  char *name; ///< name of the role
+  char *name; /** name of the role */
 
-  /* specs/discord/guild.endpoints-params.json:158:20
+  /* specs/discord/guild.endpoints-params.json:177:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  enum discord_bitwise_permission_flags permissions; ///< bitwise value of the enabled/disabled permissions
+  enum discord_bitwise_permission_flags permissions; /** bitwise value of the enabled/disabled permissions */
 
-  /* specs/discord/guild.endpoints-params.json:159:20
+  /* specs/discord/guild.endpoints-params.json:178:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
-  int color; ///< RGB color value
+  int color; /** RGB color value */
 
-  /* specs/discord/guild.endpoints-params.json:160:20
+  /* specs/discord/guild.endpoints-params.json:179:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
-  bool hoist; ///< whether the role should be displayed separately in the sidebar
+  bool hoist; /** whether the role should be displayed separately in the sidebar */
 
-  /* specs/discord/guild.endpoints-params.json:161:20
+  /* specs/discord/guild.endpoints-params.json:180:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
-  bool mentionable; ///< whether the role should be mentionable
+  bool mentionable; /** whether the role should be mentionable */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Get Guild Prune Count
-// defined at specs/discord/guild.endpoints-params.json:167:22
+/* Get Guild Prune Count */
+/* defined at specs/discord/guild.endpoints-params.json:186:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7555,32 +6598,18 @@ struct discord_modify_guild_role_params {
  * @endverbatim
  */
 struct discord_get_guild_prune_count_params {
-  /* specs/discord/guild.endpoints-params.json:170:20
+  /* specs/discord/guild.endpoints-params.json:189:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:171:20
+  /* specs/discord/guild.endpoints-params.json:190:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Begin Guild Prune
-// defined at specs/discord/guild.endpoints-params.json:177:22
+/* Begin Guild Prune */
+/* defined at specs/discord/guild.endpoints-params.json:196:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7607,41 +6636,27 @@ struct discord_get_guild_prune_count_params {
  * @endverbatim
  */
 struct discord_begin_guild_prune_params {
-  /* specs/discord/guild.endpoints-params.json:180:20
+  /* specs/discord/guild.endpoints-params.json:199:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:181:20
+  /* specs/discord/guild.endpoints-params.json:200:20
      '{ "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool compute_prune_count;
 
-  /* specs/discord/guild.endpoints-params.json:182:20
+  /* specs/discord/guild.endpoints-params.json:201:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
-  /* specs/discord/guild.endpoints-params.json:183:20
+  /* specs/discord/guild.endpoints-params.json:202:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *reason;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/guild.json, Please don't edit it. */
 
-// Guild Structure
-// defined at specs/discord/guild.json:9:22
+/* Guild Structure */
+/* defined at specs/discord/guild.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-object-guild-structure
  *
@@ -7742,7 +6757,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:31:70
      '{"type":{"base":"struct discord_role", "dec":"ntl"}, "name":"roles", "comment":"array of role objects", "inject_if_not":null }' */
-  struct discord_role **roles; ///< array of role objects
+  struct discord_role **roles; /** array of role objects */
 
   /* specs/discord/guild.json:32:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
@@ -7750,7 +6765,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:33:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "comment":"array of guild feature strings", "inject_if_not":null }' */
-  ja_str **features; ///< array of guild feature strings
+  ja_str **features; /** array of guild feature strings */
 
   /* specs/discord/guild.json:34:79
      '{"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"}' */
@@ -7790,7 +6805,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:43:77
      '{"type":{"base":"struct discord_voice_state", "dec":"ntl"}, "name":"voice_states", "comment":"array of partial voice state objects", "inject_if_not":null }' */
-  struct discord_voice_state **voice_states; ///< array of partial voice state objects
+  struct discord_voice_state **voice_states; /** array of partial voice state objects */
 
   /* specs/discord/guild.json:44:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
@@ -7799,11 +6814,11 @@ struct discord_guild {
   /* specs/discord/guild.json:45:73
      '{"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}' */
-  struct discord_channel **channels; ///< array of channel objects
+  struct discord_channel **channels; /** array of channel objects */
 
   /* specs/discord/guild.json:47:81
      '{"type":{"base":"struct discord_presence_status", "dec":"ntl"}, "name":"presences", "option":true, "comment":"array of partial presence update objects", "inject_if_not":null }' */
-  struct discord_presence_status **presences; ///< array of partial presence update objects
+  struct discord_presence_status **presences; /** array of partial presence update objects */
 
   /* specs/discord/guild.json:48:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
@@ -7858,20 +6873,6 @@ struct discord_guild {
      '{"type":{"base":"struct discord_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}' */
   struct discord_welcome_screen *welcome_screen;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[46];
-    void *record_defined[46];
-    void *record_null[46];
-  } __M; // metadata
-/// @endcond
 };
 
 
@@ -7888,8 +6889,8 @@ struct discord_guild {
 
 
 
-// Unavailable Guild Object
-// defined at specs/discord/guild.json:150:23
+/* Unavailable Guild Object */
+/* defined at specs/discord/guild.json:150:23 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#unavailable-guild-object
  *
@@ -7926,24 +6927,10 @@ struct discord_unavailable_guild {
      '{"name":"unavailable", "type":{"base":"bool"}}' */
   bool unavailable;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Guild Preview Object
-// defined at specs/discord/guild.json:160:23
+/* Guild Preview Object */
+/* defined at specs/discord/guild.json:160:23 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-preview-object
  *
@@ -8012,24 +6999,10 @@ struct discord_guild_preview {
      '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
   char description[DISCORD_MAX_DESCRIPTION_LEN];
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[10];
-    void *record_defined[10];
-    void *record_null[10];
-  } __M; // metadata
-/// @endcond
 };
 
-// Guild Widget Object
-// defined at specs/discord/guild.json:178:23
+/* Guild Widget Object */
+/* defined at specs/discord/guild.json:178:23 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-widget-object
  *
@@ -8066,24 +7039,10 @@ struct discord_guild_widget {
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}}' */
   u64_snowflake_t channel_id;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Guild Member Structure
-// defined at specs/discord/guild.json:188:22
+/* Guild Member Structure */
+/* defined at specs/discord/guild.json:188:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#guild-member-object
  *
@@ -8122,7 +7081,7 @@ struct discord_guild_member {
 
   /* specs/discord/guild.json:193:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
-  ja_u64 **roles; ///< array of role object ids
+  ja_u64 **roles; /** array of role object ids */
 
   /* specs/discord/guild.json:194:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -8148,24 +7107,10 @@ struct discord_guild_member {
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*"}, "option":true}' */
   char *permissions;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 
-// Integration Structure
-// defined at specs/discord/guild.json:205:22
+/* Integration Structure */
+/* defined at specs/discord/guild.json:205:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-object-integration-structure
  *
@@ -8254,26 +7199,12 @@ struct discord_integration {
      '{ "name": "application", "type":{ "base":"struct discord_integration_application", "dec":"*" }}' */
   struct discord_integration_application *application;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[15];
-    void *record_defined[15];
-    void *record_null[15];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Integration Account Structure
-// defined at specs/discord/guild.json:239:22
+/* Integration Account Structure */
+/* defined at specs/discord/guild.json:239:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-account-object-integration-account-structure
  *
@@ -8310,24 +7241,10 @@ struct discord_integration_account {
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Integration Application Object
-// defined at specs/discord/guild.json:249:22
+/* Integration Application Object */
+/* defined at specs/discord/guild.json:249:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#integration-application-object-integration-application-structure
  *
@@ -8380,24 +7297,10 @@ struct discord_integration_application {
      '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
   struct discord_user *bot;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[6];
-    void *record_defined[6];
-    void *record_null[6];
-  } __M; // metadata
-/// @endcond
 };
 
-// Ban Structure
-// defined at specs/discord/guild.json:262:22
+/* Ban Structure */
+/* defined at specs/discord/guild.json:262:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#ban-object
  *
@@ -8432,26 +7335,12 @@ struct discord_ban {
 
   /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *user; ///< partial user object
+  struct discord_user *user; /** partial user object */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Welcome Screen Structure
-// defined at specs/discord/guild.json:272:22
+/* Welcome Screen Structure */
+/* defined at specs/discord/guild.json:272:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-structure
  *
@@ -8488,24 +7377,10 @@ struct discord_welcome_screen {
      '{ "name": "welcome_channels", "type":{ "base":"struct discord_welcome_screen_channel", "dec":"ntl" }, "inject_if_not":null }' */
   struct discord_welcome_screen_channel **welcome_channels;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Welcome Screen Channel Structure
-// defined at specs/discord/guild.json:283:22
+/* Welcome Screen Channel Structure */
+/* defined at specs/discord/guild.json:283:22 */
 /**
  * @see https://discord.com/developers/docs/resources/guild#welcome-screen-object-welcome-screen-channel-structure
  *
@@ -8550,25 +7425,11 @@ struct discord_welcome_screen_channel {
      '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}' */
   char *emoji_name;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/interaction.endpoints-params.json, Please don't edit it. */
 
-// Edit Original Interaction Response
-// defined at specs/discord/interaction.endpoints-params.json:9:22
+/* Edit Original Interaction Response */
+/* defined at specs/discord/interaction.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -8597,50 +7458,36 @@ struct discord_welcome_screen_channel {
 struct discord_edit_original_interaction_response_params {
   /* specs/discord/interaction.endpoints-params.json:12:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  char *content; ///< name of the webhook(1-2000) chars
+  char *content; /** name of the webhook(1-2000) chars */
 
   /* specs/discord/interaction.endpoints-params.json:13:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< array of up to 10 embeds objects
+  struct discord_embed **embeds; /** array of up to 10 embeds objects */
 
   /* specs/discord/interaction.endpoints-params.json:14:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; ///< the contents of the file being sent/edited
+  char *file; /** the contents of the file being sent/edited */
 
   /* specs/discord/interaction.endpoints-params.json:15:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
+  char *payload_json; /** JSON encoded body of non-file params (multipart/form-data only) */
 
   /* specs/discord/interaction.endpoints-params.json:16:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/interaction.endpoints-params.json:17:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; ///< attached files to keep
+  struct discord_attachment **attachments; /** attached files to keep */
 
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Followup Message
-// defined at specs/discord/interaction.endpoints-params.json:24:22
+/* Create Followup Message */
+/* defined at specs/discord/interaction.endpoints-params.json:24:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -8669,70 +7516,56 @@ struct discord_edit_original_interaction_response_params {
 struct discord_create_followup_message_params {
   /* specs/discord/interaction.endpoints-params.json:28:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)", "default_value":true }' */
-  bool wait; ///< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i
+  bool wait; /** cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/interaction.endpoints-params.json:29:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  u64_snowflake_t thread_id; ///< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived
+  u64_snowflake_t thread_id; /** Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
 
   /* specs/discord/interaction.endpoints-params.json:30:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
-  char *content; ///< the message contents (up to 2000 characters)
+  char *content; /** the message contents (up to 2000 characters) */
 
   /* specs/discord/interaction.endpoints-params.json:31:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
-  char *username; ///< override the default username of the webhook
+  char *username; /** override the default username of the webhook */
 
   /* specs/discord/interaction.endpoints-params.json:32:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
-  char *avatar_url; ///< override the default avatar of the webhook
+  char *avatar_url; /** override the default avatar of the webhook */
 
   /* specs/discord/interaction.endpoints-params.json:33:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; ///< true if this is a TTS message
+  bool tts; /** true if this is a TTS message */
 
   /* specs/discord/interaction.endpoints-params.json:34:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; ///< the contents of the file being sent
+  char *file; /** the contents of the file being sent */
 
   /* specs/discord/interaction.endpoints-params.json:35:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-  struct discord_embed *embeds; ///< embedded rich content
+  struct discord_embed *embeds; /** embedded rich content */
 
   /* specs/discord/interaction.endpoints-params.json:36:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  char *payload_json; ///< JSON encoded body of non-file params
+  char *payload_json; /** JSON encoded body of non-file params */
 
   /* specs/discord/interaction.endpoints-params.json:37:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
   /* specs/discord/interaction.endpoints-params.json:39:20
      '{ "name": "flags", "type":{ "base":"int" }, "comment":"can be set to 64 to send a ephemeral message", "inject_if_not": 0 }' */
-  int flags; ///< can be set to 64 to send a ephemeral message
+  int flags; /** can be set to 64 to send a ephemeral message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[12];
-    void *record_defined[12];
-    void *record_null[12];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Followup Message
-// defined at specs/discord/interaction.endpoints-params.json:45:22
+/* Edit Followup Message */
+/* defined at specs/discord/interaction.endpoints-params.json:45:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -8761,51 +7594,37 @@ struct discord_create_followup_message_params {
 struct discord_edit_followup_message_params {
   /* specs/discord/interaction.endpoints-params.json:48:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  char *content; ///< name of the webhook(1-2000) chars
+  char *content; /** name of the webhook(1-2000) chars */
 
   /* specs/discord/interaction.endpoints-params.json:49:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< array of up to 10 embeds objects
+  struct discord_embed **embeds; /** array of up to 10 embeds objects */
 
   /* specs/discord/interaction.endpoints-params.json:50:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; ///< the contents of the file being sent/edited
+  char *file; /** the contents of the file being sent/edited */
 
   /* specs/discord/interaction.endpoints-params.json:51:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
+  char *payload_json; /** JSON encoded body of non-file params (multipart/form-data only) */
 
   /* specs/discord/interaction.endpoints-params.json:52:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/interaction.endpoints-params.json:53:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; ///< attached files to keep
+  struct discord_attachment **attachments; /** attached files to keep */
 
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/interaction.json, Please don't edit it. */
 
-// Interaction Structure
-// defined at specs/discord/interaction.json:9:22
+/* Interaction Structure */
+/* defined at specs/discord/interaction.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure
  *
@@ -8836,64 +7655,50 @@ struct discord_edit_followup_message_params {
 struct discord_interaction {
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  u64_snowflake_t id; ///< id of the interaction
+  u64_snowflake_t id; /** id of the interaction */
 
   /* specs/discord/interaction.json:13:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-  u64_snowflake_t application_id; ///< id of the application this iteraction is for
+  u64_snowflake_t application_id; /** id of the application this iteraction is for */
 
   /* specs/discord/interaction.json:14:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  enum discord_interaction_types type; ///< the request type of the interaction
+  enum discord_interaction_types type; /** the request type of the interaction */
 
   /* specs/discord/interaction.json:15:18
      '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
-  struct discord_interaction_data *data; ///< the command data payload
+  struct discord_interaction_data *data; /** the command data payload */
 
   /* specs/discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-  u64_snowflake_t guild_id; ///< the guild it was sent from
+  u64_snowflake_t guild_id; /** the guild it was sent from */
 
   /* specs/discord/interaction.json:17:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-  u64_snowflake_t channel_id; ///< the channel it was sent from
+  u64_snowflake_t channel_id; /** the channel it was sent from */
 
   /* specs/discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
-  struct discord_guild_member *member; ///< guild member data for the invoking user, including permissions
+  struct discord_guild_member *member; /** guild member data for the invoking user, including permissions */
 
   /* specs/discord/interaction.json:19:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
-  struct discord_user *user; ///< user object for the invoking user, if invoked in a DM
+  struct discord_user *user; /** user object for the invoking user, if invoked in a DM */
 
   /* specs/discord/interaction.json:20:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
-  char *token; ///< a continuation token for responding to the interaction
+  char *token; /** a continuation token for responding to the interaction */
 
   /* specs/discord/interaction.json:21:18
      '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
-  struct discord_message *message; ///< for components, the message they were attached to
+  struct discord_message *message; /** for components, the message they were attached to */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[10];
-    void *record_defined[10];
-    void *record_null[10];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Interaction Data Structure
-// defined at specs/discord/interaction.json:40:22
+/* Interaction Data Structure */
+/* defined at specs/discord/interaction.json:40:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure
  *
@@ -8924,54 +7729,40 @@ struct discord_interaction {
 struct discord_interaction_data {
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-  u64_snowflake_t id; ///< the ID of the invoked command
+  u64_snowflake_t id; /** the ID of the invoked command */
 
   /* specs/discord/interaction.json:44:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
-  char *name; ///< the name of the invoked command
+  char *name; /** the name of the invoked command */
 
   /* specs/discord/interaction.json:45:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "comment":"the type of the invoked command"}' */
-  enum discord_application_command_types type; ///< the type of the invoked command
+  enum discord_application_command_types type; /** the type of the invoked command */
 
   /* specs/discord/interaction.json:46:18
      '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
-  struct discord_resolved_data *resolved; ///< converted users + roles + channels
+  struct discord_resolved_data *resolved; /** converted users + roles + channels */
 
   /* specs/discord/interaction.json:47:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command, max 25", "inject_if_not":null}' */
-  struct discord_application_command_interaction_data_option **options; ///< the parameters for the command, max 25
+  struct discord_application_command_interaction_data_option **options; /** the parameters for the command, max 25 */
 
   /* specs/discord/interaction.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
-  char *custom_id; ///< the custom id of the component
+  char *custom_id; /** the custom id of the component */
 
   /* specs/discord/interaction.json:49:18
      '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-  ja_str **values; ///< the values the user selected
+  ja_str **values; /** the values the user selected */
 
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-  u64_snowflake_t target_id; ///< id of a user or message targetted by a user or message command
+  u64_snowflake_t target_id; /** id of a user or message targetted by a user or message command */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
-// Resolved Data Structure
-// defined at specs/discord/interaction.json:57:22
+/* Resolved Data Structure */
+/* defined at specs/discord/interaction.json:57:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-resolved-data-structure
  *
@@ -9002,42 +7793,28 @@ struct discord_interaction_data {
 struct discord_resolved_data {
   /* specs/discord/interaction.json:60:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
-  ja_str **users; ///< the ids and User objects
+  ja_str **users; /** the ids and User objects */
 
   /* specs/discord/interaction.json:61:18
      '{"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null}' */
-  ja_str **members; ///< the ids and partial Member objects
+  ja_str **members; /** the ids and partial Member objects */
 
   /* specs/discord/interaction.json:62:18
      '{"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null}' */
-  ja_str **roles; ///< the ids and Role objects
+  ja_str **roles; /** the ids and Role objects */
 
   /* specs/discord/interaction.json:63:18
      '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
-  ja_str **channels; ///< the ids and partial Channel objects
+  ja_str **channels; /** the ids and partial Channel objects */
 
   /* specs/discord/interaction.json:64:18
      '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
-  ja_str **messages; ///< the ids and partial Message objects
+  ja_str **messages; /** the ids and partial Message objects */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 
-// Message Interaction Structure
-// defined at specs/discord/interaction.json:71:22
+/* Message Interaction Structure */
+/* defined at specs/discord/interaction.json:71:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#message-interaction-object-message-interaction-structure
  *
@@ -9068,38 +7845,24 @@ struct discord_resolved_data {
 struct discord_message_interaction {
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  u64_snowflake_t id; ///< id of the interaction
+  u64_snowflake_t id; /** id of the interaction */
 
   /* specs/discord/interaction.json:75:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  enum discord_interaction_types type; ///< the request type of the interaction
+  enum discord_interaction_types type; /** the request type of the interaction */
 
   /* specs/discord/interaction.json:76:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
-  char *name; ///< the name of the application command
+  char *name; /** the name of the application command */
 
   /* specs/discord/interaction.json:77:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-  struct discord_user *user; ///< the user who invoked the interaction
+  struct discord_user *user; /** the user who invoked the interaction */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[4];
-    void *record_defined[4];
-    void *record_null[4];
-  } __M; // metadata
-/// @endcond
 };
 
-// Interaction Response Structure
-// defined at specs/discord/interaction.json:84:22
+/* Interaction Response Structure */
+/* defined at specs/discord/interaction.json:84:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-response-structure
  *
@@ -9130,32 +7893,18 @@ struct discord_message_interaction {
 struct discord_interaction_response {
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
-  enum discord_interaction_callback_types type; ///< the type of response
+  enum discord_interaction_callback_types type; /** the type of response */
 
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-  struct discord_interaction_callback_data *data; ///< an optional response message
+  struct discord_interaction_callback_data *data; /** an optional response message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Interaction Callback Data Structure
-// defined at specs/discord/interaction.json:109:22
+/* Interaction Callback Data Structure */
+/* defined at specs/discord/interaction.json:109:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure
  *
@@ -9186,49 +7935,35 @@ struct discord_interaction_response {
 struct discord_interaction_callback_data {
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
-  bool tts; ///< is the response TTS
+  bool tts; /** is the response TTS */
 
   /* specs/discord/interaction.json:113:18
      '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
-  char *content; ///< message content
+  char *content; /** message content */
 
   /* specs/discord/interaction.json:114:18
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
-  struct discord_embed **embeds; ///< support up to 10 embeds
+  struct discord_embed **embeds; /** support up to 10 embeds */
 
   /* specs/discord/interaction.json:115:18
      '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions object
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions object */
 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
-  enum discord_interaction_callback_data_flags flags; ///< interaction application command callback data flags
+  enum discord_interaction_callback_data_flags flags; /** interaction application command callback data flags */
 
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-  struct discord_component **components; ///< message components
+  struct discord_component **components; /** message components */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[6];
-    void *record_defined[6];
-    void *record_null[6];
-  } __M; // metadata
-/// @endcond
 };
 
 
 /* This file is generated from specs/discord/invite.endpoints-params.json, Please don't edit it. */
 
-// Get Invite
-// defined at specs/discord/invite.endpoints-params.json:9:22
+/* Get Invite */
+/* defined at specs/discord/invite.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -9257,33 +7992,19 @@ struct discord_interaction_callback_data {
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
-  bool with_counts; ///< whether the invite should contain approximate member counts
+  bool with_counts; /** whether the invite should contain approximate member counts */
 
   /* specs/discord/invite.endpoints-params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
-  bool with_expiration; ///< whether the invite should contain the expiration date
+  bool with_expiration; /** whether the invite should contain the expiration date */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
 
 
 
-// Invite Structure
-// defined at specs/discord/invite.json:19:22
+/* Invite Structure */
+/* defined at specs/discord/invite.json:19:22 */
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
  *
@@ -9318,11 +8039,11 @@ struct discord_invite {
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
-  struct discord_guild *guild; ///< partial guild object
+  struct discord_guild *guild; /** partial guild object */
 
   /* specs/discord/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
-  struct discord_channel *channel; ///< partial channel object
+  struct discord_channel *channel; /** partial channel object */
 
   /* specs/discord/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
@@ -9330,7 +8051,7 @@ struct discord_invite {
 
   /* specs/discord/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *target_user; ///< partial user object
+  struct discord_user *target_user; /** partial user object */
 
   /* specs/discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
@@ -9344,24 +8065,10 @@ struct discord_invite {
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
   int approximate_member_count;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[8];
-    void *record_defined[8];
-    void *record_null[8];
-  } __M; // metadata
-/// @endcond
 };
 
-// Invite Metadata Structure
-// defined at specs/discord/invite.json:36:22
+/* Invite Metadata Structure */
+/* defined at specs/discord/invite.json:36:22 */
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
  *
@@ -9410,25 +8117,11 @@ struct discord_invite_metadata {
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
   u64_unix_ms_t created_at;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/message_components.json, Please don't edit it. */
 
-// Component Structure
-// defined at specs/discord/message_components.json:9:22
+/* Component Structure */
+/* defined at specs/discord/message_components.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#component-object-component-structure
  *
@@ -9459,72 +8152,58 @@ struct discord_invite_metadata {
 struct discord_component {
   /* specs/discord/message_components.json:12:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
-  enum discord_component_types type; ///< component type
+  enum discord_component_types type; /** component type */
 
   /* specs/discord/message_components.json:13:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"a developer-defined identifier for the component, max 100 characters"}' */
-  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+  char custom_id[100+1]; /** a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:14:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
-  bool disabled; ///< whether the component is disabled, default false
+  bool disabled; /** whether the component is disabled, default false */
 
   /* specs/discord/message_components.json:15:18
      '{"name":"style", "type":{"base":"int", "int_alias":"enum discord_button_styles"}, "option":true, "inject_if_not":0, "comment":"one of button styles"}' */
-  enum discord_button_styles style; ///< one of button styles
+  enum discord_button_styles style; /** one of button styles */
 
   /* specs/discord/message_components.json:16:18
      '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  char label[80+1]; ///< text that appears on the button, max 80 characters
+  char label[80+1]; /** text that appears on the button, max 80 characters */
 
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  struct discord_emoji *emoji; ///< name, id and animated
+  struct discord_emoji *emoji; /** name, id and animated */
 
   /* specs/discord/message_components.json:18:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
-  char *url; ///< a url for link-style buttons
+  char *url; /** a url for link-style buttons */
 
   /* specs/discord/message_components.json:19:18
      '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "option":true, "comment":"the choices in the select, max 25", "inject_if_not":null}' */
-  struct discord_select_option **options; ///< the choices in the select, max 25
+  struct discord_select_option **options; /** the choices in the select, max 25 */
 
   /* specs/discord/message_components.json:20:18
      '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  char placeholder[100+1]; ///< custom placeholder text if nothing is selected, max 100 characters
+  char placeholder[100+1]; /** custom placeholder text if nothing is selected, max 100 characters */
 
   /* specs/discord/message_components.json:21:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int min_values; ///< the minimum number of items that must be chosen; default 1, min 0, max 25
+  int min_values; /** the minimum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:22:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int max_values; ///< the maximum number of items that must be chosen; default 1, min 0, max 25
+  int max_values; /** the maximum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:23:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
-  struct discord_component **components; ///< a list of child components
+  struct discord_component **components; /** a list of child components */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[12];
-    void *record_defined[12];
-    void *record_null[12];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Button Structure
-// defined at specs/discord/message_components.json:41:22
+/* Button Structure */
+/* defined at specs/discord/message_components.json:41:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#button-object-button-structure
  *
@@ -9555,52 +8234,38 @@ struct discord_component {
 struct discord_button {
   /* specs/discord/message_components.json:44:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
-  enum discord_component_types type; ///< 2 for a button
+  enum discord_component_types type; /** 2 for a button */
 
   /* specs/discord/message_components.json:45:18
      '{"name":"style", "type": {"base":"int", "int_alias":"enum discord_button_styles"}, "inject_if_not":0, "comment": "one of button styles"}' */
-  enum discord_button_styles style; ///< one of button styles
+  enum discord_button_styles style; /** one of button styles */
 
   /* specs/discord/message_components.json:46:18
      '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  char label[80+1]; ///< text that appears on the button, max 80 characters
+  char label[80+1]; /** text that appears on the button, max 80 characters */
 
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  struct discord_emoji *emoji; ///< name, id and animated
+  struct discord_emoji *emoji; /** name, id and animated */
 
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+  char custom_id[100+1]; /** a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:49:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
-  char *url; ///< a url for link-style buttons
+  char *url; /** a url for link-style buttons */
 
   /* specs/discord/message_components.json:50:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
-  bool disabled; ///< whether the component is disabled, default false
+  bool disabled; /** whether the component is disabled, default false */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Select Menu Structure
-// defined at specs/discord/message_components.json:70:22
+/* Select Menu Structure */
+/* defined at specs/discord/message_components.json:70:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure
  *
@@ -9631,50 +8296,36 @@ struct discord_button {
 struct discord_select_menu {
   /* specs/discord/message_components.json:73:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
-  enum discord_component_types type; ///< 3 for a select menu
+  enum discord_component_types type; /** 3 for a select menu */
 
   /* specs/discord/message_components.json:74:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  char custom_id[100+1]; ///< a developer-defined identifier for the component, max 100 characters
+  char custom_id[100+1]; /** a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:75:18
      '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "comment":"the choices in the select, max 25"}' */
-  struct discord_select_option **options; ///< the choices in the select, max 25
+  struct discord_select_option **options; /** the choices in the select, max 25 */
 
   /* specs/discord/message_components.json:76:18
      '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  char placeholder[100+1]; ///< custom placeholder text if nothing is selected, max 100 characters
+  char placeholder[100+1]; /** custom placeholder text if nothing is selected, max 100 characters */
 
   /* specs/discord/message_components.json:77:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int min_values; ///< the minimum number of items that must be chosen; default 1, min 0, max 25
+  int min_values; /** the minimum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:78:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int max_values; ///< the maximum number of items that must be chosen; default 1, min 0, max 25
+  int max_values; /** the maximum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:79:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
-  bool disabled; ///< disable the select, default false
+  bool disabled; /** disable the select, default false */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 
-// Select Option Structure
-// defined at specs/discord/message_components.json:85:22
+/* Select Option Structure */
+/* defined at specs/discord/message_components.json:85:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
  *
@@ -9705,43 +8356,29 @@ struct discord_select_menu {
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18
      '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */
-  char label[25+1]; ///< the user-facing name of the option, max 25 characters
+  char label[25+1]; /** the user-facing name of the option, max 25 characters */
 
   /* specs/discord/message_components.json:89:18
      '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"the dev define value of the option, max 100 characters"}' */
-  char value[100+1]; ///< the dev define value of the option, max 100 characters
+  char value[100+1]; /** the dev define value of the option, max 100 characters */
 
   /* specs/discord/message_components.json:90:18
      '{"name":"description", "type":{"base":"char", "dec":"[50+1]"}, "inject_if_not":"", "option":true, "comment":"a additional description of the option, max 50 characters"}' */
-  char description[50+1]; ///< a additional description of the option, max 50 characters
+  char description[50+1]; /** a additional description of the option, max 50 characters */
 
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
-  struct discord_emoji *emoji; ///< name, id and animated
+  struct discord_emoji *emoji; /** name, id and animated */
 
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
-  bool Default; ///< will render this option as selected by default
+  bool Default; /** will render this option as selected by default */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[5];
-    void *record_defined[5];
-    void *record_null[5];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/misc.json, Please don't edit it. */
 
-// Custom File Structure
-// defined at specs/discord/misc.json:7:22
+/* Custom File Structure */
+/* defined at specs/discord/misc.json:7:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -9770,37 +8407,23 @@ struct discord_select_option {
 struct discord_file {
   /* specs/discord/misc.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"the name of the file being sent", "inject_if_not":null }' */
-  char *name; ///< the name of the file being sent
+  char *name; /** the name of the file being sent */
 
   /* specs/discord/misc.json:12:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *content; ///< the contents of the file being sent
+  char *content; /** the contents of the file being sent */
 
   /* specs/discord/misc.json:13:20
      '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
-  size_t size; ///< the size of the file in bytes
+  size_t size; /** the size of the file in bytes */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
 
-// Role Structure
-// defined at specs/discord/permissions.json:50:22
+/* Role Structure */
+/* defined at specs/discord/permissions.json:50:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  *
@@ -9865,24 +8488,10 @@ struct discord_role {
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
   struct discord_role_tags *tags;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 
-// Role Tags Structure
-// defined at specs/discord/permissions.json:68:22
+/* Role Tags Structure */
+/* defined at specs/discord/permissions.json:68:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  *
@@ -9923,25 +8532,11 @@ struct discord_role_tags {
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
   int premium_subscriber;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
-// Modify Current User
-// defined at specs/discord/user.endpoints-params.json:9:22
+/* Modify Current User */
+/* defined at specs/discord/user.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -9974,26 +8569,46 @@ struct discord_modify_current_user_params {
 
   /* specs/discord/user.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
-  char *avatar; ///< base64 encoded image data
+  char *avatar; /** base64 encoded image data */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Create Group DM
-// defined at specs/discord/user.endpoints-params.json:19:22
+/* Create DM */
+/* defined at specs/discord/user.endpoints-params.json:19:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_dm_params_init(struct discord_create_dm_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_dm_params_cleanup(struct discord_create_dm_params *)`
+ *     * :code:`void discord_create_dm_params_list_free(struct discord_create_dm_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_dm_params_from_json(char *rbuf, size_t len, struct discord_create_dm_params **)`
+ *     * :code:`void discord_create_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_dm_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_dm_params_to_json(char *wbuf, size_t len, struct discord_create_dm_params *)`
+ *     * :code:`void discord_create_dm_params_list_to_json(char *wbuf, size_t len, struct discord_create_dm_params **)`
+ * @endverbatim
+ */
+struct discord_create_dm_params {
+  /* specs/discord/user.endpoints-params.json:22:20
+     '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
+  u64_snowflake_t recipient_id; /** the recipient to open a DM channel with */
+
+};
+
+/* Create Group DM */
+/* defined at specs/discord/user.endpoints-params.json:28:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10020,30 +8635,16 @@ struct discord_modify_current_user_params {
  * @endverbatim
  */
 struct discord_create_group_dm_params {
-  /* specs/discord/user.endpoints-params.json:22:20
+  /* specs/discord/user.endpoints-params.json:31:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
-  ja_str **access_tokens; ///< access tokens of users that have granted your app the gdm.join scope
+  ja_str **access_tokens; /** access tokens of users that have granted your app the gdm.join scope */
 
-  /* specs/discord/user.endpoints-params.json:24:19
+  /* specs/discord/user.endpoints-params.json:33:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"a dictionary of user ids to their respective nicknames"}' */
-  ja_u64 **nicks; ///< a dictionary of user ids to their respective nicknames
+  ja_u64 **nicks; /** a dictionary of user ids to their respective nicknames */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 
@@ -10051,8 +8652,8 @@ struct discord_create_group_dm_params {
 
 
 
-// User Structure
-// defined at specs/discord/user.json:41:28
+/* User Structure */
+/* defined at specs/discord/user.json:41:28 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10131,26 +8732,12 @@ struct discord_user {
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
   enum discord_user_flags public_flags;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[13];
-    void *record_defined[13];
-    void *record_null[13];
-  } __M; // metadata
-/// @endcond
 };
 
 
 
-// Connection Structure
-// defined at specs/discord/user.json:73:28
+/* Connection Structure */
+/* defined at specs/discord/user.json:73:28 */
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
  *
@@ -10215,20 +8802,6 @@ struct discord_connection {
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
   enum discord_visibility_types visibility;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
 
@@ -10239,8 +8812,8 @@ struct discord_connection {
 
 /* This file is generated from specs/discord/voice.json, Please don't edit it. */
 
-// Voice State Structure
-// defined at specs/discord/voice.json:10:22
+/* Voice State Structure */
+/* defined at specs/discord/voice.json:10:22 */
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-state-object-voice-state-structure
  *
@@ -10317,24 +8890,10 @@ struct discord_voice_state {
      '{ "name": "supress", "type":{ "base":"bool" }}' */
   bool supress;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[12];
-    void *record_defined[12];
-    void *record_null[12];
-  } __M; // metadata
-/// @endcond
 };
 
-// Voice Region Structure
-// defined at specs/discord/voice.json:31:22
+/* Voice Region Structure */
+/* defined at specs/discord/voice.json:31:22 */
 /**
  * @see https://discord.com/developers/docs/resources/voice#voice-region-object-voice-region-structure
  *
@@ -10387,25 +8946,11 @@ struct discord_voice_region {
      '{ "name": "custom", "type":{ "base":"bool" }}' */
   bool custom;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[6];
-    void *record_defined[6];
-    void *record_null[6];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/webhook.endpoints-params.json, Please don't edit it. */
 
-// Create Webhook
-// defined at specs/discord/webhook.endpoints-params.json:9:22
+/* Create Webhook */
+/* defined at specs/discord/webhook.endpoints-params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10434,30 +8979,16 @@ struct discord_voice_region {
 struct discord_create_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
-  char *name; ///< name of the webhook(1-80) chars
+  char *name; /** name of the webhook(1-80) chars */
 
   /* specs/discord/webhook.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  char *avatar; ///< base64 image for the default webhook avatar
+  char *avatar; /** base64 image for the default webhook avatar */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Webhook
-// defined at specs/discord/webhook.endpoints-params.json:19:22
+/* Modify Webhook */
+/* defined at specs/discord/webhook.endpoints-params.json:19:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10486,34 +9017,20 @@ struct discord_create_webhook_params {
 struct discord_modify_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
-  char *name; ///< name of the webhook(1-80) chars
+  char *name; /** name of the webhook(1-80) chars */
 
   /* specs/discord/webhook.endpoints-params.json:23:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  char *avatar; ///< base64 image for the default webhook avatar
+  char *avatar; /** base64 image for the default webhook avatar */
 
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-  u64_snowflake_t channel_id; ///< the new channel id this webhook should be moved to
+  u64_snowflake_t channel_id; /** the new channel id this webhook should be moved to */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 
-// Modify Webhook with Token
-// defined at specs/discord/webhook.endpoints-params.json:30:22
+/* Modify Webhook with Token */
+/* defined at specs/discord/webhook.endpoints-params.json:30:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10542,30 +9059,16 @@ struct discord_modify_webhook_params {
 struct discord_modify_webhook_with_token_params {
   /* specs/discord/webhook.endpoints-params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
-  char *name; ///< name of the webhook(1-80) chars
+  char *name; /** name of the webhook(1-80) chars */
 
   /* specs/discord/webhook.endpoints-params.json:34:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  char *avatar; ///< base64 image for the default webhook avatar
+  char *avatar; /** base64 image for the default webhook avatar */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[2];
-    void *record_defined[2];
-    void *record_null[2];
-  } __M; // metadata
-/// @endcond
 };
 
-// Execute Webhook
-// defined at specs/discord/webhook.endpoints-params.json:40:22
+/* Execute Webhook */
+/* defined at specs/discord/webhook.endpoints-params.json:40:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10594,66 +9097,52 @@ struct discord_modify_webhook_with_token_params {
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:44:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
-  bool wait; ///< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i
+  bool wait; /** cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/webhook.endpoints-params.json:45:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  u64_snowflake_t thread_id; ///< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived
+  u64_snowflake_t thread_id; /** Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
 
   /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
-  char *content; ///< the message contents (up to 2000 characters)
+  char *content; /** the message contents (up to 2000 characters) */
 
   /* specs/discord/webhook.endpoints-params.json:47:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
-  char *username; ///< override the default username of the webhook
+  char *username; /** override the default username of the webhook */
 
   /* specs/discord/webhook.endpoints-params.json:48:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
-  char *avatar_url; ///< override the default avatar of the webhook
+  char *avatar_url; /** override the default avatar of the webhook */
 
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; ///< true if this is a TTS message
+  bool tts; /** true if this is a TTS message */
 
   /* specs/discord/webhook.endpoints-params.json:50:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; ///< the contents of the file being sent
+  char *file; /** the contents of the file being sent */
 
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-  struct discord_embed *embeds; ///< embedded rich content
+  struct discord_embed *embeds; /** embedded rich content */
 
   /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  char *payload_json; ///< JSON encoded body of non-file params
+  char *payload_json; /** JSON encoded body of non-file params */
 
   /* specs/discord/webhook.endpoints-params.json:53:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[11];
-    void *record_defined[11];
-    void *record_null[11];
-  } __M; // metadata
-/// @endcond
 };
 
-// Edit Webhook Message
-// defined at specs/discord/webhook.endpoints-params.json:60:22
+/* Edit Webhook Message */
+/* defined at specs/discord/webhook.endpoints-params.json:60:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -10682,51 +9171,37 @@ struct discord_execute_webhook_params {
 struct discord_edit_webhook_message_params {
   /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  char *content; ///< name of the webhook(1-2000) chars
+  char *content; /** name of the webhook(1-2000) chars */
 
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  struct discord_embed **embeds; ///< array of up to 10 embeds objects
+  struct discord_embed **embeds; /** array of up to 10 embeds objects */
 
   /* specs/discord/webhook.endpoints-params.json:65:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; ///< the contents of the file being sent/edited
+  char *file; /** the contents of the file being sent/edited */
 
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; ///< JSON encoded body of non-file params (multipart/form-data only)
+  char *payload_json; /** JSON encoded body of non-file params (multipart/form-data only) */
 
   /* specs/discord/webhook.endpoints-params.json:67:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; ///< allowed mentions for the message
+  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
 
   /* specs/discord/webhook.endpoints-params.json:68:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; ///< attached files to keep
+  struct discord_attachment **attachments; /** attached files to keep */
 
   /* specs/discord/webhook.endpoints-params.json:69:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; ///< the components to include with the message
+  struct discord_component **components; /** the components to include with the message */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[7];
-    void *record_defined[7];
-    void *record_null[7];
-  } __M; // metadata
-/// @endcond
 };
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
 
-// Webhook Structure
-// defined at specs/discord/webhook.json:9:22
+/* Webhook Structure */
+/* defined at specs/discord/webhook.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
  *
@@ -10757,23 +9232,23 @@ struct discord_edit_webhook_message_params {
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" }' */
-  u64_snowflake_t id; ///< the id of the webhook
+  u64_snowflake_t id; /** the id of the webhook */
 
   /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }, "comment":"the type of the webhook" }' */
-  enum discord_webhook_types type; ///< the type of the webhook
+  enum discord_webhook_types type; /** the type of the webhook */
 
   /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the guild id this webhook is for, if any", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; ///< the guild id this webhook is for, if any
+  u64_snowflake_t guild_id; /** the guild id this webhook is for, if any */
 
   /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the channel id this webhook is for, if any", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; ///< the channel id this webhook is for, if any
+  u64_snowflake_t channel_id; /** the channel id this webhook is for, if any */
 
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null }' */
-  struct discord_user *user; ///< the user this webhook was created by (not returned when getting a webhook with its token
+  struct discord_user *user; /** the user this webhook was created by (not returned when getting a webhook with its token */
 
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]", "comment":"the default name of the webhook", "inject_if_not":"" }}' */
@@ -10781,42 +9256,28 @@ struct discord_webhook {
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"the default user avatar has of the webhook", "inject_if_not":null }' */
-  char *avatar; ///< the default user avatar has of the webhook
+  char *avatar; /** the default user avatar has of the webhook */
 
   /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"the secure token of the webhook (returned for Incoming Webhooks)", "inject_if_not":null }' */
-  char *token; ///< the secure token of the webhook (returned for Incoming Webhooks)
+  char *token; /** the secure token of the webhook (returned for Incoming Webhooks) */
 
   /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the bot/OAuth2 application that created this webhook", "inject_if_not":0 }' */
-  u64_snowflake_t application_id; ///< the bot/OAuth2 application that created this webhook
+  u64_snowflake_t application_id; /** the bot/OAuth2 application that created this webhook */
 
   /* specs/discord/webhook.json:21:20
      '{ "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null }' */
-  struct discord_guild *source_guild; ///< the guild of the channel that this webhook is following (returned for Channel Follower Webhook)
+  struct discord_guild *source_guild; /** the guild of the channel that this webhook is following (returned for Channel Follower Webhook) */
 
   /* specs/discord/webhook.json:22:20
      '{ "name": "source_channel", "type":{ "base":"struct discord_channel", "dec":"*" }, "comment":"the channel that this webhook is following (returned for Channel Follower Webhooks)", "inject_if_not":null }' */
-  struct discord_channel *source_channel; ///< the channel that this webhook is following (returned for Channel Follower Webhooks)
+  struct discord_channel *source_channel; /** the channel that this webhook is following (returned for Channel Follower Webhooks) */
 
   /* specs/discord/webhook.json:23:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }' */
-  char *url; ///< the url used for executing the webhook (returned by the webhooks OAuth2 flow)
+  char *url; /** the url used for executing the webhook (returned by the webhooks OAuth2 flow) */
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[12];
-    void *record_defined[12];
-    void *record_null[12];
-  } __M; // metadata
-/// @endcond
 };
 
 
@@ -11944,6 +10405,36 @@ extern void discord_modify_guild_member_params_list_from_json(char *str, size_t 
 extern size_t discord_modify_guild_member_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_modify_guild_member_params **p);
 
+extern void discord_modify_current_user_nick_params_cleanup_v(void *p);
+extern void discord_modify_current_user_nick_params_cleanup(struct discord_modify_current_user_nick_params *p);
+extern void discord_modify_current_user_nick_params_init_v(void *p);
+extern void discord_modify_current_user_nick_params_init(struct discord_modify_current_user_nick_params *p);
+extern void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params **pp);
+extern size_t discord_modify_current_user_nick_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_current_user_nick_params_to_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p);
+extern void discord_modify_current_user_nick_params_list_free_v(void **p);
+extern void discord_modify_current_user_nick_params_list_free(struct discord_modify_current_user_nick_params **p);
+extern void discord_modify_current_user_nick_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_current_user_nick_params_list_from_json(char *str, size_t len, struct discord_modify_current_user_nick_params ***p);
+extern size_t discord_modify_current_user_nick_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_current_user_nick_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_nick_params **p);
+
+extern void discord_create_guild_ban_params_cleanup_v(void *p);
+extern void discord_create_guild_ban_params_cleanup(struct discord_create_guild_ban_params *p);
+extern void discord_create_guild_ban_params_init_v(void *p);
+extern void discord_create_guild_ban_params_init(struct discord_create_guild_ban_params *p);
+extern void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params **pp);
+extern size_t discord_create_guild_ban_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_ban_params_to_json(char *json, size_t len, struct discord_create_guild_ban_params *p);
+extern void discord_create_guild_ban_params_list_free_v(void **p);
+extern void discord_create_guild_ban_params_list_free(struct discord_create_guild_ban_params **p);
+extern void discord_create_guild_ban_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_guild_ban_params_list_from_json(char *str, size_t len, struct discord_create_guild_ban_params ***p);
+extern size_t discord_create_guild_ban_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_guild_ban_params_list_to_json(char *str, size_t len, struct discord_create_guild_ban_params **p);
+
 extern void discord_create_guild_role_params_cleanup_v(void *p);
 extern void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_init_v(void *p);
@@ -12514,6 +11005,21 @@ extern void discord_modify_current_user_params_list_from_json_v(char *str, size_
 extern void discord_modify_current_user_params_list_from_json(char *str, size_t len, struct discord_modify_current_user_params ***p);
 extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);
+
+extern void discord_create_dm_params_cleanup_v(void *p);
+extern void discord_create_dm_params_cleanup(struct discord_create_dm_params *p);
+extern void discord_create_dm_params_init_v(void *p);
+extern void discord_create_dm_params_init(struct discord_create_dm_params *p);
+extern void discord_create_dm_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params **pp);
+extern size_t discord_create_dm_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_dm_params_to_json(char *json, size_t len, struct discord_create_dm_params *p);
+extern void discord_create_dm_params_list_free_v(void **p);
+extern void discord_create_dm_params_list_free(struct discord_create_dm_params **p);
+extern void discord_create_dm_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_dm_params_list_from_json(char *str, size_t len, struct discord_create_dm_params ***p);
+extern size_t discord_create_dm_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_dm_params_list_to_json(char *str, size_t len, struct discord_create_dm_params **p);
 
 extern void discord_create_group_dm_params_cleanup_v(void *p);
 extern void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *p);

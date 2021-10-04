@@ -15,7 +15,7 @@
 
 void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
 {
-  static size_t ret=0; // used for debugging
+  static size_t ret=0; /**< used for debugging */
   size_t r=0;
   if (!*pp) *pp = malloc(sizeof **pp);
   struct discord_emoji *p = *pp;
@@ -42,12 +42,7 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
   /* specs/discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
                 "(animated):b,"
-  /* specs/discord/emoji.json:19:20
-     '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
-                "(available):b,"
-                "@arg_switches:b"
-                "@record_defined"
-                "@record_null",
+                "(available):b,",
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
                 cee_strtoull, &p->id,
@@ -71,54 +66,46 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
                 &p->animated,
   /* specs/discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
-                &p->available,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches,
-                p->__M.record_defined, sizeof(p->__M.record_defined),
-                p->__M.record_null, sizeof(p->__M.record_null));
+                &p->available);
   ret = r;
-}
-
-static void discord_emoji_use_default_inject_settings(struct discord_emoji *p)
-{
-  p->__M.enable_arg_switches = true;
-  /* specs/discord/emoji.json:12:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-  p->__M.arg_switches[0] = &p->id;
-
-  /* specs/discord/emoji.json:13:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
-  p->__M.arg_switches[1] = p->name;
-
-  /* specs/discord/emoji.json:14:20
-     '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
-  p->__M.arg_switches[2] = p->roles;
-
-  /* specs/discord/emoji.json:15:20
-     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
-  p->__M.arg_switches[3] = p->user;
-
-  /* specs/discord/emoji.json:16:20
-     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
-  p->__M.arg_switches[4] = &p->require_colons;
-
-  /* specs/discord/emoji.json:17:20
-     '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
-  p->__M.arg_switches[5] = &p->managed;
-
-  /* specs/discord/emoji.json:18:20
-     '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
-  p->__M.arg_switches[6] = &p->animated;
-
-  /* specs/discord/emoji.json:19:20
-     '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
-  p->__M.arg_switches[7] = &p->available;
-
 }
 
 size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p)
 {
   size_t r;
-  discord_emoji_use_default_inject_settings(p);
+  void *arg_switches[8]={NULL};
+  /* specs/discord/emoji.json:12:20
+     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
+  arg_switches[0] = &p->id;
+
+  /* specs/discord/emoji.json:13:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
+  arg_switches[1] = p->name;
+
+  /* specs/discord/emoji.json:14:20
+     '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
+  arg_switches[2] = p->roles;
+
+  /* specs/discord/emoji.json:15:20
+     '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
+  arg_switches[3] = p->user;
+
+  /* specs/discord/emoji.json:16:20
+     '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
+  arg_switches[4] = &p->require_colons;
+
+  /* specs/discord/emoji.json:17:20
+     '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
+  arg_switches[5] = &p->managed;
+
+  /* specs/discord/emoji.json:18:20
+     '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
+  arg_switches[6] = &p->animated;
+
+  /* specs/discord/emoji.json:19:20
+     '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
+  arg_switches[7] = &p->available;
+
   r=json_inject(json, len, 
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
@@ -169,7 +156,7 @@ size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p)
   /* specs/discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
                 &p->available,
-                p->__M.arg_switches, sizeof(p->__M.arg_switches), p->__M.enable_arg_switches);
+                arg_switches, sizeof(arg_switches), true);
   return r;
 }
 
@@ -209,7 +196,7 @@ size_t discord_emoji_list_to_json_v(char *str, size_t len, void *p){
 void discord_emoji_cleanup(struct discord_emoji *d) {
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-  // p->id is a scalar
+  /* p->id is a scalar */
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
   if (d->name)
@@ -226,16 +213,16 @@ void discord_emoji_cleanup(struct discord_emoji *d) {
   }
   /* specs/discord/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
-  // p->require_colons is a scalar
+  /* p->require_colons is a scalar */
   /* specs/discord/emoji.json:17:20
      '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
-  // p->managed is a scalar
+  /* p->managed is a scalar */
   /* specs/discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
-  // p->animated is a scalar
+  /* p->animated is a scalar */
   /* specs/discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
-  // p->available is a scalar
+  /* p->available is a scalar */
 }
 
 void discord_emoji_init(struct discord_emoji *p) {

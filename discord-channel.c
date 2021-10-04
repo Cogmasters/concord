@@ -184,9 +184,9 @@ discord_create_message(
     .ok_obj = &p_message
   };
 
-  if (!params->file) // content-type is application/json
+  if (!params->file) /* content-type is application/json */
   {
-    char payload[16384]; ///< @todo dynamic buffer
+    char payload[16384]; /**< @todo dynamic buffer */
     size_t ret = discord_create_message_params_to_json(payload, sizeof(payload), params);
 
     return discord_adapter_run( 
@@ -197,7 +197,7 @@ discord_create_message(
              "/channels/%"PRIu64"/messages", channel_id);
   }
 
-  // content-type is multipart/form-data
+  /* content-type is multipart/form-data */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
   ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
 
@@ -209,7 +209,7 @@ discord_create_message(
            HTTP_MIMEPOST, 
            "/channels/%"PRIu64"/messages", channel_id);
 
-  //set back to default
+  /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
   ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 
@@ -531,7 +531,7 @@ discord_edit_message(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[16384]; ///< @todo dynamic buffer
+  char payload[16384]; /**< @todo dynamic buffer */
   size_t ret = discord_edit_message_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
@@ -569,7 +569,7 @@ discord_delete_message(
            "/channels/%"PRIu64"/messages/%"PRIu64, channel_id, message_id);
 }
 
-/// @todo add duplicated ID verification
+/** @todo add duplicated ID verification */
 ORCAcode 
 discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id, NTL_T(u64_snowflake_t) messages)
 {
@@ -585,7 +585,8 @@ discord_bulk_delete_messages(struct discord *client, u64_snowflake_t channel_id,
   }
 
   u64_unix_ms_t now = cee_timestamp_ms();
-  for(size_t i = 0; messages[i]; i++) {
+  int i;
+  for (i = 0; messages[i]; i++) {
     u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
     if(now > timestamp && now - timestamp > 1209600000) {
       log_error("Messages should not be older than 2 weeks.");
@@ -742,7 +743,7 @@ discord_follow_news_channel(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[256]; // should be more than enough for this
+  char payload[256]; /* should be more than enough for this */
   size_t ret = discord_follow_news_channel_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(

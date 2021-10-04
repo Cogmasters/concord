@@ -6,8 +6,8 @@
 
 
 
-// Bitwise Permission Flags
-// defined at specs/discord/permissions.json:6:5
+/* Bitwise Permission Flags */
+/* defined at specs/discord/permissions.json:6:5 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -21,38 +21,38 @@
  * @endverbatim
  */
 enum discord_bitwise_permission_flags {
-  DISCORD_BITWISE_PERMISSION_ZERO = 0, ///< No permission bits
-  DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE = 1, ///< Allows creation of instant invites  T, V
-  DISCORD_BITWISE_PERMISSION_KICK_MEMBERS = 2, ///< Allows kicking members
-  DISCORD_BITWISE_PERMISSION_BAN_MEMBERS = 4, ///< Allows banning members
-  DISCORD_BITWISE_PERMISSION_ADMINISTRATOR = 8, ///< Allows all permissions and bypasses channel permission overwrites   
-  DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS = 16, ///< Allows management and editing of channels   T, V
-  DISCORD_BITWISE_PERMISSION_MANAGE_GUILD = 32, ///< Allows management and editing of the guild  
-  DISCORD_BITWISE_PERMISSION_ADD_REACTIONS = 64, ///< Allows for the addition of reactions to messages    T
-  DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG = 128, ///< Allows for viewing of audit logs    
-  DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER = 256, ///< Allows for using priority speaker in a voice channel    V
-  DISCORD_BITWISE_PERMISSION_STREAM = 512, ///< Allows the user to go live  V
-  DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL = 1024, ///< Allows guild members to view a channel, which includes reading messages in text channels    T, V
-  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES = 2048, ///< Allows for sending messages in a channel    T
-  DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES = 4096, ///< Allows for sending of /tts messages T
-  DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES = 8192, ///< Allows for deletion of other users messages T
-  DISCORD_BITWISE_PERMISSION_EMBED_LINKS = 16384, ///< Links sent by users with this permission will be auto-embedded  T
-  DISCORD_BITWISE_PERMISSION_ATTACH_FILES = 32768, ///< Allows for uploading images and files   T
-  DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY = 65536, ///< Allows for reading of message history   T
-  DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE = 131072, ///< Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T
-  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS = 262144, ///< Allows the usage of custom emojis from other servers    T
-  DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS = 524288, ///< Allows for viewing guild insights   
-  DISCORD_BITWISE_PERMISSION_CONNECT = 1048576, ///< Allows for joining of a voice channel   V
-  DISCORD_BITWISE_PERMISSION_SPEAK = 2097152, ///< Allows for speaking in a voice channel  V
-  DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS = 4194304, ///< Allows for muting members in a voice channel    V
-  DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS = 8388608, ///< Allows for deafening of members in a voice channel  V
-  DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS = 16777216, ///< Allows for moving of members between voice channels V
-  DISCORD_BITWISE_PERMISSION_USE_VAD = 33554432, ///< Allows for using voice-activity-detection in a voice channel    V
-  DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME = 67108864, ///< Allows for modification of own nickname 
-  DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, ///< Allows for modification of other users nicknames    
-  DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, ///< Allows management and editing of roles  T, V
-  DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, ///< Allows management and editing of webhooks   T, V
-  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, ///< Allows management and editing of emojis
+  DISCORD_BITWISE_PERMISSION_ZERO = 0, /** No permission bits */
+  DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE = 1, /** Allows creation of instant invites  T, V */
+  DISCORD_BITWISE_PERMISSION_KICK_MEMBERS = 2, /** Allows kicking members */
+  DISCORD_BITWISE_PERMISSION_BAN_MEMBERS = 4, /** Allows banning members */
+  DISCORD_BITWISE_PERMISSION_ADMINISTRATOR = 8, /** Allows all permissions and bypasses channel permission overwrites    */
+  DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS = 16, /** Allows management and editing of channels   T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_GUILD = 32, /** Allows management and editing of the guild   */
+  DISCORD_BITWISE_PERMISSION_ADD_REACTIONS = 64, /** Allows for the addition of reactions to messages    T */
+  DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG = 128, /** Allows for viewing of audit logs     */
+  DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER = 256, /** Allows for using priority speaker in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_STREAM = 512, /** Allows the user to go live  V */
+  DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL = 1024, /** Allows guild members to view a channel, which includes reading messages in text channels    T, V */
+  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES = 2048, /** Allows for sending messages in a channel    T */
+  DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES = 4096, /** Allows for sending of /tts messages T */
+  DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES = 8192, /** Allows for deletion of other users messages T */
+  DISCORD_BITWISE_PERMISSION_EMBED_LINKS = 16384, /** Links sent by users with this permission will be auto-embedded  T */
+  DISCORD_BITWISE_PERMISSION_ATTACH_FILES = 32768, /** Allows for uploading images and files   T */
+  DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY = 65536, /** Allows for reading of message history   T */
+  DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE = 131072, /** Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T */
+  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS = 262144, /** Allows the usage of custom emojis from other servers    T */
+  DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS = 524288, /** Allows for viewing guild insights    */
+  DISCORD_BITWISE_PERMISSION_CONNECT = 1048576, /** Allows for joining of a voice channel   V */
+  DISCORD_BITWISE_PERMISSION_SPEAK = 2097152, /** Allows for speaking in a voice channel  V */
+  DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS = 4194304, /** Allows for muting members in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS = 8388608, /** Allows for deafening of members in a voice channel  V */
+  DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS = 16777216, /** Allows for moving of members between voice channels V */
+  DISCORD_BITWISE_PERMISSION_USE_VAD = 33554432, /** Allows for using voice-activity-detection in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME = 67108864, /** Allows for modification of own nickname  */
+  DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, /** Allows for modification of other users nicknames     */
+  DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, /** Allows management and editing of roles  T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, /** Allows management and editing of webhooks   T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, /** Allows management and editing of emojis */
 };
 extern char* discord_bitwise_permission_flags_print(enum discord_bitwise_permission_flags);
 extern enum discord_bitwise_permission_flags discord_bitwise_permission_flags_eval(char*);
@@ -63,8 +63,8 @@ extern void discord_bitwise_permission_flags_list_from_json(char *str, size_t le
 extern size_t discord_bitwise_permission_flags_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t len, enum discord_bitwise_permission_flags **p);
 
-// Role Structure
-// defined at specs/discord/permissions.json:50:22
+/* Role Structure */
+/* defined at specs/discord/permissions.json:50:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  *
@@ -129,20 +129,6 @@ struct discord_role {
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
   struct discord_role_tags *tags;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[9];
-    void *record_defined[9];
-    void *record_null[9];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_role_cleanup_v(void *p);
 extern void discord_role_cleanup(struct discord_role *p);
@@ -159,8 +145,8 @@ extern void discord_role_list_from_json(char *str, size_t len, struct discord_ro
 extern size_t discord_role_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_role_list_to_json(char *str, size_t len, struct discord_role **p);
 
-// Role Tags Structure
-// defined at specs/discord/permissions.json:68:22
+/* Role Tags Structure */
+/* defined at specs/discord/permissions.json:68:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  *
@@ -201,20 +187,6 @@ struct discord_role_tags {
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
   int premium_subscriber;
 
-  // The following is metadata used to 
-  // 1. control which field should be extracted/injected
-  // 2. record which field is presented(defined) in JSON
-  // 3. record which field is null in JSON
-/// @cond DOXYGEN_SHOULD_SKIP_THIS
-  struct {
-    bool enable_arg_switches;
-    bool enable_record_defined;
-    bool enable_record_null;
-    void *arg_switches[3];
-    void *record_defined[3];
-    void *record_null[3];
-  } __M; // metadata
-/// @endcond
 };
 extern void discord_role_tags_cleanup_v(void *p);
 extern void discord_role_tags_cleanup(struct discord_role_tags *p);

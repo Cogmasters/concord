@@ -5,9 +5,6 @@ set -o pipefail
 mypath=$(dirname $(readlink -f $0))
 url="https://raw.githubusercontent.com/cee-studio/cee-utils/master"
 
-wget $url/scripts/get-cee-utils.sh -O ${mypath}/get-cee-utils.sh
-chmod +x ${mypath}/get-cee-utils.sh
-
 list="README.md
 debug.h
 cee-sqlite3.h
@@ -47,7 +44,9 @@ uthash.h
 utlist.h
 utringbuffer.h
 utstack.h
-utstring.h"
+utstring.h
+HttpStatusCodes_C.h
+"
 
 mkdir -p $mypath/../cee-utils
 pushd $mypath/../cee-utils
