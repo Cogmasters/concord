@@ -36,14 +36,19 @@ void on_spam(
 {
   if (msg->author->bot) return;
 
+  pthread_mutex_lock(&g_lock);
+  g_keep_spamming = true;
+  pthread_mutex_unlock(&g_lock);
+
   char number[256];
   struct discord_create_message_params params={0};
 
   bool keep_alive = true;
-  for (int i=0 ; keep_alive ; ++i) {
+  for (int i=0 ;; ++i) {
     pthread_mutex_lock(&g_lock);
     keep_alive = g_keep_spamming;
     pthread_mutex_unlock(&g_lock);
+    if (!keep_alive) break;
 
     snprintf(number, sizeof(number), "%d", i);
     params.content = number;
