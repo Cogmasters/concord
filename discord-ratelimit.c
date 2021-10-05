@@ -63,7 +63,7 @@ discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_buck
       "Transfer locked in queue.", 
       bucket->hash, bucket->remaining);
 
-    // wait for pthread_cond_signal() from parse_ratelimits()
+    /* wait for pthread_cond_signal() from parse_ratelimits() */
     pthread_cond_wait(&bucket->cond, &bucket->lock);
 
     logconf_debug(&adapter->ratelimit->conf, 
