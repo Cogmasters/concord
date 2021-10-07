@@ -54,6 +54,8 @@ void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_
   /* specs/discord/voice.json:23:20
      '{ "name": "self_video", "type":{ "base":"bool" }}' */
                 "(self_video):b,"
+  /* specs/discord/voice.json:24:20
+     '{ "name": "supress", "type":{ "base":"bool" }}' */
                 "(supress):b,",
   /* specs/discord/voice.json:13:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -383,6 +385,8 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
   /* specs/discord/voice.json:38:20
      '{ "name": "deprecated", "type":{ "base":"bool" }}' */
                 "(deprecated):b,"
+  /* specs/discord/voice.json:39:20
+     '{ "name": "custom", "type":{ "base":"bool" }}' */
                 "(custom):b,",
   /* specs/discord/voice.json:34:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */

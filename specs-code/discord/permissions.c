@@ -158,6 +158,8 @@ void discord_role_from_json(char *json, size_t len, struct discord_role **pp)
   /* specs/discord/permissions.json:60:20
      '{ "name": "mentionable", "type":{ "base":"bool" }}' */
                 "(mentionable):b,"
+  /* specs/discord/permissions.json:61:20
+     '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
                 "(tags):F,",
   /* specs/discord/permissions.json:53:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -421,6 +423,8 @@ void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tag
   /* specs/discord/permissions.json:72:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(integration_id):F,"
+  /* specs/discord/permissions.json:73:20
+     '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 "(premium_subscriber):d,",
   /* specs/discord/permissions.json:71:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */

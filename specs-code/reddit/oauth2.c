@@ -33,6 +33,8 @@ void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_
   /* specs/reddit/oauth2.json:15:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"}' */
                 "(code):?s,"
+  /* specs/reddit/oauth2.json:16:20
+     '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
                 "(redirect_uri):?s,",
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */

@@ -425,6 +425,8 @@ void discord_identify_from_json(char *json, size_t len, struct discord_identify 
   /* specs/discord/gateway.json:148:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
                 "(presence):F,"
+  /* specs/discord/gateway.json:149:19
+     '{ "name":"intents","type":{"base":"int"}}' */
                 "(intents):d,",
   /* specs/discord/gateway.json:142:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
@@ -671,6 +673,8 @@ void discord_voice_state_status_from_json(char *json, size_t len, struct discord
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
                 "(self_mute):b,"
+  /* specs/discord/gateway.json:162:19
+     '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
                 "(self_deaf):b,",
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
@@ -840,6 +844,8 @@ void discord_presence_status_from_json(char *json, size_t len, struct discord_pr
   /* specs/discord/gateway.json:174:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
                 "(status):s,"
+  /* specs/discord/gateway.json:175:19
+     '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
                 "(afk):b,",
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
@@ -1008,6 +1014,8 @@ void discord_identify_connection_from_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:186:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
                 "($browser):?s,"
+  /* specs/discord/gateway.json:187:19
+     '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
                 "($device):?s,",
   /* specs/discord/gateway.json:185:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
@@ -1174,6 +1182,8 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
   /* specs/discord/gateway.json:202:19
      '{ "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(state):?s,"
+  /* specs/discord/gateway.json:203:19
+     '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 "(instance):b,",
   /* specs/discord/gateway.json:196:19
      '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
@@ -1485,6 +1495,8 @@ void discord_session_start_limit_from_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
                 "(reset_after):d,"
+  /* specs/discord/gateway.json:230:19
+     '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
                 "(max_concurrency):d,",
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */

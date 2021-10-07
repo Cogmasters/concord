@@ -107,7 +107,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:31:70
      '{"type":{"base":"struct discord_role", "dec":"ntl"}, "name":"roles", "comment":"array of role objects", "inject_if_not":null }' */
-  struct discord_role **roles; /** array of role objects */
+  struct discord_role **roles; /**< array of role objects */
 
   /* specs/discord/guild.json:32:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
@@ -115,7 +115,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:33:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "comment":"array of guild feature strings", "inject_if_not":null }' */
-  ja_str **features; /** array of guild feature strings */
+  ja_str **features; /**< array of guild feature strings */
 
   /* specs/discord/guild.json:34:79
      '{"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"}' */
@@ -155,7 +155,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:43:77
      '{"type":{"base":"struct discord_voice_state", "dec":"ntl"}, "name":"voice_states", "comment":"array of partial voice state objects", "inject_if_not":null }' */
-  struct discord_voice_state **voice_states; /** array of partial voice state objects */
+  struct discord_voice_state **voice_states; /**< array of partial voice state objects */
 
   /* specs/discord/guild.json:44:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
@@ -164,11 +164,11 @@ struct discord_guild {
   /* specs/discord/guild.json:45:73
      '{"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}' */
-  struct discord_channel **channels; /** array of channel objects */
+  struct discord_channel **channels; /**< array of channel objects */
 
   /* specs/discord/guild.json:47:81
      '{"type":{"base":"struct discord_presence_status", "dec":"ntl"}, "name":"presences", "option":true, "comment":"array of partial presence update objects", "inject_if_not":null }' */
-  struct discord_presence_status **presences; /** array of partial presence update objects */
+  struct discord_presence_status **presences; /**< array of partial presence update objects */
 
   /* specs/discord/guild.json:48:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
@@ -413,8 +413,8 @@ extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum disc
  * @endverbatim
  */
 enum discord_system_channel_flags {
-  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, /** 1<<0 */
-  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, /** 1<<1 */
+  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, /**< 1<<0 */
+  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, /**< 1<<1 */
 };
 extern char* discord_system_channel_flags_print(enum discord_system_channel_flags);
 extern enum discord_system_channel_flags discord_system_channel_flags_eval(char*);
@@ -702,7 +702,7 @@ struct discord_guild_member {
 
   /* specs/discord/guild.json:193:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
-  ja_u64 **roles; /** array of role object ids */
+  ja_u64 **roles; /**< array of role object ids */
 
   /* specs/discord/guild.json:194:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -1040,7 +1040,7 @@ struct discord_ban {
 
   /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *user; /** partial user object */
+  struct discord_user *user; /**< partial user object */
 
 };
 extern void discord_ban_cleanup_v(void *p);

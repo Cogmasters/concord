@@ -54,6 +54,8 @@ void discord_component_from_json(char *json, size_t len, struct discord_componen
   /* specs/discord/message_components.json:22:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
                 "(max_values):d,"
+  /* specs/discord/message_components.json:23:18
+     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
                 "(components):F,",
   /* specs/discord/message_components.json:12:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
@@ -455,6 +457,8 @@ void discord_button_from_json(char *json, size_t len, struct discord_button **pp
   /* specs/discord/message_components.json:49:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
                 "(url):?s,"
+  /* specs/discord/message_components.json:50:18
+     '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
                 "(disabled):b,",
   /* specs/discord/message_components.json:44:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
@@ -758,6 +762,8 @@ void discord_select_menu_from_json(char *json, size_t len, struct discord_select
   /* specs/discord/message_components.json:78:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
                 "(max_values):d,"
+  /* specs/discord/message_components.json:79:18
+     '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
                 "(disabled):b,",
   /* specs/discord/message_components.json:73:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
@@ -992,6 +998,8 @@ void discord_select_option_from_json(char *json, size_t len, struct discord_sele
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
                 "(emoji):F,"
+  /* specs/discord/message_components.json:92:18
+     '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
                 "(default):b,",
   /* specs/discord/message_components.json:88:18
      '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */

@@ -33,6 +33,8 @@ void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_lo
   /* specs/discord/audit_log.json:15:18
      '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
                 "(integrations):F,"
+  /* specs/discord/audit_log.json:16:18
+     '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
                 "(threads):F,",
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" }, "comment":"list of webhooks found in the audit log", "inject_if_not":null }' */
@@ -238,6 +240,8 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
   /* specs/discord/audit_log.json:31:18
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
                 "(options):F,"
+  /* specs/discord/audit_log.json:32:18
+     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
                 "(reason):s,",
   /* specs/discord/audit_log.json:26:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}, "comment":"id of the affected entity (webhook,user,role,etc.)", "inject_if_not":null }' */
@@ -619,6 +623,8 @@ void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct 
   /* specs/discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
                 "(type):?s,"
+  /* specs/discord/audit_log.json:101:20
+     '{ "name": "role_name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the role if type is '0' (not present if type is '1')", "inject_if_not":null }' */
                 "(role_name):?s,",
   /* specs/discord/audit_log.json:94:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"number of days after which inactive members were kicked", "inject_if_not":null }' */
@@ -872,6 +878,8 @@ void discord_audit_log_change_from_json(char *json, size_t len, struct discord_a
   /* specs/discord/audit_log.json:112:18
      '{"name":"old_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"old value of the key", "inject_if_not":null }' */
                 "(old_value):F,"
+  /* specs/discord/audit_log.json:113:18
+     '{"name":"key", "type":{"base":"char", "dec":"*"}, "comment":"name of audit log change key", "inject_if_not":null }' */
                 "(key):?s,",
   /* specs/discord/audit_log.json:111:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"new value of the key", "inject_if_not":null }' */

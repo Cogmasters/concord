@@ -1050,12 +1050,12 @@ struct discord_webhook;
  * @endverbatim
  */
 enum discord_application_flags {
-  DISCORD_APPLICATION_GATEWAY_PRESENCE = 4096, /** 1 << 12 */
-  DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED = 8192, /** 1 << 13 */
-  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS = 16384, /** 1 << 14 */
-  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED = 32768, /** 1 << 15 */
-  DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT = 65536, /** 1 << 16 */
-  DISCORD_APPLICATION_EMBEDDED = 131072, /** 1 << 17 */
+  DISCORD_APPLICATION_GATEWAY_PRESENCE = 4096, /**< 1 << 12 */
+  DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED = 8192, /**< 1 << 13 */
+  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS = 16384, /**< 1 << 14 */
+  DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED = 32768, /**< 1 << 15 */
+  DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT = 65536, /**< 1 << 16 */
+  DISCORD_APPLICATION_EMBEDDED = 131072, /**< 1 << 17 */
 };
 extern char* discord_application_flags_print(enum discord_application_flags);
 extern enum discord_application_flags discord_application_flags_eval(char*);
@@ -1086,9 +1086,9 @@ extern size_t discord_application_flags_list_to_json(char *str, size_t len, enum
  * @endverbatim
  */
 enum discord_application_command_types {
-  DISCORD_APPLICATION_COMMAND_CHAT_INPUT = 1, /** Slash commands; a text-based command that shows up when a user types / */
-  DISCORD_APPLICATION_COMMAND_USER = 2, /** A UI-based command that shows up when you right click or tap on a user */
-  DISCORD_APPLICATION_COMMAND_MESSAGE = 3, /** A UI-based command that shows up when you right lick or tap on a message */
+  DISCORD_APPLICATION_COMMAND_CHAT_INPUT = 1, /**< Slash commands; a text-based command that shows up when a user types / */
+  DISCORD_APPLICATION_COMMAND_USER = 2, /**< A UI-based command that shows up when you right click or tap on a user */
+  DISCORD_APPLICATION_COMMAND_MESSAGE = 3, /**< A UI-based command that shows up when you right lick or tap on a message */
 };
 extern char* discord_application_command_types_print(enum discord_application_command_types);
 extern enum discord_application_command_types discord_application_command_types_eval(char*);
@@ -1120,13 +1120,13 @@ enum discord_application_command_option_types {
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND = 1,
   DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP = 2,
   DISCORD_APPLICATION_COMMAND_OPTION_STRING = 3,
-  DISCORD_APPLICATION_COMMAND_OPTION_INTEGER = 4, /** Any integer between -2^53 and 2^53 */
+  DISCORD_APPLICATION_COMMAND_OPTION_INTEGER = 4, /**< Any integer between -2^53 and 2^53 */
   DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN = 5,
   DISCORD_APPLICATION_COMMAND_OPTION_USER = 6,
-  DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL = 7, /** Includes all channel types + categories */
+  DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL = 7, /**< Includes all channel types + categories */
   DISCORD_APPLICATION_COMMAND_OPTION_ROLE = 8,
-  DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE = 9, /** Includes users and roles */
-  DISCORD_APPLICATION_COMMAND_OPTION_NUMBER = 10, /** Any double between -2^53 and 2^53 */
+  DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE = 9, /**< Includes users and roles */
+  DISCORD_APPLICATION_COMMAND_OPTION_NUMBER = 10, /**< Any double between -2^53 and 2^53 */
 };
 extern char* discord_application_command_option_types_print(enum discord_application_command_option_types);
 extern enum discord_application_command_option_types discord_application_command_option_types_eval(char*);
@@ -1330,11 +1330,11 @@ extern size_t discord_message_sticker_format_types_list_to_json(char *str, size_
  * @endverbatim
  */
 enum discord_message_flags {
-  DISCORD_MESSAGE_CROSSPOSTED = 1, /** 1<<0 */
-  DISCORD_MESSAGE_IS_CROSSPOST = 2, /** 1<<1 */
-  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, /** 1<<2 */
-  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, /** 1<<3 */
-  DISCORD_MESSAGE_URGENT = 16, /** 1<<4 */
+  DISCORD_MESSAGE_CROSSPOSTED = 1, /**< 1<<0 */
+  DISCORD_MESSAGE_IS_CROSSPOST = 2, /**< 1<<1 */
+  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, /**< 1<<2 */
+  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, /**< 1<<3 */
+  DISCORD_MESSAGE_URGENT = 16, /**< 1<<4 */
 };
 extern char* discord_message_flags_print(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_eval(char*);
@@ -1485,21 +1485,21 @@ extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, 
  * @endverbatim
  */
 enum discord_gateway_intents {
-  DISCORD_GATEWAY_GUILDS = 1, /** 1 << 0 */
-  DISCORD_GATEWAY_GUILD_MEMBERS = 2, /** 1 << 1 */
-  DISCORD_GATEWAY_GUILD_BANS = 4, /** 1 << 2 */
-  DISCORD_GATEWAY_GUILD_EMOJIS = 8, /** 1 << 3 */
-  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, /** 1 << 4 */
-  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, /** 1 << 5 */
-  DISCORD_GATEWAY_GUILD_INVITES = 64, /** 1 << 6 */
-  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, /** 1 << 7 */
-  DISCORD_GATEWAY_GUILD_PRESENCES = 256, /** 1 << 8 */
-  DISCORD_GATEWAY_GUILD_MESSAGES = 512, /** 1 << 9 */
-  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, /** 1 << 10 */
-  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, /** 1 << 11 */
-  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, /** 1 << 12 */
-  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, /** 1 << 13 */
-  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, /** 1 << 14 */
+  DISCORD_GATEWAY_GUILDS = 1, /**< 1 << 0 */
+  DISCORD_GATEWAY_GUILD_MEMBERS = 2, /**< 1 << 1 */
+  DISCORD_GATEWAY_GUILD_BANS = 4, /**< 1 << 2 */
+  DISCORD_GATEWAY_GUILD_EMOJIS = 8, /**< 1 << 3 */
+  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, /**< 1 << 4 */
+  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, /**< 1 << 5 */
+  DISCORD_GATEWAY_GUILD_INVITES = 64, /**< 1 << 6 */
+  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, /**< 1 << 7 */
+  DISCORD_GATEWAY_GUILD_PRESENCES = 256, /**< 1 << 8 */
+  DISCORD_GATEWAY_GUILD_MESSAGES = 512, /**< 1 << 9 */
+  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, /**< 1 << 10 */
+  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, /**< 1 << 11 */
+  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, /**< 1 << 12 */
+  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, /**< 1 << 13 */
+  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, /**< 1 << 14 */
 };
 extern char* discord_gateway_intents_print(enum discord_gateway_intents);
 extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
@@ -1842,8 +1842,8 @@ extern size_t discord_premium_tier_list_to_json(char *str, size_t len, enum disc
  * @endverbatim
  */
 enum discord_system_channel_flags {
-  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, /** 1<<0 */
-  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, /** 1<<1 */
+  DISCORD_SUPRESS_JOIN_NOTIFICATIONS = 1, /**< 1<<0 */
+  DISCORD_SUPRESS_PREMIUM_SUBSCRIPTIONS = 2, /**< 1<<1 */
 };
 extern char* discord_system_channel_flags_print(enum discord_system_channel_flags);
 extern enum discord_system_channel_flags discord_system_channel_flags_eval(char*);
@@ -1978,11 +1978,11 @@ extern size_t discord_interaction_types_list_to_json(char *str, size_t len, enum
  * @endverbatim
  */
 enum discord_interaction_callback_types {
-  DISCORD_INTERACTION_CALLBACK_PONG = 1, /** ACK a Ping */
-  DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE = 4, /** respond to a interaction with a message */
-  DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5, /** ACK an interaction and edit a response later, the user sees a loading state */
-  DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE = 6, /** for components, ACK an interaction and edit the original message later; the user does not see a loading state */
-  DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE = 7, /** for components, edit the message the component was attached to */
+  DISCORD_INTERACTION_CALLBACK_PONG = 1, /**< ACK a Ping */
+  DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE = 4, /**< respond to a interaction with a message */
+  DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE = 5, /**< ACK an interaction and edit a response later, the user sees a loading state */
+  DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE = 6, /**< for components, ACK an interaction and edit the original message later; the user does not see a loading state */
+  DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE = 7, /**< for components, edit the message the component was attached to */
 };
 extern char* discord_interaction_callback_types_print(enum discord_interaction_callback_types);
 extern enum discord_interaction_callback_types discord_interaction_callback_types_eval(char*);
@@ -2011,7 +2011,7 @@ extern size_t discord_interaction_callback_types_list_to_json(char *str, size_t 
  * @endverbatim
  */
 enum discord_interaction_callback_data_flags {
-  DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL = 64, /** only the user receiving the message can see it */
+  DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL = 64, /**< only the user receiving the message can see it */
 };
 extern char* discord_interaction_callback_data_flags_print(enum discord_interaction_callback_data_flags);
 extern enum discord_interaction_callback_data_flags discord_interaction_callback_data_flags_eval(char*);
@@ -2103,11 +2103,11 @@ extern size_t discord_component_types_list_to_json(char *str, size_t len, enum d
  * @endverbatim
  */
 enum discord_button_styles {
-  DISCORD_BUTTON_PRIMARY = 1, /** blurple, requires custom_id */
-  DISCORD_BUTTON_SECONDARY = 2, /** grey, requires custom_id */
-  DISCORD_BUTTON_SUCCESS = 3, /** green, requires custom_id */
-  DISCORD_BUTTON_DANGER = 4, /** red, requires custom_id */
-  DISCORD_BUTTON_LINK = 5, /** grey, requires url */
+  DISCORD_BUTTON_PRIMARY = 1, /**< blurple, requires custom_id */
+  DISCORD_BUTTON_SECONDARY = 2, /**< grey, requires custom_id */
+  DISCORD_BUTTON_SUCCESS = 3, /**< green, requires custom_id */
+  DISCORD_BUTTON_DANGER = 4, /**< red, requires custom_id */
+  DISCORD_BUTTON_LINK = 5, /**< grey, requires url */
 };
 extern char* discord_button_styles_print(enum discord_button_styles);
 extern enum discord_button_styles discord_button_styles_eval(char*);
@@ -2136,38 +2136,38 @@ extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum dis
  * @endverbatim
  */
 enum discord_bitwise_permission_flags {
-  DISCORD_BITWISE_PERMISSION_ZERO = 0, /** No permission bits */
-  DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE = 1, /** Allows creation of instant invites  T, V */
-  DISCORD_BITWISE_PERMISSION_KICK_MEMBERS = 2, /** Allows kicking members */
-  DISCORD_BITWISE_PERMISSION_BAN_MEMBERS = 4, /** Allows banning members */
-  DISCORD_BITWISE_PERMISSION_ADMINISTRATOR = 8, /** Allows all permissions and bypasses channel permission overwrites    */
-  DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS = 16, /** Allows management and editing of channels   T, V */
-  DISCORD_BITWISE_PERMISSION_MANAGE_GUILD = 32, /** Allows management and editing of the guild   */
-  DISCORD_BITWISE_PERMISSION_ADD_REACTIONS = 64, /** Allows for the addition of reactions to messages    T */
-  DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG = 128, /** Allows for viewing of audit logs     */
-  DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER = 256, /** Allows for using priority speaker in a voice channel    V */
-  DISCORD_BITWISE_PERMISSION_STREAM = 512, /** Allows the user to go live  V */
-  DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL = 1024, /** Allows guild members to view a channel, which includes reading messages in text channels    T, V */
-  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES = 2048, /** Allows for sending messages in a channel    T */
-  DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES = 4096, /** Allows for sending of /tts messages T */
-  DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES = 8192, /** Allows for deletion of other users messages T */
-  DISCORD_BITWISE_PERMISSION_EMBED_LINKS = 16384, /** Links sent by users with this permission will be auto-embedded  T */
-  DISCORD_BITWISE_PERMISSION_ATTACH_FILES = 32768, /** Allows for uploading images and files   T */
-  DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY = 65536, /** Allows for reading of message history   T */
-  DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE = 131072, /** Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T */
-  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS = 262144, /** Allows the usage of custom emojis from other servers    T */
-  DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS = 524288, /** Allows for viewing guild insights    */
-  DISCORD_BITWISE_PERMISSION_CONNECT = 1048576, /** Allows for joining of a voice channel   V */
-  DISCORD_BITWISE_PERMISSION_SPEAK = 2097152, /** Allows for speaking in a voice channel  V */
-  DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS = 4194304, /** Allows for muting members in a voice channel    V */
-  DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS = 8388608, /** Allows for deafening of members in a voice channel  V */
-  DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS = 16777216, /** Allows for moving of members between voice channels V */
-  DISCORD_BITWISE_PERMISSION_USE_VAD = 33554432, /** Allows for using voice-activity-detection in a voice channel    V */
-  DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME = 67108864, /** Allows for modification of own nickname  */
-  DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, /** Allows for modification of other users nicknames     */
-  DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, /** Allows management and editing of roles  T, V */
-  DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, /** Allows management and editing of webhooks   T, V */
-  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, /** Allows management and editing of emojis */
+  DISCORD_BITWISE_PERMISSION_ZERO = 0, /**< No permission bits */
+  DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE = 1, /**< Allows creation of instant invites  T, V */
+  DISCORD_BITWISE_PERMISSION_KICK_MEMBERS = 2, /**< Allows kicking members */
+  DISCORD_BITWISE_PERMISSION_BAN_MEMBERS = 4, /**< Allows banning members */
+  DISCORD_BITWISE_PERMISSION_ADMINISTRATOR = 8, /**< Allows all permissions and bypasses channel permission overwrites    */
+  DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS = 16, /**< Allows management and editing of channels   T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_GUILD = 32, /**< Allows management and editing of the guild   */
+  DISCORD_BITWISE_PERMISSION_ADD_REACTIONS = 64, /**< Allows for the addition of reactions to messages    T */
+  DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG = 128, /**< Allows for viewing of audit logs     */
+  DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER = 256, /**< Allows for using priority speaker in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_STREAM = 512, /**< Allows the user to go live  V */
+  DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL = 1024, /**< Allows guild members to view a channel, which includes reading messages in text channels    T, V */
+  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES = 2048, /**< Allows for sending messages in a channel    T */
+  DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES = 4096, /**< Allows for sending of /tts messages T */
+  DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES = 8192, /**< Allows for deletion of other users messages T */
+  DISCORD_BITWISE_PERMISSION_EMBED_LINKS = 16384, /**< Links sent by users with this permission will be auto-embedded  T */
+  DISCORD_BITWISE_PERMISSION_ATTACH_FILES = 32768, /**< Allows for uploading images and files   T */
+  DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY = 65536, /**< Allows for reading of message history   T */
+  DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE = 131072, /**< Allows for using the @everyone tag to notify all users in a channel, and the @here tag to notify all online users in a channel  T */
+  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS = 262144, /**< Allows the usage of custom emojis from other servers    T */
+  DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS = 524288, /**< Allows for viewing guild insights    */
+  DISCORD_BITWISE_PERMISSION_CONNECT = 1048576, /**< Allows for joining of a voice channel   V */
+  DISCORD_BITWISE_PERMISSION_SPEAK = 2097152, /**< Allows for speaking in a voice channel  V */
+  DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS = 4194304, /**< Allows for muting members in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS = 8388608, /**< Allows for deafening of members in a voice channel  V */
+  DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS = 16777216, /**< Allows for moving of members between voice channels V */
+  DISCORD_BITWISE_PERMISSION_USE_VAD = 33554432, /**< Allows for using voice-activity-detection in a voice channel    V */
+  DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME = 67108864, /**< Allows for modification of own nickname  */
+  DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, /**< Allows for modification of other users nicknames     */
+  DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, /**< Allows management and editing of roles  T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, /**< Allows management and editing of webhooks   T, V */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, /**< Allows management and editing of emojis */
 };
 extern char* discord_bitwise_permission_flags_print(enum discord_bitwise_permission_flags);
 extern enum discord_bitwise_permission_flags discord_bitwise_permission_flags_eval(char*);
@@ -2198,19 +2198,19 @@ extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t le
  * @endverbatim
  */
 enum discord_user_flags {
-  DISCORD_USER_DISCORD_EMPLOYEE = 1, /** 1 << 0 */
-  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, /** 1 << 2 */
-  DISCORD_USER_HYPESQUAD_EVENTS = 4, /** 1 << 3 */
-  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, /** 1 << 4 */
-  DISCORD_USER_HOUSE_BRAVERY = 32, /** 1 << 6 */
-  DISCORD_USER_HOUSE_BRILLIANCE = 64, /** 1 << 7 */
-  DISCORD_USER_HOUSE_BALANCE = 128, /** 1 << 8 */
-  DISCORD_USER_EARLY_SUPPORTER = 256, /** 1 << 9 */
-  DISCORD_USER_TEAM_USER = 512, /** 1 << 10 */
-  DISCORD_USER_SYSTEM = 4096, /** 1 << 12 */
-  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, /** 1 << 14 */
-  DISCORD_USER_VERIFIED_BOT = 65536, /** 1 << 16 */
-  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, /** 1 << 17 */
+  DISCORD_USER_DISCORD_EMPLOYEE = 1, /**< 1 << 0 */
+  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, /**< 1 << 2 */
+  DISCORD_USER_HYPESQUAD_EVENTS = 4, /**< 1 << 3 */
+  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, /**< 1 << 4 */
+  DISCORD_USER_HOUSE_BRAVERY = 32, /**< 1 << 6 */
+  DISCORD_USER_HOUSE_BRILLIANCE = 64, /**< 1 << 7 */
+  DISCORD_USER_HOUSE_BALANCE = 128, /**< 1 << 8 */
+  DISCORD_USER_EARLY_SUPPORTER = 256, /**< 1 << 9 */
+  DISCORD_USER_TEAM_USER = 512, /**< 1 << 10 */
+  DISCORD_USER_SYSTEM = 4096, /**< 1 << 12 */
+  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, /**< 1 << 14 */
+  DISCORD_USER_VERIFIED_BOT = 65536, /**< 1 << 16 */
+  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, /**< 1 << 17 */
 };
 extern char* discord_user_flags_print(enum discord_user_flags);
 extern enum discord_user_flags discord_user_flags_eval(char*);
@@ -2380,9 +2380,9 @@ extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum dis
  * @endverbatim
  */
 enum discord_voice_speaking_flags {
-  DISCORD_VOICE_MICROPHONE = 1, /** 1 << 0 */
-  DISCORD_VOICE_SOUNDSHARE = 2, /** 1 << 1 */
-  DISCORD_VOICE_PRIORITY = 4, /** 1 << 2 */
+  DISCORD_VOICE_MICROPHONE = 1, /**< 1 << 0 */
+  DISCORD_VOICE_SOUNDSHARE = 2, /**< 1 << 1 */
+  DISCORD_VOICE_PRIORITY = 4, /**< 1 << 2 */
 };
 extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
 extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);
@@ -2414,9 +2414,9 @@ extern size_t discord_voice_speaking_flags_list_to_json(char *str, size_t len, e
  * @endverbatim
  */
 enum discord_webhook_types {
-  DISCORD_WEBHOOK_INCOMING = 1, /** Incoming Webhooks can post messages to channels with a generated token */
-  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2, /** Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels */
-  DISCORD_WEBHOOK_APPLICATION = 3, /** Application webhooks are webhooks used with interactions */
+  DISCORD_WEBHOOK_INCOMING = 1, /**< Incoming Webhooks can post messages to channels with a generated token */
+  DISCORD_WEBHOOK_CHANNEL_FOLLOWER = 2, /**< Channel Follower Webhooks are internal webhooks used with Channel Following to post new messages int channels */
+  DISCORD_WEBHOOK_APPLICATION = 3, /**< Application webhooks are webhooks used with interactions */
 };
 extern char* discord_webhook_types_print(enum discord_webhook_types);
 extern enum discord_webhook_types discord_webhook_types_eval(char*);
@@ -2460,39 +2460,39 @@ extern size_t discord_webhook_types_list_to_json(char *str, size_t len, enum dis
 struct discord_application {
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
-  u64_snowflake_t id; /** the id of the app */
+  u64_snowflake_t id; /**< the id of the app */
 
   /* specs/discord/application.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"the name of the app" }' */
-  char *name; /** the name of the app */
+  char *name; /**< the name of the app */
 
   /* specs/discord/application.json:14:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*"}, "comment":"the icon hash of the app", "inject_if_not":null }' */
-  char *icon; /** the icon hash of the app */
+  char *icon; /**< the icon hash of the app */
 
   /* specs/discord/application.json:15:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "comment":"the description of the app" }' */
-  char *description; /** the description of the app */
+  char *description; /**< the description of the app */
 
   /* specs/discord/application.json:16:20
      '{ "name": "rpc_origins", "type":{ "base":"ja_str", "dec":"ntl"}, "comment":"an array of rpc origin urls, if rpc is enabled", "inject_if_not":null }' */
-  ja_str **rpc_origins; /** an array of rpc origin urls, if rpc is enabled */
+  ja_str **rpc_origins; /**< an array of rpc origin urls, if rpc is enabled */
 
   /* specs/discord/application.json:17:19
      '{ "name":"bot_public","type":{"base":"bool"}, "comment":"when false only app owner can join the app's bot to guilds"}' */
-  bool bot_public; /** when false only app owner can join the app's bot to guilds */
+  bool bot_public; /**< when false only app owner can join the app's bot to guilds */
 
   /* specs/discord/application.json:18:19
      '{ "name":"bot_require_code_grant","type":{"base":"bool"}, "comment":"when true the app's bot will only join upon completion of the full oauth2 code grant flow"}' */
-  bool bot_require_code_grant; /** when true the app's bot will only join upon completion of the full oauth2 code grant flow */
+  bool bot_require_code_grant; /**< when true the app's bot will only join upon completion of the full oauth2 code grant flow */
 
   /* specs/discord/application.json:19:20
      '{ "name": "term_of_service_url", "type":{ "base":"char", "dec":"*"}, "comment":"the url of the app's terms of service", "inject_if_not":null }' */
-  char *term_of_service_url; /** the url of the app's terms of service */
+  char *term_of_service_url; /**< the url of the app's terms of service */
 
   /* specs/discord/application.json:20:20
      '{ "name": "privacy_policy_url", "type":{ "base":"char", "dec":"*"}, "comment":"the url of the app's privacy policy", "inject_if_not":null }' */
-  char *privacy_policy_url; /** the url of the app's privacy policy */
+  char *privacy_policy_url; /**< the url of the app's privacy policy */
 
   /* specs/discord/application.json:21:19
      '{ "name":"team","type":{"base":"struct discord_team", "dec":"*"}, "comment":"if the application belongs to a team, this will be a list of the members of that team", "inject_if_not":null, "todo":true }' */
@@ -2500,19 +2500,19 @@ struct discord_application {
 
   /* specs/discord/application.json:22:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the guild on which it has been linked", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; /** if this application is a game sold on Discord, this field will be the guild on which it has been linked */
+  u64_snowflake_t guild_id; /**< if this application is a game sold on Discord, this field will be the guild on which it has been linked */
 
   /* specs/discord/application.json:23:20
      '{ "name": "primary_sku_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the id of the \"Game SKU\" that is created, if exists", "inject_if_not":0 }' */
-  u64_snowflake_t primary_sku_id; /** if this application is a game sold on Discord, this field will be the id of the "Game SKU" that is created, if exists */
+  u64_snowflake_t primary_sku_id; /**< if this application is a game sold on Discord, this field will be the id of the "Game SKU" that is created, if exists */
 
   /* specs/discord/application.json:24:20
      '{ "name": "slug", "type":{ "base":"char", "dec":"*"}, "comment":"if this application is a game sold on Discord, this field will be the URL slug that links to the store page", "inject_if_not":null }' */
-  char *slug; /** if this application is a game sold on Discord, this field will be the URL slug that links to the store page */
+  char *slug; /**< if this application is a game sold on Discord, this field will be the URL slug that links to the store page */
 
   /* specs/discord/application.json:25:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_application_flags" }, "comment":"the application's public flags", "inject_if_not":0 }' */
-  enum discord_application_flags flags; /** the application's public flags */
+  enum discord_application_flags flags; /**< the application's public flags */
 
 };
 
@@ -2551,19 +2551,19 @@ struct discord_application {
 struct discord_create_global_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
-  char *name; /** 1-32 lowercase character name */
+  char *name; /**< 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:14:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
-  char *description; /** 1-100 character description */
+  char *description; /**< 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:15:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; /** the parameters for the command */
+  struct discord_application_command_option **options; /**< the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:16:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
+  bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
   /* specs/discord/application_commands.endpoints-params.json:17:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
@@ -2603,19 +2603,19 @@ struct discord_create_global_application_command_params {
 struct discord_edit_global_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
-  char *name; /** 1-32 lowercase character name */
+  char *name; /**< 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:28:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
-  char *description; /** 1-100 character description */
+  char *description; /**< 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:29:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; /** the parameters for the command */
+  struct discord_application_command_option **options; /**< the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:30:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
+  bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
 };
 
@@ -2651,19 +2651,19 @@ struct discord_edit_global_application_command_params {
 struct discord_create_guild_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:40:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
-  char *name; /** 1-32 lowercase character name */
+  char *name; /**< 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:41:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
-  char *description; /** 1-100 character description */
+  char *description; /**< 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:42:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; /** the parameters for the command */
+  struct discord_application_command_option **options; /**< the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:43:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
+  bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
   /* specs/discord/application_commands.endpoints-params.json:44:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
@@ -2703,19 +2703,19 @@ struct discord_create_guild_application_command_params {
 struct discord_edit_guild_application_command_params {
   /* specs/discord/application_commands.endpoints-params.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
-  char *name; /** 1-32 lowercase character name */
+  char *name; /**< 1-32 lowercase character name */
 
   /* specs/discord/application_commands.endpoints-params.json:55:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
-  char *description; /** 1-100 character description */
+  char *description; /**< 1-100 character description */
 
   /* specs/discord/application_commands.endpoints-params.json:56:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; /** the parameters for the command */
+  struct discord_application_command_option **options; /**< the parameters for the command */
 
   /* specs/discord/application_commands.endpoints-params.json:57:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
+  bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
 };
 
@@ -2751,7 +2751,7 @@ struct discord_edit_guild_application_command_params {
 struct discord_edit_application_command_permissions_params {
   /* specs/discord/application_commands.endpoints-params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-  struct discord_application_command_permissions **permissions; /** the permissions for the command in the guild */
+  struct discord_application_command_permissions **permissions; /**< the permissions for the command in the guild */
 
 };
 /* This file is generated from specs/discord/application_commands.json, Please don't edit it. */
@@ -2788,35 +2788,35 @@ struct discord_edit_application_command_permissions_params {
 struct discord_application_command {
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-  u64_snowflake_t id; /** unique id of the command */
+  u64_snowflake_t id; /**< unique id of the command */
 
   /* specs/discord/application_commands.json:13:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
-  enum discord_application_command_types type; /** the type of the command, defaults 1 if not set */
+  enum discord_application_command_types type; /**< the type of the command, defaults 1 if not set */
 
   /* specs/discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-  u64_snowflake_t application_id; /** unique id of the parent application */
+  u64_snowflake_t application_id; /**< unique id of the parent application */
 
   /* specs/discord/application_commands.json:15:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-  u64_snowflake_t guild_id; /** guild id of the command, if not global */
+  u64_snowflake_t guild_id; /**< guild id of the command, if not global */
 
   /* specs/discord/application_commands.json:16:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-  char name[32+1]; /** 1-32 character name */
+  char name[32+1]; /**< 1-32 character name */
 
   /* specs/discord/application_commands.json:17:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-  char description[100+1]; /** 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands */
+  char description[100+1]; /**< 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands */
 
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
-  struct discord_application_command_option **options; /** the parameters for the command */
+  struct discord_application_command_option **options; /**< the parameters for the command */
 
   /* specs/discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  bool default_permission; /** whether the command is enabled by default when the app is added to a guild */
+  bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
 };
 
@@ -2854,27 +2854,27 @@ struct discord_application_command {
 struct discord_application_command_option {
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  enum discord_application_command_option_types type; /** value of application command option type */
+  enum discord_application_command_option_types type; /**< value of application command option type */
 
   /* specs/discord/application_commands.json:42:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  char name[32+1]; /** 1-32 lowercase character */
+  char name[32+1]; /**< 1-32 lowercase character */
 
   /* specs/discord/application_commands.json:43:18
      '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  char description[100+1]; /** 1-100 character description */
+  char description[100+1]; /**< 1-100 character description */
 
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
-  bool required; /** if the parameter is required or optional -- default false */
+  bool required; /**< if the parameter is required or optional -- default false */
 
   /* specs/discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
-  struct discord_application_command_option_choice **choices; /** choices for string and int types for the user to pick from */
+  struct discord_application_command_option_choice **choices; /**< choices for string and int types for the user to pick from */
 
   /* specs/discord/application_commands.json:46:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
-  struct discord_application_command_option **options; /** if the option is a subcommand or subcommand group type, this nested options will be the parameters */
+  struct discord_application_command_option **options; /**< if the option is a subcommand or subcommand group type, this nested options will be the parameters */
 
 };
 
@@ -2912,11 +2912,11 @@ struct discord_application_command_option {
 struct discord_application_command_option_choice {
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-  char name[100+1]; /** 1-100 character choice name */
+  char name[100+1]; /**< 1-100 character choice name */
 
   /* specs/discord/application_commands.json:76:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
-  json_char_t* value; /** value of choice, up to 100 characters if string */
+  json_char_t* value; /**< value of choice, up to 100 characters if string */
 
 };
 
@@ -2952,19 +2952,19 @@ struct discord_application_command_option_choice {
 struct discord_guild_application_command_permissions {
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  u64_snowflake_t id; /** the id of the command */
+  u64_snowflake_t id; /**< the id of the command */
 
   /* specs/discord/application_commands.json:87:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-  u64_snowflake_t application_id; /** the id of the parent application the command belongs to */
+  u64_snowflake_t application_id; /**< the id of the parent application the command belongs to */
 
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-  u64_snowflake_t guild_id; /** the id of the guild */
+  u64_snowflake_t guild_id; /**< the id of the guild */
 
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
-  struct discord_application_command_permissions **permissions; /** the permissions for the command in the guild */
+  struct discord_application_command_permissions **permissions; /**< the permissions for the command in the guild */
 
 };
 
@@ -3000,15 +3000,15 @@ struct discord_guild_application_command_permissions {
 struct discord_application_command_permissions {
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  u64_snowflake_t id; /** the id of the command */
+  u64_snowflake_t id; /**< the id of the command */
 
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
-  enum discord_application_command_permission_types type; /** role or user */
+  enum discord_application_command_permission_types type; /**< role or user */
 
   /* specs/discord/application_commands.json:101:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-  bool permission; /** true to allow, false, to disallow */
+  bool permission; /**< true to allow, false, to disallow */
 
 };
 
@@ -3046,19 +3046,19 @@ struct discord_application_command_permissions {
 struct discord_application_command_interaction_data_option {
   /* specs/discord/application_commands.json:122:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */
-  char *name; /** the name of the parameter */
+  char *name; /**< the name of the parameter */
 
   /* specs/discord/application_commands.json:123:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  enum discord_application_command_option_types type; /** value of application command option type */
+  enum discord_application_command_option_types type; /**< value of application command option type */
 
   /* specs/discord/application_commands.json:124:18
      '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  enum discord_application_command_option_types value; /** the value of the pair */
+  enum discord_application_command_option_types value; /**< the value of the pair */
 
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
-  struct discord_application_command_interaction_data_option **options; /** present if this option is a group or subcommand */
+  struct discord_application_command_interaction_data_option **options; /**< present if this option is a group or subcommand */
 
 };
 /* This file is generated from specs/discord/audit_log.endpoints-params.json, Please don't edit it. */
@@ -3092,19 +3092,19 @@ struct discord_application_command_interaction_data_option {
 struct discord_get_guild_audit_log_params {
   /* specs/discord/audit_log.endpoints-params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log for actions made by a user", "inject_if_not":0 }' */
-  u64_snowflake_t user_id; /** filter the log for actions made by a user */
+  u64_snowflake_t user_id; /**< filter the log for actions made by a user */
 
   /* specs/discord/audit_log.endpoints-params.json:11:20
      '{ "name": "action_type", "type":{ "base":"int", "int_alias":"enum discord_audit_log_events" }, "comment":"the type of audit log event", "inject_if_not":0 }' */
-  enum discord_audit_log_events action_type; /** the type of audit log event */
+  enum discord_audit_log_events action_type; /**< the type of audit log event */
 
   /* specs/discord/audit_log.endpoints-params.json:12:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log before a certain entry id", "inject_if_not":0 }' */
-  u64_snowflake_t before; /** filter the log before a certain entry id */
+  u64_snowflake_t before; /**< filter the log before a certain entry id */
 
   /* specs/discord/audit_log.endpoints-params.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "default_value":50, "comment":"how many entries are returned (default 50, minimum 1, maximum 100)", "inject_if_not":0 }' */
-  int limit; /** how many entries are returned (default 50, minimum 1, maximum 100) */
+  int limit; /**< how many entries are returned (default 50, minimum 1, maximum 100) */
 
 };
 /* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
@@ -3141,23 +3141,23 @@ struct discord_get_guild_audit_log_params {
 struct discord_audit_log {
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" }, "comment":"list of webhooks found in the audit log", "inject_if_not":null }' */
-  struct discord_webhook **webhooks; /** list of webhooks found in the audit log */
+  struct discord_webhook **webhooks; /**< list of webhooks found in the audit log */
 
   /* specs/discord/audit_log.json:13:18
      '{"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}, "comment":"list of users found in the audit log", "inject_if_not":null}' */
-  struct discord_user **users; /** list of users found in the audit log */
+  struct discord_user **users; /**< list of users found in the audit log */
 
   /* specs/discord/audit_log.json:14:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
-  struct discord_audit_log_entry **audit_log_entries; /** list of audit log entries */
+  struct discord_audit_log_entry **audit_log_entries; /**< list of audit log entries */
 
   /* specs/discord/audit_log.json:15:18
      '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
-  struct discord_integration **integrations; /** list of partial integration objects */
+  struct discord_integration **integrations; /**< list of partial integration objects */
 
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
-  struct discord_channel **threads; /** list of threads found in the audit log */
+  struct discord_channel **threads; /**< list of threads found in the audit log */
 
 };
 
@@ -3193,31 +3193,31 @@ struct discord_audit_log {
 struct discord_audit_log_entry {
   /* specs/discord/audit_log.json:26:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}, "comment":"id of the affected entity (webhook,user,role,etc.)", "inject_if_not":null }' */
-  char *target_id; /** id of the affected entity (webhook,user,role,etc.) */
+  char *target_id; /**< id of the affected entity (webhook,user,role,etc.) */
 
   /* specs/discord/audit_log.json:27:18
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}, "comment":"changes made to the target_id", "inject_if_not":null }' */
-  struct discord_audit_log_change **changes; /** changes made to the target_id */
+  struct discord_audit_log_change **changes; /**< changes made to the target_id */
 
   /* specs/discord/audit_log.json:28:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the user who made the changes", "inject_if_not":0 }' */
-  u64_snowflake_t user_id; /** the user who made the changes */
+  u64_snowflake_t user_id; /**< the user who made the changes */
 
   /* specs/discord/audit_log.json:29:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 }' */
-  u64_snowflake_t id; /** id of the entry */
+  u64_snowflake_t id; /**< id of the entry */
 
   /* specs/discord/audit_log.json:30:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 }' */
-  int action_type; /** type of action that occured */
+  int action_type; /**< type of action that occured */
 
   /* specs/discord/audit_log.json:31:18
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
-  struct discord_optional_audit_entry_info **options; /** additional info for certain action types */
+  struct discord_optional_audit_entry_info **options; /**< additional info for certain action types */
 
   /* specs/discord/audit_log.json:32:18
      '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-  char reason[DISCORD_MAX_REASON_LEN]; /** the reason for the change */
+  char reason[DISCORD_MAX_REASON_LEN]; /**< the reason for the change */
 
 };
 
@@ -3255,35 +3255,35 @@ struct discord_audit_log_entry {
 struct discord_optional_audit_entry_info {
   /* specs/discord/audit_log.json:94:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"number of days after which inactive members were kicked", "inject_if_not":null }' */
-  char *delete_member_days; /** number of days after which inactive members were kicked */
+  char *delete_member_days; /**< number of days after which inactive members were kicked */
 
   /* specs/discord/audit_log.json:95:20
      '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"number of members removed by the prune", "inject_if_not":null }' */
-  char *members_removed; /** number of members removed by the prune */
+  char *members_removed; /**< number of members removed by the prune */
 
   /* specs/discord/audit_log.json:96:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"channel in which the entities were targeted", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; /** channel in which the entities were targeted */
+  u64_snowflake_t channel_id; /**< channel in which the entities were targeted */
 
   /* specs/discord/audit_log.json:97:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the message that was targeted", "inject_if_not":0 }' */
-  u64_snowflake_t message_id; /** id of the message that was targeted */
+  u64_snowflake_t message_id; /**< id of the message that was targeted */
 
   /* specs/discord/audit_log.json:98:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"number of entities that were targeted", "inject_if_not":null }' */
-  char *count; /** number of entities that were targeted */
+  char *count; /**< number of entities that were targeted */
 
   /* specs/discord/audit_log.json:99:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the ovewritten entity", "inject_if_not":0 }' */
-  u64_snowflake_t id; /** id of the ovewritten entity */
+  u64_snowflake_t id; /**< id of the ovewritten entity */
 
   /* specs/discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
-  char *type; /** type of overwritten entity - '0' for role or '1' for member */
+  char *type; /**< type of overwritten entity - '0' for role or '1' for member */
 
   /* specs/discord/audit_log.json:101:20
      '{ "name": "role_name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the role if type is '0' (not present if type is '1')", "inject_if_not":null }' */
-  char *role_name; /** name of the role if type is '0' (not present if type is '1') */
+  char *role_name; /**< name of the role if type is '0' (not present if type is '1') */
 
 };
 
@@ -3319,15 +3319,15 @@ struct discord_optional_audit_entry_info {
 struct discord_audit_log_change {
   /* specs/discord/audit_log.json:111:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"new value of the key", "inject_if_not":null }' */
-  json_char_t* new_value; /** new value of the key */
+  json_char_t* new_value; /**< new value of the key */
 
   /* specs/discord/audit_log.json:112:18
      '{"name":"old_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"old value of the key", "inject_if_not":null }' */
-  json_char_t* old_value; /** old value of the key */
+  json_char_t* old_value; /**< old value of the key */
 
   /* specs/discord/audit_log.json:113:18
      '{"name":"key", "type":{"base":"char", "dec":"*"}, "comment":"name of audit log change key", "inject_if_not":null }' */
-  char *key; /** name of audit log change key */
+  char *key; /**< name of audit log change key */
 
 };
 /* This file is generated from specs/discord/channel.endpoints-params.json, Please don't edit it. */
@@ -3456,43 +3456,43 @@ struct discord_modify_channel_params {
 struct discord_create_message_params {
   /* specs/discord/channel.endpoints-params.json:36:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
-  char *content; /** the message contents (up to 2000 characters) */
+  char *content; /**< the message contents (up to 2000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:37:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; /** true if this is a TTS message */
+  bool tts; /**< true if this is a TTS message */
 
   /* specs/discord/channel.endpoints-params.json:38:20
      '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; /** the contents of the file being sent */
+  struct discord_file *file; /**< the contents of the file being sent */
 
   /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
-  struct discord_embed **embeds; /** embedded rich content (up to 6000 characters) */
+  struct discord_embed **embeds; /**< embedded rich content (up to 6000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:40:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
-  struct discord_embed *embed; /** embedded rich content, deprecated in favor of embeds */
+  struct discord_embed *embed; /**< embedded rich content, deprecated in favor of embeds */
 
   /* specs/discord/channel.endpoints-params.json:41:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; /** JSON encoded body of non-file params */
+  char *payload_json; /**< JSON encoded body of non-file params */
 
   /* specs/discord/channel.endpoints-params.json:42:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
-  struct discord_message_reference *message_reference; /** include to make your message a reply */
+  struct discord_message_reference *message_reference; /**< include to make your message a reply */
 
   /* specs/discord/channel.endpoints-params.json:44:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
   /* specs/discord/channel.endpoints-params.json:45:20
      '{ "name": "sticker_ids", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"ids of up to 3 stickers in the server to send in the message", "inject_if_not":null }' */
-  ja_u64 **sticker_ids; /** ids of up to 3 stickers in the server to send in the message */
+  ja_u64 **sticker_ids; /**< ids of up to 3 stickers in the server to send in the message */
 
 };
 
@@ -3526,19 +3526,19 @@ struct discord_create_message_params {
 struct discord_get_channel_messages_params {
   /* specs/discord/channel.endpoints-params.json:54:20
      '{ "name": "around", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages around this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t around; /** get messages around this message ID */
+  u64_snowflake_t around; /**< get messages around this message ID */
 
   /* specs/discord/channel.endpoints-params.json:55:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages before this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t before; /** get messages before this message ID */
+  u64_snowflake_t before; /**< get messages before this message ID */
 
   /* specs/discord/channel.endpoints-params.json:56:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages after this message ID", "inject_if_not":0 }' */
-  u64_snowflake_t after; /** get messages after this message ID */
+  u64_snowflake_t after; /**< get messages after this message ID */
 
   /* specs/discord/channel.endpoints-params.json:57:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
-  int limit; /** max number of messages to return (1-100) */
+  int limit; /**< max number of messages to return (1-100) */
 
 };
 
@@ -3610,11 +3610,11 @@ struct discord_get_reactions_params {
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags allow; /** permission bit set */
+  enum discord_bitwise_permission_flags allow; /**< permission bit set */
 
   /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags deny; /** permission bit set */
+  enum discord_bitwise_permission_flags deny; /**< permission bit set */
 
   /* specs/discord/channel.endpoints-params.json:78:20
      '{ "name": "type", "type":{ "base":"int" }}' */
@@ -3652,39 +3652,39 @@ struct discord_edit_channel_permissions_params {
 struct discord_edit_message_params {
   /* specs/discord/channel.endpoints-params.json:87:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
-  char *content; /** the message contents (up to 2000 characters) */
+  char *content; /**< the message contents (up to 2000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:88:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
-  struct discord_embed **embeds; /** embedded rich content (up to 6000 characters) */
+  struct discord_embed **embeds; /**< embedded rich content (up to 6000 characters) */
 
   /* specs/discord/channel.endpoints-params.json:89:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
-  struct discord_embed *embed; /** embedded rich content, deprecated in favor of embeds */
+  struct discord_embed *embed; /**< embedded rich content, deprecated in favor of embeds */
 
   /* specs/discord/channel.endpoints-params.json:90:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
-  enum discord_message_flags flags; /** edit the flags of a message */
+  enum discord_message_flags flags; /**< edit the flags of a message */
 
   /* specs/discord/channel.endpoints-params.json:91:20
      '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; /** the contents of the file being sent */
+  struct discord_file *file; /**< the contents of the file being sent */
 
   /* specs/discord/channel.endpoints-params.json:92:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; /** JSON encoded body of non-file params */
+  char *payload_json; /**< JSON encoded body of non-file params */
 
   /* specs/discord/channel.endpoints-params.json:93:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/channel.endpoints-params.json:94:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; /** attached files to keep */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
   /* specs/discord/channel.endpoints-params.json:95:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
 };
 
@@ -4326,7 +4326,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:190:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  struct discord_guild_member *member; /** partial guild member object */
+  struct discord_guild_member *member; /**< partial guild member object */
 
   /* specs/discord/channel.json:191:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
@@ -4350,11 +4350,11 @@ struct discord_message {
 
   /* specs/discord/channel.json:196:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
-  struct discord_user **mentions; /** array of user objects, with an additional partial member field */
+  struct discord_user **mentions; /**< array of user objects, with an additional partial member field */
 
   /* specs/discord/channel.json:197:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
-  ja_u64 **mention_roles; /** array of role object ids */
+  ja_u64 **mention_roles; /**< array of role object ids */
 
   /* specs/discord/channel.json:198:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
@@ -4374,7 +4374,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:202:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
-  char *nonce; /** integer or string */
+  char *nonce; /**< integer or string */
 
   /* specs/discord/channel.json:203:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
@@ -4406,27 +4406,27 @@ struct discord_message {
 
   /* specs/discord/channel.json:210:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
-  struct discord_message *referenced_message; /** this will cause recursive allocation if allocating as the parent */
+  struct discord_message *referenced_message; /**< this will cause recursive allocation if allocating as the parent */
 
   /* specs/discord/channel.json:211:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-  struct discord_message_interaction *interaction; /** the message associated with the message_reference */
+  struct discord_message_interaction *interaction; /**< the message associated with the message_reference */
 
   /* specs/discord/channel.json:212:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-  struct discord_channel *thread; /** the channel that was started from this message, includes thread member obejct */
+  struct discord_channel *thread; /**< the channel that was started from this message, includes thread member obejct */
 
   /* specs/discord/channel.json:213:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
-  struct discord_component **components; /** sent if the message contains components like buttons, actions rows, or other interactive components */
+  struct discord_component **components; /**< sent if the message contains components like buttons, actions rows, or other interactive components */
 
   /* specs/discord/channel.json:214:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
-  struct discord_message_sticker **sticker_items; /** sent if the message contains stickets */
+  struct discord_message_sticker **sticker_items; /**< sent if the message contains stickets */
 
   /* specs/discord/channel.json:215:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
-  struct discord_message_sticker **stickers; /** [DEPRECATED] array of sticker objects */
+  struct discord_message_sticker **stickers; /**< [DEPRECATED] array of sticker objects */
 
 };
 
@@ -4510,7 +4510,7 @@ struct discord_reaction {
 
   /* specs/discord/channel.json:236:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  struct discord_emoji *emoji; /** partial emoji object */
+  struct discord_emoji *emoji; /**< partial emoji object */
 
 };
 
@@ -4553,12 +4553,12 @@ struct discord_overwrite {
   /* specs/discord/channel.json:246:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags allow; /** permission bit set */
+  enum discord_bitwise_permission_flags allow; /**< permission bit set */
 
   /* specs/discord/channel.json:248:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags deny; /** permission bit set */
+  enum discord_bitwise_permission_flags deny; /**< permission bit set */
 
 };
 
@@ -4806,11 +4806,11 @@ struct discord_allowed_mentions {
 
   /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **roles; /** list of snowflakes */
+  ja_u64 **roles; /**< list of snowflakes */
 
   /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **users; /** list of snowflakes */
+  ja_u64 **users; /**< list of snowflakes */
 
   /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
@@ -5257,11 +5257,11 @@ struct discord_create_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
-  char *image; /** Base64 Encoded Image Data */
+  char *image; /**< Base64 Encoded Image Data */
 
   /* specs/discord/emoji.endpoints-params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; /** roles for which this emoji will be whitelisted */
+  ja_u64 **roles; /**< roles for which this emoji will be whitelisted */
 
 };
 
@@ -5299,7 +5299,7 @@ struct discord_modify_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; /** roles for which this emoji will be whitelisted */
+  ja_u64 **roles; /**< roles for which this emoji will be whitelisted */
 
 };
 /* This file is generated from specs/discord/emoji.json, Please don't edit it. */
@@ -5336,31 +5336,31 @@ struct discord_modify_guild_emoji_params {
 struct discord_emoji {
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-  u64_snowflake_t id; /** emoji id */
+  u64_snowflake_t id; /**< emoji id */
 
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
-  char *name; /** emoji name */
+  char *name; /**< emoji name */
 
   /* specs/discord/emoji.json:14:20
      '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl"}, "option":true, "comment":"roles allowed to use this emoji" }' */
-  struct discord_role **roles; /** roles allowed to use this emoji */
+  struct discord_role **roles; /**< roles allowed to use this emoji */
 
   /* specs/discord/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
-  struct discord_user *user; /** user that created this emoji */
+  struct discord_user *user; /**< user that created this emoji */
 
   /* specs/discord/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
-  bool require_colons; /** whether this emoji must be wrapped in colons */
+  bool require_colons; /**< whether this emoji must be wrapped in colons */
 
   /* specs/discord/emoji.json:17:20
      '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
-  bool managed; /** whether this emoji is managed */
+  bool managed; /**< whether this emoji is managed */
 
   /* specs/discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
-  bool animated; /** whether this emoji is animated */
+  bool animated; /**< whether this emoji is animated */
 
   /* specs/discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
@@ -5473,19 +5473,19 @@ struct discord_identify {
 struct discord_voice_state_status {
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; /** id of the guild */
+  u64_snowflake_t guild_id; /**< id of the guild */
 
   /* specs/discord/gateway.json:160:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; /** id of the voice channel client wants to join (null if disconnecting) */
+  u64_snowflake_t channel_id; /**< id of the voice channel client wants to join (null if disconnecting) */
 
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
-  bool self_mute; /** is the client muted */
+  bool self_mute; /**< is the client muted */
 
   /* specs/discord/gateway.json:162:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-  bool self_deaf; /** is the client deafened */
+  bool self_deaf; /**< is the client deafened */
 
 };
 
@@ -5521,19 +5521,19 @@ struct discord_voice_state_status {
 struct discord_presence_status {
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
-  u64_unix_ms_t since; /** unix time (in milliseconds) of when the client went idle, or null if the client is not idle */
+  u64_unix_ms_t since; /**< unix time (in milliseconds) of when the client went idle, or null if the client is not idle */
 
   /* specs/discord/gateway.json:173:19
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
-  struct discord_activity **activities; /** the user's activities */
+  struct discord_activity **activities; /**< the user's activities */
 
   /* specs/discord/gateway.json:174:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  char status[16]; /** the user's new status */
+  char status[16]; /**< the user's new status */
 
   /* specs/discord/gateway.json:175:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-  bool afk; /** whether or not the client is afk */
+  bool afk; /**< whether or not the client is afk */
 
 };
 
@@ -5569,15 +5569,15 @@ struct discord_presence_status {
 struct discord_identify_connection {
   /* specs/discord/gateway.json:185:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
-  char *os; /** your operating system */
+  char *os; /**< your operating system */
 
   /* specs/discord/gateway.json:186:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  char *browser; /** your library name */
+  char *browser; /**< your library name */
 
   /* specs/discord/gateway.json:187:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  char *device; /** your library name */
+  char *device; /**< your library name */
 
 };
 
@@ -5679,19 +5679,19 @@ struct discord_activity {
 struct discord_session_start_limit {
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
-  int total; /** the total number of session starts the current user is allowed */
+  int total; /**< the total number of session starts the current user is allowed */
 
   /* specs/discord/gateway.json:228:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
-  int remaining; /** the remaining number of session starts the current user is allowed */
+  int remaining; /**< the remaining number of session starts the current user is allowed */
 
   /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
-  int reset_after; /** the number of milliseconds after which the limit resets */
+  int reset_after; /**< the number of milliseconds after which the limit resets */
 
   /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-  int max_concurrency; /** the number of identify requests allowed per 5 seconds */
+  int max_concurrency; /**< the number of identify requests allowed per 5 seconds */
 
 };
 /* This file is generated from specs/discord/guild-template.endpoints-params.json, Please don't edit it. */
@@ -5726,11 +5726,11 @@ struct discord_session_start_limit {
 struct discord_create_guild_from_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; /** name of the guild */
+  char *name; /**< name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:13:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
-  char *icon; /** base64 128x128 image for the guild icon */
+  char *icon; /**< base64 128x128 image for the guild icon */
 
 };
 
@@ -5764,11 +5764,11 @@ struct discord_create_guild_from_guild_template_params {
 struct discord_create_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; /** name of the guild */
+  char *name; /**< name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:23:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
-  char *description; /** description for the template (0-120) chars */
+  char *description; /**< description for the template (0-120) chars */
 
 };
 
@@ -5802,11 +5802,11 @@ struct discord_create_guild_template_params {
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
-  char *name; /** name of the guild */
+  char *name; /**< name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:33:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
-  char *description; /** description for the template (0-120) chars */
+  char *description; /**< description for the template (0-120) chars */
 
 };
 /* This file is generated from specs/discord/guild-template.json, Please don't edit it. */
@@ -5918,47 +5918,47 @@ struct discord_guild_template {
 struct discord_create_guild_params {
   /* specs/discord/guild.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
-  char *name; /** name of the guild (2-100) characters */
+  char *name; /**< name of the guild (2-100) characters */
 
   /* specs/discord/guild.endpoints-params.json:13:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
-  char *region; /** voice region id */
+  char *region; /**< voice region id */
 
   /* specs/discord/guild.endpoints-params.json:14:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
-  char *icon; /** base64 128x1128 image for the guild icon */
+  char *icon; /**< base64 128x1128 image for the guild icon */
 
   /* specs/discord/guild.endpoints-params.json:15:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  int verification_level; /** verification level */
+  int verification_level; /**< verification level */
 
   /* specs/discord/guild.endpoints-params.json:16:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  int default_message_notifications; /** default message notification level */
+  int default_message_notifications; /**< default message notification level */
 
   /* specs/discord/guild.endpoints-params.json:17:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  int explicit_content_filter; /** explicit content filter level */
+  int explicit_content_filter; /**< explicit content filter level */
 
   /* specs/discord/guild.endpoints-params.json:18:20
      '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"new guild roles" }' */
-  struct discord_role **roles; /** new guild roles */
+  struct discord_role **roles; /**< new guild roles */
 
   /* specs/discord/guild.endpoints-params.json:19:20
      '{ "name": "channels", "type":{ "base":"struct discord_channel", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"array of partial channel objects"}' */
-  struct discord_channel **channels; /** array of partial channel objects */
+  struct discord_channel **channels; /**< array of partial channel objects */
 
   /* specs/discord/guild.endpoints-params.json:20:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  u64_snowflake_t afk_channel_id; /** id for afk channel */
+  u64_snowflake_t afk_channel_id; /**< id for afk channel */
 
   /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  int afk_timeout; /** afk timeout in seconds */
+  int afk_timeout; /**< afk timeout in seconds */
 
   /* specs/discord/guild.endpoints-params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; /** the id of the channel where guild notices such as welcome messages and boost events are posted */
+  u64_snowflake_t system_channel_id; /**< the id of the channel where guild notices such as welcome messages and boost events are posted */
 
 };
 
@@ -5992,79 +5992,79 @@ struct discord_create_guild_params {
 struct discord_modify_guild_params {
   /* specs/discord/guild.endpoints-params.json:31:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
-  char *name; /** name of the guild (2-100) characters */
+  char *name; /**< name of the guild (2-100) characters */
 
   /* specs/discord/guild.endpoints-params.json:32:20
      '{ "name": "region", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"voice region id" }' */
-  char *region; /** voice region id */
+  char *region; /**< voice region id */
 
   /* specs/discord/guild.endpoints-params.json:33:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  int verification_level; /** verification level */
+  int verification_level; /**< verification level */
 
   /* specs/discord/guild.endpoints-params.json:34:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  int default_message_notifications; /** default message notification level */
+  int default_message_notifications; /**< default message notification level */
 
   /* specs/discord/guild.endpoints-params.json:35:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  int explicit_content_filter; /** explicit content filter level */
+  int explicit_content_filter; /**< explicit content filter level */
 
   /* specs/discord/guild.endpoints-params.json:36:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  u64_snowflake_t afk_channel_id; /** id for afk channel */
+  u64_snowflake_t afk_channel_id; /**< id for afk channel */
 
   /* specs/discord/guild.endpoints-params.json:37:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  int afk_timeout; /** afk timeout in seconds */
+  int afk_timeout; /**< afk timeout in seconds */
 
   /* specs/discord/guild.endpoints-params.json:38:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
-  char *icon; /** base64 128x1128 image for the guild icon */
+  char *icon; /**< base64 128x1128 image for the guild icon */
 
   /* specs/discord/guild.endpoints-params.json:39:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}' */
-  u64_snowflake_t owner_id; /** user id to transfer guild ownership to (must be owner) */
+  u64_snowflake_t owner_id; /**< user id to transfer guild ownership to (must be owner) */
 
   /* specs/discord/guild.endpoints-params.json:40:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}' */
-  char *splash; /** base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature */
+  char *splash; /**< base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature */
 
   /* specs/discord/guild.endpoints-params.json:41:20
      '{ "name": "discovery_splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature)"}' */
-  char *discovery_splash; /** base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature) */
+  char *discovery_splash; /**< base64 16:9 png/jpeg image for the guild discovery splash (when the server has the DISCOVERABLE feature) */
 
   /* specs/discord/guild.endpoints-params.json:42:20
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"}' */
-  char *banner; /** cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh */
+  char *banner; /**< cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh */
 
   /* specs/discord/guild.endpoints-params.json:43:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; /** cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome */
+  u64_snowflake_t system_channel_id; /**< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome */
 
   /* specs/discord/guild.endpoints-params.json:44:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
-  enum discord_system_channel_flags system_channel_flags; /** system channel flags */
+  enum discord_system_channel_flags system_channel_flags; /**< system channel flags */
 
   /* specs/discord/guild.endpoints-params.json:45:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}' */
-  u64_snowflake_t rules_channel_id; /** the id of the channel where Community guilds display rules and/or guidelines */
+  u64_snowflake_t rules_channel_id; /**< the id of the channel where Community guilds display rules and/or guidelines */
 
   /* specs/discord/guild.endpoints-params.json:46:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}' */
-  u64_snowflake_t public_updates_channel_id; /** the id of the channel where admins and moderators of Community guilds receive notices from Discord */
+  u64_snowflake_t public_updates_channel_id; /**< the id of the channel where admins and moderators of Community guilds receive notices from Discord */
 
   /* specs/discord/guild.endpoints-params.json:47:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}' */
-  char *preferred_locale; /** the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US" */
+  char *preferred_locale; /**< the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to "en-US" */
 
   /* specs/discord/guild.endpoints-params.json:48:18
      '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "comment":"array of guild feature strings"}' */
-  ja_str **features; /** array of guild feature strings */
+  ja_str **features; /**< array of guild feature strings */
 
   /* specs/discord/guild.endpoints-params.json:49:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
-  char *description; /** the description for the guild, if the guild is discoverable */
+  char *description; /**< the description for the guild, if the guild is discoverable */
 
 };
 
@@ -6168,19 +6168,19 @@ struct discord_create_guild_channel_params {
 struct discord_modify_guild_channel_positions_params {
   /* specs/discord/guild.endpoints-params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
-  u64_snowflake_t id; /** channel id */
+  u64_snowflake_t id; /**< channel id */
 
   /* specs/discord/guild.endpoints-params.json:77:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}' */
-  int position; /** sorting position of the channel */
+  int position; /**< sorting position of the channel */
 
   /* specs/discord/guild.endpoints-params.json:78:20
      '{ "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"}' */
-  bool lock_permissions; /** syncs the permission overwrites with the new parent, if moving to a new category */
+  bool lock_permissions; /**< syncs the permission overwrites with the new parent, if moving to a new category */
 
   /* specs/discord/guild.endpoints-params.json:79:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
-  u64_snowflake_t parent_id; /** the new parent ID for the channel that is moved */
+  u64_snowflake_t parent_id; /**< the new parent ID for the channel that is moved */
 
 };
 
@@ -6214,11 +6214,11 @@ struct discord_modify_guild_channel_positions_params {
 struct discord_list_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:88:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
-  int limit; /** max numbers of members to return (1-1000) */
+  int limit; /**< max numbers of members to return (1-1000) */
 
   /* specs/discord/guild.endpoints-params.json:89:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
-  u64_snowflake_t after; /** the highest user id in the previous page */
+  u64_snowflake_t after; /**< the highest user id in the previous page */
 
 };
 
@@ -6252,11 +6252,11 @@ struct discord_list_guild_members_params {
 struct discord_search_guild_members_params {
   /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
-  char *query; /** Query string to match username(s) and nickname(s) against. */
+  char *query; /**< Query string to match username(s) and nickname(s) against. */
 
   /* specs/discord/guild.endpoints-params.json:99:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
-  int limit; /** max number of members to return (1-1000) */
+  int limit; /**< max number of members to return (1-1000) */
 
 };
 
@@ -6424,11 +6424,11 @@ struct discord_modify_current_user_nick_params {
 struct discord_create_guild_ban_params {
   /* specs/discord/guild.endpoints-params.json:143:20
      '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
-  int delete_message_days; /** number of days to delete messages for(0-7) */
+  int delete_message_days; /**< number of days to delete messages for(0-7) */
 
   /* specs/discord/guild.endpoints-params.json:144:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }' */
-  char *reason; /** reason for the ban (deprecated) */
+  char *reason; /**< reason for the ban (deprecated) */
 
 };
 
@@ -6512,11 +6512,11 @@ struct discord_create_guild_role_params {
 struct discord_modify_guild_role_positions_params {
   /* specs/discord/guild.endpoints-params.json:166:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
-  u64_snowflake_t id; /** role */
+  u64_snowflake_t id; /**< role */
 
   /* specs/discord/guild.endpoints-params.json:167:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
-  int position; /** sorting position of the role */
+  int position; /**< sorting position of the role */
 
 };
 
@@ -6550,23 +6550,23 @@ struct discord_modify_guild_role_positions_params {
 struct discord_modify_guild_role_params {
   /* specs/discord/guild.endpoints-params.json:176:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
-  char *name; /** name of the role */
+  char *name; /**< name of the role */
 
   /* specs/discord/guild.endpoints-params.json:177:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  enum discord_bitwise_permission_flags permissions; /** bitwise value of the enabled/disabled permissions */
+  enum discord_bitwise_permission_flags permissions; /**< bitwise value of the enabled/disabled permissions */
 
   /* specs/discord/guild.endpoints-params.json:178:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
-  int color; /** RGB color value */
+  int color; /**< RGB color value */
 
   /* specs/discord/guild.endpoints-params.json:179:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
-  bool hoist; /** whether the role should be displayed separately in the sidebar */
+  bool hoist; /**< whether the role should be displayed separately in the sidebar */
 
   /* specs/discord/guild.endpoints-params.json:180:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
-  bool mentionable; /** whether the role should be mentionable */
+  bool mentionable; /**< whether the role should be mentionable */
 
 };
 
@@ -6757,7 +6757,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:31:70
      '{"type":{"base":"struct discord_role", "dec":"ntl"}, "name":"roles", "comment":"array of role objects", "inject_if_not":null }' */
-  struct discord_role **roles; /** array of role objects */
+  struct discord_role **roles; /**< array of role objects */
 
   /* specs/discord/guild.json:32:71
      '{"type":{"base":"struct discord_emoji", "dec":"ntl"}, "name":"emojis"}' */
@@ -6765,7 +6765,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:33:57
      '{"type":{"base":"ja_str", "dec":"ntl"}, "name":"features", "comment":"array of guild feature strings", "inject_if_not":null }' */
-  ja_str **features; /** array of guild feature strings */
+  ja_str **features; /**< array of guild feature strings */
 
   /* specs/discord/guild.json:34:79
      '{"type":{"base":"int", "int_alias":"enum discord_mfa_level"}, "name":"mfa_level"}' */
@@ -6805,7 +6805,7 @@ struct discord_guild {
 
   /* specs/discord/guild.json:43:77
      '{"type":{"base":"struct discord_voice_state", "dec":"ntl"}, "name":"voice_states", "comment":"array of partial voice state objects", "inject_if_not":null }' */
-  struct discord_voice_state **voice_states; /** array of partial voice state objects */
+  struct discord_voice_state **voice_states; /**< array of partial voice state objects */
 
   /* specs/discord/guild.json:44:78
      '{"type":{"base":"struct discord_guild_member", "dec":"ntl"}, "name":"members", "option":true}' */
@@ -6814,11 +6814,11 @@ struct discord_guild {
   /* specs/discord/guild.json:45:73
      '{"type":{"base":"struct discord_channel", "dec":"ntl"}, "name":"channels", "option":true,
          "comment":"array of channel objects"}' */
-  struct discord_channel **channels; /** array of channel objects */
+  struct discord_channel **channels; /**< array of channel objects */
 
   /* specs/discord/guild.json:47:81
      '{"type":{"base":"struct discord_presence_status", "dec":"ntl"}, "name":"presences", "option":true, "comment":"array of partial presence update objects", "inject_if_not":null }' */
-  struct discord_presence_status **presences; /** array of partial presence update objects */
+  struct discord_presence_status **presences; /**< array of partial presence update objects */
 
   /* specs/discord/guild.json:48:41
      '{"type":{"base":"int"}, "name":"max_presences", "option":true}' */
@@ -7081,7 +7081,7 @@ struct discord_guild_member {
 
   /* specs/discord/guild.json:193:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
-  ja_u64 **roles; /** array of role object ids */
+  ja_u64 **roles; /**< array of role object ids */
 
   /* specs/discord/guild.json:194:20
      '{ "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
@@ -7335,7 +7335,7 @@ struct discord_ban {
 
   /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *user; /** partial user object */
+  struct discord_user *user; /**< partial user object */
 
 };
 
@@ -7458,31 +7458,31 @@ struct discord_welcome_screen_channel {
 struct discord_edit_original_interaction_response_params {
   /* specs/discord/interaction.endpoints-params.json:12:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  char *content; /** name of the webhook(1-2000) chars */
+  char *content; /**< name of the webhook(1-2000) chars */
 
   /* specs/discord/interaction.endpoints-params.json:13:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  struct discord_embed **embeds; /** array of up to 10 embeds objects */
+  struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
   /* specs/discord/interaction.endpoints-params.json:14:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /** the contents of the file being sent/edited */
+  char *file; /**< the contents of the file being sent/edited */
 
   /* specs/discord/interaction.endpoints-params.json:15:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; /** JSON encoded body of non-file params (multipart/form-data only) */
+  char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
 
   /* specs/discord/interaction.endpoints-params.json:16:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/interaction.endpoints-params.json:17:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; /** attached files to keep */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
   /* specs/discord/interaction.endpoints-params.json:18:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
 };
 
@@ -7516,51 +7516,51 @@ struct discord_edit_original_interaction_response_params {
 struct discord_create_followup_message_params {
   /* specs/discord/interaction.endpoints-params.json:28:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)", "default_value":true }' */
-  bool wait; /** cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
+  bool wait; /**< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/interaction.endpoints-params.json:29:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  u64_snowflake_t thread_id; /** Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
+  u64_snowflake_t thread_id; /**< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
 
   /* specs/discord/interaction.endpoints-params.json:30:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
-  char *content; /** the message contents (up to 2000 characters) */
+  char *content; /**< the message contents (up to 2000 characters) */
 
   /* specs/discord/interaction.endpoints-params.json:31:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
-  char *username; /** override the default username of the webhook */
+  char *username; /**< override the default username of the webhook */
 
   /* specs/discord/interaction.endpoints-params.json:32:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
-  char *avatar_url; /** override the default avatar of the webhook */
+  char *avatar_url; /**< override the default avatar of the webhook */
 
   /* specs/discord/interaction.endpoints-params.json:33:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; /** true if this is a TTS message */
+  bool tts; /**< true if this is a TTS message */
 
   /* specs/discord/interaction.endpoints-params.json:34:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; /** the contents of the file being sent */
+  char *file; /**< the contents of the file being sent */
 
   /* specs/discord/interaction.endpoints-params.json:35:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-  struct discord_embed *embeds; /** embedded rich content */
+  struct discord_embed *embeds; /**< embedded rich content */
 
   /* specs/discord/interaction.endpoints-params.json:36:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  char *payload_json; /** JSON encoded body of non-file params */
+  char *payload_json; /**< JSON encoded body of non-file params */
 
   /* specs/discord/interaction.endpoints-params.json:37:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
   /* specs/discord/interaction.endpoints-params.json:39:20
      '{ "name": "flags", "type":{ "base":"int" }, "comment":"can be set to 64 to send a ephemeral message", "inject_if_not": 0 }' */
-  int flags; /** can be set to 64 to send a ephemeral message */
+  int flags; /**< can be set to 64 to send a ephemeral message */
 
 };
 
@@ -7594,31 +7594,31 @@ struct discord_create_followup_message_params {
 struct discord_edit_followup_message_params {
   /* specs/discord/interaction.endpoints-params.json:48:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  char *content; /** name of the webhook(1-2000) chars */
+  char *content; /**< name of the webhook(1-2000) chars */
 
   /* specs/discord/interaction.endpoints-params.json:49:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  struct discord_embed **embeds; /** array of up to 10 embeds objects */
+  struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
   /* specs/discord/interaction.endpoints-params.json:50:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /** the contents of the file being sent/edited */
+  char *file; /**< the contents of the file being sent/edited */
 
   /* specs/discord/interaction.endpoints-params.json:51:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; /** JSON encoded body of non-file params (multipart/form-data only) */
+  char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
 
   /* specs/discord/interaction.endpoints-params.json:52:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/interaction.endpoints-params.json:53:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; /** attached files to keep */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
   /* specs/discord/interaction.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
 };
 /* This file is generated from specs/discord/interaction.json, Please don't edit it. */
@@ -7655,43 +7655,43 @@ struct discord_edit_followup_message_params {
 struct discord_interaction {
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  u64_snowflake_t id; /** id of the interaction */
+  u64_snowflake_t id; /**< id of the interaction */
 
   /* specs/discord/interaction.json:13:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-  u64_snowflake_t application_id; /** id of the application this iteraction is for */
+  u64_snowflake_t application_id; /**< id of the application this iteraction is for */
 
   /* specs/discord/interaction.json:14:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  enum discord_interaction_types type; /** the request type of the interaction */
+  enum discord_interaction_types type; /**< the request type of the interaction */
 
   /* specs/discord/interaction.json:15:18
      '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
-  struct discord_interaction_data *data; /** the command data payload */
+  struct discord_interaction_data *data; /**< the command data payload */
 
   /* specs/discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-  u64_snowflake_t guild_id; /** the guild it was sent from */
+  u64_snowflake_t guild_id; /**< the guild it was sent from */
 
   /* specs/discord/interaction.json:17:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-  u64_snowflake_t channel_id; /** the channel it was sent from */
+  u64_snowflake_t channel_id; /**< the channel it was sent from */
 
   /* specs/discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
-  struct discord_guild_member *member; /** guild member data for the invoking user, including permissions */
+  struct discord_guild_member *member; /**< guild member data for the invoking user, including permissions */
 
   /* specs/discord/interaction.json:19:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
-  struct discord_user *user; /** user object for the invoking user, if invoked in a DM */
+  struct discord_user *user; /**< user object for the invoking user, if invoked in a DM */
 
   /* specs/discord/interaction.json:20:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
-  char *token; /** a continuation token for responding to the interaction */
+  char *token; /**< a continuation token for responding to the interaction */
 
   /* specs/discord/interaction.json:21:18
      '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
-  struct discord_message *message; /** for components, the message they were attached to */
+  struct discord_message *message; /**< for components, the message they were attached to */
 
 };
 
@@ -7729,35 +7729,35 @@ struct discord_interaction {
 struct discord_interaction_data {
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-  u64_snowflake_t id; /** the ID of the invoked command */
+  u64_snowflake_t id; /**< the ID of the invoked command */
 
   /* specs/discord/interaction.json:44:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
-  char *name; /** the name of the invoked command */
+  char *name; /**< the name of the invoked command */
 
   /* specs/discord/interaction.json:45:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "comment":"the type of the invoked command"}' */
-  enum discord_application_command_types type; /** the type of the invoked command */
+  enum discord_application_command_types type; /**< the type of the invoked command */
 
   /* specs/discord/interaction.json:46:18
      '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
-  struct discord_resolved_data *resolved; /** converted users + roles + channels */
+  struct discord_resolved_data *resolved; /**< converted users + roles + channels */
 
   /* specs/discord/interaction.json:47:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command, max 25", "inject_if_not":null}' */
-  struct discord_application_command_interaction_data_option **options; /** the parameters for the command, max 25 */
+  struct discord_application_command_interaction_data_option **options; /**< the parameters for the command, max 25 */
 
   /* specs/discord/interaction.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"the custom id of the component", "inject_if_not":null}' */
-  char *custom_id; /** the custom id of the component */
+  char *custom_id; /**< the custom id of the component */
 
   /* specs/discord/interaction.json:49:18
      '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
-  ja_str **values; /** the values the user selected */
+  ja_str **values; /**< the values the user selected */
 
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-  u64_snowflake_t target_id; /** id of a user or message targetted by a user or message command */
+  u64_snowflake_t target_id; /**< id of a user or message targetted by a user or message command */
 
 };
 
@@ -7793,23 +7793,23 @@ struct discord_interaction_data {
 struct discord_resolved_data {
   /* specs/discord/interaction.json:60:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
-  ja_str **users; /** the ids and User objects */
+  ja_str **users; /**< the ids and User objects */
 
   /* specs/discord/interaction.json:61:18
      '{"name":"members", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Member objects", "inject_if_not":null}' */
-  ja_str **members; /** the ids and partial Member objects */
+  ja_str **members; /**< the ids and partial Member objects */
 
   /* specs/discord/interaction.json:62:18
      '{"name":"roles", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and Role objects", "inject_if_not":null}' */
-  ja_str **roles; /** the ids and Role objects */
+  ja_str **roles; /**< the ids and Role objects */
 
   /* specs/discord/interaction.json:63:18
      '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
-  ja_str **channels; /** the ids and partial Channel objects */
+  ja_str **channels; /**< the ids and partial Channel objects */
 
   /* specs/discord/interaction.json:64:18
      '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
-  ja_str **messages; /** the ids and partial Message objects */
+  ja_str **messages; /**< the ids and partial Message objects */
 
 };
 
@@ -7845,19 +7845,19 @@ struct discord_resolved_data {
 struct discord_message_interaction {
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  u64_snowflake_t id; /** id of the interaction */
+  u64_snowflake_t id; /**< id of the interaction */
 
   /* specs/discord/interaction.json:75:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  enum discord_interaction_types type; /** the request type of the interaction */
+  enum discord_interaction_types type; /**< the request type of the interaction */
 
   /* specs/discord/interaction.json:76:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
-  char *name; /** the name of the application command */
+  char *name; /**< the name of the application command */
 
   /* specs/discord/interaction.json:77:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-  struct discord_user *user; /** the user who invoked the interaction */
+  struct discord_user *user; /**< the user who invoked the interaction */
 
 };
 
@@ -7893,11 +7893,11 @@ struct discord_message_interaction {
 struct discord_interaction_response {
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
-  enum discord_interaction_callback_types type; /** the type of response */
+  enum discord_interaction_callback_types type; /**< the type of response */
 
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-  struct discord_interaction_callback_data *data; /** an optional response message */
+  struct discord_interaction_callback_data *data; /**< an optional response message */
 
 };
 
@@ -7935,27 +7935,27 @@ struct discord_interaction_response {
 struct discord_interaction_callback_data {
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
-  bool tts; /** is the response TTS */
+  bool tts; /**< is the response TTS */
 
   /* specs/discord/interaction.json:113:18
      '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
-  char *content; /** message content */
+  char *content; /**< message content */
 
   /* specs/discord/interaction.json:114:18
      '{"name":"embeds", "type":{"base":"struct discord_embed", "dec":"ntl"}, "option":true, "comment":"support up to 10 embeds", "inject_if_not":null}' */
-  struct discord_embed **embeds; /** support up to 10 embeds */
+  struct discord_embed **embeds; /**< support up to 10 embeds */
 
   /* specs/discord/interaction.json:115:18
      '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions object */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions object */
 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
-  enum discord_interaction_callback_data_flags flags; /** interaction application command callback data flags */
+  enum discord_interaction_callback_data_flags flags; /**< interaction application command callback data flags */
 
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-  struct discord_component **components; /** message components */
+  struct discord_component **components; /**< message components */
 
 };
 
@@ -7992,11 +7992,11 @@ struct discord_interaction_callback_data {
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
-  bool with_counts; /** whether the invite should contain approximate member counts */
+  bool with_counts; /**< whether the invite should contain approximate member counts */
 
   /* specs/discord/invite.endpoints-params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
-  bool with_expiration; /** whether the invite should contain the expiration date */
+  bool with_expiration; /**< whether the invite should contain the expiration date */
 
 };
 /* This file is generated from specs/discord/invite.json, Please don't edit it. */
@@ -8039,11 +8039,11 @@ struct discord_invite {
 
   /* specs/discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
-  struct discord_guild *guild; /** partial guild object */
+  struct discord_guild *guild; /**< partial guild object */
 
   /* specs/discord/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
-  struct discord_channel *channel; /** partial channel object */
+  struct discord_channel *channel; /**< partial channel object */
 
   /* specs/discord/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
@@ -8051,7 +8051,7 @@ struct discord_invite {
 
   /* specs/discord/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-  struct discord_user *target_user; /** partial user object */
+  struct discord_user *target_user; /**< partial user object */
 
   /* specs/discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
@@ -8152,51 +8152,51 @@ struct discord_invite_metadata {
 struct discord_component {
   /* specs/discord/message_components.json:12:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
-  enum discord_component_types type; /** component type */
+  enum discord_component_types type; /**< component type */
 
   /* specs/discord/message_components.json:13:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"a developer-defined identifier for the component, max 100 characters"}' */
-  char custom_id[100+1]; /** a developer-defined identifier for the component, max 100 characters */
+  char custom_id[100+1]; /**< a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:14:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
-  bool disabled; /** whether the component is disabled, default false */
+  bool disabled; /**< whether the component is disabled, default false */
 
   /* specs/discord/message_components.json:15:18
      '{"name":"style", "type":{"base":"int", "int_alias":"enum discord_button_styles"}, "option":true, "inject_if_not":0, "comment":"one of button styles"}' */
-  enum discord_button_styles style; /** one of button styles */
+  enum discord_button_styles style; /**< one of button styles */
 
   /* specs/discord/message_components.json:16:18
      '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  char label[80+1]; /** text that appears on the button, max 80 characters */
+  char label[80+1]; /**< text that appears on the button, max 80 characters */
 
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  struct discord_emoji *emoji; /** name, id and animated */
+  struct discord_emoji *emoji; /**< name, id and animated */
 
   /* specs/discord/message_components.json:18:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
-  char *url; /** a url for link-style buttons */
+  char *url; /**< a url for link-style buttons */
 
   /* specs/discord/message_components.json:19:18
      '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "option":true, "comment":"the choices in the select, max 25", "inject_if_not":null}' */
-  struct discord_select_option **options; /** the choices in the select, max 25 */
+  struct discord_select_option **options; /**< the choices in the select, max 25 */
 
   /* specs/discord/message_components.json:20:18
      '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  char placeholder[100+1]; /** custom placeholder text if nothing is selected, max 100 characters */
+  char placeholder[100+1]; /**< custom placeholder text if nothing is selected, max 100 characters */
 
   /* specs/discord/message_components.json:21:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int min_values; /** the minimum number of items that must be chosen; default 1, min 0, max 25 */
+  int min_values; /**< the minimum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:22:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int max_values; /** the maximum number of items that must be chosen; default 1, min 0, max 25 */
+  int max_values; /**< the maximum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:23:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
-  struct discord_component **components; /** a list of child components */
+  struct discord_component **components; /**< a list of child components */
 
 };
 
@@ -8234,31 +8234,31 @@ struct discord_component {
 struct discord_button {
   /* specs/discord/message_components.json:44:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
-  enum discord_component_types type; /** 2 for a button */
+  enum discord_component_types type; /**< 2 for a button */
 
   /* specs/discord/message_components.json:45:18
      '{"name":"style", "type": {"base":"int", "int_alias":"enum discord_button_styles"}, "inject_if_not":0, "comment": "one of button styles"}' */
-  enum discord_button_styles style; /** one of button styles */
+  enum discord_button_styles style; /**< one of button styles */
 
   /* specs/discord/message_components.json:46:18
      '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  char label[80+1]; /** text that appears on the button, max 80 characters */
+  char label[80+1]; /**< text that appears on the button, max 80 characters */
 
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-  struct discord_emoji *emoji; /** name, id and animated */
+  struct discord_emoji *emoji; /**< name, id and animated */
 
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  char custom_id[100+1]; /** a developer-defined identifier for the component, max 100 characters */
+  char custom_id[100+1]; /**< a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:49:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
-  char *url; /** a url for link-style buttons */
+  char *url; /**< a url for link-style buttons */
 
   /* specs/discord/message_components.json:50:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
-  bool disabled; /** whether the component is disabled, default false */
+  bool disabled; /**< whether the component is disabled, default false */
 
 };
 
@@ -8296,31 +8296,31 @@ struct discord_button {
 struct discord_select_menu {
   /* specs/discord/message_components.json:73:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
-  enum discord_component_types type; /** 3 for a select menu */
+  enum discord_component_types type; /**< 3 for a select menu */
 
   /* specs/discord/message_components.json:74:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  char custom_id[100+1]; /** a developer-defined identifier for the component, max 100 characters */
+  char custom_id[100+1]; /**< a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:75:18
      '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "comment":"the choices in the select, max 25"}' */
-  struct discord_select_option **options; /** the choices in the select, max 25 */
+  struct discord_select_option **options; /**< the choices in the select, max 25 */
 
   /* specs/discord/message_components.json:76:18
      '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  char placeholder[100+1]; /** custom placeholder text if nothing is selected, max 100 characters */
+  char placeholder[100+1]; /**< custom placeholder text if nothing is selected, max 100 characters */
 
   /* specs/discord/message_components.json:77:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int min_values; /** the minimum number of items that must be chosen; default 1, min 0, max 25 */
+  int min_values; /**< the minimum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:78:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
-  int max_values; /** the maximum number of items that must be chosen; default 1, min 0, max 25 */
+  int max_values; /**< the maximum number of items that must be chosen; default 1, min 0, max 25 */
 
   /* specs/discord/message_components.json:79:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
-  bool disabled; /** disable the select, default false */
+  bool disabled; /**< disable the select, default false */
 
 };
 
@@ -8356,23 +8356,23 @@ struct discord_select_menu {
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18
      '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */
-  char label[25+1]; /** the user-facing name of the option, max 25 characters */
+  char label[25+1]; /**< the user-facing name of the option, max 25 characters */
 
   /* specs/discord/message_components.json:89:18
      '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"the dev define value of the option, max 100 characters"}' */
-  char value[100+1]; /** the dev define value of the option, max 100 characters */
+  char value[100+1]; /**< the dev define value of the option, max 100 characters */
 
   /* specs/discord/message_components.json:90:18
      '{"name":"description", "type":{"base":"char", "dec":"[50+1]"}, "inject_if_not":"", "option":true, "comment":"a additional description of the option, max 50 characters"}' */
-  char description[50+1]; /** a additional description of the option, max 50 characters */
+  char description[50+1]; /**< a additional description of the option, max 50 characters */
 
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
-  struct discord_emoji *emoji; /** name, id and animated */
+  struct discord_emoji *emoji; /**< name, id and animated */
 
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
-  bool Default; /** will render this option as selected by default */
+  bool Default; /**< will render this option as selected by default */
 
 };
 /* This file is generated from specs/discord/misc.json, Please don't edit it. */
@@ -8407,15 +8407,15 @@ struct discord_select_option {
 struct discord_file {
   /* specs/discord/misc.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"the name of the file being sent", "inject_if_not":null }' */
-  char *name; /** the name of the file being sent */
+  char *name; /**< the name of the file being sent */
 
   /* specs/discord/misc.json:12:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *content; /** the contents of the file being sent */
+  char *content; /**< the contents of the file being sent */
 
   /* specs/discord/misc.json:13:20
      '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
-  size_t size; /** the size of the file in bytes */
+  size_t size; /**< the size of the file in bytes */
 
 };
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
@@ -8569,7 +8569,7 @@ struct discord_modify_current_user_params {
 
   /* specs/discord/user.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
-  char *avatar; /** base64 encoded image data */
+  char *avatar; /**< base64 encoded image data */
 
 };
 
@@ -8603,7 +8603,7 @@ struct discord_modify_current_user_params {
 struct discord_create_dm_params {
   /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
-  u64_snowflake_t recipient_id; /** the recipient to open a DM channel with */
+  u64_snowflake_t recipient_id; /**< the recipient to open a DM channel with */
 
 };
 
@@ -8638,12 +8638,12 @@ struct discord_create_group_dm_params {
   /* specs/discord/user.endpoints-params.json:31:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
-  ja_str **access_tokens; /** access tokens of users that have granted your app the gdm.join scope */
+  ja_str **access_tokens; /**< access tokens of users that have granted your app the gdm.join scope */
 
   /* specs/discord/user.endpoints-params.json:33:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"a dictionary of user ids to their respective nicknames"}' */
-  ja_u64 **nicks; /** a dictionary of user ids to their respective nicknames */
+  ja_u64 **nicks; /**< a dictionary of user ids to their respective nicknames */
 
 };
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
@@ -8979,11 +8979,11 @@ struct discord_voice_region {
 struct discord_create_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
-  char *name; /** name of the webhook(1-80) chars */
+  char *name; /**< name of the webhook(1-80) chars */
 
   /* specs/discord/webhook.endpoints-params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  char *avatar; /** base64 image for the default webhook avatar */
+  char *avatar; /**< base64 image for the default webhook avatar */
 
 };
 
@@ -9017,15 +9017,15 @@ struct discord_create_webhook_params {
 struct discord_modify_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
-  char *name; /** name of the webhook(1-80) chars */
+  char *name; /**< name of the webhook(1-80) chars */
 
   /* specs/discord/webhook.endpoints-params.json:23:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  char *avatar; /** base64 image for the default webhook avatar */
+  char *avatar; /**< base64 image for the default webhook avatar */
 
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-  u64_snowflake_t channel_id; /** the new channel id this webhook should be moved to */
+  u64_snowflake_t channel_id; /**< the new channel id this webhook should be moved to */
 
 };
 
@@ -9059,11 +9059,11 @@ struct discord_modify_webhook_params {
 struct discord_modify_webhook_with_token_params {
   /* specs/discord/webhook.endpoints-params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
-  char *name; /** name of the webhook(1-80) chars */
+  char *name; /**< name of the webhook(1-80) chars */
 
   /* specs/discord/webhook.endpoints-params.json:34:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
-  char *avatar; /** base64 image for the default webhook avatar */
+  char *avatar; /**< base64 image for the default webhook avatar */
 
 };
 
@@ -9097,47 +9097,47 @@ struct discord_modify_webhook_with_token_params {
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.endpoints-params.json:44:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
-  bool wait; /** cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
+  bool wait; /**< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/webhook.endpoints-params.json:45:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  u64_snowflake_t thread_id; /** Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
+  u64_snowflake_t thread_id; /**< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
 
   /* specs/discord/webhook.endpoints-params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
-  char *content; /** the message contents (up to 2000 characters) */
+  char *content; /**< the message contents (up to 2000 characters) */
 
   /* specs/discord/webhook.endpoints-params.json:47:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
-  char *username; /** override the default username of the webhook */
+  char *username; /**< override the default username of the webhook */
 
   /* specs/discord/webhook.endpoints-params.json:48:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
-  char *avatar_url; /** override the default avatar of the webhook */
+  char *avatar_url; /**< override the default avatar of the webhook */
 
   /* specs/discord/webhook.endpoints-params.json:49:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  bool tts; /** true if this is a TTS message */
+  bool tts; /**< true if this is a TTS message */
 
   /* specs/discord/webhook.endpoints-params.json:50:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; /** the contents of the file being sent */
+  char *file; /**< the contents of the file being sent */
 
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-  struct discord_embed *embeds; /** embedded rich content */
+  struct discord_embed *embeds; /**< embedded rich content */
 
   /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  char *payload_json; /** JSON encoded body of non-file params */
+  char *payload_json; /**< JSON encoded body of non-file params */
 
   /* specs/discord/webhook.endpoints-params.json:53:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/webhook.endpoints-params.json:54:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
 };
 
@@ -9171,31 +9171,31 @@ struct discord_execute_webhook_params {
 struct discord_edit_webhook_message_params {
   /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
-  char *content; /** name of the webhook(1-2000) chars */
+  char *content; /**< name of the webhook(1-2000) chars */
 
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
-  struct discord_embed **embeds; /** array of up to 10 embeds objects */
+  struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
   /* specs/discord/webhook.endpoints-params.json:65:20
      '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /** the contents of the file being sent/edited */
+  char *file; /**< the contents of the file being sent/edited */
 
   /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; /** JSON encoded body of non-file params (multipart/form-data only) */
+  char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
 
   /* specs/discord/webhook.endpoints-params.json:67:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-  struct discord_allowed_mentions *allowed_mentions; /** allowed mentions for the message */
+  struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
   /* specs/discord/webhook.endpoints-params.json:68:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
-  struct discord_attachment **attachments; /** attached files to keep */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
   /* specs/discord/webhook.endpoints-params.json:69:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
-  struct discord_component **components; /** the components to include with the message */
+  struct discord_component **components; /**< the components to include with the message */
 
 };
 /* This file is generated from specs/discord/webhook.json, Please don't edit it. */
@@ -9232,23 +9232,23 @@ struct discord_edit_webhook_message_params {
 struct discord_webhook {
   /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" }' */
-  u64_snowflake_t id; /** the id of the webhook */
+  u64_snowflake_t id; /**< the id of the webhook */
 
   /* specs/discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }, "comment":"the type of the webhook" }' */
-  enum discord_webhook_types type; /** the type of the webhook */
+  enum discord_webhook_types type; /**< the type of the webhook */
 
   /* specs/discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the guild id this webhook is for, if any", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; /** the guild id this webhook is for, if any */
+  u64_snowflake_t guild_id; /**< the guild id this webhook is for, if any */
 
   /* specs/discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the channel id this webhook is for, if any", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; /** the channel id this webhook is for, if any */
+  u64_snowflake_t channel_id; /**< the channel id this webhook is for, if any */
 
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null }' */
-  struct discord_user *user; /** the user this webhook was created by (not returned when getting a webhook with its token */
+  struct discord_user *user; /**< the user this webhook was created by (not returned when getting a webhook with its token */
 
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]", "comment":"the default name of the webhook", "inject_if_not":"" }}' */
@@ -9256,27 +9256,27 @@ struct discord_webhook {
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"the default user avatar has of the webhook", "inject_if_not":null }' */
-  char *avatar; /** the default user avatar has of the webhook */
+  char *avatar; /**< the default user avatar has of the webhook */
 
   /* specs/discord/webhook.json:19:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"the secure token of the webhook (returned for Incoming Webhooks)", "inject_if_not":null }' */
-  char *token; /** the secure token of the webhook (returned for Incoming Webhooks) */
+  char *token; /**< the secure token of the webhook (returned for Incoming Webhooks) */
 
   /* specs/discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the bot/OAuth2 application that created this webhook", "inject_if_not":0 }' */
-  u64_snowflake_t application_id; /** the bot/OAuth2 application that created this webhook */
+  u64_snowflake_t application_id; /**< the bot/OAuth2 application that created this webhook */
 
   /* specs/discord/webhook.json:21:20
      '{ "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null }' */
-  struct discord_guild *source_guild; /** the guild of the channel that this webhook is following (returned for Channel Follower Webhook) */
+  struct discord_guild *source_guild; /**< the guild of the channel that this webhook is following (returned for Channel Follower Webhook) */
 
   /* specs/discord/webhook.json:22:20
      '{ "name": "source_channel", "type":{ "base":"struct discord_channel", "dec":"*" }, "comment":"the channel that this webhook is following (returned for Channel Follower Webhooks)", "inject_if_not":null }' */
-  struct discord_channel *source_channel; /** the channel that this webhook is following (returned for Channel Follower Webhooks) */
+  struct discord_channel *source_channel; /**< the channel that this webhook is following (returned for Channel Follower Webhooks) */
 
   /* specs/discord/webhook.json:23:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }' */
-  char *url; /** the url used for executing the webhook (returned by the webhooks OAuth2 flow) */
+  char *url; /**< the url used for executing the webhook (returned by the webhooks OAuth2 flow) */
 
 };
 

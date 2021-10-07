@@ -42,6 +42,8 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
+  /* specs/discord/application_commands.json:19:18
+     '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,",
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
@@ -350,6 +352,8 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
   /* specs/discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
                 "(choices):F,"
+  /* specs/discord/application_commands.json:46:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}' */
                 "(options):F,",
   /* specs/discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
@@ -622,6 +626,8 @@ void discord_application_command_option_choice_from_json(char *json, size_t len,
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
                 "(name):s,"
+  /* specs/discord/application_commands.json:76:18
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 "(value):F,",
   /* specs/discord/application_commands.json:75:18
      '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
@@ -752,6 +758,8 @@ void discord_guild_application_command_permissions_from_json(char *json, size_t 
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
                 "(guild_id):F,"
+  /* specs/discord/application_commands.json:89:18
+     '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 "(permissions):F,",
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
@@ -917,6 +925,8 @@ void discord_application_command_permissions_from_json(char *json, size_t len, s
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
                 "(type):d,"
+  /* specs/discord/application_commands.json:101:18
+     '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
                 "(permission):b,",
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
@@ -1118,6 +1128,8 @@ void discord_application_command_interaction_data_option_from_json(char *json, s
   /* specs/discord/application_commands.json:124:18
      '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
                 "(value):d,"
+  /* specs/discord/application_commands.json:125:18
+     '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
                 "(options):F,",
   /* specs/discord/application_commands.json:122:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the parameter"}' */

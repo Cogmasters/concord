@@ -48,6 +48,8 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
   /* specs/discord/interaction.json:20:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
                 "(token):?s,"
+  /* specs/discord/interaction.json:21:18
+     '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
                 "(message):F,",
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
@@ -416,6 +418,8 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
   /* specs/discord/interaction.json:49:18
      '{"name":"values", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the values the user selected", "inject_if_not":null}' */
                 "(values):F,"
+  /* specs/discord/interaction.json:50:18
+     '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
                 "(target_id):F,",
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
@@ -674,6 +678,8 @@ void discord_resolved_data_from_json(char *json, size_t len, struct discord_reso
   /* specs/discord/interaction.json:63:18
      '{"name":"channels", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Channel objects", "inject_if_not":null}' */
                 "(channels):F,"
+  /* specs/discord/interaction.json:64:18
+     '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
                 "(messages):F,",
   /* specs/discord/interaction.json:60:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
@@ -870,6 +876,8 @@ void discord_message_interaction_from_json(char *json, size_t len, struct discor
   /* specs/discord/interaction.json:76:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
                 "(name):?s,"
+  /* specs/discord/interaction.json:77:18
+     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
                 "(user):F,",
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
@@ -1035,6 +1043,8 @@ void discord_interaction_response_from_json(char *json, size_t len, struct disco
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
                 "(type):d,"
+  /* specs/discord/interaction.json:88:18
+     '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
                 "(data):F,",
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
@@ -1233,6 +1243,8 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 "(flags):d,"
+  /* specs/discord/interaction.json:117:18
+     '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
                 "(components):F,",
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */

@@ -35,23 +35,23 @@
 struct reddit_access_token_params {
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
-  char *grant_type; /** 'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps */
+  char *grant_type; /**< 'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps */
 
   /* specs/reddit/oauth2.json:13:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"username for script app"}' */
-  char *username; /** username for script app */
+  char *username; /**< username for script app */
 
   /* specs/reddit/oauth2.json:14:20
      '{ "name": "password", "type":{ "base":"char", "dec":"*" }, "comment":"password for script app"}' */
-  char *password; /** password for script app */
+  char *password; /**< password for script app */
 
   /* specs/reddit/oauth2.json:15:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }, "comment":"the code retrieved by the webapp"}' */
-  char *code; /** the code retrieved by the webapp */
+  char *code; /**< the code retrieved by the webapp */
 
   /* specs/reddit/oauth2.json:16:20
      '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
-  char *redirect_uri; /** redirect uri for webapp */
+  char *redirect_uri; /**< redirect uri for webapp */
 
 };
 extern void reddit_access_token_params_cleanup_v(void *p);

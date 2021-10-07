@@ -24,6 +24,8 @@ void discord_get_invite_params_from_json(char *json, size_t len, struct discord_
   /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
                 "(with_counts):b,"
+  /* specs/discord/invite.endpoints-params.json:13:20
+     '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
                 "(with_expiration):b,",
   /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */

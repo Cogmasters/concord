@@ -35,15 +35,15 @@
 struct discord_file {
   /* specs/discord/misc.json:11:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"the name of the file being sent", "inject_if_not":null }' */
-  char *name; /** the name of the file being sent */
+  char *name; /**< the name of the file being sent */
 
   /* specs/discord/misc.json:12:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *content; /** the contents of the file being sent */
+  char *content; /**< the contents of the file being sent */
 
   /* specs/discord/misc.json:13:20
      '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
-  size_t size; /** the size of the file in bytes */
+  size_t size; /**< the size of the file in bytes */
 
 };
 extern void discord_file_cleanup_v(void *p);

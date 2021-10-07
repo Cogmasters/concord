@@ -66,6 +66,8 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/channel.endpoints-params.json:26:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(auto_archive_duration):d,"
+  /* specs/discord/channel.endpoints-params.json:27:20
+     '{ "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }' */
                 "(locked):b,",
   /* specs/discord/channel.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
@@ -493,6 +495,8 @@ void discord_create_message_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/channel.endpoints-params.json:44:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 "(components):F,"
+  /* specs/discord/channel.endpoints-params.json:45:20
+     '{ "name": "sticker_ids", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"ids of up to 3 stickers in the server to send in the message", "inject_if_not":null }' */
                 "(sticker_ids):F,",
   /* specs/discord/channel.endpoints-params.json:36:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
@@ -774,6 +778,8 @@ void discord_get_channel_messages_params_from_json(char *json, size_t len, struc
   struct discord_get_channel_messages_params *p = *pp;
   discord_get_channel_messages_params_init(p);
   r=json_extract(json, len, 
+  /* specs/discord/channel.endpoints-params.json:57:20
+     '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
                 "(limit):d,",
   /* specs/discord/channel.endpoints-params.json:57:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
@@ -903,6 +909,8 @@ void discord_get_reactions_params_from_json(char *json, size_t len, struct disco
   struct discord_get_reactions_params *p = *pp;
   discord_get_reactions_params_init(p);
   r=json_extract(json, len, 
+  /* specs/discord/channel.endpoints-params.json:67:20
+     '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
                 "(limit):d,",
   /* specs/discord/channel.endpoints-params.json:67:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
@@ -1014,6 +1022,8 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
   /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 "(deny):s_as_hex_uint,"
+  /* specs/discord/channel.endpoints-params.json:78:20
+     '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,",
   /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
@@ -1171,6 +1181,8 @@ void discord_edit_message_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/channel.endpoints-params.json:94:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
+  /* specs/discord/channel.endpoints-params.json:95:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 "(components):F,",
   /* specs/discord/channel.endpoints-params.json:87:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
@@ -1429,6 +1441,8 @@ void discord_follow_news_channel_params_from_json(char *json, size_t len, struct
   struct discord_follow_news_channel_params *p = *pp;
   discord_follow_news_channel_params_init(p);
   r=json_extract(json, len, 
+  /* specs/discord/channel.endpoints-params.json:104:20
+     '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 "(webhook_channel_id):F,",
   /* specs/discord/channel.endpoints-params.json:104:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
@@ -1548,6 +1562,8 @@ void discord_create_channel_invite_params_from_json(char *json, size_t len, stru
   /* specs/discord/channel.endpoints-params.json:118:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
                 "(target_user_id):F,"
+  /* specs/discord/channel.endpoints-params.json:119:20
+     '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
                 "(target_application_id):F,",
   /* specs/discord/channel.endpoints-params.json:113:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
@@ -1769,6 +1785,8 @@ void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, str
   /* specs/discord/channel.endpoints-params.json:128:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
                 "(access_token):?s,"
+  /* specs/discord/channel.endpoints-params.json:129:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 "(nick):?s,",
   /* specs/discord/channel.endpoints-params.json:128:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
@@ -1894,6 +1912,8 @@ void discord_start_thread_with_message_params_from_json(char *json, size_t len, 
   /* specs/discord/channel.endpoints-params.json:138:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 "(name):?s,"
+  /* specs/discord/channel.endpoints-params.json:139:20
+     '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(auto_archive_duration):d,",
   /* specs/discord/channel.endpoints-params.json:138:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
@@ -2023,6 +2043,8 @@ void discord_start_thread_without_message_params_from_json(char *json, size_t le
   /* specs/discord/channel.endpoints-params.json:149:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 "(auto_archive_duration):d,"
+  /* specs/discord/channel.endpoints-params.json:150:20
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
                 "(type):d,",
   /* specs/discord/channel.endpoints-params.json:148:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
@@ -2170,6 +2192,8 @@ void discord_thread_response_body_from_json(char *json, size_t len, struct disco
   /* specs/discord/channel.endpoints-params.json:160:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
                 "(members):F,"
+  /* specs/discord/channel.endpoints-params.json:161:20
+     '{ "name": "has_more", "type":{ "base":"bool" } }' */
                 "(has_more):b,",
   /* specs/discord/channel.endpoints-params.json:159:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */

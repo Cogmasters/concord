@@ -42,6 +42,8 @@ void github_gist_from_json(char *json, size_t len, struct github_gist **pp)
   /* specs/github/gist.json:18:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}}' */
                 "(description):?s,"
+  /* specs/github/gist.json:19:28
+     '{ "name": "comments", "type":{ "base":"int"}}' */
                 "(comments):d,",
   /* specs/github/gist.json:12:28
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */

@@ -185,6 +185,8 @@ void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
   /* specs/discord/user.json:55:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
                 "(premium_type):d,"
+  /* specs/discord/user.json:56:24
+     '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
                 "(public_flags):d,",
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
@@ -591,6 +593,8 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
   /* specs/discord/user.json:83:24
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
                 "(show_activity):b,"
+  /* specs/discord/user.json:84:24
+     '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 "(visibility):d,",
   /* specs/discord/user.json:76:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */

@@ -81,6 +81,8 @@ void github_user_from_json(char *json, size_t len, struct github_user **pp)
   /* specs/github/user.json:31:28
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
                 "(created_at):?s,"
+  /* specs/github/user.json:32:28
+     '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
                 "(updated_at):?s,",
   /* specs/github/user.json:12:28
      '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */

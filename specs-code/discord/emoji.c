@@ -42,6 +42,8 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
   /* specs/discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
                 "(animated):b,"
+  /* specs/discord/emoji.json:19:20
+     '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
                 "(available):b,",
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */

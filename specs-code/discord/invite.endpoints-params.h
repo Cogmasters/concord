@@ -35,11 +35,11 @@
 struct discord_get_invite_params {
   /* specs/discord/invite.endpoints-params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
-  bool with_counts; /** whether the invite should contain approximate member counts */
+  bool with_counts; /**< whether the invite should contain approximate member counts */
 
   /* specs/discord/invite.endpoints-params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
-  bool with_expiration; /** whether the invite should contain the expiration date */
+  bool with_expiration; /**< whether the invite should contain the expiration date */
 
 };
 extern void discord_get_invite_params_cleanup_v(void *p);

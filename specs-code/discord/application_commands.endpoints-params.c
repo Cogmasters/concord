@@ -33,6 +33,8 @@ void discord_create_global_application_command_params_from_json(char *json, size
   /* specs/discord/application_commands.endpoints-params.json:16:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,"
+  /* specs/discord/application_commands.endpoints-params.json:17:20
+     '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
                 "(type):d,",
   /* specs/discord/application_commands.endpoints-params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
@@ -224,6 +226,8 @@ void discord_edit_global_application_command_params_from_json(char *json, size_t
   /* specs/discord/application_commands.endpoints-params.json:29:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
+  /* specs/discord/application_commands.endpoints-params.json:30:20
+     '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,",
   /* specs/discord/application_commands.endpoints-params.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
@@ -401,6 +405,8 @@ void discord_create_guild_application_command_params_from_json(char *json, size_
   /* specs/discord/application_commands.endpoints-params.json:43:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,"
+  /* specs/discord/application_commands.endpoints-params.json:44:20
+     '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
                 "(type):d,",
   /* specs/discord/application_commands.endpoints-params.json:40:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
@@ -592,6 +598,8 @@ void discord_edit_guild_application_command_params_from_json(char *json, size_t 
   /* specs/discord/application_commands.endpoints-params.json:56:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
+  /* specs/discord/application_commands.endpoints-params.json:57:20
+     '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 "(default_permission):b,",
   /* specs/discord/application_commands.endpoints-params.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
@@ -757,6 +765,8 @@ void discord_edit_application_command_permissions_params_from_json(char *json, s
   struct discord_edit_application_command_permissions_params *p = *pp;
   discord_edit_application_command_permissions_params_init(p);
   r=json_extract(json, len, 
+  /* specs/discord/application_commands.endpoints-params.json:67:20
+     '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 "(permissions):F,",
   /* specs/discord/application_commands.endpoints-params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */

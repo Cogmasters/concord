@@ -51,6 +51,8 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
                 "(afk_timeout):d,"
+  /* specs/discord/guild.endpoints-params.json:22:20
+     '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
                 "(system_channel_id):F,",
   /* specs/discord/guild.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
@@ -411,6 +413,8 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.endpoints-params.json:48:18
      '{"name":"features", "type": { "base":"ja_str", "dec":"ntl" }, "comment":"array of guild feature strings"}' */
                 "(features):F,"
+  /* specs/discord/guild.endpoints-params.json:49:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
                 "(description):?s,",
   /* specs/discord/guild.endpoints-params.json:31:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
@@ -905,6 +909,8 @@ void discord_create_guild_channel_params_from_json(char *json, size_t len, struc
   /* specs/discord/guild.endpoints-params.json:66:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
                 "(parent_id):F,"
+  /* specs/discord/guild.endpoints-params.json:67:20
+     '{ "name": "nsfw", "type":{ "base":"bool" }}' */
                 "(nsfw):b,",
   /* specs/discord/guild.endpoints-params.json:58:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
@@ -1194,6 +1200,8 @@ void discord_modify_guild_channel_positions_params_from_json(char *json, size_t 
   /* specs/discord/guild.endpoints-params.json:78:20
      '{ "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"}' */
                 "(lock_permissions):b,"
+  /* specs/discord/guild.endpoints-params.json:79:20
+     '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
                 "(parent_id):F,",
   /* specs/discord/guild.endpoints-params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
@@ -1359,6 +1367,8 @@ void discord_list_guild_members_params_from_json(char *json, size_t len, struct 
   /* specs/discord/guild.endpoints-params.json:88:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
                 "(limit):d,"
+  /* specs/discord/guild.endpoints-params.json:89:20
+     '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
                 "(after):F,",
   /* specs/discord/guild.endpoints-params.json:88:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
@@ -1484,6 +1494,8 @@ void discord_search_guild_members_params_from_json(char *json, size_t len, struc
   /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
                 "(query):?s,"
+  /* specs/discord/guild.endpoints-params.json:99:20
+     '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
                 "(limit):d,",
   /* specs/discord/guild.endpoints-params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
@@ -1619,6 +1631,8 @@ void discord_add_guild_member_params_from_json(char *json, size_t len, struct di
   /* specs/discord/guild.endpoints-params.json:111:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 "(mute):b,"
+  /* specs/discord/guild.endpoints-params.json:112:20
+     '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 "(deaf):b,",
   /* specs/discord/guild.endpoints-params.json:108:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -1816,6 +1830,8 @@ void discord_modify_guild_member_params_from_json(char *json, size_t len, struct
   /* specs/discord/guild.endpoints-params.json:124:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 "(deaf):b,"
+  /* specs/discord/guild.endpoints-params.json:125:20
+     '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
                 "(channel_id):F,",
   /* specs/discord/guild.endpoints-params.json:121:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
@@ -1999,6 +2015,8 @@ void discord_modify_current_user_nick_params_from_json(char *json, size_t len, s
   struct discord_modify_current_user_nick_params *p = *pp;
   discord_modify_current_user_nick_params_init(p);
   r=json_extract(json, len, 
+  /* specs/discord/guild.endpoints-params.json:134:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 "(nick):?s,",
   /* specs/discord/guild.endpoints-params.json:134:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
@@ -2104,6 +2122,8 @@ void discord_create_guild_ban_params_from_json(char *json, size_t len, struct di
   /* specs/discord/guild.endpoints-params.json:143:20
      '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
                 "(delete_message_days):d,"
+  /* specs/discord/guild.endpoints-params.json:144:20
+     '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }' */
                 "(reason):?s,",
   /* specs/discord/guild.endpoints-params.json:143:20
      '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
@@ -2238,6 +2258,8 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
   /* specs/discord/guild.endpoints-params.json:156:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 "(hoist):b,"
+  /* specs/discord/guild.endpoints-params.json:157:20
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 "(mentionable):b,",
   /* specs/discord/guild.endpoints-params.json:153:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
@@ -2423,6 +2445,8 @@ void discord_modify_guild_role_positions_params_from_json(char *json, size_t len
   /* specs/discord/guild.endpoints-params.json:166:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
                 "(id):F,"
+  /* specs/discord/guild.endpoints-params.json:167:20
+     '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
                 "(position):d,",
   /* specs/discord/guild.endpoints-params.json:166:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
@@ -2557,6 +2581,8 @@ void discord_modify_guild_role_params_from_json(char *json, size_t len, struct d
   /* specs/discord/guild.endpoints-params.json:179:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
                 "(hoist):b,"
+  /* specs/discord/guild.endpoints-params.json:180:20
+     '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
                 "(mentionable):b,",
   /* specs/discord/guild.endpoints-params.json:176:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
@@ -2743,6 +2769,8 @@ void discord_get_guild_prune_count_params_from_json(char *json, size_t len, stru
   /* specs/discord/guild.endpoints-params.json:189:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(days):d,"
+  /* specs/discord/guild.endpoints-params.json:190:20
+     '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
                 "(include_roles):F,",
   /* specs/discord/guild.endpoints-params.json:189:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2875,6 +2903,8 @@ void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct d
   /* specs/discord/guild.endpoints-params.json:201:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
                 "(include_roles):F,"
+  /* specs/discord/guild.endpoints-params.json:202:20
+     '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(reason):?s,",
   /* specs/discord/guild.endpoints-params.json:199:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */

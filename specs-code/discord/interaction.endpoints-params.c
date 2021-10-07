@@ -36,6 +36,8 @@ void discord_edit_original_interaction_response_params_from_json(char *json, siz
   /* specs/discord/interaction.endpoints-params.json:17:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
+  /* specs/discord/interaction.endpoints-params.json:18:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 "(components):F,",
   /* specs/discord/interaction.endpoints-params.json:12:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
@@ -282,6 +284,8 @@ void discord_create_followup_message_params_from_json(char *json, size_t len, st
   /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
                 "(components):F,"
+  /* specs/discord/interaction.endpoints-params.json:39:20
+     '{ "name": "flags", "type":{ "base":"int" }, "comment":"can be set to 64 to send a ephemeral message", "inject_if_not": 0 }' */
                 "(flags):d,",
   /* specs/discord/interaction.endpoints-params.json:30:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
@@ -603,6 +607,8 @@ void discord_edit_followup_message_params_from_json(char *json, size_t len, stru
   /* specs/discord/interaction.endpoints-params.json:53:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 "(attachments):F,"
+  /* specs/discord/interaction.endpoints-params.json:54:20
+     '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 "(components):F,",
   /* specs/discord/interaction.endpoints-params.json:48:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */

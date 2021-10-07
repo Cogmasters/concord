@@ -59,6 +59,8 @@ void discord_application_from_json(char *json, size_t len, struct discord_applic
   /* specs/discord/application.json:24:20
      '{ "name": "slug", "type":{ "base":"char", "dec":"*"}, "comment":"if this application is a game sold on Discord, this field will be the URL slug that links to the store page", "inject_if_not":null }' */
                 "(slug):?s,"
+  /* specs/discord/application.json:25:20
+     '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_application_flags" }, "comment":"the application's public flags", "inject_if_not":0 }' */
                 "(flags):d,",
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */

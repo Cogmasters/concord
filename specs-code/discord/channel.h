@@ -307,11 +307,11 @@ extern size_t discord_message_sticker_list_to_json(char *str, size_t len, struct
  * @endverbatim
  */
 enum discord_message_flags {
-  DISCORD_MESSAGE_CROSSPOSTED = 1, /** 1<<0 */
-  DISCORD_MESSAGE_IS_CROSSPOST = 2, /** 1<<1 */
-  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, /** 1<<2 */
-  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, /** 1<<3 */
-  DISCORD_MESSAGE_URGENT = 16, /** 1<<4 */
+  DISCORD_MESSAGE_CROSSPOSTED = 1, /**< 1<<0 */
+  DISCORD_MESSAGE_IS_CROSSPOST = 2, /**< 1<<1 */
+  DISCORD_MESSAGE_SUPRESS_EMBEDS = 4, /**< 1<<2 */
+  DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED = 8, /**< 1<<3 */
+  DISCORD_MESSAGE_URGENT = 16, /**< 1<<4 */
 };
 extern char* discord_message_flags_print(enum discord_message_flags);
 extern enum discord_message_flags discord_message_flags_eval(char*);
@@ -630,7 +630,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:190:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-  struct discord_guild_member *member; /** partial guild member object */
+  struct discord_guild_member *member; /**< partial guild member object */
 
   /* specs/discord/channel.json:191:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
@@ -654,11 +654,11 @@ struct discord_message {
 
   /* specs/discord/channel.json:196:71
      '{"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"mentions", "comment":"array of user objects, with an additional partial member field"}' */
-  struct discord_user **mentions; /** array of user objects, with an additional partial member field */
+  struct discord_user **mentions; /**< array of user objects, with an additional partial member field */
 
   /* specs/discord/channel.json:197:58
      '{"type":{"base":"ja_u64", "dec":"ntl"}, "name":"mention_roles", "comment":"array of role object ids"}' */
-  ja_u64 **mention_roles; /** array of role object ids */
+  ja_u64 **mention_roles; /**< array of role object ids */
 
   /* specs/discord/channel.json:198:82
      '{"type":{"base":"struct discord_channel_mention", "dec":"ntl"}, "name":"mention_channels", "option":true }' */
@@ -678,7 +678,7 @@ struct discord_message {
 
   /* specs/discord/channel.json:202:54
      '{"type":{"base":"char", "dec":"*"}, "name":"nonce", "comment":"integer or string", "option":true }' */
-  char *nonce; /** integer or string */
+  char *nonce; /**< integer or string */
 
   /* specs/discord/channel.json:203:43
      '{"type":{"base":"bool"}, "name":"pinned"}' */
@@ -710,27 +710,27 @@ struct discord_message {
 
   /* specs/discord/channel.json:210:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
-  struct discord_message *referenced_message; /** this will cause recursive allocation if allocating as the parent */
+  struct discord_message *referenced_message; /**< this will cause recursive allocation if allocating as the parent */
 
   /* specs/discord/channel.json:211:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-  struct discord_message_interaction *interaction; /** the message associated with the message_reference */
+  struct discord_message_interaction *interaction; /**< the message associated with the message_reference */
 
   /* specs/discord/channel.json:212:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-  struct discord_channel *thread; /** the channel that was started from this message, includes thread member obejct */
+  struct discord_channel *thread; /**< the channel that was started from this message, includes thread member obejct */
 
   /* specs/discord/channel.json:213:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
-  struct discord_component **components; /** sent if the message contains components like buttons, actions rows, or other interactive components */
+  struct discord_component **components; /**< sent if the message contains components like buttons, actions rows, or other interactive components */
 
   /* specs/discord/channel.json:214:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
-  struct discord_message_sticker **sticker_items; /** sent if the message contains stickets */
+  struct discord_message_sticker **sticker_items; /**< sent if the message contains stickets */
 
   /* specs/discord/channel.json:215:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
-  struct discord_message_sticker **stickers; /** [DEPRECATED] array of sticker objects */
+  struct discord_message_sticker **stickers; /**< [DEPRECATED] array of sticker objects */
 
 };
 extern void discord_message_cleanup_v(void *p);
@@ -842,7 +842,7 @@ struct discord_reaction {
 
   /* specs/discord/channel.json:236:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-  struct discord_emoji *emoji; /** partial emoji object */
+  struct discord_emoji *emoji; /**< partial emoji object */
 
 };
 extern void discord_reaction_cleanup_v(void *p);
@@ -899,12 +899,12 @@ struct discord_overwrite {
   /* specs/discord/channel.json:246:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags allow; /** permission bit set */
+  enum discord_bitwise_permission_flags allow; /**< permission bit set */
 
   /* specs/discord/channel.json:248:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags deny; /** permission bit set */
+  enum discord_bitwise_permission_flags deny; /**< permission bit set */
 
 };
 extern void discord_overwrite_cleanup_v(void *p);
@@ -1222,11 +1222,11 @@ struct discord_allowed_mentions {
 
   /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **roles; /** list of snowflakes */
+  ja_u64 **roles; /**< list of snowflakes */
 
   /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
-  ja_u64 **users; /** list of snowflakes */
+  ja_u64 **users; /**< list of snowflakes */
 
   /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */

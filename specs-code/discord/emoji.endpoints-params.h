@@ -39,11 +39,11 @@ struct discord_create_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
-  char *image; /** Base64 Encoded Image Data */
+  char *image; /**< Base64 Encoded Image Data */
 
   /* specs/discord/emoji.endpoints-params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; /** roles for which this emoji will be whitelisted */
+  ja_u64 **roles; /**< roles for which this emoji will be whitelisted */
 
 };
 extern void discord_create_guild_emoji_params_cleanup_v(void *p);
@@ -95,7 +95,7 @@ struct discord_modify_guild_emoji_params {
 
   /* specs/discord/emoji.endpoints-params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
-  ja_u64 **roles; /** roles for which this emoji will be whitelisted */
+  ja_u64 **roles; /**< roles for which this emoji will be whitelisted */
 
 };
 extern void discord_modify_guild_emoji_params_cleanup_v(void *p);

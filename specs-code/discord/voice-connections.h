@@ -103,9 +103,9 @@ extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum dis
  * @endverbatim
  */
 enum discord_voice_speaking_flags {
-  DISCORD_VOICE_MICROPHONE = 1, /** 1 << 0 */
-  DISCORD_VOICE_SOUNDSHARE = 2, /** 1 << 1 */
-  DISCORD_VOICE_PRIORITY = 4, /** 1 << 2 */
+  DISCORD_VOICE_MICROPHONE = 1, /**< 1 << 0 */
+  DISCORD_VOICE_SOUNDSHARE = 2, /**< 1 << 1 */
+  DISCORD_VOICE_PRIORITY = 4, /**< 1 << 2 */
 };
 extern char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags);
 extern enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char*);

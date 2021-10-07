@@ -24,6 +24,8 @@ void discord_modify_current_user_params_from_json(char *json, size_t len, struct
   /* specs/discord/user.endpoints-params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
                 "(username):?s,"
+  /* specs/discord/user.endpoints-params.json:13:20
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
                 "(avatar):?s,",
   /* specs/discord/user.endpoints-params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
@@ -146,6 +148,8 @@ void discord_create_dm_params_from_json(char *json, size_t len, struct discord_c
   struct discord_create_dm_params *p = *pp;
   discord_create_dm_params_init(p);
   r=json_extract(json, len, 
+  /* specs/discord/user.endpoints-params.json:22:20
+     '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
                 "(recipient_id):F,",
   /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
@@ -252,6 +256,9 @@ void discord_create_group_dm_params_from_json(char *json, size_t len, struct dis
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
                 "(access_tokens):F,"
+  /* specs/discord/user.endpoints-params.json:33:19
+     '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
+          "comment":"a dictionary of user ids to their respective nicknames"}' */
                 "(nicks):F,",
   /* specs/discord/user.endpoints-params.json:31:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 

@@ -65,21 +65,21 @@ extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, 
  * @endverbatim
  */
 enum discord_gateway_intents {
-  DISCORD_GATEWAY_GUILDS = 1, /** 1 << 0 */
-  DISCORD_GATEWAY_GUILD_MEMBERS = 2, /** 1 << 1 */
-  DISCORD_GATEWAY_GUILD_BANS = 4, /** 1 << 2 */
-  DISCORD_GATEWAY_GUILD_EMOJIS = 8, /** 1 << 3 */
-  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, /** 1 << 4 */
-  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, /** 1 << 5 */
-  DISCORD_GATEWAY_GUILD_INVITES = 64, /** 1 << 6 */
-  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, /** 1 << 7 */
-  DISCORD_GATEWAY_GUILD_PRESENCES = 256, /** 1 << 8 */
-  DISCORD_GATEWAY_GUILD_MESSAGES = 512, /** 1 << 9 */
-  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, /** 1 << 10 */
-  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, /** 1 << 11 */
-  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, /** 1 << 12 */
-  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, /** 1 << 13 */
-  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, /** 1 << 14 */
+  DISCORD_GATEWAY_GUILDS = 1, /**< 1 << 0 */
+  DISCORD_GATEWAY_GUILD_MEMBERS = 2, /**< 1 << 1 */
+  DISCORD_GATEWAY_GUILD_BANS = 4, /**< 1 << 2 */
+  DISCORD_GATEWAY_GUILD_EMOJIS = 8, /**< 1 << 3 */
+  DISCORD_GATEWAY_GUILD_INTEGRATIONS = 16, /**< 1 << 4 */
+  DISCORD_GATEWAY_GUILD_WEBHOOKS = 32, /**< 1 << 5 */
+  DISCORD_GATEWAY_GUILD_INVITES = 64, /**< 1 << 6 */
+  DISCORD_GATEWAY_GUILD_VOICE_STATES = 128, /**< 1 << 7 */
+  DISCORD_GATEWAY_GUILD_PRESENCES = 256, /**< 1 << 8 */
+  DISCORD_GATEWAY_GUILD_MESSAGES = 512, /**< 1 << 9 */
+  DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS = 1024, /**< 1 << 10 */
+  DISCORD_GATEWAY_GUILD_MESSAGE_TYPING = 2048, /**< 1 << 11 */
+  DISCORD_GATEWAY_DIRECT_MESSAGES = 4096, /**< 1 << 12 */
+  DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS = 8192, /**< 1 << 13 */
+  DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING = 16384, /**< 1 << 14 */
 };
 extern char* discord_gateway_intents_print(enum discord_gateway_intents);
 extern enum discord_gateway_intents discord_gateway_intents_eval(char*);
@@ -321,19 +321,19 @@ extern size_t discord_identify_list_to_json(char *str, size_t len, struct discor
 struct discord_voice_state_status {
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-  u64_snowflake_t guild_id; /** id of the guild */
+  u64_snowflake_t guild_id; /**< id of the guild */
 
   /* specs/discord/gateway.json:160:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-  u64_snowflake_t channel_id; /** id of the voice channel client wants to join (null if disconnecting) */
+  u64_snowflake_t channel_id; /**< id of the voice channel client wants to join (null if disconnecting) */
 
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
-  bool self_mute; /** is the client muted */
+  bool self_mute; /**< is the client muted */
 
   /* specs/discord/gateway.json:162:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-  bool self_deaf; /** is the client deafened */
+  bool self_deaf; /**< is the client deafened */
 
 };
 extern void discord_voice_state_status_cleanup_v(void *p);
@@ -383,19 +383,19 @@ extern size_t discord_voice_state_status_list_to_json(char *str, size_t len, str
 struct discord_presence_status {
   /* specs/discord/gateway.json:172:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
-  u64_unix_ms_t since; /** unix time (in milliseconds) of when the client went idle, or null if the client is not idle */
+  u64_unix_ms_t since; /**< unix time (in milliseconds) of when the client went idle, or null if the client is not idle */
 
   /* specs/discord/gateway.json:173:19
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
-  struct discord_activity **activities; /** the user's activities */
+  struct discord_activity **activities; /**< the user's activities */
 
   /* specs/discord/gateway.json:174:19
      '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  char status[16]; /** the user's new status */
+  char status[16]; /**< the user's new status */
 
   /* specs/discord/gateway.json:175:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-  bool afk; /** whether or not the client is afk */
+  bool afk; /**< whether or not the client is afk */
 
 };
 extern void discord_presence_status_cleanup_v(void *p);
@@ -445,15 +445,15 @@ extern size_t discord_presence_status_list_to_json(char *str, size_t len, struct
 struct discord_identify_connection {
   /* specs/discord/gateway.json:185:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
-  char *os; /** your operating system */
+  char *os; /**< your operating system */
 
   /* specs/discord/gateway.json:186:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  char *browser; /** your library name */
+  char *browser; /**< your library name */
 
   /* specs/discord/gateway.json:187:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
-  char *device; /** your library name */
+  char *device; /**< your library name */
 
 };
 extern void discord_identify_connection_cleanup_v(void *p);
@@ -614,19 +614,19 @@ extern size_t discord_activity_types_list_to_json(char *str, size_t len, enum di
 struct discord_session_start_limit {
   /* specs/discord/gateway.json:227:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
-  int total; /** the total number of session starts the current user is allowed */
+  int total; /**< the total number of session starts the current user is allowed */
 
   /* specs/discord/gateway.json:228:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
-  int remaining; /** the remaining number of session starts the current user is allowed */
+  int remaining; /**< the remaining number of session starts the current user is allowed */
 
   /* specs/discord/gateway.json:229:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
-  int reset_after; /** the number of milliseconds after which the limit resets */
+  int reset_after; /**< the number of milliseconds after which the limit resets */
 
   /* specs/discord/gateway.json:230:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-  int max_concurrency; /** the number of identify requests allowed per 5 seconds */
+  int max_concurrency; /**< the number of identify requests allowed per 5 seconds */
 
 };
 extern void discord_session_start_limit_cleanup_v(void *p);

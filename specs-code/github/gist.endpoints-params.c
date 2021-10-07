@@ -30,6 +30,8 @@ void github_gist_create_params_from_json(char *json, size_t len, struct github_g
   /* specs/github/gist.endpoints-params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
                 "(contents):?s,"
+  /* specs/github/gist.endpoints-params.json:16:28
+     '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 "(public):?s,",
   /* specs/github/gist.endpoints-params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */

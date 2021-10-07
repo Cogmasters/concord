@@ -21,6 +21,8 @@ void github_topic_from_json(char *json, size_t len, struct github_topic **pp)
   struct github_topic *p = *pp;
   github_topic_init(p);
   r=json_extract(json, len, 
+  /* specs/github/repository.json:12:28
+     '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 "(names):F,",
   /* specs/github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */

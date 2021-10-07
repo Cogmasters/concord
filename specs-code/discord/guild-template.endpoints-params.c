@@ -24,6 +24,8 @@ void discord_create_guild_from_guild_template_params_from_json(char *json, size_
   /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
+  /* specs/discord/guild-template.endpoints-params.json:13:20
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
                 "(icon):?s,",
   /* specs/discord/guild-template.endpoints-params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
@@ -149,6 +151,8 @@ void discord_create_guild_template_params_from_json(char *json, size_t len, stru
   /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
+  /* specs/discord/guild-template.endpoints-params.json:23:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 "(description):?s,",
   /* specs/discord/guild-template.endpoints-params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
@@ -274,6 +278,8 @@ void discord_modify_guild_template_params_from_json(char *json, size_t len, stru
   /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
+  /* specs/discord/guild-template.endpoints-params.json:33:20
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
                 "(description):?s,",
   /* specs/discord/guild-template.endpoints-params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */

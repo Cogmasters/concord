@@ -93,6 +93,8 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp
   /* specs/discord/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
                 "(approximate_presence_count):d,"
+  /* specs/discord/invite.json:29:20
+     '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
                 "(approximate_member_count):d,",
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
@@ -352,6 +354,8 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
   /* specs/discord/invite.json:42:20
      '{ "name": "temporary", "type":{ "base":"int" }}' */
                 "(temporary):d,"
+  /* specs/discord/invite.json:43:20
+     '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
                 "(created_at):F,",
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */

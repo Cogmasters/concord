@@ -36,6 +36,8 @@ void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comme
   /* specs/reddit/links_n_comments.json:17:20
      '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
                 "(thing_id):?s,"
+  /* specs/reddit/links_n_comments.json:18:20
+     '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
                 "(uh):?s,",
   /* specs/reddit/links_n_comments.json:13:20
      '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */

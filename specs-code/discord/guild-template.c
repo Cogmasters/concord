@@ -51,6 +51,8 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
                 "(serialized_source_guild):F,"
+  /* specs/discord/guild-template.json:22:20
+     '{ "name": "is_dirty", "type":{ "base":"bool" }}' */
                 "(is_dirty):b,",
   /* specs/discord/guild-template.json:12:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */

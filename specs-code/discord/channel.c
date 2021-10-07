@@ -159,6 +159,8 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel **
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
          "option":true, "inject_if_not":0}' */
                 "(last_pin_timestamp):F,"
+  /* specs/discord/channel.json:63:73
+     '{"type":{"base":"struct discord_message", "dec":"ntl"}, "name":"messages"}' */
                 "(messages):F,",
   /* specs/discord/channel.json:32:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
@@ -776,6 +778,8 @@ void discord_message_sticker_from_json(char *json, size_t len, struct discord_me
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
          "option":true, "inject_if_not":null}' */
                 "(preview_asset):s,"
+  /* specs/discord/channel.json:92:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
                 "(type):d,",
   /* specs/discord/channel.json:84:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1088,6 +1092,8 @@ void discord_message_reference_from_json(char *json, size_t len, struct discord_
   /* specs/discord/channel.json:116:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
                 "(guild_id):F,"
+  /* specs/discord/channel.json:117:18
+     '{"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 "(fail_if_not_exists):b,",
   /* specs/discord/channel.json:114:18
      '{"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
@@ -1262,6 +1268,8 @@ void discord_message_application_from_json(char *json, size_t len, struct discor
   /* specs/discord/channel.json:129:18
      '{"name":"icon", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(icon):?s,"
+  /* specs/discord/channel.json:130:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
                 "(name):?s,",
   /* specs/discord/channel.json:126:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
@@ -1505,6 +1513,9 @@ void discord_message_activity_from_json(char *json, size_t len, struct discord_m
   /* specs/discord/channel.json:151:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_activity_types"}}' */
                 "(type):d,"
+  /* specs/discord/channel.json:152:18
+     '{"name":"party_id", "type":{"base":"char", "dec":"*"},
+         "option":true, "inject_if_not":null}' */
                 "(party_id):?s,",
   /* specs/discord/channel.json:151:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_activity_types"}}' */
@@ -1803,6 +1814,8 @@ void discord_message_from_json(char *json, size_t len, struct discord_message **
   /* specs/discord/channel.json:214:82
      '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"sticker_items", "option":true, "inject_if_not":null, "comment":"sent if the message contains stickets"}' */
                 "(sticker_items):F,"
+  /* specs/discord/channel.json:215:82
+     '{"type":{"base":"struct discord_message_sticker", "dec":"ntl"}, "name":"stickers", "option":true, "inject_if_not":null, "comment":"[DEPRECATED] array of sticker objects"}' */
                 "(stickers):F,",
   /* specs/discord/channel.json:186:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
@@ -2503,6 +2516,8 @@ void discord_followed_channel_from_json(char *json, size_t len, struct discord_f
   /* specs/discord/channel.json:224:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(channel_id):F,"
+  /* specs/discord/channel.json:225:20
+     '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(webhook_id):F,",
   /* specs/discord/channel.json:224:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -2629,6 +2644,8 @@ void discord_reaction_from_json(char *json, size_t len, struct discord_reaction 
   /* specs/discord/channel.json:235:20
      '{ "name": "me", "type":{ "base":"bool" }}' */
                 "(me):b,"
+  /* specs/discord/channel.json:236:20
+     '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
                 "(emoji):F,",
   /* specs/discord/channel.json:234:20
      '{ "name": "count", "type":{ "base":"int" }}' */
@@ -2781,6 +2798,9 @@ void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
           "comment":"permission bit set"}' */
                 "(allow):s_as_hex_uint,"
+  /* specs/discord/channel.json:248:20
+     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
+          "comment":"permission bit set"}' */
                 "(deny):s_as_hex_uint,",
   /* specs/discord/channel.json:244:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -2963,6 +2983,8 @@ void discord_thread_metadata_from_json(char *json, size_t len, struct discord_th
   /* specs/discord/channel.json:262:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 "(archive_timestamp):F,"
+  /* specs/discord/channel.json:263:20
+     '{ "name": "locked", "type":{ "base":"bool" }}' */
                 "(locked):b,",
   /* specs/discord/channel.json:259:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
@@ -3149,6 +3171,8 @@ void discord_thread_member_from_json(char *json, size_t len, struct discord_thre
   /* specs/discord/channel.json:275:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 "(join_timestamp):F,"
+  /* specs/discord/channel.json:276:20
+     '{ "name": "flags", "type":{ "base":"int" }}' */
                 "(flags):d,",
   /* specs/discord/channel.json:273:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -3325,6 +3349,8 @@ void discord_attachment_from_json(char *json, size_t len, struct discord_attachm
   /* specs/discord/channel.json:290:20
      '{ "name": "height", "type":{ "base":"int", "nullable":true }}' */
                 "(height):d,"
+  /* specs/discord/channel.json:291:20
+     '{ "name": "width", "type":{ "base":"int", "nullable":true }}' */
                 "(width):d,",
   /* specs/discord/channel.json:285:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -3551,6 +3577,8 @@ void discord_channel_mention_from_json(char *json, size_t len, struct discord_ch
   /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 "(type):d,"
+  /* specs/discord/channel.json:304:20
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):?s,",
   /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -3719,6 +3747,8 @@ void discord_allowed_mentions_from_json(char *json, size_t len, struct discord_a
   /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 "(users):F,"
+  /* specs/discord/channel.json:316:20
+     '{ "name": "replied_user", "type":{ "base":"bool" }}' */
                 "(replied_user):b,",
   /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
@@ -3916,6 +3946,8 @@ void discord_embed_from_json(char *json, size_t len, struct discord_embed **pp)
   /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
                 "(author):F,"
+  /* specs/discord/channel.json:337:20
+     '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 "(fields):F,",
   /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"[DISCORD_EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null}' */
@@ -4287,6 +4319,8 @@ void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_em
   /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
+  /* specs/discord/channel.json:349:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,",
   /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -4460,6 +4494,8 @@ void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_
   /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
+  /* specs/discord/channel.json:361:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,",
   /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -4633,6 +4669,8 @@ void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_
   /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
+  /* specs/discord/channel.json:373:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,",
   /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
@@ -4800,6 +4838,8 @@ void discord_embed_provider_from_json(char *json, size_t len, struct discord_emb
   /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(name):?s,"
+  /* specs/discord/channel.json:383:20
+     '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(url):?s,",
   /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
@@ -4933,6 +4973,8 @@ void discord_embed_author_from_json(char *json, size_t len, struct discord_embed
   /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(icon_url):?s,"
+  /* specs/discord/channel.json:395:20
+     '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_icon_url):?s,",
   /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null}' */
@@ -5104,6 +5146,8 @@ void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed
   /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(icon_url):?s,"
+  /* specs/discord/channel.json:406:20
+     '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(proxy_icon_url):?s,",
   /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"[DISCORD_EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null}' */
@@ -5254,6 +5298,8 @@ void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_
   /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null}' */
                 "(value):s,"
+  /* specs/discord/channel.json:417:20
+     '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
                 "(inline):b,",
   /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null}' */

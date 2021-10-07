@@ -23,19 +23,19 @@
  * @endverbatim
  */
 enum discord_user_flags {
-  DISCORD_USER_DISCORD_EMPLOYEE = 1, /** 1 << 0 */
-  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, /** 1 << 2 */
-  DISCORD_USER_HYPESQUAD_EVENTS = 4, /** 1 << 3 */
-  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, /** 1 << 4 */
-  DISCORD_USER_HOUSE_BRAVERY = 32, /** 1 << 6 */
-  DISCORD_USER_HOUSE_BRILLIANCE = 64, /** 1 << 7 */
-  DISCORD_USER_HOUSE_BALANCE = 128, /** 1 << 8 */
-  DISCORD_USER_EARLY_SUPPORTER = 256, /** 1 << 9 */
-  DISCORD_USER_TEAM_USER = 512, /** 1 << 10 */
-  DISCORD_USER_SYSTEM = 4096, /** 1 << 12 */
-  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, /** 1 << 14 */
-  DISCORD_USER_VERIFIED_BOT = 65536, /** 1 << 16 */
-  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, /** 1 << 17 */
+  DISCORD_USER_DISCORD_EMPLOYEE = 1, /**< 1 << 0 */
+  DISCORD_USER_PARTNERED_SERVER_OWNER = 2, /**< 1 << 2 */
+  DISCORD_USER_HYPESQUAD_EVENTS = 4, /**< 1 << 3 */
+  DISCORD_USER_BUG_HUNTER_LEVEL_1 = 8, /**< 1 << 4 */
+  DISCORD_USER_HOUSE_BRAVERY = 32, /**< 1 << 6 */
+  DISCORD_USER_HOUSE_BRILLIANCE = 64, /**< 1 << 7 */
+  DISCORD_USER_HOUSE_BALANCE = 128, /**< 1 << 8 */
+  DISCORD_USER_EARLY_SUPPORTER = 256, /**< 1 << 9 */
+  DISCORD_USER_TEAM_USER = 512, /**< 1 << 10 */
+  DISCORD_USER_SYSTEM = 4096, /**< 1 << 12 */
+  DISCORD_USER_BUG_HUNTER_LEVEL_2 = 16384, /**< 1 << 14 */
+  DISCORD_USER_VERIFIED_BOT = 65536, /**< 1 << 16 */
+  DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER = 131072, /**< 1 << 17 */
 };
 extern char* discord_user_flags_print(enum discord_user_flags);
 extern enum discord_user_flags discord_user_flags_eval(char*);

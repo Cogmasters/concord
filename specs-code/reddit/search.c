@@ -57,6 +57,8 @@ void reddit_search_params_from_json(char *json, size_t len, struct reddit_search
   /* specs/reddit/search.json:24:20
      '{ "name": "t", "type":{ "base":"char", "dec":"*" }, "comment":"one of(hour, day, week, month, year, all)"}' */
                 "(t):?s,"
+  /* specs/reddit/search.json:25:20
+     '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
                 "(type):?s,",
   /* specs/reddit/search.json:13:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
