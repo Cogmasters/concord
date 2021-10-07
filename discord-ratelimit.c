@@ -15,15 +15,13 @@ static struct discord_bucket*
 bucket_init(struct sized_buffer *hash, const char route[])
 {
   struct discord_bucket *new_bucket = calloc(1, sizeof *new_bucket);
+  new_bucket->remaining = 1;
   int ret = snprintf(new_bucket->hash, sizeof(new_bucket->hash), "%.*s", (int)hash->size, hash->start);
   ASSERT_S(ret < sizeof(new_bucket->hash), "Out of bounds write attempt");
   ret = snprintf(new_bucket->route, sizeof(new_bucket->route), "%s", route);
   ASSERT_S(ret < sizeof(new_bucket->route), "Out of bounds write attempt");
   if (pthread_mutex_init(&new_bucket->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
-  if (pthread_cond_init(&new_bucket->cond, NULL))
-    ERR("Couldn't initialize pthread cond");
-
   return new_bucket;
 }
 
@@ -31,7 +29,6 @@ static void
 bucket_cleanup(struct discord_bucket *bucket) 
 {
   pthread_mutex_destroy(&bucket->lock);
-  pthread_cond_destroy(&bucket->cond);
   free(bucket);
 }
 
@@ -47,59 +44,16 @@ discord_buckets_cleanup(struct discord_adapter *adapter)
 }
 
 /* sleep cooldown for a connection within this bucket in milliseconds */
-void
-discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_bucket *bucket)
+long
+discord_bucket_get_cooldown(struct discord_adapter *adapter, struct discord_bucket *bucket)
 {
-  if (!bucket) return;
-
-  pthread_mutex_lock(&bucket->lock);
-  ++bucket->busy;
-
-  /* wait for a while if busy requests reach threshold */
-  /** @todo? add pthread_broadcast() to avoid zombie threads */
-  while (bucket->busy > bucket->remaining) {
-    logconf_debug(&adapter->ratelimit->conf, 
-      "[%.4s] Reach bucket's 'Remaining' threshold (%d)\n"
-      "Transfer locked in queue.", 
-      bucket->hash, bucket->remaining);
-
-    /* wait for pthread_cond_signal() from parse_ratelimits() */
-    pthread_cond_wait(&bucket->cond, &bucket->lock);
-
-    logconf_debug(&adapter->ratelimit->conf, 
-      "[%.4s] Transfer unlocked from queue", bucket->hash);
+  if (!bucket) return 0L;
+  u64_unix_ms_t now_tstamp = cee_timestamp_ms();
+  if (bucket->remaining < 1 && bucket->reset_tstamp > now_tstamp) {
+    return bucket->reset_tstamp - now_tstamp;
   }
-  if (bucket->remaining > 1) {
-    --bucket->remaining;
-    logconf_debug(&adapter->ratelimit->conf,
-      "[%.4s] %d remaining transfers before cooldown", bucket->hash, bucket->remaining);
-    pthread_mutex_unlock(&bucket->lock);
-    return; /* EARLY RETURN */
-  }
-
-  u64_unix_ms_t curr_tstamp = cee_timestamp_ms();
-  int64_t delay_ms = (int64_t)(bucket->reset_tstamp - curr_tstamp);
-  if (delay_ms <= 0) { /*no delay needed */
-    logconf_debug(&adapter->ratelimit->conf,
-      "[%.4s] Skipping cooldown because current timestamp"
-      " exceeds bucket reset timestamp\n\t"
-      "Reset At:\t%"PRIu64"\n\t"
-      "Current:\t%"PRIu64"\n\t"
-      "Delay:\t\t%"PRId64" ms", 
-      bucket->hash, bucket->reset_tstamp, curr_tstamp, delay_ms);
-    pthread_mutex_unlock(&bucket->lock);
-    return; /* EARLY RETURN */
-  }
-
-  if (delay_ms > bucket->reset_after_ms) /*don't delay excessively */
-    delay_ms = bucket->reset_after_ms;
-
-  logconf_info(&adapter->ratelimit->conf,
-    "[%.4s] RATELIMITING (wait %"PRId64" ms)", bucket->hash, delay_ms);
-
-  cee_sleep_ms(delay_ms); /*sleep for delay amount (if any) */
-
-  pthread_mutex_unlock(&bucket->lock);
+  /* @todo check for global ratelimits */
+  return 0L;
 }
 
 /* attempt to find a bucket associated with this route */
@@ -108,8 +62,12 @@ discord_bucket_try_get(struct discord_adapter *adapter, const char route[])
 {
   logconf_debug(&adapter->ratelimit->conf,
     "[?] Attempt to find matching bucket for route '%s'", route);
+
   struct discord_bucket *bucket;
+  pthread_mutex_lock(&adapter->ratelimit->lock);
   HASH_FIND_STR(adapter->ratelimit->buckets, route, bucket);
+  pthread_mutex_unlock(&adapter->ratelimit->lock);
+
   if (!bucket)
     logconf_debug(&adapter->ratelimit->conf,
       "[?] Couldn't match bucket to route '%s', will attempt to create a new one", route);
@@ -125,10 +83,10 @@ discord_bucket_try_get(struct discord_adapter *adapter, const char route[])
 static void
 parse_ratelimits(struct discord_adapter *adapter, struct discord_bucket *bucket, ORCAcode code, struct ua_info *info)
 { 
-  pthread_mutex_lock(&bucket->lock);
-
-  if (ORCA_OK == code && bucket->update_tstamp < info->req_tstamp) 
-  {
+  if (code != ORCA_OK) {
+    logconf_debug(&adapter->ratelimit->conf, "[%.4s] Request failed", bucket->hash);
+  }
+  else if (bucket->update_tstamp <= info->req_tstamp) {
     bucket->update_tstamp = info->req_tstamp;
 
     struct sized_buffer value; /* fetch header value as string */
@@ -137,21 +95,12 @@ parse_ratelimits(struct discord_adapter *adapter, struct discord_bucket *bucket,
     value = ua_info_respheader_field(info, "x-ratelimit-remaining");
     if (value.size) bucket->remaining = strtol(value.start, NULL, 10);
     value = ua_info_respheader_field(info, "x-ratelimit-reset-after");
-    if (value.size) bucket->reset_after_ms = 1000 * strtod(value.start, NULL);
+    if (value.size) bucket->reset_after = 1000 * strtod(value.start, NULL);
 
-    logconf_debug(&adapter->ratelimit->conf,
-      "[%.4s] Reset-Timestamp = %"PRIu64" ; Remaining = %d ; Reset-After = %"PRId64" ms",
-      bucket->hash, bucket->reset_tstamp, bucket->remaining, bucket->reset_after_ms);
+    logconf_info(&adapter->ratelimit->conf,
+      "[%.4s] Reset-Timestamp = %"PRIu64" ; Remaining = %d ; Reset-After = %ld ms",
+      bucket->hash, bucket->reset_tstamp, bucket->remaining, bucket->reset_after);
   }
-  else {
-    logconf_debug(&adapter->ratelimit->conf, 
-      "[%.4s] Request failed or its timestamp is older than bucket's last update", 
-      bucket->hash);
-  }
-
-  --bucket->busy;
-  pthread_cond_signal(&bucket->cond);
-  pthread_mutex_unlock(&bucket->lock);
 }
 
 /* Attempt to find/link a route between route and a client bucket by

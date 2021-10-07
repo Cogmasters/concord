@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <errno.h>
 
 #include "discord.h"
 #include "discord-internal.h"
@@ -70,10 +71,15 @@ discord_adapter_run(
   struct discord_adapter *adapter, 
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[], ...)
+  enum http_method http_method, 
+  char endpoint_fmt[], ...)
 {
   va_list args;
-  va_start(args, endpoint);
+  char endpoint[2048];
+
+  va_start(args, endpoint_fmt);
+  int ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
 
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
@@ -81,35 +87,42 @@ discord_adapter_run(
     resp_handle->err_obj = adapter;
   }
 
-  /* Check if endpoint contain a major param */
+  /* Check if endpoint_fmt contain a major param */
   const char *route;
-  if (strstr(endpoint, "/channels/%")) 
+  if (strstr(endpoint_fmt, "/channels/%")) 
     route = "@channel";
-  else if (strstr(endpoint, "/guilds/%"))   
+  else if (strstr(endpoint_fmt, "/guilds/%"))   
     route = "@guild";
-  else if (strstr(endpoint, "/webhook/%"))  
+  else if (strstr(endpoint_fmt, "/webhook/%"))  
     route = "@webhook";
   else
-    route = endpoint;
+    route = endpoint_fmt;
 
-  struct discord_bucket *bucket;
-  pthread_mutex_lock(&adapter->ratelimit->lock);
-  bucket = discord_bucket_try_get(adapter, route);
-  pthread_mutex_unlock(&adapter->ratelimit->lock);
+  struct discord_bucket *bucket = discord_bucket_try_get(adapter, route);
 
   ORCAcode code;
   bool keepalive=true;
+  long delay_ms;
+
+  if (bucket) pthread_mutex_lock(&bucket->lock);
   do {
     ua_info_cleanup(&adapter->err.info);
+    delay_ms = discord_bucket_get_cooldown(adapter, bucket);
+    if (delay_ms > 0) {
+      logconf_info(&adapter->ratelimit->conf,
+        "[%.4s] RATELIMITING (wait %ld sec)", bucket->hash, delay_ms);
+      uint64_t t = cee_timestamp_ms();
+      cee_sleep_ms(delay_ms);
+      log_info("took: %"PRIu64, cee_timestamp_ms() - t);
+    }
+    if (bucket) --bucket->remaining;
 
-    discord_bucket_try_cooldown(adapter, bucket);
-
-    code = ua_vrun(
+    code = ua_run(
       adapter->ua,
       &adapter->err.info,
       resp_handle,
       req_body,
-      http_method, endpoint, args);
+      http_method, endpoint);
     
     if (code != ORCA_HTTP_CODE)
     {
@@ -117,8 +130,7 @@ discord_adapter_run(
     }
     else 
     {
-        const int httpcode = adapter->err.info.httpcode;
-        switch (httpcode) {
+        switch (adapter->err.info.httpcode) {
         case HTTP_FORBIDDEN:
         case HTTP_NOT_FOUND:
         case HTTP_BAD_REQUEST:
@@ -145,26 +157,26 @@ discord_adapter_run(
                         &is_global, message, &retry_after);
             VASSERT_S(retry_after != -1, "(NO RETRY-AFTER INCLUDED) %s", message);
 
+            retry_after *= 1000;
+
             if (is_global) {
-              logconf_warn(&adapter->conf, "GLOBAL RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
-              ua_block_ms(adapter->ua, (uint64_t)(1000*retry_after));
+              logconf_warn(&adapter->conf, "429 GLOBAL RATELIMITING (wait: %.2lf ms) : %s", retry_after, message);
+              ua_block_ms(adapter->ua, (uint64_t)retry_after);
             }
             else {
-              logconf_warn(&adapter->conf, "429 RATELIMITING (wait: %.2lf ms) : %s", 1000*retry_after, message);
-              cee_sleep_ms((int64_t)(1000*retry_after));
+              logconf_warn(&adapter->conf, "429 RATELIMITING (wait: %.2lf ms) : %s", retry_after, message);
+              cee_sleep_ms((long)retry_after);
             }
            break; }
         default:
-            if (httpcode >= 500) /* server related error, retry */
+            if (adapter->err.info.httpcode >= 500) /* server related error, retry */
               ua_block_ms(adapter->ua, 5000); /* wait for 5 seconds */
             break;
         }
     }
-
-    pthread_mutex_lock(&adapter->ratelimit->lock);
     discord_bucket_build(adapter, bucket, route, code, &adapter->err.info);
-    pthread_mutex_unlock(&adapter->ratelimit->lock);
   } while (keepalive);
+  if (bucket) pthread_mutex_unlock(&bucket->lock);
 
   va_end(args);
 

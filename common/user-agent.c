@@ -589,19 +589,13 @@ set_method(
 }
 
 static void
-set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list args)
+set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[])
 {
-  size_t url_len = 1 + ua->base_url.size;
-
-  va_list tmp;
-  va_copy(tmp, args);
-  url_len += 1 + vsnprintf(NULL, 0, endpoint, tmp);
-  va_end(tmp);
+  size_t url_len = 2 + ua->base_url.size + strlen(endpoint);
 
   if (url_len > conn->info.req_url.size) {
     void *tmp = realloc(conn->info.req_url.start, url_len);
     ASSERT_S(NULL != tmp, "Couldn't increase buffer's length");
-
     conn->info.req_url = (struct sized_buffer){
       .start = tmp,
       .size  = url_len
@@ -610,7 +604,7 @@ set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[], va_list a
 
   size_t ret = snprintf(conn->info.req_url.start, conn->info.req_url.size, "%.*s", (int)ua->base_url.size, ua->base_url.start);
   ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
-  ret += vsnprintf(conn->info.req_url.start+ret, conn->info.req_url.size-ret, endpoint, args);
+  ret += snprintf(conn->info.req_url.start+ret, conn->info.req_url.size-ret, "%s", endpoint);
   ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url.start);
@@ -778,12 +772,12 @@ ua_block_ms(struct user_agent *ua, const uint64_t wait_ms)
 
 /* template function for performing requests */
 ORCAcode
-ua_vrun(
+ua_run(
   struct user_agent *ua,
   struct ua_info *info,
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[], va_list args)
+  enum http_method http_method, char endpoint[])
 {
   const char *method_str = http_method_print(http_method);
   static struct sized_buffer blank_req_body = {"", 0};
@@ -792,7 +786,7 @@ ua_vrun(
   }
 
   struct _ua_conn *conn = get_conn(ua);
-  set_url(ua, conn, endpoint, args); /*set the request url */
+  set_url(ua, conn, endpoint); /*set the request url */
 
   char buf[1024]="";
   ua_reqheader_str(ua, buf, sizeof(buf));
@@ -829,29 +823,6 @@ ua_vrun(
   }
   pthread_mutex_unlock(&ua->shared->lock);
 
-  return code;
-}
-
-/* template function for performing requests */
-ORCAcode
-ua_run(
-  struct user_agent *ua,
-  struct ua_info *info,
-  struct ua_resp_handle *resp_handle,
-  struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[], ...)
-{
-  va_list args;
-  va_start(args, endpoint);
-
-  ORCAcode code = ua_vrun(
-                    ua, 
-                    info,
-                    resp_handle, 
-                    req_body, 
-                    http_method, endpoint, args);
-
-  va_end(args);
   return code;
 }
 

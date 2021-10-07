@@ -275,6 +275,19 @@ void ws_close(struct websockets *ws, const enum ws_close_reason code, const char
  */
 bool ws_same_thread(struct websockets *ws);
 
+/**
+ * @brief Lock WebSockets handle
+ * @param ws the WebSockets handle created with ws_init()
+ * @return pthread_mutex_lock return value
+ */
+int ws_lock(struct websockets *ws);
+
+/**
+ * @brief Unlock WebSockets handle
+ * @param ws the WebSockets handle created with ws_init()
+ * @return pthread_mutex_unlock return value
+ */
+int ws_unlock(struct websockets *ws);
 
 #ifdef __cplusplus
 }

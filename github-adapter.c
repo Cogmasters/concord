@@ -44,10 +44,15 @@ github_adapter_run(
   struct github_adapter *adapter,
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[], ...)
+  enum http_method http_method, 
+  char endpoint_fmt[], ...)
 {
   va_list args;
-  va_start(args, endpoint);
+  char endpoint[2048];
+
+  va_start(args, endpoint_fmt);
+  int ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
 
   /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
   if (resp_handle && !resp_handle->err_cb) {
@@ -56,12 +61,12 @@ github_adapter_run(
   }
 
   ORCAcode code;
-  code = ua_vrun(
+  code = ua_run(
     adapter->ua,
     NULL,
     resp_handle,
     req_body,
-    http_method, endpoint, args);
+    http_method, endpoint);
 
   va_end(args);
 

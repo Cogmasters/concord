@@ -281,6 +281,9 @@ void on_command(
 
   discord_trigger_typing_indicator(client, msg->channel_id);
 
+  char endpoint[2048];
+  snprintf(endpoint, sizeof(endpoint), "/factions%s", query);
+
   /* Fetch factions from ELITEBGS API */
   ua_run(
     g_elitebgs_ua, 
@@ -291,7 +294,7 @@ void on_command(
     },
     NULL,
     HTTP_GET,
-    "/factions%s", query);
+    endpoint);
 
   /* Send embed to channel if embed was loaded */
   struct discord_create_message_params params = {0};

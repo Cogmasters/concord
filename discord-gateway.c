@@ -1369,16 +1369,20 @@ discord_gateway_run(struct discord_gateway *gw)
 void
 discord_gateway_shutdown(struct discord_gateway *gw) 
 {
+  ws_lock(gw->ws);
   gw->reconnect->enable = false;
   gw->status->is_resumable = false;
   gw->status->shutdown = true;
+  ws_unlock(gw->ws);
   ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }
 
 void
 discord_gateway_reconnect(struct discord_gateway *gw, bool resume) 
 {
+  ws_lock(gw->ws);
   gw->reconnect->enable = true;
   gw->status->is_resumable = resume;
+  ws_unlock(gw->ws);
   ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
 }

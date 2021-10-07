@@ -80,7 +80,7 @@ ORCAcode discord_adapter_run(
   struct ua_resp_handle *resp_handle,
   struct sized_buffer *req_body,
   enum http_method http_method,
-  char endpoint[], ...);
+  char endpoint_fmt[], ...);
 
 /**
  * @brief The bucket struct that will handle ratelimiting 
@@ -97,12 +97,11 @@ struct discord_bucket {
   char hash[128]; /**< the unique hash associated with this bucket */
   int busy; /**< amount of busy connections that have not yet finished its requests */
   int remaining; /**< connections this bucket can do before waiting for cooldown */
-  int64_t reset_after_ms; /**< how long until cooldown timer resets */
+  long reset_after; /**< how long until cooldown timer resets */
   u64_unix_ms_t reset_tstamp; /**< timestamp of when cooldown timer resets */
   u64_unix_ms_t update_tstamp; /**< timestamp of the most recent request */
   
   pthread_mutex_t lock; /**< synchronize buckets between threads */
-  pthread_cond_t cond;
   UT_hash_handle hh; /**< makes this structure hashable */
 };
 
@@ -120,8 +119,9 @@ void discord_buckets_cleanup(struct discord_adapter *adapter);
  *        associated with the bucket until cooldown time elapses
  * @param adapter the client adapter containinig every bucket found
  * @param bucket check if bucket expects a cooldown before performing a request
+ * @return timespan to wait for in milliseconds
  */
-void discord_bucket_try_cooldown(struct discord_adapter *adapter, struct discord_bucket *bucket);
+long discord_bucket_get_cooldown(struct discord_adapter *adapter, struct discord_bucket *bucket);
 
 /**
  * @brief Get existing bucket with @p route

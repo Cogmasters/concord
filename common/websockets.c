@@ -797,3 +797,13 @@ bool
 ws_same_thread(struct websockets *ws) {
   return ws->tid == pthread_self();
 }
+
+int 
+ws_lock(struct websockets *ws) {
+  return pthread_mutex_lock(&ws->lock);
+}
+
+int
+ws_unlock(struct websockets *ws) {
+  return pthread_mutex_unlock(&ws->lock);
+}

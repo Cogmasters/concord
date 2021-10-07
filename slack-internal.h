@@ -26,7 +26,8 @@ ORCAcode slack_webapi_run(
   struct slack_webapi *webapi, 
   struct sized_buffer *p_resp_body,
   struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[], ...);
+  enum http_method http_method, 
+  char endpoint_fmt[], ...);
 
 struct slack_sm {
   struct websockets *ws;
