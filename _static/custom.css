@@ -18,11 +18,6 @@
 
 /* THE FOLLOWING MODIFY HOW THE DEFAULT PAGE IS RENDERED */
 
-/* Hide all rendered titles for doxygen's groups */
-.section .sig.sig-object.cpp {
-    display: none;
-}
-
 /* Hide the welcome text */
 .section#welcome-to-orca > h1 {
     display: none;
