@@ -1163,10 +1163,36 @@
 </p>
 </dd></dl>
 
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenenum: Cannot find enum “discord_event_handling_mode” in doxygen xml output for project “Orca” from directory: ../xml</p>
-</div>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_event_scheduler">
+<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_event_scheduler</span></span></span><a class="headerlink" href="#c.discord_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>return value of <a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> callback </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> </p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_IGNORE">
+<span class="target" id="discord_8h_1gad871630e69eb4355566dc8c1031bae76aa592f84b7c8c98d876e01f6370eaa9bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_IGNORE</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_IGNORE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>this event has been handled </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD">
+<span class="target" id="discord_8h_1gad871630e69eb4355566dc8c1031bae76a37aa110da76890681fbeec022ec8a29f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_MAIN_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>handle this event in main thread </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD">
+<span class="target" id="discord_8h_1gad871630e69eb4355566dc8c1031bae76a79c17442662efa88d24ddcc450bc4684"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_WORKER_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>handle this event in a worker thread </p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 <section id="datatypes">
@@ -1183,11 +1209,11 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
 <dl class="c type">
 <dt class="sig sig-object c" id="c.discord_event_scheduler_cb">
-<span class="target" id="group__DiscordCallbacksGeneral_1ga854817b69665e5bed24b1f12ad650111"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="n"><span class="pre">discord_event_scheduler</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_event_scheduler_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sized_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event_data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_events" title="discord_gateway_events"><span class="n"><span class="pre">discord_gateway_events</span></span></a><span class="w"> </span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.discord_event_scheduler_cb" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordCallbacksGeneral_1ga854817b69665e5bed24b1f12ad650111"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_event_scheduler" title="discord_event_scheduler"><span class="n"><span class="pre">discord_event_scheduler</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_event_scheduler_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">bot</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">sized_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">event_data</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_gateway_events" title="discord_gateway_events"><span class="n"><span class="pre">discord_gateway_events</span></span></a><span class="w"> </span><span class="n"><span class="pre">event</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.discord_event_scheduler_cb" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Event Handling Mode callback. </p>
 <p>A very important callback that enables the user with a fine-grained control of how each event is handled: blocking, non-blocking or ignored</p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p>discord_set_event_scheduler() </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> </p>
 </dd>
 <dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#gateway_8h_1a90ebb76de1682ce02a67a08b0510145b"><span class="std std-ref">discord_gateway_events</span></a> </p>
 </dd>
@@ -10259,10 +10285,70 @@
 </dl>
 </dd></dl>
 
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_event_scheduler">
+<span class="target" id="discord_8h_1a711b3197c991b6a435bea981d516b70c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_scheduler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.discord_event_scheduler_cb" title="discord_event_scheduler_cb"><span class="n"><span class="pre">discord_event_scheduler_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Specify how events should execute their callbacks, in a blocking or non-blocking fashion. </p>
+<p>This is a very important function that provides the user a more fine-grained control of the Discord Gateway’s event-loop. By default, every event callback will block the event-loop, but for a scalable bot application this is undesirable. To circumvent this the user can specify which events should be executed in parallel.</p>
+<p>In the following example code, a MESSAGE_CREATE event callback will be executed non-blocking and READY callback on the main thread, while anything else will be ignored and won’t be executed.</p>
+<p><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="k">enum</span> <span class="n">discord_event_scheduler</span>
+<span class="n">scheduler</span><span class="p">(</span>
+  <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+  <span class="k">struct</span> <span class="n">discord_user</span> <span class="o">*</span><span class="n">bot</span><span class="p">,</span>
+  <span class="k">struct</span> <span class="n">sized_buffer</span> <span class="o">*</span><span class="n">event_data</span><span class="p">,</span>
+  <span class="k">enum</span> <span class="n">discord_gateway_events</span> <span class="n">event</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span><span class="p">:</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_WORKER_THREAD</span><span class="p">;</span>
+  <span class="k">default</span><span class="o">:</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">discord_init</span><span class="p">(</span><span class="n">TOKEN</span><span class="p">);</span>
+
+  <span class="n">discord_set_event_scheduler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">scheduler</span><span class="p">);</span>
+
+  <span class="c1">// The following will be executed on main thread</span>
+  <span class="n">discord_set_on_ready</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_ready</span><span class="p">);</span>
+  <span class="c1">// The following will be executed on a worker thread</span>
+  <span class="n">discord_set_on_message_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_create</span><span class="p">);</span>
+  <span class="c1">// The following will be ignored</span>
+  <span class="n">discord_set_on_message_delete</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_delete</span><span class="p">);</span>
+  <span class="n">discord_set_on_channel_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_channel_create</span><span class="p">);</span>
+
+  <span class="n">discord_run</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p>enum <a class="reference internal" href="#discord_8h_1ad871630e69eb4355566dc8c1031bae76"><span class="std std-ref">discord_event_scheduler</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p>enum <a class="reference internal" href="#gateway_8h_1a90ebb76de1682ce02a67a08b0510145b"><span class="std std-ref">discord_gateway_events</span></a> </p>
+</dd>
+</dl>
+</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>doxygenfunction: Cannot find function “discord_set_event_handler” in doxygen xml output for project “Orca” from directory: ../xml</p>
+<p>The user is responsible for providing his own locking mechanism to avoid race-condition on sensitive data. </p>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created_with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>fn</strong> – the function that will be executed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="set-event-callbacks">
 <h4>Set Event Callbacks<a class="headerlink" href="#set-event-callbacks" title="Permalink to this headline">¶</a></h4>

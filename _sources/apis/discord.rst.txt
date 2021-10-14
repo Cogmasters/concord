@@ -19,7 +19,7 @@ Client
 ~~~~~~
 
 .. doxygenstruct:: discord
-.. doxygenenum:: discord_event_handling_mode
+.. doxygenenum:: discord_event_scheduler
 
 Datatypes
 ---------
@@ -228,7 +228,7 @@ Set Behaviour
 .. doxygenfunction:: discord_add_intents
 .. doxygenfunction:: discord_remove_intents
 .. doxygenfunction:: discord_set_prefix
-.. doxygenfunction:: discord_set_event_handler
+.. doxygenfunction:: discord_set_event_scheduler
 
 Set Event Callbacks
 ^^^^^^^^^^^^^^^^^^^
