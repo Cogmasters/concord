@@ -44,8 +44,8 @@ SLACK_SRC    := $(wildcard slack-*.c)
 SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs cflags
-LIBDISCORD_CFLAGS := -std=c89
-LIBGITHUB_CFLAGS  :=# -std=c89
+LIBDISCORD_CFLAGS := 
+LIBGITHUB_CFLAGS  :=
 LIBREDDIT_CFLAGS  :=
 LIBSLACK_CFLAGS   :=
 
@@ -77,7 +77,7 @@ TEST_EXES := $(filter %.out, $(TEST_SRC:.c=.out))
 LIBS_CFLAGS  += -I./mujs
 LIBS_LDFLAGS += -L./$(LIBDIR) -lpthread -lm
 
-CFLAGS += -std=c11 -O0 -g                                 \
+CFLAGS += -O0 -g                                 		  \
           -Wall -Wno-unused-function                      \
           -I. -I./$(CEE_UTILS_DIR)                        \
           -I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \

@@ -31,4 +31,5 @@ struct github {
   struct github_presets presets;
 };
 
-#endif // GITHUB_INTERNAL_H
+/* GITHUB_INTERNAL_H */
+#endif

@@ -202,8 +202,8 @@ discord_set_on_command(struct discord *client, char *command, discord_message_cb
 }
 
 void 
-discord_set_event_handler(struct discord *client, discord_event_mode_cb fn) {
-  client->gw.user_cmd->event_handler = fn;
+discord_set_event_scheduler(struct discord *client, discord_event_scheduler_cb callback) {
+  client->gw.user_cmd->scheduler = callback;
 }
 
 void

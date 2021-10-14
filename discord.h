@@ -77,10 +77,10 @@ struct discord_voice_cbs;
  * A very important callback that enables the user with a fine-grained control 
  * of how each event is handled: blocking, non-blocking or ignored
  *
- * @see discord_set_event_handler()
+ * @see discord_set_event_scheduler()
  * @see discord_gateway_events
  */
-typedef enum discord_event_handling_mode (*discord_event_mode_cb)(struct discord *client, struct discord_user *bot, struct sized_buffer *event_data, enum discord_gateway_events event);
+typedef enum discord_event_scheduler (*discord_event_scheduler_cb)(struct discord *client, struct discord_user *bot, struct sized_buffer *event_data, enum discord_gateway_events event);
 
 /** 
  * @brief Idle callback
@@ -404,14 +404,14 @@ void discord_remove_intents(struct discord *client, enum discord_gateway_intents
 void discord_set_prefix(struct discord *client, char *prefix);
 
 /**
- * @brief return value of discord_set_event_handler() callback
+ * @brief return value of discord_set_event_scheduler() callback
  *
- * @see discord_set_event_handler()
+ * @see discord_set_event_scheduler()
  */
-enum discord_event_handling_mode {
+enum discord_event_scheduler {
   DISCORD_EVENT_IGNORE,  /**< this event has been handled */
   DISCORD_EVENT_MAIN_THREAD, /**< handle this event in main thread */
-  DISCORD_EVENT_CHILD_THREAD /**< handle this event in a child thread */
+  DISCORD_EVENT_WORKER_THREAD /**< handle this event in a worker thread */
 };
 
 /**
@@ -428,8 +428,8 @@ enum discord_event_handling_mode {
  *
  * @code{.c}
  * ...
- * enum discord_event_handling_mode
- * handle_events(
+ * enum discord_event_scheduler
+ * scheduler(
  *   struct discord *client,
  *   struct discord_user *bot,
  *   struct sized_buffer *event_data,
@@ -439,7 +439,7 @@ enum discord_event_handling_mode {
  *   case DISCORD_GATEWAY_EVENTS_READY:
  *      return DISCORD_EVENT_MAIN_THREAD;
  *   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
- *      return DISCORD_EVENT_CHILD_THREAD;
+ *      return DISCORD_EVENT_WORKER_THREAD;
  *   default:
  *      return DISCORD_EVENT_IGNORE;
  *   }
@@ -449,11 +449,11 @@ enum discord_event_handling_mode {
  * {
  *   struct discord *client = discord_init(TOKEN);
  *
- *   discord_set_event_handler(client, &handle_events);
+ *   discord_set_event_scheduler(client, &scheduler);
  *
  *   // The following will be executed on main thread
  *   discord_set_on_ready(client, &on_ready);
- *   // The following will be executed in another thread
+ *   // The following will be executed on a worker thread
  *   discord_set_on_message_create(client, &on_message_create);
  *   // The following will be ignored
  *   discord_set_on_message_delete(client, &on_message_delete);
@@ -467,11 +467,10 @@ enum discord_event_handling_mode {
  * @param fn the function that will be executed
  *
  * @warning The user is responsible for providing his own locking mechanism to avoid race-condition on sensitive data.
- * @see event_mode_cb
- * @see enum discord_event_handling_mode
+ * @see enum discord_event_scheduler
  * @see enum discord_gateway_events
  */
-void discord_set_event_handler(struct discord *client, discord_event_mode_cb fn);
+void discord_set_event_scheduler(struct discord *client, discord_event_scheduler_cb callback);
 
 /**
  * @brief Set command/callback pair, the callback is triggered if someone

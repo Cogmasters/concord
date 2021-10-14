@@ -40,4 +40,5 @@ ORCAcode github_gist_is_starred(struct github *client, char *id);
 
 ORCAcode github_get_repository_topics(struct github *client, char* owner, char* repository);
 
-#endif // GITHUB_H
+/* GITHUB_H */
+#endif

@@ -88,14 +88,14 @@ void on_message_delete_bulk(
   discord_create_message(client, channel_id, &params, NULL);
 }
 
-enum discord_event_handling_mode 
-on_any_event(
+enum discord_event_scheduler 
+scheduler(
   struct discord *client,
   struct discord_user *bot,
   struct sized_buffer *event_data,
   enum discord_gateway_events event) 
 {
-  return DISCORD_EVENT_CHILD_THREAD;
+  return DISCORD_EVENT_WORKER_THREAD;
 }
 
 int main(int argc, char *argv[])
@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
   assert(NULL != client && "Couldn't initialize client");
 
   /* trigger event callbacks in a multi-threaded fashion */
-  discord_set_event_handler(client, &on_any_event);
+  discord_set_event_scheduler(client, &scheduler);
 
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_message_create);

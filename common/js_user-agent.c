@@ -69,8 +69,9 @@ jsua_log(char *fmt, ...)
 static void 
 jsua_print(js_State *J)
 {
+  int i;
   int top = js_gettop(J);
-  for (int i=1; i < top; ++i) {
+  for (i=1; i < top; ++i) {
     const char *s = js_tostring(J, i);
     if (i > 1) putchar(' ');
     fputs(s, stdout);

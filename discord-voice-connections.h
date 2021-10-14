@@ -82,12 +82,13 @@ struct discord_voice_cbs { /* CALLBACKS STRUCTURE */
  *
  * @note struct discord_voice are reused on a guild basis, because there can
  *        be only one active struct discord_voice session per guild.
- * @see discord_join_vc()
+ * @see discord_voice_join()
  * @see discord_voice_get_vc()
  */
 struct discord_voice {
-  u64_snowflake_t guild_id; /**< the session guild id @note obtained from discord_join_vc() */
-  u64_snowflake_t channel_id; /**< the session channel id @note obtained from discord_join_vc() */
+  struct logconf conf; /**< DISCORD_VOICE logging module */
+  u64_snowflake_t guild_id; /**< the session guild id @note obtained from discord_voice_join() */
+  u64_snowflake_t channel_id; /**< the session channel id @note obtained from discord_voice_join() */
   /** @note obtained from on_voice_server_update() */
   char token[128]; /**< the session token @note obtained from on_voice_server_update() */
   char new_token[128]; /**< the new session token after a voice region change @note obtained from on_voice_server_update() */
@@ -139,8 +140,6 @@ struct discord_voice {
 
   struct discord_voice_cbs *p_voice_cbs;
 
-  uint64_t  message_channel_id; /**< used to communicate the status of the bot state changes */
-
   /**
    * @brief Interval to divide the received packets
    *
@@ -153,16 +152,16 @@ struct discord_voice {
 /**
  * @brief Set a callback that triggers at every event-loop iteration.
  *
- * @param vc the VC obtained with discord_join_vc()
+ * @param vc the voice connection obtained with discord_voice_join()
  * @param callback the callback that will be executed
  */
 void discord_voice_set_on_idle(struct discord_voice *vc, discord_voice_idle_cb *callback);
 
-enum discord_join_vc_status {
-  DISCORD_JOIN_VC_ERROR = 0,
-  DISCORD_JOIN_VC_JOINED = 1,
-  DISCORD_JOIN_VC_EXHAUST_CAPACITY,
-  DISCORD_JOIN_VC_ALREADY_JOINED
+enum discord_voice_status {
+  DISCORD_VOICE_ERROR = 0,
+  DISCORD_VOICE_JOINED,
+  DISCORD_VOICE_EXHAUST_CAPACITY,
+  DISCORD_VOICE_ALREADY_JOINED
 };
 
 /**
@@ -170,16 +169,15 @@ enum discord_join_vc_status {
  *
  * Necessary to connect to the voice server. When succesful a new voice connection instance will start
  * @param client the client created with discord_init()
- * @param msg @todo remove this non-intuitive requirement
  * @param guild_id the guild that houses the voice channel
  * @param channel_id the voice channel the client wants to connect to
  * @param self_mute true will join as mute 
  * @param self_deaf true will join as deaf 
- * @return enum discord_join_vc_status value
+ * @return enum discord_voice_status value
  */
-enum discord_join_vc_status discord_join_vc(
+enum discord_voice_status 
+discord_voice_join(
   struct discord *client,
-  struct discord_message *msg,
   u64_snowflake_t guild_id,
   u64_snowflake_t channel_id,
   bool self_mute,
@@ -188,7 +186,7 @@ enum discord_join_vc_status discord_join_vc(
 /**
  * @brief Notify clients that you are speaking or have stopped speaking.
  *
- * @param vc the VC obtained with discord_join_vc()
+ * @param vc the voice connection obtained with discord_voice_join()
  * @param flag
  * @param delay Should be set to 0.
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
@@ -220,7 +218,7 @@ void _discord_on_voice_server_update(struct discord *client, u64_snowflake_t gui
 /**
  * @brief Gracefully exits a ongoing Discord Voice connection
  * 
- * @param vc the VC obtained with discord_join_vc()
+ * @param vc the voice connection obtained with discord_voice_join()
  * @note Wraps around ws_set_action()
  * @see websockets.h
  */
@@ -229,7 +227,7 @@ void discord_voice_shutdown(struct discord_voice *vc);
 /**
  * @brief Gracefully reconnect a ongoing Discord Voice connection
  * 
- * @param vc the VC obtained with discord_join_vc()
+ * @param vc the voice connection obtained with discord_voice_join()
  * @param resume true to attempt to resume to previous session,
  *        false reconnect to a fresh session
  * @note Helper around ws_set_action()
@@ -240,7 +238,7 @@ void discord_voice_reconnect(struct discord_voice *vc, bool resume);
 /**
  * @brief Check if a Discord Voice connection is alive
  *
- * @param vc the VC obtained with discord_join_vc()
+ * @param vc the voice connection obtained with discord_voice_join()
  * @return true if WebSockets status is different than
  *        WS_DISCONNECTED, false otherwise.
  */

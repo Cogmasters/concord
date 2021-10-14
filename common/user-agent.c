@@ -516,7 +516,8 @@ ua_cleanup(struct user_agent *ua)
   if (ua->is_original) 
   {
     if (ua->conn->pool) {
-      for (size_t i=0; i < ua->conn->amt; ++i)
+      size_t i;
+      for (i=0; i < ua->conn->amt; ++i)
         conn_cleanup(ua->conn->pool[i]);
       free(ua->conn->pool);
     }
@@ -846,7 +847,8 @@ ua_info_respheader_field(struct ua_info *info, char field[])
 {
   const size_t len = strlen(field);
   struct sized_buffer h_field; /* header field */
-  for (int i=0; i < info->resp_header.size; ++i) {
+  int i;
+  for (i=0; i < info->resp_header.size; ++i) {
     h_field = (struct sized_buffer){
       info->resp_header.buf + info->resp_header.pairs[i].field.idx,
       info->resp_header.pairs[i].field.size

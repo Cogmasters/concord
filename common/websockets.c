@@ -11,7 +11,7 @@
 
 #define CURLE_CHECK(ws, ecode)                             \
   VASSERT_S(CURLE_OK == ecode, "[%s] (CURLE code: %d) %s", \
-      ws->conf.id,                                             \
+      ws->conf.id,                                         \
       ecode,                                               \
       IS_EMPTY_STRING(ws->errbuf)                          \
         ? curl_easy_strerror(ecode)                        \
@@ -19,7 +19,7 @@
 
 #define CURLM_CHECK(ws, mcode)                             \
   VASSERT_S(CURLM_OK == mcode, "[%s] (CURLM code: %d) %s", \
-      ws->conf.id,                                             \
+      ws->conf.id,                                         \
       mcode,                                               \
       curl_multi_strerror(mcode))
 
@@ -251,7 +251,8 @@ _ws_set_status_nolock(struct websockets *ws, enum ws_status status)
   ws->status = status;
 }
 
-static void // thread-safe
+/* thread-safe */
+static void
 _ws_set_status(struct websockets *ws, enum ws_status status)
 {
   pthread_mutex_lock(&ws->lock);
@@ -299,7 +300,7 @@ cws_on_close_cb(void *p_ws, CURL *ehandle, enum cws_close_reason cwscode, const 
   (*ws->cbs.on_close)(ws->cbs.data, ws, &ws->info, cwscode, reason, len);
   ws->action = WS_ACTION_END_CLOSE;
 
-  // will set status to WS_DISCONNECTED when is_running == false
+  /* will set status to WS_DISCONNECTED when is_running == false */
 }
 
 static void
@@ -421,13 +422,13 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
   CURL *new_ehandle = cws_new(ws->base_url, ws_protocols, &cws_cbs);
 
   CURLcode ecode;
-  //set error buffer for capturing CURL error descriptions
+  /* set error buffer for capturing CURL error descriptions */
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, ws->errbuf);
   CURLE_CHECK(ws, ecode);
-  //enable follow redirections
+  /* enable follow redirections */
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
   CURLE_CHECK(ws, ecode);
-  //enable progress function (a callback that executes constantly)
+  /* enable progress function (a callback that executes constantly) */
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_XFERINFOFUNCTION, &_ws_check_action_cb);
   CURLE_CHECK(ws, ecode);
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_XFERINFODATA, ws);
@@ -513,7 +514,7 @@ ws_init(struct ws_callbacks *cbs, struct logconf *conf)
   logconf_branch(&new_ws->conf, conf, "WEBSOCKETS");
 
   new_ws->cbs = *cbs;
-  // use noop callbacks for missing callbacks
+  /* use noop callbacks for missing callbacks */
   if (!new_ws->cbs.on_connect) new_ws->cbs.on_connect = &noop_on_connect;
   if (!new_ws->cbs.on_text) new_ws->cbs.on_text = &noop_on_text;
   if (!new_ws->cbs.on_binary) new_ws->cbs.on_binary = &noop_on_binary;
@@ -561,7 +562,7 @@ ws_cleanup(struct websockets *ws)
 bool
 ws_send_binary(struct websockets *ws, struct ws_info *info, const char msg[], size_t msglen)
 {
-  VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
+  ASSERT_S(ws->tid == pthread_self(), "Can only be called from main-thread");
 
   logconf_http(
     &ws->conf, 
@@ -590,7 +591,7 @@ ws_send_binary(struct websockets *ws, struct ws_info *info, const char msg[], si
 bool
 ws_send_text(struct websockets *ws, struct ws_info *info, const char text[], size_t len)
 {
-  VASSERT_S(ws->tid == pthread_self(), "Can only be called from thread %u", ws->tid);
+  ASSERT_S(ws->tid == pthread_self(), "Can only be called from main-thread");
 
   logconf_http(
     &ws->conf, 
@@ -619,7 +620,8 @@ ws_send_text(struct websockets *ws, struct ws_info *info, const char text[], siz
 bool 
 ws_ping(struct websockets *ws, struct ws_info *info, const char *reason, size_t len)
 {
-#if 0 // disabled because this creates too many entries
+/* disabled because this creates too many entries */
+#if 0
   logconf_http(
     &ws->conf, 
     &ws->info.loginfo,
@@ -645,7 +647,8 @@ ws_ping(struct websockets *ws, struct ws_info *info, const char *reason, size_t 
 bool 
 ws_pong(struct websockets *ws, struct ws_info *info, const char *reason, size_t len)
 {
-#if 0 // disabled because this creates too many entries
+/* disabled because this creates too many entries */
+#if 0
   logconf_http(
     &ws->conf, 
     &ws->info.loginfo,
@@ -671,7 +674,7 @@ ws_pong(struct websockets *ws, struct ws_info *info, const char *reason, size_t 
 void
 ws_start(struct websockets *ws) 
 {
-  ws->tid = pthread_self(); // save the starting thread
+  ws->tid = pthread_self(); /* save the starting thread */
   memset(&ws->pending_close, 0, sizeof ws->pending_close);
   ws->action = WS_ACTION_NONE;
 
@@ -714,21 +717,21 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
   mcode = curl_multi_perform(ws->mhandle, &is_running);
   CURLM_CHECK(ws, mcode);
   
-  // wait for some activity or timeout after "wait_ms" elapsed
+  /* wait for some activity or timeout after "wait_ms" elapsed */
   mcode = curl_multi_wait(ws->mhandle, NULL, 0, wait_ms, &numfds);
   CURLM_CHECK(ws, mcode);
 
-  if (!is_running) { // WebSockets connection is severed
+  if (!is_running) { /* WebSockets connection is severed */
     _ws_set_status(ws, WS_DISCONNECTING);
 
-    // read messages/informationals from the individual transfers
+    /* read messages/informationals from the individual transfers */
     int msgq = 0;
     struct CURLMsg *curlmsg = curl_multi_info_read(ws->mhandle, &msgq);
     if (curlmsg) {
       CURLcode ecode = curlmsg->data.result;
       switch (ecode) {
       case CURLE_OK:
-      case CURLE_ABORTED_BY_CALLBACK: // _ws_check_action_cb()
+      case CURLE_ABORTED_BY_CALLBACK: /* _ws_check_action_cb() */
           logconf_info(&ws->conf, "Disconnected gracefully");
           break;
       case CURLE_READ_ERROR:
@@ -748,7 +751,7 @@ ws_perform(struct websockets *ws, bool *p_is_running, uint64_t wait_ms)
     
     curl_multi_remove_handle(ws->mhandle, ws->ehandle);
 
-    // reset for next iteration
+    /* reset for next iteration */
     *ws->errbuf = '\0';
     if (ws->ehandle) {
       cws_free(ws->ehandle);

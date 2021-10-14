@@ -20,6 +20,8 @@
 #include "user-agent.h"
 #include "websockets.h"
 #include "cee-utils.h"
+#include "threadpool.h"
+
 #include "discord-voice-connections.h"
 
 /**
@@ -211,6 +213,7 @@ struct discord_gateway_cbs {
 struct discord_gateway {
   struct logconf conf; /**< DISCORD_GATEWAY logging module */
   struct websockets *ws; /**< the websockets handle that connects to Discord */
+  threadpool_t *tpool; /**< thread-pool manager */
 
   struct { /**< Reconnect structure */
     bool enable; /**< will attempt reconnecting if true */
@@ -262,7 +265,7 @@ struct discord_gateway {
     struct discord_gateway_cmd_cbs on_default; /**< user's default callback incase prefix matches but command doesn't */
 
     struct discord_gateway_cbs cbs;            /**< user's callbacks */
-    discord_event_mode_cb event_handler;       /**< context on how each event callback is executed @see discord_set_event_handler() */
+    discord_event_scheduler_cb scheduler;      /**< context on how each event callback is executed @see discord_set_event_scheduler() */
   } *user_cmd;
 };
 

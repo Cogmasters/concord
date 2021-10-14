@@ -266,11 +266,12 @@ github_create_blobs(struct github *client, NTL_T(struct github_file) files)
     return ORCA_MISSING_PARAMETER;
   }
 
+  int i;
   char *f_content;
   size_t f_len;
   ORCAcode code;
 
-  for (int i=0; files[i]; ++i) {
+  for (i=0; files[i]; ++i) {
     log_info("===creating blob for %s===", files[i]->path);
 
     f_content = cee_load_whole_file(files[i]->path, &f_len);

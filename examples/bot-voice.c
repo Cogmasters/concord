@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 #include <assert.h>
 
 #include "discord.h"
+#include "discord-voice-connections.h"
 
 
 void on_ready(struct discord *client, const struct discord_user *bot) {
@@ -11,7 +13,7 @@ void on_ready(struct discord *client, const struct discord_user *bot) {
       bot->username, bot->discriminator);
 }
 
-void on_voice_regions(
+void on_list_voice_regions(
     struct discord *client,
     const struct discord_user *bot,
     const struct discord_message *msg)
@@ -33,14 +35,60 @@ void on_voice_regions(
   discord_voice_region_list_free(voice_regions);
 }
 
-enum discord_event_handling_mode 
-on_any_event(
+void on_voice_join(
   struct discord *client,
-  struct discord_user *bot,
-  struct sized_buffer *event_data,
-  enum discord_gateway_events event) 
+  const struct discord_user *bot,
+  const struct discord_message *msg)
 {
-  return DISCORD_EVENT_CHILD_THREAD;
+  if (msg->author->bot) return;
+
+  int position=-1;
+  sscanf(msg->content, "%d", &position);
+
+  struct discord_channel vchannel;
+  discord_channel_init(&vchannel);
+
+  discord_get_channel_at_pos(client, msg->guild_id, DISCORD_CHANNEL_GUILD_VOICE, position-1, &vchannel);
+
+  if (vchannel.id != 0) { // founds voice channel at pos
+    discord_voice_join(client, msg->guild_id, vchannel.id, false, false);
+  }
+  else { // couldn't find a voice channel at pos
+    struct discord_create_message_params params = { .content = "Invalid channel position" };
+    discord_create_message(client, msg->channel_id, &params, NULL);
+  }
+  discord_channel_cleanup(&vchannel);
+}
+
+void on_voice_kick(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  u64_snowflake_t user_id=0;
+  sscanf(msg->content, "%"SCNu64, &user_id);
+
+  char text[DISCORD_MAX_MESSAGE_LEN];
+  if (!user_id) {
+    sprintf(text, "Couldn't find user");
+  }
+  else {
+    discord_disconnect_guild_member(client, msg->guild_id, user_id, NULL);
+    snprintf(text, sizeof(text), "<@!%"PRIu64"> has been kicked from VC", user_id);
+  }
+
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+}
+
+void log_on_voice_state_update(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_voice_state *vs)
+{
+  log_info("User <@!%"PRIu64"> has joined <#%"PRIu64">!", vs->user_id, vs->channel_id);
 }
 
 int main(int argc, char *argv[])
@@ -56,14 +104,16 @@ int main(int argc, char *argv[])
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
-  /* trigger event callbacks in a multi-threaded fashion */
-  discord_set_event_handler(client, &on_any_event);
-
+  discord_set_on_voice_state_update(client, &log_on_voice_state_update);
   discord_set_prefix(client, "voice.");
-  discord_set_on_command(client, "regions", &on_voice_regions);
+  discord_set_on_command(client, "list_regions", &on_list_voice_regions);
+  discord_set_on_command(client, "join", &on_voice_join);
+  discord_set_on_command(client, "kick", &on_voice_kick);
 
   printf("\n\nThis bot is a work in progress, it should demonstrate some Voice related utilities\n"
-         "1. Type 'voice.regions' to list regions that can be used when creating servers\n"
+         "1. Type 'voice.list_regions' to list regions that can be used when creating servers\n"
+         "2. Type 'voice.join <channel position>' to join a particular voice channel by its position\n"
+         "3. Type 'voice.kick <user id>' to kick a particular user from the voice channel he's at\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

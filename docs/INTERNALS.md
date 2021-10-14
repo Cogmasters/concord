@@ -144,4 +144,78 @@ This may seem complicated at first, but in reality it is quite simple. As explai
 start of this guide, this JSON will be used to generate structures, enumerations, and functions
 that are used internally and by the user.
 
+On a base level, this will generate allow us to generate a structure that holds a “ja_str” which
+has a “decorator” of an “ntl.” ja_str is a string found in the JSON library that Orca uses internally.
+It holds a single value, which is a string.
+
+A decorator is simply a token that is put after the type. A decorator you may be familiar with is a *
+or [] to describe an array. This is what a decorator is in this context.
+
+Finally, an “ntl” or “null-terminated list” is a data structure that is implemented in cee-utils that
+is an array of void pointers that has a NULL pointer at the end. This is similar in principle to a
+string, which in C is almost always terminated with a NUL byte.
+
+We choose to have an array of strings here because we are extracting topics from a GitHub repository.
+There might be lots of topics, there might be none. This is “dynamic” data, when you do not know how
+much of a piece of data you will be receiving. Handling dynamic data will be covered at a later time.
+
+Now that we got our specification described in JSON format, we can begin writing the meat of our endpoint.
+
+# Writing the meat of the function
+
+To start writing the meat of our function, we will need to determine how to send information. There are
+two primary ways to send information to an endpoint.
+
+1. Send it in the URL
+2. Send it under JSON
+
+Sending information through a URL is almost always the way information is sent through a GET request,
+however it is possible to send JSON along with a GET request.
+
+Sending information under JSON is the way that POST requests communicate with the server. The endpoint
+we are dealing with is a GET request, so we must send the information through the URL. The URL accepts
+this format:
+
+```
+https://api.github.com/repos/{owner}/{repo}/topics
+```
+
+Anything inside braces are intended to be replaced with a string. If we wanted to get the topics for Orca,
+we would send a GET request to this URL:
+
+```
+https://api.github.com/repos/cee-studio/orca/topics
+```
+
+Now that we know the format of our URL, we will need to take the parameters given to our function, and put
+them into the URL. To do this, we must first cover the adapter. The adapter is the function that actually
+performs our request, and writes the response information to a buffer. Each API wrapping has its own adapter,
+which includes GitHub. GitHub’s function is named github_adapter_run.
+
+GitHub’s adapter running function’s main arguments in order are the adapter it should run, the response handler,
+the place to write the JSON to, the HTTP verb, which is something like HTTP_GET, HTTP_POST, and others. Finally,
+there is the format of the URL to send the request to. The format is a printf-style format, and the arguments that
+are after it are what will be filled in. So if we wanted to format our url, it would look like:
+
+```c
+github_adapter_run(client,
+                   handler,
+                   buffer,
+                   HTTP_GET,
+                   "api.github.com/repos/%s/%s/topics",
+                   owner,
+                   repository):
+```
+
+As you can see, We provide the values for each specifier in the URL using our function's parameters. You may also
+notice that we have a parameter, “buffer.” Buffer should be an array that should have enough space to hold the JSON
+response. For this endpoint, there is a fixed size limit on how big a response can be. For the purpose of this guide,
+we will use 1024 characters as the size of our buffer.
+
+In situations where you do not know how much information the buffer should have, whether that be because it has too
+much to fit on the stack (unlikely), or because it has dynamic data, you can use a “sized buffer” which must be managed
+through the response handler. This will be covered and added to this section at a later date.
+
+If you have any questions, feel free to join our [Discord server](https://discord.gg/nBUqrWf).
+
 If you have any questions, feel free to join our [Discord server](https://discord.gg/nBUqrWf).

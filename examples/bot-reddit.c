@@ -470,14 +470,14 @@ void cleanup_BOT()
   ja_u64_list_free((NTL_T(ja_u64))BOT.D.channel_ids); 
 }
 
-enum discord_event_handling_mode 
-on_any_event(
+enum discord_event_scheduler 
+scheduler(
   struct discord *client,
   struct discord_user *bot,
   struct sized_buffer *event_data,
   enum discord_gateway_events event) 
 {
-  return DISCORD_EVENT_CHILD_THREAD;
+  return DISCORD_EVENT_WORKER_THREAD;
 }
 
 int main(int argc, char *argv[])
@@ -510,7 +510,7 @@ int main(int argc, char *argv[])
   load_BOT(config_file);
 
   /* trigger event callbacks in a multi-threaded fashion */
-  discord_set_event_handler(BOT.D.client, &on_any_event);
+  discord_set_event_scheduler(BOT.D.client, &scheduler);
 
   discord_set_on_ready(BOT.D.client, &on_ready);
 
