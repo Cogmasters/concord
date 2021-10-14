@@ -176,7 +176,7 @@ Included headers must be `orca/` prefixed:
 ### Standalone executable
 
 ```bash
-$ gcc myBot.c -o myBot.out -ldiscord -lcurl -lcrypto -lpthread -lm
+$ gcc myBot.c -o myBot.out -pthread -ldiscord -lcurl -lcrypto -lm
 ```
 
 ## Debugging Memory Errors

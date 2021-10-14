@@ -75,9 +75,9 @@ TEST_EXES := $(filter %.out, $(TEST_SRC:.c=.out))
 
 
 LIBS_CFLAGS  += -I./mujs
-LIBS_LDFLAGS += -L./$(LIBDIR) -lpthread -lm
+LIBS_LDFLAGS += -L./$(LIBDIR) -lm
 
-CFLAGS += -O0 -g                                 		  \
+CFLAGS += -O0 -g -pthread                                	\
           -Wall -Wno-unused-function                      \
           -I. -I./$(CEE_UTILS_DIR)                        \
           -I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \

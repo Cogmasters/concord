@@ -12,14 +12,15 @@ SRC  := $(wildcard ./*.c)
 # EXES replaces all .c extensions from SRC with .out
 EXES := $(patsubst %.c, %.out, $(SRC))
 
-# -I links to a folder where a header dependency resides
-# -Wall emit warnings
-# -std=c11 tells the compiler to build against c11 standard
 # -O0 no optimization
+# -Wall emit warnings
 # -g keep this for debugging with gdb
-CFLAGS  := -I. -I$(TOP) -I$(TOP)/cee-utils             \
+# -pthread tell the compiler to link the pthread library
+#  			aswell configure compilation for threads
+# -I links to a folder where a header dependency resides
+CFLAGS  := -O0 -g -Wall -pthread                       \
+           -I. -I$(TOP) -I$(TOP)/cee-utils             \
            -I$(TOP)/common -I$(TOP)/common/third-party \
-           -Wall -std=c11 -O0 -g
 
 # -L links to a folder where a lib dependency resides
 # -ldiscord links against libdiscord.a
