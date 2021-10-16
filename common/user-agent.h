@@ -67,7 +67,7 @@ struct ua_resp_handle {
 
 struct ua_resp_header {
   char *buf;      /**< response header buffer */
-  size_t length;  /**< response header string length */
+  size_t len;  /**< response header string length */
   size_t bufsize; /**< real size occupied in memory by buffer */
 
   struct {  /**< array of header field/value pairs */
@@ -81,7 +81,7 @@ struct ua_resp_header {
 
 struct ua_resp_body {
   char *buf;      /**< response body buffer */
-  size_t length;  /**< response body string length */
+  size_t len;  /**< response body string length */
   size_t bufsize; /**< real size occupied in memory by buffer */
 };
 
@@ -90,8 +90,8 @@ struct ua_info {
   int httpcode;                      /**< the HTTP response code */
   struct sized_buffer req_url;       /**< request URL */
   uint64_t req_tstamp;               /**< timestamp of when the request completed */
-  struct ua_resp_header resp_header; /**< the response header */
-  struct ua_resp_body resp_body;     /**< the response body */
+  struct ua_resp_header header; /**< the response header */
+  struct ua_resp_body body;     /**< the response body */
 };
 
 const char* http_code_print(int httpcode);
@@ -121,8 +121,8 @@ ORCAcode ua_run(
   enum http_method http_method, char endpoint[]);
 
 void ua_info_cleanup(struct ua_info *info);
-struct sized_buffer ua_info_respheader_field(struct ua_info *info, char field[]);
-struct sized_buffer ua_info_get_resp_body(struct ua_info *info);
+struct sized_buffer ua_info_header_get(struct ua_info *info, char field[]);
+struct sized_buffer ua_info_get_body(struct ua_info *info);
 
 #ifdef __cplusplus
 }

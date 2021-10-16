@@ -296,14 +296,14 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
     return bufsize;
   }
 
-  if (header->bufsize < (header->length + bufsize + 1)) {
-    header->bufsize = header->length + bufsize + 1;
+  if (header->bufsize < (header->len + bufsize + 1)) {
+    header->bufsize = header->len + bufsize + 1;
     header->buf = realloc(header->buf, header->bufsize);
   }
-  memcpy(&header->buf[header->length], buf, bufsize);
+  memcpy(&header->buf[header->len], buf, bufsize);
 
   /* get the field part of the string */
-  header->pairs[header->size].field.idx = header->length;
+  header->pairs[header->size].field.idx = header->len;
   header->pairs[header->size].field.size = delim_idx;
 
   /* offsets blank characters */
@@ -315,10 +315,10 @@ conn_respheader_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   }
 
   /* get the value part of the string */
-  header->pairs[header->size].value.idx = header->length + (delim_idx + bufoffset);
+  header->pairs[header->size].value.idx = header->len + (delim_idx + bufoffset);
   header->pairs[header->size].value.size = (ptr - buf) - (delim_idx + bufoffset);
 
-  header->length += bufsize;
+  header->len += bufsize;
 
   ++header->size; /* update header amount of field/value header */
   ASSERT_S(header->size < UA_MAX_HEADER_SIZE, "Out of bounds write attempt");
@@ -337,13 +337,13 @@ conn_respbody_cb(char *buf, size_t size, size_t nmemb, void *p_userdata)
   struct ua_resp_body *body = p_userdata;
 
   /*increase response body memory block size only if necessary */
-  if (body->bufsize < (body->length + bufchunk_size + 1)) {
-    body->bufsize = body->length + bufchunk_size + 1;
+  if (body->bufsize < (body->len + bufchunk_size + 1)) {
+    body->bufsize = body->len + bufchunk_size + 1;
     body->buf = realloc(body->buf, body->bufsize);
   }
-  memcpy(&body->buf[body->length], buf, bufchunk_size);
-  body->length += bufchunk_size;
-  body->buf[body->length] = '\0';
+  memcpy(&body->buf[body->len], buf, bufchunk_size);
+  body->len += bufchunk_size;
+  body->buf[body->len] = '\0';
   return bufchunk_size;
 }
 
@@ -386,7 +386,7 @@ conn_init(struct user_agent *ua)
   CURLE_CHECK(new_conn, ecode);
 
   /*set ptr to response body to be filled at callback */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->info.resp_body);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->info.body);
   CURLE_CHECK(new_conn, ecode);
 
   /*set response header callback */
@@ -394,7 +394,7 @@ conn_init(struct user_agent *ua)
   CURLE_CHECK(new_conn, ecode);
 
   /*set ptr to response header to be filled at callback */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.resp_header);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.header);
   CURLE_CHECK(new_conn, ecode);
 
   /* execute user-defined curl_easy_setopts */
@@ -421,9 +421,9 @@ conn_reset(struct _ua_conn *conn)
   conn->is_busy = false;
   conn->info.httpcode = 0;
   conn->info.req_tstamp = 0;
-  conn->info.resp_body.length = 0;
-  conn->info.resp_header.length = 0;
-  conn->info.resp_header.size = 0;
+  conn->info.body.len = 0;
+  conn->info.header.len = 0;
+  conn->info.header.size = 0;
   *conn->errbuf = '\0';
 }
 
@@ -648,8 +648,8 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
     &ua->conf, 
     &conn->info.loginfo,
     resp_url, 
-    (struct sized_buffer){conn->info.resp_header.buf, conn->info.resp_header.length},
-    (struct sized_buffer){conn->info.resp_body.buf, conn->info.resp_body.length},
+    (struct sized_buffer){conn->info.header.buf, conn->info.header.len},
+    (struct sized_buffer){conn->info.body.buf, conn->info.body.len},
     "HTTP_RCV_%s(%d)", http_code_print(httpcode), httpcode);
 
   pthread_mutex_unlock(&ua->shared->lock);
@@ -676,15 +676,15 @@ perform_request(
     if (resp_handle) {
       if (resp_handle->err_cb) {
         (*resp_handle->err_cb)(
-          conn->info.resp_body.buf,
-          conn->info.resp_body.length,
+          conn->info.body.buf,
+          conn->info.body.len,
           resp_handle->err_obj);
       }
       else if (resp_handle->cxt_err_cb) {
         (*resp_handle->cxt_err_cb)(
           resp_handle->cxt,
-          conn->info.resp_body.buf,
-          conn->info.resp_body.length,
+          conn->info.body.buf,
+          conn->info.body.len,
           resp_handle->err_obj);
       }
     }
@@ -700,15 +700,15 @@ perform_request(
     if (resp_handle) {
       if(resp_handle->err_cb) {
         (*resp_handle->err_cb)(
-          conn->info.resp_body.buf,
-          conn->info.resp_body.length,
+          conn->info.body.buf,
+          conn->info.body.len,
           resp_handle->err_obj);
       }
       else if (resp_handle->cxt_err_cb) {
         (*resp_handle->cxt_err_cb)(
           resp_handle->cxt,
-          conn->info.resp_body.buf,
-          conn->info.resp_body.length,
+          conn->info.body.buf,
+          conn->info.body.len,
           resp_handle->err_obj);
       }
     }
@@ -732,15 +732,15 @@ perform_request(
     if (resp_handle) {
       if (resp_handle->ok_cb) {
         (*resp_handle->ok_cb)(
-          conn->info.resp_body.buf,
-          conn->info.resp_body.length,
+          conn->info.body.buf,
+          conn->info.body.len,
           resp_handle->ok_obj);
       }
       else if (resp_handle->cxt_ok_cb) {
         (*resp_handle->cxt_ok_cb)(
           resp_handle->cxt,
-          conn->info.resp_body.buf,
-          conn->info.resp_body.length,
+          conn->info.body.buf,
+          conn->info.body.len,
           resp_handle->ok_obj);
       }
     }
@@ -809,10 +809,10 @@ ua_run(
   pthread_mutex_lock(&ua->shared->lock);
   if (info) {
     memcpy(info, &conn->info, sizeof(struct ua_info));
-    asprintf(&info->resp_body.buf, "%.*s", \
-        (int)conn->info.resp_body.length, conn->info.resp_body.buf);
-    asprintf(&info->resp_header.buf, "%.*s", \
-        (int)conn->info.resp_header.length, conn->info.resp_header.buf);
+    asprintf(&info->body.buf, "%.*s", \
+        (int)conn->info.body.len, conn->info.body.buf);
+    asprintf(&info->header.buf, "%.*s", \
+        (int)conn->info.header.len, conn->info.header.buf);
     asprintf(&info->req_url.start, "%.*s", \
         (int)conn->info.req_url.size, conn->info.req_url.start);
   }
@@ -832,10 +832,10 @@ ua_info_cleanup(struct ua_info *info)
 {
   if (info->req_url.start)
     free(info->req_url.start);
-  if (info->resp_body.buf)
-    free(info->resp_body.buf);
-  if (info->resp_header.buf)
-    free(info->resp_header.buf);
+  if (info->body.buf)
+    free(info->body.buf);
+  if (info->header.buf)
+    free(info->header.buf);
   memset(info, 0, sizeof(struct ua_info));
 }
 
@@ -843,20 +843,20 @@ ua_info_cleanup(struct ua_info *info)
  * attempt to get value from matching response header field
  */
 struct sized_buffer
-ua_info_respheader_field(struct ua_info *info, char field[])
+ua_info_header_get(struct ua_info *info, char field[])
 {
   const size_t len = strlen(field);
   struct sized_buffer h_field; /* header field */
   int i;
-  for (i=0; i < info->resp_header.size; ++i) {
+  for (i=0; i < info->header.size; ++i) {
     h_field = (struct sized_buffer){
-      info->resp_header.buf + info->resp_header.pairs[i].field.idx,
-      info->resp_header.pairs[i].field.size
+      info->header.buf + info->header.pairs[i].field.idx,
+      info->header.pairs[i].field.size
     };
     if (len == h_field.size && 0 == strncasecmp(field, h_field.start, len)) {
       return (struct sized_buffer){
-        info->resp_header.buf + info->resp_header.pairs[i].value.idx,
-        info->resp_header.pairs[i].value.size
+        info->header.buf + info->header.pairs[i].value.idx,
+        info->header.pairs[i].value.size
       };
     }
   }
@@ -864,6 +864,6 @@ ua_info_respheader_field(struct ua_info *info, char field[])
 }
 
 struct sized_buffer
-ua_info_get_resp_body(struct ua_info *info) {
-  return (struct sized_buffer){info->resp_body.buf, info->resp_body.length};
+ua_info_get_body(struct ua_info *info) {
+  return (struct sized_buffer){info->body.buf, info->body.len};
 }
