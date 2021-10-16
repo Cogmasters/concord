@@ -138,8 +138,8 @@ UserAgent_prototype_run(js_State *J)
     js_pushstring(J, aux);
     js_setproperty(J, -2, "requestTimestamp");
 
-    struct sized_buffer resp_body = ua_info_get_resp_body(&info);
-    js_pushstring(J, resp_body.start);
+    struct sized_buffer body = ua_info_get_body(&info);
+    js_pushstring(J, body.start);
     js_setproperty(J, -2, "responseBody");
   }
   ua_info_cleanup(&info);
@@ -152,13 +152,13 @@ UserAgent_prototype_string(js_State *J)
   struct ua_info info={0};
   jsua_run(J, ua, &info);
 
-  struct sized_buffer resp_body = ua_info_get_resp_body(&info);
-  struct sized_buffer new_resp_body={0};
+  struct sized_buffer body = ua_info_get_body(&info);
+  struct sized_buffer new_body={0};
 
-  jsua_log("original response >>>:%.*s\n", (int)resp_body.size, resp_body.start);
-  json_string_unescape(&new_resp_body.start, &new_resp_body.size, resp_body.start, resp_body.size);
-  jsua_log("unescaped response >>>:%.*s\n", (int)new_resp_body.size, new_resp_body.start);
-  js_pushstring(J, new_resp_body.start); /* this will make a new copy */
+  jsua_log("original response >>>:%.*s\n", (int)body.size, body.start);
+  json_string_unescape(&new_body.start, &new_body.size, body.start, body.size);
+  jsua_log("unescaped response >>>:%.*s\n", (int)new_body.size, new_body.start);
+  js_pushstring(J, new_body.start); /* this will make a new copy */
 
   ua_info_cleanup(&info);
 }

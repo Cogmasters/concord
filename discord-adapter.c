@@ -151,7 +151,7 @@ discord_adapter_run(
             char message[256]  = "";
             double retry_after = -1; /* seconds */
 
-            struct sized_buffer body = ua_info_get_resp_body(&adapter->err.info);
+            struct sized_buffer body = ua_info_get_body(&adapter->err.info);
             json_extract(body.start, body.size,
                         "(global):b (message):s (retry_after):lf",
                         &is_global, message, &retry_after);
