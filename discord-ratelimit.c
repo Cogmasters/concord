@@ -87,19 +87,28 @@ parse_ratelimits(struct discord_adapter *adapter, struct discord_bucket *bucket,
     logconf_debug(&adapter->ratelimit->conf, "[%.4s] Request failed", bucket->hash);
   }
   else if (bucket->update_tstamp <= info->req_tstamp) {
-    bucket->update_tstamp = info->req_tstamp;
+    /* fetch header individual fields */
+    struct sized_buffer reset = ua_info_header_get(info, "x-ratelimit-reset"),
+                        remaining = ua_info_header_get(info, "x-ratelimit-remaining"),
+                        reset_after = ua_info_header_get(info, "x-ratelimit-reset-after");
 
-    struct sized_buffer value; /* fetch header value as string */
-    value = ua_info_respheader_field(info, "x-ratelimit-reset");
-    if (value.size) bucket->reset_tstamp = 1000 * strtod(value.start, NULL);
-    value = ua_info_respheader_field(info, "x-ratelimit-remaining");
-    if (value.size) bucket->remaining = strtol(value.start, NULL, 10);
-    value = ua_info_respheader_field(info, "x-ratelimit-reset-after");
-    if (value.size) bucket->reset_after = 1000 * strtod(value.start, NULL);
+    bucket->remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1;
+    if (reset.size)
+      bucket->reset_tstamp = 1000 * strtod(reset.start, NULL); 
+    else if (reset_after.size) {
+      struct sized_buffer date = ua_info_header_get(info, "date");
+
+      /* @todo should return error if date is missing */
+      /* @todo add elapsed milliseconds since localtime */
+      u64_unix_ms_t now_tstamp = date.size ? 1000 * curl_getdate(date.start, NULL) : cee_timestamp_ms();
+      bucket->reset_tstamp = now_tstamp + 1000 * strtod(reset_after.start, NULL);
+    }
 
     logconf_info(&adapter->ratelimit->conf,
-      "[%.4s] Reset-Timestamp = %"PRIu64" ; Remaining = %d ; Reset-After = %ld ms",
-      bucket->hash, bucket->reset_tstamp, bucket->remaining, bucket->reset_after);
+      "[%.4s] Reset = %"PRIu64" ; Remaining = %d",
+      bucket->hash, bucket->reset_tstamp, bucket->remaining);
+
+    bucket->update_tstamp = info->req_tstamp;
   }
 }
 
@@ -111,7 +120,7 @@ parse_ratelimits(struct discord_adapter *adapter, struct discord_bucket *bucket,
 static void
 match_route(struct discord_adapter *adapter, const char route[], ORCAcode code, struct ua_info *info)
 {
-  struct sized_buffer hash = ua_info_respheader_field(info, "x-ratelimit-bucket");
+  struct sized_buffer hash = ua_info_header_get(info, "x-ratelimit-bucket");
   if (!hash.size) {
     logconf_debug(&adapter->ratelimit->conf,
       "[?] Missing bucket-hash from response header,"

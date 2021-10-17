@@ -99,7 +99,6 @@ struct discord_bucket {
   char hash[128]; /**< the unique hash associated with this bucket */
   int busy; /**< amount of busy connections that have not yet finished its requests */
   int remaining; /**< connections this bucket can do before waiting for cooldown */
-  long reset_after; /**< how long until cooldown timer resets */
   u64_unix_ms_t reset_tstamp; /**< timestamp of when cooldown timer resets */
   u64_unix_ms_t update_tstamp; /**< timestamp of the most recent request */
   
