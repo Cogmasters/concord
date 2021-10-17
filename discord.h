@@ -1551,7 +1551,7 @@ ORCAcode discord_edit_channel_permissions(struct discord *client, const u64_snow
  * @param channel_id the channel that the message belongs to
  * @param p_invites a null-terminated list of invite objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
-*/
+ */
 ORCAcode discord_get_channel_invites(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_invite) *p_invites);
 /** @} DiscordGetChannelInvites */
 
@@ -1904,7 +1904,7 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
  * @param p_invites the location to store the list of invites at
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
  */
-ORCAcode discord_get_guild_invites(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_invite)* p_invites);
+ORCAcode discord_get_guild_invites(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_invite) *p_invites);
 /** @} DiscordGetGuildInvites */
 
 /** @defgroup DiscordModifyGuildRolePositions

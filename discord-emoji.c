@@ -26,7 +26,7 @@ discord_list_guild_emojis(
            &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_emoji_list_from_json_v, 
-             .ok_obj = &p_emojis
+             .ok_obj = p_emojis
            },
            NULL,
            HTTP_GET,

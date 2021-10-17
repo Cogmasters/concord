@@ -433,7 +433,7 @@ discord_get_reactions(
            &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_user_list_from_json_v, 
-             .ok_obj = &p_users 
+             .ok_obj = p_users 
            },
            NULL,
            HTTP_GET,
@@ -667,7 +667,7 @@ discord_get_channel_invites(
            &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_invite_list_from_json_v,
-             .ok_obj = &p_invites
+             .ok_obj = p_invites
            },
            NULL,
            HTTP_GET,
@@ -792,7 +792,7 @@ discord_get_pinned_messages(
            &client->adapter,
            &(struct ua_resp_handle){ 
              .ok_cb = &discord_message_list_from_json_v, 
-             .ok_obj = &p_messages 
+             .ok_obj = p_messages 
            },
            NULL,
            HTTP_GET, 
@@ -1066,7 +1066,7 @@ discord_list_thread_members(
            &client->adapter,
            &(struct ua_resp_handle){
              .ok_cb = &discord_thread_member_list_from_json_v,
-             .ok_obj = &p_thread_members
+             .ok_obj = p_thread_members
            },
            NULL,
            HTTP_GET,

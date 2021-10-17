@@ -772,12 +772,21 @@ ORCAcode
 discord_get_guild_invites(
   struct discord *client,
   const u64_snowflake_t guild_id,
-  NTL_T(struct discord_invite)* p_invites)
+  NTL_T(struct discord_invite) *p_invites)
 {
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_invites) {
+    log_error("Missing 'p_invites'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
   return discord_adapter_run(
           &client->adapter,
           &(struct ua_resp_handle){
-            .ok_cb = p_invites ? &discord_invite_list_from_json_v : NULL,
+            .ok_cb = &discord_invite_list_from_json_v,
             .ok_obj = p_invites
           },
           NULL,
@@ -785,10 +794,3 @@ discord_get_guild_invites(
           "/guilds/%"PRIu64"/invites",
           guild_id);
 }
-
-
-
-
-
-
-
