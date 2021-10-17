@@ -179,20 +179,43 @@ Included headers must be `orca/` prefixed:
 $ gcc myBot.c -o myBot.out -pthread -ldiscord -lcurl -lcrypto -lm
 ```
 
-## Debugging Memory Errors
+## Recommended debuggers
 
-* The convenient method:
-  Using valgrind which cannot report all runtime memory errors. 
+First, make sure your executable is compiled with the `-g` flag so you can get more
+detailed debugger messages.
+
+### Valgrind
+
+Using valgrind to check for memory leaks:
+
 ```bash
-$ valgrind ./myBot.out
+$ valgrind --leak-check=full ./myBot.out
 ```
+For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
+
+### GDB
+
+Using GDB to check for runtime errors, such as segmentation faults:
+
+```bash
+$ gdb ./myBot.out
+```
+And then execute your bot from the gdb environment:
+```bash
+(gdb) run
+```
+If the program has crashed, get a backtrace of the function calls leading to it:
+```bash
+(gdb) bt
+```
+
+For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us/guide/bggdb/)
 
 ## Links
 
 - [Discord Server](https://discord.gg/nBUqrWf)
 - [Documentation](https://cee-studio.github.io/orca/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
-- [Debugging with SaiphC](docs/SAIPHC.md)
 - [Internals](docs/INTERNALS.md)
 - [Contributing](docs/CONTRIBUTING.md)
 
