@@ -1551,7 +1551,7 @@ ORCAcode discord_edit_channel_permissions(struct discord *client, const u64_snow
  * @param channel_id the channel that the message belongs to
  * @param p_invites a null-terminated list of invite objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
- */
+*/
 ORCAcode discord_get_channel_invites(struct discord *client, const u64_snowflake_t channel_id, NTL_T(struct discord_invite) *p_invites);
 /** @} DiscordGetChannelInvites */
 
@@ -1708,7 +1708,18 @@ ORCAcode discord_create_guild(struct discord *client, struct discord_create_guil
 /** @} DiscordCreateGuild */
 
 /** @defgroup DiscordGetGuild
+ * @brief @b PATCH /guilds/{guild.id}
+ * 
+ * Returns the guild object for the given id. If with_counts is set to true, this endpoint will also return
+ * approximate_member_count and approximate_presence_count for the guild.
+ * @see https://discord.com/developers/docs/resources/guild#get-guild
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to retrieve
+ * @param p_guild the location of the guild object if the operation is successful
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_get_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_guild *p_guild);
 /** @} DiscordGetGuild */
 
@@ -1718,29 +1729,83 @@ ORCAcode discord_get_guild_preview(struct discord *client, const u64_snowflake_t
 /** @} DiscordGetGuildPreview */
 
 /** @defgroup DiscordModifyGuild
+ * @brief @b PATCH /guilds/{guild.id}
+ *
+ * Modify a guild's settings. Requires the MANAGE_GUILD permission. Returns the updated guild object on success. Fires a Guild Update Gateway event.
+ * @see https://discord.com/developers/docs/resources/guild#modify-guild
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to modify
+ * @param params request params
+ * @param p_guild location of the updated guild object
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_modify_guild(struct discord *client, const u64_snowflake_t guild_id, struct discord_modify_guild_params *params, struct discord_guild *p_guild);
 /** @struct discord_modify_guild_params */
 /** @} DiscordModifyGuild */
 
 /** @defgroup DiscordDeleteGuild
+ * @brief @b DELETE /guilds/{guild.id}
+ *
+ * Delete a guild permanently. User must be owner. Returns 204 No Content on success. Fires a Guild Delete Gateway event.
+ * @see https://discord.com/developers/docs/resources/guild#delete-guild
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to delete
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_delete_guild(struct discord *client, const u64_snowflake_t guild_id);
 /** @} DiscordDeleteGuild */
 
 /** @defgroup DiscordGetGuildChannels
+ * @brief @b GET /guilds/{guild.id}/channels
+ *
+ * Returns a list of guild channel objects. Does not include threads.
+ * @see https://discord.com/developers/docs/resources/guild#get-guild-channels
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to delete
+ * @param p_channels the location to store the channels of the guild
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_get_guild_channels(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_channel) *p_channels);
 /** @} DiscordGetGuildChannels */
 
 /** @defgroup DiscordCreateGuildChannel
+ * @brief @b POST /guilds/{guild.id}/channels
+ *
+ * Create a new channel object for the guild. Requires the MANAGE_CHANNELS permission. If setting permission overwrites,
+ * only permissions your bot has in the guild can be allowed/denied. Setting MANAGE_ROLES permission in channels is only
+ * possible for guild administrators. Returns the new channel object on success. Fires a Channel Create Gateway event.
+ * @see https://discord.com/developers/docs/resources/guild#create-guild-channel
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to create the channel in
+ * @param params: request parameters
+ * @params p_channel the place to store the newly created channel
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
 /** @struct discord_create_guild_channel_params */
 /** @} DiscordCreateGuildChannel */
 
 /** @defgroup DiscordModifyGuildChannelPositions
+ * @brief @b PATCH /guilds/{guild.id}/channels
+ *
+ * Modify the positions of a set of channel objects for the guild. Requires MANAGE_CHANNELS permission. Returns a 204 empty
+ * response on success. Fires multiple Channel Update Gateway events.
+ * @see https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to change the positions of the channels in
+ * @param params: request params
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
 ORCAcode discord_modify_guild_channel_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_channel_positions_params) params);
 /** @struct discord_modify_guild_channel_positions_params */
 /** @} DiscordModifyGuildChannelPositions */
@@ -1827,6 +1892,21 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
 /** @struct discord_create_guild_role_params */
 /** @} DiscordCreateGuildRole */
 
+/** @defgroup DiscordGetGuildInvites
+ * @brief @b GET /guilds/{guild.id}/invites
+ *
+ * Returns a list of invite objects (with invite metadata) for the guild. Requires the MANAGE_GUILD permission.
+ * @see https://discord.com/developers/docs/resources/guild#get-guild-invites
+ *  @{ */
+ /**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get invites from
+ * @param p_invites the location to store the list of invites at
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
+ORCAcode discord_get_guild_invites(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_invite)* p_invites);
+/** @} DiscordGetGuildInvites */
+
 /** @defgroup DiscordModifyGuildRolePositions
  *  @{ */
 ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_role) *p_roles);
@@ -1834,13 +1914,35 @@ ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_s
 /** @} DiscordModifyGuildRolePositions */
 
 /** @defgroup DiscordModifyGuildRole
+ * @brief @b PATCH /guilds/{guild.id}/roles/{role.id}
+ *
+ * Modify a guild role. Requires the MANAGE_ROLES permission. Returns the updated role on success. Fires a Guild Role Update Gateway event.
+ * @see https://discord.com/developers/docs/resources/guild#modify-guild-role
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild that the role belongs to
+ * @param role_id the unique id of the role to modify
+ * @param params: request parameters
+ * @param p_role: the updated role
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_role *p_role);
 /** @struct discord_modify_guild_role_params */
 /** @} DiscordModifyGuildRole */
 
 /** @defgroup DiscordDeleteGuildRole
+ * @brief @b DELETE /guilds/{guild.id}/roles/{role.id}
+ *
+ * Delete a guild role. Requires the MANAGE_ROLES permission. Returns a 204 empty response on success. Fires a Guild Role Delete Gateway event.
+ * @see https://discord.com/developers/docs/resources/guild#delete-guild-role
  *  @{ */
+/**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild that the role belongs to
+ * @param role_id the unique id of the role to delete
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
 ORCAcode discord_delete_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id);
 /** @} DiscordDeleteGuildRole */
 

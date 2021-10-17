@@ -767,3 +767,28 @@ discord_delete_guild_role(
            HTTP_DELETE, 
            "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
 }
+
+ORCAcode
+discord_get_guild_invites(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  NTL_T(struct discord_invite)* p_invites)
+{
+  return discord_adapter_run(
+          &client->adapter,
+          &(struct ua_resp_handle){
+            .ok_cb = p_invites ? &discord_invite_list_from_json_v : NULL,
+            .ok_obj = p_invites
+          },
+          NULL,
+          HTTP_GET,
+          "/guilds/%"PRIu64"/invites",
+          guild_id);
+}
+
+
+
+
+
+
+
