@@ -14537,12 +14537,30 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordGetGuild"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordGetGuild</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>PATCH</strong> /guilds/{guild.id} </p>
+<p>Returns the guild object for the given id. If with_counts is set to true, this endpoint will also return approximate_member_count and approximate_presence_count for the guild. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#get-guild">https://discord.com/developers/docs/resources/guild#get-guild</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_get_guild">
 <span class="target" id="group__DiscordGetGuild_1ga8545a8492c38b03a8ddf9fb1c8627ce1"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_guild</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_guild" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild to retrieve </p></li>
+<li><p><strong>p_guild</strong> – the location of the guild object if the operation is successful </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -14569,12 +14587,31 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordModifyGuild"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordModifyGuild</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>PATCH</strong> /guilds/{guild.id} </p>
+<p>Modify a guild’s settings. Requires the MANAGE_GUILD permission. Returns the updated guild object on success. Fires a Guild Update Gateway event. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#modify-guild">https://discord.com/developers/docs/resources/guild#modify-guild</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_modify_guild">
 <span class="target" id="group__DiscordModifyGuild_1ga5e43a85d9a19cb7d48ccb4486581f3d9"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_params" title="discord_modify_guild_params"><span class="n"><span class="pre">discord_modify_guild_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_guild</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild to modify </p></li>
+<li><p><strong>params</strong> – request params </p></li>
+<li><p><strong>p_guild</strong> – location of the updated guild object </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <dl class="c struct">
@@ -14739,12 +14776,29 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordDeleteGuild"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordDeleteGuild</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>DELETE</strong> /guilds/{guild.id} </p>
+<p>Delete a guild permanently. User must be owner. Returns 204 No Content on success. Fires a Guild Delete Gateway event. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#delete-guild">https://discord.com/developers/docs/resources/guild#delete-guild</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_delete_guild">
 <span class="target" id="group__DiscordDeleteGuild_1gab38de653971be92d42b8667fbc77c3f9"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_delete_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_delete_guild" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild to delete </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -14755,12 +14809,30 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordGetGuildChannels"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordGetGuildChannels</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>GET</strong> /guilds/{guild.id}/channels </p>
+<p>Returns a list of guild channel objects. Does not include threads. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#get-guild-channels">https://discord.com/developers/docs/resources/guild#get-guild-channels</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_get_guild_channels">
 <span class="target" id="group__DiscordGetGuildChannels_1ga215a124e9f7a95d7131e6e124ea3dfcd"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_guild_channels</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_channels</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_guild_channels" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild to delete </p></li>
+<li><p><strong>p_channels</strong> – the location to store the channels of the guild </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -14771,12 +14843,30 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordCreateGuildChannel"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordCreateGuildChannel</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>POST</strong> /guilds/{guild.id}/channels </p>
+<p>Create a new channel object for the guild. Requires the MANAGE_CHANNELS permission. If setting permission overwrites, only permissions your bot has in the guild can be allowed/denied. Setting MANAGE_ROLES permission in channels is only possible for guild administrators. Returns the new channel object on success. Fires a Channel Create Gateway event. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#create-guild-channel">https://discord.com/developers/docs/resources/guild#create-guild-channel</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_guild_channel">
 <span class="target" id="group__DiscordCreateGuildChannel_1gacc4363c5911fc175c99e4f89a52cc759"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild_channel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_guild_channel_params" title="discord_create_guild_channel_params"><span class="n"><span class="pre">discord_create_guild_channel_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_channel</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_guild_channel" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild to create the channel in </p></li>
+<li><p><strong>params</strong> – request parameters &#64;params p_channel the place to store the newly created channel </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <dl class="c struct">
@@ -14877,12 +14967,30 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordModifyGuildChannelPositions"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordModifyGuildChannelPositions</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>PATCH</strong> /guilds/{guild.id}/channels </p>
+<p>Modify the positions of a set of channel objects for the guild. Requires MANAGE_CHANNELS permission. Returns a 204 empty response on success. Fires multiple Channel Update Gateway events. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions">https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions">
 <span class="target" id="group__DiscordModifyGuildChannelPositions_1gabd1b54455623787417e79866047181a9"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild_channel_positions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_channel_positions_params" title="discord_modify_guild_channel_positions_params"><span class="n"><span class="pre">discord_modify_guild_channel_positions_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild_channel_positions" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild to change the positions of the channels in </p></li>
+<li><p><strong>params</strong> – request params </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <dl class="c struct">
@@ -15661,12 +15769,32 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordModifyGuildRole"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordModifyGuildRole</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>PATCH</strong> /guilds/{guild.id}/roles/{role.id} </p>
+<p>Modify a guild role. Requires the MANAGE_ROLES permission. Returns the updated role on success. Fires a Guild Role Update Gateway event. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#modify-guild-role">https://discord.com/developers/docs/resources/guild#modify-guild-role</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_modify_guild_role">
 <span class="target" id="group__DiscordModifyGuildRole_1ga994f8cefd0b4103053141df6df836985"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild_role</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">role_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_role_params" title="discord_modify_guild_role_params"><span class="n"><span class="pre">discord_modify_guild_role_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_role</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild_role" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild that the role belongs to </p></li>
+<li><p><strong>role_id</strong> – the unique id of the role to modify </p></li>
+<li><p><strong>params</strong> – request parameters </p></li>
+<li><p><strong>p_role</strong> – the updated role </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 <dl class="c struct">
@@ -15747,12 +15875,30 @@
 <dl>
 <dt class="sig sig-object cpp">
 <span class="target" id="group__DiscordDeleteGuildRole"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordDeleteGuildRole</span></span></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p><strong>DELETE</strong> /guilds/{guild.id}/roles/{role.id} </p>
+<p>Delete a guild role. Requires the MANAGE_ROLES permission. Returns a 204 empty response on success. Fires a Guild Role Delete Gateway event. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#delete-guild-role">https://discord.com/developers/docs/resources/guild#delete-guild-role</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_delete_guild_role">
 <span class="target" id="group__DiscordDeleteGuildRole_1gaa7f8d051db93343d52f7306a4778722c"></span><a class="reference internal" href="../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_delete_guild_role</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">role_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_delete_guild_role" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – the unique id of the guild that the role belongs to </p></li>
+<li><p><strong>role_id</strong> – the unique id of the role to delete </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 </dd></dl>
