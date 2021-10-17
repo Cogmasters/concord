@@ -1737,7 +1737,7 @@ ORCAcode discord_get_guild_preview(struct discord *client, const u64_snowflake_t
 /**
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to modify
- * @param params request params
+ * @param params request parameters
  * @param p_guild location of the updated guild object
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
 */
@@ -1785,8 +1785,8 @@ ORCAcode discord_get_guild_channels(struct discord *client, const u64_snowflake_
 /**
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to create the channel in
- * @param params: request parameters
- * @params p_channel the place to store the newly created channel
+ * @param params request parameters
+ * @param p_channel the place to store the newly created channel
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
 */
 ORCAcode discord_create_guild_channel(struct discord *client, const u64_snowflake_t guild_id, struct discord_create_guild_channel_params *params, struct discord_channel *p_channel);
@@ -1803,7 +1803,7 @@ ORCAcode discord_create_guild_channel(struct discord *client, const u64_snowflak
 /**
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to change the positions of the channels in
- * @param params: request params
+ * @param params request parameters
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
  */
 ORCAcode discord_modify_guild_channel_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_channel_positions_params) params);
@@ -1923,8 +1923,8 @@ ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_s
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to modify
- * @param params: request parameters
- * @param p_role: the updated role
+ * @param params request parameters
+ * @param p_role the updated role
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
 */
 ORCAcode discord_modify_guild_role(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t role_id, struct discord_modify_guild_role_params *params, struct discord_role *p_role);
