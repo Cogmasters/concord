@@ -181,9 +181,6 @@ $ gcc myBot.c -o myBot.out -pthread -ldiscord -lcurl -lcrypto -lm
 
 ## Debugging Memory Errors
 
-* The recommended method: 
-  Use [SaiphC](docs/SAIPHC.md) to build your bot and run the generated executable. All runtime memory errors will be reported. 
-
 * The convenient method:
   Using valgrind which cannot report all runtime memory errors. 
 ```bash
