@@ -135,6 +135,24 @@ send_identify(struct discord_gateway *gw)
   gw->session.identify_tstamp = ws_timestamp(gw->ws);
 }
 
+/* send heartbeat pulse to websockets server in order
+ *  to maintain connection alive */
+static void
+send_heartbeat(struct discord_gateway *gw)
+{
+  char payload[64];
+  int ret = json_inject(payload, sizeof(payload), 
+              "(op):1, (d):d", &gw->payload->seq);
+  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+
+  struct ws_info info={0};
+  ws_send_text(gw->ws, &info, payload, ret);
+
+  logconf_info(&gw->conf, ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter + 1);
+
+  gw->hbeat->tstamp = ws_timestamp(gw->ws); /*update heartbeat timestamp */
+}
+
 static void
 on_hello(struct discord_gateway *gw)
 {
@@ -776,12 +794,14 @@ on_dispatch(struct discord_gateway *gw)
       gw->reconnect->attempt = 0;
       if (gw->user_cmd->cbs.on_ready)
         on_event = &on_ready;
+      send_heartbeat(gw);
       break;
   case DISCORD_GATEWAY_EVENTS_RESUMED:
       logconf_info(&gw->conf, "Succesfully resumed a Discord session!");
       gw->status->is_ready = true;
       gw->reconnect->attempt = 0;
-      /*/ @todo add callback */
+      /* @todo add callback */
+      send_heartbeat(gw);
       break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE:
       if (gw->user_cmd->cbs.on_application_command_create)
@@ -1151,22 +1171,6 @@ on_text_cb(void *p_gw, struct websockets *ws, struct ws_info *info, const char *
   }
 }
 
-/* send heartbeat pulse to websockets server in order
- *  to maintain connection alive */
-static void
-send_heartbeat(struct discord_gateway *gw)
-{
-  char payload[64];
-  int ret = json_inject(payload, sizeof(payload), 
-              "(op):1, (d):d", &gw->payload->seq);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
-
-  struct ws_info info={0};
-  ws_send_text(gw->ws, &info, payload, ret);
-
-  logconf_info(&gw->conf, ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN)" HEARTBEAT (%d bytes) [@@@_%zu_@@@]", ret, info.loginfo.counter + 1);
-}
-
 static void noop_idle_cb(struct discord *a, const struct discord_user *b)
 { return; }
 static void noop_event_raw_cb(struct discord *a, enum discord_gateway_events b, struct sized_buffer *c, struct sized_buffer *d)
@@ -1342,7 +1346,6 @@ event_loop(struct discord_gateway *gw)
      * minimum heartbeat interval required*/
     if (gw->hbeat->interval_ms < (ws_timestamp(gw->ws) - gw->hbeat->tstamp)) {
       send_heartbeat(gw);
-      gw->hbeat->tstamp = ws_timestamp(gw->ws); /*update heartbeat timestamp */
     }
     (*gw->user_cmd->cbs.on_idle)(CLIENT(gw), &gw->bot);
   }
