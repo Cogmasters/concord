@@ -1126,8 +1126,8 @@ void discord_application_command_interaction_data_option_from_json(char *json, s
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 "(type):d,"
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-                "(value):d,"
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+                "(value):F,"
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
                 "(options):F,",
@@ -1138,8 +1138,8 @@ void discord_application_command_interaction_data_option_from_json(char *json, s
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 &p->type,
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-                &p->value,
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+                cee_strndup, &p->value,
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
                 discord_application_command_interaction_data_option_list_from_json, &p->options);
@@ -1159,8 +1159,8 @@ size_t discord_application_command_interaction_data_option_to_json(char *json, s
   arg_switches[1] = &p->type;
 
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  arg_switches[2] = &p->value;
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+  arg_switches[2] = p->value;
 
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
@@ -1175,8 +1175,8 @@ size_t discord_application_command_interaction_data_option_to_json(char *json, s
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 "(type):d,"
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-                "(value):d,"
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+                "(value):s,"
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
                 "(options):F,"
@@ -1188,8 +1188,8 @@ size_t discord_application_command_interaction_data_option_to_json(char *json, s
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 &p->type,
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-                &p->value,
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+                p->value,
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
                 discord_application_command_interaction_data_option_list_to_json, p->options,
@@ -1239,8 +1239,9 @@ void discord_application_command_interaction_data_option_cleanup(struct discord_
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
   /* p->type is a scalar */
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  /* p->value is a scalar */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+  if (d->value)
+    free(d->value);
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
   if (d->options)
@@ -1256,7 +1257,7 @@ void discord_application_command_interaction_data_option_init(struct discord_app
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
 
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
 
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */

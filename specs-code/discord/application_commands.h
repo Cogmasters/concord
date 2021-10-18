@@ -465,8 +465,8 @@ struct discord_application_command_interaction_data_option {
   enum discord_application_command_option_types type; /**< value of application command option type */
 
   /* specs/discord/application_commands.json:124:18
-     '{"name":"value", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"the value of the pair"}' */
-  enum discord_application_command_option_types value; /**< the value of the pair */
+     '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
+  json_char_t* value; /**< the value of the pair */
 
   /* specs/discord/application_commands.json:125:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "comment":"present if this option is a group or subcommand", "inject_if_not":null}' */
