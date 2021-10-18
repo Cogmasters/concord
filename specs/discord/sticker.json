@@ -1,0 +1,70 @@
+{
+  "namespace": ["discord"],
+  "defs":
+  [
+    {
+      "title":"Sticker Types",
+      "namespace":["sticker"],
+      "enum":"types",
+      "items":
+      [
+        { "name": "STANDARD", "value":1, "comment":"an official sticker in a pack, part of Nitro or in a removed purchasable pack"},
+        { "name": "GUILD", "value":2, "comment":"a sticker uploaded to a Boosted guild for the guild's members"}
+      ]
+    },
+    {
+      "title":"Sticker Format Types",
+      "namespace":["sticker"],
+      "enum":"format_types",
+      "items":
+      [
+        { "name": "PNG", "value":1},
+        { "name": "APNG", "value":2},
+        { "name": "LOTTIE", "value":3}
+      ]
+    },
+    {
+      "title":"Sticker Structure",
+      "struct":"sticker",
+      "fields":
+      [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"},
+        {"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"for standard stickers, id of the pack the sticker is from"},
+        {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"},
+        {"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker"},
+        {"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"},
+        {"name":"asset", "type":{"base":"char", "dec":"*"}, "comment":"Deprecated previously the sticker asset hash, now an empty string"},
+        {"name":"type", "type":{"base":"int", "int_alias":"enum discord_sticker_types"}, "comment":"type of sticker"},
+        {"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"},
+        {"name":"available", "type":{"base":"bool"}, "inject_if_not":false, "comment":"whether this guild sticker can be used, may be false due to loss of Server Boosts"},
+        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of the guild that owns this sticker"},
+        {"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "inject_if_not":null, "comment":"the user that uploaded the guild sticker"},
+        {"name":"sort_value", "type":{"base":"int"}, "comment":"the standard sticker's sort order within its pack"}
+      ]
+    },
+    {
+      "title":"Sticker Item Structure",
+      "struct":"sticker_item",
+      "fields":
+      [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"},
+        {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"},
+        {"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"}
+      ]
+    },
+    {
+      "title":"Sticker Pack Structure",
+      "struct":"sticker_pack",
+      "fields":
+      [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack"},
+        {"name":"stickers", "type":{"base":"struct discord_sticker", "dec":"ntl"}, "comment":"the stickers in the pack"},
+        {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker pack"},
+        {"name":"sku_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the pack's SKU"},
+        {"name":"cover_sticker_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of a sticker in the pack which is shown as the pack's icon"},
+        {"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker pack"},
+        {"name":"banner_asset_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack's banner image"}
+      ]
+    }
+  ]
+}

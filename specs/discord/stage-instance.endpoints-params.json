@@ -1,0 +1,27 @@
+{
+  "namespace":["discord"],
+  "defs":
+  [
+    {
+      "title":"Create Stage Instance",
+      "namespace":["create_stage_instance"],
+      "struct":"params",
+      "fields":
+      [
+        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"},
+        {"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"},
+        {"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}
+      ]
+    },
+    {
+      "title":"Modify Stage Instance",
+      "namespace":["modify_stage_instance"],
+      "struct":"params",
+      "fields":
+      [
+        {"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"},
+        {"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}
+      ]
+    }
+  ]
+}

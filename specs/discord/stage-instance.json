@@ -1,0 +1,29 @@
+{
+  "namespace": ["discord"],
+  "defs":
+  [
+    {
+      "title":"Privacy Level",
+      "namespace":["stage_instance"],
+      "enum":"privacy_level",
+      "items":
+      [
+        { "name": "PUBLIC", "value":1, "comment":"The Stage instance is visible publicly, such as on Stage Discovery."},
+        { "name": "GUILD_ONLY", "value":2, "comment":"The Stage instance is visible to only guild members."}
+      ]
+    },
+    {
+      "title":"Stage Instance Structure",
+      "struct":"stage_instance",
+      "fields":
+      [
+        {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"},
+        {"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"},
+        {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"},
+        {"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"},
+        {"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"},
+        {"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}
+      ]
+    }
+  ]
+}

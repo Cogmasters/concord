@@ -915,6 +915,79 @@ struct discord_role;
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  */
 struct discord_role_tags;
+/* This file is generated from specs/discord/stage-instance.endpoints-params.json, Please don't edit it. */
+
+/* defined at specs/discord/stage-instance.endpoints-params.json:8:22 */
+/**
+ * @brief Create Stage Instance
+ *
+ */
+struct discord_create_stage_instance_params;
+
+/* defined at specs/discord/stage-instance.endpoints-params.json:19:22 */
+/**
+ * @brief Modify Stage Instance
+ *
+ */
+struct discord_modify_stage_instance_params;
+/* This file is generated from specs/discord/stage-instance.json, Please don't edit it. */
+
+
+
+/* defined at specs/discord/stage-instance.json:17:22 */
+/**
+ * @brief Stage Instance Structure
+ *
+ */
+struct discord_stage_instance;
+/* This file is generated from specs/discord/sticker.endpoints-params.json, Please don't edit it. */
+
+/* defined at specs/discord/sticker.endpoints-params.json:8:22 */
+/**
+ * @brief List Nitro Sticker Packs
+ *
+ */
+struct discord_list_nitro_sticker_packs_response;
+
+/* defined at specs/discord/sticker.endpoints-params.json:17:22 */
+/**
+ * @brief Create Guild Sticker
+ *
+ */
+struct discord_create_guild_sticker_params;
+
+/* defined at specs/discord/sticker.endpoints-params.json:29:22 */
+/**
+ * @brief Modify Guild Sticker
+ *
+ */
+struct discord_modify_guild_sticker_params;
+/* This file is generated from specs/discord/sticker.json, Please don't edit it. */
+
+
+
+
+
+/* defined at specs/discord/sticker.json:28:22 */
+/**
+ * @brief Sticker Structure
+ *
+ */
+struct discord_sticker;
+
+/* defined at specs/discord/sticker.json:47:22 */
+/**
+ * @brief Sticker Item Structure
+ *
+ */
+struct discord_sticker_item;
+
+/* defined at specs/discord/sticker.json:57:22 */
+/**
+ * @brief Sticker Pack Structure
+ *
+ */
+struct discord_sticker_pack;
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
 /* defined at specs/discord/user.endpoints-params.json:9:22 */
@@ -2177,6 +2250,95 @@ extern void discord_bitwise_permission_flags_list_from_json_v(char *str, size_t 
 extern void discord_bitwise_permission_flags_list_from_json(char *str, size_t len, enum discord_bitwise_permission_flags ***p);
 extern size_t discord_bitwise_permission_flags_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t len, enum discord_bitwise_permission_flags **p);
+/* This file is generated from specs/discord/stage-instance.endpoints-params.json, Please don't edit it. */
+/* This file is generated from specs/discord/stage-instance.json, Please don't edit it. */
+
+
+/* Privacy Level */
+/* defined at specs/discord/stage-instance.json:5:5 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_stage_instance_privacy_level_print(enum discord_stage_instance_privacy_level code)`
+ *   * :code:`enum discord_stage_instance_privacy_level discord_stage_instance_privacy_level_eval(char *code_as_str)`
+ * @endverbatim
+ */
+enum discord_stage_instance_privacy_level {
+  DISCORD_STAGE_INSTANCE_PUBLIC = 1, /**< The Stage instance is visible publicly, such as on Stage Discovery. */
+  DISCORD_STAGE_INSTANCE_GUILD_ONLY = 2, /**< The Stage instance is visible to only guild members. */
+};
+extern char* discord_stage_instance_privacy_level_print(enum discord_stage_instance_privacy_level);
+extern enum discord_stage_instance_privacy_level discord_stage_instance_privacy_level_eval(char*);
+extern void discord_stage_instance_privacy_level_list_free_v(void **p);
+extern void discord_stage_instance_privacy_level_list_free(enum discord_stage_instance_privacy_level **p);
+extern void discord_stage_instance_privacy_level_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_stage_instance_privacy_level_list_from_json(char *str, size_t len, enum discord_stage_instance_privacy_level ***p);
+extern size_t discord_stage_instance_privacy_level_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_stage_instance_privacy_level_list_to_json(char *str, size_t len, enum discord_stage_instance_privacy_level **p);
+/* This file is generated from specs/discord/sticker.endpoints-params.json, Please don't edit it. */
+/* This file is generated from specs/discord/sticker.json, Please don't edit it. */
+
+
+/* Sticker Types */
+/* defined at specs/discord/sticker.json:5:5 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_sticker_types_print(enum discord_sticker_types code)`
+ *   * :code:`enum discord_sticker_types discord_sticker_types_eval(char *code_as_str)`
+ * @endverbatim
+ */
+enum discord_sticker_types {
+  DISCORD_STICKER_STANDARD = 1, /**< an official sticker in a pack, part of Nitro or in a removed purchasable pack */
+  DISCORD_STICKER_GUILD = 2, /**< a sticker uploaded to a Boosted guild for the guild's members */
+};
+extern char* discord_sticker_types_print(enum discord_sticker_types);
+extern enum discord_sticker_types discord_sticker_types_eval(char*);
+extern void discord_sticker_types_list_free_v(void **p);
+extern void discord_sticker_types_list_free(enum discord_sticker_types **p);
+extern void discord_sticker_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_sticker_types_list_from_json(char *str, size_t len, enum discord_sticker_types ***p);
+extern size_t discord_sticker_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_sticker_types_list_to_json(char *str, size_t len, enum discord_sticker_types **p);
+
+
+/* Sticker Format Types */
+/* defined at specs/discord/sticker.json:15:5 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * :code:`char* discord_sticker_format_types_print(enum discord_sticker_format_types code)`
+ *   * :code:`enum discord_sticker_format_types discord_sticker_format_types_eval(char *code_as_str)`
+ * @endverbatim
+ */
+enum discord_sticker_format_types {
+  DISCORD_STICKER_PNG = 1,
+  DISCORD_STICKER_APNG = 2,
+  DISCORD_STICKER_LOTTIE = 3,
+};
+extern char* discord_sticker_format_types_print(enum discord_sticker_format_types);
+extern enum discord_sticker_format_types discord_sticker_format_types_eval(char*);
+extern void discord_sticker_format_types_list_free_v(void **p);
+extern void discord_sticker_format_types_list_free(enum discord_sticker_format_types **p);
+extern void discord_sticker_format_types_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_sticker_format_types_list_from_json(char *str, size_t len, enum discord_sticker_format_types ***p);
+extern size_t discord_sticker_format_types_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_sticker_format_types_list_to_json(char *str, size_t len, enum discord_sticker_format_types **p);
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/discord/user.json, Please don't edit it. */
 
@@ -8533,6 +8695,450 @@ struct discord_role_tags {
   int premium_subscriber;
 
 };
+/* This file is generated from specs/discord/stage-instance.endpoints-params.json, Please don't edit it. */
+
+/* Create Stage Instance */
+/* defined at specs/discord/stage-instance.endpoints-params.json:8:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_stage_instance_params_init(struct discord_create_stage_instance_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_stage_instance_params_cleanup(struct discord_create_stage_instance_params *)`
+ *     * :code:`void discord_create_stage_instance_params_list_free(struct discord_create_stage_instance_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_stage_instance_params_from_json(char *rbuf, size_t len, struct discord_create_stage_instance_params **)`
+ *     * :code:`void discord_create_stage_instance_params_list_from_json(char *rbuf, size_t len, struct discord_create_stage_instance_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_stage_instance_params_to_json(char *wbuf, size_t len, struct discord_create_stage_instance_params *)`
+ *     * :code:`void discord_create_stage_instance_params_list_to_json(char *wbuf, size_t len, struct discord_create_stage_instance_params **)`
+ * @endverbatim
+ */
+struct discord_create_stage_instance_params {
+  /* specs/discord/stage-instance.endpoints-params.json:11:18
+     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
+  u64_snowflake_t channel_id; /**< The id of the Stage channel */
+
+  /* specs/discord/stage-instance.endpoints-params.json:12:18
+     '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
+  char *topic; /**< The topic of the Stage instance (1-120 characters) */
+
+  /* specs/discord/stage-instance.endpoints-params.json:13:18
+     '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
+  enum discord_stage_instance_privacy_level privacy_level;
+
+};
+
+/* Modify Stage Instance */
+/* defined at specs/discord/stage-instance.endpoints-params.json:19:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_stage_instance_params_init(struct discord_modify_stage_instance_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_stage_instance_params_cleanup(struct discord_modify_stage_instance_params *)`
+ *     * :code:`void discord_modify_stage_instance_params_list_free(struct discord_modify_stage_instance_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_stage_instance_params_from_json(char *rbuf, size_t len, struct discord_modify_stage_instance_params **)`
+ *     * :code:`void discord_modify_stage_instance_params_list_from_json(char *rbuf, size_t len, struct discord_modify_stage_instance_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_stage_instance_params_to_json(char *wbuf, size_t len, struct discord_modify_stage_instance_params *)`
+ *     * :code:`void discord_modify_stage_instance_params_list_to_json(char *wbuf, size_t len, struct discord_modify_stage_instance_params **)`
+ * @endverbatim
+ */
+struct discord_modify_stage_instance_params {
+  /* specs/discord/stage-instance.endpoints-params.json:22:18
+     '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
+  char *topic; /**< The topic of the Stage instance (1-120 characters) */
+
+  /* specs/discord/stage-instance.endpoints-params.json:23:18
+     '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
+  enum discord_stage_instance_privacy_level privacy_level;
+
+};
+/* This file is generated from specs/discord/stage-instance.json, Please don't edit it. */
+
+
+
+/* Stage Instance Structure */
+/* defined at specs/discord/stage-instance.json:17:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_stage_instance_init(struct discord_stage_instance *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_stage_instance_cleanup(struct discord_stage_instance *)`
+ *     * :code:`void discord_stage_instance_list_free(struct discord_stage_instance **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_stage_instance_from_json(char *rbuf, size_t len, struct discord_stage_instance **)`
+ *     * :code:`void discord_stage_instance_list_from_json(char *rbuf, size_t len, struct discord_stage_instance ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_stage_instance_to_json(char *wbuf, size_t len, struct discord_stage_instance *)`
+ *     * :code:`void discord_stage_instance_list_to_json(char *wbuf, size_t len, struct discord_stage_instance **)`
+ * @endverbatim
+ */
+struct discord_stage_instance {
+  /* specs/discord/stage-instance.json:20:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
+  u64_snowflake_t id; /**< The id of this Stage instance */
+
+  /* specs/discord/stage-instance.json:21:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
+  u64_snowflake_t guild_id; /**< The guild id of the associated Stage channel */
+
+  /* specs/discord/stage-instance.json:22:18
+     '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
+  u64_snowflake_t channel_id; /**< The id of the associated Stage channel */
+
+  /* specs/discord/stage-instance.json:23:18
+     '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
+  char *topic; /**< The topic of the Stage instance (1-120 characters) */
+
+  /* specs/discord/stage-instance.json:24:18
+     '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
+  enum discord_stage_instance_privacy_level privacy_level; /**< The privacy level of the Stage instance */
+
+  /* specs/discord/stage-instance.json:25:18
+     '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
+  bool discoverable_disabled;
+
+};
+/* This file is generated from specs/discord/sticker.endpoints-params.json, Please don't edit it. */
+
+/* List Nitro Sticker Packs */
+/* defined at specs/discord/sticker.endpoints-params.json:8:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_list_nitro_sticker_packs_response_init(struct discord_list_nitro_sticker_packs_response *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_list_nitro_sticker_packs_response_cleanup(struct discord_list_nitro_sticker_packs_response *)`
+ *     * :code:`void discord_list_nitro_sticker_packs_response_list_free(struct discord_list_nitro_sticker_packs_response **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_list_nitro_sticker_packs_response_from_json(char *rbuf, size_t len, struct discord_list_nitro_sticker_packs_response **)`
+ *     * :code:`void discord_list_nitro_sticker_packs_response_list_from_json(char *rbuf, size_t len, struct discord_list_nitro_sticker_packs_response ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_list_nitro_sticker_packs_response_to_json(char *wbuf, size_t len, struct discord_list_nitro_sticker_packs_response *)`
+ *     * :code:`void discord_list_nitro_sticker_packs_response_list_to_json(char *wbuf, size_t len, struct discord_list_nitro_sticker_packs_response **)`
+ * @endverbatim
+ */
+struct discord_list_nitro_sticker_packs_response {
+  /* specs/discord/sticker.endpoints-params.json:11:18
+     '{"name":"sticker_packs", "type":{"base":"struct discord_sticker_pack", "dec":"ntl"}, "comment":"array of sticker pack objects"}' */
+  struct discord_sticker_pack **sticker_packs; /**< array of sticker pack objects */
+
+};
+
+/* Create Guild Sticker */
+/* defined at specs/discord/sticker.endpoints-params.json:17:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_create_guild_sticker_params_init(struct discord_create_guild_sticker_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_create_guild_sticker_params_cleanup(struct discord_create_guild_sticker_params *)`
+ *     * :code:`void discord_create_guild_sticker_params_list_free(struct discord_create_guild_sticker_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_create_guild_sticker_params_from_json(char *rbuf, size_t len, struct discord_create_guild_sticker_params **)`
+ *     * :code:`void discord_create_guild_sticker_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_sticker_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_create_guild_sticker_params_to_json(char *wbuf, size_t len, struct discord_create_guild_sticker_params *)`
+ *     * :code:`void discord_create_guild_sticker_params_list_to_json(char *wbuf, size_t len, struct discord_create_guild_sticker_params **)`
+ * @endverbatim
+ */
+struct discord_create_guild_sticker_params {
+  /* specs/discord/sticker.endpoints-params.json:20:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"}' */
+  char *name; /**< name of the sticker (2-30 characters) */
+
+  /* specs/discord/sticker.endpoints-params.json:21:18
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker (empty or 2-100 characters)"}' */
+  char *description; /**< description of the sticker (empty or 2-100 characters) */
+
+  /* specs/discord/sticker.endpoints-params.json:22:18
+     '{"name":"file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
+  struct discord_file *file; /**< the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB */
+
+  /* specs/discord/sticker.endpoints-params.json:23:18
+     '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
+  char *tags; /**< autocomplete/suggestion tags for the sticker (max 200 characters) */
+
+};
+
+/* Modify Guild Sticker */
+/* defined at specs/discord/sticker.endpoints-params.json:29:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_guild_sticker_params_init(struct discord_modify_guild_sticker_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_guild_sticker_params_cleanup(struct discord_modify_guild_sticker_params *)`
+ *     * :code:`void discord_modify_guild_sticker_params_list_free(struct discord_modify_guild_sticker_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_guild_sticker_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_sticker_params **)`
+ *     * :code:`void discord_modify_guild_sticker_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_sticker_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_guild_sticker_params_to_json(char *wbuf, size_t len, struct discord_modify_guild_sticker_params *)`
+ *     * :code:`void discord_modify_guild_sticker_params_list_to_json(char *wbuf, size_t len, struct discord_modify_guild_sticker_params **)`
+ * @endverbatim
+ */
+struct discord_modify_guild_sticker_params {
+  /* specs/discord/sticker.endpoints-params.json:32:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"}' */
+  char *name; /**< name of the sticker (2-30 characters) */
+
+  /* specs/discord/sticker.endpoints-params.json:33:18
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker (empty or 2-100 characters)"}' */
+  char *description; /**< description of the sticker (empty or 2-100 characters) */
+
+  /* specs/discord/sticker.endpoints-params.json:34:18
+     '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
+  char *tags; /**< autocomplete/suggestion tags for the sticker (max 200 characters) */
+
+};
+/* This file is generated from specs/discord/sticker.json, Please don't edit it. */
+
+
+
+
+
+/* Sticker Structure */
+/* defined at specs/discord/sticker.json:28:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_sticker_init(struct discord_sticker *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_sticker_cleanup(struct discord_sticker *)`
+ *     * :code:`void discord_sticker_list_free(struct discord_sticker **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_sticker_from_json(char *rbuf, size_t len, struct discord_sticker **)`
+ *     * :code:`void discord_sticker_list_from_json(char *rbuf, size_t len, struct discord_sticker ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_sticker_to_json(char *wbuf, size_t len, struct discord_sticker *)`
+ *     * :code:`void discord_sticker_list_to_json(char *wbuf, size_t len, struct discord_sticker **)`
+ * @endverbatim
+ */
+struct discord_sticker {
+  /* specs/discord/sticker.json:31:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
+  u64_snowflake_t id; /**< id of the sticker */
+
+  /* specs/discord/sticker.json:32:18
+     '{"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"for standard stickers, id of the pack the sticker is from"}' */
+  u64_snowflake_t pack_id; /**< for standard stickers, id of the pack the sticker is from */
+
+  /* specs/discord/sticker.json:33:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
+  char *name; /**< name of the sticker */
+
+  /* specs/discord/sticker.json:34:18
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker"}' */
+  char *description; /**< description of the sticker */
+
+  /* specs/discord/sticker.json:35:18
+     '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
+  char *tags; /**< autocomplete/suggestion tags for the sticker (max 200 characters) */
+
+  /* specs/discord/sticker.json:36:18
+     '{"name":"asset", "type":{"base":"char", "dec":"*"}, "comment":"Deprecated previously the sticker asset hash, now an empty string"}' */
+  char *asset; /**< Deprecated previously the sticker asset hash, now an empty string */
+
+  /* specs/discord/sticker.json:37:18
+     '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_sticker_types"}, "comment":"type of sticker"}' */
+  enum discord_sticker_types type; /**< type of sticker */
+
+  /* specs/discord/sticker.json:38:18
+     '{"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"}' */
+  enum discord_sticker_format_types format_type; /**< type of sticker format */
+
+  /* specs/discord/sticker.json:39:18
+     '{"name":"available", "type":{"base":"bool"}, "inject_if_not":false, "comment":"whether this guild sticker can be used, may be false due to loss of Server Boosts"}' */
+  bool available; /**< whether this guild sticker can be used, may be false due to loss of Server Boosts */
+
+  /* specs/discord/sticker.json:40:18
+     '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of the guild that owns this sticker"}' */
+  u64_snowflake_t guild_id; /**< id of the guild that owns this sticker */
+
+  /* specs/discord/sticker.json:41:18
+     '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "inject_if_not":null, "comment":"the user that uploaded the guild sticker"}' */
+  struct discord_user *user; /**< the user that uploaded the guild sticker */
+
+  /* specs/discord/sticker.json:42:18
+     '{"name":"sort_value", "type":{"base":"int"}, "comment":"the standard sticker's sort order within its pack"}' */
+  int sort_value; /**< the standard sticker's sort order within its pack */
+
+};
+
+/* Sticker Item Structure */
+/* defined at specs/discord/sticker.json:47:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_sticker_item_init(struct discord_sticker_item *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_sticker_item_cleanup(struct discord_sticker_item *)`
+ *     * :code:`void discord_sticker_item_list_free(struct discord_sticker_item **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_sticker_item_from_json(char *rbuf, size_t len, struct discord_sticker_item **)`
+ *     * :code:`void discord_sticker_item_list_from_json(char *rbuf, size_t len, struct discord_sticker_item ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_sticker_item_to_json(char *wbuf, size_t len, struct discord_sticker_item *)`
+ *     * :code:`void discord_sticker_item_list_to_json(char *wbuf, size_t len, struct discord_sticker_item **)`
+ * @endverbatim
+ */
+struct discord_sticker_item {
+  /* specs/discord/sticker.json:50:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
+  u64_snowflake_t id; /**< id of the sticker */
+
+  /* specs/discord/sticker.json:51:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
+  char *name; /**< name of the sticker */
+
+  /* specs/discord/sticker.json:52:18
+     '{"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"}' */
+  enum discord_sticker_format_types format_type; /**< type of sticker format */
+
+};
+
+/* Sticker Pack Structure */
+/* defined at specs/discord/sticker.json:57:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_sticker_pack_init(struct discord_sticker_pack *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_sticker_pack_cleanup(struct discord_sticker_pack *)`
+ *     * :code:`void discord_sticker_pack_list_free(struct discord_sticker_pack **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_sticker_pack_from_json(char *rbuf, size_t len, struct discord_sticker_pack **)`
+ *     * :code:`void discord_sticker_pack_list_from_json(char *rbuf, size_t len, struct discord_sticker_pack ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_sticker_pack_to_json(char *wbuf, size_t len, struct discord_sticker_pack *)`
+ *     * :code:`void discord_sticker_pack_list_to_json(char *wbuf, size_t len, struct discord_sticker_pack **)`
+ * @endverbatim
+ */
+struct discord_sticker_pack {
+  /* specs/discord/sticker.json:60:18
+     '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack"}' */
+  u64_snowflake_t id; /**< id of the sticker pack */
+
+  /* specs/discord/sticker.json:61:18
+     '{"name":"stickers", "type":{"base":"struct discord_sticker", "dec":"ntl"}, "comment":"the stickers in the pack"}' */
+  struct discord_sticker **stickers; /**< the stickers in the pack */
+
+  /* specs/discord/sticker.json:62:18
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker pack"}' */
+  char *name; /**< name of the sticker pack */
+
+  /* specs/discord/sticker.json:63:18
+     '{"name":"sku_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the pack's SKU"}' */
+  u64_snowflake_t sku_id; /**< id of the pack's SKU */
+
+  /* specs/discord/sticker.json:64:18
+     '{"name":"cover_sticker_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of a sticker in the pack which is shown as the pack's icon"}' */
+  u64_snowflake_t cover_sticker_id; /**< id of a sticker in the pack which is shown as the pack's icon */
+
+  /* specs/discord/sticker.json:65:18
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker pack"}' */
+  char *description; /**< description of the sticker pack */
+
+  /* specs/discord/sticker.json:66:18
+     '{"name":"banner_asset_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack's banner image"}' */
+  u64_snowflake_t banner_asset_id; /**< id of the sticker pack's banner image */
+
+};
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
 /* Modify Current User */
@@ -10989,6 +11595,151 @@ extern void discord_role_tags_list_from_json_v(char *str, size_t len, void *p);
 extern void discord_role_tags_list_from_json(char *str, size_t len, struct discord_role_tags ***p);
 extern size_t discord_role_tags_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_role_tags_list_to_json(char *str, size_t len, struct discord_role_tags **p);
+/* This file is generated from specs/discord/stage-instance.endpoints-params.json, Please don't edit it. */
+
+extern void discord_create_stage_instance_params_cleanup_v(void *p);
+extern void discord_create_stage_instance_params_cleanup(struct discord_create_stage_instance_params *p);
+extern void discord_create_stage_instance_params_init_v(void *p);
+extern void discord_create_stage_instance_params_init(struct discord_create_stage_instance_params *p);
+extern void discord_create_stage_instance_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_stage_instance_params_from_json(char *json, size_t len, struct discord_create_stage_instance_params **pp);
+extern size_t discord_create_stage_instance_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_stage_instance_params_to_json(char *json, size_t len, struct discord_create_stage_instance_params *p);
+extern void discord_create_stage_instance_params_list_free_v(void **p);
+extern void discord_create_stage_instance_params_list_free(struct discord_create_stage_instance_params **p);
+extern void discord_create_stage_instance_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_stage_instance_params_list_from_json(char *str, size_t len, struct discord_create_stage_instance_params ***p);
+extern size_t discord_create_stage_instance_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_stage_instance_params_list_to_json(char *str, size_t len, struct discord_create_stage_instance_params **p);
+
+extern void discord_modify_stage_instance_params_cleanup_v(void *p);
+extern void discord_modify_stage_instance_params_cleanup(struct discord_modify_stage_instance_params *p);
+extern void discord_modify_stage_instance_params_init_v(void *p);
+extern void discord_modify_stage_instance_params_init(struct discord_modify_stage_instance_params *p);
+extern void discord_modify_stage_instance_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_stage_instance_params_from_json(char *json, size_t len, struct discord_modify_stage_instance_params **pp);
+extern size_t discord_modify_stage_instance_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_stage_instance_params_to_json(char *json, size_t len, struct discord_modify_stage_instance_params *p);
+extern void discord_modify_stage_instance_params_list_free_v(void **p);
+extern void discord_modify_stage_instance_params_list_free(struct discord_modify_stage_instance_params **p);
+extern void discord_modify_stage_instance_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_stage_instance_params_list_from_json(char *str, size_t len, struct discord_modify_stage_instance_params ***p);
+extern size_t discord_modify_stage_instance_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_stage_instance_params_list_to_json(char *str, size_t len, struct discord_modify_stage_instance_params **p);
+/* This file is generated from specs/discord/stage-instance.json, Please don't edit it. */
+
+
+
+extern void discord_stage_instance_cleanup_v(void *p);
+extern void discord_stage_instance_cleanup(struct discord_stage_instance *p);
+extern void discord_stage_instance_init_v(void *p);
+extern void discord_stage_instance_init(struct discord_stage_instance *p);
+extern void discord_stage_instance_from_json_v(char *json, size_t len, void *pp);
+extern void discord_stage_instance_from_json(char *json, size_t len, struct discord_stage_instance **pp);
+extern size_t discord_stage_instance_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_stage_instance_to_json(char *json, size_t len, struct discord_stage_instance *p);
+extern void discord_stage_instance_list_free_v(void **p);
+extern void discord_stage_instance_list_free(struct discord_stage_instance **p);
+extern void discord_stage_instance_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_stage_instance_list_from_json(char *str, size_t len, struct discord_stage_instance ***p);
+extern size_t discord_stage_instance_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_stage_instance_list_to_json(char *str, size_t len, struct discord_stage_instance **p);
+/* This file is generated from specs/discord/sticker.endpoints-params.json, Please don't edit it. */
+
+extern void discord_list_nitro_sticker_packs_response_cleanup_v(void *p);
+extern void discord_list_nitro_sticker_packs_response_cleanup(struct discord_list_nitro_sticker_packs_response *p);
+extern void discord_list_nitro_sticker_packs_response_init_v(void *p);
+extern void discord_list_nitro_sticker_packs_response_init(struct discord_list_nitro_sticker_packs_response *p);
+extern void discord_list_nitro_sticker_packs_response_from_json_v(char *json, size_t len, void *pp);
+extern void discord_list_nitro_sticker_packs_response_from_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response **pp);
+extern size_t discord_list_nitro_sticker_packs_response_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_list_nitro_sticker_packs_response_to_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response *p);
+extern void discord_list_nitro_sticker_packs_response_list_free_v(void **p);
+extern void discord_list_nitro_sticker_packs_response_list_free(struct discord_list_nitro_sticker_packs_response **p);
+extern void discord_list_nitro_sticker_packs_response_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_list_nitro_sticker_packs_response_list_from_json(char *str, size_t len, struct discord_list_nitro_sticker_packs_response ***p);
+extern size_t discord_list_nitro_sticker_packs_response_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_list_nitro_sticker_packs_response_list_to_json(char *str, size_t len, struct discord_list_nitro_sticker_packs_response **p);
+
+extern void discord_create_guild_sticker_params_cleanup_v(void *p);
+extern void discord_create_guild_sticker_params_cleanup(struct discord_create_guild_sticker_params *p);
+extern void discord_create_guild_sticker_params_init_v(void *p);
+extern void discord_create_guild_sticker_params_init(struct discord_create_guild_sticker_params *p);
+extern void discord_create_guild_sticker_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_create_guild_sticker_params_from_json(char *json, size_t len, struct discord_create_guild_sticker_params **pp);
+extern size_t discord_create_guild_sticker_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_create_guild_sticker_params_to_json(char *json, size_t len, struct discord_create_guild_sticker_params *p);
+extern void discord_create_guild_sticker_params_list_free_v(void **p);
+extern void discord_create_guild_sticker_params_list_free(struct discord_create_guild_sticker_params **p);
+extern void discord_create_guild_sticker_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_create_guild_sticker_params_list_from_json(char *str, size_t len, struct discord_create_guild_sticker_params ***p);
+extern size_t discord_create_guild_sticker_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_create_guild_sticker_params_list_to_json(char *str, size_t len, struct discord_create_guild_sticker_params **p);
+
+extern void discord_modify_guild_sticker_params_cleanup_v(void *p);
+extern void discord_modify_guild_sticker_params_cleanup(struct discord_modify_guild_sticker_params *p);
+extern void discord_modify_guild_sticker_params_init_v(void *p);
+extern void discord_modify_guild_sticker_params_init(struct discord_modify_guild_sticker_params *p);
+extern void discord_modify_guild_sticker_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struct discord_modify_guild_sticker_params **pp);
+extern size_t discord_modify_guild_sticker_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_guild_sticker_params_to_json(char *json, size_t len, struct discord_modify_guild_sticker_params *p);
+extern void discord_modify_guild_sticker_params_list_free_v(void **p);
+extern void discord_modify_guild_sticker_params_list_free(struct discord_modify_guild_sticker_params **p);
+extern void discord_modify_guild_sticker_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_guild_sticker_params_list_from_json(char *str, size_t len, struct discord_modify_guild_sticker_params ***p);
+extern size_t discord_modify_guild_sticker_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_guild_sticker_params_list_to_json(char *str, size_t len, struct discord_modify_guild_sticker_params **p);
+/* This file is generated from specs/discord/sticker.json, Please don't edit it. */
+
+
+
+
+
+extern void discord_sticker_cleanup_v(void *p);
+extern void discord_sticker_cleanup(struct discord_sticker *p);
+extern void discord_sticker_init_v(void *p);
+extern void discord_sticker_init(struct discord_sticker *p);
+extern void discord_sticker_from_json_v(char *json, size_t len, void *pp);
+extern void discord_sticker_from_json(char *json, size_t len, struct discord_sticker **pp);
+extern size_t discord_sticker_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p);
+extern void discord_sticker_list_free_v(void **p);
+extern void discord_sticker_list_free(struct discord_sticker **p);
+extern void discord_sticker_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_sticker_list_from_json(char *str, size_t len, struct discord_sticker ***p);
+extern size_t discord_sticker_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_sticker_list_to_json(char *str, size_t len, struct discord_sticker **p);
+
+extern void discord_sticker_item_cleanup_v(void *p);
+extern void discord_sticker_item_cleanup(struct discord_sticker_item *p);
+extern void discord_sticker_item_init_v(void *p);
+extern void discord_sticker_item_init(struct discord_sticker_item *p);
+extern void discord_sticker_item_from_json_v(char *json, size_t len, void *pp);
+extern void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item **pp);
+extern size_t discord_sticker_item_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_sticker_item_to_json(char *json, size_t len, struct discord_sticker_item *p);
+extern void discord_sticker_item_list_free_v(void **p);
+extern void discord_sticker_item_list_free(struct discord_sticker_item **p);
+extern void discord_sticker_item_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_sticker_item_list_from_json(char *str, size_t len, struct discord_sticker_item ***p);
+extern size_t discord_sticker_item_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_sticker_item_list_to_json(char *str, size_t len, struct discord_sticker_item **p);
+
+extern void discord_sticker_pack_cleanup_v(void *p);
+extern void discord_sticker_pack_cleanup(struct discord_sticker_pack *p);
+extern void discord_sticker_pack_init_v(void *p);
+extern void discord_sticker_pack_init(struct discord_sticker_pack *p);
+extern void discord_sticker_pack_from_json_v(char *json, size_t len, void *pp);
+extern void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack **pp);
+extern size_t discord_sticker_pack_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_sticker_pack *p);
+extern void discord_sticker_pack_list_free_v(void **p);
+extern void discord_sticker_pack_list_free(struct discord_sticker_pack **p);
+extern void discord_sticker_pack_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_sticker_pack_list_from_json(char *str, size_t len, struct discord_sticker_pack ***p);
+extern size_t discord_sticker_pack_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_sticker_pack_list_to_json(char *str, size_t len, struct discord_sticker_pack **p);
 /* This file is generated from specs/discord/user.endpoints-params.json, Please don't edit it. */
 
 extern void discord_modify_current_user_params_cleanup_v(void *p);
