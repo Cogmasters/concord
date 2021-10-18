@@ -1907,6 +1907,21 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
 ORCAcode discord_get_guild_invites(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_invite) *p_invites);
 /** @} DiscordGetGuildInvites */
 
+/** @defgroup DiscordGetGuildWelcomeScreen
+ * @brief @b GET /guilds/{guild.id}/welcome-screen
+ *
+ * Returns the Welcome Screen object for the guild.
+ * @see https://discord.com/developers/docs/resources/guild#get-guild-welcome-screen
+ *  @{ */
+ /**
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get welcome screen of
+ * @param p_screen the location to store the welcome screen at
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
+ORCAcode discord_get_guild_welcome_screen(struct discord *client, const u64_snowflake_t guild_id, struct discord_welcome_screen *p_screen);
+/** @} DiscordGetGuildWelcomeScreen */
+
 /** @defgroup DiscordModifyGuildRolePositions
  *  @{ */
 ORCAcode discord_modify_guild_role_positions(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_modify_guild_role_positions_params) params, NTL_T(struct discord_role) *p_roles);

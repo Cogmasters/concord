@@ -387,6 +387,68 @@ void on_bot_change_nick(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
+void on_bot_get_welcome_screen(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  struct discord_welcome_screen screen = {0};
+  char text[DISCORD_MAX_MESSAGE_LEN];
+
+  if (!*msg->content) {
+    sprintf(text, "Invalid format for `guild.welcome_screen <guild_id>`");
+    return;
+  }
+
+  ORCAcode response = discord_get_guild_welcome_screen(client, strtoul(msg->content, NULL, 10), &screen);
+
+  if (response != ORCA_OK) {
+    sprintf(text, "Could not fetch welcome screen from guild %s.", msg->content);
+  } else {
+    sprintf(text, "%s\n", screen.description);
+  }
+  
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+  discord_welcome_screen_cleanup(&screen);
+}
+void on_bot_get_invites(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  char text[DISCORD_MAX_MESSAGE_LEN] = {0};
+  struct discord_invite** invites = {0};
+
+  if (!*msg->content) {
+    sprintf(text, "Invalid format for `guild.invites <guild_id>`");
+    return;
+  }
+
+  ORCAcode response = discord_get_guild_invites(client, strtoul(msg->content, NULL, 10), &invites);
+
+  if (response != ORCA_OK) {
+    sprintf(text, "Could not fetch invites from guild %s.", msg->content);
+  } else {
+    int index;
+    
+    sprintf(text, "%s", "Active invites in this server:\n");
+
+    for(index = 0; invites && invites[index] != NULL; index++) {
+      sprintf(text, "%s\n", invites[0][index].code);
+    }
+  }
+
+  
+  struct discord_create_message_params params = { .content = text };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+  discord_invite_list_free(invites);
+}
+
 int main(int argc, char *argv[])
 {
   const char *config_file;
@@ -418,6 +480,8 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "member_change_nick", &on_member_change_nick);
   discord_set_on_command(client, "member_search", &on_member_search);
   discord_set_on_command(client, "bot_change_nick", &on_bot_change_nick);
+  discord_set_on_command(client, "welcome_screen", &on_bot_get_welcome_screen);
+  discord_set_on_command(client, "invites", &on_bot_get_invites);
 
   printf("\n\nThis bot demonstrates how easy it is to manipulate guild"
          " endpoints.\n"
@@ -433,6 +497,8 @@ int main(int argc, char *argv[])
          "11. Type 'guild.member_change_nick <user_id> <nick>' to change member nick\n"
          "12. Type 'guild.member_search <nick>' to search for members matching a nick\n"
          "13. Type 'guild.bot_change_nick <nick>' to change bot nick\n"
+         "14. Type 'guild.welcome_screen' <guild_id> to get the welcome screen of a guild\n"
+         "15. Type 'guild.invites' <guild_id> to get the active invites of a guild\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

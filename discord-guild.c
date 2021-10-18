@@ -794,3 +794,30 @@ discord_get_guild_invites(
           "/guilds/%"PRIu64"/invites",
           guild_id);
 }
+
+ORCAcode
+discord_get_guild_welcome_screen(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  struct discord_welcome_screen *p_screen)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!p_screen) {
+    log_error("Missing 'p_screen'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  return discord_adapter_run(
+        &client->adapter,
+        &(struct ua_resp_handle){
+          .ok_cb = &discord_welcome_screen_from_json_v,
+          .ok_obj = &p_screen,
+        },
+        NULL,
+        HTTP_GET,
+        "/guilds/%"PRIu64"/welcome-screen",
+        guild_id);
+}
