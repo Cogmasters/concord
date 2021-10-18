@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "discord.h"
+#include "discord-internal.h"
 #include "cee-utils.h"
 
 #define THREADPOOL_SIZE "4"
@@ -95,7 +96,19 @@ void on_force_error(
   struct discord_create_message_params params = { 
     .content = (char *)discord_strerror(code, client) 
   };
+  discord_create_message(client, msg->channel_id, &params, NULL);
+}
 
+void on_ping(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *msg)
+{
+  if (msg->author->bot) return;
+
+  char text[256];
+  sprintf(text, "Ping: %d", client->gw.hbeat->ping_ms);
+  struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -103,9 +116,14 @@ enum discord_event_scheduler
 scheduler(
   struct discord *client,
   struct discord_user *bot,
-  struct sized_buffer *event_data,
+  struct sized_buffer *data,
   enum discord_gateway_events event) 
 {
+  if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
+    char cmd[1024]="";
+    json_extract(data->start, data->size, "(content):.*s", sizeof(cmd), cmd);
+    if (0 == strcmp("ping", cmd)) return DISCORD_EVENT_MAIN_THREAD;
+  }
   return DISCORD_EVENT_WORKER_THREAD;
 }
 
@@ -132,6 +150,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "spam", &on_spam);
   discord_set_on_command(client, "stop", &on_stop);
   discord_set_on_command(client, "force_error", &on_force_error);
+  discord_set_on_command(client, "ping", &on_ping);
 
   discord_run(client);
 
