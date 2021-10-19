@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> /* strcmp() */
 #include <pthread.h>
 #include <assert.h>
 
 #include "discord.h"
-#include "discord-internal.h"
 #include "cee-utils.h"
+#include "json-actor.h" /* json_extract() */
 
 #define THREADPOOL_SIZE "4"
 
@@ -107,7 +108,7 @@ void on_ping(
   if (msg->author->bot) return;
 
   char text[256];
-  sprintf(text, "Ping: %d", client->gw.hbeat->ping_ms);
+  sprintf(text, "Ping: %d", discord_get_ping(client));
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
