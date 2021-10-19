@@ -69,34 +69,28 @@ embed_reddit_search_result(
   discord_embed_init(embed);
 
   embed->color = 0xff0000; // RED
-  snprintf(embed->title, sizeof(embed->title), "Reddit Search");
+  discord_embed_set_title(embed, "Reddit Search");
   discord_embed_set_thumbnail(embed, EMBED_THUMBNAIL, NULL, 100, 100);
   discord_embed_set_author(embed,
-      "designed & built by https://cee.dev",
-      "https://cee.dev",
-      "https://cee.dev/static/images/cee.png", NULL);
+    "designed & built by https://cee.dev",
+    "https://cee.dev",
+    "https://cee.dev/static/images/cee.png", NULL);
 
   json_item_t *root = json_parse(resp_body.start, resp_body.size);
   json_item_t *children = json_get_child(root, "data.children");
   if (!children) return NULL;
   
-  ///@todo add check to make sure embed is not over 6000 characters
   json_item_t *data;
-  char title[DISCORD_EMBED_TITLE_LEN + 1]; // +1 to trigger auto-truncation
-  char permalink[DISCORD_EMBED_FIELD_VALUE_LEN + 1];
+  char title[DISCORD_EMBED_TITLE_LEN];
+  char permalink[DISCORD_EMBED_FIELD_VALUE_LEN];
   size_t n_size = json_size(children);
   for (size_t i=0; i < n_size; ++i) {
     data = json_get_child(json_get_byindex(children, i), "data");
-    snprintf(title, sizeof(title), "%s", \
-        json_get_string(json_get_child(data, "title"), NULL));
-    snprintf(permalink, sizeof(permalink), "https://reddit.com%s", \
-        json_get_string(json_get_child(data, "permalink"), NULL));
-    discord_embed_add_field(embed, 
-      title,
-      permalink,
-      false);
+    snprintf(title, sizeof(title), "%s", json_get_string(json_get_child(data, "title"), NULL));
+    snprintf(permalink, sizeof(permalink), "https://reddit.com%s", json_get_string(json_get_child(data, "permalink"), NULL));
+    discord_embed_add_field(embed, title, permalink, false);
   }
-  snprintf(embed->description, sizeof(embed->description), "%zu results", n_size);
+  discord_embed_set_description(embed, "%zu results", n_size);
 
   char footer[DISCORD_EMBED_FOOTER_TEXT_LEN];
   snprintf(footer, sizeof(footer), "🔎 %s\t🔗 %s", keywords, subreddits);

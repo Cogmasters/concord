@@ -51,7 +51,7 @@
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }},
+        { "name": "name", "type":{ "base":"char", "dec":"*" }},
         { "name": "color", "type":{ "base":"int" }},
         { "name": "hoist", "type":{ "base":"bool" }},
         { "name": "position", "type":{ "base":"int" }},

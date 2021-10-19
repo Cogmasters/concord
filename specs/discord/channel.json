@@ -37,10 +37,8 @@
          "option":true, "inject_if_not":0 },
         {"type":{"base":"struct discord_overwrite", "dec":"ntl"}, "name":"permission_overwrites",
          "option":true, "inject_if_not":null }, 
-        {"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name", 
-         "option":true, "inject_if_not":null},
-        {"type":{"base":"char", "dec":"[DISCORD_MAX_TOPIC_LEN]"}, "name":"topic",
-         "option":true, "inject_if_not":null },
+        {"type":{"base":"char", "dec":"*"}, "name":"name", "option":true, "inject_if_not":null},
+        {"type":{"base":"char", "dec":"*"}, "name":"topic", "option":true, "inject_if_not":null },
         {"type":{"base":"bool"}, "name":"nsfw", "option":true, "inject_if_not":false},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
          "option":true, "inject_if_not":0},
@@ -51,7 +49,7 @@
         {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null},
+         "option":true, "inject_if_not":""},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
          "option":true, "inject_if_not":0},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
@@ -88,7 +86,7 @@
         {"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null},
         {"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}},
         {"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null},
+         "option":true, "inject_if_not":""},
         {"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}
       ]
     },
@@ -322,9 +320,9 @@
       "struct":"embed",
       "fields":
       [
-        { "name": "title", "type":{ "base":"char", "dec":"[DISCORD_EMBED_TITLE_LEN]" }, "option":true, "inject_if_not":null},
-        { "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":null},
-        { "name": "description", "type":{ "base":"char", "dec":"[DISCORD_EMBED_DESCRIPTION_LEN]"}, "option":true, "inject_if_not":null},
+        { "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null},
+        { "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":""},
+        { "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
         { "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
         { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0},
         { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0},
@@ -389,7 +387,7 @@
       "namespace":["embed"],
       "struct":"author",
       "fields": [
-        { "name": "name", "type":{ "base":"char", "dec":"[DISCORD_EMBED_AUTHOR_NAME_LEN]" }, "inject_if_not":null},
+        { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}
@@ -401,7 +399,7 @@
       "namespace":["embed"],
       "struct":"footer",
       "fields": [
-        { "name": "text", "type": {"base":"char", "dec":"[DISCORD_EMBED_FOOTER_TEXT_LEN]"}, "inject_if_not":null},
+        { "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null},
         { "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null},
         { "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}
       ]
@@ -412,8 +410,8 @@
       "namespace":["embed"],
       "struct":"field",
       "fields": [
-        { "name": "name", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_NAME_LEN]" }, "inject_if_not":null},
-        { "name": "value", "type": { "base":"char", "dec":"[DISCORD_EMBED_FIELD_VALUE_LEN]" }, "inject_if_not":null},
+        { "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null},
+        { "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}
       ]
     }

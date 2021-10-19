@@ -109,12 +109,12 @@ struct discord_user {
   u64_snowflake_t id;
 
   /* specs/discord/user.json:45:24
-     '{ "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}}' */
-  char username[DISCORD_MAX_USERNAME_LEN];
+     '{ "name": "username", "type":{ "base":"char", "dec":"*"}}' */
+  char *username;
 
   /* specs/discord/user.json:46:24
-     '{ "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }}' */
-  char discriminator[DISCORD_MAX_DISCRIMINATOR_LEN];
+     '{ "name": "discriminator", "type":{ "base":"char", "dec":"*" }}' */
+  char *discriminator;
 
   /* specs/discord/user.json:47:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */

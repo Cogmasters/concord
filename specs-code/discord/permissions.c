@@ -138,8 +138,8 @@ void discord_role_from_json(char *json, size_t len, struct discord_role **pp)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
-                "(name):s,"
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
+                "(name):?s,"
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */
                 "(color):d,"
@@ -165,8 +165,8 @@ void discord_role_from_json(char *json, size_t len, struct discord_role **pp)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtoull, &p->id,
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
-                p->name,
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
+                &p->name,
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */
                 &p->color,
@@ -200,7 +200,7 @@ size_t discord_role_to_json(char *json, size_t len, struct discord_role *p)
   arg_switches[0] = &p->id;
 
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   arg_switches[1] = p->name;
 
   /* specs/discord/permissions.json:55:20
@@ -236,7 +236,7 @@ size_t discord_role_to_json(char *json, size_t len, struct discord_role *p)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):s,"
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -264,7 +264,7 @@ size_t discord_role_to_json(char *json, size_t len, struct discord_role *p)
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_ulltostr, &p->id,
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */
@@ -329,8 +329,9 @@ void discord_role_cleanup(struct discord_role *d) {
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   /* p->id is a scalar */
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
-  /* p->name is a scalar */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
+  if (d->name)
+    free(d->name);
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */
   /* p->color is a scalar */
@@ -364,7 +365,7 @@ void discord_role_init(struct discord_role *p) {
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
 
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */

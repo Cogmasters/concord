@@ -174,7 +174,7 @@ discord_create_guild_channel(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[2048];
   size_t ret = discord_create_guild_channel_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
@@ -349,7 +349,7 @@ discord_add_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_add_guild_member_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
@@ -385,7 +385,7 @@ discord_modify_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[2048];
   size_t ret = discord_modify_guild_member_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
@@ -667,7 +667,7 @@ discord_create_guild_role(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_create_guild_role_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 
@@ -728,11 +728,12 @@ discord_modify_guild_role(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN]="{}";
-  size_t ret=2;
-  if (params) {
+  char payload[2048]="{}";
+  size_t ret;
+  if (params)
     ret = discord_modify_guild_role_params_to_json(payload, sizeof(payload), params);
-  }
+  else
+    ret = sprintf(payload, "{}");
 
   return discord_adapter_run( 
            &client->adapter,

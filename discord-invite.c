@@ -27,7 +27,7 @@ discord_get_invite(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_get_invite_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run( 

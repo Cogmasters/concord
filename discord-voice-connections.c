@@ -33,7 +33,7 @@ send_resume(struct discord_voice *vc)
 {
   vc->is_resumable = false; /* reset */
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   int ret = json_inject(payload, sizeof(payload), 
               "(op):7" /* RESUME OPCODE */
               "(d):{"
@@ -53,7 +53,7 @@ send_resume(struct discord_voice *vc)
 static void
 send_identify(struct discord_voice *vc)
 {
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   int ret = json_inject(payload, sizeof(payload), 
               "(op):0" /* IDENTIFY OPCODE */
               "(d):{"

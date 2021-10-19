@@ -241,8 +241,8 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
                 "(options):F,"
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-                "(reason):s,",
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
+                "(reason):?s,",
   /* specs/discord/audit_log.json:26:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}, "comment":"id of the affected entity (webhook,user,role,etc.)", "inject_if_not":null }' */
                 &p->target_id,
@@ -262,8 +262,8 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
                 discord_optional_audit_entry_info_list_from_json, &p->options,
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-                p->reason);
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
+                &p->reason);
   ret = r;
 }
 
@@ -302,8 +302,8 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
     arg_switches[5] = p->options;
 
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-  if (*p->reason)
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
+  if (p->reason != NULL)
     arg_switches[6] = p->reason;
 
   r=json_inject(json, len, 
@@ -326,7 +326,7 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
                 "(options):F,"
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
                 "(reason):s,"
                 "@arg_switches:b",
   /* specs/discord/audit_log.json:26:18
@@ -348,7 +348,7 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
                 discord_optional_audit_entry_info_list_to_json, p->options,
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
                 p->reason,
                 arg_switches, sizeof(arg_switches), true);
   return r;
@@ -410,8 +410,9 @@ void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *d) {
   if (d->options)
     discord_optional_audit_entry_info_list_free(d->options);
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-  /* p->reason is a scalar */
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
+  if (d->reason)
+    free(d->reason);
 }
 
 void discord_audit_log_entry_init(struct discord_audit_log_entry *p) {
@@ -435,7 +436,7 @@ void discord_audit_log_entry_init(struct discord_audit_log_entry *p) {
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
 
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
 
 }
 void discord_audit_log_entry_list_free(struct discord_audit_log_entry **p) {

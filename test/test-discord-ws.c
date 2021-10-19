@@ -145,6 +145,7 @@ int main(int argc, char *argv[])
   /* trigger event callbacks in a multi-threaded fashion */
   discord_set_event_scheduler(client, &scheduler);
 
+  discord_set_prefix(client, "!");
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "disconnect", &on_disconnect);
   discord_set_on_command(client, "spam", &on_spam);

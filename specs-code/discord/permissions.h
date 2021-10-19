@@ -98,8 +98,8 @@ struct discord_role {
   u64_snowflake_t id;
 
   /* specs/discord/permissions.json:54:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]" }}' */
-  char name[DISCORD_MAX_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
+  char *name;
 
   /* specs/discord/permissions.json:55:20
      '{ "name": "color", "type":{ "base":"int" }}' */

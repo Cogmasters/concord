@@ -115,7 +115,8 @@ discord_embed_set_footer(
     embed->footer = malloc(sizeof *embed->footer);
   discord_embed_footer_init(embed->footer);
 
-  strncpy(embed->footer->text, text, DISCORD_EMBED_FOOTER_TEXT_LEN);
+  if (text)
+    asprintf(&embed->footer->text, "%s", text);
   if (icon_url)
     asprintf(&embed->footer->icon_url, "%s", icon_url);
   if (proxy_icon_url)
@@ -128,7 +129,28 @@ discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 {
   va_list args;
   va_start(args, format);
-  vsnprintf(embed->title, sizeof(embed->title), format, args);
+  if (embed->title) free(embed->title);
+  vasprintf(&embed->title, format, args);
+  va_end(args);
+}
+
+void 
+discord_embed_set_description(struct discord_embed *embed, char format[], ...)
+{
+  va_list args;
+  va_start(args, format);
+  if (embed->description) free(embed->description);
+  vasprintf(&embed->description, format, args);
+  va_end(args);
+}
+
+void 
+discord_embed_set_url(struct discord_embed *embed, char format[], ...)
+{
+  va_list args;
+  va_start(args, format);
+  if (embed->url) free(embed->url);
+  vasprintf(&embed->url, format, args);
   va_end(args);
 }
 
@@ -145,7 +167,6 @@ discord_embed_set_thumbnail(
   else
     embed->thumbnail = malloc(sizeof *embed->thumbnail);
   discord_embed_thumbnail_init(embed->thumbnail);
-
   if (url)
     asprintf(&embed->thumbnail->url, "%s", url);
   if (proxy_url)
@@ -169,7 +190,6 @@ discord_embed_set_image(
   else
     embed->image = malloc(sizeof *embed->image);
   discord_embed_image_init(embed->image);
-
   if (url)
     asprintf(&embed->image->url, "%s", url);
   if (proxy_url)
@@ -193,7 +213,6 @@ discord_embed_set_video(
   else
     embed->video = malloc(sizeof *embed->video);
   discord_embed_video_init(embed->video);
-
   if (url)
     asprintf(&embed->video->url, "%s", url);
   if (proxy_url)
@@ -212,11 +231,10 @@ discord_embed_set_provider(struct discord_embed *embed, char name[], char url[])
   else
     embed->provider = malloc(sizeof *embed->provider);
   discord_embed_provider_init(embed->provider);
-
+  if (name)
+    asprintf(&embed->provider->name, "%s", name);
   if (url)
     asprintf(&embed->provider->url, "%s", url);
-  if (!IS_EMPTY_STRING(name))
-    strncpy(embed->provider->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
 }
 
 void
@@ -232,10 +250,8 @@ discord_embed_set_author(
   else
     embed->author = malloc(sizeof *embed->author);
   discord_embed_author_init(embed->author);
-
-  if (!IS_EMPTY_STRING(name))
-    strncpy(embed->author->name, name, DISCORD_EMBED_AUTHOR_NAME_LEN);
-
+  if (name)
+    asprintf(&embed->author->name, "%s", name);
   if (url)
     asprintf(&embed->author->url, "%s", url);
   if (icon_url)
@@ -261,26 +277,10 @@ discord_embed_add_field(struct discord_embed *embed, char name[], char value[], 
   }
 
   struct discord_embed_field field = { .Inline = Inline };
-
-  size_t ret;
-  if (!(ret = cee_str_bounds_check(name, sizeof(field.name)))) {
-    log_warn("'name' exceeds %d characters, truncation will occur", sizeof(field.name));
-    snprintf(field.name, sizeof(field.name), "%.*s(...)", \
-        (int)(sizeof(field.name)-6), name);
-  }
-  else {
-    snprintf(field.name, sizeof(field.name), "%s", name);
-  }
-
-  if (!(ret = cee_str_bounds_check(value, sizeof(field.value)))) {
-    log_warn("'value' exceeds %d characters, truncation will occur", sizeof(field.value));
-    snprintf(field.value, sizeof(field.value), "%.*s(...)", \
-        (int)(sizeof(field.value)-6), value);
-  }
-  else {
-    snprintf(field.value, sizeof(field.value), "%s", value);
-  }
-
+  if (name)
+    asprintf(&field.name, "%s", name);
+  if (value)
+    asprintf(&field.value, "%s", value);
   ntl_append2((ntl_t*)&embed->fields, sizeof(struct discord_embed_field), &field);
 }
 
@@ -300,13 +300,7 @@ discord_overwrite_append(
     log_error("'type' should be 0 (role) or 1 (member)");
     return;
   }
-
-  struct discord_overwrite new_overwrite = {
-    .id = id,
-    .type = type,
-    .allow = allow,
-    .deny = deny
-  };
+  struct discord_overwrite new_overwrite = { .id = id, .type = type, .allow = allow, .deny = deny };
   ntl_append2((ntl_t*)permission_overwrites, sizeof(struct discord_overwrite), &new_overwrite);
 }
 
@@ -365,7 +359,7 @@ discord_disconnect_guild_member(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[128];
   size_t ret = json_inject(payload, sizeof(payload), "(channel_id):null");
 
   return discord_adapter_run( 

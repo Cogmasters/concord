@@ -1,3 +1,4 @@
+#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,8 +22,8 @@ _discord_init(struct discord *new_client)
 struct discord*
 discord_init(const char token[])
 {
-  struct discord *new_client = calloc(1, sizeof *new_client);
-  new_client->conf = calloc(1, sizeof *new_client->conf);
+  struct discord *new_client = calloc(1, sizeof(*new_client));
+  new_client->conf = calloc(1, sizeof(*new_client->conf));
   logconf_setup(new_client->conf, "DISCORD", NULL);
 
   new_client->token = (struct sized_buffer){
@@ -38,8 +39,8 @@ discord_init(const char token[])
 struct discord*
 discord_config_init(const char config_file[])
 {
-  struct discord *new_client = calloc(1, sizeof *new_client);
-  new_client->conf = calloc(1, sizeof *new_client->conf);
+  struct discord *new_client = calloc(1, sizeof(*new_client));
+  new_client->conf = calloc(1, sizeof(*new_client->conf));
 
   FILE *fp = fopen(config_file, "rb");
   VASSERT_S(fp != NULL, "Couldn't open '%s': %s", config_file, strerror(errno));
@@ -50,8 +51,7 @@ discord_config_init(const char config_file[])
 
   new_client->token = logconf_get_field(new_client->conf, "discord.token");
   if (STRNEQ("YOUR-BOT-TOKEN", new_client->token.start, new_client->token.size)) {
-    memset(&new_client->token, 0, sizeof new_client->token);
-
+    memset(&new_client->token, 0, sizeof(new_client->token));
   }
 
   _discord_init(new_client);
@@ -66,7 +66,7 @@ discord_clone(const struct discord *orig_client)
   memcpy(clone_client, orig_client, sizeof(struct discord));
 
   clone_client->adapter.ua = ua_clone(orig_client->adapter.ua);
-  memset(&clone_client->adapter.err, 0, sizeof clone_client->adapter.err);
+  memset(&clone_client->adapter.err, 0, sizeof(clone_client->adapter.err));
 
   clone_client->is_original = false;
 
@@ -156,18 +156,9 @@ void
 discord_set_prefix(struct discord *client, char *prefix) 
 {
   if (IS_EMPTY_STRING(prefix)) return;
-
-  const size_t PREFIX_LEN = 32;
-  ssize_t len;
-  if (!(len = cee_str_bounds_check(prefix, PREFIX_LEN))) {
-    log_error("Prefix length greater than threshold (%zu chars)", PREFIX_LEN);
-    return;
-  }
-
-  client->gw.user_cmd->prefix = (struct sized_buffer){
-    .start = prefix,
-    .size = (size_t)len
-  };
+  if (client->gw.user_cmd->prefix.start)
+    free(client->gw.user_cmd->prefix.start);
+  client->gw.user_cmd->prefix.size = asprintf(&client->gw.user_cmd->prefix.start, "%s", prefix);
 }
 
 void
@@ -192,7 +183,7 @@ discord_set_on_command(struct discord *client, char *command, discord_message_cb
   }
 
   ++client->gw.user_cmd->amt;
-  client->gw.user_cmd->pool = realloc(client->gw.user_cmd->pool, client->gw.user_cmd->amt * sizeof *client->gw.user_cmd->pool);
+  client->gw.user_cmd->pool = realloc(client->gw.user_cmd->pool, client->gw.user_cmd->amt * sizeof(*client->gw.user_cmd->pool));
 
   client->gw.user_cmd->pool[client->gw.user_cmd->amt-1].start = command;
   client->gw.user_cmd->pool[client->gw.user_cmd->amt-1].size = (size_t)len;

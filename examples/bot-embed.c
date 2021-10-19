@@ -69,11 +69,7 @@ void on_designated_init(
     .fields = (struct discord_embed_field*[]) {
       &(struct discord_embed_field){
         .name = "Want to learn more?",
-        .value = "Read our [documentation](https://cee-studio.github.io/orca/discord_api.html#c.discord_embed)!"
-      },
-      &(struct discord_embed_field){
-        .name = "Need help troubleshooting?",
-        .value = "Debug with [Saiph-C]((https://www.cee.studio/)"
+        .value = "Read our [documentation](https://cee-studio.github.io/orca/apis/discord.html#c.discord_embed)!"
       },
       &(struct discord_embed_field){
         .name = "Looking for support?",
@@ -94,12 +90,11 @@ void on_builder_init(
 {
   if (msg->author->bot) return;
 
-  struct discord_embed embed = {
-    .title = "Orca",
-    .description = "Multi-REST Api lbrary",
-    .url = strdup("https://github.com/cee-studio/orca"),
-    .color = 3447003
-  };
+  struct discord_embed embed = { .color = 3447003 };
+
+  discord_embed_set_title(&embed, "Orca");
+  discord_embed_set_description(&embed, "Multi-REST Api library");
+  discord_embed_set_url(&embed, "https://github.com/cee-studio/orca");
 
   discord_embed_set_footer(
     &embed, 
@@ -120,12 +115,7 @@ void on_builder_init(
   discord_embed_add_field(
     &embed,
     "Want to learn more?",
-    "Read our [documentation](https://cee-studio.github.io/orca/discord_api.html#c.discord_embed)!",
-    false);
-  discord_embed_add_field(
-    &embed,
-    "Need help troubleshooting?",
-    "Debug with [Saiph-C](https://www.cee.studio/)",
+    "Read our [documentation](https://cee-studio.github.io/orca/apis/discord.html#c.discord_embed)!",
     false);
   discord_embed_add_field(
     &embed,

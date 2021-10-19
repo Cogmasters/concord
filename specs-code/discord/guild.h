@@ -39,9 +39,9 @@ struct discord_guild {
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
   u64_snowflake_t id;
 
-  /* specs/discord/guild.json:13:74
-     '{"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"}' */
-  char name[DISCORD_MAX_NAME_LEN];
+  /* specs/discord/guild.json:13:53
+     '{"type":{"base":"char", "dec":"*"}, "name":"name"}' */
+  char *name;
 
   /* specs/discord/guild.json:14:70
      '{"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"}' */
@@ -557,8 +557,8 @@ struct discord_guild_preview {
   u64_snowflake_t id;
 
   /* specs/discord/guild.json:163:18
-     '{"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}}' */
-  char name[DISCORD_MAX_NAME_LEN];
+     '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
+  char *name;
 
   /* specs/discord/guild.json:164:18
      '{"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}}' */
@@ -589,8 +589,8 @@ struct discord_guild_preview {
   int approximate_presence_count;
 
   /* specs/discord/guild.json:171:18
-     '{"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}' */
-  char description[DISCORD_MAX_DESCRIPTION_LEN];
+     '{"name":"description", "type":{"base":"char", "dec":"*"}}' */
+  char *description;
 
 };
 extern void discord_guild_preview_cleanup_v(void *p);
@@ -697,8 +697,8 @@ struct discord_guild_member {
   struct discord_user *user;
 
   /* specs/discord/guild.json:192:20
-     '{ "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true}' */
-  char nick[DISCORD_MAX_NAME_LEN];
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*"}, "option":true}' */
+  char *nick;
 
   /* specs/discord/guild.json:193:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"}' */
@@ -1035,8 +1035,8 @@ extern size_t discord_integration_application_list_to_json(char *str, size_t len
  */
 struct discord_ban {
   /* specs/discord/guild.json:265:20
-     '{ "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }}' */
-  char reason[DISCORD_MAX_REASON_LEN];
+     '{ "name": "reason", "type":{ "base":"char", "dec":"*" }}' */
+  char *reason;
 
   /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */

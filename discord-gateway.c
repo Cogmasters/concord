@@ -87,7 +87,7 @@ send_resume(struct discord_gateway *gw)
 {
   gw->status->is_resumable = false; /* reset */
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = json_inject(payload, sizeof(payload), 
                 "(op):6" /* RESUME OPCODE */
                 "(d):{"
@@ -119,7 +119,7 @@ send_identify(struct discord_gateway *gw)
     gw->session.concurrent = 0;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = json_inject(payload, sizeof(payload), 
                 "(op):2" /* IDENTIFY OPCODE */
                 "(d):F",
@@ -142,7 +142,7 @@ send_heartbeat(struct discord_gateway *gw)
 {
   char payload[64];
   int ret = json_inject(payload, sizeof(payload), 
-              "(op):1, (d):d", &gw->payload->seq);
+              "(op):1,(d):d", &gw->payload->seq);
   ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
 
   struct ws_info info={0};
@@ -1251,12 +1251,10 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
   struct sized_buffer default_prefix = logconf_get_field(conf, "discord.default_prefix");
   if (default_prefix.size) {
     bool enable_prefix=false;
-    static char prefix[64]="";
+    char *prefix=NULL;
     json_extract(default_prefix.start, default_prefix.size,
-        "(enable):b,(prefix):.*s", 
-        &enable_prefix, sizeof(prefix), prefix);
-
-    if (enable_prefix) {
+        "(enable):b,(prefix):?s", &enable_prefix, &prefix);
+    if (enable_prefix && prefix) {
       gw->user_cmd->prefix = (struct sized_buffer){
         .start = prefix,
         .size = strlen(prefix)
@@ -1290,8 +1288,11 @@ discord_gateway_cleanup(struct discord_gateway *gw)
   free(gw->reconnect);
   free(gw->status);
   free(gw->hbeat);
+  /* cleanup user commands */
   if (gw->user_cmd->pool)
     free(gw->user_cmd->pool);
+  if (gw->user_cmd->prefix.start)
+    free(gw->user_cmd->prefix.start);
   free(gw->user_cmd);
 }
 

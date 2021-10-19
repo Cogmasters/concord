@@ -45,7 +45,7 @@ void ticks_from_json(char *str, size_t len, void *p_tick_ms)
   json_extract(str, len, "[L]", &ticks);
   if (!ticks) return;
 
-  json_extract(ticks[0]->start, ticks[0]->size, \
+  json_extract(ticks[0]->start, ticks[0]->size,
       "(time):F", &cee_iso8601_to_unix_ms, tick_ms);
 
   free(ticks);
@@ -53,8 +53,7 @@ void ticks_from_json(char *str, size_t len, void *p_tick_ms)
 
 void update_last_tick_ms(uint64_t *tick_ms)
 {
-  struct ua_resp_handle resp_handle = \
-    { .ok_cb = &ticks_from_json, .ok_obj = tick_ms };
+  struct ua_resp_handle resp_handle = { .ok_cb = &ticks_from_json, .ok_obj = tick_ms };
 
   /* Fetch ticks from ELITEBGS API */
   ua_run(
@@ -266,7 +265,7 @@ void on_command(
     .color = 15844367 // gold
   };
   /* Set embed fields */
-  strncpy(new_embed.title, msg->content, sizeof(new_embed.title));
+  discord_embed_set_title(&new_embed, "%s", msg->content);
   discord_embed_set_footer(&new_embed, 
       "designed & built by https://cee.dev",
       "https://cee.dev/static/images/cee.png", NULL);

@@ -29,7 +29,7 @@
         {"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 },
         {"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 },
         {"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null },
-        {"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }
+        {"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }
       ]
     },
     {

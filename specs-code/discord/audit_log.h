@@ -126,8 +126,8 @@ struct discord_audit_log_entry {
   struct discord_optional_audit_entry_info **options; /**< additional info for certain action types */
 
   /* specs/discord/audit_log.json:32:18
-     '{"name":"reason", "type": {"base":"char", "dec":"[DISCORD_MAX_REASON_LEN]"}, "comment":"the reason for the change", "inject_if_not":"" }' */
-  char reason[DISCORD_MAX_REASON_LEN]; /**< the reason for the change */
+     '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
+  char *reason; /**< the reason for the change */
 
 };
 extern void discord_audit_log_entry_cleanup_v(void *p);

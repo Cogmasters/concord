@@ -58,7 +58,7 @@ discord_modify_current_user(struct discord *client, struct discord_modify_curren
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_modify_current_user_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(

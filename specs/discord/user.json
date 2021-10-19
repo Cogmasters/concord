@@ -42,8 +42,8 @@
           "fields":
           [
             { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} },
-            { "name": "username", "type":{ "base":"char", "dec":"[DISCORD_MAX_USERNAME_LEN]"}},
-            { "name": "discriminator", "type":{ "base":"char", "dec":"[DISCORD_MAX_DISCRIMINATOR_LEN]" }},
+            { "name": "username", "type":{ "base":"char", "dec":"*"}},
+            { "name": "discriminator", "type":{ "base":"char", "dec":"*" }},
             { "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }},
             { "name": "bot", "type":{ "base":"bool" }},
             { "name": "System", "json_key": "system", "type":{ "base":"bool" }},

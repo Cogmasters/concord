@@ -10,7 +10,7 @@
       "fields":
       [
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"},
-        {"type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "name":"name"},
+        {"type":{"base":"char", "dec":"*"}, "name":"name"},
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon"},
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"icon_hash"},
         {"type":{"base":"char", "dec":"*", "nullable":true}, "name":"splash"},
@@ -160,7 +160,7 @@
       "struct": "preview",
       "fields": [
         {"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}},
-        {"name":"name", "type":{"base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}},
+        {"name":"name", "type":{"base":"char", "dec":"*"}},
         {"name":"icon", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"splash", "type":{"base":"char", "dec":"*", "nullable":true}},
         {"name":"discovery_splash", "type":{"base":"char", "dec":"*", "nullable":true}},
@@ -168,7 +168,7 @@
         {"name":"features", "type":{"base":"ja_str", "dec":"ntl"}},
         {"name":"approximate_member_count", "type":{"base":"int"}},
         {"name":"approximate_presence_count", "type":{"base":"int"}},
-        {"name":"description", "type":{"base":"char", "dec":"[DISCORD_MAX_DESCRIPTION_LEN]"}}
+        {"name":"description", "type":{"base":"char", "dec":"*"}}
       ]
     },
     {
@@ -189,7 +189,7 @@
       "fields":
       [
         { "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true},
-        { "name": "nick", "type":{ "base":"char", "dec":"[DISCORD_MAX_NAME_LEN]"}, "option":true},
+        { "name": "nick", "type":{ "base":"char", "dec":"*"}, "option":true},
         { "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl"}, "comment":"array of role object ids"},
         { "name": "joined_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
         { "name": "premium_since", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }},
@@ -262,7 +262,7 @@
       "struct":"ban",
       "fields":
       [
-        { "name": "reason", "type":{ "base":"char", "dec":"[DISCORD_MAX_REASON_LEN]" }},
+        { "name": "reason", "type":{ "base":"char", "dec":"*" }},
         { "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}
       ]
     },

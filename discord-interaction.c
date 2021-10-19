@@ -180,15 +180,8 @@ discord_create_followup_message(
   char query[4096]="";
   size_t ret=0;
 
-#if 0
-  if (params->wait) { /* according tot he docs this is always true */
-    ret = snprintf(query, sizeof(query), "wait=1");
-    ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
-  }
-#endif
   if (params->thread_id) { 
-    ret += snprintf(query+ret, sizeof(query)-ret, "%sthread_id=%"PRIu64, 
-        ret ? "&" : "", params->thread_id);
+    ret += snprintf(query+ret, sizeof(query)-ret, "%sthread_id=%"PRIu64, ret ? "&" : "", params->thread_id);
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
 

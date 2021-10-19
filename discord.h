@@ -35,34 +35,38 @@ struct discord_voice_cbs;
 /** @} DiscordLimitsSnowflake */
 
 /** @defgroup DiscordLimitsGeneral
+ *  @note assume the worst-case scenario for strings,
+ *          where each character is 4 bytes long (UTF32)
  *  @{ */
-#define DISCORD_MAX_NAME_LEN          100 + 1
-#define DISCORD_MAX_TOPIC_LEN         1024 + 1
-#define DISCORD_MAX_DESCRIPTION_LEN   2048 + 1
-#define DISCORD_MAX_USERNAME_LEN      32 + 1
+#define DISCORD_MAX_NAME_LEN          4*100 + 1
+#define DISCORD_MAX_TOPIC_LEN         4*1024 + 1
+#define DISCORD_MAX_DESCRIPTION_LEN   4*2048 + 1
+#define DISCORD_MAX_USERNAME_LEN      4*32 + 1
 #define DISCORD_MAX_DISCRIMINATOR_LEN 4 + 1
-#define DISCORD_MAX_REASON_LEN        512 + 1
-#define DISCORD_MAX_MESSAGE_LEN       2000 + 1
-#define DISCORD_MAX_PAYLOAD_LEN       4096 + 1
+#define DISCORD_MAX_REASON_LEN        4*512 + 1
+#define DISCORD_MAX_MESSAGE_LEN       4*2000 + 1
+#define DISCORD_MAX_PAYLOAD_LEN       4*4096 + 1
 #define DISCORD_MAX_VOICE_CONNECTIONS 512
 /** @} DiscordLimitsGeneral */
 
 /** @defgroup DiscordLimitsEmbed
  *  @see https://discord.com/developers/docs/resources/channel#embed-limits 
+ *  @note assume the worst-case scenario for strings,
+ *          where each character is 4 bytes long (UTF32)
  *  @{ */
-#define DISCORD_EMBED_TITLE_LEN       256 + 1
-#define DISCORD_EMBED_DESCRIPTION_LEN 2048 + 1
+#define DISCORD_EMBED_TITLE_LEN       4*256 + 1
+#define DISCORD_EMBED_DESCRIPTION_LEN 4*2048 + 1
 #define DISCORD_EMBED_MAX_FIELDS      25
-#define DISCORD_EMBED_FIELD_NAME_LEN  256 + 1
-#define DISCORD_EMBED_FIELD_VALUE_LEN 1024 + 1
-#define DISCORD_EMBED_FOOTER_TEXT_LEN 2048 + 1
-#define DISCORD_EMBED_AUTHOR_NAME_LEN 256 + 1
+#define DISCORD_EMBED_FIELD_NAME_LEN  4*256 + 1
+#define DISCORD_EMBED_FIELD_VALUE_LEN 4*1024 + 1
+#define DISCORD_EMBED_FOOTER_TEXT_LEN 4*2048 + 1
+#define DISCORD_EMBED_AUTHOR_NAME_LEN 4*256 + 1
 /** @} DiscordLimitsEmbed */
 
 /** @defgroup DiscordLimitsWebhook
  *  @see https://discord.com/developers/docs/resources/webhook#create-webhook-json-params
  *  @{ */
-#define DISCORD_WEBHOOK_NAME_LEN 80 + 1
+#define DISCORD_WEBHOOK_NAME_LEN 4*80 + 1
 /** @} DiscordLimitsWebhook */
 
 /* see specs/discord/ for specs */
@@ -2253,13 +2257,15 @@ ORCAcode discord_get_gateway_bot(struct discord *client, struct sized_buffer *p_
 
 /** @defgroup DiscordMiscEmbed
  *  @{ */
+void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
+void discord_embed_set_description(struct discord_embed *embed, char format[], ...);
+void discord_embed_set_url(struct discord_embed *embed, char format[], ...);
 void discord_embed_set_thumbnail(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
 void discord_embed_set_image(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
 void discord_embed_set_video(struct discord_embed *embed, char url[], char proxy_url[], int height, int width);
 void discord_embed_set_footer(struct discord_embed *embed, char text[], char icon_url[], char proxy_icon_url[]);
 void discord_embed_set_provider(struct discord_embed *embed, char name[], char url[]);
 void discord_embed_set_author(struct discord_embed *embed, char name[], char url[], char icon_url[], char proxy_icon_url[]);
-void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
 void discord_embed_add_field(struct discord_embed *embed, char name[], char value[], bool Inline);
 /** @} DiscordMiscEmbed */
 

@@ -46,7 +46,7 @@ discord_modify_channel(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_modify_channel_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
@@ -99,23 +99,19 @@ discord_get_channel_messages(
   if (params) {
     size_t offset=0;
     if (params->limit) {
-      offset += snprintf(query+offset, sizeof(query)-offset,
-          "limit=%d", params->limit);
+      offset += snprintf(query+offset, sizeof(query)-offset, "limit=%d", params->limit);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
     if (params->around) {
-      offset += snprintf(query+offset, sizeof(query)-offset,
-          "%saround=%"PRIu64, (*query)?"&":"", params->around);
+      offset += snprintf(query+offset, sizeof(query)-offset, "%saround=%"PRIu64, (*query)?"&":"", params->around);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
     if (params->before) {
-      offset += snprintf(query+offset, sizeof(query)-offset,
-          "%sbefore=%"PRIu64, (*query)?"&":"", params->before);
+      offset += snprintf(query+offset, sizeof(query)-offset, "%sbefore=%"PRIu64, (*query)?"&":"", params->before);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
     if (params->after) {
-      offset += snprintf(query+offset, sizeof(query)-offset,
-          "%safter=%"PRIu64, (*query)?"&":"", params->after);
+      offset += snprintf(query+offset, sizeof(query)-offset, "%safter=%"PRIu64, (*query)?"&":"", params->after);
       ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
   }
@@ -267,7 +263,7 @@ discord_create_reaction(
 
   char emoji_endpoint[256];
   if (emoji_id)
-    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64, pct_emoji_name, emoji_id);
+    snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%"PRIu64, pct_emoji_name, emoji_id);
   else
     snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
@@ -418,9 +414,7 @@ discord_get_reactions(
     ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
   }
 
-  char *pct_emoji_name = (emoji_name) 
-                           ? url_encode((char*)emoji_name)
-                           : NULL;
+  char *pct_emoji_name = (emoji_name) ? url_encode((char*)emoji_name) : NULL;
 
   char emoji_endpoint[256];
   if (emoji_id)
@@ -636,7 +630,7 @@ discord_edit_channel_permissions(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_edit_channel_permissions_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
@@ -686,7 +680,7 @@ discord_create_channel_invite(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret;
   if (params)
     ret = discord_create_channel_invite_params_to_json(payload, sizeof(payload), params);
@@ -865,7 +859,7 @@ discord_group_dm_add_recipient(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_group_dm_add_recipient_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
@@ -922,7 +916,7 @@ discord_start_thread_with_message(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_start_thread_with_message_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
@@ -953,7 +947,7 @@ discord_start_thread_without_message(
     return ORCA_MISSING_PARAMETER;
   }
 
-  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  char payload[1024];
   size_t ret = discord_start_thread_without_message_params_to_json(payload, sizeof(payload), params);
 
   return discord_adapter_run(
@@ -1119,13 +1113,11 @@ discord_list_public_archived_threads(
   char query[1024]="";
   size_t offset=0;
   if (before) {
-    offset += snprintf(query+offset, sizeof(query)-offset, \
-        "before=%"PRIu64, before);
+    offset += snprintf(query+offset, sizeof(query)-offset, "before=%"PRIu64, before);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
   if (limit) {
-    offset += snprintf(query+offset, sizeof(query)-offset, \
-        "%slimit=%d", (*query)?"&":"", limit);
+    offset += snprintf(query+offset, sizeof(query)-offset, "%slimit=%d", (*query)?"&":"", limit);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
@@ -1161,13 +1153,11 @@ discord_list_private_archived_threads(
   char query[1024]="";
   size_t offset=0;
   if (before) {
-    offset += snprintf(query+offset, sizeof(query)-offset, \
-        "before=%"PRIu64, before);
+    offset += snprintf(query+offset, sizeof(query)-offset, "before=%"PRIu64, before);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
   if (limit) {
-    offset += snprintf(query+offset, sizeof(query)-offset, \
-        "%slimit=%d", (*query)?"&":"", limit);
+    offset += snprintf(query+offset, sizeof(query)-offset, "%slimit=%d", (*query)?"&":"", limit);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
@@ -1203,13 +1193,11 @@ discord_list_joined_private_archived_threads(
   char query[1024]="";
   size_t offset=0;
   if (before) {
-    offset += snprintf(query+offset, sizeof(query)-offset, \
-        "before=%"PRIu64, before);
+    offset += snprintf(query+offset, sizeof(query)-offset, "before=%"PRIu64, before);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
   if (limit) {
-    offset += snprintf(query+offset, sizeof(query)-offset, \
-        "%slimit=%d", (*query)?"&":"", limit);
+    offset += snprintf(query+offset, sizeof(query)-offset, "%slimit=%d", (*query)?"&":"", limit);
     ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
   }
 
