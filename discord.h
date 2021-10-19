@@ -36,7 +36,7 @@ struct discord_voice_cbs;
 
 /** @defgroup DiscordLimitsGeneral
  *  @note assume the worst-case scenario for strings,
- *          where each character is 4 bytes long (UTF32)
+ *          where each character is 4 bytes long (UTF8)
  *  @{ */
 #define DISCORD_MAX_NAME_LEN          4*100 + 1
 #define DISCORD_MAX_TOPIC_LEN         4*1024 + 1
@@ -52,7 +52,7 @@ struct discord_voice_cbs;
 /** @defgroup DiscordLimitsEmbed
  *  @see https://discord.com/developers/docs/resources/channel#embed-limits 
  *  @note assume the worst-case scenario for strings,
- *          where each character is 4 bytes long (UTF32)
+ *          where each character is 4 bytes long (UTF8)
  *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       4*256 + 1
 #define DISCORD_EMBED_DESCRIPTION_LEN 4*2048 + 1
