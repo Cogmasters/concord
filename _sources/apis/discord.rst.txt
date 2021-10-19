@@ -128,6 +128,18 @@ Invite
 .. doxygenfile:: specs-code/discord/invite.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
 
+Stage Instance
+^^^^^^^^^^^^^^
+
+.. doxygenfile:: specs-code/discord/stage-instance.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
+Sticker
+^^^^^^^
+
+.. doxygenfile:: specs-code/discord/sticker.h
+    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+
 User
 ^^^^
 
