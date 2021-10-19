@@ -439,3 +439,13 @@ discord_set_presence(struct discord *client, struct discord_presence_status *pre
   discord_presence_status_cleanup(client->gw.id.presence);
   memcpy(client->gw.id.presence, presence, sizeof(struct discord_presence_status));
 }
+
+int
+discord_get_ping(struct discord *client)
+{
+  int ping_ms;
+  ws_lock(client->gw.ws);
+  ping_ms = client->gw.hbeat->ping_ms;
+  ws_unlock(client->gw.ws);
+  return ping_ms;
+}

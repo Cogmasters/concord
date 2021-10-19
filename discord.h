@@ -809,6 +809,15 @@ void* discord_get_data(struct discord *client);
  */
 void discord_set_presence(struct discord *client, struct discord_presence_status *presence);
 
+/**
+ * @brief Get the client WebSockets ping
+ * @note Only works after a connection has been established via discord_run()
+ *
+ * @param client the client created with discord_init()
+ * @return the ping in milliseconds
+ */
+int discord_get_ping(struct discord *client);
+
 
  /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */

@@ -1059,7 +1059,9 @@ static void
 on_heartbeat_ack(struct discord_gateway *gw)
 {
   /* get request / response interval in milliseconds */
+  ws_lock(gw->ws);
   gw->hbeat->ping_ms = cee_timestamp_ms() - gw->hbeat->tstamp;
+  ws_unlock(gw->ws);
   logconf_trace(&gw->conf, "PING: %d ms", gw->hbeat->ping_ms);
 }
 
