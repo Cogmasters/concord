@@ -11418,6 +11418,26 @@
 </dl>
 </dd></dl>
 
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_get_ping">
+<span class="target" id="discord_8h_1a8a6d0002445738ace70f5eb2b22ca471"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_ping</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_ping" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the client WebSockets ping. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only works after a connection has been established via <a class="reference internal" href="#discord_8h_1ab7988ee40a818de5f17e302981dfbbc7"><span class="std std-ref">discord_run()</span></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the ping in milliseconds </p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 <section id="id7">
