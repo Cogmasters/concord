@@ -1,10 +1,10 @@
 # CODING GUIDELINES
 
-In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use this coding guidelines outside of this project.
+In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use these coding guidelines outside of this project.
 
 ## Naming
 
-Try using a non-confusing naming scheme for your new functions and variable names. It doesn't necessarily have to mean that you should use the same as in other places of the code, just that the names should be logical, understandable and be named according to what they're used for. File-local functions should be made static. We like lower case names.
+Try using an organized naming scheme for your new functions and variable names. It doesn't necessarily mean that you should use the same as in other places of the code. The names should be logical, understandable and be named according to what they're used for. File-local functions should be made static. We require lowercase names for all of our symbols (functions, variables names, etc).
 
 ## Line Width
 
@@ -12,7 +12,7 @@ Try to use lines that are at most 80 characters long. This is an amount of text 
 
 ## Indentation
 
-We use only spaces for identation, never TABs. We use two spaces for each new open brace. If readability becomes an issue, your better judgment should tell you wether you need more or less identation. For compactness and readability this is the preferred identation style:
+We use always two spaces for identation for each new open brace, never TABs. If readability becomes an issue, your better judgment should tell you whether you need more or less identation. For compactness and readability, this is the preferred identation style:
 
 ```c
 for (int i=0; i < n; ++i) {
@@ -50,7 +50,7 @@ if (!x)
   continue;
 ```
 
-For functions the opening brace should be on a separate line:
+For functions, the opening brace should be on a separate line:
 
 ```c
 int main(int argc, char *argv[])
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 
 ## 'else' on the following line
 
-When adding an else clause to a conditional expression using braces, we add it on a new line after the closing brace. Like this:
+When adding an else clause to a conditional expression using braces, we add it on a new line after the closing brace like this:
 
 ```c
 if (age < 40) {
@@ -74,7 +74,7 @@ else {
 
 ## Space before parentheses
 
-When writing expressions using if/while/do/for, there shall be no space between the keyword and the open parenthesis. Like this:
+When writing expressions using if/while/do/for, there should be no space between the keyword and the open parenthesis like this:
 
 ```c
 while (1) {
@@ -84,7 +84,7 @@ while (1) {
 
 ## No typedefed structs
 
-Use structs by all means, but do not typedef them. Use the `struct` name way of identifying them:
+Use structs by all means, but do not typedef them. Use the `struct` syntax to identify them:
 
 ```c
 struct something {
@@ -106,7 +106,7 @@ something instance;
 
 ### Nesting
 
-To keep the code away from deep nesting one should always check for false conditions.
+To keep the code away from deep nesting, one should always check for false conditions.
 
 Instead of checking only for true, like so:
 
@@ -122,7 +122,7 @@ if (IS_PAIR(a)) {
 }
 ```
 
-We can achieve a code with better flow and minimal nesting by checking for false conditions, as follows:
+We can achieve a code with better flow and minimal nesting by checking for false conditions instead as follows:
 
 ```c
 if (!IS_PAIR(a)) return;
@@ -140,7 +140,7 @@ If you are in a situation where a variable can assume many values that are known
 
 And remember to always explicitly comment your fall throughs.
 
-Try to keep your switch statement similar to the following format:
+Try to keep your switch statement(s) similar to the following format:
 
 ```c
   switch (a) {
@@ -169,7 +169,7 @@ Please only use the portable C/C++ features in the implementation.
 
 ### Include guards in header files/files for importing
 
-When making files for importing, adding `#ifndef` and `#define` in the beginning of the file with a specified tag and `#endif` at the end disallows double declarations. The tag is normally the name of the file in uppercase, with dots and spaces represented as underscores.
+When making files for importing, add `#ifndef` and `#define` at the beginning of the file with a specified tag and `#endif` at the end disallows double declarations. The tag is normally the name of the file in uppercase, with dots and spaces represented as underscores.
 
 For example, a file called `test.h` should have:
 
@@ -188,7 +188,5 @@ Don't use `pragam once` which is not supported by all C/C++ compilers
 For subjects that are not covered here, we follow [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style)
 
 ## Commit and Merge
-To avoid creating redundant merge commits the following methods are recommanded:
+To avoid creating redundant merge commits, the following methods are recommanded:
 * [How to avoid merge commits from git pull when pushing to remote](https://stackoverflow.com/questions/30052104/how-to-avoid-merge-commits-from-git-pull-when-pushing-to-remote)
-
-
