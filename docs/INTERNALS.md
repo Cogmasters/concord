@@ -100,13 +100,13 @@ For starters, we make sure that the function that is being executed is logged. T
 we do this is simply for purposes of debugging. Knowing **where** functions are running is
 critical in debugging.
 
-Next, we verify that the 'owner' and 'repository' strings are provided. These are required
+Next, we verify that the ``owner`` and ``repository`` strings are provided. These are required
 for extracting topics from the correct repository, and so we must not allow the function to
 run unless both are provided. Depending on the nature of the error, it may be desirable to
 return something other than ``ORCA_MISSING_PARAMETER``. However, for most purposes, this is
 fine. If there is a need for another error code, they can be found or added at ``common/types.h``.
 
-When the function ends, we return ``ORCA_OK`` to signal that 'everything went well.'
+When the function ends, we return ``ORCA_OK`` to signal that 'everything went well'.
 
 # Extending our function
 Now that the base skeleton is complete, we can continue on in finishing the function.
@@ -115,10 +115,10 @@ of this guide.
 
 If we want this to be useful for users, it would be best to 'output' the response information
 to the user, but parsed in a way that is easy to use for the user. To output the information,
-however, we will need a location to output it **to.**
+however, we will need a location to output it **to**.
 
 As said previously, we will have to utilize the ``specs`` system to generate structures that
-can be used to store the topics in. Create a file in ``specs/github`` called ``repository.json.``
+can be used to store the topics in. Create a file in ``specs/github`` called ``repository.json``.
 In this file, put the following code inside of it:
 
 ```json
@@ -144,19 +144,21 @@ This may seem complicated at first, but in reality it is quite simple. As explai
 start of this guide, this JSON will be used to generate structures, enumerations, and functions
 that are used internally and by the user.
 
-On a base level, this will generate allow us to generate a structure that holds a “ja_str” which
-has a “decorator” of an “ntl.” ja_str is a string found in the JSON library that Orca uses internally.
+On a base level, this allow us to generate a structure that holds a ``ja_str`` which
+has a **decorator** of an ``ntl``.
+
+``ja_str`` is a string found in the JSON library that Orca uses internally.
 It holds a single value, which is a string.
 
-A decorator is simply a token that is put after the type. A decorator you may be familiar with is a *
-or [] to describe an array. This is what a decorator is in this context.
+A **decorator** is simply a token that is put after the type. A decorator you may be familiar with is a `*`
+or `[ ]` to describe an array. This is what a decorator is in this context.
 
-Finally, an “ntl” or “null-terminated list” is a data structure that is implemented in cee-utils that
+Finally, an ``ntl`` or “null-terminated list” is a data structure, implemented in cee-utils, that
 is an array of void pointers that has a NULL pointer at the end. This is similar in principle to a
-string, which in C is almost always terminated with a NUL byte.
+string, which in C is almost always terminated with a NULL byte.
 
 We choose to have an array of strings here because we are extracting topics from a GitHub repository.
-There might be lots of topics, there might be none. This is “dynamic” data, when you do not know how
+There might be lots of topics, there might be none. This is “dynamic” data, useful when you do not know how
 much of a piece of data you will be receiving. Handling dynamic data will be covered at a later time.
 
 Now that we got our specification described in JSON format, we can begin writing the meat of our endpoint.
@@ -188,14 +190,21 @@ https://api.github.com/repos/cee-studio/orca/topics
 ```
 
 Now that we know the format of our URL, we will need to take the parameters given to our function, and put
-them into the URL. To do this, we must first cover the adapter. The adapter is the function that actually
+them into the URL. To do this, we must first cover the **adapter**. The adapter is the function that actually
 performs our request, and writes the response information to a buffer. Each API wrapping has its own adapter,
-which includes GitHub. GitHub’s function is named github_adapter_run.
+which includes GitHub. GitHub’s function is named ``github_adapter_run``.
 
-GitHub’s adapter running function’s main arguments in order are the adapter it should run, the response handler,
-the place to write the JSON to, the HTTP verb, which is something like HTTP_GET, HTTP_POST, and others. Finally,
-there is the format of the URL to send the request to. The format is a printf-style format, and the arguments that
-are after it are what will be filled in. So if we wanted to format our url, it would look like:
+``github_adapter_run`` function’s main arguments are, in order:
+
+- the adapter it should run,
+- the response handler,
+- the place to write the JSON to,
+- the HTTP verb (which is something like HTTP_GET, HTTP_POST, and others);
+- finally,  the format of the URL to send the request to. The format is a printf-style format,
+- the arguments that
+are after are what will be filled in this URL.
+
+So if we wanted to format our URL, it would look like:
 
 ```c
 github_adapter_run(client,
@@ -207,15 +216,13 @@ github_adapter_run(client,
                    repository):
 ```
 
-As you can see, We provide the values for each specifier in the URL using our function's parameters. You may also
-notice that we have a parameter, “buffer.” Buffer should be an array that should have enough space to hold the JSON
+As you can see, we provide the values for each specifier in the URL using our function's parameters. You may also
+notice that we have a parameter, ``buffer``. **Buffer** should be an array that should have enough space to hold the JSON
 response. For this endpoint, there is a fixed size limit on how big a response can be. For the purpose of this guide,
 we will use 1024 characters as the size of our buffer.
 
 In situations where you do not know how much information the buffer should have, whether that be because it has too
-much to fit on the stack (unlikely), or because it has dynamic data, you can use a “sized buffer” which must be managed
+much to fit on the stack (unlikely), or because it has dynamic data, you can use a **sized buffer** which must be managed
 through the response handler. This will be covered and added to this section at a later date.
-
-If you have any questions, feel free to join our [Discord server](https://discord.gg/nBUqrWf).
 
 If you have any questions, feel free to join our [Discord server](https://discord.gg/nBUqrWf).
