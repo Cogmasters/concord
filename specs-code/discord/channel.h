@@ -134,7 +134,7 @@ struct discord_channel {
 
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
   char icon[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:53:78
@@ -264,7 +264,7 @@ struct discord_message_sticker {
 
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
   char preview_asset[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:90:18

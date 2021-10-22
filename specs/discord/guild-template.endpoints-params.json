@@ -10,7 +10,7 @@
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"},
-        { "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}
+        { "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon", "inject_if_not": null}
       ]
     },
     {
@@ -20,7 +20,7 @@
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"},
-        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars", "inject_if_not": null}
       ]
     },
     {
@@ -29,8 +29,8 @@
       "struct":"params",
       "fields":
       [
-        { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"},
-        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}
+        { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild", "inject_if_not": null},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars", "inject_if_not": null}
       ]
     }
   ]

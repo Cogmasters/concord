@@ -139,7 +139,7 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel **
                 "(recipients):F,"
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 "(icon):s,"
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -207,7 +207,7 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel **
                 discord_user_list_from_json, &p->recipients,
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 p->icon,
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -306,8 +306,8 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
 
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
-  if (p->icon != NULL)
+         "option":true, "inject_if_not":""}' */
+  if (*p->icon)
     arg_switches[13] = p->icon;
 
   /* specs/discord/channel.json:53:78
@@ -386,7 +386,7 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
                 "(recipients):F,"
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 "(icon):s,"
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -455,7 +455,7 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
                 discord_user_list_to_json, p->recipients,
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 p->icon,
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -565,7 +565,7 @@ void discord_channel_cleanup(struct discord_channel *d) {
     discord_user_list_free(d->recipients);
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
   /* p->icon is a scalar */
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -638,7 +638,7 @@ void discord_channel_init(struct discord_channel *p) {
 
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
 
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
@@ -764,7 +764,7 @@ void discord_message_sticker_from_json(char *json, size_t len, struct discord_me
                 "(asset):s,"
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 "(preview_asset):s,"
   /* specs/discord/channel.json:90:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
@@ -789,7 +789,7 @@ void discord_message_sticker_from_json(char *json, size_t len, struct discord_me
                 p->asset,
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 p->preview_asset,
   /* specs/discord/channel.json:90:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
@@ -827,8 +827,8 @@ size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_me
 
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
-  if (p->preview_asset != NULL)
+         "option":true, "inject_if_not":""}' */
+  if (*p->preview_asset)
     arg_switches[6] = p->preview_asset;
 
   /* specs/discord/channel.json:90:18
@@ -856,7 +856,7 @@ size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_me
                 "(asset):s,"
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 "(preview_asset):s,"
   /* specs/discord/channel.json:90:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
@@ -882,7 +882,7 @@ size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_me
                 p->asset,
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
                 p->preview_asset,
   /* specs/discord/channel.json:90:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
@@ -948,7 +948,7 @@ void discord_message_sticker_cleanup(struct discord_message_sticker *d) {
   /* p->asset is a scalar */
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
   /* p->preview_asset is a scalar */
   /* specs/discord/channel.json:90:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */
@@ -977,7 +977,7 @@ void discord_message_sticker_init(struct discord_message_sticker *p) {
 
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
 
   /* specs/discord/channel.json:90:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}' */

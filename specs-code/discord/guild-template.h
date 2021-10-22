@@ -76,8 +76,8 @@ struct discord_guild_template {
   struct discord_guild *serialized_source_guild;
 
   /* specs/discord/guild-template.json:22:20
-     '{ "name": "is_dirty", "type":{ "base":"bool" }}' */
-  bool is_dirty;
+     '{ "name": "is_dirty", "type":{ "base":"char", "dec":"*", "converter":"mixed"}}' */
+  json_char_t* is_dirty;
 
 };
 extern void discord_guild_template_cleanup_v(void *p);

@@ -4195,7 +4195,7 @@ struct discord_channel {
 
   /* specs/discord/channel.json:51:72
      '{"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
   char icon[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:53:78
@@ -4282,7 +4282,7 @@ struct discord_message_sticker {
 
   /* specs/discord/channel.json:88:18
      '{"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":null}' */
+         "option":true, "inject_if_not":""}' */
   char preview_asset[ORCA_LIMITS_SHA256];
 
   /* specs/discord/channel.json:90:18
@@ -5889,7 +5889,7 @@ struct discord_create_guild_from_guild_template_params {
   char *name; /**< name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:13:20
-     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon"}' */
+     '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon", "inject_if_not": null}' */
   char *icon; /**< base64 128x128 image for the guild icon */
 
 };
@@ -5927,7 +5927,7 @@ struct discord_create_guild_template_params {
   char *name; /**< name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:23:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars", "inject_if_not": null}' */
   char *description; /**< description for the template (0-120) chars */
 
 };
@@ -5961,11 +5961,11 @@ struct discord_create_guild_template_params {
  */
 struct discord_modify_guild_template_params {
   /* specs/discord/guild-template.endpoints-params.json:32:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
+     '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild", "inject_if_not": null}' */
   char *name; /**< name of the guild */
 
   /* specs/discord/guild-template.endpoints-params.json:33:20
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars"}' */
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars", "inject_if_not": null}' */
   char *description; /**< description for the template (0-120) chars */
 
 };
@@ -6042,8 +6042,8 @@ struct discord_guild_template {
   struct discord_guild *serialized_source_guild;
 
   /* specs/discord/guild-template.json:22:20
-     '{ "name": "is_dirty", "type":{ "base":"bool" }}' */
-  bool is_dirty;
+     '{ "name": "is_dirty", "type":{ "base":"char", "dec":"*", "converter":"mixed"}}' */
+  json_char_t* is_dirty;
 
 };
 /* This file is generated from specs/discord/guild.endpoints-params.json, Please don't edit it. */
@@ -9855,8 +9855,8 @@ struct discord_webhook {
   struct discord_user *user; /**< the user this webhook was created by (not returned when getting a webhook with its token */
 
   /* specs/discord/webhook.json:17:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"[DISCORD_WEBHOOK_NAME_LEN]", "comment":"the default name of the webhook", "inject_if_not":"" }}' */
-  char name[DISCORD_WEBHOOK_NAME_LEN];
+     '{ "name": "name", "type":{ "base":"char", "dec":"*", "comment":"the default name of the webhook", "inject_if_not":null }}' */
+  char *name;
 
   /* specs/discord/webhook.json:18:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "comment":"the default user avatar has of the webhook", "inject_if_not":null }' */
