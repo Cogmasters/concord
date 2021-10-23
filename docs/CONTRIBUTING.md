@@ -40,6 +40,16 @@ Writing docs is dead boring and one of the big problems with many open source pr
 
 Thorougly test your patch before sending a PR for approval. If you are implementing a missing feature to one of our wrapped APIs, you can write or update one of the example bots from `examples/` folder, alternatively, you can write a test to the `test/` folder.
 
+### Install additional libraries
+
+`libsqlite3` is required for testing.
+
+So, for example, on Ubuntu/Debian you may want to:
+
+```bash
+$ sudo apt-get install -y libsqlite3-dev
+```
+
 ## Sharing Your Changes
 
 ### Semantic Commit Messages
