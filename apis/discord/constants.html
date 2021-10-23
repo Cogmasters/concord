@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Constants &#8212; Orca  documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Event Reference" href="events.html" />
+    <link rel="prev" title="Client" href="client.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Discord
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../common/types.html">
+  Types
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../common/websockets.html">
+  WebSockets
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="client.html">
+   Client
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Constants
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="events.html">
+   Event Reference
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models.html">
+   Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="interactions.html">
+   Interactions
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#general">
+   General
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#snowflake">
+   Snowflake
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#embed">
+   Embed
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#webhook">
+   Webhook
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/apis/discord/constants.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="constants">
+<h1>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h1>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__DiscordLimitsGeneral"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordLimitsGeneral</span></span></dt>
+<dd><p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>assume the worst-case scenario for strings, where each character is 4 bytes long (UTF8) </p>
+</div>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_NAME_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1gaf09d89d32a9a1a2cf8628c017d1a444a"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_NAME_LEN</span></span></span> <span class="pre">4*100</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_TOPIC_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1gab1a1bbc08ffc175d89c18c347c900a16"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_TOPIC_LEN</span></span></span> <span class="pre">4*1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_TOPIC_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_DESCRIPTION_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1ga5a42d7c4cc0481f2e4ef71f18ac79106"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_DESCRIPTION_LEN</span></span></span> <span class="pre">4*2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_USERNAME_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1gaf4a62be925101809bcb4e65db8c018db"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_USERNAME_LEN</span></span></span> <span class="pre">4*32</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_USERNAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_DISCRIMINATOR_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1gae084653f362f3d68412da87b9b347504"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_DISCRIMINATOR_LEN</span></span></span> <span class="pre">4</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_DISCRIMINATOR_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_REASON_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1ga402b12f5da1cb580358337a4f2429e19"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_REASON_LEN</span></span></span> <span class="pre">4*512</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_REASON_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_MESSAGE_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1gaefa17f92436520f8048deb53ba691cef"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_MESSAGE_LEN</span></span></span> <span class="pre">4*2000</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_MESSAGE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_PAYLOAD_LEN">
+<span class="target" id="group__DiscordLimitsGeneral_1gaa01c5acae7c669de67202da3022b75fb"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_PAYLOAD_LEN</span></span></span> <span class="pre">4*4096</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_MAX_PAYLOAD_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_MAX_VOICE_CONNECTIONS">
+<span class="target" id="group__DiscordLimitsGeneral_1gab1e2246f05f68a6d6484cfd7ee278e4a"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_MAX_VOICE_CONNECTIONS</span></span></span> <span class="pre">512</span><a class="headerlink" href="#c.DISCORD_MAX_VOICE_CONNECTIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="snowflake">
+<h2>Snowflake<a class="headerlink" href="#snowflake" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__DiscordLimitsSnowflake"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordLimitsSnowflake</span></span></dt>
+<dd><p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/reference#snowflakes">https://discord.com/developers/docs/reference#snowflakes</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_SNOWFLAKE_INCREMENT">
+<span class="target" id="group__DiscordLimitsSnowflake_1gaed8f71b7932bb1a0060cd1c129910ef4"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_SNOWFLAKE_INCREMENT</span></span></span> <span class="pre">12</span><a class="headerlink" href="#c.DISCORD_SNOWFLAKE_INCREMENT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_SNOWFLAKE_PROCESS_ID">
+<span class="target" id="group__DiscordLimitsSnowflake_1gabdf027297cdcc2bbe7c94a4b2f9b402b"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_SNOWFLAKE_PROCESS_ID</span></span></span> <span class="pre">17</span><a class="headerlink" href="#c.DISCORD_SNOWFLAKE_PROCESS_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID">
+<span class="target" id="group__DiscordLimitsSnowflake_1gaaa78027d43565475e586e553584db7ce"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID</span></span></span> <span class="pre">22</span><a class="headerlink" href="#c.DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_SNOWFLAKE_TIMESTAMP">
+<span class="target" id="group__DiscordLimitsSnowflake_1ga877f476d6aa9924a56886ecc7a36ad8b"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_SNOWFLAKE_TIMESTAMP</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.DISCORD_SNOWFLAKE_TIMESTAMP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="embed">
+<h2>Embed<a class="headerlink" href="#embed" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__DiscordLimitsEmbed"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordLimitsEmbed</span></span></dt>
+<dd><p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>assume the worst-case scenario for strings, where each character is 4 bytes long (UTF8) </p>
+</div>
+<dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/channel#embed-limits">https://discord.com/developers/docs/resources/channel#embed-limits</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_TITLE_LEN">
+<span class="target" id="group__DiscordLimitsEmbed_1ga6d05e16cce1ecdcacdd9d219ec1d21fe"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_TITLE_LEN</span></span></span> <span class="pre">4*256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_EMBED_TITLE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_DESCRIPTION_LEN">
+<span class="target" id="group__DiscordLimitsEmbed_1gaa113ae2f7c0693f8465157ba1a9d60c2"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_DESCRIPTION_LEN</span></span></span> <span class="pre">4*2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_EMBED_DESCRIPTION_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_MAX_FIELDS">
+<span class="target" id="group__DiscordLimitsEmbed_1ga5c7673185b8273a2433649672fca369d"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_MAX_FIELDS</span></span></span> <span class="pre">25</span><a class="headerlink" href="#c.DISCORD_EMBED_MAX_FIELDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_FIELD_NAME_LEN">
+<span class="target" id="group__DiscordLimitsEmbed_1ga12cfc348c8cff05dd80204920eb94298"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_FIELD_NAME_LEN</span></span></span> <span class="pre">4*256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_EMBED_FIELD_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_FIELD_VALUE_LEN">
+<span class="target" id="group__DiscordLimitsEmbed_1ga9bdc097c668faff24c5fe6d637726b73"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_FIELD_VALUE_LEN</span></span></span> <span class="pre">4*1024</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_EMBED_FIELD_VALUE_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_FOOTER_TEXT_LEN">
+<span class="target" id="group__DiscordLimitsEmbed_1gade5ea7c9bb5f925192846eb297e9a6bc"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_FOOTER_TEXT_LEN</span></span></span> <span class="pre">4*2048</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_EMBED_FOOTER_TEXT_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_EMBED_AUTHOR_NAME_LEN">
+<span class="target" id="group__DiscordLimitsEmbed_1ga134d07b9384d6f5a78e01f08d00869c8"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EMBED_AUTHOR_NAME_LEN</span></span></span> <span class="pre">4*256</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_EMBED_AUTHOR_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="webhook">
+<h2>Webhook<a class="headerlink" href="#webhook" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt class="sig sig-object cpp">
+<span class="target" id="group__DiscordLimitsWebhook"></span><em><span class="pre">group</span></em> <span class="sig-name descname"><span class="pre">DiscordLimitsWebhook</span></span></dt>
+<dd><p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>assume the worst-case scenario for strings, where each character is 4 bytes long (UTF8) </p>
+</div>
+<dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/webhook#create-webhook-json-params">https://discord.com/developers/docs/resources/webhook#create-webhook-json-params</a> </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_WEBHOOK_NAME_LEN">
+<span class="target" id="group__DiscordLimitsWebhook_1ga94aa4b277a2aa6215e69f3c7a73b1cc9"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_WEBHOOK_NAME_LEN</span></span></span> <span class="pre">4*80</span> <span class="pre">+</span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_WEBHOOK_NAME_LEN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="client.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Client</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="events.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Event Reference</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

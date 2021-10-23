@@ -26,15 +26,25 @@ A Multi-REST API library that is easy to reason about, easy to debug, and easy t
     scalability to his applications without having to excessively worry
     about race-conditions. All transfers made with Orca are thread-safe by nature.
 
-Documentation
--------------
+Reference
+---------
+
+Supported APIs
+~~~~~~~~~~~~~~
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
-   apis/index
+   Discord <apis/discord/index>
 
-   common/index
+Building with Orca
+~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+
+   Types <common/types>
+   WebSockets <common/websockets>
 
 Help
 ----

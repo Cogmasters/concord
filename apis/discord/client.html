@@ -1,0 +1,726 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Client &#8212; Orca  documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Constants" href="constants.html" />
+    <link rel="prev" title="Discord API Reference" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Discord
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../common/types.html">
+  Types
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../common/websockets.html">
+  WebSockets
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Client
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="constants.html">
+   Constants
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="events.html">
+   Event Reference
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="models.html">
+   Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="interactions.html">
+   Interactions
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#functions">
+   Functions
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#initialization-cleanup">
+     Initialization / Cleanup
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#connecting">
+     Connecting
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#error-handling">
+     Error Handling
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#behaviour">
+     Behaviour
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#utils">
+     Utils
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/apis/discord/client.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="client">
+<h1>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h1>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord">
+<span class="target" id="structdiscord"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord</span></span></span><a class="headerlink" href="#c.discord" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The Discord opaque structure handler. </p>
+<p>Used to access/perform public functions from discord.h</p>
+<p><ul class="simple">
+<li><p>Initializer:<ul>
+<li><p><a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a>, <a class="reference internal" href="#discord_8h_1a23500a16c7afdb797c779b045ad20b10"><span class="std std-ref">discord_config_init()</span></a></p></li>
+</ul>
+</p></li>
+<li><p>Cleanup:<ul>
+<li><p><a class="reference internal" href="#discord_8h_1a009d0e352a30c00f8b4765712fcfa5a9"><span class="std std-ref">discord_cleanup()</span></a></p></li>
+</ul>
+</p></li>
+</ul>
+</p>
+<p><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>defined at discord-internal.h </p>
+</div>
+<dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1ab7988ee40a818de5f17e302981dfbbc7"><span class="std std-ref">discord_run()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_event_scheduler">
+<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_event_scheduler</span></span></span><a class="headerlink" href="#c.discord_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>return value of <a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> callback </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> </p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_IGNORE">
+<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76aa592f84b7c8c98d876e01f6370eaa9bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_IGNORE</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_IGNORE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>this event has been handled </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD">
+<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76a37aa110da76890681fbeec022ec8a29f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_MAIN_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>handle this event in main thread </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD">
+<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76a79c17442662efa88d24ddcc450bc4684"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_WORKER_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>handle this event in a worker thread </p>
+</dd></dl>
+
+</dd></dl>
+
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<section id="initialization-cleanup">
+<h3>Initialization / Cleanup<a class="headerlink" href="#initialization-cleanup" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_global_init">
+<span class="target" id="discord_8h_1a4df1c61716cd01011c7a7bde928a31ca"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_global_init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_global_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize resources of globals used by discord.h. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_global_cleanup">
+<span class="target" id="discord_8h_1aee069a2483ef9bf92f56b492ebedf1d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_global_cleanup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_global_cleanup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free resources of globals used by discord.h. </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_init">
+<span class="target" id="discord_8h_1a445cca7dc5a28113760c7e55759845c7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a Discord Client handle by its token. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>token</strong> – the bot token </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the newly created Discord Client handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_config_init">
+<span class="target" id="discord_8h_1a23500a16c7afdb797c779b045ad20b10"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_config_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">config_file</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_config_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a Discord Client handle by a bot.config file. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_file</strong> – the bot.config file name </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the newly created Discord Client handle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_clone">
+<span class="target" id="discord_8h_1aa350d6bc95fb4b4969a9a8025233d38f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">orig_client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_clone" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clone a discord client. </p>
+<p>This is useful in a multithreading scenario. For example, making sure each client instance has its own shared url, headers, return codes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>orig_client</strong> – the original client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the original client clone </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_cleanup">
+<span class="target" id="discord_8h_1a009d0e352a30c00f8b4765712fcfa5a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_cleanup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_cleanup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Free a Discord Client handle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="connecting">
+<h3>Connecting<a class="headerlink" href="#connecting" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_run">
+<span class="target" id="discord_8h_1ab7988ee40a818de5f17e302981dfbbc7"></span><a class="reference internal" href="../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_run</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_run" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Start a connection to the Discord Gateway. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the run went, ORCA_OK means nothing out of the ordinary </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_shutdown">
+<span class="target" id="discord_8h_1a3e522caa529dd26e03d75a6482e7aaa1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_shutdown</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_shutdown" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gracefully shutdown an ongoing Discord connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_reconnect">
+<span class="target" id="discord_8h_1a6accf8c8d133a8b676b6838da2912f94"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_reconnect</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">resume</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_reconnect" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Gracefully reconnects an ongoing Discord connection. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>resume</strong> – true to attempt to resume to previous session, false restart a fresh session </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="error-handling">
+<h3>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_strerror">
+<span class="target" id="discord_8h_1abc4c8859fe92c5284e36c84fe0f70bd5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_strerror</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_strerror" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the meaning of ORCAcode. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if the client parameter is provided, the raw JSON error string will be given for ORCA_DISCORD_JSON_CODE code </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> – the ORCAcode to be explained </p></li>
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a>, NULL for generic error descriptions </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a string containing the code meaning </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="behaviour">
+<h3>Behaviour<a class="headerlink" href="#behaviour" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_add_intents">
+<span class="target" id="discord_8h_1ad49194134d7b9e656d3a96cb0b60cfec"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_add_intents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="models.html#c.discord_gateway_intents" title="discord_gateway_intents"><span class="n"><span class="pre">discord_gateway_intents</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_add_intents" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Subscribe to Discord Gateway events. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#gateway-intents">https://discord.com/developers/docs/topics/gateway#gateway-intents</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>code</strong> – the intents opcode, can be set as a bitmask operation (ex: A | B | C) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_remove_intents">
+<span class="target" id="discord_8h_1ac6a9d904378b46a72c64ade07ac02f43"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_remove_intents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="models.html#c.discord_gateway_intents" title="discord_gateway_intents"><span class="n"><span class="pre">discord_gateway_intents</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_remove_intents" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unsubscribe from Discord Gateway events. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#gateway-intents">https://discord.com/developers/docs/topics/gateway#gateway-intents</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>code</strong> – the intents opcode, can be set as a bitmask operation (ex: A | B | C) </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_prefix">
+<span class="target" id="discord_8h_1a13d9f16d62fea7cebdb6c24d57f685a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_prefix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">prefix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_prefix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a mandatory prefix before commands. </p>
+<p>Example: If <em>‘help’</em> is a command and <em>‘!’</em> prefix is set, the command will only be validated if <em>‘!help’</em> is sent <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="events.html#discord_8h_1a8942a360ffe8758c458a2ab6fa391228"><span class="std std-ref">discord_set_on_command()</span></a> </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>prefix</strong> – the prefix that should accompany any command </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_event_scheduler">
+<span class="target" id="discord_8h_1a711b3197c991b6a435bea981d516b70c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_scheduler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="events.html#c.discord_event_scheduler_cb" title="discord_event_scheduler_cb"><span class="n"><span class="pre">discord_event_scheduler_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Specify how events should execute their callbacks, in a blocking or non-blocking fashion. </p>
+<p>This is a very important function that provides the user a more fine-grained control of the Discord Gateway’s event-loop. By default, every event callback will block the event-loop, but for a scalable bot application this is undesirable. To circumvent this the user can specify which events should be executed in parallel.</p>
+<p>In the following example code, a MESSAGE_CREATE event callback will be executed non-blocking and READY callback on the main thread, while anything else will be ignored and won’t be executed.</p>
+<p><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
+<span class="k">enum</span> <span class="n">discord_event_scheduler</span>
+<span class="n">scheduler</span><span class="p">(</span>
+  <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+  <span class="k">struct</span> <span class="n">discord_user</span> <span class="o">*</span><span class="n">bot</span><span class="p">,</span>
+  <span class="k">struct</span> <span class="n">sized_buffer</span> <span class="o">*</span><span class="n">event_data</span><span class="p">,</span>
+  <span class="k">enum</span> <span class="n">discord_gateway_events</span> <span class="n">event</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span><span class="p">:</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_WORKER_THREAD</span><span class="p">;</span>
+  <span class="k">default</span><span class="o">:</span>
+     <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">discord_init</span><span class="p">(</span><span class="n">TOKEN</span><span class="p">);</span>
+
+  <span class="n">discord_set_event_scheduler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">scheduler</span><span class="p">);</span>
+
+  <span class="c1">// The following will be executed on main thread</span>
+  <span class="n">discord_set_on_ready</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_ready</span><span class="p">);</span>
+  <span class="c1">// The following will be executed on a worker thread</span>
+  <span class="n">discord_set_on_message_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_create</span><span class="p">);</span>
+  <span class="c1">// The following will be ignored</span>
+  <span class="n">discord_set_on_message_delete</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_delete</span><span class="p">);</span>
+  <span class="n">discord_set_on_channel_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_channel_create</span><span class="p">);</span>
+
+  <span class="n">discord_run</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p>enum <a class="reference internal" href="#discord_8h_1ad871630e69eb4355566dc8c1031bae76"><span class="std std-ref">discord_event_scheduler</span></a> </p>
+</dd>
+<dt><strong>See</strong></dt><dd><p>enum <a class="reference internal" href="models.html#gateway_8h_1a90ebb76de1682ce02a67a08b0510145b"><span class="std std-ref">discord_gateway_events</span></a> </p>
+</dd>
+</dl>
+</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The user is responsible for providing his own locking mechanism to avoid race-condition on sensitive data. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created_with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>fn</strong> – the function that will be executed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="utils">
+<h3>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_data">
+<span class="target" id="discord_8h_1a2fe34375b2ce557d8ac84a0794063b78"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Store user arbitrary data that can be retrieved by <a class="reference internal" href="#discord_8h_1af7534e0384766754eeb77f573dac1a84"><span class="std std-ref">discord_get_data()</span></a> </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>the user should provide his own locking mechanism to protect his data from race conditions </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>data</strong> – user arbitrary data </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pointer to user data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_get_data">
+<span class="target" id="discord_8h_1af7534e0384766754eeb77f573dac1a84"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Receive user arbitrary data stored with <a class="reference internal" href="#discord_8h_1a2fe34375b2ce557d8ac84a0794063b78"><span class="std std-ref">discord_set_data()</span></a> </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>the user should provide his own locking mechanism to protect his data from race conditions </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pointer to user data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_set_presence">
+<span class="target" id="discord_8h_1a85aa60632cd13ca917521c5166902719"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_presence</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="models.html#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_presence" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the Client presence state. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="models.html#group__DiscordMiscGateway_1ga98855f8e8996b75d6ec46f6278404940"><span class="std std-ref">discord_presence_add_activity()</span></a> </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>presence</strong> – overwrite client’s presence with it </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_get_ping">
+<span class="target" id="discord_8h_1a8a6d0002445738ace70f5eb2b22ca471"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_ping</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_ping" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get the client WebSockets ping. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only works after a connection has been established via <a class="reference internal" href="#discord_8h_1ab7988ee40a818de5f17e302981dfbbc7"><span class="std std-ref">discord_run()</span></a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the ping in milliseconds </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Discord API Reference</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="constants.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Constants</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>
