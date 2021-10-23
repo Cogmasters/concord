@@ -1014,3 +1014,49 @@ cws_free(CURL *easy)
     priv->deleted = true;
     _cws_cleanup(priv);
 }
+
+void
+cws_reqheader_add(CURL *easy, const char field[],  const char value[])
+{
+    struct cws_data *priv;
+    char *p = NULL;
+    char buf[4096];
+    size_t bufret;
+    size_t field_len;
+
+    curl_easy_getinfo(easy, CURLINFO_PRIVATE, &p); /* checks for char* */
+    if (!p)
+        return;
+    priv = (struct cws_data *)p;
+
+    bufret = snprintf(buf, sizeof(buf), "%s: %s", field, value);
+    if (bufret >= sizeof(buf)) {
+        fprintf(stderr, "Out of bounds write attempt\n");
+        abort();
+    }
+
+    /* check for match in existing fields */
+    field_len = strlen(field);
+    struct curl_slist *node = priv->headers;
+    while (NULL != node) {
+        if (!(p = strchr(node->data, ':'))) {
+            fprintf(stderr, "Missing ':' in header:\n\t%s\n", node->data);
+            abort();
+        }
+        if (field_len == p - node->data
+            && 0 == strncasecmp(node->data, field, field_len)) 
+        {
+            if (strlen(node->data) < bufret) {
+                free(node->data);
+                node->data = strdup(buf);
+            }
+            else {
+                memcpy(node->data, buf, bufret+1);
+            }
+            return; /* EARLY RETURN */
+        }
+        node = node->next;
+    }
+
+    curl_slist_append(priv->headers, buf);
+}

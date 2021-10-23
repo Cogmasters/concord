@@ -197,6 +197,15 @@ bool cws_pong(CURL *easy, const char *reason, size_t len);
  */
 bool cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, size_t reason_text_len);
 
+/**
+ * Add a header field/value pair
+ *
+ * @param easy the CURL easy handle created with cws_new()
+ * @param field the header field
+ * @param value the header value
+ */
+void cws_reqheader_add(CURL *easy, const char field[],  const char value[]);
+
 #ifdef __cplusplus
 }
 #endif

@@ -289,6 +289,15 @@ int ws_lock(struct websockets *ws);
  */
 int ws_unlock(struct websockets *ws);
 
+/**
+ * @brief Add a header field/value pair
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @param field the header field
+ * @param value the header value
+ */
+void ws_reqheader_add(struct websockets *ws, const char field[], const char value[]);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
