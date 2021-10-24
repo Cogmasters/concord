@@ -6837,6 +6837,11 @@
 </div>
 <section id="id3">
 <h3>Utils<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_disconnect_guild_member">
+<span class="target" id="group__DiscordMiscGuild_1ga7bca68b10bc07a82621a2bc20e2ac567"></span><a class="reference internal" href="../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_disconnect_guild_member</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="client.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_member</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_disconnect_guild_member" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
 </section>
 <section id="id4">
 <h3>Methods<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
@@ -11647,6 +11652,17 @@
 </div>
 <section id="id9">
 <h3>Utils<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_presence_add_activity">
+<span class="target" id="group__DiscordMiscGateway_1ga98855f8e8996b75d6ec46f6278404940"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_presence_add_activity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">presence</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_activity" title="discord_activity"><span class="n"><span class="pre">discord_activity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">activity</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_presence_add_activity" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Helper function to add presence activities. </p>
+<p>This function is a wrapper over ntl_append2() <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="client.html#discord_8h_1a85aa60632cd13ca917521c5166902719"><span class="std std-ref">discord_set_presence()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
 </section>
 <section id="id10">
 <h3>Methods<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>

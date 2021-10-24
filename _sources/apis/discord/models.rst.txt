@@ -331,7 +331,6 @@ Utils
 
 .. doxygengroup:: DiscordMiscGuild
    :content-only:
-   :content-only:
 
 Methods
 ~~~~~~~
@@ -701,7 +700,6 @@ Utils
 ~~~~~
 
 .. doxygengroup:: DiscordMiscGateway
-   :content-only:
    :content-only:
 
 Methods
