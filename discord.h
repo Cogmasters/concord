@@ -1524,7 +1524,15 @@ ORCAcode discord_create_channel_invite(struct discord *client, const u64_snowfla
 /** @} */
 
 /** @defgroup DiscordDeleteChannelPermission
- *  @{ */
+  * @b DELETE /channels/{channel.id}/permissions/{overwrite.id}
+  * Delete a channel permission overwrite for a user or role in a channel.
+  * @{ */
+/**
+  * @param client the client created with discord_init()
+  * @param channel_id the channel to the permission deleted
+  * @param overwrite_id the id of the overwritten permission
+  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+  */
 ORCAcode discord_delete_channel_permission(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t overwrite_id);
 /** @} */
 
