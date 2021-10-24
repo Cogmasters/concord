@@ -1,4 +1,5 @@
 # This Makefile assumes the top folder has been built
+.SILENT: config
 
 TOP = ..
 
@@ -41,5 +42,10 @@ all: $(EXES)
 
 clean:
 	rm -rf $(EXES)
+
+config:
+	cp -n $(TOP)/config.json ./mybot_config.json
+	echo "A template config file was copied into this folder."
+	echo "Replace 'YOUR-BOT-TOKEN' with an actual token in mybot_config.json ."
 
 .PHONY: all clean
