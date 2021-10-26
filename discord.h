@@ -1810,7 +1810,7 @@ ORCAcode discord_add_guild_member(struct discord *client, const u64_snowflake_t 
  * @param p_member location where the updated member object is stored if successful
  */
 ORCAcode discord_modify_current_member(struct discord *client, const u64_snowflake_t guild_id, struct discord_modify_current_member_params *params, struct discord_guild_member *p_member);
-/** @struct discord_modify_current_member_params
+/** @struct discord_modify_current_member_params */
 /**@} */
 
 /** @defgroup DiscordModifyCurrentUserNick
