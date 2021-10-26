@@ -1797,8 +1797,33 @@ ORCAcode discord_add_guild_member(struct discord *client, const u64_snowflake_t 
 /** @struct discord_add_guild_member_params */
 /** @} */
 
+/** @defgroup DiscordModifyCurrentMember
+ * @{ */
+/**
+ * @brief @b PATCH /guilds/{guild.id}/members/@me
+ * 
+ * Modifies the current member in the guild. Used to modify nicknames.
+ * @see https://discord.com/developers/docs/resources/guild#modify-current-member
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild where the member exists
+ * @param params the parameters sent to discord. For example the new nickname for the bot
+ * @param p_member location where the updated member object is stored if successful
+ */
+ORCAcode discord_modify_current_member(struct discord *client, const u64_snowflake_t guild_id, struct discord_modify_current_member_params *params, struct discord_guild_member *p_member);
+/** @struct discord_modify_current_member_params
+/**@} */
+
 /** @defgroup DiscordModifyCurrentUserNick
  *  @{ */
+/**
+ * @brief @b PATCH /guilds/{guild.id}/members/@me/nick
+ * @attention Deprecated by the discord api. Use discord_modify_current_member() instead
+ * @see https://discord.com/developers/docs/resources/guild#modify-current-user-nick
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild where the member exists
+ * @param params the new nickname for the bot
+ * @param p_member location where the updated member object is stored if successful
+ */
 ORCAcode discord_modify_current_user_nick(struct discord *client, const u64_snowflake_t guild_id, struct discord_modify_current_user_nick_params *params, struct discord_guild_member *p_member);
 /** @struct discord_modify_current_user_nick_params */
 /** @} */

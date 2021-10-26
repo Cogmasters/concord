@@ -376,8 +376,8 @@ void on_bot_change_nick(
     sprintf(text, "Invalid format for `guild.bot_change_nick <nick>`");
   }
   else {
-    struct discord_modify_current_user_nick_params params = { .nick = msg->content };
-    if (ORCA_OK == discord_modify_current_user_nick(client, msg->guild_id, &params, NULL))
+    struct discord_modify_current_member_params params = { .nick = msg->content };
+    if (ORCA_OK == discord_modify_current_member(client, msg->guild_id, &params, NULL))
       sprintf(text, "Succesfully changed <@%"PRIu64"> nick", bot->id);
     else
       sprintf(text, "Couldn't change <@%"PRIu64"> nick", bot->id);

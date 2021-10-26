@@ -126,6 +126,15 @@
       ]
     },
     {
+      "title":"Modify Current Member",
+      "namespace": ["modify_current_member"],
+      "struct":"params",
+      "fields":
+      [
+        { "name": "nick", "type":{ "base":"char", "dec":"*" }}
+      ]
+    },
+    {
       "title":"Modify Current User Nick",
       "namespace": ["modify_current_user_nick"],
       "struct":"params",

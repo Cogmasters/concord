@@ -398,7 +398,40 @@ discord_modify_guild_member(
            HTTP_PATCH, 
            "/guilds/%"PRIu64"/members/%"PRIu64, guild_id, user_id);
 }
+ORCAcode
+discord_modify_current_member(
+  struct discord *client,
+  const u64_snowflake_t guild_id,
+  struct discord_modify_current_member_params *params,
+  struct discord_guild_member *p_member)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params) {
+    log_error("Missing 'params'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!params->nick) {
+    log_error("Missing 'params.nick'");
+    return ORCA_MISSING_PARAMETER;
+  }
 
+
+  char payload[512];
+  size_t ret = discord_modify_current_member_params_to_json(payload, sizeof(payload), params);
+
+  return discord_adapter_run(
+           &client->adapter,
+           &(struct ua_resp_handle){
+             .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL, 
+             .ok_obj = &p_member
+           },
+           &(struct sized_buffer){ payload, ret },
+           HTTP_PATCH,
+           "/guilds/%"PRIu64"/members/@me", guild_id);
+}
 ORCAcode
 discord_modify_current_user_nick(
   struct discord *client,
@@ -419,6 +452,7 @@ discord_modify_current_user_nick(
     return ORCA_MISSING_PARAMETER;
   }
 
+  log_warn("This endpoint is now deprecated by Discord. Please use discord_modify_current_member instead");
 
   char payload[512];
   size_t ret = discord_modify_current_user_nick_params_to_json(payload, sizeof(payload), params);
