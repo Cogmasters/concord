@@ -589,8 +589,56 @@ extern void discord_modify_guild_member_params_list_from_json(char *str, size_t 
 extern size_t discord_modify_guild_member_params_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_modify_guild_member_params **p);
 
-/* Modify Current User Nick */
+/* Modify Current Member */
 /* defined at specs/discord/guild.endpoints-params.json:131:22 */
+/**
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void discord_modify_current_member_params_init(struct discord_modify_current_member_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void discord_modify_current_member_params_cleanup(struct discord_modify_current_member_params *)`
+ *     * :code:`void discord_modify_current_member_params_list_free(struct discord_modify_current_member_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void discord_modify_current_member_params_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params **)`
+ *     * :code:`void discord_modify_current_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void discord_modify_current_member_params_to_json(char *wbuf, size_t len, struct discord_modify_current_member_params *)`
+ *     * :code:`void discord_modify_current_member_params_list_to_json(char *wbuf, size_t len, struct discord_modify_current_member_params **)`
+ * @endverbatim
+ */
+struct discord_modify_current_member_params {
+  /* specs/discord/guild.endpoints-params.json:134:20
+     '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
+  char *nick;
+
+};
+extern void discord_modify_current_member_params_cleanup_v(void *p);
+extern void discord_modify_current_member_params_cleanup(struct discord_modify_current_member_params *p);
+extern void discord_modify_current_member_params_init_v(void *p);
+extern void discord_modify_current_member_params_init(struct discord_modify_current_member_params *p);
+extern void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *pp);
+extern void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params **pp);
+extern size_t discord_modify_current_member_params_to_json_v(char *json, size_t len, void *p);
+extern size_t discord_modify_current_member_params_to_json(char *json, size_t len, struct discord_modify_current_member_params *p);
+extern void discord_modify_current_member_params_list_free_v(void **p);
+extern void discord_modify_current_member_params_list_free(struct discord_modify_current_member_params **p);
+extern void discord_modify_current_member_params_list_from_json_v(char *str, size_t len, void *p);
+extern void discord_modify_current_member_params_list_from_json(char *str, size_t len, struct discord_modify_current_member_params ***p);
+extern size_t discord_modify_current_member_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t discord_modify_current_member_params_list_to_json(char *str, size_t len, struct discord_modify_current_member_params **p);
+
+/* Modify Current User Nick */
+/* defined at specs/discord/guild.endpoints-params.json:140:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -617,7 +665,7 @@ extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t 
  * @endverbatim
  */
 struct discord_modify_current_user_nick_params {
-  /* specs/discord/guild.endpoints-params.json:134:20
+  /* specs/discord/guild.endpoints-params.json:143:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
@@ -638,7 +686,7 @@ extern size_t discord_modify_current_user_nick_params_list_to_json_v(char *str, 
 extern size_t discord_modify_current_user_nick_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_nick_params **p);
 
 /* Create Guild Ban */
-/* defined at specs/discord/guild.endpoints-params.json:140:22 */
+/* defined at specs/discord/guild.endpoints-params.json:149:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -665,11 +713,11 @@ extern size_t discord_modify_current_user_nick_params_list_to_json(char *str, si
  * @endverbatim
  */
 struct discord_create_guild_ban_params {
-  /* specs/discord/guild.endpoints-params.json:143:20
+  /* specs/discord/guild.endpoints-params.json:152:20
      '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
   int delete_message_days; /**< number of days to delete messages for(0-7) */
 
-  /* specs/discord/guild.endpoints-params.json:144:20
+  /* specs/discord/guild.endpoints-params.json:153:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }' */
   char *reason; /**< reason for the ban (deprecated) */
 
@@ -690,7 +738,7 @@ extern size_t discord_create_guild_ban_params_list_to_json_v(char *str, size_t l
 extern size_t discord_create_guild_ban_params_list_to_json(char *str, size_t len, struct discord_create_guild_ban_params **p);
 
 /* Create Guild Role */
-/* defined at specs/discord/guild.endpoints-params.json:150:22 */
+/* defined at specs/discord/guild.endpoints-params.json:159:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -717,23 +765,23 @@ extern size_t discord_create_guild_ban_params_list_to_json(char *str, size_t len
  * @endverbatim
  */
 struct discord_create_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:153:20
+  /* specs/discord/guild.endpoints-params.json:162:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/guild.endpoints-params.json:154:20
+  /* specs/discord/guild.endpoints-params.json:163:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
   enum discord_bitwise_permission_flags permissions;
 
-  /* specs/discord/guild.endpoints-params.json:155:20
+  /* specs/discord/guild.endpoints-params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/guild.endpoints-params.json:156:20
+  /* specs/discord/guild.endpoints-params.json:165:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool hoist;
 
-  /* specs/discord/guild.endpoints-params.json:157:20
+  /* specs/discord/guild.endpoints-params.json:166:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool mentionable;
 
@@ -754,7 +802,7 @@ extern size_t discord_create_guild_role_params_list_to_json_v(char *str, size_t 
 extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t len, struct discord_create_guild_role_params **p);
 
 /* Modify Guild Role Positions */
-/* defined at specs/discord/guild.endpoints-params.json:163:22 */
+/* defined at specs/discord/guild.endpoints-params.json:172:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -781,11 +829,11 @@ extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_modify_guild_role_positions_params {
-  /* specs/discord/guild.endpoints-params.json:166:20
+  /* specs/discord/guild.endpoints-params.json:175:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
   u64_snowflake_t id; /**< role */
 
-  /* specs/discord/guild.endpoints-params.json:167:20
+  /* specs/discord/guild.endpoints-params.json:176:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
   int position; /**< sorting position of the role */
 
@@ -806,7 +854,7 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json_v(char *st
 extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_role_positions_params **p);
 
 /* Modify Guild Role */
-/* defined at specs/discord/guild.endpoints-params.json:173:22 */
+/* defined at specs/discord/guild.endpoints-params.json:182:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -833,23 +881,23 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str,
  * @endverbatim
  */
 struct discord_modify_guild_role_params {
-  /* specs/discord/guild.endpoints-params.json:176:20
+  /* specs/discord/guild.endpoints-params.json:185:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
   char *name; /**< name of the role */
 
-  /* specs/discord/guild.endpoints-params.json:177:20
+  /* specs/discord/guild.endpoints-params.json:186:20
      '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
   enum discord_bitwise_permission_flags permissions; /**< bitwise value of the enabled/disabled permissions */
 
-  /* specs/discord/guild.endpoints-params.json:178:20
+  /* specs/discord/guild.endpoints-params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
   int color; /**< RGB color value */
 
-  /* specs/discord/guild.endpoints-params.json:179:20
+  /* specs/discord/guild.endpoints-params.json:188:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
   bool hoist; /**< whether the role should be displayed separately in the sidebar */
 
-  /* specs/discord/guild.endpoints-params.json:180:20
+  /* specs/discord/guild.endpoints-params.json:189:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
   bool mentionable; /**< whether the role should be mentionable */
 
@@ -870,7 +918,7 @@ extern size_t discord_modify_guild_role_params_list_to_json_v(char *str, size_t 
 extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t len, struct discord_modify_guild_role_params **p);
 
 /* Get Guild Prune Count */
-/* defined at specs/discord/guild.endpoints-params.json:186:22 */
+/* defined at specs/discord/guild.endpoints-params.json:195:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -897,11 +945,11 @@ extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_get_guild_prune_count_params {
-  /* specs/discord/guild.endpoints-params.json:189:20
+  /* specs/discord/guild.endpoints-params.json:198:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:190:20
+  /* specs/discord/guild.endpoints-params.json:199:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
@@ -922,7 +970,7 @@ extern size_t discord_get_guild_prune_count_params_list_to_json_v(char *str, siz
 extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_t len, struct discord_get_guild_prune_count_params **p);
 
 /* Begin Guild Prune */
-/* defined at specs/discord/guild.endpoints-params.json:196:22 */
+/* defined at specs/discord/guild.endpoints-params.json:205:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -949,19 +997,19 @@ extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_
  * @endverbatim
  */
 struct discord_begin_guild_prune_params {
-  /* specs/discord/guild.endpoints-params.json:199:20
+  /* specs/discord/guild.endpoints-params.json:208:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
   int days;
 
-  /* specs/discord/guild.endpoints-params.json:200:20
+  /* specs/discord/guild.endpoints-params.json:209:20
      '{ "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false}' */
   bool compute_prune_count;
 
-  /* specs/discord/guild.endpoints-params.json:201:20
+  /* specs/discord/guild.endpoints-params.json:210:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   ja_u64 **include_roles;
 
-  /* specs/discord/guild.endpoints-params.json:202:20
+  /* specs/discord/guild.endpoints-params.json:211:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *reason;
 
