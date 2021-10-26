@@ -1863,6 +1863,22 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
  */
 ORCAcode discord_get_guild_invites(struct discord *client, const u64_snowflake_t guild_id, NTL_T(struct discord_invite) *p_invites);
+/** @struct discord_get_guild_invites_params */
+/** @} */
+
+/** @defgroup DiscordGetGuildVanityUrl
+ *  @{ */
+ /**
+ * @brief @b GET /guilds/{guild.id}/vanity-url
+ *
+ * Returns a partial invite object from the guild. Requires the MANAGE_GUILD permission.
+ * @see https://discord.com/developers/docs/resources/guild#get-guild-vanity-url
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get vanity url from
+ * @param p_invites the location to store the invite at
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+*/
+ORCAcode discord_get_guild_vanity_url(struct discord *client, const u64_snowflake_t guild_id, struct discord_invite* p_invites);
 /** @} */
 
 /** @defgroup DiscordGetGuildWelcomeScreen
