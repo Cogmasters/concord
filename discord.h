@@ -2292,7 +2292,6 @@ void discord_presence_add_activity(struct discord_presence_status *presence, str
 /** 
  * @brief @b GET /guilds/templates/{template.code}
  *
- * @see https://discord.com/developers/docs/resources/guild-template#get-guild-template
  * @param client the client created with discord_init()
  * @param code the code of the guild template
  * @param p_template the location to store the template
@@ -2301,5 +2300,19 @@ void discord_presence_add_activity(struct discord_presence_status *presence, str
 ORCAcode discord_get_guild_template(struct discord *client, char *code, struct discord_guild_template *p_template);
 /** @} */
 
+/** @defgroup DiscordCreateGuildTemplate
+ *  @{ */
+/**
+ * @brief @b POST /guilds/{guild.id}/templates
+ *
+ * Creates a template for the guild. Requires the MANAGE_GUILD permission. Returns the created guild template object on success.
+ * @param client the client created with discord_init()
+ * @param guild_id the channel to the permission deleted
+ * @param params the parameters to create the guild template
+ * @param p_template the location to store the created template at
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
+ORCAcode discord_create_guild_template(struct discord *client, u64_snowflake_t guild_id, struct discord_create_guild_template_params* params, struct discord_guild_template* p_template);
+/** @} */
 
 #endif /* DISCORD_H */
