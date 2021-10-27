@@ -1,0 +1,1060 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Get Channel Webhooks &#8212; Orca  documentation</title>
+    
+  <link href="../../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+    <script src="../../../../../_static/jquery.js"></script>
+    <script src="../../../../../_static/underscore.js"></script>
+    <script src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="Get Guild Webhooks" href="get_guild_webhooks.html" />
+    <link rel="prev" title="Execute Webhook" href="execute_webhook.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../../../../index.html">
+  <img src="../../../../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../../index.html">
+  Discord
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../common/types.html">
+  Types
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../common/websockets.html">
+  WebSockets
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../client.html">
+   Client
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../constants.html">
+   Constants
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../events.html">
+   Event Reference
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Models
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../application/index.html">
+     Application
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../application/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../audit_log/index.html">
+     Audit Log
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../audit_log/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../audit_log/methods/get_guild_audit_log.html">
+       Get Guild Audit Log
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../channel/index.html">
+     Channel
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/utils/methods.html">
+       Utils
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/embed_builder/methods.html">
+       Embed Builder
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/add_thread_member.html">
+       Add Thread Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/bulk_delete_messages.html">
+       Bulk Delete Messages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/create_channel_invite.html">
+       Create Channel Invite
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/create_message.html">
+       Create Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/crosspost_message.html">
+       Crosspost Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_all_reactions.html">
+       Delete All Reactions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_all_reactions_for_emoji.html">
+       Delete All Reactions For Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_channel.html">
+       Delete Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_channel_permission.html">
+       Delete Channel Permission
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_create_reaction.html">
+       Delete Create Reaction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_message.html">
+       Delete Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_own_reaction.html">
+       Delete Own Reaction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/delete_user_reaction.html">
+       Delete User Reaction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/edit_channel_permissions.html">
+       Edit Channel Permissions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/edit_message.html">
+       Edit Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/follow_news_channel.html">
+       Follow News Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/get_channel.html">
+       Get Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/get_channel_invites.html">
+       Get Channel Invites
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/get_channel_message.html">
+       Get Channel Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/get_channel_messages.html">
+       Get Channel Messages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/get_pinned_messages.html">
+       Get Pinned Messages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/get_reactions.html">
+       Get Reactions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/group_dm_add_recipient.html">
+       Group DM Add Recipient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/group_dm_remove_recipient.html">
+       Group DM Remove Recipient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/join_thread.html">
+       Join Thread
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/leave_thread.html">
+       Leave Thread
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/list_active_threads.html">
+       List Active Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/list_joined_private_archived_threads.html">
+       List Joined Private Archived Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/list_private_archived_threads.html">
+       List Private Archived Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/list_public_archived_threads.html">
+       List Public Archived Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/list_thread_members.html">
+       List Thread Members
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/modify_channel.html">
+       Modify Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/pin_message.html">
+       Pin Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/remove_thread_member.html">
+       Remove Thread Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/start_thread_with_message.html">
+       Start Thread With Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/start_thread_without_message.html">
+       Start Thread Without Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/trigger_typing_indicator.html">
+       Trigger Typing Indicator
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../channel/methods/unpin_message.html">
+       Unpin Message
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../emoji/index.html">
+     Emoji
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../emoji/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../emoji/methods/create_guild_emoji.html">
+       Create Guild Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../emoji/methods/delete_guild_emoji.html">
+       Delete Guild Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../emoji/methods/get_guild_emoji.html">
+       Get Guild Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../emoji/methods/list_guild_emoji.html">
+       List Guild Emojis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../emoji/methods/modify_guild_emoji.html">
+       Modify Guild Emoji
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../guild/index.html">
+     Guild
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/add_guild_member.html">
+       Add Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/add_guild_member_role.html">
+       Add Guild Member Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/craete_guild_channel.html">
+       Create Guild Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/create_guild.html">
+       Create Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/create_guild_ban.html">
+       Create Guild Ban
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/create_guild_role.html">
+       Create Guild Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/delete_guild.html">
+       Delete Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/delete_guild_role.html">
+       Delete Guild Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild.html">
+       Get Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild_ban.html">
+       Get Guild Ban
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild_bans.html">
+       Get Guild Bans
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild_channels.html">
+       Get Guild Channels
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild_member.html">
+       Get Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild_preview.html">
+       Get Guild Preview
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/get_guild_roles.html">
+       Get Guild Roles
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/list_guild_members.html">
+       List Guild Members
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/modify_current_user_nick.html">
+       Modify Current User Nick
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/modify_guild.html">
+       Modify Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/modify_guild_channel_positions.html">
+       Modify Guild Channel Positions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/modify_guild_member.html">
+       Modify Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/modify_guild_role.html">
+       Modify Guild Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/modify_guild_role_positions.html">
+       Modify Guild Role Positions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/remove_guild_ban.html">
+       Remove Guild Ban
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/remove_guild_member.html">
+       Remove Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/remove_guild_member_role.html">
+       Remove Guild Member Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/methods/search_guild_members.html">
+       Search Guild Members
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild/utils/methods.html">
+       Utils
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../guild_template/index.html">
+     Guild Template
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../guild_template/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../invite/index.html">
+     Invite
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../invite/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../invite/methods/delete_invite.html">
+       Delete Invite
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../invite/methods/get_invite.html">
+       Get Invite
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../stage_instance/index.html">
+     Stage Instance
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../stage_instance/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../sticker/index.html">
+     Sticker
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../sticker/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../user/index.html">
+     User
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/create_dm.html">
+       Create DM
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/create_group_dm.html">
+       Create Group DM
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/get_current_user.html">
+       Get Current User
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/get_current_user_guilds.html">
+       Get Current User Guilds
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/get_user.html">
+       Get User
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/get_user_connections.html">
+       Get User Connections
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/leave_guild.html">
+       Leave Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../user/methods/modify_current_user.html">
+       Modify Current User
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../voice/index.html">
+     Voice
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../voice/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../voice/methods/list_voice_regions.html">
+       List Voice Regions
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Webhook
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="../structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="create_webhook.html">
+       Create Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="delete_webhook.html">
+       Delete Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="delete_webhook_message.html">
+       Delete Webhook Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="delete_webhook_with_token.html">
+       Delete Webhook with Token
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="edit_webhook_message.html">
+       Edit Webhook Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="execute_webhook.html">
+       Execute Webhook
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Get Channel Webhooks
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="get_guild_webhooks.html">
+       Get Guild Webhooks
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="get_webhook.html">
+       Get Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="get_webhook_message.html">
+       Get Webhook Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="get_webhook_with_token.html">
+       Get Webhook with Token
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="modify_webhook.html">
+       Modify Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="modify_webhook_with_token.html">
+       Modify Webhook with Token
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../gateway/index.html">
+     Gateway
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../gateway/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../gateway/utils/methods.html">
+       Utils
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../gateway/methods/get_gateway.html">
+       Get Gateway
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../gateway/methods/get_gateway_bot.html">
+       Get Gateway Bot
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../permissions/index.html">
+     Permissions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+    <label for="toctree-checkbox-15">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../permissions/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../custom/index.html">
+     Custom
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+    <label for="toctree-checkbox-16">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../custom/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../interactions.html">
+   Interactions
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/apis/discord/models/webhook/methods/get_channel_webhooks.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="get-channel-webhooks">
+<h1>Get Channel Webhooks<a class="headerlink" href="#get-channel-webhooks" title="Permalink to this headline">¶</a></h1>
+<dl class="c function">
+<dt class="sig sig-object c" id="c.discord_get_channel_webhooks">
+<span class="target" id="group__DiscordGetChannelWebhooks_1gacef7cd283590ded1327d1fa5860a213d"></span><a class="reference internal" href="../../../../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_channel_webhooks</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_webhook" title="discord_webhook"><span class="n"><span class="pre">discord_webhook</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_webhooks</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_channel_webhooks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><strong>GET</strong> /channels/{channel.id}/webhooks </p>
+<p>Returns a list of channel webhook objects. Requires the MANAGE_WEBHOOKS permission. <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/webhook#get-channel-webhooks">https://discord.com/developers/docs/resources/webhook#get-channel-webhooks</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>channel_id</strong> – the channel that the webhooks belongs to </p></li>
+<li><p><strong>p_webhooks</strong> – a null-terminated list of webhook objects if successful </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="execute_webhook.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Execute Webhook</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="get_guild_webhooks.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Get Guild Webhooks</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

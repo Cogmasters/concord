@@ -14,6 +14,6 @@ The following section outlines the Discord API supported by Orca
 
     Event Reference <events>
 
-    Models <models>
+    Models <models/index>
 
     Interactions <interactions>

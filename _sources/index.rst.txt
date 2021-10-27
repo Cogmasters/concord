@@ -34,6 +34,7 @@ Supported APIs
 
 .. toctree::
    :maxdepth: 1
+   :glob:
 
    Discord <apis/discord/index>
 
