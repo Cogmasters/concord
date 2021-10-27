@@ -1553,28 +1553,72 @@ ORCAcode discord_get_pinned_messages(struct discord *client, const u64_snowflake
 /** @} */
 
 /** @defgroup DiscordPinMessage
- *  @{ */
+  *  @{ */
+/** @brief @b PUT /channels/{channel.id}/pins/{message.id}
+  *
+  * Pin a message in a channel.
+  * @see https://discord.com/developers/docs/resources/channel#pin-message
+  * @param client the client created with discord_init()
+  * @param channel_id channel to pin the message on
+  * @param message_id message to be pinned
+  */
 ORCAcode discord_pin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 /** @} */
 
 /** @defgroup DiscordUnpinMessage
- *  @{ */
+  *  @{ */
+/** @brief @b DELETE /channels/{channel.id}/pins/{message.id}
+  *
+  * Unpin a message in a channel.
+  * @see https://discord.com/developers/docs/resources/channel#unpin-message
+  * @param client the client created with discord_init()
+  * @param channel_id channel for the message to be unpinned
+  * @param message_id message to be unpinned
+  * @
+  */
 ORCAcode discord_unpin_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id);
 /** @} */
 
 /** @defgroup DiscordGroupDmAddRecipient
- *  @{ */
+  *  @{ */
+/** @brief @b PUT /channels/{channel.id}/recipients/{user.id}
+  *
+  * Adds a recipient to a Group DM using their access token.
+  * @see https://discord.com/developers/docs/resources/channel#group-dm-add-recipient
+  * @param client the client created with discord_init()
+  * @param channel_id group to add the user in
+  * @param user_id user to be added
+  * @param params request parameters
+  */
 ORCAcode discord_group_dm_add_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id, struct discord_group_dm_add_recipient_params *params);
 /** @struct discord_group_dm_add_recipient_params */
 /** @} */
 
 /** @defgroup DiscordGroupDmRemoveRecipient
- *  @{ */
+  *  @{ */
+/** @brief @b DELETE /channels/{channel.id}/recipients/{user.id}
+  *
+  * Removes a recipient from a Group DM.
+  * @see https://discord.com/developers/docs/resources/channel#group-dm-remove-recipient
+  * @param client the client created with discord_init()
+  * @param channel_id channel for the user to be removed from
+  * @param user_id user to be removed
+  */
 ORCAcode discord_group_dm_remove_recipient(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t user_id);
 /** @} */
 
 /** @defgroup DiscordStartThreadWithMessage
- *  @{ */
+  *  @{ */
+/** @brief @b POST /channels/{channel.id}/messages/{message.id}/threads
+  *
+  * Creates a new thread from an existing message.
+  * @see https://discord.com/developers/docs/resources/channel#start-thread-with-message
+  * @param client the client created with discord_init()
+  * @param channel_id channel to start a thread on
+  * @param message_id message to start a thread from
+  * @param params request parameters
+  * @param p_channel the thread ID
+  */
 ORCAcode discord_start_thread_with_message(struct discord *client, const u64_snowflake_t channel_id, const u64_snowflake_t message_id, struct discord_start_thread_with_message_params *params, struct discord_channel *p_channel);
 /** @struct discord_start_thread_with_message_params */
 /** @} */
