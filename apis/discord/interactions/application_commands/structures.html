@@ -1,0 +1,1853 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Structures &#8212; Orca  documentation</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Batch Edit Application Command Permissions" href="methods/batch_edit_application_command_permissions.html" />
+    <link rel="prev" title="Application Commands" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../../../index.html">
+  <img src="../../../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../index.html">
+  Discord
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../common/types.html">
+  Types
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../common/websockets.html">
+  WebSockets
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../client/index.html">
+   Client
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/structures.html">
+     Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/initialization.html">
+     Initialization / Cleanup
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/error.html">
+     Error Handling
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/connecting.html">
+     Connecting
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/async.html">
+     Async Behaviour
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/behaviour.html">
+     Behaviour
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../client/utils.html">
+     Utils
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../constants.html">
+   Constants
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../events/index.html">
+   Event Reference
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../events/triggers.html">
+     Callback Triggers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../events/types.html">
+     Callback Types
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../index.html">
+   Interactions
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="index.html">
+     Application Commands
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/batch_edit_application_command_permissions.html">
+       Batch Edit Application Command Permissions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/bulk_overwrite_global_application_commands.html">
+       Bulk Overwrite Global Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/bulk_overwrite_guild_application_command.html">
+       Bulk Overwrite Guild Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/create_global_application_command.html">
+       Create Global Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/create_guild_application_command.html">
+       Create Guild Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/delete_global_application_command.html">
+       Delete Global Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/delete_guild_application_command.html">
+       Delete Guild Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/edit_application_command_permissions.html">
+       Edit Application Command Permissions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/edit_global_application_command.html">
+       Edit Global Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/edit_guild_application_command.html">
+       Edit Guild Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/get_application_command_permissions.html">
+       Get Application Command Permissions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/get_global_application_command.html">
+       Get Global Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/get_global_application_commands.html">
+       Get Global Application Commands
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/get_guild_application_command.html">
+       Get Guild Application Command
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/get_guild_application_command_permissions.html">
+       Get Guild Application Command Permissions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/get_guild_application_commands.html">
+       Get Guild Application Commands
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../interaction/index.html">
+     Interaction
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/create_followup_message.html">
+       Create Followup Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/create_interaction_response.html">
+       Create Interaction Response
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/delete_followup_message.html">
+       Delete Followup Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/delete_original_interaction_response.html">
+       Delete Original Interaction Response
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/edit_followup_message.html">
+       Edit Followup Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/edit_original_interaction_response.html">
+       Edit Original Interaction Response
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/get_followup_message.html">
+       Get Followup Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../interaction/methods/get_original_interaction_response.html">
+       Get Original Interaction Response
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../message_components/index.html">
+     Message Components
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../message_components/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../models/index.html">
+   Discord Models
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+  <label for="toctree-checkbox-7">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/application/index.html">
+     Application
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/application/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/audit_log/index.html">
+     Audit Log
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/audit_log/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/audit_log/methods/get_guild_audit_log.html">
+       Get Guild Audit Log
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/channel/index.html">
+     Channel
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/utils/methods.html">
+       Utils
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/embed_builder/methods.html">
+       Embed Builder
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/add_thread_member.html">
+       Add Thread Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/bulk_delete_messages.html">
+       Bulk Delete Messages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/create_channel_invite.html">
+       Create Channel Invite
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/create_message.html">
+       Create Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/crosspost_message.html">
+       Crosspost Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_all_reactions.html">
+       Delete All Reactions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_all_reactions_for_emoji.html">
+       Delete All Reactions For Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_channel.html">
+       Delete Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_channel_permission.html">
+       Delete Channel Permission
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_create_reaction.html">
+       Delete Create Reaction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_message.html">
+       Delete Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_own_reaction.html">
+       Delete Own Reaction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/delete_user_reaction.html">
+       Delete User Reaction
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/edit_channel_permissions.html">
+       Edit Channel Permissions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/edit_message.html">
+       Edit Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/follow_news_channel.html">
+       Follow News Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/get_channel.html">
+       Get Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/get_channel_invites.html">
+       Get Channel Invites
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/get_channel_message.html">
+       Get Channel Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/get_channel_messages.html">
+       Get Channel Messages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/get_pinned_messages.html">
+       Get Pinned Messages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/get_reactions.html">
+       Get Reactions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/group_dm_add_recipient.html">
+       Group DM Add Recipient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/group_dm_remove_recipient.html">
+       Group DM Remove Recipient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/join_thread.html">
+       Join Thread
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/leave_thread.html">
+       Leave Thread
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/list_active_threads.html">
+       List Active Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/list_joined_private_archived_threads.html">
+       List Joined Private Archived Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/list_private_archived_threads.html">
+       List Private Archived Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/list_public_archived_threads.html">
+       List Public Archived Threads
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/list_thread_members.html">
+       List Thread Members
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/modify_channel.html">
+       Modify Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/pin_message.html">
+       Pin Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/remove_thread_member.html">
+       Remove Thread Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/start_thread_with_message.html">
+       Start Thread With Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/start_thread_without_message.html">
+       Start Thread Without Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/trigger_typing_indicator.html">
+       Trigger Typing Indicator
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/channel/methods/unpin_message.html">
+       Unpin Message
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/emoji/index.html">
+     Emoji
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/emoji/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/emoji/methods/create_guild_emoji.html">
+       Create Guild Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/emoji/methods/delete_guild_emoji.html">
+       Delete Guild Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/emoji/methods/get_guild_emoji.html">
+       Get Guild Emoji
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/emoji/methods/list_guild_emoji.html">
+       List Guild Emojis
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/emoji/methods/modify_guild_emoji.html">
+       Modify Guild Emoji
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/guild/index.html">
+     Guild
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+    <label for="toctree-checkbox-12">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/add_guild_member.html">
+       Add Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/add_guild_member_role.html">
+       Add Guild Member Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/craete_guild_channel.html">
+       Create Guild Channel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/create_guild.html">
+       Create Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/create_guild_ban.html">
+       Create Guild Ban
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/create_guild_role.html">
+       Create Guild Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/delete_guild.html">
+       Delete Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/delete_guild_role.html">
+       Delete Guild Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild.html">
+       Get Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild_ban.html">
+       Get Guild Ban
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild_bans.html">
+       Get Guild Bans
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild_channels.html">
+       Get Guild Channels
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild_member.html">
+       Get Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild_preview.html">
+       Get Guild Preview
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/get_guild_roles.html">
+       Get Guild Roles
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/list_guild_members.html">
+       List Guild Members
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/modify_current_user_nick.html">
+       Modify Current User Nick
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/modify_guild.html">
+       Modify Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/modify_guild_channel_positions.html">
+       Modify Guild Channel Positions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/modify_guild_member.html">
+       Modify Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/modify_guild_role.html">
+       Modify Guild Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/modify_guild_role_positions.html">
+       Modify Guild Role Positions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/remove_guild_ban.html">
+       Remove Guild Ban
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/remove_guild_member.html">
+       Remove Guild Member
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/remove_guild_member_role.html">
+       Remove Guild Member Role
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/methods/search_guild_members.html">
+       Search Guild Members
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild/utils/methods.html">
+       Utils
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/guild_template/index.html">
+     Guild Template
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+    <label for="toctree-checkbox-13">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/guild_template/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/invite/index.html">
+     Invite
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+    <label for="toctree-checkbox-14">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/invite/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/invite/methods/delete_invite.html">
+       Delete Invite
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/invite/methods/get_invite.html">
+       Get Invite
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/stage_instance/index.html">
+     Stage Instance
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+    <label for="toctree-checkbox-15">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/stage_instance/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/sticker/index.html">
+     Sticker
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+    <label for="toctree-checkbox-16">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/sticker/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/user/index.html">
+     User
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+    <label for="toctree-checkbox-17">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/create_dm.html">
+       Create DM
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/create_group_dm.html">
+       Create Group DM
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/get_current_user.html">
+       Get Current User
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/get_current_user_guilds.html">
+       Get Current User Guilds
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/get_user.html">
+       Get User
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/get_user_connections.html">
+       Get User Connections
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/leave_guild.html">
+       Leave Guild
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/user/methods/modify_current_user.html">
+       Modify Current User
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/voice/index.html">
+     Voice
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+    <label for="toctree-checkbox-18">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/voice/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/voice/methods/list_voice_regions.html">
+       List Voice Regions
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/webhook/index.html">
+     Webhook
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+    <label for="toctree-checkbox-19">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/create_webhook.html">
+       Create Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/delete_webhook.html">
+       Delete Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/delete_webhook_message.html">
+       Delete Webhook Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/delete_webhook_with_token.html">
+       Delete Webhook with Token
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/edit_webhook_message.html">
+       Edit Webhook Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/execute_webhook.html">
+       Execute Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/get_channel_webhooks.html">
+       Get Channel Webhooks
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/get_guild_webhooks.html">
+       Get Guild Webhooks
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/get_webhook.html">
+       Get Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/get_webhook_message.html">
+       Get Webhook Message
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/get_webhook_with_token.html">
+       Get Webhook with Token
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/modify_webhook.html">
+       Modify Webhook
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/webhook/methods/modify_webhook_with_token.html">
+       Modify Webhook with Token
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/gateway/index.html">
+     Gateway
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+    <label for="toctree-checkbox-20">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/gateway/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/gateway/utils/methods.html">
+       Utils
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/gateway/methods/get_gateway.html">
+       Get Gateway
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/gateway/methods/get_gateway_bot.html">
+       Get Gateway Bot
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/permissions/index.html">
+     Permissions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+    <label for="toctree-checkbox-21">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/permissions/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/custom/index.html">
+     Custom
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+    <label for="toctree-checkbox-22">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../models/custom/structures.html">
+       Structures
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/apis/discord/interactions/application_commands/structures.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="structures">
+<h1>Structures<a class="headerlink" href="#structures" title="Permalink to this headline">¶</a></h1>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command">
+<span class="target" id="structdiscord__application__command"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command</span></span></span><a class="headerlink" href="#c.discord_application_command" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_init(struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_cleanup(struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_list_free(struct</span> <span class="pre">discord_application_command</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.id">
+<span class="target" id="structdiscord__application__command_1a1d1e8dee47017bc7b56332a2f6cfb1ba"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_application_command.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unique id of the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.type">
+<span class="target" id="structdiscord__application__command_1afb6538b1dab513effaf26bf9af8d70e1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_types" title="discord_application_command_types"><span class="n"><span class="pre">discord_application_command_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the type of the command, defaults 1 if not set </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.application_id">
+<span class="target" id="structdiscord__application__command_1a7958c27745543bd8b20ffe1820ae9845"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_application_command.application_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unique id of the parent application </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.guild_id">
+<span class="target" id="structdiscord__application__command_1af0eff4ee8dce40d88f332735a86dd0c6"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_application_command.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>guild id of the command, if not global </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.name">
+<span class="target" id="structdiscord__application__command_1ac96878eb6d9e762238fde6bc748f4ed7"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-32 character name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.description">
+<span class="target" id="structdiscord__application__command_1a9e21d1a22d4b555c6dc3ea010d32f093"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.options">
+<span class="target" id="structdiscord__application__command_1a20a43a9e87397276a8430cd8ebb937a5"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option" title="discord_application_command_option"><span class="n"><span class="pre">discord_application_command_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_application_command.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the parameters for the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.default_permission">
+<span class="target" id="structdiscord__application__command_1a66e1330b69bfe72b45b8922054ebaba8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_permission</span></span></span><a class="headerlink" href="#c.discord_application_command.default_permission" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether the command is enabled by default when the app is added to a guild </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_option">
+<span class="target" id="structdiscord__application__command__option"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_option</span></span></span><a class="headerlink" href="#c.discord_application_command_option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_init(struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_cleanup(struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_list_free(struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.type">
+<span class="target" id="structdiscord__application__command__option_1ad9a9140572a4a0cdf57748889ae988b1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option_types" title="discord_application_command_option_types"><span class="n"><span class="pre">discord_application_command_option_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command_option.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>value of application command option type </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.name">
+<span class="target" id="structdiscord__application__command__option_1a09d4790980ee652cd3b01404e9bbaab2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command_option.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-32 lowercase character </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.description">
+<span class="target" id="structdiscord__application__command__option_1a1fd10f05dd700c58a31e967d2619b6e2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command_option.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-100 character description </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.required">
+<span class="target" id="structdiscord__application__command__option_1ac73196db71c0d4d977eb41212eaa17df"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">required</span></span></span><a class="headerlink" href="#c.discord_application_command_option.required" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the parameter is required or optional  default false </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.choices">
+<span class="target" id="structdiscord__application__command__option_1a01da3589487220a0883b3183c5f29a17"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option_choice" title="discord_application_command_option_choice"><span class="n"><span class="pre">discord_application_command_option_choice</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">choices</span></span></span><a class="headerlink" href="#c.discord_application_command_option.choices" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>choices for string and int types for the user to pick from </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.options">
+<span class="target" id="structdiscord__application__command__option_1a0bc7e50f240760caf024294bc7bbdfff"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option" title="discord_application_command_option"><span class="n"><span class="pre">discord_application_command_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_application_command_option.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the option is a subcommand or subcommand group type, this nested options will be the parameters </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_option_choice">
+<span class="target" id="structdiscord__application__command__option__choice"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_option_choice</span></span></span><a class="headerlink" href="#c.discord_application_command_option_choice" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_init(struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_cleanup(struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_list_free(struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option_choice.name">
+<span class="target" id="structdiscord__application__command__option__choice_1a9c424fdd79a87f429425f1378b856770"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command_option_choice.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-100 character choice name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option_choice.value">
+<span class="target" id="structdiscord__application__command__option__choice_1af69bd5d3c3c4162e3771f85cbf145b85"></span><a class="reference internal" href="../../../../common/types.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#c.discord_application_command_option_choice.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>value of choice, up to 100 characters if string </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions">
+<span class="target" id="structdiscord__guild__application__command__permissions"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_guild_application_command_permissions</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_init(struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_cleanup(struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_list_free(struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.id">
+<span class="target" id="structdiscord__guild__application__command__permissions_1a0b7c5c294fa9733f770a39cedbbc5220"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.application_id">
+<span class="target" id="structdiscord__guild__application__command__permissions_1a7be258adb6f3c497dbd89ce8a806c834"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.application_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the parent application the command belongs to </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.guild_id">
+<span class="target" id="structdiscord__guild__application__command__permissions_1a321fc7b25922343416f1f5ea385b2d0e"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the guild </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.permissions">
+<span class="target" id="structdiscord__guild__application__command__permissions_1aeeb649655901fe27312771f75d288586"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_permissions" title="discord_application_command_permissions"><span class="n"><span class="pre">discord_application_command_permissions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">permissions</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the permissions for the command in the guild </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions">
+<span class="target" id="structdiscord__application__command__permissions"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_permissions</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_init(struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_cleanup(struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_list_free(struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions.id">
+<span class="target" id="structdiscord__application__command__permissions_1ad59d079df44a777d1e8cf107fe672e64"></span><a class="reference internal" href="../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions.type">
+<span class="target" id="structdiscord__application__command__permissions_1a21a3804f97df8c50c3f3303281606180"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_permission_types" title="discord_application_command_permission_types"><span class="n"><span class="pre">discord_application_command_permission_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>role or user </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions.permission">
+<span class="target" id="structdiscord__application__command__permissions_1adcf0ce480968fc67044d0c691fd69827"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">permission</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions.permission" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>true to allow, false, to disallow </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option">
+<span class="target" id="structdiscord__application__command__interaction__data__option"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_interaction_data_option</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_init(struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_cleanup(struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_list_free(struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.name">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1a11094bb3ab34d431a61dc6fa3191c671"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the name of the parameter </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.type">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1a823d917feb72148b602231d7c537d66b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option_types" title="discord_application_command_option_types"><span class="n"><span class="pre">discord_application_command_option_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>value of application command option type </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.value">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1aa18dbb0abac594312f7e47d0d39429e3"></span><a class="reference internal" href="../../../../common/types.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the value of the pair </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.options">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1acdc833f4bf56440e83e6b36b21850569"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_interaction_data_option" title="discord_application_command_interaction_data_option"><span class="n"><span class="pre">discord_application_command_interaction_data_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>present if this option is a group or subcommand </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_command_types">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5ac"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_types</span></span></span><a class="headerlink" href="#c.discord_application_command_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_command_types_print(enum</span> <span class="pre">discord_application_command_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_command_types</span> <span class="pre">discord_application_command_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_CHAT_INPUT">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5aca6bb3a917d85795efdc17adbdb4393766"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_CHAT_INPUT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_CHAT_INPUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Slash commands; a text-based command that shows up when a user types / </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_USER">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5aca84ff5f62ac41f767085030fc9abd0232"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_USER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A UI-based command that shows up when you right click or tap on a user </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_MESSAGE">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5aca2f05c7f82e1799d2ac286bc3611f8fba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_MESSAGE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_MESSAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A UI-based command that shows up when you right lick or tap on a message </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_option_types</span></span></span><a class="headerlink" href="#c.discord_application_command_option_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_command_option_types_print(enum</span> <span class="pre">discord_application_command_option_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_command_option_types</span> <span class="pre">discord_application_command_option_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28bafb2d94e47a862f4afe7a4496b6e06797"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba28c454b11de6e956eba4821786520d69"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_STRING">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba32eb601a40cd92d4d4ca1b2673a36021"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_STRING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_STRING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_INTEGER">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba788dbe09be4c8b8fdb3de27cd01ff90e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_INTEGER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_INTEGER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Any integer between -2^53 and 2^53 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28baa904be2a6f6590c25891d78b6d0858b4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_USER">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba96cf263c7193c1535ec8cd9d5bb6b11e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_USER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba8e68d81a9723f525880f9cbbf933e56b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Includes all channel types + categories </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_ROLE">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba466532de490fb22c87475eb8e57cf97d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_ROLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_ROLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba940d722017db4e499d5b73985faabdeb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Includes users and roles </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_NUMBER">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba48be0fabdbb92fce9ff78e1196648691"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_NUMBER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_NUMBER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Any double between -2^53 and 2^53 </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_command_permission_types">
+<span class="target" id="application__commands_8h_1af67b9df36cefd62a9264e7207ef718e2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_permission_types</span></span></span><a class="headerlink" href="#c.discord_application_command_permission_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_command_permission_types_print(enum</span> <span class="pre">discord_application_command_permission_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_command_permission_types</span> <span class="pre">discord_application_command_permission_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type">https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE">
+<span class="target" id="application__commands_8h_1af67b9df36cefd62a9264e7207ef718e2a400187b9c23c7a9dd4e43b44cceb230c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_USER">
+<span class="target" id="application__commands_8h_1af67b9df36cefd62a9264e7207ef718e2acaf4244dd9cfbc6e27cc8081fcbda3c2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_PERMISSION_USER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Application Commands</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="methods/batch_edit_application_command_permissions.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Batch Edit Application Command Permissions</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

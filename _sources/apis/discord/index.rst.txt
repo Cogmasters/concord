@@ -8,12 +8,12 @@ The following section outlines the Discord API supported by Orca
    :caption: Table of Contents
    :maxdepth: 2
 
-    Client <client>
+   client/index
 
-    Constants <constants>
+   constants
 
-    Event Reference <events>
+   events/index
 
-    Models <models/index>
+   interactions/index
 
-    Interactions <interactions>
+   models/index
