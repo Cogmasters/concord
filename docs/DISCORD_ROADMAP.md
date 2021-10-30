@@ -185,7 +185,7 @@
 - [x] [Modify Guild Role](https://discord.com/developers/docs/resources/guild#modify-guild-role)
 - [x] [Delete Guild Role](https://discord.com/developers/docs/resources/guild#delete-guild-role)
 - [ ] [Get Guild Prune Count](https://discord.com/developers/docs/resources/guild#get-guild-prune-count)
-- [ ] [Begin Guild Prune](https://discord.com/developers/docs/resources/guild#begin-guild-prune)
+- [x] [Begin Guild Prune](https://discord.com/developers/docs/resources/guild#begin-guild-prune)
 - [ ] [Get Guild Voice Regions](https://discord.com/developers/docs/resources/guild#get-guild-voice-regions)
 - [x] [Get Guild Invites](https://discord.com/developers/docs/resources/guild#get-guild-invites)
 - [ ] [Get Guild Integrations](https://discord.com/developers/docs/resources/guild#get-guild-integrations)

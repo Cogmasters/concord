@@ -802,6 +802,32 @@ discord_delete_guild_role(
            HTTP_DELETE, 
            "/guilds/%"PRIu64"/roles/%"PRIu64, guild_id, role_id);
 }
+ORCAcode 
+discord_begin_guild_prune(
+  struct discord *client, 
+  const u64_snowflake_t guild_id,
+  struct discord_begin_guild_prune_params *params)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+
+  char payload[DISCORD_MAX_PAYLOAD_LEN];
+  size_t ret;
+
+  if(params)
+    ret = discord_begin_guild_prune_params_to_json(payload, sizeof(payload), params);
+  else
+    ret = sprintf(payload, "{}");
+
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           &(struct sized_buffer){ payload, ret },
+           HTTP_POST, 
+           "/guilds/%"PRIu64"/prune", guild_id);
+}
 
 ORCAcode
 discord_get_guild_invites(

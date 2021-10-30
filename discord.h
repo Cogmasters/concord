@@ -1974,6 +1974,21 @@ ORCAcode discord_create_guild_role(struct discord *client, const u64_snowflake_t
 /** @struct discord_create_guild_role_params */
 /** @} */
 
+/** @defgroup DiscordBeginGuildPrune
+ *  @{ */
+ /**
+ * @brief @b POST /guilds/{guild.id}/prune
+ *
+ * Begin a guild prune. Discord recommends for larger servers to set "compute_prune_count" to false. Requires the KICK_MEMBERS permission.
+ * @see https://discord.com/developers/docs/resources/guild#begin-guild-prune
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to start the prune
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
+ORCAcode discord_begin_guild_prune(struct discord *client, const u64_snowflake_t guild_id, struct discord_begin_guild_prune_params *params);
+/** @struct discord_begin_guild_prune_params */
+/** @} */
+
 /** @defgroup DiscordGetGuildInvites
  *  @{ */
  /**
