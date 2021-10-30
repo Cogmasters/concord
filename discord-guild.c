@@ -855,6 +855,28 @@ discord_get_guild_invites(
           "/guilds/%"PRIu64"/invites",
           guild_id);
 }
+ORCAcode 
+discord_delete_guild_integrations(
+  struct discord *client, 
+  const u64_snowflake_t guild_id, 
+  const u64_snowflake_t integration_id)
+{
+  if (!guild_id) {
+    log_error("Missing 'guild_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  if (!integration_id) {
+    log_error("Missing 'integration_id'");
+    return ORCA_MISSING_PARAMETER;
+  }
+  
+  return discord_adapter_run(
+           &client->adapter,
+           NULL,
+           NULL,
+           HTTP_DELETE, 
+           "/guilds/%"PRIu64"/integrations/%"PRIu64, guild_id, integration_id);
+}
 
 ORCAcode
 discord_get_guild_vanity_url(

@@ -2005,6 +2005,21 @@ ORCAcode discord_get_guild_invites(struct discord *client, const u64_snowflake_t
 /** @struct discord_get_guild_invites_params */
 /** @} */
 
+/** @defgroup DiscordDeleteGuildIntegrations
+ *  @{ */
+ /**
+ * @brief @b DELETE /guilds/{guild.id}/integrations/{integration.id}
+ *
+ * Deletes the integration for the guild. It will also delete any associated webhooks and bots. Requires the MANAGE_GUILD permission.
+ * @see https://discord.com/developers/docs/resources/guild#delete-guild-integration
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to delete the integrations from
+ * @param integration_id the id of the integration to delete
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
+ORCAcode discord_delete_guild_integrations(struct discord *client, const u64_snowflake_t guild_id, const u64_snowflake_t integration_id);
+/** @} */
+
 /** @defgroup DiscordGetGuildVanityUrl
  *  @{ */
  /**

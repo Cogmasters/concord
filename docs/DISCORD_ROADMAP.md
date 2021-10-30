@@ -189,7 +189,7 @@
 - [ ] [Get Guild Voice Regions](https://discord.com/developers/docs/resources/guild#get-guild-voice-regions)
 - [x] [Get Guild Invites](https://discord.com/developers/docs/resources/guild#get-guild-invites)
 - [ ] [Get Guild Integrations](https://discord.com/developers/docs/resources/guild#get-guild-integrations)
-- [ ] [Delete Guild Integration](https://discord.com/developers/docs/resources/guild#delete-guild-integration)
+- [x] [Delete Guild Integration](https://discord.com/developers/docs/resources/guild#delete-guild-integration)
 - [ ] [Get Guild Widget Settings](https://discord.com/developers/docs/resources/guild#get-guild-widget-settings)
 - [ ] [Modify Guild Widget](https://discord.com/developers/docs/resources/guild#modify-guild-widget)
 - [ ] [Get Guild Widget](https://discord.com/developers/docs/resources/guild#get-guild-widget)
