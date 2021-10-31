@@ -1286,12 +1286,6 @@
 </dd></dl>
 
 <dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_message_params.file">
-<span class="target" id="structdiscord__create__message__params_1a41fcdb14daa18b586a0cbe4189cbb949"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../custom/structures.html#c.discord_file" title="discord_file"><span class="n"><span class="pre">discord_file</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">file</span></span></span><a class="headerlink" href="#c.discord_create_message_params.file" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>the contents of the file being sent </p>
-</dd></dl>
-
-<dl class="c var">
 <dt class="sig sig-object c" id="c.discord_create_message_params.embeds">
 <span class="target" id="structdiscord__create__message__params_1abc9ff52410146ddec6166d38941bfce0"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">embeds</span></span></span><a class="headerlink" href="#c.discord_create_message_params.embeds" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>embedded rich content (up to 6000 characters) </p>
@@ -1301,12 +1295,6 @@
 <dt class="sig sig-object c" id="c.discord_create_message_params.embed">
 <span class="target" id="structdiscord__create__message__params_1a9307dec7aa37d8045d47d52f2b16eb46"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">embed</span></span></span><a class="headerlink" href="#c.discord_create_message_params.embed" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>embedded rich content, deprecated in favor of embeds </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_message_params.payload_json">
-<span class="target" id="structdiscord__create__message__params_1a8b3fb41627d5c019f1cdc2495b2825f6"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">payload_json</span></span></span><a class="headerlink" href="#c.discord_create_message_params.payload_json" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>JSON encoded body of non-file params </p>
 </dd></dl>
 
 <dl class="c var">
@@ -1331,6 +1319,12 @@
 <dt class="sig sig-object c" id="c.discord_create_message_params.sticker_ids">
 <span class="target" id="structdiscord__create__message__params_1a6a9dda847758c923388f4a27e46a1605"></span><span class="n"><span class="pre">ja_u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">sticker_ids</span></span></span><a class="headerlink" href="#c.discord_create_message_params.sticker_ids" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>ids of up to 3 stickers in the server to send in the message </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_message_params.attachments">
+<span class="target" id="structdiscord__create__message__params_1a28ac9b994f95563e9cd1f0c7f61002d0"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_attachment" title="discord_attachment"><span class="n"><span class="pre">discord_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">attachments</span></span></span><a class="headerlink" href="#c.discord_create_message_params.attachments" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>attachment objects with filename and description </p>
 </dd></dl>
 
 </div>
