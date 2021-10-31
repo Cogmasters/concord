@@ -12,7 +12,6 @@
 #include <pthread.h>
 #include "uthash.h"
 
-#include "json-scanf.h"
 #include "json-actor.h"
 #include "json-actor-boxed.h"
 

@@ -6,7 +6,6 @@
 #include "github.h"
 #include "github-internal.h"
 
-#include "json-scanf.h"
 #include "cee-utils.h"
 
 #define GITHUB_BASE_API_URL "https://api.github.com"
