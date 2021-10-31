@@ -895,14 +895,6 @@ struct discord_select_menu;
  * @see https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
  */
 struct discord_select_option;
-/* This file is generated from specs/discord/misc.json, Please don't edit it. */
-
-/* defined at specs/discord/misc.json:7:22 */
-/**
- * @brief Custom File Structure
- *
- */
-struct discord_file;
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -2197,7 +2189,6 @@ extern void discord_button_styles_list_from_json_v(char *str, size_t len, void *
 extern void discord_button_styles_list_from_json(char *str, size_t len, enum discord_button_styles ***p);
 extern size_t discord_button_styles_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_button_styles **p);
-/* This file is generated from specs/discord/misc.json, Please don't edit it. */
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -8576,49 +8567,6 @@ struct discord_select_option {
   bool Default; /**< will render this option as selected by default */
 
 };
-/* This file is generated from specs/discord/misc.json, Please don't edit it. */
-
-/* Custom File Structure */
-/* defined at specs/discord/misc.json:7:22 */
-/**
- * @verbatim embed:rst:leading-asterisk
- * .. container:: toggle
-
- *   .. container:: header
-
- *     **Methods**
-
- *   * Initializer:
-
- *     * :code:`void discord_file_init(struct discord_file *)`
- *   * Cleanup:
-
- *     * :code:`void discord_file_cleanup(struct discord_file *)`
- *     * :code:`void discord_file_list_free(struct discord_file **)`
- *   * JSON Decoder:
-
- *     * :code:`void discord_file_from_json(char *rbuf, size_t len, struct discord_file **)`
- *     * :code:`void discord_file_list_from_json(char *rbuf, size_t len, struct discord_file ***)`
- *   * JSON Encoder:
-
- *     * :code:`void discord_file_to_json(char *wbuf, size_t len, struct discord_file *)`
- *     * :code:`void discord_file_list_to_json(char *wbuf, size_t len, struct discord_file **)`
- * @endverbatim
- */
-struct discord_file {
-  /* specs/discord/misc.json:11:20
-     '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"the name of the file being sent", "inject_if_not":null }' */
-  char *name; /**< the name of the file being sent */
-
-  /* specs/discord/misc.json:12:20
-     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *content; /**< the contents of the file being sent */
-
-  /* specs/discord/misc.json:13:20
-     '{ "name": "size", "type":{ "base":"int", "int_alias":"size_t" }, "comment":"the size of the file in bytes", "inject_if_not":0 }' */
-  size_t size; /**< the size of the file in bytes */
-
-};
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
@@ -11596,14 +11544,6 @@ extern void discord_select_option_list_from_json_v(char *str, size_t len, void *
 extern void discord_select_option_list_from_json(char *str, size_t len, struct discord_select_option ***p);
 extern size_t discord_select_option_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_select_option_list_to_json(char *str, size_t len, struct discord_select_option **p);
-/* This file is generated from specs/discord/misc.json, Please don't edit it. */
-
-extern void discord_file_cleanup_v(void *p);
-extern void discord_file_cleanup(struct discord_file *p);
-extern void discord_file_init_v(void *p);
-extern void discord_file_init(struct discord_file *p);
-extern void discord_file_list_free_v(void **p);
-extern void discord_file_list_free(struct discord_file **p);
 /* This file is generated from specs/discord/permissions.json, Please don't edit it. */
 
 
