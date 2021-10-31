@@ -26,6 +26,7 @@ cee-utils.h
 greatest.h
 uthash.h
 cee-data-sizes.h
+clock.h
 "
 
 mkdir -p $mypath/../cee-utils

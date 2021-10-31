@@ -15,7 +15,7 @@
 #include "cee-utils.h"
 #include "json-actor-boxed.h" /* ja_str and functions */
 #include "json-actor.h"
-#include "debug.h"
+#include "clock.h"
 
 
 char*
@@ -75,23 +75,18 @@ stat_to_type(const struct stat *st)
 int
 cee_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
 {
+  (void)len;
   struct tm tm;
   double seconds = 0;
-  memset(&tm, 0, sizeof(tm));
 
-  /* @todo is this really necessary? */
-  char *buf = malloc(len + 1);
-  memcpy(buf, str, len);
-  buf[len] = '\0';
+  memset(&tm, 0, sizeof(tm));
 
   char tz_operator = 'Z';
   int tz_hour = 0, tz_min = 0;
-  sscanf(buf, "%d-%d-%dT%d:%d:%lf%c%d:%d", /* ISO-8601 complete format */
+  sscanf(str, "%d-%d-%dT%d:%d:%lf%c%d:%d", /* ISO-8601 complete format */
     &tm.tm_year, &tm.tm_mon, &tm.tm_mday, /* Date */
     &tm.tm_hour, &tm.tm_min, &seconds, /* Time */
     &tz_operator, &tz_hour, &tz_min); /* Timezone */
-
-  free(buf);
 
   tm.tm_mon--; /* struct tm takes month from 0 to 11 */
   tm.tm_year -= 1900; /* struct tm takes years from 1900 */
@@ -176,9 +171,11 @@ cee_sleep_ms(const long tms)
 uint64_t
 cee_timestamp_ms(void)
 {
-  struct timespec t;
-  clock_gettime(CLOCK_REALTIME, &t);
-  return (uint64_t)t.tv_sec*1000 + (uint64_t)t.tv_nsec/1000000;
+  struct PsnipClockTimespec t;
+  if (0 == psnip_clock_get_time(PSNIP_CLOCK_TYPE_WALL, &t)) {
+    return (uint64_t)t.seconds*1000 + (uint64_t)t.nanoseconds/1000000;
+  }
+  return 0ULL;
 }
 
 char*
