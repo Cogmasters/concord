@@ -26,8 +26,6 @@ SPECSDEPS_SRC     := $(CEE_UTILS_DIR)/cee-utils.c   \
                      $(CEE_UTILS_DIR)/json-actor.c  \
                      $(CEE_UTILS_DIR)/ntl.c         \
                      $(CEE_UTILS_DIR)/json-string.c \
-                     $(CEE_UTILS_DIR)/json-scanf.c  \
-                     $(CEE_UTILS_DIR)/json-printf.c \
                      $(CEE_UTILS_DIR)/log.c         \
                      $(SPECS_RDIR)/specs-gen.c
 SPECSDEPS_OBJS    := $(SPECSDEPS_SRC:%.c=$(SPECSDEPS_OBJDIR)/%.o)

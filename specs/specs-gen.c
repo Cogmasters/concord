@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #include "json-struct.c"
-#include "json-scanf.h"
 
 static void print_usage(char *prog)
 {
