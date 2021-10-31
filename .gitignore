@@ -17,7 +17,6 @@ bots-2
 *dump.json
 add-ons
 *.log
-cee-utils
 orca-docs
 Doxyfile
 botx
