@@ -33,6 +33,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 #include <errno.h>
+#include <time.h>
 
 #include "curl-websocket-utils.c"
 
@@ -178,6 +179,7 @@ struct cws_data {
     bool connection_websocket;
     bool closed;
     bool deleted;
+    clock_t start;
 };
 
 static bool
@@ -373,12 +375,10 @@ cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, siz
         fprintf(stderr,"not CWS (no CURLINFO_PRIVATE): %p", easy);
         return false;
     }
-#if defined(__stensal__)
-    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 150L);
-#else
-    curl_easy_setopt(easy, CURLOPT_TIMEOUT, 15L);
-#endif
     priv = (struct cws_data *)p;
+
+    long runtime_sec = ((long)(clock() - priv->start)) / CLOCKS_PER_SEC;
+    curl_easy_setopt(easy, CURLOPT_TIMEOUT, runtime_sec + 15L); /* give 15 seconds to terminate connection @todo configurable */
 
     if (reason == 0) {
         ret = _cws_send(priv, CWS_OPCODE_CLOSE, NULL, 0);
@@ -498,6 +498,7 @@ _cws_receive_header(const char *buffer, size_t count, size_t nitems, void *data)
             }
             return 0;
         } else {
+            priv->start = clock();
             if (priv->cbs.on_connect) {
                 priv->dispatching++;
                 priv->cbs.on_connect((void *)priv->cbs.data,

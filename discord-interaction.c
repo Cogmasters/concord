@@ -99,15 +99,16 @@ discord_edit_original_interaction_response(
     .ok_obj = &p_response
   };
 
-  if (!params->file) /* content-type is application/json */
-  {
-    char payload[16384]; /**< @todo dynamic buffer */
-    size_t ret = discord_edit_original_interaction_response_params_to_json(payload, sizeof(payload), params);
+  char payload[16384]; /**< @todo dynamic buffer */
+  size_t ret = discord_edit_original_interaction_response_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer body = { payload, ret };
 
+  /* content-type is application/json */
+  if (!params->attachments) {
     return discord_adapter_run(
              &client->adapter,
              &resp_handle,
-             &(struct sized_buffer){ payload, ret },
+             &body,
              HTTP_POST,
              "/webhooks/%"PRIu64"/%s/messages/@original", 
              interaction_id, interaction_token);
@@ -115,7 +116,7 @@ discord_edit_original_interaction_response(
 
   /* content-type is multipart/form-data */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
-  ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
+  ua_curl_mime_setopt(client->adapter.ua, (void*[2]){params->attachments, &body}, &_discord_params_to_mime);
 
   ORCAcode code;
   code = discord_adapter_run( 
@@ -126,9 +127,7 @@ discord_edit_original_interaction_response(
            "/webhooks/%"PRIu64"/%s/messages/@original", 
            interaction_id, interaction_token);
 
-  /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
-  ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 
   return code;
 }
@@ -190,15 +189,16 @@ discord_create_followup_message(
     .ok_obj = &p_webhook
   };
 
-  if (!params->file) /* content-type is application/json */
-  {
-    char payload[16384]; /**< @todo dynamic buffer */
-    ret = discord_create_followup_message_params_to_json(payload, sizeof(payload), params);
+  char payload[16384]; /**< @todo dynamic buffer */
+  ret = discord_create_followup_message_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer body = { payload, ret };
 
+  /* content-type is application/json */
+  if (!params->attachments) {
     return discord_adapter_run(
              &client->adapter,
              &resp_handle,
-             &(struct sized_buffer){ payload, ret },
+             &body,
              HTTP_POST,
              "/webhooks/%"PRIu64"/%s%s%s", 
              application_id, interaction_token, *query ? "?" : "", query);
@@ -206,7 +206,7 @@ discord_create_followup_message(
 
   /* content-type is multipart/form-data */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
-  ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
+  ua_curl_mime_setopt(client->adapter.ua, (void*[2]){params->attachments, &body}, &_discord_params_to_mime);
 
   ORCAcode code;
   code = discord_adapter_run( 
@@ -217,9 +217,7 @@ discord_create_followup_message(
            "/webhooks/%"PRIu64"/%s%s%s", 
            application_id, interaction_token, *query ? "?" : "", query);
 
-  /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
-  ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 
   return code;
 }
@@ -292,15 +290,16 @@ discord_edit_followup_message(
     .ok_obj = &p_message
   };
 
-  if (!params->file) /* content-type is application/json */
-  {
-    char payload[16384]; /**< @todo dynamic buffer */
-    size_t ret = discord_edit_followup_message_params_to_json(payload, sizeof(payload), params);
+  char payload[16384]; /**< @todo dynamic buffer */
+  size_t ret = discord_edit_followup_message_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer body = { payload, ret };
 
+  /* content-type is application/json */
+  if (!params->attachments) {
     return discord_adapter_run(
              &client->adapter,
              &resp_handle,
-             &(struct sized_buffer){ payload, ret },
+             &body,
              HTTP_POST,
              "/webhooks/%"PRIu64"/%s/messages/%"PRIu64, 
              application_id, interaction_token, message_id);
@@ -308,7 +307,7 @@ discord_edit_followup_message(
 
   /* content-type is multipart/form-data */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
-  ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
+  ua_curl_mime_setopt(client->adapter.ua, (void*[2]){params->attachments, &body}, &_discord_params_to_mime);
 
   ORCAcode code;
   code = discord_adapter_run( 
@@ -319,9 +318,7 @@ discord_edit_followup_message(
            "/webhooks/%"PRIu64"/%s/messages/%"PRIu64, 
            application_id, interaction_token, message_id);
 
-  /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
-  ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 
   return code;
 }

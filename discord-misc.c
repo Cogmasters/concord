@@ -12,30 +12,40 @@ struct msg {
   bool matched;
 };
 
-/* defined at dicord-internal.h */
-curl_mime*
-discord_file_to_mime(CURL *ehandle, void *p_file) 
+void
+_discord_params_to_mime(curl_mime *mime, void *p_cxt)
 {
-  struct discord_file *file = p_file;
+  NTL_T(struct discord_attachment) attachments = ((void**)p_cxt)[0];
+  struct sized_buffer             *buf         = ((void**)p_cxt)[1];
 
-  curl_mime *mime = curl_mime_init(ehandle);
-  curl_mimepart *part = curl_mime_addpart(mime);
+  /* json part */
+  if (buf->start) {
+    curl_mimepart *part = curl_mime_addpart(mime);
+    curl_mime_data(part, buf->start, buf->size);
+    curl_mime_type(part, "application/json");
+    curl_mime_name(part, "payload_json");
+  }
 
-  if (file->content) {
-    if (!file->name) { /* set a default name */
-      file->name = "a.out";
+  /* attachment part */
+  char name[64];
+  for (int i=0; attachments[i]; ++i) {
+    snprintf(name, sizeof(name), "files[%d]", i);
+
+    curl_mimepart *part = curl_mime_addpart(mime);
+    if (attachments[i]->content) {
+      char *fname = IS_EMPTY_STRING(attachments[i]->filename) ? "a.out" : attachments[i]->filename;
+      int   fsize = attachments[i]->size ? attachments[i]->size : CURL_ZERO_TERMINATED;
+      curl_mime_data(part, attachments[i]->content, fsize);
+      curl_mime_filename(part, fname);
     }
-    curl_mime_data(part, file->content, file->size);
-    curl_mime_filename(part, file->name);
-    curl_mime_type(part, "application/octet-stream");
+    else if (!IS_EMPTY_STRING(attachments[i]->filename)) {
+      curl_mime_filedata(part, attachments[i]->filename);
+    }
+    curl_mime_type(part, (IS_EMPTY_STRING(attachments[i]->content_type)) 
+                           ? "application/octet-stream"
+                           : attachments[i]->content_type);
+    curl_mime_name(part, name);
   }
-  else { /*file->name exists  */
-    curl_mime_filedata(part, file->name);
-  }
-
-  curl_mime_name(part, "file");
-
-  return mime;
 }
 
 ORCAcode

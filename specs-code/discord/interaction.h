@@ -469,6 +469,10 @@ struct discord_interaction_callback_data {
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
   struct discord_component **components; /**< message components */
 
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+  struct discord_attachment **attachments; /**< attachment objects with filename and description */
+
 };
 extern void discord_interaction_callback_data_cleanup_v(void *p);
 extern void discord_interaction_callback_data_cleanup(struct discord_interaction_callback_data *p);
@@ -487,7 +491,7 @@ extern size_t discord_interaction_callback_data_list_to_json(char *str, size_t l
 
 
 /* Interaction Callback Data Flags */
-/* defined at specs/discord/interaction.json:120:5 */
+/* defined at specs/discord/interaction.json:121:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-flags
  *

@@ -12,6 +12,7 @@
 
 pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 bool g_keep_spamming = true;
+unsigned g_thread_count;
 
 
 void on_ready(struct discord *client, const struct discord_user *me) {
@@ -37,13 +38,12 @@ void on_spam(
   const struct discord_user *bot,
   const struct discord_message *msg)
 {
-  static unsigned count;
   const unsigned threadpool_size = strtol(THREADPOOL_SIZE, NULL, 10);
 
   if (msg->author->bot) return;
 
   pthread_mutex_lock(&g_lock);
-  if (count >= threadpool_size-1) { // prevent blocking all threads
+  if (g_thread_count >= threadpool_size-1) { // prevent blocking all threads
     discord_create_message(
         client, 
         msg->channel_id, 
@@ -54,7 +54,7 @@ void on_spam(
     pthread_mutex_unlock(&g_lock);
     return;
   }
-  ++count;
+  ++g_thread_count;
   g_keep_spamming = true;
   pthread_mutex_unlock(&g_lock);
 
@@ -83,6 +83,7 @@ void on_stop(
 
   pthread_mutex_lock(&g_lock);
   g_keep_spamming = false;
+  g_thread_count = 0;
   pthread_mutex_unlock(&g_lock);
 }
 

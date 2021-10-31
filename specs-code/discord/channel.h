@@ -1048,7 +1048,7 @@ extern void discord_thread_member_list_from_json(char *str, size_t len, struct d
 extern size_t discord_thread_member_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct discord_thread_member **p);
 
-/* Attachment Strcture */
+/* Attachment Structure */
 /* defined at specs/discord/channel.json:280:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
@@ -1079,32 +1079,48 @@ extern size_t discord_thread_member_list_to_json(char *str, size_t len, struct d
  */
 struct discord_attachment {
   /* specs/discord/channel.json:283:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t id;
-
-  /* specs/discord/channel.json:284:20
-     '{ "name": "filename", "type":{ "base":"char", "dec":"[256]" }}' */
-  char filename[256];
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null }' */
+  char *content; /**< the file contents */
 
   /* specs/discord/channel.json:285:20
-     '{ "name": "size", "type":{ "base":"int" }}' */
-  int size;
+     '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
+  int id; /**< attachment id */
 
   /* specs/discord/channel.json:286:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}' */
-  char *url;
+     '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
+  char *filename; /**< name of file attached */
 
   /* specs/discord/channel.json:287:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}' */
-  char *proxy_url;
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
+  char *description; /**< description for the file */
 
   /* specs/discord/channel.json:288:20
-     '{ "name": "height", "type":{ "base":"int", "nullable":true }}' */
-  int height;
+     '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
+  char *content_type; /**< the attachment's media type */
 
   /* specs/discord/channel.json:289:20
-     '{ "name": "width", "type":{ "base":"int", "nullable":true }}' */
-  int width;
+     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+  int size; /**< size of file in bytes */
+
+  /* specs/discord/channel.json:290:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
+  char *url; /**< source url of file */
+
+  /* specs/discord/channel.json:291:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
+  char *proxy_url; /**< a proxied url of file */
+
+  /* specs/discord/channel.json:292:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
+  int height; /**< height of file (if image) */
+
+  /* specs/discord/channel.json:293:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
+  int width; /**< width of file (if image) */
+
+  /* specs/discord/channel.json:294:20
+     '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
+  bool ephemeral; /**< whether this attachment is ephemeral */
 
 };
 extern void discord_attachment_cleanup_v(void *p);
@@ -1123,7 +1139,7 @@ extern size_t discord_attachment_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_attachment_list_to_json(char *str, size_t len, struct discord_attachment **p);
 
 /* Channel Mention Structure */
-/* defined at specs/discord/channel.json:296:22 */
+/* defined at specs/discord/channel.json:301:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
@@ -1152,19 +1168,19 @@ extern size_t discord_attachment_list_to_json(char *str, size_t len, struct disc
  * @endverbatim
  */
 struct discord_channel_mention {
-  /* specs/discord/channel.json:299:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/channel.json:300:20
+  /* specs/discord/channel.json:305:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t guild_id;
 
-  /* specs/discord/channel.json:301:20
+  /* specs/discord/channel.json:306:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
   enum discord_channel_types type;
 
-  /* specs/discord/channel.json:302:20
+  /* specs/discord/channel.json:307:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
@@ -1185,7 +1201,7 @@ extern size_t discord_channel_mention_list_to_json_v(char *str, size_t len, void
 extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discord_channel_mention **p);
 
 /* Allowed Mentions Structure */
-/* defined at specs/discord/channel.json:308:22 */
+/* defined at specs/discord/channel.json:313:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
@@ -1214,19 +1230,19 @@ extern size_t discord_channel_mention_list_to_json(char *str, size_t len, struct
  * @endverbatim
  */
 struct discord_allowed_mentions {
-  /* specs/discord/channel.json:311:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
   ja_str **parse;
 
-  /* specs/discord/channel.json:312:20
+  /* specs/discord/channel.json:317:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   ja_u64 **roles; /**< list of snowflakes */
 
-  /* specs/discord/channel.json:313:20
+  /* specs/discord/channel.json:318:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   ja_u64 **users; /**< list of snowflakes */
 
-  /* specs/discord/channel.json:314:20
+  /* specs/discord/channel.json:319:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   bool replied_user;
 
@@ -1247,7 +1263,7 @@ extern size_t discord_allowed_mentions_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_allowed_mentions_list_to_json(char *str, size_t len, struct discord_allowed_mentions **p);
 
 /* Embed Structure */
-/* defined at specs/discord/channel.json:320:22 */
+/* defined at specs/discord/channel.json:325:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
@@ -1276,55 +1292,55 @@ extern size_t discord_allowed_mentions_list_to_json(char *str, size_t len, struc
  * @endverbatim
  */
 struct discord_embed {
-  /* specs/discord/channel.json:323:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *title;
 
-  /* specs/discord/channel.json:324:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":""}' */
   char type[32];
 
-  /* specs/discord/channel.json:325:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *description;
 
-  /* specs/discord/channel.json:326:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
   u64_unix_ms_t timestamp;
 
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_footer *footer;
 
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_image *image;
 
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_thumbnail *thumbnail;
 
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_video *video;
 
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:338:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_provider *provider;
 
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:339:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_author *author;
 
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:340:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_field **fields;
 
@@ -1345,7 +1361,7 @@ extern size_t discord_embed_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_embed **p);
 
 /* Embed Thumbnail Structure */
-/* defined at specs/discord/channel.json:342:22 */
+/* defined at specs/discord/channel.json:347:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
@@ -1374,19 +1390,19 @@ extern size_t discord_embed_list_to_json(char *str, size_t len, struct discord_e
  * @endverbatim
  */
 struct discord_embed_thumbnail {
-  /* specs/discord/channel.json:344:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:345:20
+  /* specs/discord/channel.json:350:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:346:20
+  /* specs/discord/channel.json:351:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:347:20
+  /* specs/discord/channel.json:352:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
@@ -1407,7 +1423,7 @@ extern size_t discord_embed_thumbnail_list_to_json_v(char *str, size_t len, void
 extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct discord_embed_thumbnail **p);
 
 /* Embed Video Structure */
-/* defined at specs/discord/channel.json:354:22 */
+/* defined at specs/discord/channel.json:359:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
@@ -1436,19 +1452,19 @@ extern size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct
  * @endverbatim
  */
 struct discord_embed_video {
-  /* specs/discord/channel.json:356:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:357:20
+  /* specs/discord/channel.json:362:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:358:20
+  /* specs/discord/channel.json:363:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:359:20
+  /* specs/discord/channel.json:364:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
@@ -1469,7 +1485,7 @@ extern size_t discord_embed_video_list_to_json_v(char *str, size_t len, void *p)
 extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct discord_embed_video **p);
 
 /* Embed Image Structure */
-/* defined at specs/discord/channel.json:366:22 */
+/* defined at specs/discord/channel.json:371:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
@@ -1498,19 +1514,19 @@ extern size_t discord_embed_video_list_to_json(char *str, size_t len, struct dis
  * @endverbatim
  */
 struct discord_embed_image {
-  /* specs/discord/channel.json:368:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:369:20
+  /* specs/discord/channel.json:374:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:370:20
+  /* specs/discord/channel.json:375:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:371:20
+  /* specs/discord/channel.json:376:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
@@ -1531,7 +1547,7 @@ extern size_t discord_embed_image_list_to_json_v(char *str, size_t len, void *p)
 extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct discord_embed_image **p);
 
 /* Embed Provider Structure */
-/* defined at specs/discord/channel.json:378:22 */
+/* defined at specs/discord/channel.json:383:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
@@ -1560,11 +1576,11 @@ extern size_t discord_embed_image_list_to_json(char *str, size_t len, struct dis
  * @endverbatim
  */
 struct discord_embed_provider {
-  /* specs/discord/channel.json:380:20
+  /* specs/discord/channel.json:385:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:381:20
+  /* specs/discord/channel.json:386:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *url;
 
@@ -1585,7 +1601,7 @@ extern size_t discord_embed_provider_list_to_json_v(char *str, size_t len, void 
 extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct discord_embed_provider **p);
 
 /* Embed Author Structure */
-/* defined at specs/discord/channel.json:388:22 */
+/* defined at specs/discord/channel.json:393:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
@@ -1614,19 +1630,19 @@ extern size_t discord_embed_provider_list_to_json(char *str, size_t len, struct 
  * @endverbatim
  */
 struct discord_embed_author {
-  /* specs/discord/channel.json:390:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:391:20
+  /* specs/discord/channel.json:396:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:392:20
+  /* specs/discord/channel.json:397:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *icon_url;
 
-  /* specs/discord/channel.json:393:20
+  /* specs/discord/channel.json:398:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_icon_url;
 
@@ -1647,7 +1663,7 @@ extern size_t discord_embed_author_list_to_json_v(char *str, size_t len, void *p
 extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct discord_embed_author **p);
 
 /* Embed Footer Structure */
-/* defined at specs/discord/channel.json:400:22 */
+/* defined at specs/discord/channel.json:405:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
@@ -1676,15 +1692,15 @@ extern size_t discord_embed_author_list_to_json(char *str, size_t len, struct di
  * @endverbatim
  */
 struct discord_embed_footer {
-  /* specs/discord/channel.json:402:20
+  /* specs/discord/channel.json:407:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *text;
 
-  /* specs/discord/channel.json:403:20
+  /* specs/discord/channel.json:408:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *icon_url;
 
-  /* specs/discord/channel.json:404:20
+  /* specs/discord/channel.json:409:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *proxy_icon_url;
 
@@ -1705,7 +1721,7 @@ extern size_t discord_embed_footer_list_to_json_v(char *str, size_t len, void *p
 extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct discord_embed_footer **p);
 
 /* Embed Field Structure */
-/* defined at specs/discord/channel.json:411:22 */
+/* defined at specs/discord/channel.json:416:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
@@ -1734,15 +1750,15 @@ extern size_t discord_embed_footer_list_to_json(char *str, size_t len, struct di
  * @endverbatim
  */
 struct discord_embed_field {
-  /* specs/discord/channel.json:413:20
+  /* specs/discord/channel.json:418:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:414:20
+  /* specs/discord/channel.json:419:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *value;
 
-  /* specs/discord/channel.json:415:20
+  /* specs/discord/channel.json:420:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   bool Inline;
 

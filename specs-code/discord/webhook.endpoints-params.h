@@ -218,24 +218,20 @@ struct discord_execute_webhook_params {
   bool tts; /**< true if this is a TTS message */
 
   /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent */
-
-  /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
   struct discord_embed *embeds; /**< embedded rich content */
 
-  /* specs/discord/webhook.endpoints-params.json:52:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  char *payload_json; /**< JSON encoded body of non-file params */
-
-  /* specs/discord/webhook.endpoints-params.json:53:20
+  /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/webhook.endpoints-params.json:54:20
+  /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
   struct discord_component **components; /**< the components to include with the message */
+
+  /* specs/discord/webhook.endpoints-params.json:53:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
 };
 extern void discord_execute_webhook_params_cleanup_v(void *p);
@@ -254,7 +250,7 @@ extern size_t discord_execute_webhook_params_list_to_json_v(char *str, size_t le
 extern size_t discord_execute_webhook_params_list_to_json(char *str, size_t len, struct discord_execute_webhook_params **p);
 
 /* Edit Webhook Message */
-/* defined at specs/discord/webhook.endpoints-params.json:60:22 */
+/* defined at specs/discord/webhook.endpoints-params.json:59:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -281,31 +277,23 @@ extern size_t discord_execute_webhook_params_list_to_json(char *str, size_t len,
  * @endverbatim
  */
 struct discord_edit_webhook_message_params {
-  /* specs/discord/webhook.endpoints-params.json:63:20
+  /* specs/discord/webhook.endpoints-params.json:62:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   char *content; /**< name of the webhook(1-2000) chars */
 
-  /* specs/discord/webhook.endpoints-params.json:64:20
+  /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent/edited */
-
-  /* specs/discord/webhook.endpoints-params.json:66:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
-
-  /* specs/discord/webhook.endpoints-params.json:67:20
+  /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/webhook.endpoints-params.json:68:20
+  /* specs/discord/webhook.endpoints-params.json:65:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_attachment **attachments; /**< attached files to keep */
 
-  /* specs/discord/webhook.endpoints-params.json:69:20
+  /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; /**< the components to include with the message */
 

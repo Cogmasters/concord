@@ -150,7 +150,7 @@ dump(const char *text, FILE *stream, unsigned char *ptr, size_t size)
 static int 
 _curl_debug_trace(CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
 {
-  (void)handle; /* prevent compiler warning */
+  (void)handle; (void)userp;
  
   const char *text;
   switch(type) {
@@ -181,6 +181,18 @@ _curl_debug_trace(CURL *handle, curl_infotype type, char *data, size_t size, voi
   }
  
   dump(text, stderr, (unsigned char *)data, size);
+  return 0;
+}
+
+static int 
+_curl_tls_check(CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
+{
+  (void)handle; (void)data; (void)size;
+ 
+  if (CURLINFO_TEXT == type && strstr(data, "close notify (256)")) {
+    char reason[] = "TLS ended connection with a close notify (256)";
+    ws_close(userp, WS_CLOSE_REASON_ABRUPTLY, reason, sizeof(reason)-1);
+  }
   return 0;
 }
 
@@ -439,8 +451,14 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
 #ifdef _ORCA_DEBUG_WEBSOCKETS
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, _curl_debug_trace);
   CURLE_CHECK(ws, ecode);
-
   ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
+  CURLE_CHECK(ws, ecode);
+#else
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, _curl_tls_check);
+  CURLE_CHECK(ws, ecode);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
+  CURLE_CHECK(ws, ecode);
+  ecode = curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, ws);
   CURLE_CHECK(ws, ecode);
 #endif
 

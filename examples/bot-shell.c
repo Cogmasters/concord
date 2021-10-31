@@ -54,12 +54,25 @@ void on_less_like(
   }
 
   struct discord_create_message_params params={0};
-  if (*msg->content)
-    params.file = &(struct discord_file){
-      .name = msg->content
+  if (*msg->content) {
+    char attachment_url[512];
+    snprintf(attachment_url, sizeof(attachment_url), "attachment://%s", msg->content);
+
+    params.embeds = (struct discord_embed*[]){
+      &(struct discord_embed){
+        .title = msg->content,
+        .thumbnail = &(struct discord_embed_thumbnail){ .url = attachment_url }
+      },
+      (void*){ NULL } // end of array
     };
-  else
+    params.attachments = (struct discord_attachment*[]){
+      &(struct discord_attachment){ .filename = msg->content },
+      (void*){ NULL } // end of array
+    };
+  }
+  else {
     params.content = "No file specified";
+  }
 
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
@@ -95,8 +108,8 @@ on_default(
   }
 
   const size_t MAX_FSIZE = 5e6; // 5 mb
-  char *path = (char*)calloc(1, MAX_FSIZE);
-  char *pathtmp = (char*)calloc(1, MAX_FSIZE);
+  char *path    = calloc(1, MAX_FSIZE);
+  char *pathtmp = calloc(1, MAX_FSIZE);
 
   while (NULL != fgets(path, MAX_FSIZE, fp)) {
     strncat(pathtmp, path, MAX_FSIZE-1);
@@ -104,11 +117,14 @@ on_default(
 
   const size_t fsize = strlen(pathtmp);
   struct discord_create_message_params params;
-  if (fsize > DISCORD_MAX_MESSAGE_LEN) // MAX MESSAGE LEN is 2000 bytes
+  if (fsize > DISCORD_MAX_MESSAGE_LEN)
     params = (struct discord_create_message_params){
-      .file = &(struct discord_file){
-        .content = pathtmp,
-        .size = fsize
+      .attachments = (struct discord_attachment*[]){
+        &(struct discord_attachment){
+          .content = pathtmp,
+          .size = fsize
+        },
+        (void*){ NULL } // end of array
       }
     };
   else

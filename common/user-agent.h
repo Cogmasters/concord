@@ -104,7 +104,7 @@ void ua_reqheader_del(struct user_agent *ua, const char field[]);
 char* ua_reqheader_str(struct user_agent *ua, char *buf, size_t bufsize);
 
 void ua_curl_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *ehandle, void *data));
-void ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)); /* @todo this is temporary */
+void ua_curl_mime_setopt(struct user_agent *ua, void *data, void (mime_cb)(curl_mime *mime, void *data));
 
 struct user_agent* ua_init(struct logconf *config);
 struct user_agent* ua_clone(struct user_agent *orig_ua);

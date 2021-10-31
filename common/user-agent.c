@@ -61,14 +61,11 @@ struct user_agent {
   void (*setopt_cb)(CURL *ehandle, void *data);
   /** 
    * user arbitrary data accessed by mime_cb
-   *
-   * @todo this is temporary, we should implement a non-curl reliant 
-   *        way of sending MIME type data 
    * @see ua_curl_mime_setopt()
    */
   void       *data2;
   curl_mime  *mime; 
-  curl_mime* (*mime_cb)(CURL *ehandle, void *data2);
+  void (*mime_cb)(curl_mime *mime, void *data2);
 };
 
 struct _ua_conn {
@@ -355,7 +352,7 @@ ua_curl_easy_setopt(struct user_agent *ua, void *data, void (setopt_cb)(CURL *eh
 }
 
 void
-ua_curl_mime_setopt(struct user_agent *ua, void *data, curl_mime* (mime_cb)(CURL *ehandle, void *data)) 
+ua_curl_mime_setopt(struct user_agent *ua, void *data, void (mime_cb)(curl_mime *mime, void *data)) 
 {
   ua->mime_cb = mime_cb;
   ua->data2 = data;
@@ -570,7 +567,8 @@ set_method(
       ASSERT_S(NULL != ua->mime_cb, "Missing 'ua->mime_cb' callback");
       ASSERT_S(NULL == ua->mime, "'ua->mime' not freed");
 
-      ua->mime = (*ua->mime_cb)(conn->ehandle, ua->data2);
+      ua->mime = curl_mime_init(conn->ehandle);
+      (*ua->mime_cb)(ua->mime, ua->data2);
       curl_easy_setopt(conn->ehandle, CURLOPT_MIMEPOST, ua->mime);
       return; /* EARLY RETURN */
   case HTTP_PATCH:

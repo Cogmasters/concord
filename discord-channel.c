@@ -180,22 +180,24 @@ discord_create_message(
     .ok_obj = &p_message
   };
 
-  if (!params->file) /* content-type is application/json */
-  {
-    char payload[16384]; /**< @todo dynamic buffer */
-    size_t ret = discord_create_message_params_to_json(payload, sizeof(payload), params);
+  char payload[16384]; /**< @todo dynamic buffer */
+  size_t ret = discord_create_message_params_to_json(payload, sizeof(payload), params);
+  struct sized_buffer body = { payload, ret };
 
+  /* content-type is application/json */
+  if (!params->attachments) {
     return discord_adapter_run( 
              &client->adapter,
              &resp_handle,
-             &(struct sized_buffer){ payload, ret },
+             &body,
              HTTP_POST, 
              "/channels/%"PRIu64"/messages", channel_id);
   }
 
   /* content-type is multipart/form-data */
+  ua_curl_mime_setopt(client->adapter.ua, (void*[2]){params->attachments, &body}, &_discord_params_to_mime);
+
   ua_reqheader_add(client->adapter.ua, "Content-Type", "multipart/form-data");
-  ua_curl_mime_setopt(client->adapter.ua, params->file, &discord_file_to_mime);
 
   ORCAcode code;
   code = discord_adapter_run( 
@@ -207,7 +209,6 @@ discord_create_message(
 
   /*set back to default */
   ua_reqheader_add(client->adapter.ua, "Content-Type", "application/json");
-  ua_curl_mime_setopt(client->adapter.ua, NULL, NULL);
 
   return code;
 }

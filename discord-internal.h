@@ -351,6 +351,14 @@ struct discord_event_cxt {
 };
 
 /* MISCELLANEOUS */
-curl_mime* discord_file_to_mime(CURL *ehandle, void *p_file);
+
+/**
+ * @brief Encodes a raw JSON payload to multipart data
+ *
+ * In order for it to be triggered, it must be set as a callback via ua_curl_mime_setopt(), the Content-Type must be changed to `multipart/form-data` by ua_reqheader_add(), and the HTTP method for discord_adapter_run() should be `HTTP_MIMEPOST`
+ * @param mime the pre-initialized curl_mime handler
+ * @param p_cxt a `void*[2]` that expects `struct discord_attachment**` and `struct sized_buffer` on each element
+ */
+void _discord_params_to_mime(curl_mime *mime, void *p_cxt);
 
 #endif /* DISCORD_INTERNAL_H */

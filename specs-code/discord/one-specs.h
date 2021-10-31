@@ -167,70 +167,70 @@ struct discord_modify_channel_params;
  */
 struct discord_create_message_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:51:22 */
+/* defined at specs/discord/channel.endpoints-params.json:50:22 */
 /**
  * @brief Get Channel Messages
  *
  */
 struct discord_get_channel_messages_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:63:22 */
+/* defined at specs/discord/channel.endpoints-params.json:62:22 */
 /**
  * @brief Get Reactions
  *
  */
 struct discord_get_reactions_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:73:22 */
+/* defined at specs/discord/channel.endpoints-params.json:72:22 */
 /**
  * @brief Edit Channel Permissions
  *
  */
 struct discord_edit_channel_permissions_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:84:22 */
+/* defined at specs/discord/channel.endpoints-params.json:83:22 */
 /**
  * @brief Edit Message
  *
  */
 struct discord_edit_message_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:101:22 */
+/* defined at specs/discord/channel.endpoints-params.json:98:22 */
 /**
  * @brief Follow News Channel
  *
  */
 struct discord_follow_news_channel_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:110:22 */
+/* defined at specs/discord/channel.endpoints-params.json:107:22 */
 /**
  * @brief Create Channel Invite
  *
  */
 struct discord_create_channel_invite_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:125:22 */
+/* defined at specs/discord/channel.endpoints-params.json:122:22 */
 /**
  * @brief Group DM Add Recipient
  *
  */
 struct discord_group_dm_add_recipient_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:135:22 */
+/* defined at specs/discord/channel.endpoints-params.json:132:22 */
 /**
  * @brief Start Thread with Message
  *
  */
 struct discord_start_thread_with_message_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:145:22 */
+/* defined at specs/discord/channel.endpoints-params.json:142:22 */
 /**
  * @brief Start Thread without Message
  *
  */
 struct discord_start_thread_without_message_params;
 
-/* defined at specs/discord/channel.endpoints-params.json:156:22 */
+/* defined at specs/discord/channel.endpoints-params.json:153:22 */
 /**
  * @brief List Active Threads
  *
@@ -337,13 +337,13 @@ struct discord_thread_member;
 
 /* defined at specs/discord/channel.json:280:22 */
 /**
- * @brief Attachment Strcture
+ * @brief Attachment Structure
  *
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  */
 struct discord_attachment;
 
-/* defined at specs/discord/channel.json:296:22 */
+/* defined at specs/discord/channel.json:301:22 */
 /**
  * @brief Channel Mention Structure
  *
@@ -351,7 +351,7 @@ struct discord_attachment;
  */
 struct discord_channel_mention;
 
-/* defined at specs/discord/channel.json:308:22 */
+/* defined at specs/discord/channel.json:313:22 */
 /**
  * @brief Allowed Mentions Structure
  *
@@ -359,7 +359,7 @@ struct discord_channel_mention;
  */
 struct discord_allowed_mentions;
 
-/* defined at specs/discord/channel.json:320:22 */
+/* defined at specs/discord/channel.json:325:22 */
 /**
  * @brief Embed Structure
  *
@@ -367,7 +367,7 @@ struct discord_allowed_mentions;
  */
 struct discord_embed;
 
-/* defined at specs/discord/channel.json:342:22 */
+/* defined at specs/discord/channel.json:347:22 */
 /**
  * @brief Embed Thumbnail Structure
  *
@@ -375,7 +375,7 @@ struct discord_embed;
  */
 struct discord_embed_thumbnail;
 
-/* defined at specs/discord/channel.json:354:22 */
+/* defined at specs/discord/channel.json:359:22 */
 /**
  * @brief Embed Video Structure
  *
@@ -383,7 +383,7 @@ struct discord_embed_thumbnail;
  */
 struct discord_embed_video;
 
-/* defined at specs/discord/channel.json:366:22 */
+/* defined at specs/discord/channel.json:371:22 */
 /**
  * @brief Embed Image Structure
  *
@@ -391,7 +391,7 @@ struct discord_embed_video;
  */
 struct discord_embed_image;
 
-/* defined at specs/discord/channel.json:378:22 */
+/* defined at specs/discord/channel.json:383:22 */
 /**
  * @brief Embed Provider Structure
  *
@@ -399,7 +399,7 @@ struct discord_embed_image;
  */
 struct discord_embed_provider;
 
-/* defined at specs/discord/channel.json:388:22 */
+/* defined at specs/discord/channel.json:393:22 */
 /**
  * @brief Embed Author Structure
  *
@@ -407,7 +407,7 @@ struct discord_embed_provider;
  */
 struct discord_embed_author;
 
-/* defined at specs/discord/channel.json:400:22 */
+/* defined at specs/discord/channel.json:405:22 */
 /**
  * @brief Embed Footer Structure
  *
@@ -415,7 +415,7 @@ struct discord_embed_author;
  */
 struct discord_embed_footer;
 
-/* defined at specs/discord/channel.json:411:22 */
+/* defined at specs/discord/channel.json:416:22 */
 /**
  * @brief Embed Field Structure
  *
@@ -763,14 +763,14 @@ struct discord_welcome_screen_channel;
  */
 struct discord_edit_original_interaction_response_params;
 
-/* defined at specs/discord/interaction.endpoints-params.json:24:22 */
+/* defined at specs/discord/interaction.endpoints-params.json:23:22 */
 /**
  * @brief Create Followup Message
  *
  */
 struct discord_create_followup_message_params;
 
-/* defined at specs/discord/interaction.endpoints-params.json:45:22 */
+/* defined at specs/discord/interaction.endpoints-params.json:44:22 */
 /**
  * @brief Edit Followup Message
  *
@@ -1093,7 +1093,7 @@ struct discord_modify_webhook_with_token_params;
  */
 struct discord_execute_webhook_params;
 
-/* defined at specs/discord/webhook.endpoints-params.json:60:22 */
+/* defined at specs/discord/webhook.endpoints-params.json:59:22 */
 /**
  * @brief Edit Webhook Message
  *
@@ -2075,7 +2075,7 @@ extern size_t discord_interaction_callback_types_list_to_json(char *str, size_t 
 
 
 /* Interaction Callback Data Flags */
-/* defined at specs/discord/interaction.json:120:5 */
+/* defined at specs/discord/interaction.json:121:5 */
 /**
  * @see https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-flags
  *
@@ -3632,41 +3632,37 @@ struct discord_create_message_params {
   bool tts; /**< true if this is a TTS message */
 
   /* specs/discord/channel.endpoints-params.json:38:20
-     '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; /**< the contents of the file being sent */
-
-  /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
   struct discord_embed **embeds; /**< embedded rich content (up to 6000 characters) */
 
-  /* specs/discord/channel.endpoints-params.json:40:20
+  /* specs/discord/channel.endpoints-params.json:39:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
   struct discord_embed *embed; /**< embedded rich content, deprecated in favor of embeds */
 
-  /* specs/discord/channel.endpoints-params.json:41:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; /**< JSON encoded body of non-file params */
-
-  /* specs/discord/channel.endpoints-params.json:42:20
+  /* specs/discord/channel.endpoints-params.json:40:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/channel.endpoints-params.json:43:20
+  /* specs/discord/channel.endpoints-params.json:41:20
      '{ "name": "message_reference", "type":{ "base":"struct discord_message_reference", "dec":"*" }, "comment":"include to make your message a reply", "inject_if_not":null }' */
   struct discord_message_reference *message_reference; /**< include to make your message a reply */
 
-  /* specs/discord/channel.endpoints-params.json:44:20
+  /* specs/discord/channel.endpoints-params.json:42:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; /**< the components to include with the message */
 
-  /* specs/discord/channel.endpoints-params.json:45:20
+  /* specs/discord/channel.endpoints-params.json:43:20
      '{ "name": "sticker_ids", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"ids of up to 3 stickers in the server to send in the message", "inject_if_not":null }' */
   ja_u64 **sticker_ids; /**< ids of up to 3 stickers in the server to send in the message */
+
+  /* specs/discord/channel.endpoints-params.json:44:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null }' */
+  struct discord_attachment **attachments; /**< attachment objects with filename and description */
 
 };
 
 /* Get Channel Messages */
-/* defined at specs/discord/channel.endpoints-params.json:51:22 */
+/* defined at specs/discord/channel.endpoints-params.json:50:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3693,26 +3689,26 @@ struct discord_create_message_params {
  * @endverbatim
  */
 struct discord_get_channel_messages_params {
-  /* specs/discord/channel.endpoints-params.json:54:20
+  /* specs/discord/channel.endpoints-params.json:53:20
      '{ "name": "around", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages around this message ID", "inject_if_not":0 }' */
   u64_snowflake_t around; /**< get messages around this message ID */
 
-  /* specs/discord/channel.endpoints-params.json:55:20
+  /* specs/discord/channel.endpoints-params.json:54:20
      '{ "name": "before", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages before this message ID", "inject_if_not":0 }' */
   u64_snowflake_t before; /**< get messages before this message ID */
 
-  /* specs/discord/channel.endpoints-params.json:56:20
+  /* specs/discord/channel.endpoints-params.json:55:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages after this message ID", "inject_if_not":0 }' */
   u64_snowflake_t after; /**< get messages after this message ID */
 
-  /* specs/discord/channel.endpoints-params.json:57:20
+  /* specs/discord/channel.endpoints-params.json:56:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
   int limit; /**< max number of messages to return (1-100) */
 
 };
 
 /* Get Reactions */
-/* defined at specs/discord/channel.endpoints-params.json:63:22 */
+/* defined at specs/discord/channel.endpoints-params.json:62:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3739,18 +3735,18 @@ struct discord_get_channel_messages_params {
  * @endverbatim
  */
 struct discord_get_reactions_params {
-  /* specs/discord/channel.endpoints-params.json:66:20
+  /* specs/discord/channel.endpoints-params.json:65:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"}' */
   u64_snowflake_t after;
 
-  /* specs/discord/channel.endpoints-params.json:67:20
+  /* specs/discord/channel.endpoints-params.json:66:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
   int limit;
 
 };
 
 /* Edit Channel Permissions */
-/* defined at specs/discord/channel.endpoints-params.json:73:22 */
+/* defined at specs/discord/channel.endpoints-params.json:72:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3777,22 +3773,22 @@ struct discord_get_reactions_params {
  * @endverbatim
  */
 struct discord_edit_channel_permissions_params {
-  /* specs/discord/channel.endpoints-params.json:76:20
+  /* specs/discord/channel.endpoints-params.json:75:20
      '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   enum discord_bitwise_permission_flags allow; /**< permission bit set */
 
-  /* specs/discord/channel.endpoints-params.json:77:20
+  /* specs/discord/channel.endpoints-params.json:76:20
      '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   enum discord_bitwise_permission_flags deny; /**< permission bit set */
 
-  /* specs/discord/channel.endpoints-params.json:78:20
+  /* specs/discord/channel.endpoints-params.json:77:20
      '{ "name": "type", "type":{ "base":"int" }}' */
   int type;
 
 };
 
 /* Edit Message */
-/* defined at specs/discord/channel.endpoints-params.json:84:22 */
+/* defined at specs/discord/channel.endpoints-params.json:83:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3819,46 +3815,38 @@ struct discord_edit_channel_permissions_params {
  * @endverbatim
  */
 struct discord_edit_message_params {
-  /* specs/discord/channel.endpoints-params.json:87:20
+  /* specs/discord/channel.endpoints-params.json:86:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
   char *content; /**< the message contents (up to 2000 characters) */
 
-  /* specs/discord/channel.endpoints-params.json:88:20
+  /* specs/discord/channel.endpoints-params.json:87:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"embedded rich content (up to 6000 characters)", "inject_if_not":null }' */
   struct discord_embed **embeds; /**< embedded rich content (up to 6000 characters) */
 
-  /* specs/discord/channel.endpoints-params.json:89:20
+  /* specs/discord/channel.endpoints-params.json:88:20
      '{ "name": "embed", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content, deprecated in favor of embeds", "inject_if_not":null }' */
   struct discord_embed *embed; /**< embedded rich content, deprecated in favor of embeds */
 
-  /* specs/discord/channel.endpoints-params.json:90:20
+  /* specs/discord/channel.endpoints-params.json:89:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_message_flags" }, "comment":"edit the flags of a message", "inject_if_not":0 }' */
   enum discord_message_flags flags; /**< edit the flags of a message */
 
-  /* specs/discord/channel.endpoints-params.json:91:20
-     '{ "name": "file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  struct discord_file *file; /**< the contents of the file being sent */
-
-  /* specs/discord/channel.endpoints-params.json:92:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"JSON encoded body of non-file params", "inject_if_not":null }' */
-  char *payload_json; /**< JSON encoded body of non-file params */
-
-  /* specs/discord/channel.endpoints-params.json:93:20
+  /* specs/discord/channel.endpoints-params.json:90:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/channel.endpoints-params.json:94:20
+  /* specs/discord/channel.endpoints-params.json:91:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_attachment **attachments; /**< attached files to keep */
 
-  /* specs/discord/channel.endpoints-params.json:95:20
+  /* specs/discord/channel.endpoints-params.json:92:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; /**< the components to include with the message */
 
 };
 
 /* Follow News Channel */
-/* defined at specs/discord/channel.endpoints-params.json:101:22 */
+/* defined at specs/discord/channel.endpoints-params.json:98:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3885,14 +3873,14 @@ struct discord_edit_message_params {
  * @endverbatim
  */
 struct discord_follow_news_channel_params {
-  /* specs/discord/channel.endpoints-params.json:104:20
+  /* specs/discord/channel.endpoints-params.json:101:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   u64_snowflake_t webhook_channel_id;
 
 };
 
 /* Create Channel Invite */
-/* defined at specs/discord/channel.endpoints-params.json:110:22 */
+/* defined at specs/discord/channel.endpoints-params.json:107:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3919,38 +3907,38 @@ struct discord_follow_news_channel_params {
  * @endverbatim
  */
 struct discord_create_channel_invite_params {
-  /* specs/discord/channel.endpoints-params.json:113:20
+  /* specs/discord/channel.endpoints-params.json:110:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
   int max_age;
 
-  /* specs/discord/channel.endpoints-params.json:114:20
+  /* specs/discord/channel.endpoints-params.json:111:20
      '{ "name": "max_uses", "type":{ "base":"int" }}' */
   int max_uses;
 
-  /* specs/discord/channel.endpoints-params.json:115:20
+  /* specs/discord/channel.endpoints-params.json:112:20
      '{ "name": "temporary", "type":{ "base":"bool" }}' */
   bool temporary;
 
-  /* specs/discord/channel.endpoints-params.json:116:20
+  /* specs/discord/channel.endpoints-params.json:113:20
      '{ "name": "unique", "type":{ "base":"bool" }}' */
   bool unique;
 
-  /* specs/discord/channel.endpoints-params.json:117:20
+  /* specs/discord/channel.endpoints-params.json:114:20
      '{ "name": "target_type", "type":{ "base":"int" }, "option":true, "inject_if_not":0 }' */
   int target_type;
 
-  /* specs/discord/channel.endpoints-params.json:118:20
+  /* specs/discord/channel.endpoints-params.json:115:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_user_id;
 
-  /* specs/discord/channel.endpoints-params.json:119:20
+  /* specs/discord/channel.endpoints-params.json:116:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t target_application_id;
 
 };
 
 /* Group DM Add Recipient */
-/* defined at specs/discord/channel.endpoints-params.json:125:22 */
+/* defined at specs/discord/channel.endpoints-params.json:122:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -3977,18 +3965,18 @@ struct discord_create_channel_invite_params {
  * @endverbatim
  */
 struct discord_group_dm_add_recipient_params {
-  /* specs/discord/channel.endpoints-params.json:128:20
+  /* specs/discord/channel.endpoints-params.json:125:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
   char *access_token;
 
-  /* specs/discord/channel.endpoints-params.json:129:20
+  /* specs/discord/channel.endpoints-params.json:126:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
   char *nick;
 
 };
 
 /* Start Thread with Message */
-/* defined at specs/discord/channel.endpoints-params.json:135:22 */
+/* defined at specs/discord/channel.endpoints-params.json:132:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4015,18 +4003,18 @@ struct discord_group_dm_add_recipient_params {
  * @endverbatim
  */
 struct discord_start_thread_with_message_params {
-  /* specs/discord/channel.endpoints-params.json:138:20
+  /* specs/discord/channel.endpoints-params.json:135:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:139:20
+  /* specs/discord/channel.endpoints-params.json:136:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
 };
 
 /* Start Thread without Message */
-/* defined at specs/discord/channel.endpoints-params.json:145:22 */
+/* defined at specs/discord/channel.endpoints-params.json:142:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4053,22 +4041,22 @@ struct discord_start_thread_with_message_params {
  * @endverbatim
  */
 struct discord_start_thread_without_message_params {
-  /* specs/discord/channel.endpoints-params.json:148:20
+  /* specs/discord/channel.endpoints-params.json:145:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
   char *name;
 
-  /* specs/discord/channel.endpoints-params.json:149:20
+  /* specs/discord/channel.endpoints-params.json:146:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
   int auto_archive_duration;
 
-  /* specs/discord/channel.endpoints-params.json:150:20
+  /* specs/discord/channel.endpoints-params.json:147:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   enum discord_channel_types type;
 
 };
 
 /* List Active Threads */
-/* defined at specs/discord/channel.endpoints-params.json:156:22 */
+/* defined at specs/discord/channel.endpoints-params.json:153:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -4095,15 +4083,15 @@ struct discord_start_thread_without_message_params {
  * @endverbatim
  */
 struct discord_thread_response_body {
-  /* specs/discord/channel.endpoints-params.json:159:20
+  /* specs/discord/channel.endpoints-params.json:156:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
   struct discord_channel **threads;
 
-  /* specs/discord/channel.endpoints-params.json:160:20
+  /* specs/discord/channel.endpoints-params.json:157:20
      '{ "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } }' */
   struct discord_thread_member **members;
 
-  /* specs/discord/channel.endpoints-params.json:161:20
+  /* specs/discord/channel.endpoints-params.json:158:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
   bool has_more;
 
@@ -4829,7 +4817,7 @@ struct discord_thread_member {
 
 };
 
-/* Attachment Strcture */
+/* Attachment Structure */
 /* defined at specs/discord/channel.json:280:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
@@ -4860,37 +4848,53 @@ struct discord_thread_member {
  */
 struct discord_attachment {
   /* specs/discord/channel.json:283:20
-     '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  u64_snowflake_t id;
-
-  /* specs/discord/channel.json:284:20
-     '{ "name": "filename", "type":{ "base":"char", "dec":"[256]" }}' */
-  char filename[256];
+     '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null }' */
+  char *content; /**< the file contents */
 
   /* specs/discord/channel.json:285:20
-     '{ "name": "size", "type":{ "base":"int" }}' */
-  int size;
+     '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
+  int id; /**< attachment id */
 
   /* specs/discord/channel.json:286:20
-     '{ "name": "url", "type":{ "base":"char", "dec":"*" }}' */
-  char *url;
+     '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
+  char *filename; /**< name of file attached */
 
   /* specs/discord/channel.json:287:20
-     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }}' */
-  char *proxy_url;
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
+  char *description; /**< description for the file */
 
   /* specs/discord/channel.json:288:20
-     '{ "name": "height", "type":{ "base":"int", "nullable":true }}' */
-  int height;
+     '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
+  char *content_type; /**< the attachment's media type */
 
   /* specs/discord/channel.json:289:20
-     '{ "name": "width", "type":{ "base":"int", "nullable":true }}' */
-  int width;
+     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+  int size; /**< size of file in bytes */
+
+  /* specs/discord/channel.json:290:20
+     '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
+  char *url; /**< source url of file */
+
+  /* specs/discord/channel.json:291:20
+     '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
+  char *proxy_url; /**< a proxied url of file */
+
+  /* specs/discord/channel.json:292:20
+     '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
+  int height; /**< height of file (if image) */
+
+  /* specs/discord/channel.json:293:20
+     '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
+  int width; /**< width of file (if image) */
+
+  /* specs/discord/channel.json:294:20
+     '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
+  bool ephemeral; /**< whether this attachment is ephemeral */
 
 };
 
 /* Channel Mention Structure */
-/* defined at specs/discord/channel.json:296:22 */
+/* defined at specs/discord/channel.json:301:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
@@ -4919,26 +4923,26 @@ struct discord_attachment {
  * @endverbatim
  */
 struct discord_channel_mention {
-  /* specs/discord/channel.json:299:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/channel.json:300:20
+  /* specs/discord/channel.json:305:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t guild_id;
 
-  /* specs/discord/channel.json:301:20
+  /* specs/discord/channel.json:306:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
   enum discord_channel_types type;
 
-  /* specs/discord/channel.json:302:20
+  /* specs/discord/channel.json:307:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
 };
 
 /* Allowed Mentions Structure */
-/* defined at specs/discord/channel.json:308:22 */
+/* defined at specs/discord/channel.json:313:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
@@ -4967,26 +4971,26 @@ struct discord_channel_mention {
  * @endverbatim
  */
 struct discord_allowed_mentions {
-  /* specs/discord/channel.json:311:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
   ja_str **parse;
 
-  /* specs/discord/channel.json:312:20
+  /* specs/discord/channel.json:317:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   ja_u64 **roles; /**< list of snowflakes */
 
-  /* specs/discord/channel.json:313:20
+  /* specs/discord/channel.json:318:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   ja_u64 **users; /**< list of snowflakes */
 
-  /* specs/discord/channel.json:314:20
+  /* specs/discord/channel.json:319:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   bool replied_user;
 
 };
 
 /* Embed Structure */
-/* defined at specs/discord/channel.json:320:22 */
+/* defined at specs/discord/channel.json:325:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
@@ -5015,62 +5019,62 @@ struct discord_allowed_mentions {
  * @endverbatim
  */
 struct discord_embed {
-  /* specs/discord/channel.json:323:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *title;
 
-  /* specs/discord/channel.json:324:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":""}' */
   char type[32];
 
-  /* specs/discord/channel.json:325:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *description;
 
-  /* specs/discord/channel.json:326:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
   u64_unix_ms_t timestamp;
 
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_footer *footer;
 
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_image *image;
 
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_thumbnail *thumbnail;
 
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_video *video;
 
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:338:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_provider *provider;
 
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:339:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_author *author;
 
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:340:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_field **fields;
 
 };
 
 /* Embed Thumbnail Structure */
-/* defined at specs/discord/channel.json:342:22 */
+/* defined at specs/discord/channel.json:347:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
@@ -5099,26 +5103,26 @@ struct discord_embed {
  * @endverbatim
  */
 struct discord_embed_thumbnail {
-  /* specs/discord/channel.json:344:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:345:20
+  /* specs/discord/channel.json:350:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:346:20
+  /* specs/discord/channel.json:351:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:347:20
+  /* specs/discord/channel.json:352:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
 };
 
 /* Embed Video Structure */
-/* defined at specs/discord/channel.json:354:22 */
+/* defined at specs/discord/channel.json:359:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
@@ -5147,26 +5151,26 @@ struct discord_embed_thumbnail {
  * @endverbatim
  */
 struct discord_embed_video {
-  /* specs/discord/channel.json:356:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:357:20
+  /* specs/discord/channel.json:362:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:358:20
+  /* specs/discord/channel.json:363:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:359:20
+  /* specs/discord/channel.json:364:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
 };
 
 /* Embed Image Structure */
-/* defined at specs/discord/channel.json:366:22 */
+/* defined at specs/discord/channel.json:371:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
@@ -5195,26 +5199,26 @@ struct discord_embed_video {
  * @endverbatim
  */
 struct discord_embed_image {
-  /* specs/discord/channel.json:368:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:369:20
+  /* specs/discord/channel.json:374:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:370:20
+  /* specs/discord/channel.json:375:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:371:20
+  /* specs/discord/channel.json:376:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
 };
 
 /* Embed Provider Structure */
-/* defined at specs/discord/channel.json:378:22 */
+/* defined at specs/discord/channel.json:383:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
@@ -5243,18 +5247,18 @@ struct discord_embed_image {
  * @endverbatim
  */
 struct discord_embed_provider {
-  /* specs/discord/channel.json:380:20
+  /* specs/discord/channel.json:385:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:381:20
+  /* specs/discord/channel.json:386:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *url;
 
 };
 
 /* Embed Author Structure */
-/* defined at specs/discord/channel.json:388:22 */
+/* defined at specs/discord/channel.json:393:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
@@ -5283,26 +5287,26 @@ struct discord_embed_provider {
  * @endverbatim
  */
 struct discord_embed_author {
-  /* specs/discord/channel.json:390:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:391:20
+  /* specs/discord/channel.json:396:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:392:20
+  /* specs/discord/channel.json:397:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *icon_url;
 
-  /* specs/discord/channel.json:393:20
+  /* specs/discord/channel.json:398:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_icon_url;
 
 };
 
 /* Embed Footer Structure */
-/* defined at specs/discord/channel.json:400:22 */
+/* defined at specs/discord/channel.json:405:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
@@ -5331,22 +5335,22 @@ struct discord_embed_author {
  * @endverbatim
  */
 struct discord_embed_footer {
-  /* specs/discord/channel.json:402:20
+  /* specs/discord/channel.json:407:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *text;
 
-  /* specs/discord/channel.json:403:20
+  /* specs/discord/channel.json:408:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *icon_url;
 
-  /* specs/discord/channel.json:404:20
+  /* specs/discord/channel.json:409:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *proxy_icon_url;
 
 };
 
 /* Embed Field Structure */
-/* defined at specs/discord/channel.json:411:22 */
+/* defined at specs/discord/channel.json:416:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
@@ -5375,15 +5379,15 @@ struct discord_embed_footer {
  * @endverbatim
  */
 struct discord_embed_field {
-  /* specs/discord/channel.json:413:20
+  /* specs/discord/channel.json:418:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:414:20
+  /* specs/discord/channel.json:419:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *value;
 
-  /* specs/discord/channel.json:415:20
+  /* specs/discord/channel.json:420:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   bool Inline;
 
@@ -7666,29 +7670,25 @@ struct discord_edit_original_interaction_response_params {
   struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
   /* specs/discord/interaction.endpoints-params.json:14:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent/edited */
-
-  /* specs/discord/interaction.endpoints-params.json:15:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
   char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
 
-  /* specs/discord/interaction.endpoints-params.json:16:20
+  /* specs/discord/interaction.endpoints-params.json:15:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/interaction.endpoints-params.json:17:20
+  /* specs/discord/interaction.endpoints-params.json:16:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_attachment **attachments; /**< attached files to keep */
 
-  /* specs/discord/interaction.endpoints-params.json:18:20
+  /* specs/discord/interaction.endpoints-params.json:17:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; /**< the components to include with the message */
 
 };
 
 /* Create Followup Message */
-/* defined at specs/discord/interaction.endpoints-params.json:24:22 */
+/* defined at specs/discord/interaction.endpoints-params.json:23:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7715,58 +7715,58 @@ struct discord_edit_original_interaction_response_params {
  * @endverbatim
  */
 struct discord_create_followup_message_params {
-  /* specs/discord/interaction.endpoints-params.json:28:20
+  /* specs/discord/interaction.endpoints-params.json:27:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)", "default_value":true }' */
   bool wait; /**< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
-  /* specs/discord/interaction.endpoints-params.json:29:20
+  /* specs/discord/interaction.endpoints-params.json:28:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
   u64_snowflake_t thread_id; /**< Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived */
 
-  /* specs/discord/interaction.endpoints-params.json:30:20
+  /* specs/discord/interaction.endpoints-params.json:29:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
   char *content; /**< the message contents (up to 2000 characters) */
 
-  /* specs/discord/interaction.endpoints-params.json:31:20
+  /* specs/discord/interaction.endpoints-params.json:30:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"override the default username of the webhook", "inject_if_not": null }' */
   char *username; /**< override the default username of the webhook */
 
-  /* specs/discord/interaction.endpoints-params.json:32:20
+  /* specs/discord/interaction.endpoints-params.json:31:20
      '{ "name": "avatar_url", "type":{ "base":"char", "dec":"*" }, "comment":"override the default avatar of the webhook", "inject_if_not": null }' */
   char *avatar_url; /**< override the default avatar of the webhook */
 
-  /* specs/discord/interaction.endpoints-params.json:33:20
+  /* specs/discord/interaction.endpoints-params.json:32:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
   bool tts; /**< true if this is a TTS message */
 
-  /* specs/discord/interaction.endpoints-params.json:34:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent */
+  /* specs/discord/interaction.endpoints-params.json:33:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
-  /* specs/discord/interaction.endpoints-params.json:35:20
+  /* specs/discord/interaction.endpoints-params.json:34:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
   struct discord_embed *embeds; /**< embedded rich content */
 
-  /* specs/discord/interaction.endpoints-params.json:36:20
+  /* specs/discord/interaction.endpoints-params.json:35:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
   char *payload_json; /**< JSON encoded body of non-file params */
 
-  /* specs/discord/interaction.endpoints-params.json:37:20
+  /* specs/discord/interaction.endpoints-params.json:36:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/interaction.endpoints-params.json:38:20
+  /* specs/discord/interaction.endpoints-params.json:37:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
   struct discord_component **components; /**< the components to include with the message */
 
-  /* specs/discord/interaction.endpoints-params.json:39:20
+  /* specs/discord/interaction.endpoints-params.json:38:20
      '{ "name": "flags", "type":{ "base":"int" }, "comment":"can be set to 64 to send a ephemeral message", "inject_if_not": 0 }' */
   int flags; /**< can be set to 64 to send a ephemeral message */
 
 };
 
 /* Edit Followup Message */
-/* defined at specs/discord/interaction.endpoints-params.json:45:22 */
+/* defined at specs/discord/interaction.endpoints-params.json:44:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -7793,31 +7793,27 @@ struct discord_create_followup_message_params {
  * @endverbatim
  */
 struct discord_edit_followup_message_params {
-  /* specs/discord/interaction.endpoints-params.json:48:20
+  /* specs/discord/interaction.endpoints-params.json:47:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   char *content; /**< name of the webhook(1-2000) chars */
 
-  /* specs/discord/interaction.endpoints-params.json:49:20
+  /* specs/discord/interaction.endpoints-params.json:48:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
-  /* specs/discord/interaction.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent/edited */
-
-  /* specs/discord/interaction.endpoints-params.json:51:20
+  /* specs/discord/interaction.endpoints-params.json:49:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
   char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
 
-  /* specs/discord/interaction.endpoints-params.json:52:20
+  /* specs/discord/interaction.endpoints-params.json:50:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/interaction.endpoints-params.json:53:20
+  /* specs/discord/interaction.endpoints-params.json:51:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_attachment **attachments; /**< attached files to keep */
 
-  /* specs/discord/interaction.endpoints-params.json:54:20
+  /* specs/discord/interaction.endpoints-params.json:52:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; /**< the components to include with the message */
 
@@ -8157,6 +8153,10 @@ struct discord_interaction_callback_data {
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
   struct discord_component **components; /**< message components */
+
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+  struct discord_attachment **attachments; /**< attachment objects with filename and description */
 
 };
 
@@ -9765,29 +9765,25 @@ struct discord_execute_webhook_params {
   bool tts; /**< true if this is a TTS message */
 
   /* specs/discord/webhook.endpoints-params.json:50:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent */
-
-  /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
   struct discord_embed *embeds; /**< embedded rich content */
 
-  /* specs/discord/webhook.endpoints-params.json:52:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
-  char *payload_json; /**< JSON encoded body of non-file params */
-
-  /* specs/discord/webhook.endpoints-params.json:53:20
+  /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/webhook.endpoints-params.json:54:20
+  /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
   struct discord_component **components; /**< the components to include with the message */
+
+  /* specs/discord/webhook.endpoints-params.json:53:20
+     '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
+  struct discord_attachment **attachments; /**< attached files to keep */
 
 };
 
 /* Edit Webhook Message */
-/* defined at specs/discord/webhook.endpoints-params.json:60:22 */
+/* defined at specs/discord/webhook.endpoints-params.json:59:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -9814,31 +9810,23 @@ struct discord_execute_webhook_params {
  * @endverbatim
  */
 struct discord_edit_webhook_message_params {
-  /* specs/discord/webhook.endpoints-params.json:63:20
+  /* specs/discord/webhook.endpoints-params.json:62:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
   char *content; /**< name of the webhook(1-2000) chars */
 
-  /* specs/discord/webhook.endpoints-params.json:64:20
+  /* specs/discord/webhook.endpoints-params.json:63:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"ntl" }, "comment":"array of up to 10 embeds objects", "inject_if_not":null }' */
   struct discord_embed **embeds; /**< array of up to 10 embeds objects */
 
-  /* specs/discord/webhook.endpoints-params.json:65:20
-     '{ "name": "file", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the contents of the file being sent/edited", "inject_if_not":null }' */
-  char *file; /**< the contents of the file being sent/edited */
-
-  /* specs/discord/webhook.endpoints-params.json:66:20
-     '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params (multipart/form-data only)", "inject_if_not":null }' */
-  char *payload_json; /**< JSON encoded body of non-file params (multipart/form-data only) */
-
-  /* specs/discord/webhook.endpoints-params.json:67:20
+  /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
   struct discord_allowed_mentions *allowed_mentions; /**< allowed mentions for the message */
 
-  /* specs/discord/webhook.endpoints-params.json:68:20
+  /* specs/discord/webhook.endpoints-params.json:65:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   struct discord_attachment **attachments; /**< attached files to keep */
 
-  /* specs/discord/webhook.endpoints-params.json:69:20
+  /* specs/discord/webhook.endpoints-params.json:66:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
   struct discord_component **components; /**< the components to include with the message */
 

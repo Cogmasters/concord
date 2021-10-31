@@ -1245,7 +1245,10 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
                 "(flags):d,"
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-                "(components):F,",
+                "(components):F,"
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+                "(attachments):F,",
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
                 &p->tts,
@@ -1263,14 +1266,17 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
                 &p->flags,
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
-                discord_component_list_from_json, &p->components);
+                discord_component_list_from_json, &p->components,
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+                discord_attachment_list_from_json, &p->attachments);
   ret = r;
 }
 
 size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct discord_interaction_callback_data *p)
 {
   size_t r;
-  void *arg_switches[6]={NULL};
+  void *arg_switches[7]={NULL};
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
   arg_switches[0] = &p->tts;
@@ -1300,6 +1306,11 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
   if (p->components != NULL)
     arg_switches[5] = p->components;
 
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+  if (p->attachments != NULL)
+    arg_switches[6] = p->attachments;
+
   r=json_inject(json, len, 
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
@@ -1319,6 +1330,9 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
                 "(components):F,"
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+                "(attachments):F,"
                 "@arg_switches:b",
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
@@ -1338,6 +1352,9 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
                 discord_component_list_to_json, p->components,
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+                discord_attachment_list_to_json, p->attachments,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }
@@ -1400,6 +1417,10 @@ void discord_interaction_callback_data_cleanup(struct discord_interaction_callba
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
   if (d->components)
     discord_component_list_free(d->components);
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
+  if (d->attachments)
+    discord_attachment_list_free(d->attachments);
 }
 
 void discord_interaction_callback_data_init(struct discord_interaction_callback_data *p) {
@@ -1421,6 +1442,9 @@ void discord_interaction_callback_data_init(struct discord_interaction_callback_
 
   /* specs/discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
+
+  /* specs/discord/interaction.json:118:19
+     '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
 
 }
 void discord_interaction_callback_data_list_free(struct discord_interaction_callback_data **p) {

@@ -275,18 +275,23 @@
       ]
     },
     {
-      "title":"Attachment Strcture",
+      "title":"Attachment Structure",
       "comment":"https://discord.com/developers/docs/resources/channel#attachment-object",
       "struct":"attachment",
       "fields":
       [
-        { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
-        { "name": "filename", "type":{ "base":"char", "dec":"[256]" }},
-        { "name": "size", "type":{ "base":"int" }},
-        { "name": "url", "type":{ "base":"char", "dec":"*" }},
-        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }},
-        { "name": "height", "type":{ "base":"int", "nullable":true }},
-        { "name": "width", "type":{ "base":"int", "nullable":true }}
+        { "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null },
+
+        { "name": "id", "type":{ "base":"int" }, "comment":"attachment id"},
+        { "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"},
+        { "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"},
+        { "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"},
+        { "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"},
+        { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"},
+        { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"},
+        { "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" },
+        { "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"},
+        { "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}
       ]
     },
     {
