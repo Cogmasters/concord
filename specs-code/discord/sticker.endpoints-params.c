@@ -159,7 +159,7 @@ size_t discord_create_guild_sticker_params_to_json(char *json, size_t len, struc
   arg_switches[1] = p->description;
 
   /* specs/discord/sticker.endpoints-params.json:22:18
-     '{"name":"file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
+     '{"name":"file", "type":{ "base":"struct discord_attachment", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
   arg_switches[2] = p->file;
 
   /* specs/discord/sticker.endpoints-params.json:23:18
@@ -233,9 +233,9 @@ void discord_create_guild_sticker_params_cleanup(struct discord_create_guild_sti
   if (d->description)
     free(d->description);
   /* specs/discord/sticker.endpoints-params.json:22:18
-     '{"name":"file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
+     '{"name":"file", "type":{ "base":"struct discord_attachment", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
   if (d->file) {
-    discord_file_cleanup(d->file);
+    discord_attachment_cleanup(d->file);
     free(d->file);
   }
   /* specs/discord/sticker.endpoints-params.json:23:18
@@ -253,7 +253,7 @@ void discord_create_guild_sticker_params_init(struct discord_create_guild_sticke
      '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker (empty or 2-100 characters)"}' */
 
   /* specs/discord/sticker.endpoints-params.json:22:18
-     '{"name":"file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
+     '{"name":"file", "type":{ "base":"struct discord_attachment", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
 
   /* specs/discord/sticker.endpoints-params.json:23:18
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */

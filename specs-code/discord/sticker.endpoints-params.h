@@ -90,8 +90,8 @@ struct discord_create_guild_sticker_params {
   char *description; /**< description of the sticker (empty or 2-100 characters) */
 
   /* specs/discord/sticker.endpoints-params.json:22:18
-     '{"name":"file", "type":{ "base":"struct discord_file", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
-  struct discord_file *file; /**< the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB */
+     '{"name":"file", "type":{ "base":"struct discord_attachment", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
+  struct discord_attachment *file; /**< the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB */
 
   /* specs/discord/sticker.endpoints-params.json:23:18
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
