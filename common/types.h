@@ -47,6 +47,8 @@ typedef int ORCAcode;             /**< the error code datatype */
 #define ORCA_MISSING_PARAMETER -4 /**< missing a mandatory function parameter */
 #define ORCA_BAD_PARAMETER     -5 /**< unexpected value for parameter */
 #define ORCA_BAD_JSON          -6 /**< internal failure when encoding or decoding JSON */
+#define ORCA_CURLE_INTERNAL    -7 /**< curl's easy handle internal error */
+#define ORCA_CURLM_INTERNAL    -8 /**< curl's multi handle internal error */
 /** @} OrcaCodes */
 
 /** @defgroup OrcaDiscordCodes

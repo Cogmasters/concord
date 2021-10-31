@@ -17,6 +17,9 @@ orca_strerror(ORCAcode code)
     return "Failure: Unexpected value for parameter";
   case ORCA_BAD_JSON:
     return "Failure: Internal failure when encoding or decoding JSON";
+  case ORCA_CURLE_INTERNAL:
+  case ORCA_CURLM_INTERNAL:
+    return "Failure: Libcurl's internal error";
   default:
     return "Unknown: Code received doesn't match any description";
   }
