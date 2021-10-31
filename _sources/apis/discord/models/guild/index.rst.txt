@@ -17,5 +17,5 @@ Guild
    :maxdepth: 2
 
    structures
-   methods/*
    utils/*
+   methods/*

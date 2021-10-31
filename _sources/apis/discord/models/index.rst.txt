@@ -23,4 +23,3 @@ The following section outlines the Discord API models
    webhook/index
    gateway/index
    permissions/index
-   custom/index
