@@ -13,13 +13,15 @@
 #include "cee-utils.h"
 
 
-#define CURLE_CHECK(conn, ecode)                           \
-  VASSERT_S(CURLE_OK == ecode, "[%s] (CURLE code: %d) %s", \
-      conn->conf->id,                                      \
-      ecode,                                               \
-      IS_EMPTY_STRING(conn->errbuf)                        \
-        ? curl_easy_strerror(ecode)                        \
-        : conn->errbuf)
+#define CURLE_LOG(conn, ecode)          \
+do {                                    \
+  log_fatal("[%s] (CURLE code: %d) %s", \
+    conn->conf->id,                     \
+    ecode,                              \
+    IS_EMPTY_STRING(conn->errbuf)       \
+      ? curl_easy_strerror(ecode)       \
+      : conn->errbuf);                  \
+} while (0)
 
 struct user_agent {
   /**
@@ -366,39 +368,24 @@ conn_init(struct user_agent *ua)
 
   CURL *new_ehandle = curl_easy_init(); /* will be assigned to new_conn */
 
-  CURLcode ecode;
   /*set error buffer for capturing CURL error descriptions */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, new_conn->errbuf);
-  CURLE_CHECK(new_conn, ecode);
+  curl_easy_setopt(new_ehandle, CURLOPT_ERRORBUFFER, new_conn->errbuf);
   /*set ptr to request header we will be using for API communication */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, ua->req_header);
-  CURLE_CHECK(new_conn, ecode);
-
+  curl_easy_setopt(new_ehandle, CURLOPT_HTTPHEADER, ua->req_header);
   /*enable follow redirections */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
-  CURLE_CHECK(new_conn, ecode);
-
+  curl_easy_setopt(new_ehandle, CURLOPT_FOLLOWLOCATION, 1L);
   /*set response body callback */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_respbody_cb);
-  CURLE_CHECK(new_conn, ecode);
-
+  curl_easy_setopt(new_ehandle, CURLOPT_WRITEFUNCTION, &conn_respbody_cb);
   /*set ptr to response body to be filled at callback */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->info.body);
-  CURLE_CHECK(new_conn, ecode);
-
+  curl_easy_setopt(new_ehandle, CURLOPT_WRITEDATA, &new_conn->info.body);
   /*set response header callback */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_respheader_cb);
-  CURLE_CHECK(new_conn, ecode);
-
+  curl_easy_setopt(new_ehandle, CURLOPT_HEADERFUNCTION, &conn_respheader_cb);
   /*set ptr to response header to be filled at callback */
-  ecode = curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.header);
-  CURLE_CHECK(new_conn, ecode);
-
+  curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.header);
   /* execute user-defined curl_easy_setopts */
   if (ua->setopt_cb) {
     (*ua->setopt_cb)(new_ehandle, ua->data);
   }
-
   new_conn->ehandle = new_ehandle;
 
   return new_conn;
@@ -550,15 +537,12 @@ set_method(
   /* resets any preexisting CUSTOMREQUEST */
   curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL);
 
-  CURLcode ecode;
   switch (method) {
   case HTTP_DELETE:
-      ecode = curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-      CURLE_CHECK(conn, ecode);
+      curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, "DELETE");
       break;
   case HTTP_GET:
-      ecode = curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L);
-      CURLE_CHECK(conn, ecode);
+      curl_easy_setopt(conn->ehandle, CURLOPT_HTTPGET, 1L);
       return; /* EARLY RETURN */
   case HTTP_POST:
       curl_easy_setopt(conn->ehandle, CURLOPT_POST, 1L);
@@ -566,7 +550,6 @@ set_method(
   case HTTP_MIMEPOST: /*@todo this is temporary */
       ASSERT_S(NULL != ua->mime_cb, "Missing 'ua->mime_cb' callback");
       ASSERT_S(NULL == ua->mime, "'ua->mime' not freed");
-
       ua->mime = curl_mime_init(conn->ehandle);
       (*ua->mime_cb)(ua->mime, ua->data2);
       curl_easy_setopt(conn->ehandle, CURLOPT_MIMEPOST, ua->mime);
@@ -607,40 +590,27 @@ set_url(struct user_agent *ua, struct _ua_conn *conn, char endpoint[])
   ASSERT_S(ret < conn->info.req_url.size, "Out of bounds write attempt");
 
   CURLcode ecode = curl_easy_setopt(conn->ehandle, CURLOPT_URL, conn->info.req_url.start);
-  CURLE_CHECK(conn, ecode);
+  if (ecode != ORCA_OK) CURLE_LOG(conn, ecode);
 
   logconf_trace(conn->conf, "Request URL: %s", conn->info.req_url.start);
 }
 
-static int
-send_request(struct user_agent *ua, struct _ua_conn *conn)
+static CURLcode
+send_request(struct user_agent *ua, struct _ua_conn *conn, int *httpcode)
 {
-  pthread_mutex_lock(&ua->shared->lock);
-  
-  /* enforces global ratelimiting with ua_block_ms(); */
-  cee_sleep_ms(ua->shared->blockuntil_tstamp - cee_timestamp_ms());
   CURLcode ecode;
+  char    *resp_url = NULL;
+
+  /* enforces global ratelimiting with ua_block_ms(); */
+  pthread_mutex_lock(&ua->shared->lock);
+  cee_sleep_ms(ua->shared->blockuntil_tstamp - cee_timestamp_ms());
   
   ecode = curl_easy_perform(conn->ehandle);
-#ifdef BEARSSL
-  if (CURLE_READ_ERROR == ecode 
-      && 0 == strcmp(conn->errbuf, "SSL: EOF without close notify"))
-    logconf_warn(conn->conf, "The remote server closes connection without terminating SSL");
-  else
-    CURLE_CHECK(conn, ecode);
-#else
-  CURLE_CHECK(conn, ecode);
-#endif
   conn->info.req_tstamp = cee_timestamp_ms();
-
-  /*get response's code */
-  int httpcode=0;
-  ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &httpcode);
-  CURLE_CHECK(conn, ecode);
-
-  char *resp_url=NULL;
-  ecode = curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
-  CURLE_CHECK(conn, ecode);
+  /* get response's code */
+  curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, httpcode);
+  /* get response's url */
+  curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
   logconf_http(
     &ua->conf, 
@@ -648,11 +618,10 @@ send_request(struct user_agent *ua, struct _ua_conn *conn)
     resp_url, 
     (struct sized_buffer){conn->info.header.buf, conn->info.header.len},
     (struct sized_buffer){conn->info.body.buf, conn->info.body.len},
-    "HTTP_RCV_%s(%d)", http_code_print(httpcode), httpcode);
-
+    "HTTP_RCV_%s(%d)", http_code_print(*httpcode), httpcode);
   pthread_mutex_unlock(&ua->shared->lock);
 
-  return httpcode;
+  return ecode;
 }
 
 static ORCAcode
@@ -661,7 +630,11 @@ perform_request(
   struct _ua_conn *conn, 
   struct ua_resp_handle *resp_handle)
 {
-  conn->info.httpcode = send_request(ua, conn);
+  CURLcode ecode = send_request(ua, conn, &conn->info.httpcode);
+  if (ecode != CURLE_OK) {
+    CURLE_LOG(conn, ecode);
+    return ORCA_CURLE_INTERNAL;
+  }
 
   /* triggers response related callbacks */
   if (conn->info.httpcode >= 500 && conn->info.httpcode < 600) {
@@ -807,11 +780,11 @@ ua_run(
   pthread_mutex_lock(&ua->shared->lock);
   if (info) {
     memcpy(info, &conn->info, sizeof(struct ua_info));
-    asprintf(&info->body.buf, "%.*s", \
+    asprintf(&info->body.buf, "%.*s",
         (int)conn->info.body.len, conn->info.body.buf);
-    asprintf(&info->header.buf, "%.*s", \
+    asprintf(&info->header.buf, "%.*s",
         (int)conn->info.header.len, conn->info.header.buf);
-    asprintf(&info->req_url.start, "%.*s", \
+    asprintf(&info->req_url.start, "%.*s",
         (int)conn->info.req_url.size, conn->info.req_url.start);
   }
 
