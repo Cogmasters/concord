@@ -16,7 +16,7 @@ void
 _discord_params_to_mime(curl_mime *mime, void *p_cxt)
 {
   NTL_T(struct discord_attachment) atchs = ((void**)p_cxt)[0];
-  struct sized_buffer             *buf         = ((void**)p_cxt)[1];
+  struct sized_buffer             *buf   = ((void**)p_cxt)[1];
   curl_mimepart *part;
   char           name[64];
 
