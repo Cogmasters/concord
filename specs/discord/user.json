@@ -52,6 +52,7 @@
             { "name": "verified", "type":{ "base":"bool" }},
             { "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }},
             { "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }},
+            { "name": "banner", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }},
             { "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }},
             { "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}
           ]
