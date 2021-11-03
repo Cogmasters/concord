@@ -113,12 +113,10 @@ void ua_cleanup(struct user_agent *ua);
 void ua_set_url(struct user_agent *ua, const char *base_url);
 const char* ua_get_url(struct user_agent *ua);
 void ua_block_ms(struct user_agent *ua, const uint64_t wait_ms);
-ORCAcode ua_run(
-  struct user_agent *ua,
-  struct ua_info *info,
-  struct ua_resp_handle *resp_handle,
-  struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[]);
+
+ORCAcode ua_run(struct user_agent *ua, struct ua_info *info,
+                struct ua_resp_handle *resp_handle, struct sized_buffer *req_body,
+                enum http_method http_method, char endpoint[]);
 
 void ua_info_cleanup(struct ua_info *info);
 struct sized_buffer ua_info_header_get(struct ua_info *info, char field[]);

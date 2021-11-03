@@ -179,7 +179,7 @@ struct cws_data {
     bool connection_websocket;
     bool closed;
     bool deleted;
-    clock_t start;
+    time_t start;
 };
 
 static bool
@@ -377,8 +377,9 @@ cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text, siz
     }
     priv = (struct cws_data *)p;
 
-    long runtime_sec = ((long)(clock() - priv->start)) / CLOCKS_PER_SEC;
-    curl_easy_setopt(easy, CURLOPT_TIMEOUT, runtime_sec + 15L); /* give 15 seconds to terminate connection @todo configurable */
+    /* give 15 seconds to terminate connection @todo configurable */
+    long runtime_sec = (long)(time(NULL) - priv->start);
+    curl_easy_setopt(easy, CURLOPT_TIMEOUT, (long)(runtime_sec + 15L));
 
     if (reason == 0) {
         ret = _cws_send(priv, CWS_OPCODE_CLOSE, NULL, 0);
@@ -498,7 +499,7 @@ _cws_receive_header(const char *buffer, size_t count, size_t nitems, void *data)
             }
             return 0;
         } else {
-            priv->start = clock();
+            priv->start = time(NULL);
             if (priv->cbs.on_connect) {
                 priv->dispatching++;
                 priv->cbs.on_connect((void *)priv->cbs.data,

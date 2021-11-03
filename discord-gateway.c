@@ -1182,37 +1182,35 @@ static enum discord_event_scheduler noop_scheduler(struct discord *a, struct dis
 void
 discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct sized_buffer *token)
 {
+  struct ws_callbacks cbs;
+  struct sized_buffer buf;
+  /* pre-initialize worker threads */
   static int nthreads;
   static int queue_size;
   const char *val;
 
   val = getenv("DISCORD_THREADPOOL_SIZE");
-  if (val != NULL)
-    nthreads = atoi(val);
-  if (0 == nthreads)
-    nthreads = 1;
+  if (val != NULL)   nthreads = atoi(val);
+  if (0 == nthreads) nthreads = 1;
   val = getenv("DISCORD_THREADPOOL_QUEUE_SIZE");
-  if (val != NULL)
-    queue_size = atoi(val);
-  if (0 == queue_size)
-    queue_size = 8;
-
+  if (val != NULL)     queue_size = atoi(val);
+  if (0 == queue_size) queue_size = 8;
   gw->tpool = threadpool_create(nthreads, queue_size, 0);
 
-  struct ws_callbacks cbs = {
+  cbs = (struct ws_callbacks){
     .data = gw,
     .on_connect = &on_connect_cb,
-    .on_text = &on_text_cb,
-    .on_close = &on_close_cb
+    .on_text    = &on_text_cb,
+    .on_close   = &on_close_cb
   };
 
   gw->ws = ws_init(&cbs, conf);
   logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
-  gw->reconnect = malloc(sizeof *gw->reconnect);
-  gw->reconnect->enable = true;
+  gw->reconnect            = malloc(sizeof *gw->reconnect);
+  gw->reconnect->enable    = true;
   gw->reconnect->threshold = 5; /**< hard limit for now */
-  gw->reconnect->attempt = 0;
+  gw->reconnect->attempt   = 0;
 
   gw->status = calloc(1, sizeof *gw->status);
 
@@ -1227,6 +1225,7 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
     .device  = "orca"
   };
 
+  /* the bot initial presence */
   discord_set_presence(CLIENT(gw), 
     &(struct discord_presence_status){
       .activities = NULL,
@@ -1236,29 +1235,33 @@ discord_gateway_init(struct discord_gateway *gw, struct logconf *conf, struct si
     })
   ;
 
-  gw->payload = calloc(1, sizeof *gw->payload);
-  gw->hbeat = calloc(1, sizeof *gw->hbeat);
+  gw->payload  = calloc(1, sizeof *gw->payload);
+  gw->hbeat    = calloc(1, sizeof *gw->hbeat);
   gw->user_cmd = calloc(1, sizeof *gw->user_cmd);
 
-  gw->user_cmd->cbs.on_idle = &noop_idle_cb;
+  gw->user_cmd->cbs.on_idle      = &noop_idle_cb;
   gw->user_cmd->cbs.on_event_raw = &noop_event_raw_cb;
-  gw->user_cmd->scheduler = &noop_scheduler;
+  gw->user_cmd->scheduler        = &noop_scheduler;
 
+  /* fetch and store the bot info */
   if (token->size) {
     discord_get_current_user(CLIENT(gw), &gw->bot);
     sb_discord_get_current_user(CLIENT(gw), &gw->sb_bot);
   }
 
-  struct sized_buffer default_prefix = logconf_get_field(conf, "discord.default_prefix");
-  if (default_prefix.size) {
-    bool enable_prefix=false;
-    char *prefix=NULL;
-    json_extract(default_prefix.start, default_prefix.size,
-        "(enable):b,(prefix):?s", &enable_prefix, &prefix);
-    if (enable_prefix && prefix) {
+  /* check for default prefix in config file */
+  buf = logconf_get_field(conf, "discord.default_prefix");
+  if (buf.size) {
+    bool  enable_prefix = false;
+    json_extract(buf.start, buf.size, "(enable):b", &enable_prefix);
+
+    if (enable_prefix) {
+      char *prefix = NULL;
+      json_extract(buf.start, buf.size, "(prefix):?s", &prefix);
+
       gw->user_cmd->prefix = (struct sized_buffer){
         .start = prefix,
-        .size = strlen(prefix)
+        .size  = prefix ? strlen(prefix) : 0
       };
     }
   }

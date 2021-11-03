@@ -11,7 +11,8 @@
 
 
 void
-discord_adapter_init(struct discord_adapter *adapter, struct logconf *conf, struct sized_buffer *token)
+discord_adapter_init(struct discord_adapter *adapter, struct logconf *conf,
+                     struct sized_buffer *token)
 {
   adapter->ua = ua_init(conf);
   ua_set_url(adapter->ua, DISCORD_API_BASE_URL);
@@ -65,120 +66,132 @@ json_error_cb(char *str, size_t len, void *p_adapter)
       "%.*s", (int)len, str);
 }
 
-/* template function for performing requests */
-ORCAcode
-discord_adapter_run(
-  struct discord_adapter *adapter, 
-  struct ua_resp_handle *resp_handle,
-  struct sized_buffer *req_body,
-  enum http_method http_method, 
-  char endpoint_fmt[], ...)
+static ORCAcode
+_discord_perform_request(struct discord_adapter *adapter, 
+                         struct ua_resp_handle *resp_handle,
+                         struct sized_buffer *req_body,
+                         enum http_method http_method, char endpoint[],
+                         struct discord_bucket *bucket, const char route[])
 {
-  va_list args;
-  char endpoint[2048];
+  bool keepalive = true;
+  long delay_ms;
+  ORCAcode code;
 
-  va_start(args, endpoint_fmt);
-  int ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
-
-  /* IF UNSET, SET TO DEFAULT ERROR HANDLING CALLBACKS */
+  /* if unset, set to default error handling callbacks */
   if (resp_handle && !resp_handle->err_cb) {
     resp_handle->err_cb = &json_error_cb;
     resp_handle->err_obj = adapter;
   }
 
-  /* Check if endpoint_fmt contain a major param */
-  const char *route;
-  if (strstr(endpoint_fmt, "/channels/%")) 
-    route = "@channel";
-  else if (strstr(endpoint_fmt, "/guilds/%"))   
-    route = "@guild";
-  else if (strstr(endpoint_fmt, "/webhook/%"))  
-    route = "@webhook";
-  else
-    route = endpoint_fmt;
-
-  struct discord_bucket *bucket = discord_bucket_try_get(adapter, route);
-
-  ORCAcode code;
-  bool keepalive=true;
-  long delay_ms;
-
-  if (bucket) pthread_mutex_lock(&bucket->lock);
   do {
     ua_info_cleanup(&adapter->err.info);
     delay_ms = discord_bucket_get_cooldown(adapter, bucket);
     if (delay_ms > 0) {
       logconf_info(&adapter->ratelimit->conf,
-        "[%.4s] RATELIMITING (wait %ld sec)", bucket->hash, delay_ms);
-      uint64_t t = cee_timestamp_ms();
+        "[%.4s] RATELIMITING (wait %ld ms)", bucket->hash, delay_ms);
       cee_sleep_ms(delay_ms);
-      log_info("took: %"PRIu64, cee_timestamp_ms() - t);
     }
-    if (bucket) --bucket->remaining;
 
-    code = ua_run(
-      adapter->ua,
-      &adapter->err.info,
-      resp_handle,
-      req_body,
-      http_method, endpoint);
+    code = ua_run(adapter->ua, &adapter->err.info, resp_handle,
+                  req_body, http_method, endpoint);
     
-    if (code != ORCA_HTTP_CODE)
-    {
-        keepalive = false;
+    if (code != ORCA_HTTP_CODE) {
+      keepalive = false;
     }
-    else 
-    {
-        switch (adapter->err.info.httpcode) {
-        case HTTP_FORBIDDEN:
-        case HTTP_NOT_FOUND:
-        case HTTP_BAD_REQUEST:
-            keepalive = false; 
-            code = ORCA_DISCORD_JSON_CODE;
-            break;
-        case HTTP_UNAUTHORIZED:
-            keepalive = false;
-            logconf_fatal(&adapter->conf, "UNAUTHORIZED: Please provide a valid authentication token");
-            code = ORCA_DISCORD_BAD_AUTH;
-            break;
-        case HTTP_METHOD_NOT_ALLOWED:
-            keepalive = false;
-            logconf_fatal(&adapter->conf, "METHOD_NOT_ALLOWED: The server couldn't recognize the received HTTP method");
-            break;
-        case HTTP_TOO_MANY_REQUESTS: {
-            bool is_global     = false;
-            char message[256]  = "";
-            double retry_after = -1; /* seconds */
+    else {
+      switch (adapter->err.info.httpcode) {
+      case HTTP_FORBIDDEN:
+      case HTTP_NOT_FOUND:
+      case HTTP_BAD_REQUEST:
+          keepalive = false; 
+          code = ORCA_DISCORD_JSON_CODE;
+          break;
+      case HTTP_UNAUTHORIZED:
+          keepalive = false;
+          logconf_fatal(&adapter->conf, "UNAUTHORIZED: Please provide a valid authentication token");
+          code = ORCA_DISCORD_BAD_AUTH;
+          break;
+      case HTTP_METHOD_NOT_ALLOWED:
+          keepalive = false;
+          logconf_fatal(&adapter->conf, "METHOD_NOT_ALLOWED: The server couldn't recognize the received HTTP method");
+          break;
+      case HTTP_TOO_MANY_REQUESTS: {
+          bool is_global     = false;
+          char message[256]  = "";
+          double retry_after = -1; /* seconds */
 
-            struct sized_buffer body = ua_info_get_body(&adapter->err.info);
-            json_extract(body.start, body.size,
-                        "(global):b (message):s (retry_after):lf",
-                        &is_global, message, &retry_after);
-            VASSERT_S(retry_after != -1, "(NO RETRY-AFTER INCLUDED) %s", message);
+          struct sized_buffer body = ua_info_get_body(&adapter->err.info);
+          json_extract(body.start, body.size,
+                      "(global):b (message):s (retry_after):lf",
+                      &is_global, message, &retry_after);
+          VASSERT_S(retry_after != -1, "(NO RETRY-AFTER INCLUDED) %s", message);
 
-            retry_after *= 1000;
+          retry_after *= 1000;
 
-            if (is_global) {
-              logconf_warn(&adapter->conf, "429 GLOBAL RATELIMITING (wait: %.2lf ms) : %s", retry_after, message);
-              ua_block_ms(adapter->ua, (uint64_t)retry_after);
-            }
-            else {
-              logconf_warn(&adapter->conf, "429 RATELIMITING (wait: %.2lf ms) : %s", retry_after, message);
-              cee_sleep_ms((long)retry_after);
-            }
-           break; }
-        default:
-            if (adapter->err.info.httpcode >= 500) /* server related error, retry */
-              ua_block_ms(adapter->ua, 5000); /* wait for 5 seconds */
-            break;
-        }
+          if (is_global) {
+            logconf_warn(&adapter->conf, "429 GLOBAL RATELIMITING (wait: %.2lf ms) : %s", retry_after, message);
+            ua_block_ms(adapter->ua, (uint64_t)retry_after);
+          }
+          else {
+            logconf_warn(&adapter->conf, "429 RATELIMITING (wait: %.2lf ms) : %s", retry_after, message);
+            cee_sleep_ms((long)retry_after);
+          }
+         break; }
+      default:
+          if (adapter->err.info.httpcode >= 500) /* server related error, retry */
+            ua_block_ms(adapter->ua, 5000); /* wait for 5 seconds */
+          break;
+      }
     }
     discord_bucket_build(adapter, bucket, route, code, &adapter->err.info);
   } while (keepalive);
-  if (bucket) pthread_mutex_unlock(&bucket->lock);
-
-  va_end(args);
 
   return code;
+}
+
+/* template function for performing requests */
+ORCAcode
+discord_adapter_run(struct discord_adapter *adapter, 
+                    struct ua_resp_handle *resp_handle,
+                    struct sized_buffer *req_body, enum http_method http_method,
+                    char endpoint_fmt[], ...)
+{
+  va_list args;
+  char    endpoint[2048];
+  int     ret;
+
+  /* Determine which ratelimit group (aka bucket) a request belongs to
+   * by checking its route.
+   * see:  https://discord.com/developers/docs/topics/rate-limits */
+  const char            *route;
+  struct discord_bucket *bucket;
+
+
+  /* build the endpoint string */
+  va_start(args, endpoint_fmt);
+  ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
+  va_end(args);
+
+  /* check if 'route' is a major parameter (channel, guild or webhook),
+   * if not use the raw endpoint_fmt as a route */
+  if (strstr(endpoint_fmt, "/channels/%"))
+    route = "@channel";
+  else if (strstr(endpoint_fmt, "/guilds/%"))
+    route = "@guild";
+  else if (strstr(endpoint_fmt, "/webhook/%"))
+    route = "@webhook";
+  else
+    route = endpoint_fmt;
+
+  if ((bucket = discord_bucket_try_get(adapter, route)) != NULL) {
+    ORCAcode code;
+    pthread_mutex_lock(&bucket->lock);
+    code = _discord_perform_request(adapter, resp_handle, req_body, http_method,
+                                    endpoint, bucket, route);
+    pthread_mutex_unlock(&bucket->lock);
+    return code;
+  }
+  return _discord_perform_request(adapter, resp_handle, req_body, http_method,
+                                  endpoint, NULL, route);
 }

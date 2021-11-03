@@ -40,17 +40,13 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 #include <string.h> // strcmp()
 #include <orca/discord.h>
 
-void on_ready(
-  struct discord *client, 
-  const struct discord_user *bot) 
+void on_ready(struct discord *client, const struct discord_user *bot) 
 {
   log_info("Logged in as %s!", bot->username);
 }
 
-void on_message(
-  struct discord *client, 
-  const struct discord_user *bot, 
-  const struct discord_message *msg)
+void on_message(struct discord *client, const struct discord_user *bot, 
+                const struct discord_message *msg)
 {
   // if message content is equal to 'ping', then the bot will respond with 'pong'.
   if (0 == strcmp(msg->content, "ping")) {
@@ -59,7 +55,8 @@ void on_message(
   }
 }
 
-int main() {
+int main(void)
+{
   struct discord *client = discord_init(BOT_TOKEN);
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_message);

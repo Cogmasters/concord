@@ -9,6 +9,7 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 #include "discord-internal.h"
 
 #include "cee-utils.h"
+#include "clock.h"
 
 
 static struct discord_bucket*
@@ -43,17 +44,20 @@ discord_buckets_cleanup(struct discord_adapter *adapter)
   }
 }
 
-/* sleep cooldown for a connection within this bucket in milliseconds */
+/* return ratelimit cooldown for this bucket (in milliseconds) */
 long
 discord_bucket_get_cooldown(struct discord_adapter *adapter, struct discord_bucket *bucket)
 {
   if (!bucket) return 0L;
-  u64_unix_ms_t now_tstamp = cee_timestamp_ms();
+
+  u64_unix_ms_t now_tstamp = cee_timestamp_ms(), delay_ms = 0L;
+
   if (bucket->remaining < 1 && bucket->reset_tstamp > now_tstamp) {
-    return bucket->reset_tstamp - now_tstamp;
+    delay_ms = bucket->reset_tstamp - now_tstamp;
   }
+  --bucket->remaining;
   /* @todo check for global ratelimits */
-  return 0L;
+  return delay_ms;
 }
 
 /* attempt to find a bucket associated with this route */
@@ -88,19 +92,31 @@ parse_ratelimits(struct discord_adapter *adapter, struct discord_bucket *bucket,
   }
   else if (bucket->update_tstamp <= info->req_tstamp) {
     /* fetch header individual fields */
-    struct sized_buffer reset = ua_info_header_get(info, "x-ratelimit-reset"),
-                        remaining = ua_info_header_get(info, "x-ratelimit-remaining"),
+    struct sized_buffer reset       = ua_info_header_get(info, "x-ratelimit-reset"),
+                        remaining   = ua_info_header_get(info, "x-ratelimit-remaining"),
                         reset_after = ua_info_header_get(info, "x-ratelimit-reset-after");
 
     bucket->remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1;
-    if (reset.size)
-      bucket->reset_tstamp = 1000 * strtod(reset.start, NULL); 
-    else if (reset_after.size) {
-      struct sized_buffer date = ua_info_header_get(info, "date");
 
-      /* @todo should return error if date is missing */
-      /* @todo add elapsed milliseconds since localtime */
-      u64_unix_ms_t now_tstamp = date.size ? 1000 * curl_getdate(date.start, NULL) : cee_timestamp_ms();
+    /* use the more accurate X-Ratelimit-Reset header if available,
+     * otherwise use X-Ratelimit-Reset-After */
+    if (reset.size) {
+      bucket->reset_tstamp = 1000 * strtod(reset.start, NULL); 
+    }
+    else if (reset_after.size) {
+      /* calculate the reset time with Discord's date header */
+      struct sized_buffer date = ua_info_header_get(info, "date");
+      u64_unix_ms_t       now_tstamp;
+
+      if (date.size) {
+        struct PsnipClockTimespec ts;
+        psnip_clock_wall_get_time(&ts);
+        now_tstamp = 1000 * curl_getdate(date.start, NULL) + ts.nanoseconds / 1000000;
+      }
+      else {
+        /* rely on system time to fetch current timestamp */
+        now_tstamp = cee_timestamp_ms();
+      }
       bucket->reset_tstamp = now_tstamp + 1000 * strtod(reset_after.start, NULL);
     }
 

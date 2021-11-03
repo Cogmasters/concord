@@ -26,18 +26,14 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 #include "discord.h"
 
 
-void on_ready(
-  struct discord *client, 
-  const struct discord_user *bot) 
+void on_ready(struct discord *client, const struct discord_user *bot)
 {
   log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
-void on_ping(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_message *msg)
+void on_ping(struct discord *client, const struct discord_user *bot,
+             const struct discord_message *msg)
 {
   if (msg->author->bot) return; // ignore bots
 
@@ -45,10 +41,8 @@ void on_ping(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_pong(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_pong(struct discord *client, const struct discord_user *bot,
+             const struct discord_message *msg)
 {
   if (msg->author->bot) return; // ignore bots
 
@@ -56,7 +50,7 @@ void on_pong(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-int main()
+int main(void)
 {
   struct discord *client = discord_config_init("./mybot_config.json");
 

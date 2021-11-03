@@ -528,11 +528,8 @@ ua_set_url(struct user_agent *ua, const char *base_url) {
 
 /* set specific http method used for the request */
 static void
-set_method(
-  struct user_agent *ua,
-  struct _ua_conn *conn, 
-  enum http_method method, 
-  struct sized_buffer *req_body)
+set_method(struct user_agent *ua, struct _ua_conn *conn,
+           enum http_method method, struct sized_buffer *req_body)
 {
   /* resets any preexisting CUSTOMREQUEST */
   curl_easy_setopt(conn->ehandle, CURLOPT_CUSTOMREQUEST, NULL);
@@ -612,23 +609,18 @@ send_request(struct user_agent *ua, struct _ua_conn *conn, int *httpcode)
   /* get response's url */
   curl_easy_getinfo(conn->ehandle, CURLINFO_EFFECTIVE_URL, &resp_url);
 
-  logconf_http(
-    &ua->conf, 
-    &conn->info.loginfo,
-    resp_url, 
-    (struct sized_buffer){conn->info.header.buf, conn->info.header.len},
-    (struct sized_buffer){conn->info.body.buf, conn->info.body.len},
-    "HTTP_RCV_%s(%d)", http_code_print(*httpcode), httpcode);
+  logconf_http(&ua->conf, &conn->info.loginfo, resp_url, 
+    (struct sized_buffer){ conn->info.header.buf, conn->info.header.len },
+    (struct sized_buffer){ conn->info.body.buf, conn->info.body.len },
+    "HTTP_RCV_%s(%d)", http_code_print(*httpcode), *httpcode);
   pthread_mutex_unlock(&ua->shared->lock);
 
   return ecode;
 }
 
 static ORCAcode
-perform_request(
-  struct user_agent *ua,
-  struct _ua_conn *conn, 
-  struct ua_resp_handle *resp_handle)
+perform_request(struct user_agent *ua, struct _ua_conn *conn, 
+                struct ua_resp_handle *resp_handle)
 {
   CURLcode ecode = send_request(ua, conn, &conn->info.httpcode);
   if (ecode != CURLE_OK) {
@@ -639,90 +631,65 @@ perform_request(
   /* triggers response related callbacks */
   if (conn->info.httpcode >= 500 && conn->info.httpcode < 600) {
     logconf_error(conn->conf, ANSICOLOR("SERVER ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->info.httpcode,
-        http_code_print(conn->info.httpcode),
-        http_reason_print(conn->info.httpcode),
-        conn->info.loginfo.counter);
+        conn->info.httpcode, http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode), conn->info.loginfo.counter);
 
     if (resp_handle) {
       if (resp_handle->err_cb) {
-        (*resp_handle->err_cb)(
-          conn->info.body.buf,
-          conn->info.body.len,
+        (*resp_handle->err_cb)(conn->info.body.buf, conn->info.body.len,
           resp_handle->err_obj);
       }
       else if (resp_handle->cxt_err_cb) {
-        (*resp_handle->cxt_err_cb)(
-          resp_handle->cxt,
-          conn->info.body.buf,
-          conn->info.body.len,
-          resp_handle->err_obj);
+        (*resp_handle->cxt_err_cb)(resp_handle->cxt, conn->info.body.buf,
+          conn->info.body.len, resp_handle->err_obj);
       }
     }
     return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 400) {
     logconf_error(conn->conf, ANSICOLOR("CLIENT ERROR", ANSI_FG_RED)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->info.httpcode,
-        http_code_print(conn->info.httpcode),
-        http_reason_print(conn->info.httpcode),
-        conn->info.loginfo.counter);
+        conn->info.httpcode, http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode), conn->info.loginfo.counter);
 
     if (resp_handle) {
       if(resp_handle->err_cb) {
-        (*resp_handle->err_cb)(
-          conn->info.body.buf,
-          conn->info.body.len,
+        (*resp_handle->err_cb)(conn->info.body.buf, conn->info.body.len,
           resp_handle->err_obj);
       }
       else if (resp_handle->cxt_err_cb) {
-        (*resp_handle->cxt_err_cb)(
-          resp_handle->cxt,
-          conn->info.body.buf,
-          conn->info.body.len,
-          resp_handle->err_obj);
+        (*resp_handle->cxt_err_cb)(resp_handle->cxt, conn->info.body.buf,
+          conn->info.body.len, resp_handle->err_obj);
       }
     }
     return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 300) {
     logconf_warn(conn->conf, ANSICOLOR("REDIRECTING", ANSI_FG_YELLOW)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->info.httpcode,
-        http_code_print(conn->info.httpcode),
-        http_reason_print(conn->info.httpcode),
-        conn->info.loginfo.counter);
+        conn->info.httpcode, http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode), conn->info.loginfo.counter);
     return ORCA_HTTP_CODE;
   }
   if (conn->info.httpcode >= 200) {
     logconf_info(conn->conf, ANSICOLOR("SUCCESS", ANSI_FG_GREEN)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->info.httpcode,
-        http_code_print(conn->info.httpcode),
-        http_reason_print(conn->info.httpcode),
-        conn->info.loginfo.counter);
+        conn->info.httpcode, http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode), conn->info.loginfo.counter);
 
     if (resp_handle) {
       if (resp_handle->ok_cb) {
-        (*resp_handle->ok_cb)(
-          conn->info.body.buf,
-          conn->info.body.len,
-          resp_handle->ok_obj);
+        (*resp_handle->ok_cb)(conn->info.body.buf, conn->info.body.len,
+                              resp_handle->ok_obj);
       }
       else if (resp_handle->cxt_ok_cb) {
-        (*resp_handle->cxt_ok_cb)(
-          resp_handle->cxt,
-          conn->info.body.buf,
-          conn->info.body.len,
-          resp_handle->ok_obj);
+        (*resp_handle->cxt_ok_cb)(resp_handle->cxt, conn->info.body.buf,
+                                  conn->info.body.len, resp_handle->ok_obj);
       }
     }
     return ORCA_OK;
   }
   if (conn->info.httpcode >= 100) {
     logconf_info(conn->conf, ANSICOLOR("INFO", ANSI_FG_GRAY)" (%d)%s - %s [@@@_%zu_@@@]",
-        conn->info.httpcode,
-        http_code_print(conn->info.httpcode),
-        http_reason_print(conn->info.httpcode),
-        conn->info.loginfo.counter);
+        conn->info.httpcode, http_code_print(conn->info.httpcode),
+        http_reason_print(conn->info.httpcode), conn->info.loginfo.counter);
     return conn->info.httpcode;
   }
   if (!conn->info.httpcode) {
@@ -744,12 +711,9 @@ ua_block_ms(struct user_agent *ua, const uint64_t wait_ms)
 
 /* template function for performing requests */
 ORCAcode
-ua_run(
-  struct user_agent *ua,
-  struct ua_info *info,
-  struct ua_resp_handle *resp_handle,
-  struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint[])
+ua_run(struct user_agent *ua, struct ua_info *info,
+       struct ua_resp_handle *resp_handle, struct sized_buffer *req_body,
+       enum http_method http_method, char endpoint[])
 {
   const char *method_str = http_method_print(http_method);
   static struct sized_buffer blank_req_body = {"", 0};
@@ -763,13 +727,8 @@ ua_run(
   char buf[1024]="";
   ua_reqheader_str(ua, buf, sizeof(buf));
 
-  logconf_http(
-    &ua->conf, 
-    &conn->info.loginfo,
-    conn->info.req_url.start, 
-    (struct sized_buffer){buf, sizeof(buf)},
-    *req_body,
-    "HTTP_SEND_%s", method_str);
+  logconf_http(&ua->conf, &conn->info.loginfo, conn->info.req_url.start, 
+    (struct sized_buffer){ buf, sizeof(buf) }, *req_body, "HTTP_SEND_%s", method_str);
 
   logconf_trace(conn->conf, ANSICOLOR("SEND", ANSI_FG_GREEN)" %s [@@@_%zu_@@@]", 
       method_str, conn->info.loginfo.counter);
