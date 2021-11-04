@@ -121,16 +121,16 @@ void on_designated_init(
                   .id = 625891303795982337ULL
                 }
               },
-              (void*){ NULL } // 3rd LEVEL ARRAY END
+              NULL // 3rd LEVEL ARRAY END
             },
             .placeholder = "Choose a class",
             .min_values = 1,
             .max_values = 3
           },
-          (void*){ NULL } // 2nd LEVEL ARRAY END
+          NULL // 2nd LEVEL ARRAY END
         }
       }, 
-      (void*){ NULL } // 1st LEVEL ARRAY END
+      NULL // 1st LEVEL ARRAY END
   };
 
   struct discord_create_message_params params = {

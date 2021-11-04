@@ -75,7 +75,7 @@ void on_designated_init(
         .name = "Looking for support?",
         .value = "Join our server [here](https://discord.gg/x4hhGQYu)!"
       },
-      (void*){ NULL } // END OF ARRAY
+      NULL // END OF ARRAY
     }
   };
 
