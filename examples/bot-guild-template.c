@@ -61,10 +61,38 @@ void on_bot_create_guild_template(
     ORCAcode response = discord_create_guild_template(client, message->guild_id, &params, &template);
 
     if(response == ORCA_OK) {
-        snprintf(message_buffer, 8001, "Here is some information about your new guild template:\nName: '%s'\nDescription: '%s'\nCreator Id: %"PRIu64"\n",
-                 template.name, template.description, template.creator_id);
+        snprintf(message_buffer, 8001, "Successfully synced the guild template! Here is some information about its current state guild template:\nName: '%s'\nDescription: '%s'\nCode: %s\nCreator Id: %"PRIu64"\n",
+                 template.name, template.description, template.code, template.creator_id);
     } else {
         snprintf(message_buffer, 8001, "Could not create guild template. Error: '%s'\n", discord_strerror(response, client));
+    }
+
+    struct discord_create_message_params message_params = {0};
+    message_params.content = message_buffer;
+
+    discord_create_message(client, message->channel_id, &message_params, &p_message);
+
+    if(response == ORCA_OK) {
+        discord_guild_template_cleanup(&template);
+    }
+}
+
+void on_bot_sync_guild_template(
+  struct discord *client,
+  const struct discord_user *bot,
+  const struct discord_message *message)
+{
+    char message_buffer[8001];
+    struct discord_message p_message;
+    struct discord_guild_template template;
+
+    ORCAcode response = discord_sync_guild_template(client, message->guild_id, message->content, &template);
+
+    if(response == ORCA_OK) {
+        snprintf(message_buffer, 8001, "Successfully synced the guild template! Here is some information about its current state guild template:\nName: '%s'\nDescription: '%s'\nCode: %s\nCreator Id: %"PRIu64"\n",
+                 template.name, template.description, template.code, template.creator_id);
+    } else {
+        snprintf(message_buffer, 8001, "Could not create sync template. Error: '%s'\n", discord_strerror(response, client));
     }
 
     struct discord_create_message_params message_params = {0};
@@ -94,11 +122,13 @@ int main(int argc, char *argv[])
   discord_set_prefix(client, "guild-template.");
   discord_set_on_command(client, "get", on_bot_get_guild_template);
   discord_set_on_command(client, "create", on_bot_create_guild_template);
+  discord_set_on_command(client, "sync", on_bot_sync_guild_template);
 
   printf("\n\nThis bot demonstrates how easy it is to manipulate guild"
          " template endpoints.\n"
          "1. Type 'guild-template.get <code>' to get a guild template's information\n"
          "2. Type 'guild-template.create' to create a new guild template\n"
+         "3. Type 'guild-template.sync' to sync the guild template\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 

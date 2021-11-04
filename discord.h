@@ -2451,12 +2451,27 @@ ORCAcode discord_get_guild_template(struct discord *client, char *code, struct d
  *
  * Creates a template for the guild. Requires the MANAGE_GUILD permission. Returns the created guild template object on success.
  * @param client the client created with discord_init()
- * @param guild_id the channel to the permission deleted
+ * @param guild_id the guild to create a template of
  * @param params the parameters to create the guild template
  * @param p_template the location to store the created template at
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
  */
-ORCAcode discord_create_guild_template(struct discord *client, u64_snowflake_t guild_id, struct discord_create_guild_template_params* params, struct discord_guild_template* p_template);
+ORCAcode discord_create_guild_template(struct discord *client, u64_snowflake_t guild_id, struct discord_create_guild_template_params *params, struct discord_guild_template *p_template);
+/** @} */
+
+/** @defgroup DiscordSyncGuildTemplate
+ *  @{ */
+/**
+ * @brief @b POST /guilds/{guild.id}/templates/{template.code}
+ *
+ * Syncs the template to the guild's current state. Requires the MANAGE_GUILD permission. Returns the guild template object on success.
+ * @param client the client created with discord_init()
+ * @param guild_id the guild to sync the template of
+ * @param code the identifier of the template to sync
+ * @param p_template the location to store the updated template at
+ * @return ORCAcode for how the transfer went, ORCA_OK means a successful request
+ */
+ORCAcode discord_sync_guild_template(struct discord *client, u64_snowflake_t guild_id, char *code, struct discord_guild_template *p_template);
 /** @} */
 
 #endif /* DISCORD_H */
