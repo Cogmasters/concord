@@ -66,11 +66,9 @@ discord_modify_current_user(struct discord *client,
 
 /* @todo this is a temporary solution for wrapping with JS */
 static void
-sized_buffer_from_json(char *json, size_t len, void *pp)
+sized_buffer_from_json(char *json, size_t len, void *data)
 {
-  if (!*(struct sized_buffer **)pp)
-    *(struct sized_buffer **)pp = calloc(1, sizeof(struct sized_buffer));
-  struct sized_buffer *p = *(struct sized_buffer **)pp;
+  struct sized_buffer *p = data;
   p->size = asprintf(&p->start, "%.*s", (int)len, json);
 }
 
