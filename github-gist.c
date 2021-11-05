@@ -49,7 +49,7 @@ github_create_gist(struct github *client,
   return github_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &github_gist_from_json_v,
-                              .ok_obj = &gist },
+                              .ok_obj = gist },
     &(struct sized_buffer){ payload, ret }, HTTP_POST, "/gists");
 }
 
@@ -71,7 +71,7 @@ github_get_gist(struct github *client, char *id, struct github_gist *gist)
   return github_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &github_gist_from_json_v,
-                              .ok_obj = &gist },
+                              .ok_obj = gist },
     NULL, HTTP_GET, "/gists/%s", id);
 }
 

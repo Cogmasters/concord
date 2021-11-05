@@ -63,7 +63,7 @@ struct github_user;
  *     * :code:`void github_gist_create_params_list_free(struct github_gist_create_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void github_gist_create_params_from_json(char *rbuf, size_t len, struct github_gist_create_params **)`
+ *     * :code:`void github_gist_create_params_from_json(char *rbuf, size_t len, struct github_gist_create_params *)`
  *     * :code:`void github_gist_create_params_list_from_json(char *rbuf, size_t len, struct github_gist_create_params ***)`
  *   * JSON Encoder:
 
@@ -110,7 +110,7 @@ struct github_gist_create_params {
  *     * :code:`void github_gist_list_free(struct github_gist **)`
  *   * JSON Decoder:
 
- *     * :code:`void github_gist_from_json(char *rbuf, size_t len, struct github_gist **)`
+ *     * :code:`void github_gist_from_json(char *rbuf, size_t len, struct github_gist *)`
  *     * :code:`void github_gist_list_from_json(char *rbuf, size_t len, struct github_gist ***)`
  *   * JSON Encoder:
 
@@ -173,7 +173,7 @@ struct github_gist {
  *     * :code:`void github_topic_list_free(struct github_topic **)`
  *   * JSON Decoder:
 
- *     * :code:`void github_topic_from_json(char *rbuf, size_t len, struct github_topic **)`
+ *     * :code:`void github_topic_from_json(char *rbuf, size_t len, struct github_topic *)`
  *     * :code:`void github_topic_list_from_json(char *rbuf, size_t len, struct github_topic ***)`
  *   * JSON Encoder:
 
@@ -208,7 +208,7 @@ struct github_topic {
  *     * :code:`void github_user_list_free(struct github_user **)`
  *   * JSON Decoder:
 
- *     * :code:`void github_user_from_json(char *rbuf, size_t len, struct github_user **)`
+ *     * :code:`void github_user_from_json(char *rbuf, size_t len, struct github_user *)`
  *     * :code:`void github_user_list_from_json(char *rbuf, size_t len, struct github_user ***)`
  *   * JSON Encoder:
 
@@ -308,8 +308,9 @@ extern void github_gist_create_params_cleanup_v(void *p);
 extern void github_gist_create_params_cleanup(struct github_gist_create_params *p);
 extern void github_gist_create_params_init_v(void *p);
 extern void github_gist_create_params_init(struct github_gist_create_params *p);
-extern void github_gist_create_params_from_json_v(char *json, size_t len, void *pp);
-extern void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params **pp);
+extern void github_gist_create_params_from_json_v(char *json, size_t len, void *p);
+extern void github_gist_create_params_from_json_p(char *json, size_t len, struct github_gist_create_params **pp);
+extern void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params *p);
 extern size_t github_gist_create_params_to_json_v(char *json, size_t len, void *p);
 extern size_t github_gist_create_params_to_json(char *json, size_t len, struct github_gist_create_params *p);
 extern void github_gist_create_params_list_free_v(void **p);
@@ -324,8 +325,9 @@ extern void github_gist_cleanup_v(void *p);
 extern void github_gist_cleanup(struct github_gist *p);
 extern void github_gist_init_v(void *p);
 extern void github_gist_init(struct github_gist *p);
-extern void github_gist_from_json_v(char *json, size_t len, void *pp);
-extern void github_gist_from_json(char *json, size_t len, struct github_gist **pp);
+extern void github_gist_from_json_v(char *json, size_t len, void *p);
+extern void github_gist_from_json_p(char *json, size_t len, struct github_gist **pp);
+extern void github_gist_from_json(char *json, size_t len, struct github_gist *p);
 extern size_t github_gist_to_json_v(char *json, size_t len, void *p);
 extern size_t github_gist_to_json(char *json, size_t len, struct github_gist *p);
 extern void github_gist_list_free_v(void **p);
@@ -340,8 +342,9 @@ extern void github_topic_cleanup_v(void *p);
 extern void github_topic_cleanup(struct github_topic *p);
 extern void github_topic_init_v(void *p);
 extern void github_topic_init(struct github_topic *p);
-extern void github_topic_from_json_v(char *json, size_t len, void *pp);
-extern void github_topic_from_json(char *json, size_t len, struct github_topic **pp);
+extern void github_topic_from_json_v(char *json, size_t len, void *p);
+extern void github_topic_from_json_p(char *json, size_t len, struct github_topic **pp);
+extern void github_topic_from_json(char *json, size_t len, struct github_topic *p);
 extern size_t github_topic_to_json_v(char *json, size_t len, void *p);
 extern size_t github_topic_to_json(char *json, size_t len, struct github_topic *p);
 extern void github_topic_list_free_v(void **p);
@@ -356,8 +359,9 @@ extern void github_user_cleanup_v(void *p);
 extern void github_user_cleanup(struct github_user *p);
 extern void github_user_init_v(void *p);
 extern void github_user_init(struct github_user *p);
-extern void github_user_from_json_v(char *json, size_t len, void *pp);
-extern void github_user_from_json(char *json, size_t len, struct github_user **pp);
+extern void github_user_from_json_v(char *json, size_t len, void *p);
+extern void github_user_from_json_p(char *json, size_t len, struct github_user **pp);
+extern void github_user_from_json(char *json, size_t len, struct github_user *p);
 extern size_t github_user_to_json_v(char *json, size_t len, void *p);
 extern size_t github_user_to_json(char *json, size_t len, struct github_user *p);
 extern void github_user_list_free_v(void **p);

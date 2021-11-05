@@ -126,12 +126,15 @@ size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t len, enum
 }
 
 
-void discord_role_from_json(char *json, size_t len, struct discord_role **pp)
+void discord_role_from_json_p(char *json, size_t len, struct discord_role **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_role_from_json(json, len, *pp);
+}
+void discord_role_from_json(char *json, size_t len, struct discord_role *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_role *p = *pp;
   discord_role_init(p);
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:53:20
@@ -187,7 +190,7 @@ void discord_role_from_json(char *json, size_t len, struct discord_role **pp)
                 &p->mentionable,
   /* specs/discord/permissions.json:61:20
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
-                discord_role_tags_from_json, &p->tags);
+                discord_role_tags_from_json_p, &p->tags);
   ret = r;
 }
 
@@ -303,8 +306,8 @@ void discord_role_init_v(void *p) {
   discord_role_init((struct discord_role *)p);
 }
 
-void discord_role_from_json_v(char *json, size_t len, void *pp) {
- discord_role_from_json(json, len, (struct discord_role**)pp);
+void discord_role_from_json_v(char *json, size_t len, void *p) {
+ discord_role_from_json(json, len, (struct discord_role*)p);
 }
 
 size_t discord_role_to_json_v(char *json, size_t len, void *p) {
@@ -410,12 +413,15 @@ size_t discord_role_list_to_json(char *str, size_t len, struct discord_role **p)
 }
 
 
-void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags **pp)
+void discord_role_tags_from_json_p(char *json, size_t len, struct discord_role_tags **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_role_tags_from_json(json, len, *pp);
+}
+void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_role_tags *p = *pp;
   discord_role_tags_init(p);
   r=json_extract(json, len, 
   /* specs/discord/permissions.json:71:20
@@ -491,8 +497,8 @@ void discord_role_tags_init_v(void *p) {
   discord_role_tags_init((struct discord_role_tags *)p);
 }
 
-void discord_role_tags_from_json_v(char *json, size_t len, void *pp) {
- discord_role_tags_from_json(json, len, (struct discord_role_tags**)pp);
+void discord_role_tags_from_json_v(char *json, size_t len, void *p) {
+ discord_role_tags_from_json(json, len, (struct discord_role_tags*)p);
 }
 
 size_t discord_role_tags_to_json_v(char *json, size_t len, void *p) {

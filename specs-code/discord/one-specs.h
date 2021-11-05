@@ -2609,7 +2609,7 @@ extern size_t discord_webhook_types_list_to_json(char *str, size_t len, enum dis
  *     * :code:`void discord_application_list_free(struct discord_application **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_from_json(char *rbuf, size_t len, struct discord_application **)`
+ *     * :code:`void discord_application_from_json(char *rbuf, size_t len, struct discord_application *)`
  *     * :code:`void discord_application_list_from_json(char *rbuf, size_t len, struct discord_application ***)`
  *   * JSON Encoder:
 
@@ -2700,7 +2700,7 @@ struct discord_application {
  *     * :code:`void discord_create_global_application_command_params_list_free(struct discord_create_global_application_command_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_global_application_command_params_from_json(char *rbuf, size_t len, struct discord_create_global_application_command_params **)`
+ *     * :code:`void discord_create_global_application_command_params_from_json(char *rbuf, size_t len, struct discord_create_global_application_command_params *)`
  *     * :code:`void discord_create_global_application_command_params_list_from_json(char *rbuf, size_t len, struct discord_create_global_application_command_params ***)`
  *   * JSON Encoder:
 
@@ -2752,7 +2752,7 @@ struct discord_create_global_application_command_params {
  *     * :code:`void discord_edit_global_application_command_params_list_free(struct discord_edit_global_application_command_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_global_application_command_params_from_json(char *rbuf, size_t len, struct discord_edit_global_application_command_params **)`
+ *     * :code:`void discord_edit_global_application_command_params_from_json(char *rbuf, size_t len, struct discord_edit_global_application_command_params *)`
  *     * :code:`void discord_edit_global_application_command_params_list_from_json(char *rbuf, size_t len, struct discord_edit_global_application_command_params ***)`
  *   * JSON Encoder:
 
@@ -2800,7 +2800,7 @@ struct discord_edit_global_application_command_params {
  *     * :code:`void discord_create_guild_application_command_params_list_free(struct discord_create_guild_application_command_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_application_command_params_from_json(char *rbuf, size_t len, struct discord_create_guild_application_command_params **)`
+ *     * :code:`void discord_create_guild_application_command_params_from_json(char *rbuf, size_t len, struct discord_create_guild_application_command_params *)`
  *     * :code:`void discord_create_guild_application_command_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_application_command_params ***)`
  *   * JSON Encoder:
 
@@ -2852,7 +2852,7 @@ struct discord_create_guild_application_command_params {
  *     * :code:`void discord_edit_guild_application_command_params_list_free(struct discord_edit_guild_application_command_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_guild_application_command_params_from_json(char *rbuf, size_t len, struct discord_edit_guild_application_command_params **)`
+ *     * :code:`void discord_edit_guild_application_command_params_from_json(char *rbuf, size_t len, struct discord_edit_guild_application_command_params *)`
  *     * :code:`void discord_edit_guild_application_command_params_list_from_json(char *rbuf, size_t len, struct discord_edit_guild_application_command_params ***)`
  *   * JSON Encoder:
 
@@ -2900,7 +2900,7 @@ struct discord_edit_guild_application_command_params {
  *     * :code:`void discord_edit_application_command_permissions_params_list_free(struct discord_edit_application_command_permissions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_application_command_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_application_command_permissions_params **)`
+ *     * :code:`void discord_edit_application_command_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_application_command_permissions_params *)`
  *     * :code:`void discord_edit_application_command_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_application_command_permissions_params ***)`
  *   * JSON Encoder:
 
@@ -2937,7 +2937,7 @@ struct discord_edit_application_command_permissions_params {
  *     * :code:`void discord_application_command_list_free(struct discord_application_command **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command **)`
+ *     * :code:`void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command *)`
  *     * :code:`void discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command ***)`
  *   * JSON Encoder:
 
@@ -3003,7 +3003,7 @@ struct discord_application_command {
  *     * :code:`void discord_application_command_option_list_free(struct discord_application_command_option **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option **)`
+ *     * :code:`void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option *)`
  *     * :code:`void discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option ***)`
  *   * JSON Encoder:
 
@@ -3061,7 +3061,7 @@ struct discord_application_command_option {
  *     * :code:`void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice **)`
+ *     * :code:`void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice *)`
  *     * :code:`void discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice ***)`
  *   * JSON Encoder:
 
@@ -3101,7 +3101,7 @@ struct discord_application_command_option_choice {
  *     * :code:`void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions **)`
+ *     * :code:`void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions *)`
  *     * :code:`void discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions ***)`
  *   * JSON Encoder:
 
@@ -3149,7 +3149,7 @@ struct discord_guild_application_command_permissions {
  *     * :code:`void discord_application_command_permissions_list_free(struct discord_application_command_permissions **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions **)`
+ *     * :code:`void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions *)`
  *     * :code:`void discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions ***)`
  *   * JSON Encoder:
 
@@ -3195,7 +3195,7 @@ struct discord_application_command_permissions {
  *     * :code:`void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option **)`
+ *     * :code:`void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option *)`
  *     * :code:`void discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option ***)`
  *   * JSON Encoder:
 
@@ -3241,7 +3241,7 @@ struct discord_application_command_interaction_data_option {
  *     * :code:`void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params **)`
+ *     * :code:`void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params *)`
  *     * :code:`void discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params ***)`
  *   * JSON Encoder:
 
@@ -3290,7 +3290,7 @@ struct discord_get_guild_audit_log_params {
  *     * :code:`void discord_audit_log_list_free(struct discord_audit_log **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log **)`
+ *     * :code:`void discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log *)`
  *     * :code:`void discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log ***)`
  *   * JSON Encoder:
 
@@ -3342,7 +3342,7 @@ struct discord_audit_log {
  *     * :code:`void discord_audit_log_entry_list_free(struct discord_audit_log_entry **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry **)`
+ *     * :code:`void discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry *)`
  *     * :code:`void discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry ***)`
  *   * JSON Encoder:
 
@@ -3404,7 +3404,7 @@ struct discord_audit_log_entry {
  *     * :code:`void discord_optional_audit_entry_info_list_free(struct discord_optional_audit_entry_info **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_optional_audit_entry_info_from_json(char *rbuf, size_t len, struct discord_optional_audit_entry_info **)`
+ *     * :code:`void discord_optional_audit_entry_info_from_json(char *rbuf, size_t len, struct discord_optional_audit_entry_info *)`
  *     * :code:`void discord_optional_audit_entry_info_list_from_json(char *rbuf, size_t len, struct discord_optional_audit_entry_info ***)`
  *   * JSON Encoder:
 
@@ -3468,7 +3468,7 @@ struct discord_optional_audit_entry_info {
  *     * :code:`void discord_audit_log_change_list_free(struct discord_audit_log_change **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change **)`
+ *     * :code:`void discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change *)`
  *     * :code:`void discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change ***)`
  *   * JSON Encoder:
 
@@ -3511,7 +3511,7 @@ struct discord_audit_log_change {
  *     * :code:`void discord_modify_channel_params_list_free(struct discord_modify_channel_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params **)`
+ *     * :code:`void discord_modify_channel_params_from_json(char *rbuf, size_t len, struct discord_modify_channel_params *)`
  *     * :code:`void discord_modify_channel_params_list_from_json(char *rbuf, size_t len, struct discord_modify_channel_params ***)`
  *   * JSON Encoder:
 
@@ -3605,7 +3605,7 @@ struct discord_modify_channel_params {
  *     * :code:`void discord_create_message_params_list_free(struct discord_create_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_message_params_from_json(char *rbuf, size_t len, struct discord_create_message_params **)`
+ *     * :code:`void discord_create_message_params_from_json(char *rbuf, size_t len, struct discord_create_message_params *)`
  *     * :code:`void discord_create_message_params_list_from_json(char *rbuf, size_t len, struct discord_create_message_params ***)`
  *   * JSON Encoder:
 
@@ -3671,7 +3671,7 @@ struct discord_create_message_params {
  *     * :code:`void discord_get_channel_messages_params_list_free(struct discord_get_channel_messages_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_channel_messages_params_from_json(char *rbuf, size_t len, struct discord_get_channel_messages_params **)`
+ *     * :code:`void discord_get_channel_messages_params_from_json(char *rbuf, size_t len, struct discord_get_channel_messages_params *)`
  *     * :code:`void discord_get_channel_messages_params_list_from_json(char *rbuf, size_t len, struct discord_get_channel_messages_params ***)`
  *   * JSON Encoder:
 
@@ -3717,7 +3717,7 @@ struct discord_get_channel_messages_params {
  *     * :code:`void discord_get_reactions_params_list_free(struct discord_get_reactions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params **)`
+ *     * :code:`void discord_get_reactions_params_from_json(char *rbuf, size_t len, struct discord_get_reactions_params *)`
  *     * :code:`void discord_get_reactions_params_list_from_json(char *rbuf, size_t len, struct discord_get_reactions_params ***)`
  *   * JSON Encoder:
 
@@ -3755,7 +3755,7 @@ struct discord_get_reactions_params {
  *     * :code:`void discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params **)`
+ *     * :code:`void discord_edit_channel_permissions_params_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params *)`
  *     * :code:`void discord_edit_channel_permissions_params_list_from_json(char *rbuf, size_t len, struct discord_edit_channel_permissions_params ***)`
  *   * JSON Encoder:
 
@@ -3797,7 +3797,7 @@ struct discord_edit_channel_permissions_params {
  *     * :code:`void discord_edit_message_params_list_free(struct discord_edit_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_message_params_from_json(char *rbuf, size_t len, struct discord_edit_message_params **)`
+ *     * :code:`void discord_edit_message_params_from_json(char *rbuf, size_t len, struct discord_edit_message_params *)`
  *     * :code:`void discord_edit_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_message_params ***)`
  *   * JSON Encoder:
 
@@ -3855,7 +3855,7 @@ struct discord_edit_message_params {
  *     * :code:`void discord_follow_news_channel_params_list_free(struct discord_follow_news_channel_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params **)`
+ *     * :code:`void discord_follow_news_channel_params_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params *)`
  *     * :code:`void discord_follow_news_channel_params_list_from_json(char *rbuf, size_t len, struct discord_follow_news_channel_params ***)`
  *   * JSON Encoder:
 
@@ -3889,7 +3889,7 @@ struct discord_follow_news_channel_params {
  *     * :code:`void discord_create_channel_invite_params_list_free(struct discord_create_channel_invite_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params **)`
+ *     * :code:`void discord_create_channel_invite_params_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params *)`
  *     * :code:`void discord_create_channel_invite_params_list_from_json(char *rbuf, size_t len, struct discord_create_channel_invite_params ***)`
  *   * JSON Encoder:
 
@@ -3947,7 +3947,7 @@ struct discord_create_channel_invite_params {
  *     * :code:`void discord_group_dm_add_recipient_params_list_free(struct discord_group_dm_add_recipient_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params **)`
+ *     * :code:`void discord_group_dm_add_recipient_params_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params *)`
  *     * :code:`void discord_group_dm_add_recipient_params_list_from_json(char *rbuf, size_t len, struct discord_group_dm_add_recipient_params ***)`
  *   * JSON Encoder:
 
@@ -3985,7 +3985,7 @@ struct discord_group_dm_add_recipient_params {
  *     * :code:`void discord_start_thread_with_message_params_list_free(struct discord_start_thread_with_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params **)`
+ *     * :code:`void discord_start_thread_with_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params *)`
  *     * :code:`void discord_start_thread_with_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_with_message_params ***)`
  *   * JSON Encoder:
 
@@ -4023,7 +4023,7 @@ struct discord_start_thread_with_message_params {
  *     * :code:`void discord_start_thread_without_message_params_list_free(struct discord_start_thread_without_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params **)`
+ *     * :code:`void discord_start_thread_without_message_params_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params *)`
  *     * :code:`void discord_start_thread_without_message_params_list_from_json(char *rbuf, size_t len, struct discord_start_thread_without_message_params ***)`
  *   * JSON Encoder:
 
@@ -4065,7 +4065,7 @@ struct discord_start_thread_without_message_params {
  *     * :code:`void discord_thread_response_body_list_free(struct discord_thread_response_body **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body **)`
+ *     * :code:`void discord_thread_response_body_from_json(char *rbuf, size_t len, struct discord_thread_response_body *)`
  *     * :code:`void discord_thread_response_body_list_from_json(char *rbuf, size_t len, struct discord_thread_response_body ***)`
  *   * JSON Encoder:
 
@@ -4112,7 +4112,7 @@ struct discord_thread_response_body {
  *     * :code:`void discord_channel_list_free(struct discord_channel **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_channel_from_json(char *rbuf, size_t len, struct discord_channel **)`
+ *     * :code:`void discord_channel_from_json(char *rbuf, size_t len, struct discord_channel *)`
  *     * :code:`void discord_channel_list_from_json(char *rbuf, size_t len, struct discord_channel ***)`
  *   * JSON Encoder:
 
@@ -4233,7 +4233,7 @@ struct discord_channel {
  *     * :code:`void discord_message_sticker_list_free(struct discord_message_sticker **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker **)`
+ *     * :code:`void discord_message_sticker_from_json(char *rbuf, size_t len, struct discord_message_sticker *)`
  *     * :code:`void discord_message_sticker_list_from_json(char *rbuf, size_t len, struct discord_message_sticker ***)`
  *   * JSON Encoder:
 
@@ -4300,7 +4300,7 @@ struct discord_message_sticker {
  *     * :code:`void discord_message_reference_list_free(struct discord_message_reference **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference **)`
+ *     * :code:`void discord_message_reference_from_json(char *rbuf, size_t len, struct discord_message_reference *)`
  *     * :code:`void discord_message_reference_list_from_json(char *rbuf, size_t len, struct discord_message_reference ***)`
  *   * JSON Encoder:
 
@@ -4348,7 +4348,7 @@ struct discord_message_reference {
  *     * :code:`void discord_message_application_list_free(struct discord_message_application **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application **)`
+ *     * :code:`void discord_message_application_from_json(char *rbuf, size_t len, struct discord_message_application *)`
  *     * :code:`void discord_message_application_list_from_json(char *rbuf, size_t len, struct discord_message_application ***)`
  *   * JSON Encoder:
 
@@ -4402,7 +4402,7 @@ struct discord_message_application {
  *     * :code:`void discord_message_activity_list_free(struct discord_message_activity **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity **)`
+ *     * :code:`void discord_message_activity_from_json(char *rbuf, size_t len, struct discord_message_activity *)`
  *     * :code:`void discord_message_activity_list_from_json(char *rbuf, size_t len, struct discord_message_activity ***)`
  *   * JSON Encoder:
 
@@ -4445,7 +4445,7 @@ struct discord_message_activity {
  *     * :code:`void discord_message_list_free(struct discord_message **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_from_json(char *rbuf, size_t len, struct discord_message **)`
+ *     * :code:`void discord_message_from_json(char *rbuf, size_t len, struct discord_message *)`
  *     * :code:`void discord_message_list_from_json(char *rbuf, size_t len, struct discord_message ***)`
  *   * JSON Encoder:
 
@@ -4597,7 +4597,7 @@ struct discord_message {
  *     * :code:`void discord_followed_channel_list_free(struct discord_followed_channel **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_followed_channel_from_json(char *rbuf, size_t len, struct discord_followed_channel **)`
+ *     * :code:`void discord_followed_channel_from_json(char *rbuf, size_t len, struct discord_followed_channel *)`
  *     * :code:`void discord_followed_channel_list_from_json(char *rbuf, size_t len, struct discord_followed_channel ***)`
  *   * JSON Encoder:
 
@@ -4637,7 +4637,7 @@ struct discord_followed_channel {
  *     * :code:`void discord_reaction_list_free(struct discord_reaction **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_reaction_from_json(char *rbuf, size_t len, struct discord_reaction **)`
+ *     * :code:`void discord_reaction_from_json(char *rbuf, size_t len, struct discord_reaction *)`
  *     * :code:`void discord_reaction_list_from_json(char *rbuf, size_t len, struct discord_reaction ***)`
  *   * JSON Encoder:
 
@@ -4679,7 +4679,7 @@ struct discord_reaction {
  *     * :code:`void discord_overwrite_list_free(struct discord_overwrite **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_overwrite_from_json(char *rbuf, size_t len, struct discord_overwrite **)`
+ *     * :code:`void discord_overwrite_from_json(char *rbuf, size_t len, struct discord_overwrite *)`
  *     * :code:`void discord_overwrite_list_from_json(char *rbuf, size_t len, struct discord_overwrite ***)`
  *   * JSON Encoder:
 
@@ -4729,7 +4729,7 @@ struct discord_overwrite {
  *     * :code:`void discord_thread_metadata_list_free(struct discord_thread_metadata **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata **)`
+ *     * :code:`void discord_thread_metadata_from_json(char *rbuf, size_t len, struct discord_thread_metadata *)`
  *     * :code:`void discord_thread_metadata_list_from_json(char *rbuf, size_t len, struct discord_thread_metadata ***)`
  *   * JSON Encoder:
 
@@ -4781,7 +4781,7 @@ struct discord_thread_metadata {
  *     * :code:`void discord_thread_member_list_free(struct discord_thread_member **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member **)`
+ *     * :code:`void discord_thread_member_from_json(char *rbuf, size_t len, struct discord_thread_member *)`
  *     * :code:`void discord_thread_member_list_from_json(char *rbuf, size_t len, struct discord_thread_member ***)`
  *   * JSON Encoder:
 
@@ -4829,7 +4829,7 @@ struct discord_thread_member {
  *     * :code:`void discord_attachment_list_free(struct discord_attachment **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_attachment_from_json(char *rbuf, size_t len, struct discord_attachment **)`
+ *     * :code:`void discord_attachment_from_json(char *rbuf, size_t len, struct discord_attachment *)`
  *     * :code:`void discord_attachment_list_from_json(char *rbuf, size_t len, struct discord_attachment ***)`
  *   * JSON Encoder:
 
@@ -4905,7 +4905,7 @@ struct discord_attachment {
  *     * :code:`void discord_channel_mention_list_free(struct discord_channel_mention **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention **)`
+ *     * :code:`void discord_channel_mention_from_json(char *rbuf, size_t len, struct discord_channel_mention *)`
  *     * :code:`void discord_channel_mention_list_from_json(char *rbuf, size_t len, struct discord_channel_mention ***)`
  *   * JSON Encoder:
 
@@ -4953,7 +4953,7 @@ struct discord_channel_mention {
  *     * :code:`void discord_allowed_mentions_list_free(struct discord_allowed_mentions **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_allowed_mentions **)`
+ *     * :code:`void discord_allowed_mentions_from_json(char *rbuf, size_t len, struct discord_allowed_mentions *)`
  *     * :code:`void discord_allowed_mentions_list_from_json(char *rbuf, size_t len, struct discord_allowed_mentions ***)`
  *   * JSON Encoder:
 
@@ -5001,7 +5001,7 @@ struct discord_allowed_mentions {
  *     * :code:`void discord_embed_list_free(struct discord_embed **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_from_json(char *rbuf, size_t len, struct discord_embed **)`
+ *     * :code:`void discord_embed_from_json(char *rbuf, size_t len, struct discord_embed *)`
  *     * :code:`void discord_embed_list_from_json(char *rbuf, size_t len, struct discord_embed ***)`
  *   * JSON Encoder:
 
@@ -5085,7 +5085,7 @@ struct discord_embed {
  *     * :code:`void discord_embed_thumbnail_list_free(struct discord_embed_thumbnail **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail **)`
+ *     * :code:`void discord_embed_thumbnail_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail *)`
  *     * :code:`void discord_embed_thumbnail_list_from_json(char *rbuf, size_t len, struct discord_embed_thumbnail ***)`
  *   * JSON Encoder:
 
@@ -5133,7 +5133,7 @@ struct discord_embed_thumbnail {
  *     * :code:`void discord_embed_video_list_free(struct discord_embed_video **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video **)`
+ *     * :code:`void discord_embed_video_from_json(char *rbuf, size_t len, struct discord_embed_video *)`
  *     * :code:`void discord_embed_video_list_from_json(char *rbuf, size_t len, struct discord_embed_video ***)`
  *   * JSON Encoder:
 
@@ -5181,7 +5181,7 @@ struct discord_embed_video {
  *     * :code:`void discord_embed_image_list_free(struct discord_embed_image **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image **)`
+ *     * :code:`void discord_embed_image_from_json(char *rbuf, size_t len, struct discord_embed_image *)`
  *     * :code:`void discord_embed_image_list_from_json(char *rbuf, size_t len, struct discord_embed_image ***)`
  *   * JSON Encoder:
 
@@ -5229,7 +5229,7 @@ struct discord_embed_image {
  *     * :code:`void discord_embed_provider_list_free(struct discord_embed_provider **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider **)`
+ *     * :code:`void discord_embed_provider_from_json(char *rbuf, size_t len, struct discord_embed_provider *)`
  *     * :code:`void discord_embed_provider_list_from_json(char *rbuf, size_t len, struct discord_embed_provider ***)`
  *   * JSON Encoder:
 
@@ -5269,7 +5269,7 @@ struct discord_embed_provider {
  *     * :code:`void discord_embed_author_list_free(struct discord_embed_author **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author **)`
+ *     * :code:`void discord_embed_author_from_json(char *rbuf, size_t len, struct discord_embed_author *)`
  *     * :code:`void discord_embed_author_list_from_json(char *rbuf, size_t len, struct discord_embed_author ***)`
  *   * JSON Encoder:
 
@@ -5317,7 +5317,7 @@ struct discord_embed_author {
  *     * :code:`void discord_embed_footer_list_free(struct discord_embed_footer **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer **)`
+ *     * :code:`void discord_embed_footer_from_json(char *rbuf, size_t len, struct discord_embed_footer *)`
  *     * :code:`void discord_embed_footer_list_from_json(char *rbuf, size_t len, struct discord_embed_footer ***)`
  *   * JSON Encoder:
 
@@ -5361,7 +5361,7 @@ struct discord_embed_footer {
  *     * :code:`void discord_embed_field_list_free(struct discord_embed_field **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field **)`
+ *     * :code:`void discord_embed_field_from_json(char *rbuf, size_t len, struct discord_embed_field *)`
  *     * :code:`void discord_embed_field_list_from_json(char *rbuf, size_t len, struct discord_embed_field ***)`
  *   * JSON Encoder:
 
@@ -5404,7 +5404,7 @@ struct discord_embed_field {
  *     * :code:`void discord_create_guild_emoji_params_list_free(struct discord_create_guild_emoji_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params **)`
+ *     * :code:`void discord_create_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params *)`
  *     * :code:`void discord_create_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_emoji_params ***)`
  *   * JSON Encoder:
 
@@ -5446,7 +5446,7 @@ struct discord_create_guild_emoji_params {
  *     * :code:`void discord_modify_guild_emoji_params_list_free(struct discord_modify_guild_emoji_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params **)`
+ *     * :code:`void discord_modify_guild_emoji_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params *)`
  *     * :code:`void discord_modify_guild_emoji_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_emoji_params ***)`
  *   * JSON Encoder:
 
@@ -5487,7 +5487,7 @@ struct discord_modify_guild_emoji_params {
  *     * :code:`void discord_emoji_list_free(struct discord_emoji **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji **)`
+ *     * :code:`void discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji *)`
  *     * :code:`void discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji ***)`
  *   * JSON Encoder:
 
@@ -5560,7 +5560,7 @@ struct discord_emoji {
  *     * :code:`void discord_identify_list_free(struct discord_identify **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_identify_from_json(char *rbuf, size_t len, struct discord_identify **)`
+ *     * :code:`void discord_identify_from_json(char *rbuf, size_t len, struct discord_identify *)`
  *     * :code:`void discord_identify_list_from_json(char *rbuf, size_t len, struct discord_identify ***)`
  *   * JSON Encoder:
 
@@ -5624,7 +5624,7 @@ struct discord_identify {
  *     * :code:`void discord_voice_state_status_list_free(struct discord_voice_state_status **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_voice_state_status_from_json(char *rbuf, size_t len, struct discord_voice_state_status **)`
+ *     * :code:`void discord_voice_state_status_from_json(char *rbuf, size_t len, struct discord_voice_state_status *)`
  *     * :code:`void discord_voice_state_status_list_from_json(char *rbuf, size_t len, struct discord_voice_state_status ***)`
  *   * JSON Encoder:
 
@@ -5672,7 +5672,7 @@ struct discord_voice_state_status {
  *     * :code:`void discord_presence_status_list_free(struct discord_presence_status **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_presence_status_from_json(char *rbuf, size_t len, struct discord_presence_status **)`
+ *     * :code:`void discord_presence_status_from_json(char *rbuf, size_t len, struct discord_presence_status *)`
  *     * :code:`void discord_presence_status_list_from_json(char *rbuf, size_t len, struct discord_presence_status ***)`
  *   * JSON Encoder:
 
@@ -5720,7 +5720,7 @@ struct discord_presence_status {
  *     * :code:`void discord_identify_connection_list_free(struct discord_identify_connection **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_identify_connection_from_json(char *rbuf, size_t len, struct discord_identify_connection **)`
+ *     * :code:`void discord_identify_connection_from_json(char *rbuf, size_t len, struct discord_identify_connection *)`
  *     * :code:`void discord_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_identify_connection ***)`
  *   * JSON Encoder:
 
@@ -5764,7 +5764,7 @@ struct discord_identify_connection {
  *     * :code:`void discord_activity_list_free(struct discord_activity **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_activity_from_json(char *rbuf, size_t len, struct discord_activity **)`
+ *     * :code:`void discord_activity_from_json(char *rbuf, size_t len, struct discord_activity *)`
  *     * :code:`void discord_activity_list_from_json(char *rbuf, size_t len, struct discord_activity ***)`
  *   * JSON Encoder:
 
@@ -5830,7 +5830,7 @@ struct discord_activity {
  *     * :code:`void discord_session_start_limit_list_free(struct discord_session_start_limit **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_session_start_limit_from_json(char *rbuf, size_t len, struct discord_session_start_limit **)`
+ *     * :code:`void discord_session_start_limit_from_json(char *rbuf, size_t len, struct discord_session_start_limit *)`
  *     * :code:`void discord_session_start_limit_list_from_json(char *rbuf, size_t len, struct discord_session_start_limit ***)`
  *   * JSON Encoder:
 
@@ -5877,7 +5877,7 @@ struct discord_session_start_limit {
  *     * :code:`void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params **)`
+ *     * :code:`void discord_create_guild_from_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params *)`
  *     * :code:`void discord_create_guild_from_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_from_guild_template_params ***)`
  *   * JSON Encoder:
 
@@ -5915,7 +5915,7 @@ struct discord_create_guild_from_guild_template_params {
  *     * :code:`void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params **)`
+ *     * :code:`void discord_create_guild_template_params_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params *)`
  *     * :code:`void discord_create_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_template_params ***)`
  *   * JSON Encoder:
 
@@ -5953,7 +5953,7 @@ struct discord_create_guild_template_params {
  *     * :code:`void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params **)`
+ *     * :code:`void discord_modify_guild_template_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params *)`
  *     * :code:`void discord_modify_guild_template_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_template_params ***)`
  *   * JSON Encoder:
 
@@ -5994,7 +5994,7 @@ struct discord_modify_guild_template_params {
  *     * :code:`void discord_guild_template_list_free(struct discord_guild_template **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template **)`
+ *     * :code:`void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template *)`
  *     * :code:`void discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template ***)`
  *   * JSON Encoder:
 
@@ -6069,7 +6069,7 @@ struct discord_guild_template {
  *     * :code:`void discord_create_guild_params_list_free(struct discord_create_guild_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params **)`
+ *     * :code:`void discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params *)`
  *     * :code:`void discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params ***)`
  *   * JSON Encoder:
 
@@ -6143,7 +6143,7 @@ struct discord_create_guild_params {
  *     * :code:`void discord_modify_guild_params_list_free(struct discord_modify_guild_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params **)`
+ *     * :code:`void discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params *)`
  *     * :code:`void discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params ***)`
  *   * JSON Encoder:
 
@@ -6249,7 +6249,7 @@ struct discord_modify_guild_params {
  *     * :code:`void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params **)`
+ *     * :code:`void discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params *)`
  *     * :code:`void discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params ***)`
  *   * JSON Encoder:
 
@@ -6319,7 +6319,7 @@ struct discord_create_guild_channel_params {
  *     * :code:`void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params **)`
+ *     * :code:`void discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params *)`
  *     * :code:`void discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params ***)`
  *   * JSON Encoder:
 
@@ -6365,7 +6365,7 @@ struct discord_modify_guild_channel_positions_params {
  *     * :code:`void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_list_guild_members_params_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params **)`
+ *     * :code:`void discord_list_guild_members_params_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params *)`
  *     * :code:`void discord_list_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params ***)`
  *   * JSON Encoder:
 
@@ -6403,7 +6403,7 @@ struct discord_list_guild_members_params {
  *     * :code:`void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params **)`
+ *     * :code:`void discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params *)`
  *     * :code:`void discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params ***)`
  *   * JSON Encoder:
 
@@ -6441,7 +6441,7 @@ struct discord_search_guild_members_params {
  *     * :code:`void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params **)`
+ *     * :code:`void discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params *)`
  *     * :code:`void discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params ***)`
  *   * JSON Encoder:
 
@@ -6491,7 +6491,7 @@ struct discord_add_guild_member_params {
  *     * :code:`void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params **)`
+ *     * :code:`void discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params *)`
  *     * :code:`void discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params ***)`
  *   * JSON Encoder:
 
@@ -6541,7 +6541,7 @@ struct discord_modify_guild_member_params {
  *     * :code:`void discord_modify_current_member_params_list_free(struct discord_modify_current_member_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_current_member_params_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params **)`
+ *     * :code:`void discord_modify_current_member_params_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params *)`
  *     * :code:`void discord_modify_current_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params ***)`
  *   * JSON Encoder:
 
@@ -6575,7 +6575,7 @@ struct discord_modify_current_member_params {
  *     * :code:`void discord_modify_current_user_nick_params_list_free(struct discord_modify_current_user_nick_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_current_user_nick_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params **)`
+ *     * :code:`void discord_modify_current_user_nick_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params *)`
  *     * :code:`void discord_modify_current_user_nick_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params ***)`
  *   * JSON Encoder:
 
@@ -6609,7 +6609,7 @@ struct discord_modify_current_user_nick_params {
  *     * :code:`void discord_create_guild_ban_params_list_free(struct discord_create_guild_ban_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_ban_params_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params **)`
+ *     * :code:`void discord_create_guild_ban_params_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params *)`
  *     * :code:`void discord_create_guild_ban_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params ***)`
  *   * JSON Encoder:
 
@@ -6647,7 +6647,7 @@ struct discord_create_guild_ban_params {
  *     * :code:`void discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params **)`
+ *     * :code:`void discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params *)`
  *     * :code:`void discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params ***)`
  *   * JSON Encoder:
 
@@ -6697,7 +6697,7 @@ struct discord_create_guild_role_params {
  *     * :code:`void discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params **)`
+ *     * :code:`void discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params *)`
  *     * :code:`void discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params ***)`
  *   * JSON Encoder:
 
@@ -6735,7 +6735,7 @@ struct discord_modify_guild_role_positions_params {
  *     * :code:`void discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params **)`
+ *     * :code:`void discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params *)`
  *     * :code:`void discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params ***)`
  *   * JSON Encoder:
 
@@ -6785,7 +6785,7 @@ struct discord_modify_guild_role_params {
  *     * :code:`void discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params **)`
+ *     * :code:`void discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params *)`
  *     * :code:`void discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params ***)`
  *   * JSON Encoder:
 
@@ -6823,7 +6823,7 @@ struct discord_get_guild_prune_count_params {
  *     * :code:`void discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params **)`
+ *     * :code:`void discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params *)`
  *     * :code:`void discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params ***)`
  *   * JSON Encoder:
 
@@ -6872,7 +6872,7 @@ struct discord_begin_guild_prune_params {
  *     * :code:`void discord_guild_list_free(struct discord_guild **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_from_json(char *rbuf, size_t len, struct discord_guild **)`
+ *     * :code:`void discord_guild_from_json(char *rbuf, size_t len, struct discord_guild *)`
  *     * :code:`void discord_guild_list_from_json(char *rbuf, size_t len, struct discord_guild ***)`
  *   * JSON Encoder:
 
@@ -7106,7 +7106,7 @@ struct discord_guild {
  *     * :code:`void discord_unavailable_guild_list_free(struct discord_unavailable_guild **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_unavailable_guild_from_json(char *rbuf, size_t len, struct discord_unavailable_guild **)`
+ *     * :code:`void discord_unavailable_guild_from_json(char *rbuf, size_t len, struct discord_unavailable_guild *)`
  *     * :code:`void discord_unavailable_guild_list_from_json(char *rbuf, size_t len, struct discord_unavailable_guild ***)`
  *   * JSON Encoder:
 
@@ -7146,7 +7146,7 @@ struct discord_unavailable_guild {
  *     * :code:`void discord_guild_preview_list_free(struct discord_guild_preview **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview **)`
+ *     * :code:`void discord_guild_preview_from_json(char *rbuf, size_t len, struct discord_guild_preview *)`
  *     * :code:`void discord_guild_preview_list_from_json(char *rbuf, size_t len, struct discord_guild_preview ***)`
  *   * JSON Encoder:
 
@@ -7218,7 +7218,7 @@ struct discord_guild_preview {
  *     * :code:`void discord_guild_widget_list_free(struct discord_guild_widget **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget **)`
+ *     * :code:`void discord_guild_widget_from_json(char *rbuf, size_t len, struct discord_guild_widget *)`
  *     * :code:`void discord_guild_widget_list_from_json(char *rbuf, size_t len, struct discord_guild_widget ***)`
  *   * JSON Encoder:
 
@@ -7258,7 +7258,7 @@ struct discord_guild_widget {
  *     * :code:`void discord_guild_member_list_free(struct discord_guild_member **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member **)`
+ *     * :code:`void discord_guild_member_from_json(char *rbuf, size_t len, struct discord_guild_member *)`
  *     * :code:`void discord_guild_member_list_from_json(char *rbuf, size_t len, struct discord_guild_member ***)`
  *   * JSON Encoder:
 
@@ -7326,7 +7326,7 @@ struct discord_guild_member {
  *     * :code:`void discord_integration_list_free(struct discord_integration **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_integration_from_json(char *rbuf, size_t len, struct discord_integration **)`
+ *     * :code:`void discord_integration_from_json(char *rbuf, size_t len, struct discord_integration *)`
  *     * :code:`void discord_integration_list_from_json(char *rbuf, size_t len, struct discord_integration ***)`
  *   * JSON Encoder:
 
@@ -7420,7 +7420,7 @@ struct discord_integration {
  *     * :code:`void discord_integration_account_list_free(struct discord_integration_account **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_integration_account_from_json(char *rbuf, size_t len, struct discord_integration_account **)`
+ *     * :code:`void discord_integration_account_from_json(char *rbuf, size_t len, struct discord_integration_account *)`
  *     * :code:`void discord_integration_account_list_from_json(char *rbuf, size_t len, struct discord_integration_account ***)`
  *   * JSON Encoder:
 
@@ -7460,7 +7460,7 @@ struct discord_integration_account {
  *     * :code:`void discord_integration_application_list_free(struct discord_integration_application **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_integration_application_from_json(char *rbuf, size_t len, struct discord_integration_application **)`
+ *     * :code:`void discord_integration_application_from_json(char *rbuf, size_t len, struct discord_integration_application *)`
  *     * :code:`void discord_integration_application_list_from_json(char *rbuf, size_t len, struct discord_integration_application ***)`
  *   * JSON Encoder:
 
@@ -7516,7 +7516,7 @@ struct discord_integration_application {
  *     * :code:`void discord_ban_list_free(struct discord_ban **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_ban_from_json(char *rbuf, size_t len, struct discord_ban **)`
+ *     * :code:`void discord_ban_from_json(char *rbuf, size_t len, struct discord_ban *)`
  *     * :code:`void discord_ban_list_from_json(char *rbuf, size_t len, struct discord_ban ***)`
  *   * JSON Encoder:
 
@@ -7556,7 +7556,7 @@ struct discord_ban {
  *     * :code:`void discord_welcome_screen_list_free(struct discord_welcome_screen **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_welcome_screen_from_json(char *rbuf, size_t len, struct discord_welcome_screen **)`
+ *     * :code:`void discord_welcome_screen_from_json(char *rbuf, size_t len, struct discord_welcome_screen *)`
  *     * :code:`void discord_welcome_screen_list_from_json(char *rbuf, size_t len, struct discord_welcome_screen ***)`
  *   * JSON Encoder:
 
@@ -7596,7 +7596,7 @@ struct discord_welcome_screen {
  *     * :code:`void discord_welcome_screen_channel_list_free(struct discord_welcome_screen_channel **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_welcome_screen_channel **)`
+ *     * :code:`void discord_welcome_screen_channel_from_json(char *rbuf, size_t len, struct discord_welcome_screen_channel *)`
  *     * :code:`void discord_welcome_screen_channel_list_from_json(char *rbuf, size_t len, struct discord_welcome_screen_channel ***)`
  *   * JSON Encoder:
 
@@ -7643,7 +7643,7 @@ struct discord_welcome_screen_channel {
  *     * :code:`void discord_edit_original_interaction_response_params_list_free(struct discord_edit_original_interaction_response_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_original_interaction_response_params_from_json(char *rbuf, size_t len, struct discord_edit_original_interaction_response_params **)`
+ *     * :code:`void discord_edit_original_interaction_response_params_from_json(char *rbuf, size_t len, struct discord_edit_original_interaction_response_params *)`
  *     * :code:`void discord_edit_original_interaction_response_params_list_from_json(char *rbuf, size_t len, struct discord_edit_original_interaction_response_params ***)`
  *   * JSON Encoder:
 
@@ -7697,7 +7697,7 @@ struct discord_edit_original_interaction_response_params {
  *     * :code:`void discord_create_followup_message_params_list_free(struct discord_create_followup_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_followup_message_params_from_json(char *rbuf, size_t len, struct discord_create_followup_message_params **)`
+ *     * :code:`void discord_create_followup_message_params_from_json(char *rbuf, size_t len, struct discord_create_followup_message_params *)`
  *     * :code:`void discord_create_followup_message_params_list_from_json(char *rbuf, size_t len, struct discord_create_followup_message_params ***)`
  *   * JSON Encoder:
 
@@ -7775,7 +7775,7 @@ struct discord_create_followup_message_params {
  *     * :code:`void discord_edit_followup_message_params_list_free(struct discord_edit_followup_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_followup_message_params_from_json(char *rbuf, size_t len, struct discord_edit_followup_message_params **)`
+ *     * :code:`void discord_edit_followup_message_params_from_json(char *rbuf, size_t len, struct discord_edit_followup_message_params *)`
  *     * :code:`void discord_edit_followup_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_followup_message_params ***)`
  *   * JSON Encoder:
 
@@ -7832,7 +7832,7 @@ struct discord_edit_followup_message_params {
  *     * :code:`void discord_interaction_list_free(struct discord_interaction **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction **)`
+ *     * :code:`void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction *)`
  *     * :code:`void discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction ***)`
  *   * JSON Encoder:
 
@@ -7906,7 +7906,7 @@ struct discord_interaction {
  *     * :code:`void discord_interaction_data_list_free(struct discord_interaction_data **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_data_from_json(char *rbuf, size_t len, struct discord_interaction_data **)`
+ *     * :code:`void discord_interaction_data_from_json(char *rbuf, size_t len, struct discord_interaction_data *)`
  *     * :code:`void discord_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_data ***)`
  *   * JSON Encoder:
 
@@ -7970,7 +7970,7 @@ struct discord_interaction_data {
  *     * :code:`void discord_resolved_data_list_free(struct discord_resolved_data **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_resolved_data_from_json(char *rbuf, size_t len, struct discord_resolved_data **)`
+ *     * :code:`void discord_resolved_data_from_json(char *rbuf, size_t len, struct discord_resolved_data *)`
  *     * :code:`void discord_resolved_data_list_from_json(char *rbuf, size_t len, struct discord_resolved_data ***)`
  *   * JSON Encoder:
 
@@ -8022,7 +8022,7 @@ struct discord_resolved_data {
  *     * :code:`void discord_message_interaction_list_free(struct discord_message_interaction **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction **)`
+ *     * :code:`void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction *)`
  *     * :code:`void discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction ***)`
  *   * JSON Encoder:
 
@@ -8070,7 +8070,7 @@ struct discord_message_interaction {
  *     * :code:`void discord_interaction_response_list_free(struct discord_interaction_response **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response **)`
+ *     * :code:`void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response *)`
  *     * :code:`void discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response ***)`
  *   * JSON Encoder:
 
@@ -8112,7 +8112,7 @@ struct discord_interaction_response {
  *     * :code:`void discord_interaction_callback_data_list_free(struct discord_interaction_callback_data **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_callback_data **)`
+ *     * :code:`void discord_interaction_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_callback_data *)`
  *     * :code:`void discord_interaction_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_callback_data ***)`
  *   * JSON Encoder:
 
@@ -8173,7 +8173,7 @@ struct discord_interaction_callback_data {
  *     * :code:`void discord_get_invite_params_list_free(struct discord_get_invite_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params **)`
+ *     * :code:`void discord_get_invite_params_from_json(char *rbuf, size_t len, struct discord_get_invite_params *)`
  *     * :code:`void discord_get_invite_params_list_from_json(char *rbuf, size_t len, struct discord_get_invite_params ***)`
  *   * JSON Encoder:
 
@@ -8216,7 +8216,7 @@ struct discord_get_invite_params {
  *     * :code:`void discord_invite_list_free(struct discord_invite **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_invite_from_json(char *rbuf, size_t len, struct discord_invite **)`
+ *     * :code:`void discord_invite_from_json(char *rbuf, size_t len, struct discord_invite *)`
  *     * :code:`void discord_invite_list_from_json(char *rbuf, size_t len, struct discord_invite ***)`
  *   * JSON Encoder:
 
@@ -8280,7 +8280,7 @@ struct discord_invite {
  *     * :code:`void discord_invite_metadata_list_free(struct discord_invite_metadata **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata **)`
+ *     * :code:`void discord_invite_metadata_from_json(char *rbuf, size_t len, struct discord_invite_metadata *)`
  *     * :code:`void discord_invite_metadata_list_from_json(char *rbuf, size_t len, struct discord_invite_metadata ***)`
  *   * JSON Encoder:
 
@@ -8333,7 +8333,7 @@ struct discord_invite_metadata {
  *     * :code:`void discord_component_list_free(struct discord_component **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_component_from_json(char *rbuf, size_t len, struct discord_component **)`
+ *     * :code:`void discord_component_from_json(char *rbuf, size_t len, struct discord_component *)`
  *     * :code:`void discord_component_list_from_json(char *rbuf, size_t len, struct discord_component ***)`
  *   * JSON Encoder:
 
@@ -8415,7 +8415,7 @@ struct discord_component {
  *     * :code:`void discord_button_list_free(struct discord_button **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_button_from_json(char *rbuf, size_t len, struct discord_button **)`
+ *     * :code:`void discord_button_from_json(char *rbuf, size_t len, struct discord_button *)`
  *     * :code:`void discord_button_list_from_json(char *rbuf, size_t len, struct discord_button ***)`
  *   * JSON Encoder:
 
@@ -8477,7 +8477,7 @@ struct discord_button {
  *     * :code:`void discord_select_menu_list_free(struct discord_select_menu **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu **)`
+ *     * :code:`void discord_select_menu_from_json(char *rbuf, size_t len, struct discord_select_menu *)`
  *     * :code:`void discord_select_menu_list_from_json(char *rbuf, size_t len, struct discord_select_menu ***)`
  *   * JSON Encoder:
 
@@ -8537,7 +8537,7 @@ struct discord_select_menu {
  *     * :code:`void discord_select_option_list_free(struct discord_select_option **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option **)`
+ *     * :code:`void discord_select_option_from_json(char *rbuf, size_t len, struct discord_select_option *)`
  *     * :code:`void discord_select_option_list_from_json(char *rbuf, size_t len, struct discord_select_option ***)`
  *   * JSON Encoder:
 
@@ -8592,7 +8592,7 @@ struct discord_select_option {
  *     * :code:`void discord_role_list_free(struct discord_role **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_role_from_json(char *rbuf, size_t len, struct discord_role **)`
+ *     * :code:`void discord_role_from_json(char *rbuf, size_t len, struct discord_role *)`
  *     * :code:`void discord_role_list_from_json(char *rbuf, size_t len, struct discord_role ***)`
  *   * JSON Encoder:
 
@@ -8660,7 +8660,7 @@ struct discord_role {
  *     * :code:`void discord_role_tags_list_free(struct discord_role_tags **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_role_tags_from_json(char *rbuf, size_t len, struct discord_role_tags **)`
+ *     * :code:`void discord_role_tags_from_json(char *rbuf, size_t len, struct discord_role_tags *)`
  *     * :code:`void discord_role_tags_list_from_json(char *rbuf, size_t len, struct discord_role_tags ***)`
  *   * JSON Encoder:
 
@@ -8703,7 +8703,7 @@ struct discord_role_tags {
  *     * :code:`void discord_create_stage_instance_params_list_free(struct discord_create_stage_instance_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_stage_instance_params_from_json(char *rbuf, size_t len, struct discord_create_stage_instance_params **)`
+ *     * :code:`void discord_create_stage_instance_params_from_json(char *rbuf, size_t len, struct discord_create_stage_instance_params *)`
  *     * :code:`void discord_create_stage_instance_params_list_from_json(char *rbuf, size_t len, struct discord_create_stage_instance_params ***)`
  *   * JSON Encoder:
 
@@ -8745,7 +8745,7 @@ struct discord_create_stage_instance_params {
  *     * :code:`void discord_modify_stage_instance_params_list_free(struct discord_modify_stage_instance_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_stage_instance_params_from_json(char *rbuf, size_t len, struct discord_modify_stage_instance_params **)`
+ *     * :code:`void discord_modify_stage_instance_params_from_json(char *rbuf, size_t len, struct discord_modify_stage_instance_params *)`
  *     * :code:`void discord_modify_stage_instance_params_list_from_json(char *rbuf, size_t len, struct discord_modify_stage_instance_params ***)`
  *   * JSON Encoder:
 
@@ -8786,7 +8786,7 @@ struct discord_modify_stage_instance_params {
  *     * :code:`void discord_stage_instance_list_free(struct discord_stage_instance **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_stage_instance_from_json(char *rbuf, size_t len, struct discord_stage_instance **)`
+ *     * :code:`void discord_stage_instance_from_json(char *rbuf, size_t len, struct discord_stage_instance *)`
  *     * :code:`void discord_stage_instance_list_from_json(char *rbuf, size_t len, struct discord_stage_instance ***)`
  *   * JSON Encoder:
 
@@ -8841,7 +8841,7 @@ struct discord_stage_instance {
  *     * :code:`void discord_list_nitro_sticker_packs_response_list_free(struct discord_list_nitro_sticker_packs_response **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_list_nitro_sticker_packs_response_from_json(char *rbuf, size_t len, struct discord_list_nitro_sticker_packs_response **)`
+ *     * :code:`void discord_list_nitro_sticker_packs_response_from_json(char *rbuf, size_t len, struct discord_list_nitro_sticker_packs_response *)`
  *     * :code:`void discord_list_nitro_sticker_packs_response_list_from_json(char *rbuf, size_t len, struct discord_list_nitro_sticker_packs_response ***)`
  *   * JSON Encoder:
 
@@ -8875,7 +8875,7 @@ struct discord_list_nitro_sticker_packs_response {
  *     * :code:`void discord_create_guild_sticker_params_list_free(struct discord_create_guild_sticker_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_sticker_params_from_json(char *rbuf, size_t len, struct discord_create_guild_sticker_params **)`
+ *     * :code:`void discord_create_guild_sticker_params_from_json(char *rbuf, size_t len, struct discord_create_guild_sticker_params *)`
  *     * :code:`void discord_create_guild_sticker_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_sticker_params ***)`
  *   * JSON Encoder:
 
@@ -8921,7 +8921,7 @@ struct discord_create_guild_sticker_params {
  *     * :code:`void discord_modify_guild_sticker_params_list_free(struct discord_modify_guild_sticker_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_sticker_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_sticker_params **)`
+ *     * :code:`void discord_modify_guild_sticker_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_sticker_params *)`
  *     * :code:`void discord_modify_guild_sticker_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_sticker_params ***)`
  *   * JSON Encoder:
 
@@ -8968,7 +8968,7 @@ struct discord_modify_guild_sticker_params {
  *     * :code:`void discord_sticker_list_free(struct discord_sticker **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_sticker_from_json(char *rbuf, size_t len, struct discord_sticker **)`
+ *     * :code:`void discord_sticker_from_json(char *rbuf, size_t len, struct discord_sticker *)`
  *     * :code:`void discord_sticker_list_from_json(char *rbuf, size_t len, struct discord_sticker ***)`
  *   * JSON Encoder:
 
@@ -9046,7 +9046,7 @@ struct discord_sticker {
  *     * :code:`void discord_sticker_item_list_free(struct discord_sticker_item **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_sticker_item_from_json(char *rbuf, size_t len, struct discord_sticker_item **)`
+ *     * :code:`void discord_sticker_item_from_json(char *rbuf, size_t len, struct discord_sticker_item *)`
  *     * :code:`void discord_sticker_item_list_from_json(char *rbuf, size_t len, struct discord_sticker_item ***)`
  *   * JSON Encoder:
 
@@ -9088,7 +9088,7 @@ struct discord_sticker_item {
  *     * :code:`void discord_sticker_pack_list_free(struct discord_sticker_pack **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_sticker_pack_from_json(char *rbuf, size_t len, struct discord_sticker_pack **)`
+ *     * :code:`void discord_sticker_pack_from_json(char *rbuf, size_t len, struct discord_sticker_pack *)`
  *     * :code:`void discord_sticker_pack_list_from_json(char *rbuf, size_t len, struct discord_sticker_pack ***)`
  *   * JSON Encoder:
 
@@ -9147,7 +9147,7 @@ struct discord_sticker_pack {
  *     * :code:`void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params **)`
+ *     * :code:`void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params *)`
  *     * :code:`void discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params ***)`
  *   * JSON Encoder:
 
@@ -9185,7 +9185,7 @@ struct discord_modify_current_user_params {
  *     * :code:`void discord_create_dm_params_list_free(struct discord_create_dm_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_dm_params_from_json(char *rbuf, size_t len, struct discord_create_dm_params **)`
+ *     * :code:`void discord_create_dm_params_from_json(char *rbuf, size_t len, struct discord_create_dm_params *)`
  *     * :code:`void discord_create_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_dm_params ***)`
  *   * JSON Encoder:
 
@@ -9219,7 +9219,7 @@ struct discord_create_dm_params {
  *     * :code:`void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params **)`
+ *     * :code:`void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params *)`
  *     * :code:`void discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params ***)`
  *   * JSON Encoder:
 
@@ -9264,7 +9264,7 @@ struct discord_create_group_dm_params {
  *     * :code:`void discord_user_list_free(struct discord_user **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_user_from_json(char *rbuf, size_t len, struct discord_user **)`
+ *     * :code:`void discord_user_from_json(char *rbuf, size_t len, struct discord_user *)`
  *     * :code:`void discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***)`
  *   * JSON Encoder:
 
@@ -9354,7 +9354,7 @@ struct discord_user {
  *     * :code:`void discord_connection_list_free(struct discord_connection **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **)`
+ *     * :code:`void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection *)`
  *     * :code:`void discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***)`
  *   * JSON Encoder:
 
@@ -9430,7 +9430,7 @@ struct discord_connection {
  *     * :code:`void discord_voice_state_list_free(struct discord_voice_state **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state **)`
+ *     * :code:`void discord_voice_state_from_json(char *rbuf, size_t len, struct discord_voice_state *)`
  *     * :code:`void discord_voice_state_list_from_json(char *rbuf, size_t len, struct discord_voice_state ***)`
  *   * JSON Encoder:
 
@@ -9510,7 +9510,7 @@ struct discord_voice_state {
  *     * :code:`void discord_voice_region_list_free(struct discord_voice_region **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region **)`
+ *     * :code:`void discord_voice_region_from_json(char *rbuf, size_t len, struct discord_voice_region *)`
  *     * :code:`void discord_voice_region_list_from_json(char *rbuf, size_t len, struct discord_voice_region ***)`
  *   * JSON Encoder:
 
@@ -9565,7 +9565,7 @@ struct discord_voice_region {
  *     * :code:`void discord_create_webhook_params_list_free(struct discord_create_webhook_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params **)`
+ *     * :code:`void discord_create_webhook_params_from_json(char *rbuf, size_t len, struct discord_create_webhook_params *)`
  *     * :code:`void discord_create_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_create_webhook_params ***)`
  *   * JSON Encoder:
 
@@ -9603,7 +9603,7 @@ struct discord_create_webhook_params {
  *     * :code:`void discord_modify_webhook_params_list_free(struct discord_modify_webhook_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params **)`
+ *     * :code:`void discord_modify_webhook_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params *)`
  *     * :code:`void discord_modify_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_params ***)`
  *   * JSON Encoder:
 
@@ -9645,7 +9645,7 @@ struct discord_modify_webhook_params {
  *     * :code:`void discord_modify_webhook_with_token_params_list_free(struct discord_modify_webhook_with_token_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_webhook_with_token_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_with_token_params **)`
+ *     * :code:`void discord_modify_webhook_with_token_params_from_json(char *rbuf, size_t len, struct discord_modify_webhook_with_token_params *)`
  *     * :code:`void discord_modify_webhook_with_token_params_list_from_json(char *rbuf, size_t len, struct discord_modify_webhook_with_token_params ***)`
  *   * JSON Encoder:
 
@@ -9683,7 +9683,7 @@ struct discord_modify_webhook_with_token_params {
  *     * :code:`void discord_execute_webhook_params_list_free(struct discord_execute_webhook_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params **)`
+ *     * :code:`void discord_execute_webhook_params_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params *)`
  *     * :code:`void discord_execute_webhook_params_list_from_json(char *rbuf, size_t len, struct discord_execute_webhook_params ***)`
  *   * JSON Encoder:
 
@@ -9753,7 +9753,7 @@ struct discord_execute_webhook_params {
  *     * :code:`void discord_edit_webhook_message_params_list_free(struct discord_edit_webhook_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params **)`
+ *     * :code:`void discord_edit_webhook_message_params_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params *)`
  *     * :code:`void discord_edit_webhook_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_webhook_message_params ***)`
  *   * JSON Encoder:
 
@@ -9806,7 +9806,7 @@ struct discord_edit_webhook_message_params {
  *     * :code:`void discord_webhook_list_free(struct discord_webhook **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **)`
+ *     * :code:`void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook *)`
  *     * :code:`void discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***)`
  *   * JSON Encoder:
 
@@ -9872,8 +9872,9 @@ extern void discord_application_cleanup_v(void *p);
 extern void discord_application_cleanup(struct discord_application *p);
 extern void discord_application_init_v(void *p);
 extern void discord_application_init(struct discord_application *p);
-extern void discord_application_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_from_json(char *json, size_t len, struct discord_application **pp);
+extern void discord_application_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_from_json_p(char *json, size_t len, struct discord_application **pp);
+extern void discord_application_from_json(char *json, size_t len, struct discord_application *p);
 extern size_t discord_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_to_json(char *json, size_t len, struct discord_application *p);
 extern void discord_application_list_free_v(void **p);
@@ -9890,8 +9891,9 @@ extern void discord_create_global_application_command_params_cleanup_v(void *p);
 extern void discord_create_global_application_command_params_cleanup(struct discord_create_global_application_command_params *p);
 extern void discord_create_global_application_command_params_init_v(void *p);
 extern void discord_create_global_application_command_params_init(struct discord_create_global_application_command_params *p);
-extern void discord_create_global_application_command_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params **pp);
+extern void discord_create_global_application_command_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_global_application_command_params_from_json_p(char *json, size_t len, struct discord_create_global_application_command_params **pp);
+extern void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params *p);
 extern size_t discord_create_global_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_global_application_command_params_to_json(char *json, size_t len, struct discord_create_global_application_command_params *p);
 extern void discord_create_global_application_command_params_list_free_v(void **p);
@@ -9905,8 +9907,9 @@ extern void discord_edit_global_application_command_params_cleanup_v(void *p);
 extern void discord_edit_global_application_command_params_cleanup(struct discord_edit_global_application_command_params *p);
 extern void discord_edit_global_application_command_params_init_v(void *p);
 extern void discord_edit_global_application_command_params_init(struct discord_edit_global_application_command_params *p);
-extern void discord_edit_global_application_command_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params **pp);
+extern void discord_edit_global_application_command_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_global_application_command_params_from_json_p(char *json, size_t len, struct discord_edit_global_application_command_params **pp);
+extern void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params *p);
 extern size_t discord_edit_global_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_global_application_command_params_to_json(char *json, size_t len, struct discord_edit_global_application_command_params *p);
 extern void discord_edit_global_application_command_params_list_free_v(void **p);
@@ -9920,8 +9923,9 @@ extern void discord_create_guild_application_command_params_cleanup_v(void *p);
 extern void discord_create_guild_application_command_params_cleanup(struct discord_create_guild_application_command_params *p);
 extern void discord_create_guild_application_command_params_init_v(void *p);
 extern void discord_create_guild_application_command_params_init(struct discord_create_guild_application_command_params *p);
-extern void discord_create_guild_application_command_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params **pp);
+extern void discord_create_guild_application_command_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_application_command_params_from_json_p(char *json, size_t len, struct discord_create_guild_application_command_params **pp);
+extern void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params *p);
 extern size_t discord_create_guild_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_application_command_params_to_json(char *json, size_t len, struct discord_create_guild_application_command_params *p);
 extern void discord_create_guild_application_command_params_list_free_v(void **p);
@@ -9935,8 +9939,9 @@ extern void discord_edit_guild_application_command_params_cleanup_v(void *p);
 extern void discord_edit_guild_application_command_params_cleanup(struct discord_edit_guild_application_command_params *p);
 extern void discord_edit_guild_application_command_params_init_v(void *p);
 extern void discord_edit_guild_application_command_params_init(struct discord_edit_guild_application_command_params *p);
-extern void discord_edit_guild_application_command_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params **pp);
+extern void discord_edit_guild_application_command_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_guild_application_command_params_from_json_p(char *json, size_t len, struct discord_edit_guild_application_command_params **pp);
+extern void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p);
 extern size_t discord_edit_guild_application_command_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_guild_application_command_params_to_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p);
 extern void discord_edit_guild_application_command_params_list_free_v(void **p);
@@ -9950,8 +9955,9 @@ extern void discord_edit_application_command_permissions_params_cleanup_v(void *
 extern void discord_edit_application_command_permissions_params_cleanup(struct discord_edit_application_command_permissions_params *p);
 extern void discord_edit_application_command_permissions_params_init_v(void *p);
 extern void discord_edit_application_command_permissions_params_init(struct discord_edit_application_command_permissions_params *p);
-extern void discord_edit_application_command_permissions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params **pp);
+extern void discord_edit_application_command_permissions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_application_command_permissions_params_from_json_p(char *json, size_t len, struct discord_edit_application_command_permissions_params **pp);
+extern void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p);
 extern size_t discord_edit_application_command_permissions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_application_command_permissions_params_to_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p);
 extern void discord_edit_application_command_permissions_params_list_free_v(void **p);
@@ -9966,8 +9972,9 @@ extern void discord_application_command_cleanup_v(void *p);
 extern void discord_application_command_cleanup(struct discord_application_command *p);
 extern void discord_application_command_init_v(void *p);
 extern void discord_application_command_init(struct discord_application_command *p);
-extern void discord_application_command_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp);
+extern void discord_application_command_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_from_json_p(char *json, size_t len, struct discord_application_command **pp);
+extern void discord_application_command_from_json(char *json, size_t len, struct discord_application_command *p);
 extern size_t discord_application_command_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_to_json(char *json, size_t len, struct discord_application_command *p);
 extern void discord_application_command_list_free_v(void **p);
@@ -9983,8 +9990,9 @@ extern void discord_application_command_option_cleanup_v(void *p);
 extern void discord_application_command_option_cleanup(struct discord_application_command_option *p);
 extern void discord_application_command_option_init_v(void *p);
 extern void discord_application_command_option_init(struct discord_application_command_option *p);
-extern void discord_application_command_option_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp);
+extern void discord_application_command_option_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_option_from_json_p(char *json, size_t len, struct discord_application_command_option **pp);
+extern void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option *p);
 extern size_t discord_application_command_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_to_json(char *json, size_t len, struct discord_application_command_option *p);
 extern void discord_application_command_option_list_free_v(void **p);
@@ -10000,8 +10008,9 @@ extern void discord_application_command_option_choice_cleanup_v(void *p);
 extern void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *p);
 extern void discord_application_command_option_choice_init_v(void *p);
 extern void discord_application_command_option_choice_init(struct discord_application_command_option_choice *p);
-extern void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp);
+extern void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_option_choice_from_json_p(char *json, size_t len, struct discord_application_command_option_choice **pp);
+extern void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice *p);
 extern size_t discord_application_command_option_choice_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_choice_to_json(char *json, size_t len, struct discord_application_command_option_choice *p);
 extern void discord_application_command_option_choice_list_free_v(void **p);
@@ -10015,8 +10024,9 @@ extern void discord_guild_application_command_permissions_cleanup_v(void *p);
 extern void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *p);
 extern void discord_guild_application_command_permissions_init_v(void *p);
 extern void discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions *p);
-extern void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions **pp);
+extern void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_application_command_permissions_from_json_p(char *json, size_t len, struct discord_guild_application_command_permissions **pp);
+extern void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions *p);
 extern size_t discord_guild_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_application_command_permissions_to_json(char *json, size_t len, struct discord_guild_application_command_permissions *p);
 extern void discord_guild_application_command_permissions_list_free_v(void **p);
@@ -10030,8 +10040,9 @@ extern void discord_application_command_permissions_cleanup_v(void *p);
 extern void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *p);
 extern void discord_application_command_permissions_init_v(void *p);
 extern void discord_application_command_permissions_init(struct discord_application_command_permissions *p);
-extern void discord_application_command_permissions_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions **pp);
+extern void discord_application_command_permissions_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_permissions_from_json_p(char *json, size_t len, struct discord_application_command_permissions **pp);
+extern void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions *p);
 extern size_t discord_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_permissions_to_json(char *json, size_t len, struct discord_application_command_permissions *p);
 extern void discord_application_command_permissions_list_free_v(void **p);
@@ -10047,8 +10058,9 @@ extern void discord_application_command_interaction_data_option_cleanup_v(void *
 extern void discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option *p);
 extern void discord_application_command_interaction_data_option_init_v(void *p);
 extern void discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option *p);
-extern void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp);
+extern void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_interaction_data_option_from_json_p(char *json, size_t len, struct discord_application_command_interaction_data_option **pp);
+extern void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
 extern size_t discord_application_command_interaction_data_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_interaction_data_option_to_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
 extern void discord_application_command_interaction_data_option_list_free_v(void **p);
@@ -10063,8 +10075,9 @@ extern void discord_get_guild_audit_log_params_cleanup_v(void *p);
 extern void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *p);
 extern void discord_get_guild_audit_log_params_init_v(void *p);
 extern void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *p);
-extern void discord_get_guild_audit_log_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params **pp);
+extern void discord_get_guild_audit_log_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_guild_audit_log_params_from_json_p(char *json, size_t len, struct discord_get_guild_audit_log_params **pp);
+extern void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
 extern size_t discord_get_guild_audit_log_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
 extern void discord_get_guild_audit_log_params_list_free_v(void **p);
@@ -10079,8 +10092,9 @@ extern void discord_audit_log_cleanup_v(void *p);
 extern void discord_audit_log_cleanup(struct discord_audit_log *p);
 extern void discord_audit_log_init_v(void *p);
 extern void discord_audit_log_init(struct discord_audit_log *p);
-extern void discord_audit_log_from_json_v(char *json, size_t len, void *pp);
-extern void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log **pp);
+extern void discord_audit_log_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_from_json_p(char *json, size_t len, struct discord_audit_log **pp);
+extern void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log *p);
 extern size_t discord_audit_log_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_log *p);
 extern void discord_audit_log_list_free_v(void **p);
@@ -10094,8 +10108,9 @@ extern void discord_audit_log_entry_cleanup_v(void *p);
 extern void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *p);
 extern void discord_audit_log_entry_init_v(void *p);
 extern void discord_audit_log_entry_init(struct discord_audit_log_entry *p);
-extern void discord_audit_log_entry_from_json_v(char *json, size_t len, void *pp);
-extern void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp);
+extern void discord_audit_log_entry_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_entry_from_json_p(char *json, size_t len, struct discord_audit_log_entry **pp);
+extern void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry *p);
 extern size_t discord_audit_log_entry_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_audit_log_entry *p);
 extern void discord_audit_log_entry_list_free_v(void **p);
@@ -10111,8 +10126,9 @@ extern void discord_optional_audit_entry_info_cleanup_v(void *p);
 extern void discord_optional_audit_entry_info_cleanup(struct discord_optional_audit_entry_info *p);
 extern void discord_optional_audit_entry_info_init_v(void *p);
 extern void discord_optional_audit_entry_info_init(struct discord_optional_audit_entry_info *p);
-extern void discord_optional_audit_entry_info_from_json_v(char *json, size_t len, void *pp);
-extern void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info **pp);
+extern void discord_optional_audit_entry_info_from_json_v(char *json, size_t len, void *p);
+extern void discord_optional_audit_entry_info_from_json_p(char *json, size_t len, struct discord_optional_audit_entry_info **pp);
+extern void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info *p);
 extern size_t discord_optional_audit_entry_info_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_optional_audit_entry_info_to_json(char *json, size_t len, struct discord_optional_audit_entry_info *p);
 extern void discord_optional_audit_entry_info_list_free_v(void **p);
@@ -10126,8 +10142,9 @@ extern void discord_audit_log_change_cleanup_v(void *p);
 extern void discord_audit_log_change_cleanup(struct discord_audit_log_change *p);
 extern void discord_audit_log_change_init_v(void *p);
 extern void discord_audit_log_change_init(struct discord_audit_log_change *p);
-extern void discord_audit_log_change_from_json_v(char *json, size_t len, void *pp);
-extern void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change **pp);
+extern void discord_audit_log_change_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_change_from_json_p(char *json, size_t len, struct discord_audit_log_change **pp);
+extern void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change *p);
 extern size_t discord_audit_log_change_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_change_to_json(char *json, size_t len, struct discord_audit_log_change *p);
 extern void discord_audit_log_change_list_free_v(void **p);
@@ -10142,8 +10159,9 @@ extern void discord_modify_channel_params_cleanup_v(void *p);
 extern void discord_modify_channel_params_cleanup(struct discord_modify_channel_params *p);
 extern void discord_modify_channel_params_init_v(void *p);
 extern void discord_modify_channel_params_init(struct discord_modify_channel_params *p);
-extern void discord_modify_channel_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params **pp);
+extern void discord_modify_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_channel_params_from_json_p(char *json, size_t len, struct discord_modify_channel_params **pp);
+extern void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params *p);
 extern size_t discord_modify_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_channel_params_to_json(char *json, size_t len, struct discord_modify_channel_params *p);
 extern void discord_modify_channel_params_list_free_v(void **p);
@@ -10157,8 +10175,9 @@ extern void discord_create_message_params_cleanup_v(void *p);
 extern void discord_create_message_params_cleanup(struct discord_create_message_params *p);
 extern void discord_create_message_params_init_v(void *p);
 extern void discord_create_message_params_init(struct discord_create_message_params *p);
-extern void discord_create_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_message_params_from_json(char *json, size_t len, struct discord_create_message_params **pp);
+extern void discord_create_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_message_params_from_json_p(char *json, size_t len, struct discord_create_message_params **pp);
+extern void discord_create_message_params_from_json(char *json, size_t len, struct discord_create_message_params *p);
 extern size_t discord_create_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_message_params_to_json(char *json, size_t len, struct discord_create_message_params *p);
 extern void discord_create_message_params_list_free_v(void **p);
@@ -10172,8 +10191,9 @@ extern void discord_get_channel_messages_params_cleanup_v(void *p);
 extern void discord_get_channel_messages_params_cleanup(struct discord_get_channel_messages_params *p);
 extern void discord_get_channel_messages_params_init_v(void *p);
 extern void discord_get_channel_messages_params_init(struct discord_get_channel_messages_params *p);
-extern void discord_get_channel_messages_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_channel_messages_params_from_json(char *json, size_t len, struct discord_get_channel_messages_params **pp);
+extern void discord_get_channel_messages_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_channel_messages_params_from_json_p(char *json, size_t len, struct discord_get_channel_messages_params **pp);
+extern void discord_get_channel_messages_params_from_json(char *json, size_t len, struct discord_get_channel_messages_params *p);
 extern size_t discord_get_channel_messages_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_channel_messages_params_to_json(char *json, size_t len, struct discord_get_channel_messages_params *p);
 extern void discord_get_channel_messages_params_list_free_v(void **p);
@@ -10187,8 +10207,9 @@ extern void discord_get_reactions_params_cleanup_v(void *p);
 extern void discord_get_reactions_params_cleanup(struct discord_get_reactions_params *p);
 extern void discord_get_reactions_params_init_v(void *p);
 extern void discord_get_reactions_params_init(struct discord_get_reactions_params *p);
-extern void discord_get_reactions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params **pp);
+extern void discord_get_reactions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_reactions_params_from_json_p(char *json, size_t len, struct discord_get_reactions_params **pp);
+extern void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params *p);
 extern size_t discord_get_reactions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_reactions_params_to_json(char *json, size_t len, struct discord_get_reactions_params *p);
 extern void discord_get_reactions_params_list_free_v(void **p);
@@ -10202,8 +10223,9 @@ extern void discord_edit_channel_permissions_params_cleanup_v(void *p);
 extern void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *p);
 extern void discord_edit_channel_permissions_params_init_v(void *p);
 extern void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *p);
-extern void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params **pp);
+extern void discord_edit_channel_permissions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_channel_permissions_params_from_json_p(char *json, size_t len, struct discord_edit_channel_permissions_params **pp);
+extern void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p);
 extern size_t discord_edit_channel_permissions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p);
 extern void discord_edit_channel_permissions_params_list_free_v(void **p);
@@ -10217,8 +10239,9 @@ extern void discord_edit_message_params_cleanup_v(void *p);
 extern void discord_edit_message_params_cleanup(struct discord_edit_message_params *p);
 extern void discord_edit_message_params_init_v(void *p);
 extern void discord_edit_message_params_init(struct discord_edit_message_params *p);
-extern void discord_edit_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_message_params_from_json(char *json, size_t len, struct discord_edit_message_params **pp);
+extern void discord_edit_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_message_params_from_json_p(char *json, size_t len, struct discord_edit_message_params **pp);
+extern void discord_edit_message_params_from_json(char *json, size_t len, struct discord_edit_message_params *p);
 extern size_t discord_edit_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_message_params_to_json(char *json, size_t len, struct discord_edit_message_params *p);
 extern void discord_edit_message_params_list_free_v(void **p);
@@ -10232,8 +10255,9 @@ extern void discord_follow_news_channel_params_cleanup_v(void *p);
 extern void discord_follow_news_channel_params_cleanup(struct discord_follow_news_channel_params *p);
 extern void discord_follow_news_channel_params_init_v(void *p);
 extern void discord_follow_news_channel_params_init(struct discord_follow_news_channel_params *p);
-extern void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params **pp);
+extern void discord_follow_news_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_follow_news_channel_params_from_json_p(char *json, size_t len, struct discord_follow_news_channel_params **pp);
+extern void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
 extern size_t discord_follow_news_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct discord_follow_news_channel_params *p);
 extern void discord_follow_news_channel_params_list_free_v(void **p);
@@ -10247,8 +10271,9 @@ extern void discord_create_channel_invite_params_cleanup_v(void *p);
 extern void discord_create_channel_invite_params_cleanup(struct discord_create_channel_invite_params *p);
 extern void discord_create_channel_invite_params_init_v(void *p);
 extern void discord_create_channel_invite_params_init(struct discord_create_channel_invite_params *p);
-extern void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params **pp);
+extern void discord_create_channel_invite_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_channel_invite_params_from_json_p(char *json, size_t len, struct discord_create_channel_invite_params **pp);
+extern void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
 extern size_t discord_create_channel_invite_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_channel_invite_params_to_json(char *json, size_t len, struct discord_create_channel_invite_params *p);
 extern void discord_create_channel_invite_params_list_free_v(void **p);
@@ -10262,8 +10287,9 @@ extern void discord_group_dm_add_recipient_params_cleanup_v(void *p);
 extern void discord_group_dm_add_recipient_params_cleanup(struct discord_group_dm_add_recipient_params *p);
 extern void discord_group_dm_add_recipient_params_init_v(void *p);
 extern void discord_group_dm_add_recipient_params_init(struct discord_group_dm_add_recipient_params *p);
-extern void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params **pp);
+extern void discord_group_dm_add_recipient_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_group_dm_add_recipient_params_from_json_p(char *json, size_t len, struct discord_group_dm_add_recipient_params **pp);
+extern void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
 extern size_t discord_group_dm_add_recipient_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_group_dm_add_recipient_params_to_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p);
 extern void discord_group_dm_add_recipient_params_list_free_v(void **p);
@@ -10277,8 +10303,9 @@ extern void discord_start_thread_with_message_params_cleanup_v(void *p);
 extern void discord_start_thread_with_message_params_cleanup(struct discord_start_thread_with_message_params *p);
 extern void discord_start_thread_with_message_params_init_v(void *p);
 extern void discord_start_thread_with_message_params_init(struct discord_start_thread_with_message_params *p);
-extern void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params **pp);
+extern void discord_start_thread_with_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_start_thread_with_message_params_from_json_p(char *json, size_t len, struct discord_start_thread_with_message_params **pp);
+extern void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params *p);
 extern size_t discord_start_thread_with_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_start_thread_with_message_params_to_json(char *json, size_t len, struct discord_start_thread_with_message_params *p);
 extern void discord_start_thread_with_message_params_list_free_v(void **p);
@@ -10292,8 +10319,9 @@ extern void discord_start_thread_without_message_params_cleanup_v(void *p);
 extern void discord_start_thread_without_message_params_cleanup(struct discord_start_thread_without_message_params *p);
 extern void discord_start_thread_without_message_params_init_v(void *p);
 extern void discord_start_thread_without_message_params_init(struct discord_start_thread_without_message_params *p);
-extern void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params **pp);
+extern void discord_start_thread_without_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_start_thread_without_message_params_from_json_p(char *json, size_t len, struct discord_start_thread_without_message_params **pp);
+extern void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params *p);
 extern size_t discord_start_thread_without_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_start_thread_without_message_params_to_json(char *json, size_t len, struct discord_start_thread_without_message_params *p);
 extern void discord_start_thread_without_message_params_list_free_v(void **p);
@@ -10307,8 +10335,9 @@ extern void discord_thread_response_body_cleanup_v(void *p);
 extern void discord_thread_response_body_cleanup(struct discord_thread_response_body *p);
 extern void discord_thread_response_body_init_v(void *p);
 extern void discord_thread_response_body_init(struct discord_thread_response_body *p);
-extern void discord_thread_response_body_from_json_v(char *json, size_t len, void *pp);
-extern void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body **pp);
+extern void discord_thread_response_body_from_json_v(char *json, size_t len, void *p);
+extern void discord_thread_response_body_from_json_p(char *json, size_t len, struct discord_thread_response_body **pp);
+extern void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body *p);
 extern size_t discord_thread_response_body_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_response_body_to_json(char *json, size_t len, struct discord_thread_response_body *p);
 extern void discord_thread_response_body_list_free_v(void **p);
@@ -10325,8 +10354,9 @@ extern void discord_channel_cleanup_v(void *p);
 extern void discord_channel_cleanup(struct discord_channel *p);
 extern void discord_channel_init_v(void *p);
 extern void discord_channel_init(struct discord_channel *p);
-extern void discord_channel_from_json_v(char *json, size_t len, void *pp);
-extern void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp);
+extern void discord_channel_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_from_json_p(char *json, size_t len, struct discord_channel **pp);
+extern void discord_channel_from_json(char *json, size_t len, struct discord_channel *p);
 extern size_t discord_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p);
 extern void discord_channel_list_free_v(void **p);
@@ -10342,8 +10372,9 @@ extern void discord_message_sticker_cleanup_v(void *p);
 extern void discord_message_sticker_cleanup(struct discord_message_sticker *p);
 extern void discord_message_sticker_init_v(void *p);
 extern void discord_message_sticker_init(struct discord_message_sticker *p);
-extern void discord_message_sticker_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp);
+extern void discord_message_sticker_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_sticker_from_json_p(char *json, size_t len, struct discord_message_sticker **pp);
+extern void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker *p);
 extern size_t discord_message_sticker_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_message_sticker *p);
 extern void discord_message_sticker_list_free_v(void **p);
@@ -10359,8 +10390,9 @@ extern void discord_message_reference_cleanup_v(void *p);
 extern void discord_message_reference_cleanup(struct discord_message_reference *p);
 extern void discord_message_reference_init_v(void *p);
 extern void discord_message_reference_init(struct discord_message_reference *p);
-extern void discord_message_reference_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp);
+extern void discord_message_reference_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_reference_from_json_p(char *json, size_t len, struct discord_message_reference **pp);
+extern void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference *p);
 extern size_t discord_message_reference_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_reference_to_json(char *json, size_t len, struct discord_message_reference *p);
 extern void discord_message_reference_list_free_v(void **p);
@@ -10374,8 +10406,9 @@ extern void discord_message_application_cleanup_v(void *p);
 extern void discord_message_application_cleanup(struct discord_message_application *p);
 extern void discord_message_application_init_v(void *p);
 extern void discord_message_application_init(struct discord_message_application *p);
-extern void discord_message_application_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_application_from_json(char *json, size_t len, struct discord_message_application **pp);
+extern void discord_message_application_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_application_from_json_p(char *json, size_t len, struct discord_message_application **pp);
+extern void discord_message_application_from_json(char *json, size_t len, struct discord_message_application *p);
 extern size_t discord_message_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_application_to_json(char *json, size_t len, struct discord_message_application *p);
 extern void discord_message_application_list_free_v(void **p);
@@ -10391,8 +10424,9 @@ extern void discord_message_activity_cleanup_v(void *p);
 extern void discord_message_activity_cleanup(struct discord_message_activity *p);
 extern void discord_message_activity_init_v(void *p);
 extern void discord_message_activity_init(struct discord_message_activity *p);
-extern void discord_message_activity_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp);
+extern void discord_message_activity_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_activity_from_json_p(char *json, size_t len, struct discord_message_activity **pp);
+extern void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity *p);
 extern size_t discord_message_activity_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_activity_to_json(char *json, size_t len, struct discord_message_activity *p);
 extern void discord_message_activity_list_free_v(void **p);
@@ -10408,8 +10442,9 @@ extern void discord_message_cleanup_v(void *p);
 extern void discord_message_cleanup(struct discord_message *p);
 extern void discord_message_init_v(void *p);
 extern void discord_message_init(struct discord_message *p);
-extern void discord_message_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_from_json(char *json, size_t len, struct discord_message **pp);
+extern void discord_message_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_from_json_p(char *json, size_t len, struct discord_message **pp);
+extern void discord_message_from_json(char *json, size_t len, struct discord_message *p);
 extern size_t discord_message_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_to_json(char *json, size_t len, struct discord_message *p);
 extern void discord_message_list_free_v(void **p);
@@ -10423,8 +10458,9 @@ extern void discord_followed_channel_cleanup_v(void *p);
 extern void discord_followed_channel_cleanup(struct discord_followed_channel *p);
 extern void discord_followed_channel_init_v(void *p);
 extern void discord_followed_channel_init(struct discord_followed_channel *p);
-extern void discord_followed_channel_from_json_v(char *json, size_t len, void *pp);
-extern void discord_followed_channel_from_json(char *json, size_t len, struct discord_followed_channel **pp);
+extern void discord_followed_channel_from_json_v(char *json, size_t len, void *p);
+extern void discord_followed_channel_from_json_p(char *json, size_t len, struct discord_followed_channel **pp);
+extern void discord_followed_channel_from_json(char *json, size_t len, struct discord_followed_channel *p);
 extern size_t discord_followed_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_followed_channel_to_json(char *json, size_t len, struct discord_followed_channel *p);
 extern void discord_followed_channel_list_free_v(void **p);
@@ -10438,8 +10474,9 @@ extern void discord_reaction_cleanup_v(void *p);
 extern void discord_reaction_cleanup(struct discord_reaction *p);
 extern void discord_reaction_init_v(void *p);
 extern void discord_reaction_init(struct discord_reaction *p);
-extern void discord_reaction_from_json_v(char *json, size_t len, void *pp);
-extern void discord_reaction_from_json(char *json, size_t len, struct discord_reaction **pp);
+extern void discord_reaction_from_json_v(char *json, size_t len, void *p);
+extern void discord_reaction_from_json_p(char *json, size_t len, struct discord_reaction **pp);
+extern void discord_reaction_from_json(char *json, size_t len, struct discord_reaction *p);
 extern size_t discord_reaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_reaction_to_json(char *json, size_t len, struct discord_reaction *p);
 extern void discord_reaction_list_free_v(void **p);
@@ -10453,8 +10490,9 @@ extern void discord_overwrite_cleanup_v(void *p);
 extern void discord_overwrite_cleanup(struct discord_overwrite *p);
 extern void discord_overwrite_init_v(void *p);
 extern void discord_overwrite_init(struct discord_overwrite *p);
-extern void discord_overwrite_from_json_v(char *json, size_t len, void *pp);
-extern void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrite **pp);
+extern void discord_overwrite_from_json_v(char *json, size_t len, void *p);
+extern void discord_overwrite_from_json_p(char *json, size_t len, struct discord_overwrite **pp);
+extern void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrite *p);
 extern size_t discord_overwrite_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrite *p);
 extern void discord_overwrite_list_free_v(void **p);
@@ -10468,8 +10506,9 @@ extern void discord_thread_metadata_cleanup_v(void *p);
 extern void discord_thread_metadata_cleanup(struct discord_thread_metadata *p);
 extern void discord_thread_metadata_init_v(void *p);
 extern void discord_thread_metadata_init(struct discord_thread_metadata *p);
-extern void discord_thread_metadata_from_json_v(char *json, size_t len, void *pp);
-extern void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata **pp);
+extern void discord_thread_metadata_from_json_v(char *json, size_t len, void *p);
+extern void discord_thread_metadata_from_json_p(char *json, size_t len, struct discord_thread_metadata **pp);
+extern void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata *p);
 extern size_t discord_thread_metadata_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_metadata_to_json(char *json, size_t len, struct discord_thread_metadata *p);
 extern void discord_thread_metadata_list_free_v(void **p);
@@ -10483,8 +10522,9 @@ extern void discord_thread_member_cleanup_v(void *p);
 extern void discord_thread_member_cleanup(struct discord_thread_member *p);
 extern void discord_thread_member_init_v(void *p);
 extern void discord_thread_member_init(struct discord_thread_member *p);
-extern void discord_thread_member_from_json_v(char *json, size_t len, void *pp);
-extern void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member **pp);
+extern void discord_thread_member_from_json_v(char *json, size_t len, void *p);
+extern void discord_thread_member_from_json_p(char *json, size_t len, struct discord_thread_member **pp);
+extern void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member *p);
 extern size_t discord_thread_member_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_thread_member_to_json(char *json, size_t len, struct discord_thread_member *p);
 extern void discord_thread_member_list_free_v(void **p);
@@ -10498,8 +10538,9 @@ extern void discord_attachment_cleanup_v(void *p);
 extern void discord_attachment_cleanup(struct discord_attachment *p);
 extern void discord_attachment_init_v(void *p);
 extern void discord_attachment_init(struct discord_attachment *p);
-extern void discord_attachment_from_json_v(char *json, size_t len, void *pp);
-extern void discord_attachment_from_json(char *json, size_t len, struct discord_attachment **pp);
+extern void discord_attachment_from_json_v(char *json, size_t len, void *p);
+extern void discord_attachment_from_json_p(char *json, size_t len, struct discord_attachment **pp);
+extern void discord_attachment_from_json(char *json, size_t len, struct discord_attachment *p);
 extern size_t discord_attachment_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_attachment_to_json(char *json, size_t len, struct discord_attachment *p);
 extern void discord_attachment_list_free_v(void **p);
@@ -10513,8 +10554,9 @@ extern void discord_channel_mention_cleanup_v(void *p);
 extern void discord_channel_mention_cleanup(struct discord_channel_mention *p);
 extern void discord_channel_mention_init_v(void *p);
 extern void discord_channel_mention_init(struct discord_channel_mention *p);
-extern void discord_channel_mention_from_json_v(char *json, size_t len, void *pp);
-extern void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention **pp);
+extern void discord_channel_mention_from_json_v(char *json, size_t len, void *p);
+extern void discord_channel_mention_from_json_p(char *json, size_t len, struct discord_channel_mention **pp);
+extern void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention *p);
 extern size_t discord_channel_mention_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_channel_mention_to_json(char *json, size_t len, struct discord_channel_mention *p);
 extern void discord_channel_mention_list_free_v(void **p);
@@ -10528,8 +10570,9 @@ extern void discord_allowed_mentions_cleanup_v(void *p);
 extern void discord_allowed_mentions_cleanup(struct discord_allowed_mentions *p);
 extern void discord_allowed_mentions_init_v(void *p);
 extern void discord_allowed_mentions_init(struct discord_allowed_mentions *p);
-extern void discord_allowed_mentions_from_json_v(char *json, size_t len, void *pp);
-extern void discord_allowed_mentions_from_json(char *json, size_t len, struct discord_allowed_mentions **pp);
+extern void discord_allowed_mentions_from_json_v(char *json, size_t len, void *p);
+extern void discord_allowed_mentions_from_json_p(char *json, size_t len, struct discord_allowed_mentions **pp);
+extern void discord_allowed_mentions_from_json(char *json, size_t len, struct discord_allowed_mentions *p);
 extern size_t discord_allowed_mentions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_allowed_mentions_to_json(char *json, size_t len, struct discord_allowed_mentions *p);
 extern void discord_allowed_mentions_list_free_v(void **p);
@@ -10543,8 +10586,9 @@ extern void discord_embed_cleanup_v(void *p);
 extern void discord_embed_cleanup(struct discord_embed *p);
 extern void discord_embed_init_v(void *p);
 extern void discord_embed_init(struct discord_embed *p);
-extern void discord_embed_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_from_json(char *json, size_t len, struct discord_embed **pp);
+extern void discord_embed_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_from_json_p(char *json, size_t len, struct discord_embed **pp);
+extern void discord_embed_from_json(char *json, size_t len, struct discord_embed *p);
 extern size_t discord_embed_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_to_json(char *json, size_t len, struct discord_embed *p);
 extern void discord_embed_list_free_v(void **p);
@@ -10558,8 +10602,9 @@ extern void discord_embed_thumbnail_cleanup_v(void *p);
 extern void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *p);
 extern void discord_embed_thumbnail_init_v(void *p);
 extern void discord_embed_thumbnail_init(struct discord_embed_thumbnail *p);
-extern void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail **pp);
+extern void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_thumbnail_from_json_p(char *json, size_t len, struct discord_embed_thumbnail **pp);
+extern void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail *p);
 extern size_t discord_embed_thumbnail_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_thumbnail_to_json(char *json, size_t len, struct discord_embed_thumbnail *p);
 extern void discord_embed_thumbnail_list_free_v(void **p);
@@ -10573,8 +10618,9 @@ extern void discord_embed_video_cleanup_v(void *p);
 extern void discord_embed_video_cleanup(struct discord_embed_video *p);
 extern void discord_embed_video_init_v(void *p);
 extern void discord_embed_video_init(struct discord_embed_video *p);
-extern void discord_embed_video_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video **pp);
+extern void discord_embed_video_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_video_from_json_p(char *json, size_t len, struct discord_embed_video **pp);
+extern void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video *p);
 extern size_t discord_embed_video_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_video_to_json(char *json, size_t len, struct discord_embed_video *p);
 extern void discord_embed_video_list_free_v(void **p);
@@ -10588,8 +10634,9 @@ extern void discord_embed_image_cleanup_v(void *p);
 extern void discord_embed_image_cleanup(struct discord_embed_image *p);
 extern void discord_embed_image_init_v(void *p);
 extern void discord_embed_image_init(struct discord_embed_image *p);
-extern void discord_embed_image_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image **pp);
+extern void discord_embed_image_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_image_from_json_p(char *json, size_t len, struct discord_embed_image **pp);
+extern void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image *p);
 extern size_t discord_embed_image_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_image_to_json(char *json, size_t len, struct discord_embed_image *p);
 extern void discord_embed_image_list_free_v(void **p);
@@ -10603,8 +10650,9 @@ extern void discord_embed_provider_cleanup_v(void *p);
 extern void discord_embed_provider_cleanup(struct discord_embed_provider *p);
 extern void discord_embed_provider_init_v(void *p);
 extern void discord_embed_provider_init(struct discord_embed_provider *p);
-extern void discord_embed_provider_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider **pp);
+extern void discord_embed_provider_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_provider_from_json_p(char *json, size_t len, struct discord_embed_provider **pp);
+extern void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider *p);
 extern size_t discord_embed_provider_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_provider_to_json(char *json, size_t len, struct discord_embed_provider *p);
 extern void discord_embed_provider_list_free_v(void **p);
@@ -10618,8 +10666,9 @@ extern void discord_embed_author_cleanup_v(void *p);
 extern void discord_embed_author_cleanup(struct discord_embed_author *p);
 extern void discord_embed_author_init_v(void *p);
 extern void discord_embed_author_init(struct discord_embed_author *p);
-extern void discord_embed_author_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author **pp);
+extern void discord_embed_author_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_author_from_json_p(char *json, size_t len, struct discord_embed_author **pp);
+extern void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author *p);
 extern size_t discord_embed_author_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_author_to_json(char *json, size_t len, struct discord_embed_author *p);
 extern void discord_embed_author_list_free_v(void **p);
@@ -10633,8 +10682,9 @@ extern void discord_embed_footer_cleanup_v(void *p);
 extern void discord_embed_footer_cleanup(struct discord_embed_footer *p);
 extern void discord_embed_footer_init_v(void *p);
 extern void discord_embed_footer_init(struct discord_embed_footer *p);
-extern void discord_embed_footer_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer **pp);
+extern void discord_embed_footer_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_footer_from_json_p(char *json, size_t len, struct discord_embed_footer **pp);
+extern void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer *p);
 extern size_t discord_embed_footer_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_footer_to_json(char *json, size_t len, struct discord_embed_footer *p);
 extern void discord_embed_footer_list_free_v(void **p);
@@ -10648,8 +10698,9 @@ extern void discord_embed_field_cleanup_v(void *p);
 extern void discord_embed_field_cleanup(struct discord_embed_field *p);
 extern void discord_embed_field_init_v(void *p);
 extern void discord_embed_field_init(struct discord_embed_field *p);
-extern void discord_embed_field_from_json_v(char *json, size_t len, void *pp);
-extern void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field **pp);
+extern void discord_embed_field_from_json_v(char *json, size_t len, void *p);
+extern void discord_embed_field_from_json_p(char *json, size_t len, struct discord_embed_field **pp);
+extern void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field *p);
 extern size_t discord_embed_field_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_embed_field_to_json(char *json, size_t len, struct discord_embed_field *p);
 extern void discord_embed_field_list_free_v(void **p);
@@ -10664,8 +10715,9 @@ extern void discord_create_guild_emoji_params_cleanup_v(void *p);
 extern void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *p);
 extern void discord_create_guild_emoji_params_init_v(void *p);
 extern void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *p);
-extern void discord_create_guild_emoji_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_create_guild_emoji_params **pp);
+extern void discord_create_guild_emoji_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_emoji_params_from_json_p(char *json, size_t len, struct discord_create_guild_emoji_params **pp);
+extern void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
 extern size_t discord_create_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_emoji_params_to_json(char *json, size_t len, struct discord_create_guild_emoji_params *p);
 extern void discord_create_guild_emoji_params_list_free_v(void **p);
@@ -10679,8 +10731,9 @@ extern void discord_modify_guild_emoji_params_cleanup_v(void *p);
 extern void discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params *p);
 extern void discord_modify_guild_emoji_params_init_v(void *p);
 extern void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *p);
-extern void discord_modify_guild_emoji_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct discord_modify_guild_emoji_params **pp);
+extern void discord_modify_guild_emoji_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_emoji_params_from_json_p(char *json, size_t len, struct discord_modify_guild_emoji_params **pp);
+extern void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct discord_modify_guild_emoji_params *p);
 extern size_t discord_modify_guild_emoji_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_emoji_params_to_json(char *json, size_t len, struct discord_modify_guild_emoji_params *p);
 extern void discord_modify_guild_emoji_params_list_free_v(void **p);
@@ -10695,8 +10748,9 @@ extern void discord_emoji_cleanup_v(void *p);
 extern void discord_emoji_cleanup(struct discord_emoji *p);
 extern void discord_emoji_init_v(void *p);
 extern void discord_emoji_init(struct discord_emoji *p);
-extern void discord_emoji_from_json_v(char *json, size_t len, void *pp);
-extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp);
+extern void discord_emoji_from_json_v(char *json, size_t len, void *p);
+extern void discord_emoji_from_json_p(char *json, size_t len, struct discord_emoji **pp);
+extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p);
 extern size_t discord_emoji_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p);
 extern void discord_emoji_list_free_v(void **p);
@@ -10719,8 +10773,9 @@ extern void discord_identify_cleanup_v(void *p);
 extern void discord_identify_cleanup(struct discord_identify *p);
 extern void discord_identify_init_v(void *p);
 extern void discord_identify_init(struct discord_identify *p);
-extern void discord_identify_from_json_v(char *json, size_t len, void *pp);
-extern void discord_identify_from_json(char *json, size_t len, struct discord_identify **pp);
+extern void discord_identify_from_json_v(char *json, size_t len, void *p);
+extern void discord_identify_from_json_p(char *json, size_t len, struct discord_identify **pp);
+extern void discord_identify_from_json(char *json, size_t len, struct discord_identify *p);
 extern size_t discord_identify_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_identify_to_json(char *json, size_t len, struct discord_identify *p);
 extern void discord_identify_list_free_v(void **p);
@@ -10734,8 +10789,9 @@ extern void discord_voice_state_status_cleanup_v(void *p);
 extern void discord_voice_state_status_cleanup(struct discord_voice_state_status *p);
 extern void discord_voice_state_status_init_v(void *p);
 extern void discord_voice_state_status_init(struct discord_voice_state_status *p);
-extern void discord_voice_state_status_from_json_v(char *json, size_t len, void *pp);
-extern void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status **pp);
+extern void discord_voice_state_status_from_json_v(char *json, size_t len, void *p);
+extern void discord_voice_state_status_from_json_p(char *json, size_t len, struct discord_voice_state_status **pp);
+extern void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status *p);
 extern size_t discord_voice_state_status_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord_voice_state_status *p);
 extern void discord_voice_state_status_list_free_v(void **p);
@@ -10749,8 +10805,9 @@ extern void discord_presence_status_cleanup_v(void *p);
 extern void discord_presence_status_cleanup(struct discord_presence_status *p);
 extern void discord_presence_status_init_v(void *p);
 extern void discord_presence_status_init(struct discord_presence_status *p);
-extern void discord_presence_status_from_json_v(char *json, size_t len, void *pp);
-extern void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status **pp);
+extern void discord_presence_status_from_json_v(char *json, size_t len, void *p);
+extern void discord_presence_status_from_json_p(char *json, size_t len, struct discord_presence_status **pp);
+extern void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status *p);
 extern size_t discord_presence_status_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_presence_status_to_json(char *json, size_t len, struct discord_presence_status *p);
 extern void discord_presence_status_list_free_v(void **p);
@@ -10764,8 +10821,9 @@ extern void discord_identify_connection_cleanup_v(void *p);
 extern void discord_identify_connection_cleanup(struct discord_identify_connection *p);
 extern void discord_identify_connection_init_v(void *p);
 extern void discord_identify_connection_init(struct discord_identify_connection *p);
-extern void discord_identify_connection_from_json_v(char *json, size_t len, void *pp);
-extern void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection **pp);
+extern void discord_identify_connection_from_json_v(char *json, size_t len, void *p);
+extern void discord_identify_connection_from_json_p(char *json, size_t len, struct discord_identify_connection **pp);
+extern void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection *p);
 extern size_t discord_identify_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_identify_connection_to_json(char *json, size_t len, struct discord_identify_connection *p);
 extern void discord_identify_connection_list_free_v(void **p);
@@ -10779,8 +10837,9 @@ extern void discord_activity_cleanup_v(void *p);
 extern void discord_activity_cleanup(struct discord_activity *p);
 extern void discord_activity_init_v(void *p);
 extern void discord_activity_init(struct discord_activity *p);
-extern void discord_activity_from_json_v(char *json, size_t len, void *pp);
-extern void discord_activity_from_json(char *json, size_t len, struct discord_activity **pp);
+extern void discord_activity_from_json_v(char *json, size_t len, void *p);
+extern void discord_activity_from_json_p(char *json, size_t len, struct discord_activity **pp);
+extern void discord_activity_from_json(char *json, size_t len, struct discord_activity *p);
 extern size_t discord_activity_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_activity_to_json(char *json, size_t len, struct discord_activity *p);
 extern void discord_activity_list_free_v(void **p);
@@ -10796,8 +10855,9 @@ extern void discord_session_start_limit_cleanup_v(void *p);
 extern void discord_session_start_limit_cleanup(struct discord_session_start_limit *p);
 extern void discord_session_start_limit_init_v(void *p);
 extern void discord_session_start_limit_init(struct discord_session_start_limit *p);
-extern void discord_session_start_limit_from_json_v(char *json, size_t len, void *pp);
-extern void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit **pp);
+extern void discord_session_start_limit_from_json_v(char *json, size_t len, void *p);
+extern void discord_session_start_limit_from_json_p(char *json, size_t len, struct discord_session_start_limit **pp);
+extern void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit *p);
 extern size_t discord_session_start_limit_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_session_start_limit_to_json(char *json, size_t len, struct discord_session_start_limit *p);
 extern void discord_session_start_limit_list_free_v(void **p);
@@ -10812,8 +10872,9 @@ extern void discord_create_guild_from_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_from_guild_template_params_cleanup(struct discord_create_guild_from_guild_template_params *p);
 extern void discord_create_guild_from_guild_template_params_init_v(void *p);
 extern void discord_create_guild_from_guild_template_params_init(struct discord_create_guild_from_guild_template_params *p);
-extern void discord_create_guild_from_guild_template_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params **pp);
+extern void discord_create_guild_from_guild_template_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_from_guild_template_params_from_json_p(char *json, size_t len, struct discord_create_guild_from_guild_template_params **pp);
+extern void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p);
 extern size_t discord_create_guild_from_guild_template_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_from_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p);
 extern void discord_create_guild_from_guild_template_params_list_free_v(void **p);
@@ -10827,8 +10888,9 @@ extern void discord_create_guild_template_params_cleanup_v(void *p);
 extern void discord_create_guild_template_params_cleanup(struct discord_create_guild_template_params *p);
 extern void discord_create_guild_template_params_init_v(void *p);
 extern void discord_create_guild_template_params_init(struct discord_create_guild_template_params *p);
-extern void discord_create_guild_template_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_template_params **pp);
+extern void discord_create_guild_template_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_template_params_from_json_p(char *json, size_t len, struct discord_create_guild_template_params **pp);
+extern void discord_create_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_template_params *p);
 extern size_t discord_create_guild_template_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_template_params *p);
 extern void discord_create_guild_template_params_list_free_v(void **p);
@@ -10842,8 +10904,9 @@ extern void discord_modify_guild_template_params_cleanup_v(void *p);
 extern void discord_modify_guild_template_params_cleanup(struct discord_modify_guild_template_params *p);
 extern void discord_modify_guild_template_params_init_v(void *p);
 extern void discord_modify_guild_template_params_init(struct discord_modify_guild_template_params *p);
-extern void discord_modify_guild_template_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_template_params_from_json(char *json, size_t len, struct discord_modify_guild_template_params **pp);
+extern void discord_modify_guild_template_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_template_params_from_json_p(char *json, size_t len, struct discord_modify_guild_template_params **pp);
+extern void discord_modify_guild_template_params_from_json(char *json, size_t len, struct discord_modify_guild_template_params *p);
 extern size_t discord_modify_guild_template_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_template_params_to_json(char *json, size_t len, struct discord_modify_guild_template_params *p);
 extern void discord_modify_guild_template_params_list_free_v(void **p);
@@ -10858,8 +10921,9 @@ extern void discord_guild_template_cleanup_v(void *p);
 extern void discord_guild_template_cleanup(struct discord_guild_template *p);
 extern void discord_guild_template_init_v(void *p);
 extern void discord_guild_template_init(struct discord_guild_template *p);
-extern void discord_guild_template_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template **pp);
+extern void discord_guild_template_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_template_from_json_p(char *json, size_t len, struct discord_guild_template **pp);
+extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template *p);
 extern size_t discord_guild_template_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_template_to_json(char *json, size_t len, struct discord_guild_template *p);
 extern void discord_guild_template_list_free_v(void **p);
@@ -10874,8 +10938,9 @@ extern void discord_create_guild_params_cleanup_v(void *p);
 extern void discord_create_guild_params_cleanup(struct discord_create_guild_params *p);
 extern void discord_create_guild_params_init_v(void *p);
 extern void discord_create_guild_params_init(struct discord_create_guild_params *p);
-extern void discord_create_guild_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params **pp);
+extern void discord_create_guild_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_params_from_json_p(char *json, size_t len, struct discord_create_guild_params **pp);
+extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params *p);
 extern size_t discord_create_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_params_to_json(char *json, size_t len, struct discord_create_guild_params *p);
 extern void discord_create_guild_params_list_free_v(void **p);
@@ -10889,8 +10954,9 @@ extern void discord_modify_guild_params_cleanup_v(void *p);
 extern void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *p);
 extern void discord_modify_guild_params_init_v(void *p);
 extern void discord_modify_guild_params_init(struct discord_modify_guild_params *p);
-extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params **pp);
+extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_params_from_json_p(char *json, size_t len, struct discord_modify_guild_params **pp);
+extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params *p);
 extern size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p);
 extern void discord_modify_guild_params_list_free_v(void **p);
@@ -10904,8 +10970,9 @@ extern void discord_create_guild_channel_params_cleanup_v(void *p);
 extern void discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *p);
 extern void discord_create_guild_channel_params_init_v(void *p);
 extern void discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *p);
-extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params **pp);
+extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_channel_params_from_json_p(char *json, size_t len, struct discord_create_guild_channel_params **pp);
+extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern void discord_create_guild_channel_params_list_free_v(void **p);
@@ -10919,8 +10986,9 @@ extern void discord_modify_guild_channel_positions_params_cleanup_v(void *p);
 extern void discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *p);
 extern void discord_modify_guild_channel_positions_params_init_v(void *p);
 extern void discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *p);
-extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
+extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_channel_positions_params_from_json_p(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
+extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern void discord_modify_guild_channel_positions_params_list_free_v(void **p);
@@ -10934,8 +11002,9 @@ extern void discord_list_guild_members_params_cleanup_v(void *p);
 extern void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *p);
 extern void discord_list_guild_members_params_init_v(void *p);
 extern void discord_list_guild_members_params_init(struct discord_list_guild_members_params *p);
-extern void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params **pp);
+extern void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_list_guild_members_params_from_json_p(char *json, size_t len, struct discord_list_guild_members_params **pp);
+extern void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params *p);
 extern size_t discord_list_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_list_guild_members_params_to_json(char *json, size_t len, struct discord_list_guild_members_params *p);
 extern void discord_list_guild_members_params_list_free_v(void **p);
@@ -10949,8 +11018,9 @@ extern void discord_search_guild_members_params_cleanup_v(void *p);
 extern void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *p);
 extern void discord_search_guild_members_params_init_v(void *p);
 extern void discord_search_guild_members_params_init(struct discord_search_guild_members_params *p);
-extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params **pp);
+extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_search_guild_members_params_from_json_p(char *json, size_t len, struct discord_search_guild_members_params **pp);
+extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern void discord_search_guild_members_params_list_free_v(void **p);
@@ -10964,8 +11034,9 @@ extern void discord_add_guild_member_params_cleanup_v(void *p);
 extern void discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *p);
 extern void discord_add_guild_member_params_init_v(void *p);
 extern void discord_add_guild_member_params_init(struct discord_add_guild_member_params *p);
-extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params **pp);
+extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_add_guild_member_params_from_json_p(char *json, size_t len, struct discord_add_guild_member_params **pp);
+extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern void discord_add_guild_member_params_list_free_v(void **p);
@@ -10979,8 +11050,9 @@ extern void discord_modify_guild_member_params_cleanup_v(void *p);
 extern void discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *p);
 extern void discord_modify_guild_member_params_init_v(void *p);
 extern void discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *p);
-extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params **pp);
+extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_member_params_from_json_p(char *json, size_t len, struct discord_modify_guild_member_params **pp);
+extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern void discord_modify_guild_member_params_list_free_v(void **p);
@@ -10994,8 +11066,9 @@ extern void discord_modify_current_member_params_cleanup_v(void *p);
 extern void discord_modify_current_member_params_cleanup(struct discord_modify_current_member_params *p);
 extern void discord_modify_current_member_params_init_v(void *p);
 extern void discord_modify_current_member_params_init(struct discord_modify_current_member_params *p);
-extern void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params **pp);
+extern void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_member_params_from_json_p(char *json, size_t len, struct discord_modify_current_member_params **pp);
+extern void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params *p);
 extern size_t discord_modify_current_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_member_params_to_json(char *json, size_t len, struct discord_modify_current_member_params *p);
 extern void discord_modify_current_member_params_list_free_v(void **p);
@@ -11009,8 +11082,9 @@ extern void discord_modify_current_user_nick_params_cleanup_v(void *p);
 extern void discord_modify_current_user_nick_params_cleanup(struct discord_modify_current_user_nick_params *p);
 extern void discord_modify_current_user_nick_params_init_v(void *p);
 extern void discord_modify_current_user_nick_params_init(struct discord_modify_current_user_nick_params *p);
-extern void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params **pp);
+extern void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_user_nick_params_from_json_p(char *json, size_t len, struct discord_modify_current_user_nick_params **pp);
+extern void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p);
 extern size_t discord_modify_current_user_nick_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_user_nick_params_to_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p);
 extern void discord_modify_current_user_nick_params_list_free_v(void **p);
@@ -11024,8 +11098,9 @@ extern void discord_create_guild_ban_params_cleanup_v(void *p);
 extern void discord_create_guild_ban_params_cleanup(struct discord_create_guild_ban_params *p);
 extern void discord_create_guild_ban_params_init_v(void *p);
 extern void discord_create_guild_ban_params_init(struct discord_create_guild_ban_params *p);
-extern void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params **pp);
+extern void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_ban_params_from_json_p(char *json, size_t len, struct discord_create_guild_ban_params **pp);
+extern void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params *p);
 extern size_t discord_create_guild_ban_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_ban_params_to_json(char *json, size_t len, struct discord_create_guild_ban_params *p);
 extern void discord_create_guild_ban_params_list_free_v(void **p);
@@ -11039,8 +11114,9 @@ extern void discord_create_guild_role_params_cleanup_v(void *p);
 extern void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_init_v(void *p);
 extern void discord_create_guild_role_params_init(struct discord_create_guild_role_params *p);
-extern void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params **pp);
+extern void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_role_params_from_json_p(char *json, size_t len, struct discord_create_guild_role_params **pp);
+extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern size_t discord_create_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_list_free_v(void **p);
@@ -11054,8 +11130,9 @@ extern void discord_modify_guild_role_positions_params_cleanup_v(void *p);
 extern void discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *p);
 extern void discord_modify_guild_role_positions_params_init_v(void *p);
 extern void discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *p);
-extern void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
+extern void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_role_positions_params_from_json_p(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
+extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern size_t discord_modify_guild_role_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern void discord_modify_guild_role_positions_params_list_free_v(void **p);
@@ -11069,8 +11146,9 @@ extern void discord_modify_guild_role_params_cleanup_v(void *p);
 extern void discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params *p);
 extern void discord_modify_guild_role_params_init_v(void *p);
 extern void discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *p);
-extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params **pp);
+extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_role_params_from_json_p(char *json, size_t len, struct discord_modify_guild_role_params **pp);
+extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern size_t discord_modify_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern void discord_modify_guild_role_params_list_free_v(void **p);
@@ -11084,8 +11162,9 @@ extern void discord_get_guild_prune_count_params_cleanup_v(void *p);
 extern void discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *p);
 extern void discord_get_guild_prune_count_params_init_v(void *p);
 extern void discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params *p);
-extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
+extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_guild_prune_count_params_from_json_p(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
+extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern size_t discord_get_guild_prune_count_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern void discord_get_guild_prune_count_params_list_free_v(void **p);
@@ -11099,8 +11178,9 @@ extern void discord_begin_guild_prune_params_cleanup_v(void *p);
 extern void discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *p);
 extern void discord_begin_guild_prune_params_init_v(void *p);
 extern void discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params *p);
-extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
+extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_begin_guild_prune_params_from_json_p(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
+extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern size_t discord_begin_guild_prune_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern void discord_begin_guild_prune_params_list_free_v(void **p);
@@ -11115,8 +11195,9 @@ extern void discord_guild_cleanup_v(void *p);
 extern void discord_guild_cleanup(struct discord_guild *p);
 extern void discord_guild_init_v(void *p);
 extern void discord_guild_init(struct discord_guild *p);
-extern void discord_guild_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_from_json(char *json, size_t len, struct discord_guild **pp);
+extern void discord_guild_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_from_json_p(char *json, size_t len, struct discord_guild **pp);
+extern void discord_guild_from_json(char *json, size_t len, struct discord_guild *p);
 extern size_t discord_guild_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p);
 extern void discord_guild_list_free_v(void **p);
@@ -11144,8 +11225,9 @@ extern void discord_unavailable_guild_cleanup_v(void *p);
 extern void discord_unavailable_guild_cleanup(struct discord_unavailable_guild *p);
 extern void discord_unavailable_guild_init_v(void *p);
 extern void discord_unavailable_guild_init(struct discord_unavailable_guild *p);
-extern void discord_unavailable_guild_from_json_v(char *json, size_t len, void *pp);
-extern void discord_unavailable_guild_from_json(char *json, size_t len, struct discord_unavailable_guild **pp);
+extern void discord_unavailable_guild_from_json_v(char *json, size_t len, void *p);
+extern void discord_unavailable_guild_from_json_p(char *json, size_t len, struct discord_unavailable_guild **pp);
+extern void discord_unavailable_guild_from_json(char *json, size_t len, struct discord_unavailable_guild *p);
 extern size_t discord_unavailable_guild_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_unavailable_guild_to_json(char *json, size_t len, struct discord_unavailable_guild *p);
 extern void discord_unavailable_guild_list_free_v(void **p);
@@ -11159,8 +11241,9 @@ extern void discord_guild_preview_cleanup_v(void *p);
 extern void discord_guild_preview_cleanup(struct discord_guild_preview *p);
 extern void discord_guild_preview_init_v(void *p);
 extern void discord_guild_preview_init(struct discord_guild_preview *p);
-extern void discord_guild_preview_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview **pp);
+extern void discord_guild_preview_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_preview_from_json_p(char *json, size_t len, struct discord_guild_preview **pp);
+extern void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview *p);
 extern size_t discord_guild_preview_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guild_preview *p);
 extern void discord_guild_preview_list_free_v(void **p);
@@ -11174,8 +11257,9 @@ extern void discord_guild_widget_cleanup_v(void *p);
 extern void discord_guild_widget_cleanup(struct discord_guild_widget *p);
 extern void discord_guild_widget_init_v(void *p);
 extern void discord_guild_widget_init(struct discord_guild_widget *p);
-extern void discord_guild_widget_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget **pp);
+extern void discord_guild_widget_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_widget_from_json_p(char *json, size_t len, struct discord_guild_widget **pp);
+extern void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget *p);
 extern size_t discord_guild_widget_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_widget_to_json(char *json, size_t len, struct discord_guild_widget *p);
 extern void discord_guild_widget_list_free_v(void **p);
@@ -11189,8 +11273,9 @@ extern void discord_guild_member_cleanup_v(void *p);
 extern void discord_guild_member_cleanup(struct discord_guild_member *p);
 extern void discord_guild_member_init_v(void *p);
 extern void discord_guild_member_init(struct discord_guild_member *p);
-extern void discord_guild_member_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member **pp);
+extern void discord_guild_member_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_member_from_json_p(char *json, size_t len, struct discord_guild_member **pp);
+extern void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member *p);
 extern size_t discord_guild_member_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_member_to_json(char *json, size_t len, struct discord_guild_member *p);
 extern void discord_guild_member_list_free_v(void **p);
@@ -11204,8 +11289,9 @@ extern void discord_integration_cleanup_v(void *p);
 extern void discord_integration_cleanup(struct discord_integration *p);
 extern void discord_integration_init_v(void *p);
 extern void discord_integration_init(struct discord_integration *p);
-extern void discord_integration_from_json_v(char *json, size_t len, void *pp);
-extern void discord_integration_from_json(char *json, size_t len, struct discord_integration **pp);
+extern void discord_integration_from_json_v(char *json, size_t len, void *p);
+extern void discord_integration_from_json_p(char *json, size_t len, struct discord_integration **pp);
+extern void discord_integration_from_json(char *json, size_t len, struct discord_integration *p);
 extern size_t discord_integration_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_integration_to_json(char *json, size_t len, struct discord_integration *p);
 extern void discord_integration_list_free_v(void **p);
@@ -11221,8 +11307,9 @@ extern void discord_integration_account_cleanup_v(void *p);
 extern void discord_integration_account_cleanup(struct discord_integration_account *p);
 extern void discord_integration_account_init_v(void *p);
 extern void discord_integration_account_init(struct discord_integration_account *p);
-extern void discord_integration_account_from_json_v(char *json, size_t len, void *pp);
-extern void discord_integration_account_from_json(char *json, size_t len, struct discord_integration_account **pp);
+extern void discord_integration_account_from_json_v(char *json, size_t len, void *p);
+extern void discord_integration_account_from_json_p(char *json, size_t len, struct discord_integration_account **pp);
+extern void discord_integration_account_from_json(char *json, size_t len, struct discord_integration_account *p);
 extern size_t discord_integration_account_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_integration_account_to_json(char *json, size_t len, struct discord_integration_account *p);
 extern void discord_integration_account_list_free_v(void **p);
@@ -11236,8 +11323,9 @@ extern void discord_integration_application_cleanup_v(void *p);
 extern void discord_integration_application_cleanup(struct discord_integration_application *p);
 extern void discord_integration_application_init_v(void *p);
 extern void discord_integration_application_init(struct discord_integration_application *p);
-extern void discord_integration_application_from_json_v(char *json, size_t len, void *pp);
-extern void discord_integration_application_from_json(char *json, size_t len, struct discord_integration_application **pp);
+extern void discord_integration_application_from_json_v(char *json, size_t len, void *p);
+extern void discord_integration_application_from_json_p(char *json, size_t len, struct discord_integration_application **pp);
+extern void discord_integration_application_from_json(char *json, size_t len, struct discord_integration_application *p);
 extern size_t discord_integration_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_integration_application_to_json(char *json, size_t len, struct discord_integration_application *p);
 extern void discord_integration_application_list_free_v(void **p);
@@ -11251,8 +11339,9 @@ extern void discord_ban_cleanup_v(void *p);
 extern void discord_ban_cleanup(struct discord_ban *p);
 extern void discord_ban_init_v(void *p);
 extern void discord_ban_init(struct discord_ban *p);
-extern void discord_ban_from_json_v(char *json, size_t len, void *pp);
-extern void discord_ban_from_json(char *json, size_t len, struct discord_ban **pp);
+extern void discord_ban_from_json_v(char *json, size_t len, void *p);
+extern void discord_ban_from_json_p(char *json, size_t len, struct discord_ban **pp);
+extern void discord_ban_from_json(char *json, size_t len, struct discord_ban *p);
 extern size_t discord_ban_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_ban_to_json(char *json, size_t len, struct discord_ban *p);
 extern void discord_ban_list_free_v(void **p);
@@ -11266,8 +11355,9 @@ extern void discord_welcome_screen_cleanup_v(void *p);
 extern void discord_welcome_screen_cleanup(struct discord_welcome_screen *p);
 extern void discord_welcome_screen_init_v(void *p);
 extern void discord_welcome_screen_init(struct discord_welcome_screen *p);
-extern void discord_welcome_screen_from_json_v(char *json, size_t len, void *pp);
-extern void discord_welcome_screen_from_json(char *json, size_t len, struct discord_welcome_screen **pp);
+extern void discord_welcome_screen_from_json_v(char *json, size_t len, void *p);
+extern void discord_welcome_screen_from_json_p(char *json, size_t len, struct discord_welcome_screen **pp);
+extern void discord_welcome_screen_from_json(char *json, size_t len, struct discord_welcome_screen *p);
 extern size_t discord_welcome_screen_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_welcome_screen_to_json(char *json, size_t len, struct discord_welcome_screen *p);
 extern void discord_welcome_screen_list_free_v(void **p);
@@ -11281,8 +11371,9 @@ extern void discord_welcome_screen_channel_cleanup_v(void *p);
 extern void discord_welcome_screen_channel_cleanup(struct discord_welcome_screen_channel *p);
 extern void discord_welcome_screen_channel_init_v(void *p);
 extern void discord_welcome_screen_channel_init(struct discord_welcome_screen_channel *p);
-extern void discord_welcome_screen_channel_from_json_v(char *json, size_t len, void *pp);
-extern void discord_welcome_screen_channel_from_json(char *json, size_t len, struct discord_welcome_screen_channel **pp);
+extern void discord_welcome_screen_channel_from_json_v(char *json, size_t len, void *p);
+extern void discord_welcome_screen_channel_from_json_p(char *json, size_t len, struct discord_welcome_screen_channel **pp);
+extern void discord_welcome_screen_channel_from_json(char *json, size_t len, struct discord_welcome_screen_channel *p);
 extern size_t discord_welcome_screen_channel_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_welcome_screen_channel_to_json(char *json, size_t len, struct discord_welcome_screen_channel *p);
 extern void discord_welcome_screen_channel_list_free_v(void **p);
@@ -11297,8 +11388,9 @@ extern void discord_edit_original_interaction_response_params_cleanup_v(void *p)
 extern void discord_edit_original_interaction_response_params_cleanup(struct discord_edit_original_interaction_response_params *p);
 extern void discord_edit_original_interaction_response_params_init_v(void *p);
 extern void discord_edit_original_interaction_response_params_init(struct discord_edit_original_interaction_response_params *p);
-extern void discord_edit_original_interaction_response_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_original_interaction_response_params_from_json(char *json, size_t len, struct discord_edit_original_interaction_response_params **pp);
+extern void discord_edit_original_interaction_response_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_original_interaction_response_params_from_json_p(char *json, size_t len, struct discord_edit_original_interaction_response_params **pp);
+extern void discord_edit_original_interaction_response_params_from_json(char *json, size_t len, struct discord_edit_original_interaction_response_params *p);
 extern size_t discord_edit_original_interaction_response_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_original_interaction_response_params_to_json(char *json, size_t len, struct discord_edit_original_interaction_response_params *p);
 extern void discord_edit_original_interaction_response_params_list_free_v(void **p);
@@ -11312,8 +11404,9 @@ extern void discord_create_followup_message_params_cleanup_v(void *p);
 extern void discord_create_followup_message_params_cleanup(struct discord_create_followup_message_params *p);
 extern void discord_create_followup_message_params_init_v(void *p);
 extern void discord_create_followup_message_params_init(struct discord_create_followup_message_params *p);
-extern void discord_create_followup_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_followup_message_params_from_json(char *json, size_t len, struct discord_create_followup_message_params **pp);
+extern void discord_create_followup_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_followup_message_params_from_json_p(char *json, size_t len, struct discord_create_followup_message_params **pp);
+extern void discord_create_followup_message_params_from_json(char *json, size_t len, struct discord_create_followup_message_params *p);
 extern size_t discord_create_followup_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_followup_message_params_to_json(char *json, size_t len, struct discord_create_followup_message_params *p);
 extern void discord_create_followup_message_params_list_free_v(void **p);
@@ -11327,8 +11420,9 @@ extern void discord_edit_followup_message_params_cleanup_v(void *p);
 extern void discord_edit_followup_message_params_cleanup(struct discord_edit_followup_message_params *p);
 extern void discord_edit_followup_message_params_init_v(void *p);
 extern void discord_edit_followup_message_params_init(struct discord_edit_followup_message_params *p);
-extern void discord_edit_followup_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_followup_message_params_from_json(char *json, size_t len, struct discord_edit_followup_message_params **pp);
+extern void discord_edit_followup_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_followup_message_params_from_json_p(char *json, size_t len, struct discord_edit_followup_message_params **pp);
+extern void discord_edit_followup_message_params_from_json(char *json, size_t len, struct discord_edit_followup_message_params *p);
 extern size_t discord_edit_followup_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_followup_message_params_to_json(char *json, size_t len, struct discord_edit_followup_message_params *p);
 extern void discord_edit_followup_message_params_list_free_v(void **p);
@@ -11343,8 +11437,9 @@ extern void discord_interaction_cleanup_v(void *p);
 extern void discord_interaction_cleanup(struct discord_interaction *p);
 extern void discord_interaction_init_v(void *p);
 extern void discord_interaction_init(struct discord_interaction *p);
-extern void discord_interaction_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp);
+extern void discord_interaction_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_from_json_p(char *json, size_t len, struct discord_interaction **pp);
+extern void discord_interaction_from_json(char *json, size_t len, struct discord_interaction *p);
 extern size_t discord_interaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_to_json(char *json, size_t len, struct discord_interaction *p);
 extern void discord_interaction_list_free_v(void **p);
@@ -11360,8 +11455,9 @@ extern void discord_interaction_data_cleanup_v(void *p);
 extern void discord_interaction_data_cleanup(struct discord_interaction_data *p);
 extern void discord_interaction_data_init_v(void *p);
 extern void discord_interaction_data_init(struct discord_interaction_data *p);
-extern void discord_interaction_data_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data **pp);
+extern void discord_interaction_data_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_data_from_json_p(char *json, size_t len, struct discord_interaction_data **pp);
+extern void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data *p);
 extern size_t discord_interaction_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_interaction_data *p);
 extern void discord_interaction_data_list_free_v(void **p);
@@ -11375,8 +11471,9 @@ extern void discord_resolved_data_cleanup_v(void *p);
 extern void discord_resolved_data_cleanup(struct discord_resolved_data *p);
 extern void discord_resolved_data_init_v(void *p);
 extern void discord_resolved_data_init(struct discord_resolved_data *p);
-extern void discord_resolved_data_from_json_v(char *json, size_t len, void *pp);
-extern void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data **pp);
+extern void discord_resolved_data_from_json_v(char *json, size_t len, void *p);
+extern void discord_resolved_data_from_json_p(char *json, size_t len, struct discord_resolved_data **pp);
+extern void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data *p);
 extern size_t discord_resolved_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_resolved_data *p);
 extern void discord_resolved_data_list_free_v(void **p);
@@ -11390,8 +11487,9 @@ extern void discord_message_interaction_cleanup_v(void *p);
 extern void discord_message_interaction_cleanup(struct discord_message_interaction *p);
 extern void discord_message_interaction_init_v(void *p);
 extern void discord_message_interaction_init(struct discord_message_interaction *p);
-extern void discord_message_interaction_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp);
+extern void discord_message_interaction_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_interaction_from_json_p(char *json, size_t len, struct discord_message_interaction **pp);
+extern void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction *p);
 extern size_t discord_message_interaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_interaction_to_json(char *json, size_t len, struct discord_message_interaction *p);
 extern void discord_message_interaction_list_free_v(void **p);
@@ -11405,8 +11503,9 @@ extern void discord_interaction_response_cleanup_v(void *p);
 extern void discord_interaction_response_cleanup(struct discord_interaction_response *p);
 extern void discord_interaction_response_init_v(void *p);
 extern void discord_interaction_response_init(struct discord_interaction_response *p);
-extern void discord_interaction_response_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response **pp);
+extern void discord_interaction_response_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_response_from_json_p(char *json, size_t len, struct discord_interaction_response **pp);
+extern void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response *p);
 extern size_t discord_interaction_response_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_response_to_json(char *json, size_t len, struct discord_interaction_response *p);
 extern void discord_interaction_response_list_free_v(void **p);
@@ -11422,8 +11521,9 @@ extern void discord_interaction_callback_data_cleanup_v(void *p);
 extern void discord_interaction_callback_data_cleanup(struct discord_interaction_callback_data *p);
 extern void discord_interaction_callback_data_init_v(void *p);
 extern void discord_interaction_callback_data_init(struct discord_interaction_callback_data *p);
-extern void discord_interaction_callback_data_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data **pp);
+extern void discord_interaction_callback_data_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_callback_data_from_json_p(char *json, size_t len, struct discord_interaction_callback_data **pp);
+extern void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data *p);
 extern size_t discord_interaction_callback_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct discord_interaction_callback_data *p);
 extern void discord_interaction_callback_data_list_free_v(void **p);
@@ -11440,8 +11540,9 @@ extern void discord_get_invite_params_cleanup_v(void *p);
 extern void discord_get_invite_params_cleanup(struct discord_get_invite_params *p);
 extern void discord_get_invite_params_init_v(void *p);
 extern void discord_get_invite_params_init(struct discord_get_invite_params *p);
-extern void discord_get_invite_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params **pp);
+extern void discord_get_invite_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_invite_params_from_json_p(char *json, size_t len, struct discord_get_invite_params **pp);
+extern void discord_get_invite_params_from_json(char *json, size_t len, struct discord_get_invite_params *p);
 extern size_t discord_get_invite_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_invite_params_to_json(char *json, size_t len, struct discord_get_invite_params *p);
 extern void discord_get_invite_params_list_free_v(void **p);
@@ -11458,8 +11559,9 @@ extern void discord_invite_cleanup_v(void *p);
 extern void discord_invite_cleanup(struct discord_invite *p);
 extern void discord_invite_init_v(void *p);
 extern void discord_invite_init(struct discord_invite *p);
-extern void discord_invite_from_json_v(char *json, size_t len, void *pp);
-extern void discord_invite_from_json(char *json, size_t len, struct discord_invite **pp);
+extern void discord_invite_from_json_v(char *json, size_t len, void *p);
+extern void discord_invite_from_json_p(char *json, size_t len, struct discord_invite **pp);
+extern void discord_invite_from_json(char *json, size_t len, struct discord_invite *p);
 extern size_t discord_invite_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p);
 extern void discord_invite_list_free_v(void **p);
@@ -11473,8 +11575,9 @@ extern void discord_invite_metadata_cleanup_v(void *p);
 extern void discord_invite_metadata_cleanup(struct discord_invite_metadata *p);
 extern void discord_invite_metadata_init_v(void *p);
 extern void discord_invite_metadata_init(struct discord_invite_metadata *p);
-extern void discord_invite_metadata_from_json_v(char *json, size_t len, void *pp);
-extern void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata **pp);
+extern void discord_invite_metadata_from_json_v(char *json, size_t len, void *p);
+extern void discord_invite_metadata_from_json_p(char *json, size_t len, struct discord_invite_metadata **pp);
+extern void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata *p);
 extern size_t discord_invite_metadata_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_invite_metadata *p);
 extern void discord_invite_metadata_list_free_v(void **p);
@@ -11489,8 +11592,9 @@ extern void discord_component_cleanup_v(void *p);
 extern void discord_component_cleanup(struct discord_component *p);
 extern void discord_component_init_v(void *p);
 extern void discord_component_init(struct discord_component *p);
-extern void discord_component_from_json_v(char *json, size_t len, void *pp);
-extern void discord_component_from_json(char *json, size_t len, struct discord_component **pp);
+extern void discord_component_from_json_v(char *json, size_t len, void *p);
+extern void discord_component_from_json_p(char *json, size_t len, struct discord_component **pp);
+extern void discord_component_from_json(char *json, size_t len, struct discord_component *p);
 extern size_t discord_component_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_component_to_json(char *json, size_t len, struct discord_component *p);
 extern void discord_component_list_free_v(void **p);
@@ -11506,8 +11610,9 @@ extern void discord_button_cleanup_v(void *p);
 extern void discord_button_cleanup(struct discord_button *p);
 extern void discord_button_init_v(void *p);
 extern void discord_button_init(struct discord_button *p);
-extern void discord_button_from_json_v(char *json, size_t len, void *pp);
-extern void discord_button_from_json(char *json, size_t len, struct discord_button **pp);
+extern void discord_button_from_json_v(char *json, size_t len, void *p);
+extern void discord_button_from_json_p(char *json, size_t len, struct discord_button **pp);
+extern void discord_button_from_json(char *json, size_t len, struct discord_button *p);
 extern size_t discord_button_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_button_to_json(char *json, size_t len, struct discord_button *p);
 extern void discord_button_list_free_v(void **p);
@@ -11523,8 +11628,9 @@ extern void discord_select_menu_cleanup_v(void *p);
 extern void discord_select_menu_cleanup(struct discord_select_menu *p);
 extern void discord_select_menu_init_v(void *p);
 extern void discord_select_menu_init(struct discord_select_menu *p);
-extern void discord_select_menu_from_json_v(char *json, size_t len, void *pp);
-extern void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp);
+extern void discord_select_menu_from_json_v(char *json, size_t len, void *p);
+extern void discord_select_menu_from_json_p(char *json, size_t len, struct discord_select_menu **pp);
+extern void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu *p);
 extern size_t discord_select_menu_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_select_menu_to_json(char *json, size_t len, struct discord_select_menu *p);
 extern void discord_select_menu_list_free_v(void **p);
@@ -11538,8 +11644,9 @@ extern void discord_select_option_cleanup_v(void *p);
 extern void discord_select_option_cleanup(struct discord_select_option *p);
 extern void discord_select_option_init_v(void *p);
 extern void discord_select_option_init(struct discord_select_option *p);
-extern void discord_select_option_from_json_v(char *json, size_t len, void *pp);
-extern void discord_select_option_from_json(char *json, size_t len, struct discord_select_option **pp);
+extern void discord_select_option_from_json_v(char *json, size_t len, void *p);
+extern void discord_select_option_from_json_p(char *json, size_t len, struct discord_select_option **pp);
+extern void discord_select_option_from_json(char *json, size_t len, struct discord_select_option *p);
 extern size_t discord_select_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_select_option_to_json(char *json, size_t len, struct discord_select_option *p);
 extern void discord_select_option_list_free_v(void **p);
@@ -11556,8 +11663,9 @@ extern void discord_role_cleanup_v(void *p);
 extern void discord_role_cleanup(struct discord_role *p);
 extern void discord_role_init_v(void *p);
 extern void discord_role_init(struct discord_role *p);
-extern void discord_role_from_json_v(char *json, size_t len, void *pp);
-extern void discord_role_from_json(char *json, size_t len, struct discord_role **pp);
+extern void discord_role_from_json_v(char *json, size_t len, void *p);
+extern void discord_role_from_json_p(char *json, size_t len, struct discord_role **pp);
+extern void discord_role_from_json(char *json, size_t len, struct discord_role *p);
 extern size_t discord_role_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_role_to_json(char *json, size_t len, struct discord_role *p);
 extern void discord_role_list_free_v(void **p);
@@ -11571,8 +11679,9 @@ extern void discord_role_tags_cleanup_v(void *p);
 extern void discord_role_tags_cleanup(struct discord_role_tags *p);
 extern void discord_role_tags_init_v(void *p);
 extern void discord_role_tags_init(struct discord_role_tags *p);
-extern void discord_role_tags_from_json_v(char *json, size_t len, void *pp);
-extern void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags **pp);
+extern void discord_role_tags_from_json_v(char *json, size_t len, void *p);
+extern void discord_role_tags_from_json_p(char *json, size_t len, struct discord_role_tags **pp);
+extern void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags *p);
 extern size_t discord_role_tags_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_role_tags_to_json(char *json, size_t len, struct discord_role_tags *p);
 extern void discord_role_tags_list_free_v(void **p);
@@ -11587,8 +11696,9 @@ extern void discord_create_stage_instance_params_cleanup_v(void *p);
 extern void discord_create_stage_instance_params_cleanup(struct discord_create_stage_instance_params *p);
 extern void discord_create_stage_instance_params_init_v(void *p);
 extern void discord_create_stage_instance_params_init(struct discord_create_stage_instance_params *p);
-extern void discord_create_stage_instance_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_stage_instance_params_from_json(char *json, size_t len, struct discord_create_stage_instance_params **pp);
+extern void discord_create_stage_instance_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_stage_instance_params_from_json_p(char *json, size_t len, struct discord_create_stage_instance_params **pp);
+extern void discord_create_stage_instance_params_from_json(char *json, size_t len, struct discord_create_stage_instance_params *p);
 extern size_t discord_create_stage_instance_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_stage_instance_params_to_json(char *json, size_t len, struct discord_create_stage_instance_params *p);
 extern void discord_create_stage_instance_params_list_free_v(void **p);
@@ -11602,8 +11712,9 @@ extern void discord_modify_stage_instance_params_cleanup_v(void *p);
 extern void discord_modify_stage_instance_params_cleanup(struct discord_modify_stage_instance_params *p);
 extern void discord_modify_stage_instance_params_init_v(void *p);
 extern void discord_modify_stage_instance_params_init(struct discord_modify_stage_instance_params *p);
-extern void discord_modify_stage_instance_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_stage_instance_params_from_json(char *json, size_t len, struct discord_modify_stage_instance_params **pp);
+extern void discord_modify_stage_instance_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_stage_instance_params_from_json_p(char *json, size_t len, struct discord_modify_stage_instance_params **pp);
+extern void discord_modify_stage_instance_params_from_json(char *json, size_t len, struct discord_modify_stage_instance_params *p);
 extern size_t discord_modify_stage_instance_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_stage_instance_params_to_json(char *json, size_t len, struct discord_modify_stage_instance_params *p);
 extern void discord_modify_stage_instance_params_list_free_v(void **p);
@@ -11620,8 +11731,9 @@ extern void discord_stage_instance_cleanup_v(void *p);
 extern void discord_stage_instance_cleanup(struct discord_stage_instance *p);
 extern void discord_stage_instance_init_v(void *p);
 extern void discord_stage_instance_init(struct discord_stage_instance *p);
-extern void discord_stage_instance_from_json_v(char *json, size_t len, void *pp);
-extern void discord_stage_instance_from_json(char *json, size_t len, struct discord_stage_instance **pp);
+extern void discord_stage_instance_from_json_v(char *json, size_t len, void *p);
+extern void discord_stage_instance_from_json_p(char *json, size_t len, struct discord_stage_instance **pp);
+extern void discord_stage_instance_from_json(char *json, size_t len, struct discord_stage_instance *p);
 extern size_t discord_stage_instance_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_stage_instance_to_json(char *json, size_t len, struct discord_stage_instance *p);
 extern void discord_stage_instance_list_free_v(void **p);
@@ -11636,8 +11748,9 @@ extern void discord_list_nitro_sticker_packs_response_cleanup_v(void *p);
 extern void discord_list_nitro_sticker_packs_response_cleanup(struct discord_list_nitro_sticker_packs_response *p);
 extern void discord_list_nitro_sticker_packs_response_init_v(void *p);
 extern void discord_list_nitro_sticker_packs_response_init(struct discord_list_nitro_sticker_packs_response *p);
-extern void discord_list_nitro_sticker_packs_response_from_json_v(char *json, size_t len, void *pp);
-extern void discord_list_nitro_sticker_packs_response_from_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response **pp);
+extern void discord_list_nitro_sticker_packs_response_from_json_v(char *json, size_t len, void *p);
+extern void discord_list_nitro_sticker_packs_response_from_json_p(char *json, size_t len, struct discord_list_nitro_sticker_packs_response **pp);
+extern void discord_list_nitro_sticker_packs_response_from_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response *p);
 extern size_t discord_list_nitro_sticker_packs_response_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_list_nitro_sticker_packs_response_to_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response *p);
 extern void discord_list_nitro_sticker_packs_response_list_free_v(void **p);
@@ -11651,8 +11764,9 @@ extern void discord_create_guild_sticker_params_cleanup_v(void *p);
 extern void discord_create_guild_sticker_params_cleanup(struct discord_create_guild_sticker_params *p);
 extern void discord_create_guild_sticker_params_init_v(void *p);
 extern void discord_create_guild_sticker_params_init(struct discord_create_guild_sticker_params *p);
-extern void discord_create_guild_sticker_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_sticker_params_from_json(char *json, size_t len, struct discord_create_guild_sticker_params **pp);
+extern void discord_create_guild_sticker_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_sticker_params_from_json_p(char *json, size_t len, struct discord_create_guild_sticker_params **pp);
+extern void discord_create_guild_sticker_params_from_json(char *json, size_t len, struct discord_create_guild_sticker_params *p);
 extern size_t discord_create_guild_sticker_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_sticker_params_to_json(char *json, size_t len, struct discord_create_guild_sticker_params *p);
 extern void discord_create_guild_sticker_params_list_free_v(void **p);
@@ -11666,8 +11780,9 @@ extern void discord_modify_guild_sticker_params_cleanup_v(void *p);
 extern void discord_modify_guild_sticker_params_cleanup(struct discord_modify_guild_sticker_params *p);
 extern void discord_modify_guild_sticker_params_init_v(void *p);
 extern void discord_modify_guild_sticker_params_init(struct discord_modify_guild_sticker_params *p);
-extern void discord_modify_guild_sticker_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struct discord_modify_guild_sticker_params **pp);
+extern void discord_modify_guild_sticker_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_sticker_params_from_json_p(char *json, size_t len, struct discord_modify_guild_sticker_params **pp);
+extern void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struct discord_modify_guild_sticker_params *p);
 extern size_t discord_modify_guild_sticker_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_sticker_params_to_json(char *json, size_t len, struct discord_modify_guild_sticker_params *p);
 extern void discord_modify_guild_sticker_params_list_free_v(void **p);
@@ -11686,8 +11801,9 @@ extern void discord_sticker_cleanup_v(void *p);
 extern void discord_sticker_cleanup(struct discord_sticker *p);
 extern void discord_sticker_init_v(void *p);
 extern void discord_sticker_init(struct discord_sticker *p);
-extern void discord_sticker_from_json_v(char *json, size_t len, void *pp);
-extern void discord_sticker_from_json(char *json, size_t len, struct discord_sticker **pp);
+extern void discord_sticker_from_json_v(char *json, size_t len, void *p);
+extern void discord_sticker_from_json_p(char *json, size_t len, struct discord_sticker **pp);
+extern void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p);
 extern size_t discord_sticker_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p);
 extern void discord_sticker_list_free_v(void **p);
@@ -11701,8 +11817,9 @@ extern void discord_sticker_item_cleanup_v(void *p);
 extern void discord_sticker_item_cleanup(struct discord_sticker_item *p);
 extern void discord_sticker_item_init_v(void *p);
 extern void discord_sticker_item_init(struct discord_sticker_item *p);
-extern void discord_sticker_item_from_json_v(char *json, size_t len, void *pp);
-extern void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item **pp);
+extern void discord_sticker_item_from_json_v(char *json, size_t len, void *p);
+extern void discord_sticker_item_from_json_p(char *json, size_t len, struct discord_sticker_item **pp);
+extern void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item *p);
 extern size_t discord_sticker_item_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_sticker_item_to_json(char *json, size_t len, struct discord_sticker_item *p);
 extern void discord_sticker_item_list_free_v(void **p);
@@ -11716,8 +11833,9 @@ extern void discord_sticker_pack_cleanup_v(void *p);
 extern void discord_sticker_pack_cleanup(struct discord_sticker_pack *p);
 extern void discord_sticker_pack_init_v(void *p);
 extern void discord_sticker_pack_init(struct discord_sticker_pack *p);
-extern void discord_sticker_pack_from_json_v(char *json, size_t len, void *pp);
-extern void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack **pp);
+extern void discord_sticker_pack_from_json_v(char *json, size_t len, void *p);
+extern void discord_sticker_pack_from_json_p(char *json, size_t len, struct discord_sticker_pack **pp);
+extern void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack *p);
 extern size_t discord_sticker_pack_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_sticker_pack *p);
 extern void discord_sticker_pack_list_free_v(void **p);
@@ -11732,8 +11850,9 @@ extern void discord_modify_current_user_params_cleanup_v(void *p);
 extern void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *p);
 extern void discord_modify_current_user_params_init_v(void *p);
 extern void discord_modify_current_user_params_init(struct discord_modify_current_user_params *p);
-extern void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params **pp);
+extern void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_user_params_from_json_p(char *json, size_t len, struct discord_modify_current_user_params **pp);
+extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params *p);
 extern size_t discord_modify_current_user_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct discord_modify_current_user_params *p);
 extern void discord_modify_current_user_params_list_free_v(void **p);
@@ -11747,8 +11866,9 @@ extern void discord_create_dm_params_cleanup_v(void *p);
 extern void discord_create_dm_params_cleanup(struct discord_create_dm_params *p);
 extern void discord_create_dm_params_init_v(void *p);
 extern void discord_create_dm_params_init(struct discord_create_dm_params *p);
-extern void discord_create_dm_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params **pp);
+extern void discord_create_dm_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_dm_params_from_json_p(char *json, size_t len, struct discord_create_dm_params **pp);
+extern void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params *p);
 extern size_t discord_create_dm_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_dm_params_to_json(char *json, size_t len, struct discord_create_dm_params *p);
 extern void discord_create_dm_params_list_free_v(void **p);
@@ -11762,8 +11882,9 @@ extern void discord_create_group_dm_params_cleanup_v(void *p);
 extern void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *p);
 extern void discord_create_group_dm_params_init_v(void *p);
 extern void discord_create_group_dm_params_init(struct discord_create_group_dm_params *p);
-extern void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params **pp);
+extern void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_group_dm_params_from_json_p(char *json, size_t len, struct discord_create_group_dm_params **pp);
+extern void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params *p);
 extern size_t discord_create_group_dm_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct discord_create_group_dm_params *p);
 extern void discord_create_group_dm_params_list_free_v(void **p);
@@ -11782,8 +11903,9 @@ extern void discord_user_cleanup_v(void *p);
 extern void discord_user_cleanup(struct discord_user *p);
 extern void discord_user_init_v(void *p);
 extern void discord_user_init(struct discord_user *p);
-extern void discord_user_from_json_v(char *json, size_t len, void *pp);
-extern void discord_user_from_json(char *json, size_t len, struct discord_user **pp);
+extern void discord_user_from_json_v(char *json, size_t len, void *p);
+extern void discord_user_from_json_p(char *json, size_t len, struct discord_user **pp);
+extern void discord_user_from_json(char *json, size_t len, struct discord_user *p);
 extern size_t discord_user_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_user_to_json(char *json, size_t len, struct discord_user *p);
 extern void discord_user_list_free_v(void **p);
@@ -11799,8 +11921,9 @@ extern void discord_connection_cleanup_v(void *p);
 extern void discord_connection_cleanup(struct discord_connection *p);
 extern void discord_connection_init_v(void *p);
 extern void discord_connection_init(struct discord_connection *p);
-extern void discord_connection_from_json_v(char *json, size_t len, void *pp);
-extern void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp);
+extern void discord_connection_from_json_v(char *json, size_t len, void *p);
+extern void discord_connection_from_json_p(char *json, size_t len, struct discord_connection **pp);
+extern void discord_connection_from_json(char *json, size_t len, struct discord_connection *p);
 extern size_t discord_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_connection_to_json(char *json, size_t len, struct discord_connection *p);
 extern void discord_connection_list_free_v(void **p);
@@ -11822,8 +11945,9 @@ extern void discord_voice_state_cleanup_v(void *p);
 extern void discord_voice_state_cleanup(struct discord_voice_state *p);
 extern void discord_voice_state_init_v(void *p);
 extern void discord_voice_state_init(struct discord_voice_state *p);
-extern void discord_voice_state_from_json_v(char *json, size_t len, void *pp);
-extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state **pp);
+extern void discord_voice_state_from_json_v(char *json, size_t len, void *p);
+extern void discord_voice_state_from_json_p(char *json, size_t len, struct discord_voice_state **pp);
+extern void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p);
 extern size_t discord_voice_state_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p);
 extern void discord_voice_state_list_free_v(void **p);
@@ -11837,8 +11961,9 @@ extern void discord_voice_region_cleanup_v(void *p);
 extern void discord_voice_region_cleanup(struct discord_voice_region *p);
 extern void discord_voice_region_init_v(void *p);
 extern void discord_voice_region_init(struct discord_voice_region *p);
-extern void discord_voice_region_from_json_v(char *json, size_t len, void *pp);
-extern void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region **pp);
+extern void discord_voice_region_from_json_v(char *json, size_t len, void *p);
+extern void discord_voice_region_from_json_p(char *json, size_t len, struct discord_voice_region **pp);
+extern void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region *p);
 extern size_t discord_voice_region_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice_region *p);
 extern void discord_voice_region_list_free_v(void **p);
@@ -11853,8 +11978,9 @@ extern void discord_create_webhook_params_cleanup_v(void *p);
 extern void discord_create_webhook_params_cleanup(struct discord_create_webhook_params *p);
 extern void discord_create_webhook_params_init_v(void *p);
 extern void discord_create_webhook_params_init(struct discord_create_webhook_params *p);
-extern void discord_create_webhook_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params **pp);
+extern void discord_create_webhook_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_webhook_params_from_json_p(char *json, size_t len, struct discord_create_webhook_params **pp);
+extern void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params *p);
 extern size_t discord_create_webhook_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_webhook_params_to_json(char *json, size_t len, struct discord_create_webhook_params *p);
 extern void discord_create_webhook_params_list_free_v(void **p);
@@ -11868,8 +11994,9 @@ extern void discord_modify_webhook_params_cleanup_v(void *p);
 extern void discord_modify_webhook_params_cleanup(struct discord_modify_webhook_params *p);
 extern void discord_modify_webhook_params_init_v(void *p);
 extern void discord_modify_webhook_params_init(struct discord_modify_webhook_params *p);
-extern void discord_modify_webhook_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params **pp);
+extern void discord_modify_webhook_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_webhook_params_from_json_p(char *json, size_t len, struct discord_modify_webhook_params **pp);
+extern void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params *p);
 extern size_t discord_modify_webhook_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct discord_modify_webhook_params *p);
 extern void discord_modify_webhook_params_list_free_v(void **p);
@@ -11883,8 +12010,9 @@ extern void discord_modify_webhook_with_token_params_cleanup_v(void *p);
 extern void discord_modify_webhook_with_token_params_cleanup(struct discord_modify_webhook_with_token_params *p);
 extern void discord_modify_webhook_with_token_params_init_v(void *p);
 extern void discord_modify_webhook_with_token_params_init(struct discord_modify_webhook_with_token_params *p);
-extern void discord_modify_webhook_with_token_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params **pp);
+extern void discord_modify_webhook_with_token_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_webhook_with_token_params_from_json_p(char *json, size_t len, struct discord_modify_webhook_with_token_params **pp);
+extern void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p);
 extern size_t discord_modify_webhook_with_token_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_webhook_with_token_params_to_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p);
 extern void discord_modify_webhook_with_token_params_list_free_v(void **p);
@@ -11898,8 +12026,9 @@ extern void discord_execute_webhook_params_cleanup_v(void *p);
 extern void discord_execute_webhook_params_cleanup(struct discord_execute_webhook_params *p);
 extern void discord_execute_webhook_params_init_v(void *p);
 extern void discord_execute_webhook_params_init(struct discord_execute_webhook_params *p);
-extern void discord_execute_webhook_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params **pp);
+extern void discord_execute_webhook_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_execute_webhook_params_from_json_p(char *json, size_t len, struct discord_execute_webhook_params **pp);
+extern void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params *p);
 extern size_t discord_execute_webhook_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct discord_execute_webhook_params *p);
 extern void discord_execute_webhook_params_list_free_v(void **p);
@@ -11913,8 +12042,9 @@ extern void discord_edit_webhook_message_params_cleanup_v(void *p);
 extern void discord_edit_webhook_message_params_cleanup(struct discord_edit_webhook_message_params *p);
 extern void discord_edit_webhook_message_params_init_v(void *p);
 extern void discord_edit_webhook_message_params_init(struct discord_edit_webhook_message_params *p);
-extern void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params **pp);
+extern void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_webhook_message_params_from_json_p(char *json, size_t len, struct discord_edit_webhook_message_params **pp);
+extern void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params *p);
 extern size_t discord_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_edit_webhook_message_params *p);
 extern void discord_edit_webhook_message_params_list_free_v(void **p);
@@ -11929,8 +12059,9 @@ extern void discord_webhook_cleanup_v(void *p);
 extern void discord_webhook_cleanup(struct discord_webhook *p);
 extern void discord_webhook_init_v(void *p);
 extern void discord_webhook_init(struct discord_webhook *p);
-extern void discord_webhook_from_json_v(char *json, size_t len, void *pp);
-extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp);
+extern void discord_webhook_from_json_v(char *json, size_t len, void *p);
+extern void discord_webhook_from_json_p(char *json, size_t len, struct discord_webhook **pp);
+extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p);
 extern size_t discord_webhook_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p);
 extern void discord_webhook_list_free_v(void **p);

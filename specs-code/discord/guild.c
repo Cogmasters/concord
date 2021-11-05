@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_guild_from_json(char *json, size_t len, struct discord_guild **pp)
+void discord_guild_from_json_p(char *json, size_t len, struct discord_guild **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_guild_from_json(json, len, *pp);
+}
+void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_guild *p = *pp;
   discord_guild_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:12:78
@@ -304,7 +307,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild **pp)
                 &p->approximate_presence_count,
   /* specs/discord/guild.json:61:78
      '{"type":{"base":"struct discord_welcome_screen", "dec":"*"}, "name":"welcome_screen", "option":true}' */
-                discord_welcome_screen_from_json, &p->welcome_screen);
+                discord_welcome_screen_from_json_p, &p->welcome_screen);
   ret = r;
 }
 
@@ -806,8 +809,8 @@ void discord_guild_init_v(void *p) {
   discord_guild_init((struct discord_guild *)p);
 }
 
-void discord_guild_from_json_v(char *json, size_t len, void *pp) {
- discord_guild_from_json(json, len, (struct discord_guild**)pp);
+void discord_guild_from_json_v(char *json, size_t len, void *p) {
+ discord_guild_from_json(json, len, (struct discord_guild*)p);
 }
 
 size_t discord_guild_to_json_v(char *json, size_t len, void *p) {
@@ -1565,12 +1568,15 @@ size_t discord_guild_features_list_to_json(char *str, size_t len, enum discord_g
 }
 
 
-void discord_unavailable_guild_from_json(char *json, size_t len, struct discord_unavailable_guild **pp)
+void discord_unavailable_guild_from_json_p(char *json, size_t len, struct discord_unavailable_guild **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_unavailable_guild_from_json(json, len, *pp);
+}
+void discord_unavailable_guild_from_json(char *json, size_t len, struct discord_unavailable_guild *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_unavailable_guild *p = *pp;
   discord_unavailable_guild_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:152:18
@@ -1630,8 +1636,8 @@ void discord_unavailable_guild_init_v(void *p) {
   discord_unavailable_guild_init((struct discord_unavailable_guild *)p);
 }
 
-void discord_unavailable_guild_from_json_v(char *json, size_t len, void *pp) {
- discord_unavailable_guild_from_json(json, len, (struct discord_unavailable_guild**)pp);
+void discord_unavailable_guild_from_json_v(char *json, size_t len, void *p) {
+ discord_unavailable_guild_from_json(json, len, (struct discord_unavailable_guild*)p);
 }
 
 size_t discord_unavailable_guild_to_json_v(char *json, size_t len, void *p) {
@@ -1690,12 +1696,15 @@ size_t discord_unavailable_guild_list_to_json(char *str, size_t len, struct disc
 }
 
 
-void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview **pp)
+void discord_guild_preview_from_json_p(char *json, size_t len, struct discord_guild_preview **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_guild_preview_from_json(json, len, *pp);
+}
+void discord_guild_preview_from_json(char *json, size_t len, struct discord_guild_preview *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_guild_preview *p = *pp;
   discord_guild_preview_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:162:18
@@ -1883,8 +1892,8 @@ void discord_guild_preview_init_v(void *p) {
   discord_guild_preview_init((struct discord_guild_preview *)p);
 }
 
-void discord_guild_preview_from_json_v(char *json, size_t len, void *pp) {
- discord_guild_preview_from_json(json, len, (struct discord_guild_preview**)pp);
+void discord_guild_preview_from_json_v(char *json, size_t len, void *p) {
+ discord_guild_preview_from_json(json, len, (struct discord_guild_preview*)p);
 }
 
 size_t discord_guild_preview_to_json_v(char *json, size_t len, void *p) {
@@ -1998,12 +2007,15 @@ size_t discord_guild_preview_list_to_json(char *str, size_t len, struct discord_
 }
 
 
-void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget **pp)
+void discord_guild_widget_from_json_p(char *json, size_t len, struct discord_guild_widget **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_guild_widget_from_json(json, len, *pp);
+}
+void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild_widget *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_guild_widget *p = *pp;
   discord_guild_widget_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:180:18
@@ -2063,8 +2075,8 @@ void discord_guild_widget_init_v(void *p) {
   discord_guild_widget_init((struct discord_guild_widget *)p);
 }
 
-void discord_guild_widget_from_json_v(char *json, size_t len, void *pp) {
- discord_guild_widget_from_json(json, len, (struct discord_guild_widget**)pp);
+void discord_guild_widget_from_json_v(char *json, size_t len, void *p) {
+ discord_guild_widget_from_json(json, len, (struct discord_guild_widget*)p);
 }
 
 size_t discord_guild_widget_to_json_v(char *json, size_t len, void *p) {
@@ -2123,12 +2135,15 @@ size_t discord_guild_widget_list_to_json(char *str, size_t len, struct discord_g
 }
 
 
-void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member **pp)
+void discord_guild_member_from_json_p(char *json, size_t len, struct discord_guild_member **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_guild_member_from_json(json, len, *pp);
+}
+void discord_guild_member_from_json(char *json, size_t len, struct discord_guild_member *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_guild_member *p = *pp;
   discord_guild_member_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:191:20
@@ -2160,7 +2175,7 @@ void discord_guild_member_from_json(char *json, size_t len, struct discord_guild
                 "(permissions):?s,",
   /* specs/discord/guild.json:191:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
-                discord_user_from_json, &p->user,
+                discord_user_from_json_p, &p->user,
   /* specs/discord/guild.json:192:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*"}, "option":true}' */
                 &p->nick,
@@ -2300,8 +2315,8 @@ void discord_guild_member_init_v(void *p) {
   discord_guild_member_init((struct discord_guild_member *)p);
 }
 
-void discord_guild_member_from_json_v(char *json, size_t len, void *pp) {
- discord_guild_member_from_json(json, len, (struct discord_guild_member**)pp);
+void discord_guild_member_from_json_v(char *json, size_t len, void *p) {
+ discord_guild_member_from_json(json, len, (struct discord_guild_member*)p);
 }
 
 size_t discord_guild_member_to_json_v(char *json, size_t len, void *p) {
@@ -2408,12 +2423,15 @@ size_t discord_guild_member_list_to_json(char *str, size_t len, struct discord_g
 }
 
 
-void discord_integration_from_json(char *json, size_t len, struct discord_integration **pp)
+void discord_integration_from_json_p(char *json, size_t len, struct discord_integration **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_integration_from_json(json, len, *pp);
+}
+void discord_integration_from_json(char *json, size_t len, struct discord_integration *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_integration *p = *pp;
   discord_integration_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:208:20
@@ -2490,10 +2508,10 @@ void discord_integration_from_json(char *json, size_t len, struct discord_integr
                 &p->expire_grace_period,
   /* specs/discord/guild.json:217:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "opt":true}' */
-                discord_user_from_json, &p->user,
+                discord_user_from_json_p, &p->user,
   /* specs/discord/guild.json:218:20
      '{ "name": "account", "type":{ "base":"struct discord_integration_account", "dec":"*"}}' */
-                discord_integration_account_from_json, &p->account,
+                discord_integration_account_from_json_p, &p->account,
   /* specs/discord/guild.json:219:20
      '{ "name": "synced_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
                 cee_iso8601_to_unix_ms, &p->synced_at,
@@ -2505,7 +2523,7 @@ void discord_integration_from_json(char *json, size_t len, struct discord_integr
                 &p->revoked,
   /* specs/discord/guild.json:222:20
      '{ "name": "application", "type":{ "base":"struct discord_integration_application", "dec":"*" }}' */
-                discord_integration_application_from_json, &p->application);
+                discord_integration_application_from_json_p, &p->application);
   ret = r;
 }
 
@@ -2681,8 +2699,8 @@ void discord_integration_init_v(void *p) {
   discord_integration_init((struct discord_integration *)p);
 }
 
-void discord_integration_from_json_v(char *json, size_t len, void *pp) {
- discord_integration_from_json(json, len, (struct discord_integration**)pp);
+void discord_integration_from_json_v(char *json, size_t len, void *p) {
+ discord_integration_from_json(json, len, (struct discord_integration*)p);
 }
 
 size_t discord_integration_to_json_v(char *json, size_t len, void *p) {
@@ -2883,12 +2901,15 @@ size_t discord_integration_expire_behaviors_list_to_json(char *str, size_t len, 
 }
 
 
-void discord_integration_account_from_json(char *json, size_t len, struct discord_integration_account **pp)
+void discord_integration_account_from_json_p(char *json, size_t len, struct discord_integration_account **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_integration_account_from_json(json, len, *pp);
+}
+void discord_integration_account_from_json(char *json, size_t len, struct discord_integration_account *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_integration_account *p = *pp;
   discord_integration_account_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:241:19
@@ -2948,8 +2969,8 @@ void discord_integration_account_init_v(void *p) {
   discord_integration_account_init((struct discord_integration_account *)p);
 }
 
-void discord_integration_account_from_json_v(char *json, size_t len, void *pp) {
- discord_integration_account_from_json(json, len, (struct discord_integration_account**)pp);
+void discord_integration_account_from_json_v(char *json, size_t len, void *p) {
+ discord_integration_account_from_json(json, len, (struct discord_integration_account*)p);
 }
 
 size_t discord_integration_account_to_json_v(char *json, size_t len, void *p) {
@@ -3009,12 +3030,15 @@ size_t discord_integration_account_list_to_json(char *str, size_t len, struct di
 }
 
 
-void discord_integration_application_from_json(char *json, size_t len, struct discord_integration_application **pp)
+void discord_integration_application_from_json_p(char *json, size_t len, struct discord_integration_application **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_integration_application_from_json(json, len, *pp);
+}
+void discord_integration_application_from_json(char *json, size_t len, struct discord_integration_application *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_integration_application *p = *pp;
   discord_integration_application_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:251:19
@@ -3052,7 +3076,7 @@ void discord_integration_application_from_json(char *json, size_t len, struct di
                 &p->summary,
   /* specs/discord/guild.json:256:19
      '{ "name":"bot", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true}' */
-                discord_user_from_json, &p->bot);
+                discord_user_from_json_p, &p->bot);
   ret = r;
 }
 
@@ -3138,8 +3162,8 @@ void discord_integration_application_init_v(void *p) {
   discord_integration_application_init((struct discord_integration_application *)p);
 }
 
-void discord_integration_application_from_json_v(char *json, size_t len, void *pp) {
- discord_integration_application_from_json(json, len, (struct discord_integration_application**)pp);
+void discord_integration_application_from_json_v(char *json, size_t len, void *p) {
+ discord_integration_application_from_json(json, len, (struct discord_integration_application*)p);
 }
 
 size_t discord_integration_application_to_json_v(char *json, size_t len, void *p) {
@@ -3228,12 +3252,15 @@ size_t discord_integration_application_list_to_json(char *str, size_t len, struc
 }
 
 
-void discord_ban_from_json(char *json, size_t len, struct discord_ban **pp)
+void discord_ban_from_json_p(char *json, size_t len, struct discord_ban **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_ban_from_json(json, len, *pp);
+}
+void discord_ban_from_json(char *json, size_t len, struct discord_ban *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_ban *p = *pp;
   discord_ban_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:265:20
@@ -3247,7 +3274,7 @@ void discord_ban_from_json(char *json, size_t len, struct discord_ban **pp)
                 &p->reason,
   /* specs/discord/guild.json:266:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
-                discord_user_from_json, &p->user);
+                discord_user_from_json_p, &p->user);
   ret = r;
 }
 
@@ -3293,8 +3320,8 @@ void discord_ban_init_v(void *p) {
   discord_ban_init((struct discord_ban *)p);
 }
 
-void discord_ban_from_json_v(char *json, size_t len, void *pp) {
- discord_ban_from_json(json, len, (struct discord_ban**)pp);
+void discord_ban_from_json_v(char *json, size_t len, void *p) {
+ discord_ban_from_json(json, len, (struct discord_ban*)p);
 }
 
 size_t discord_ban_to_json_v(char *json, size_t len, void *p) {
@@ -3357,12 +3384,15 @@ size_t discord_ban_list_to_json(char *str, size_t len, struct discord_ban **p)
 }
 
 
-void discord_welcome_screen_from_json(char *json, size_t len, struct discord_welcome_screen **pp)
+void discord_welcome_screen_from_json_p(char *json, size_t len, struct discord_welcome_screen **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_welcome_screen_from_json(json, len, *pp);
+}
+void discord_welcome_screen_from_json(char *json, size_t len, struct discord_welcome_screen *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_welcome_screen *p = *pp;
   discord_welcome_screen_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:275:20
@@ -3424,8 +3454,8 @@ void discord_welcome_screen_init_v(void *p) {
   discord_welcome_screen_init((struct discord_welcome_screen *)p);
 }
 
-void discord_welcome_screen_from_json_v(char *json, size_t len, void *pp) {
- discord_welcome_screen_from_json(json, len, (struct discord_welcome_screen**)pp);
+void discord_welcome_screen_from_json_v(char *json, size_t len, void *p) {
+ discord_welcome_screen_from_json(json, len, (struct discord_welcome_screen*)p);
 }
 
 size_t discord_welcome_screen_to_json_v(char *json, size_t len, void *p) {
@@ -3486,12 +3516,15 @@ size_t discord_welcome_screen_list_to_json(char *str, size_t len, struct discord
 }
 
 
-void discord_welcome_screen_channel_from_json(char *json, size_t len, struct discord_welcome_screen_channel **pp)
+void discord_welcome_screen_channel_from_json_p(char *json, size_t len, struct discord_welcome_screen_channel **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_welcome_screen_channel_from_json(json, len, *pp);
+}
+void discord_welcome_screen_channel_from_json(char *json, size_t len, struct discord_welcome_screen_channel *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_welcome_screen_channel *p = *pp;
   discord_welcome_screen_channel_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.json:286:20
@@ -3583,8 +3616,8 @@ void discord_welcome_screen_channel_init_v(void *p) {
   discord_welcome_screen_channel_init((struct discord_welcome_screen_channel *)p);
 }
 
-void discord_welcome_screen_channel_from_json_v(char *json, size_t len, void *pp) {
- discord_welcome_screen_channel_from_json(json, len, (struct discord_welcome_screen_channel**)pp);
+void discord_welcome_screen_channel_from_json_v(char *json, size_t len, void *p) {
+ discord_welcome_screen_channel_from_json(json, len, (struct discord_welcome_screen_channel*)p);
 }
 
 size_t discord_welcome_screen_channel_to_json_v(char *json, size_t len, void *p) {

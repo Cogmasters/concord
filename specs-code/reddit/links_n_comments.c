@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "reddit.h"
 
-void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params **pp)
+void reddit_comment_params_from_json_p(char *json, size_t len, struct reddit_comment_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  reddit_comment_params_from_json(json, len, *pp);
+}
+void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct reddit_comment_params *p = *pp;
   reddit_comment_params_init(p);
   r=json_extract(json, len, 
   /* specs/reddit/links_n_comments.json:13:20
@@ -142,8 +145,8 @@ void reddit_comment_params_init_v(void *p) {
   reddit_comment_params_init((struct reddit_comment_params *)p);
 }
 
-void reddit_comment_params_from_json_v(char *json, size_t len, void *pp) {
- reddit_comment_params_from_json(json, len, (struct reddit_comment_params**)pp);
+void reddit_comment_params_from_json_v(char *json, size_t len, void *p) {
+ reddit_comment_params_from_json(json, len, (struct reddit_comment_params*)p);
 }
 
 size_t reddit_comment_params_to_json_v(char *json, size_t len, void *p) {

@@ -61,7 +61,7 @@ discord_create_global_application_command(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL,
-      .ok_obj = &p_app_cmd },
+      .ok_obj = p_app_cmd },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/applications/%" PRIu64 "/commands", application_id);
 }
@@ -88,9 +88,8 @@ discord_get_global_application_command(
 
   return discord_adapter_run(
     &client->adapter,
-    &(struct ua_resp_handle){ .ok_cb =
-                                &discord_application_command_from_json_v,
-                              .ok_obj = &p_app_cmd },
+    &(struct ua_resp_handle){
+      .ok_cb = &discord_application_command_from_json_v, .ok_obj = p_app_cmd },
     NULL, HTTP_GET, "/applications/%" PRIu64 "/commands/%" PRIu64,
     application_id, command_id);
 }
@@ -120,7 +119,7 @@ discord_edit_global_application_command(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL,
-      .ok_obj = &p_app_cmd },
+      .ok_obj = p_app_cmd },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/applications/%" PRIu64 "/commands/%" PRIu64, application_id, command_id);
 }
@@ -240,7 +239,7 @@ discord_create_guild_application_command(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL,
-      .ok_obj = &p_app_cmd },
+      .ok_obj = p_app_cmd },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/applications/%" PRIu64 "/guilds/%" PRIu64 "/commands", application_id,
     guild_id);
@@ -273,9 +272,8 @@ discord_get_guild_application_command(
 
   return discord_adapter_run(
     &client->adapter,
-    &(struct ua_resp_handle){ .ok_cb =
-                                &discord_application_command_from_json_v,
-                              .ok_obj = &p_app_cmd },
+    &(struct ua_resp_handle){
+      .ok_cb = &discord_application_command_from_json_v, .ok_obj = p_app_cmd },
     NULL, HTTP_GET,
     "/applications/%" PRIu64 "/guilds/%" PRIu64 "/commands/%" PRIu64,
     application_id, guild_id, command_id);
@@ -311,7 +309,7 @@ discord_edit_guild_application_command(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_app_cmd ? &discord_application_command_from_json_v : NULL,
-      .ok_obj = &p_app_cmd },
+      .ok_obj = p_app_cmd },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/applications/%" PRIu64 "/guilds/%" PRIu64 "/commands/%" PRIu64,
     application_id, guild_id, command_id);
@@ -437,7 +435,7 @@ discord_get_application_command_permissions(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = &discord_guild_application_command_permissions_from_json_v,
-      .ok_obj = &p_permissions },
+      .ok_obj = p_permissions },
     NULL, HTTP_GET,
     "/applications/%" PRIu64 "/guilds/%" PRIu64 "/commands/%" PRIu64
     "/permissions",
@@ -476,7 +474,7 @@ discord_edit_application_command_permissions(
       .ok_cb = p_permissions
                  ? &discord_guild_application_command_permissions_from_json_v
                  : NULL,
-      .ok_obj = &p_permissions },
+      .ok_obj = p_permissions },
     &(struct sized_buffer){ payload, ret }, HTTP_PUT,
     "/applications/%" PRIu64 "/guilds/%" PRIu64 "/commands/%" PRIu64
     "/permissions",

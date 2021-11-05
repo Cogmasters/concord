@@ -24,7 +24,7 @@
  *     * :code:`void discord_edit_original_interaction_response_params_list_free(struct discord_edit_original_interaction_response_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_original_interaction_response_params_from_json(char *rbuf, size_t len, struct discord_edit_original_interaction_response_params **)`
+ *     * :code:`void discord_edit_original_interaction_response_params_from_json(char *rbuf, size_t len, struct discord_edit_original_interaction_response_params *)`
  *     * :code:`void discord_edit_original_interaction_response_params_list_from_json(char *rbuf, size_t len, struct discord_edit_original_interaction_response_params ***)`
  *   * JSON Encoder:
 
@@ -62,8 +62,9 @@ extern void discord_edit_original_interaction_response_params_cleanup_v(void *p)
 extern void discord_edit_original_interaction_response_params_cleanup(struct discord_edit_original_interaction_response_params *p);
 extern void discord_edit_original_interaction_response_params_init_v(void *p);
 extern void discord_edit_original_interaction_response_params_init(struct discord_edit_original_interaction_response_params *p);
-extern void discord_edit_original_interaction_response_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_original_interaction_response_params_from_json(char *json, size_t len, struct discord_edit_original_interaction_response_params **pp);
+extern void discord_edit_original_interaction_response_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_original_interaction_response_params_from_json_p(char *json, size_t len, struct discord_edit_original_interaction_response_params **pp);
+extern void discord_edit_original_interaction_response_params_from_json(char *json, size_t len, struct discord_edit_original_interaction_response_params *p);
 extern size_t discord_edit_original_interaction_response_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_original_interaction_response_params_to_json(char *json, size_t len, struct discord_edit_original_interaction_response_params *p);
 extern void discord_edit_original_interaction_response_params_list_free_v(void **p);
@@ -92,7 +93,7 @@ extern size_t discord_edit_original_interaction_response_params_list_to_json(cha
  *     * :code:`void discord_create_followup_message_params_list_free(struct discord_create_followup_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_followup_message_params_from_json(char *rbuf, size_t len, struct discord_create_followup_message_params **)`
+ *     * :code:`void discord_create_followup_message_params_from_json(char *rbuf, size_t len, struct discord_create_followup_message_params *)`
  *     * :code:`void discord_create_followup_message_params_list_from_json(char *rbuf, size_t len, struct discord_create_followup_message_params ***)`
  *   * JSON Encoder:
 
@@ -154,8 +155,9 @@ extern void discord_create_followup_message_params_cleanup_v(void *p);
 extern void discord_create_followup_message_params_cleanup(struct discord_create_followup_message_params *p);
 extern void discord_create_followup_message_params_init_v(void *p);
 extern void discord_create_followup_message_params_init(struct discord_create_followup_message_params *p);
-extern void discord_create_followup_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_followup_message_params_from_json(char *json, size_t len, struct discord_create_followup_message_params **pp);
+extern void discord_create_followup_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_followup_message_params_from_json_p(char *json, size_t len, struct discord_create_followup_message_params **pp);
+extern void discord_create_followup_message_params_from_json(char *json, size_t len, struct discord_create_followup_message_params *p);
 extern size_t discord_create_followup_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_followup_message_params_to_json(char *json, size_t len, struct discord_create_followup_message_params *p);
 extern void discord_create_followup_message_params_list_free_v(void **p);
@@ -184,7 +186,7 @@ extern size_t discord_create_followup_message_params_list_to_json(char *str, siz
  *     * :code:`void discord_edit_followup_message_params_list_free(struct discord_edit_followup_message_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_edit_followup_message_params_from_json(char *rbuf, size_t len, struct discord_edit_followup_message_params **)`
+ *     * :code:`void discord_edit_followup_message_params_from_json(char *rbuf, size_t len, struct discord_edit_followup_message_params *)`
  *     * :code:`void discord_edit_followup_message_params_list_from_json(char *rbuf, size_t len, struct discord_edit_followup_message_params ***)`
  *   * JSON Encoder:
 
@@ -222,8 +224,9 @@ extern void discord_edit_followup_message_params_cleanup_v(void *p);
 extern void discord_edit_followup_message_params_cleanup(struct discord_edit_followup_message_params *p);
 extern void discord_edit_followup_message_params_init_v(void *p);
 extern void discord_edit_followup_message_params_init(struct discord_edit_followup_message_params *p);
-extern void discord_edit_followup_message_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_edit_followup_message_params_from_json(char *json, size_t len, struct discord_edit_followup_message_params **pp);
+extern void discord_edit_followup_message_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_edit_followup_message_params_from_json_p(char *json, size_t len, struct discord_edit_followup_message_params **pp);
+extern void discord_edit_followup_message_params_from_json(char *json, size_t len, struct discord_edit_followup_message_params *p);
 extern size_t discord_edit_followup_message_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_edit_followup_message_params_to_json(char *json, size_t len, struct discord_edit_followup_message_params *p);
 extern void discord_edit_followup_message_params_list_free_v(void **p);

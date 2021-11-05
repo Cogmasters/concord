@@ -397,12 +397,15 @@ size_t discord_gateway_events_list_to_json(char *str, size_t len, enum discord_g
 }
 
 
-void discord_identify_from_json(char *json, size_t len, struct discord_identify **pp)
+void discord_identify_from_json_p(char *json, size_t len, struct discord_identify **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_identify_from_json(json, len, *pp);
+}
+void discord_identify_from_json(char *json, size_t len, struct discord_identify *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_identify *p = *pp;
   discord_identify_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:142:19
@@ -433,7 +436,7 @@ void discord_identify_from_json(char *json, size_t len, struct discord_identify 
                 &p->token,
   /* specs/discord/gateway.json:143:19
      '{ "name":"properties","type":{"base":"struct discord_identify_connection", "dec":"*"}}' */
-                discord_identify_connection_from_json, &p->properties,
+                discord_identify_connection_from_json_p, &p->properties,
   /* specs/discord/gateway.json:144:19
      '{ "name":"compress","type":{"base":"bool"}}' */
                 &p->compress,
@@ -447,7 +450,7 @@ void discord_identify_from_json(char *json, size_t len, struct discord_identify 
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   /* specs/discord/gateway.json:148:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
-                discord_presence_status_from_json, &p->presence,
+                discord_presence_status_from_json_p, &p->presence,
   /* specs/discord/gateway.json:149:19
      '{ "name":"intents","type":{"base":"int"}}' */
                 &p->intents);
@@ -553,8 +556,8 @@ void discord_identify_init_v(void *p) {
   discord_identify_init((struct discord_identify *)p);
 }
 
-void discord_identify_from_json_v(char *json, size_t len, void *pp) {
- discord_identify_from_json(json, len, (struct discord_identify**)pp);
+void discord_identify_from_json_v(char *json, size_t len, void *p) {
+ discord_identify_from_json(json, len, (struct discord_identify*)p);
 }
 
 size_t discord_identify_to_json_v(char *json, size_t len, void *p) {
@@ -656,12 +659,15 @@ size_t discord_identify_list_to_json(char *str, size_t len, struct discord_ident
 }
 
 
-void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status **pp)
+void discord_voice_state_status_from_json_p(char *json, size_t len, struct discord_voice_state_status **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_voice_state_status_from_json(json, len, *pp);
+}
+void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_voice_state_status *p = *pp;
   discord_voice_state_status_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:159:19
@@ -755,8 +761,8 @@ void discord_voice_state_status_init_v(void *p) {
   discord_voice_state_status_init((struct discord_voice_state_status *)p);
 }
 
-void discord_voice_state_status_from_json_v(char *json, size_t len, void *pp) {
- discord_voice_state_status_from_json(json, len, (struct discord_voice_state_status**)pp);
+void discord_voice_state_status_from_json_v(char *json, size_t len, void *p) {
+ discord_voice_state_status_from_json(json, len, (struct discord_voice_state_status*)p);
 }
 
 size_t discord_voice_state_status_to_json_v(char *json, size_t len, void *p) {
@@ -827,12 +833,15 @@ size_t discord_voice_state_status_list_to_json(char *str, size_t len, struct dis
 }
 
 
-void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status **pp)
+void discord_presence_status_from_json_p(char *json, size_t len, struct discord_presence_status **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_presence_status_from_json(json, len, *pp);
+}
+void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_presence_status *p = *pp;
   discord_presence_status_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:172:19
@@ -927,8 +936,8 @@ void discord_presence_status_init_v(void *p) {
   discord_presence_status_init((struct discord_presence_status *)p);
 }
 
-void discord_presence_status_from_json_v(char *json, size_t len, void *pp) {
- discord_presence_status_from_json(json, len, (struct discord_presence_status**)pp);
+void discord_presence_status_from_json_v(char *json, size_t len, void *p) {
+ discord_presence_status_from_json(json, len, (struct discord_presence_status*)p);
 }
 
 size_t discord_presence_status_to_json_v(char *json, size_t len, void *p) {
@@ -1000,12 +1009,15 @@ size_t discord_presence_status_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection **pp)
+void discord_identify_connection_from_json_p(char *json, size_t len, struct discord_identify_connection **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_identify_connection_from_json(json, len, *pp);
+}
+void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_identify_connection *p = *pp;
   discord_identify_connection_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:185:19
@@ -1084,8 +1096,8 @@ void discord_identify_connection_init_v(void *p) {
   discord_identify_connection_init((struct discord_identify_connection *)p);
 }
 
-void discord_identify_connection_from_json_v(char *json, size_t len, void *pp) {
- discord_identify_connection_from_json(json, len, (struct discord_identify_connection**)pp);
+void discord_identify_connection_from_json_v(char *json, size_t len, void *p) {
+ discord_identify_connection_from_json(json, len, (struct discord_identify_connection*)p);
 }
 
 size_t discord_identify_connection_to_json_v(char *json, size_t len, void *p) {
@@ -1153,12 +1165,15 @@ size_t discord_identify_connection_list_to_json(char *str, size_t len, struct di
 }
 
 
-void discord_activity_from_json(char *json, size_t len, struct discord_activity **pp)
+void discord_activity_from_json_p(char *json, size_t len, struct discord_activity **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_activity_from_json(json, len, *pp);
+}
+void discord_activity_from_json(char *json, size_t len, struct discord_activity *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_activity *p = *pp;
   discord_activity_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:196:19
@@ -1320,8 +1335,8 @@ void discord_activity_init_v(void *p) {
   discord_activity_init((struct discord_activity *)p);
 }
 
-void discord_activity_from_json_v(char *json, size_t len, void *pp) {
- discord_activity_from_json(json, len, (struct discord_activity**)pp);
+void discord_activity_from_json_v(char *json, size_t len, void *p) {
+ discord_activity_from_json(json, len, (struct discord_activity*)p);
 }
 
 size_t discord_activity_to_json_v(char *json, size_t len, void *p) {
@@ -1478,12 +1493,15 @@ size_t discord_activity_types_list_to_json(char *str, size_t len, enum discord_a
 }
 
 
-void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit **pp)
+void discord_session_start_limit_from_json_p(char *json, size_t len, struct discord_session_start_limit **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_session_start_limit_from_json(json, len, *pp);
+}
+void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_session_start_limit *p = *pp;
   discord_session_start_limit_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:227:19
@@ -1579,8 +1597,8 @@ void discord_session_start_limit_init_v(void *p) {
   discord_session_start_limit_init((struct discord_session_start_limit *)p);
 }
 
-void discord_session_start_limit_from_json_v(char *json, size_t len, void *pp) {
- discord_session_start_limit_from_json(json, len, (struct discord_session_start_limit**)pp);
+void discord_session_start_limit_from_json_v(char *json, size_t len, void *p) {
+ discord_session_start_limit_from_json(json, len, (struct discord_session_start_limit*)p);
 }
 
 size_t discord_session_start_limit_to_json_v(char *json, size_t len, void *p) {

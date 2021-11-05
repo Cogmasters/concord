@@ -26,7 +26,7 @@
  *     * :code:`void discord_guild_template_list_free(struct discord_guild_template **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template **)`
+ *     * :code:`void discord_guild_template_from_json(char *rbuf, size_t len, struct discord_guild_template *)`
  *     * :code:`void discord_guild_template_list_from_json(char *rbuf, size_t len, struct discord_guild_template ***)`
  *   * JSON Encoder:
 
@@ -84,8 +84,9 @@ extern void discord_guild_template_cleanup_v(void *p);
 extern void discord_guild_template_cleanup(struct discord_guild_template *p);
 extern void discord_guild_template_init_v(void *p);
 extern void discord_guild_template_init(struct discord_guild_template *p);
-extern void discord_guild_template_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template **pp);
+extern void discord_guild_template_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_template_from_json_p(char *json, size_t len, struct discord_guild_template **pp);
+extern void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template *p);
 extern size_t discord_guild_template_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_template_to_json(char *json, size_t len, struct discord_guild_template *p);
 extern void discord_guild_template_list_free_v(void **p);

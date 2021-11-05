@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params **pp)
+void discord_create_global_application_command_params_from_json_p(char *json, size_t len, struct discord_create_global_application_command_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_global_application_command_params_from_json(json, len, *pp);
+}
+void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_global_application_command_params *p = *pp;
   discord_create_global_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:13:20
@@ -127,8 +130,8 @@ void discord_create_global_application_command_params_init_v(void *p) {
   discord_create_global_application_command_params_init((struct discord_create_global_application_command_params *)p);
 }
 
-void discord_create_global_application_command_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_global_application_command_params_from_json(json, len, (struct discord_create_global_application_command_params**)pp);
+void discord_create_global_application_command_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_global_application_command_params_from_json(json, len, (struct discord_create_global_application_command_params*)p);
 }
 
 size_t discord_create_global_application_command_params_to_json_v(char *json, size_t len, void *p) {
@@ -209,12 +212,15 @@ size_t discord_create_global_application_command_params_list_to_json(char *str, 
 }
 
 
-void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params **pp)
+void discord_edit_global_application_command_params_from_json_p(char *json, size_t len, struct discord_edit_global_application_command_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_edit_global_application_command_params_from_json(json, len, *pp);
+}
+void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_edit_global_application_command_params *p = *pp;
   discord_edit_global_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:27:20
@@ -309,8 +315,8 @@ void discord_edit_global_application_command_params_init_v(void *p) {
   discord_edit_global_application_command_params_init((struct discord_edit_global_application_command_params *)p);
 }
 
-void discord_edit_global_application_command_params_from_json_v(char *json, size_t len, void *pp) {
- discord_edit_global_application_command_params_from_json(json, len, (struct discord_edit_global_application_command_params**)pp);
+void discord_edit_global_application_command_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_global_application_command_params_from_json(json, len, (struct discord_edit_global_application_command_params*)p);
 }
 
 size_t discord_edit_global_application_command_params_to_json_v(char *json, size_t len, void *p) {
@@ -385,12 +391,15 @@ size_t discord_edit_global_application_command_params_list_to_json(char *str, si
 }
 
 
-void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params **pp)
+void discord_create_guild_application_command_params_from_json_p(char *json, size_t len, struct discord_create_guild_application_command_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_guild_application_command_params_from_json(json, len, *pp);
+}
+void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_guild_application_command_params *p = *pp;
   discord_create_guild_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:40:20
@@ -499,8 +508,8 @@ void discord_create_guild_application_command_params_init_v(void *p) {
   discord_create_guild_application_command_params_init((struct discord_create_guild_application_command_params *)p);
 }
 
-void discord_create_guild_application_command_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_guild_application_command_params_from_json(json, len, (struct discord_create_guild_application_command_params**)pp);
+void discord_create_guild_application_command_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_guild_application_command_params_from_json(json, len, (struct discord_create_guild_application_command_params*)p);
 }
 
 size_t discord_create_guild_application_command_params_to_json_v(char *json, size_t len, void *p) {
@@ -581,12 +590,15 @@ size_t discord_create_guild_application_command_params_list_to_json(char *str, s
 }
 
 
-void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params **pp)
+void discord_edit_guild_application_command_params_from_json_p(char *json, size_t len, struct discord_edit_guild_application_command_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_edit_guild_application_command_params_from_json(json, len, *pp);
+}
+void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_edit_guild_application_command_params *p = *pp;
   discord_edit_guild_application_command_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:54:20
@@ -681,8 +693,8 @@ void discord_edit_guild_application_command_params_init_v(void *p) {
   discord_edit_guild_application_command_params_init((struct discord_edit_guild_application_command_params *)p);
 }
 
-void discord_edit_guild_application_command_params_from_json_v(char *json, size_t len, void *pp) {
- discord_edit_guild_application_command_params_from_json(json, len, (struct discord_edit_guild_application_command_params**)pp);
+void discord_edit_guild_application_command_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_guild_application_command_params_from_json(json, len, (struct discord_edit_guild_application_command_params*)p);
 }
 
 size_t discord_edit_guild_application_command_params_to_json_v(char *json, size_t len, void *p) {
@@ -757,12 +769,15 @@ size_t discord_edit_guild_application_command_params_list_to_json(char *str, siz
 }
 
 
-void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params **pp)
+void discord_edit_application_command_permissions_params_from_json_p(char *json, size_t len, struct discord_edit_application_command_permissions_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_edit_application_command_permissions_params_from_json(json, len, *pp);
+}
+void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_edit_application_command_permissions_params *p = *pp;
   discord_edit_application_command_permissions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.endpoints-params.json:67:20
@@ -806,8 +821,8 @@ void discord_edit_application_command_permissions_params_init_v(void *p) {
   discord_edit_application_command_permissions_params_init((struct discord_edit_application_command_permissions_params *)p);
 }
 
-void discord_edit_application_command_permissions_params_from_json_v(char *json, size_t len, void *pp) {
- discord_edit_application_command_permissions_params_from_json(json, len, (struct discord_edit_application_command_permissions_params**)pp);
+void discord_edit_application_command_permissions_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_application_command_permissions_params_from_json(json, len, (struct discord_edit_application_command_permissions_params*)p);
 }
 
 size_t discord_edit_application_command_permissions_params_to_json_v(char *json, size_t len, void *p) {

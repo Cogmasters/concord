@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp)
+void discord_application_command_from_json_p(char *json, size_t len, struct discord_application_command **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_application_command_from_json(json, len, *pp);
+}
+void discord_application_command_from_json(char *json, size_t len, struct discord_application_command *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_application_command *p = *pp;
   discord_application_command_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:12:18
@@ -177,8 +180,8 @@ void discord_application_command_init_v(void *p) {
   discord_application_command_init((struct discord_application_command *)p);
 }
 
-void discord_application_command_from_json_v(char *json, size_t len, void *pp) {
- discord_application_command_from_json(json, len, (struct discord_application_command**)pp);
+void discord_application_command_from_json_v(char *json, size_t len, void *p) {
+ discord_application_command_from_json(json, len, (struct discord_application_command*)p);
 }
 
 size_t discord_application_command_to_json_v(char *json, size_t len, void *p) {
@@ -329,12 +332,15 @@ size_t discord_application_command_types_list_to_json(char *str, size_t len, enu
 }
 
 
-void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp)
+void discord_application_command_option_from_json_p(char *json, size_t len, struct discord_application_command_option **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_application_command_option_from_json(json, len, *pp);
+}
+void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_application_command_option *p = *pp;
   discord_application_command_option_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:41:18
@@ -460,8 +466,8 @@ void discord_application_command_option_init_v(void *p) {
   discord_application_command_option_init((struct discord_application_command_option *)p);
 }
 
-void discord_application_command_option_from_json_v(char *json, size_t len, void *pp) {
- discord_application_command_option_from_json(json, len, (struct discord_application_command_option**)pp);
+void discord_application_command_option_from_json_v(char *json, size_t len, void *p) {
+ discord_application_command_option_from_json(json, len, (struct discord_application_command_option*)p);
 }
 
 size_t discord_application_command_option_to_json_v(char *json, size_t len, void *p) {
@@ -615,12 +621,15 @@ size_t discord_application_command_option_types_list_to_json(char *str, size_t l
 }
 
 
-void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp)
+void discord_application_command_option_choice_from_json_p(char *json, size_t len, struct discord_application_command_option_choice **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_application_command_option_choice_from_json(json, len, *pp);
+}
+void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_application_command_option_choice *p = *pp;
   discord_application_command_option_choice_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:75:18
@@ -680,8 +689,8 @@ void discord_application_command_option_choice_init_v(void *p) {
   discord_application_command_option_choice_init((struct discord_application_command_option_choice *)p);
 }
 
-void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *pp) {
- discord_application_command_option_choice_from_json(json, len, (struct discord_application_command_option_choice**)pp);
+void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *p) {
+ discord_application_command_option_choice_from_json(json, len, (struct discord_application_command_option_choice*)p);
 }
 
 size_t discord_application_command_option_choice_to_json_v(char *json, size_t len, void *p) {
@@ -741,12 +750,15 @@ size_t discord_application_command_option_choice_list_to_json(char *str, size_t 
 }
 
 
-void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions **pp)
+void discord_guild_application_command_permissions_from_json_p(char *json, size_t len, struct discord_guild_application_command_permissions **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_guild_application_command_permissions_from_json(json, len, *pp);
+}
+void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_guild_application_command_permissions *p = *pp;
   discord_guild_application_command_permissions_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:86:18
@@ -838,8 +850,8 @@ void discord_guild_application_command_permissions_init_v(void *p) {
   discord_guild_application_command_permissions_init((struct discord_guild_application_command_permissions *)p);
 }
 
-void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *pp) {
- discord_guild_application_command_permissions_from_json(json, len, (struct discord_guild_application_command_permissions**)pp);
+void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *p) {
+ discord_guild_application_command_permissions_from_json(json, len, (struct discord_guild_application_command_permissions*)p);
 }
 
 size_t discord_guild_application_command_permissions_to_json_v(char *json, size_t len, void *p) {
@@ -911,12 +923,15 @@ size_t discord_guild_application_command_permissions_list_to_json(char *str, siz
 }
 
 
-void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions **pp)
+void discord_application_command_permissions_from_json_p(char *json, size_t len, struct discord_application_command_permissions **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_application_command_permissions_from_json(json, len, *pp);
+}
+void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_application_command_permissions *p = *pp;
   discord_application_command_permissions_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:99:18
@@ -992,8 +1007,8 @@ void discord_application_command_permissions_init_v(void *p) {
   discord_application_command_permissions_init((struct discord_application_command_permissions *)p);
 }
 
-void discord_application_command_permissions_from_json_v(char *json, size_t len, void *pp) {
- discord_application_command_permissions_from_json(json, len, (struct discord_application_command_permissions**)pp);
+void discord_application_command_permissions_from_json_v(char *json, size_t len, void *p) {
+ discord_application_command_permissions_from_json(json, len, (struct discord_application_command_permissions*)p);
 }
 
 size_t discord_application_command_permissions_to_json_v(char *json, size_t len, void *p) {
@@ -1111,12 +1126,15 @@ size_t discord_application_command_permission_types_list_to_json(char *str, size
 }
 
 
-void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp)
+void discord_application_command_interaction_data_option_from_json_p(char *json, size_t len, struct discord_application_command_interaction_data_option **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_application_command_interaction_data_option_from_json(json, len, *pp);
+}
+void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_application_command_interaction_data_option *p = *pp;
   discord_application_command_interaction_data_option_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:122:18
@@ -1209,8 +1227,8 @@ void discord_application_command_interaction_data_option_init_v(void *p) {
   discord_application_command_interaction_data_option_init((struct discord_application_command_interaction_data_option *)p);
 }
 
-void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *pp) {
- discord_application_command_interaction_data_option_from_json(json, len, (struct discord_application_command_interaction_data_option**)pp);
+void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *p) {
+ discord_application_command_interaction_data_option_from_json(json, len, (struct discord_application_command_interaction_data_option*)p);
 }
 
 size_t discord_application_command_interaction_data_option_to_json_v(char *json, size_t len, void *p) {

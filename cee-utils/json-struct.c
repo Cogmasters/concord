@@ -1247,7 +1247,7 @@ static void to_action(struct jc_field *f, struct action *act)
         } else {
           if (is_user_defined_type) {
             asprintf(&act->injector, "%s_to_json", act->fun_prefix);
-            asprintf(&act->extractor, "%s_from_json", act->fun_prefix);
+            asprintf(&act->extractor, "%s_from_json_p", act->fun_prefix);
             asprintf(&act->alloc, "%s_init", act->fun_prefix);
             asprintf(&act->free, "%s_cleanup", act->fun_prefix);
             act->extract_arg_decor = "&";
@@ -1506,14 +1506,20 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
     return;
   }
 
-  fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s **pp)\n",
+  fprintf(fp, "void %s_from_json_p(char *json, size_t len, struct %s **pp)\n",
+          t, t);
+
+  fprintf(fp, "{\n");
+  fprintf(fp, "  if (!*pp) *pp = malloc(sizeof **pp);\n");
+  fprintf(fp, "  %s_from_json(json, len, *pp);\n", t);
+  fprintf(fp, "}\n");
+
+  fprintf(fp, "void %s_from_json(char *json, size_t len, struct %s *p)\n",
           t, t);
 
   fprintf(fp, "{\n");
   fprintf(fp, "  static size_t ret=0; /**< used for debugging */\n");
   fprintf(fp, "  size_t r=0;\n");
-  fprintf(fp, "  if (!*pp) *pp = malloc(sizeof **pp);\n");
-  fprintf(fp, "  struct %s *p = *pp;\n", t);
   fprintf(fp, "  %s_init(p);\n", t);
   fprintf(fp, "  r=json_extract(json, len, \n");
 
@@ -1788,7 +1794,7 @@ static void gen_struct(FILE *fp, struct jc_struct *s)
        " *     * :code:`void %s_cleanup(struct %s *)`\n"
        " *     * :code:`void %s_list_free(struct %s **)`\n"
        " *   * JSON Decoder:\n\n"
-       " *     * :code:`void %s_from_json(char *rbuf, size_t len, struct %s **)`\n"
+       " *     * :code:`void %s_from_json(char *rbuf, size_t len, struct %s *)`\n"
        " *     * :code:`void %s_list_from_json(char *rbuf, size_t len, struct %s ***)`\n"
        " *   * JSON Encoder:\n\n"
        " *     * :code:`void %s_to_json(char *wbuf, size_t len, struct %s *)`\n"
@@ -1850,8 +1856,8 @@ static void gen_wrapper(FILE *fp, struct jc_def *d)
 
 
       if (!is_disabled_method(d, "from_json")) {
-        fprintf(fp, "void %s_from_json_v(char *json, size_t len, void *pp) {\n"
-                    " %s_from_json(json, len, (struct %s**)pp);\n"
+        fprintf(fp, "void %s_from_json_v(char *json, size_t len, void *p) {\n"
+                    " %s_from_json(json, len, (struct %s*)p);\n"
                     "}\n\n", t, t, t);
       }
       if (!is_disabled_method(d, "to_json")) {
@@ -1896,8 +1902,10 @@ static void gen_forward_fun_declare(FILE *fp, struct jc_def *d)
       fprintf(fp, "extern void %s_init(struct %s *p);\n", t, t);
 
       if (!is_disabled_method(d, "from_json")) {
-        fprintf(fp, "extern void %s_from_json_v(char *json, size_t len, void *pp);\n", t);
-        fprintf(fp, "extern void %s_from_json(char *json, size_t len, struct %s **pp);\n",
+        fprintf(fp, "extern void %s_from_json_v(char *json, size_t len, void *p);\n", t);
+        fprintf(fp, "extern void %s_from_json_p(char *json, size_t len, struct %s **pp);\n",
+                t, t);
+        fprintf(fp, "extern void %s_from_json(char *json, size_t len, struct %s *p);\n",
                 t, t);
       }
 

@@ -24,7 +24,7 @@
  *     * :code:`void github_gist_list_free(struct github_gist **)`
  *   * JSON Decoder:
 
- *     * :code:`void github_gist_from_json(char *rbuf, size_t len, struct github_gist **)`
+ *     * :code:`void github_gist_from_json(char *rbuf, size_t len, struct github_gist *)`
  *     * :code:`void github_gist_list_from_json(char *rbuf, size_t len, struct github_gist ***)`
  *   * JSON Encoder:
 
@@ -70,8 +70,9 @@ extern void github_gist_cleanup_v(void *p);
 extern void github_gist_cleanup(struct github_gist *p);
 extern void github_gist_init_v(void *p);
 extern void github_gist_init(struct github_gist *p);
-extern void github_gist_from_json_v(char *json, size_t len, void *pp);
-extern void github_gist_from_json(char *json, size_t len, struct github_gist **pp);
+extern void github_gist_from_json_v(char *json, size_t len, void *p);
+extern void github_gist_from_json_p(char *json, size_t len, struct github_gist **pp);
+extern void github_gist_from_json(char *json, size_t len, struct github_gist *p);
 extern size_t github_gist_to_json_v(char *json, size_t len, void *p);
 extern size_t github_gist_to_json(char *json, size_t len, struct github_gist *p);
 extern void github_gist_list_free_v(void **p);

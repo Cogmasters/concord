@@ -518,7 +518,7 @@ github_get_user(struct github *client,
   return github_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &github_user_from_json_v,
-                              .ok_obj = &user },
+                              .ok_obj = user },
     NULL, HTTP_GET, "/users/%s", username);
 }
 

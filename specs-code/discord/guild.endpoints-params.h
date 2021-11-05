@@ -24,7 +24,7 @@
  *     * :code:`void discord_create_guild_params_list_free(struct discord_create_guild_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params **)`
+ *     * :code:`void discord_create_guild_params_from_json(char *rbuf, size_t len, struct discord_create_guild_params *)`
  *     * :code:`void discord_create_guild_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_params ***)`
  *   * JSON Encoder:
 
@@ -82,8 +82,9 @@ extern void discord_create_guild_params_cleanup_v(void *p);
 extern void discord_create_guild_params_cleanup(struct discord_create_guild_params *p);
 extern void discord_create_guild_params_init_v(void *p);
 extern void discord_create_guild_params_init(struct discord_create_guild_params *p);
-extern void discord_create_guild_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params **pp);
+extern void discord_create_guild_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_params_from_json_p(char *json, size_t len, struct discord_create_guild_params **pp);
+extern void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params *p);
 extern size_t discord_create_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_params_to_json(char *json, size_t len, struct discord_create_guild_params *p);
 extern void discord_create_guild_params_list_free_v(void **p);
@@ -112,7 +113,7 @@ extern size_t discord_create_guild_params_list_to_json(char *str, size_t len, st
  *     * :code:`void discord_modify_guild_params_list_free(struct discord_modify_guild_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params **)`
+ *     * :code:`void discord_modify_guild_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_params *)`
  *     * :code:`void discord_modify_guild_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_params ***)`
  *   * JSON Encoder:
 
@@ -202,8 +203,9 @@ extern void discord_modify_guild_params_cleanup_v(void *p);
 extern void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *p);
 extern void discord_modify_guild_params_init_v(void *p);
 extern void discord_modify_guild_params_init(struct discord_modify_guild_params *p);
-extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params **pp);
+extern void discord_modify_guild_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_params_from_json_p(char *json, size_t len, struct discord_modify_guild_params **pp);
+extern void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params *p);
 extern size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p);
 extern void discord_modify_guild_params_list_free_v(void **p);
@@ -232,7 +234,7 @@ extern size_t discord_modify_guild_params_list_to_json(char *str, size_t len, st
  *     * :code:`void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params **)`
+ *     * :code:`void discord_create_guild_channel_params_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params *)`
  *     * :code:`void discord_create_guild_channel_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_channel_params ***)`
  *   * JSON Encoder:
 
@@ -286,8 +288,9 @@ extern void discord_create_guild_channel_params_cleanup_v(void *p);
 extern void discord_create_guild_channel_params_cleanup(struct discord_create_guild_channel_params *p);
 extern void discord_create_guild_channel_params_init_v(void *p);
 extern void discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *p);
-extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params **pp);
+extern void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_channel_params_from_json_p(char *json, size_t len, struct discord_create_guild_channel_params **pp);
+extern void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p);
 extern void discord_create_guild_channel_params_list_free_v(void **p);
@@ -316,7 +319,7 @@ extern size_t discord_create_guild_channel_params_list_to_json(char *str, size_t
  *     * :code:`void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params **)`
+ *     * :code:`void discord_modify_guild_channel_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params *)`
  *     * :code:`void discord_modify_guild_channel_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_channel_positions_params ***)`
  *   * JSON Encoder:
 
@@ -346,8 +349,9 @@ extern void discord_modify_guild_channel_positions_params_cleanup_v(void *p);
 extern void discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *p);
 extern void discord_modify_guild_channel_positions_params_init_v(void *p);
 extern void discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *p);
-extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
+extern void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_channel_positions_params_from_json_p(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp);
+extern void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p);
 extern void discord_modify_guild_channel_positions_params_list_free_v(void **p);
@@ -376,7 +380,7 @@ extern size_t discord_modify_guild_channel_positions_params_list_to_json(char *s
  *     * :code:`void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_list_guild_members_params_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params **)`
+ *     * :code:`void discord_list_guild_members_params_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params *)`
  *     * :code:`void discord_list_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_list_guild_members_params ***)`
  *   * JSON Encoder:
 
@@ -398,8 +402,9 @@ extern void discord_list_guild_members_params_cleanup_v(void *p);
 extern void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *p);
 extern void discord_list_guild_members_params_init_v(void *p);
 extern void discord_list_guild_members_params_init(struct discord_list_guild_members_params *p);
-extern void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params **pp);
+extern void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_list_guild_members_params_from_json_p(char *json, size_t len, struct discord_list_guild_members_params **pp);
+extern void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params *p);
 extern size_t discord_list_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_list_guild_members_params_to_json(char *json, size_t len, struct discord_list_guild_members_params *p);
 extern void discord_list_guild_members_params_list_free_v(void **p);
@@ -428,7 +433,7 @@ extern size_t discord_list_guild_members_params_list_to_json(char *str, size_t l
  *     * :code:`void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params **)`
+ *     * :code:`void discord_search_guild_members_params_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params *)`
  *     * :code:`void discord_search_guild_members_params_list_from_json(char *rbuf, size_t len, struct discord_search_guild_members_params ***)`
  *   * JSON Encoder:
 
@@ -450,8 +455,9 @@ extern void discord_search_guild_members_params_cleanup_v(void *p);
 extern void discord_search_guild_members_params_cleanup(struct discord_search_guild_members_params *p);
 extern void discord_search_guild_members_params_init_v(void *p);
 extern void discord_search_guild_members_params_init(struct discord_search_guild_members_params *p);
-extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params **pp);
+extern void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_search_guild_members_params_from_json_p(char *json, size_t len, struct discord_search_guild_members_params **pp);
+extern void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p);
 extern void discord_search_guild_members_params_list_free_v(void **p);
@@ -480,7 +486,7 @@ extern size_t discord_search_guild_members_params_list_to_json(char *str, size_t
  *     * :code:`void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params **)`
+ *     * :code:`void discord_add_guild_member_params_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params *)`
  *     * :code:`void discord_add_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_add_guild_member_params ***)`
  *   * JSON Encoder:
 
@@ -514,8 +520,9 @@ extern void discord_add_guild_member_params_cleanup_v(void *p);
 extern void discord_add_guild_member_params_cleanup(struct discord_add_guild_member_params *p);
 extern void discord_add_guild_member_params_init_v(void *p);
 extern void discord_add_guild_member_params_init(struct discord_add_guild_member_params *p);
-extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params **pp);
+extern void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_add_guild_member_params_from_json_p(char *json, size_t len, struct discord_add_guild_member_params **pp);
+extern void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p);
 extern void discord_add_guild_member_params_list_free_v(void **p);
@@ -544,7 +551,7 @@ extern size_t discord_add_guild_member_params_list_to_json(char *str, size_t len
  *     * :code:`void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params **)`
+ *     * :code:`void discord_modify_guild_member_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params *)`
  *     * :code:`void discord_modify_guild_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_member_params ***)`
  *   * JSON Encoder:
 
@@ -578,8 +585,9 @@ extern void discord_modify_guild_member_params_cleanup_v(void *p);
 extern void discord_modify_guild_member_params_cleanup(struct discord_modify_guild_member_params *p);
 extern void discord_modify_guild_member_params_init_v(void *p);
 extern void discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *p);
-extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params **pp);
+extern void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_member_params_from_json_p(char *json, size_t len, struct discord_modify_guild_member_params **pp);
+extern void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p);
 extern void discord_modify_guild_member_params_list_free_v(void **p);
@@ -608,7 +616,7 @@ extern size_t discord_modify_guild_member_params_list_to_json(char *str, size_t 
  *     * :code:`void discord_modify_current_member_params_list_free(struct discord_modify_current_member_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_current_member_params_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params **)`
+ *     * :code:`void discord_modify_current_member_params_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params *)`
  *     * :code:`void discord_modify_current_member_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_member_params ***)`
  *   * JSON Encoder:
 
@@ -626,8 +634,9 @@ extern void discord_modify_current_member_params_cleanup_v(void *p);
 extern void discord_modify_current_member_params_cleanup(struct discord_modify_current_member_params *p);
 extern void discord_modify_current_member_params_init_v(void *p);
 extern void discord_modify_current_member_params_init(struct discord_modify_current_member_params *p);
-extern void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params **pp);
+extern void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_member_params_from_json_p(char *json, size_t len, struct discord_modify_current_member_params **pp);
+extern void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params *p);
 extern size_t discord_modify_current_member_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_member_params_to_json(char *json, size_t len, struct discord_modify_current_member_params *p);
 extern void discord_modify_current_member_params_list_free_v(void **p);
@@ -656,7 +665,7 @@ extern size_t discord_modify_current_member_params_list_to_json(char *str, size_
  *     * :code:`void discord_modify_current_user_nick_params_list_free(struct discord_modify_current_user_nick_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_current_user_nick_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params **)`
+ *     * :code:`void discord_modify_current_user_nick_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params *)`
  *     * :code:`void discord_modify_current_user_nick_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_nick_params ***)`
  *   * JSON Encoder:
 
@@ -674,8 +683,9 @@ extern void discord_modify_current_user_nick_params_cleanup_v(void *p);
 extern void discord_modify_current_user_nick_params_cleanup(struct discord_modify_current_user_nick_params *p);
 extern void discord_modify_current_user_nick_params_init_v(void *p);
 extern void discord_modify_current_user_nick_params_init(struct discord_modify_current_user_nick_params *p);
-extern void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params **pp);
+extern void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_user_nick_params_from_json_p(char *json, size_t len, struct discord_modify_current_user_nick_params **pp);
+extern void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p);
 extern size_t discord_modify_current_user_nick_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_user_nick_params_to_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p);
 extern void discord_modify_current_user_nick_params_list_free_v(void **p);
@@ -704,7 +714,7 @@ extern size_t discord_modify_current_user_nick_params_list_to_json(char *str, si
  *     * :code:`void discord_create_guild_ban_params_list_free(struct discord_create_guild_ban_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_ban_params_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params **)`
+ *     * :code:`void discord_create_guild_ban_params_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params *)`
  *     * :code:`void discord_create_guild_ban_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_ban_params ***)`
  *   * JSON Encoder:
 
@@ -726,8 +736,9 @@ extern void discord_create_guild_ban_params_cleanup_v(void *p);
 extern void discord_create_guild_ban_params_cleanup(struct discord_create_guild_ban_params *p);
 extern void discord_create_guild_ban_params_init_v(void *p);
 extern void discord_create_guild_ban_params_init(struct discord_create_guild_ban_params *p);
-extern void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params **pp);
+extern void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_ban_params_from_json_p(char *json, size_t len, struct discord_create_guild_ban_params **pp);
+extern void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params *p);
 extern size_t discord_create_guild_ban_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_ban_params_to_json(char *json, size_t len, struct discord_create_guild_ban_params *p);
 extern void discord_create_guild_ban_params_list_free_v(void **p);
@@ -756,7 +767,7 @@ extern size_t discord_create_guild_ban_params_list_to_json(char *str, size_t len
  *     * :code:`void discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params **)`
+ *     * :code:`void discord_create_guild_role_params_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params *)`
  *     * :code:`void discord_create_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_create_guild_role_params ***)`
  *   * JSON Encoder:
 
@@ -790,8 +801,9 @@ extern void discord_create_guild_role_params_cleanup_v(void *p);
 extern void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_init_v(void *p);
 extern void discord_create_guild_role_params_init(struct discord_create_guild_role_params *p);
-extern void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params **pp);
+extern void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_guild_role_params_from_json_p(char *json, size_t len, struct discord_create_guild_role_params **pp);
+extern void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern size_t discord_create_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct discord_create_guild_role_params *p);
 extern void discord_create_guild_role_params_list_free_v(void **p);
@@ -820,7 +832,7 @@ extern size_t discord_create_guild_role_params_list_to_json(char *str, size_t le
  *     * :code:`void discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params **)`
+ *     * :code:`void discord_modify_guild_role_positions_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params *)`
  *     * :code:`void discord_modify_guild_role_positions_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_positions_params ***)`
  *   * JSON Encoder:
 
@@ -842,8 +854,9 @@ extern void discord_modify_guild_role_positions_params_cleanup_v(void *p);
 extern void discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *p);
 extern void discord_modify_guild_role_positions_params_init_v(void *p);
 extern void discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *p);
-extern void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
+extern void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_role_positions_params_from_json_p(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp);
+extern void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern size_t discord_modify_guild_role_positions_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p);
 extern void discord_modify_guild_role_positions_params_list_free_v(void **p);
@@ -872,7 +885,7 @@ extern size_t discord_modify_guild_role_positions_params_list_to_json(char *str,
  *     * :code:`void discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params **)`
+ *     * :code:`void discord_modify_guild_role_params_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params *)`
  *     * :code:`void discord_modify_guild_role_params_list_from_json(char *rbuf, size_t len, struct discord_modify_guild_role_params ***)`
  *   * JSON Encoder:
 
@@ -906,8 +919,9 @@ extern void discord_modify_guild_role_params_cleanup_v(void *p);
 extern void discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_params *p);
 extern void discord_modify_guild_role_params_init_v(void *p);
 extern void discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *p);
-extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params **pp);
+extern void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_guild_role_params_from_json_p(char *json, size_t len, struct discord_modify_guild_role_params **pp);
+extern void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern size_t discord_modify_guild_role_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct discord_modify_guild_role_params *p);
 extern void discord_modify_guild_role_params_list_free_v(void **p);
@@ -936,7 +950,7 @@ extern size_t discord_modify_guild_role_params_list_to_json(char *str, size_t le
  *     * :code:`void discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params **)`
+ *     * :code:`void discord_get_guild_prune_count_params_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params *)`
  *     * :code:`void discord_get_guild_prune_count_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_prune_count_params ***)`
  *   * JSON Encoder:
 
@@ -958,8 +972,9 @@ extern void discord_get_guild_prune_count_params_cleanup_v(void *p);
 extern void discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *p);
 extern void discord_get_guild_prune_count_params_init_v(void *p);
 extern void discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_count_params *p);
-extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
+extern void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_guild_prune_count_params_from_json_p(char *json, size_t len, struct discord_get_guild_prune_count_params **pp);
+extern void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern size_t discord_get_guild_prune_count_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p);
 extern void discord_get_guild_prune_count_params_list_free_v(void **p);
@@ -988,7 +1003,7 @@ extern size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_
  *     * :code:`void discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params **)`
+ *     * :code:`void discord_begin_guild_prune_params_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params *)`
  *     * :code:`void discord_begin_guild_prune_params_list_from_json(char *rbuf, size_t len, struct discord_begin_guild_prune_params ***)`
  *   * JSON Encoder:
 
@@ -1018,8 +1033,9 @@ extern void discord_begin_guild_prune_params_cleanup_v(void *p);
 extern void discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *p);
 extern void discord_begin_guild_prune_params_init_v(void *p);
 extern void discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_params *p);
-extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
+extern void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_begin_guild_prune_params_from_json_p(char *json, size_t len, struct discord_begin_guild_prune_params **pp);
+extern void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern size_t discord_begin_guild_prune_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct discord_begin_guild_prune_params *p);
 extern void discord_begin_guild_prune_params_list_free_v(void **p);

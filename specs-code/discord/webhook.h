@@ -26,7 +26,7 @@
  *     * :code:`void discord_webhook_list_free(struct discord_webhook **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook **)`
+ *     * :code:`void discord_webhook_from_json(char *rbuf, size_t len, struct discord_webhook *)`
  *     * :code:`void discord_webhook_list_from_json(char *rbuf, size_t len, struct discord_webhook ***)`
  *   * JSON Encoder:
 
@@ -88,8 +88,9 @@ extern void discord_webhook_cleanup_v(void *p);
 extern void discord_webhook_cleanup(struct discord_webhook *p);
 extern void discord_webhook_init_v(void *p);
 extern void discord_webhook_init(struct discord_webhook *p);
-extern void discord_webhook_from_json_v(char *json, size_t len, void *pp);
-extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp);
+extern void discord_webhook_from_json_v(char *json, size_t len, void *p);
+extern void discord_webhook_from_json_p(char *json, size_t len, struct discord_webhook **pp);
+extern void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p);
 extern size_t discord_webhook_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p);
 extern void discord_webhook_list_free_v(void **p);

@@ -32,7 +32,7 @@ discord_get_invite(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_invite_from_json_v,
-                              .ok_obj = &p_invite },
+                              .ok_obj = p_invite },
     &(struct sized_buffer){ payload, ret }, HTTP_GET, "/invites/%s",
     invite_code);
 }
@@ -51,6 +51,6 @@ discord_delete_invite(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb =
                                 p_invite ? &discord_invite_from_json_v : NULL,
-                              .ok_obj = &p_invite },
+                              .ok_obj = p_invite },
     NULL, HTTP_DELETE, "/invites/%s", invite_code);
 }

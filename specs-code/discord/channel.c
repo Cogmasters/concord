@@ -84,12 +84,15 @@ size_t discord_channel_types_list_to_json(char *str, size_t len, enum discord_ch
 }
 
 
-void discord_channel_from_json(char *json, size_t len, struct discord_channel **pp)
+void discord_channel_from_json_p(char *json, size_t len, struct discord_channel **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_channel_from_json(json, len, *pp);
+}
+void discord_channel_from_json(char *json, size_t len, struct discord_channel *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_channel *p = *pp;
   discord_channel_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:32:78
@@ -492,8 +495,8 @@ void discord_channel_init_v(void *p) {
   discord_channel_init((struct discord_channel *)p);
 }
 
-void discord_channel_from_json_v(char *json, size_t len, void *pp) {
- discord_channel_from_json(json, len, (struct discord_channel**)pp);
+void discord_channel_from_json_v(char *json, size_t len, void *p) {
+ discord_channel_from_json(json, len, (struct discord_channel*)p);
 }
 
 size_t discord_channel_to_json_v(char *json, size_t len, void *p) {
@@ -736,12 +739,15 @@ size_t discord_message_sticker_format_types_list_to_json(char *str, size_t len, 
 }
 
 
-void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker **pp)
+void discord_message_sticker_from_json_p(char *json, size_t len, struct discord_message_sticker **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_message_sticker_from_json(json, len, *pp);
+}
+void discord_message_sticker_from_json(char *json, size_t len, struct discord_message_sticker *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_message_sticker *p = *pp;
   discord_message_sticker_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:82:18
@@ -903,8 +909,8 @@ void discord_message_sticker_init_v(void *p) {
   discord_message_sticker_init((struct discord_message_sticker *)p);
 }
 
-void discord_message_sticker_from_json_v(char *json, size_t len, void *pp) {
- discord_message_sticker_from_json(json, len, (struct discord_message_sticker**)pp);
+void discord_message_sticker_from_json_v(char *json, size_t len, void *p) {
+ discord_message_sticker_from_json(json, len, (struct discord_message_sticker*)p);
 }
 
 size_t discord_message_sticker_to_json_v(char *json, size_t len, void *p) {
@@ -1063,12 +1069,15 @@ size_t discord_message_flags_list_to_json(char *str, size_t len, enum discord_me
 }
 
 
-void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference **pp)
+void discord_message_reference_from_json_p(char *json, size_t len, struct discord_message_reference **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_message_reference_from_json(json, len, *pp);
+}
+void discord_message_reference_from_json(char *json, size_t len, struct discord_message_reference *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_message_reference *p = *pp;
   discord_message_reference_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:112:18
@@ -1164,8 +1173,8 @@ void discord_message_reference_init_v(void *p) {
   discord_message_reference_init((struct discord_message_reference *)p);
 }
 
-void discord_message_reference_from_json_v(char *json, size_t len, void *pp) {
- discord_message_reference_from_json(json, len, (struct discord_message_reference**)pp);
+void discord_message_reference_from_json_v(char *json, size_t len, void *p) {
+ discord_message_reference_from_json(json, len, (struct discord_message_reference*)p);
 }
 
 size_t discord_message_reference_to_json_v(char *json, size_t len, void *p) {
@@ -1236,12 +1245,15 @@ size_t discord_message_reference_list_to_json(char *str, size_t len, struct disc
 }
 
 
-void discord_message_application_from_json(char *json, size_t len, struct discord_message_application **pp)
+void discord_message_application_from_json_p(char *json, size_t len, struct discord_message_application **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_message_application_from_json(json, len, *pp);
+}
+void discord_message_application_from_json(char *json, size_t len, struct discord_message_application *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_message_application *p = *pp;
   discord_message_application_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:124:18
@@ -1351,8 +1363,8 @@ void discord_message_application_init_v(void *p) {
   discord_message_application_init((struct discord_message_application *)p);
 }
 
-void discord_message_application_from_json_v(char *json, size_t len, void *pp) {
- discord_message_application_from_json(json, len, (struct discord_message_application**)pp);
+void discord_message_application_from_json_v(char *json, size_t len, void *p) {
+ discord_message_application_from_json(json, len, (struct discord_message_application*)p);
 }
 
 size_t discord_message_application_to_json_v(char *json, size_t len, void *p) {
@@ -1490,12 +1502,15 @@ size_t discord_message_activity_types_list_to_json(char *str, size_t len, enum d
 }
 
 
-void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity **pp)
+void discord_message_activity_from_json_p(char *json, size_t len, struct discord_message_activity **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_message_activity_from_json(json, len, *pp);
+}
+void discord_message_activity_from_json(char *json, size_t len, struct discord_message_activity *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_message_activity *p = *pp;
   discord_message_activity_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:149:18
@@ -1561,8 +1576,8 @@ void discord_message_activity_init_v(void *p) {
   discord_message_activity_init((struct discord_message_activity *)p);
 }
 
-void discord_message_activity_from_json_v(char *json, size_t len, void *pp) {
- discord_message_activity_from_json(json, len, (struct discord_message_activity**)pp);
+void discord_message_activity_from_json_v(char *json, size_t len, void *p) {
+ discord_message_activity_from_json(json, len, (struct discord_message_activity*)p);
 }
 
 size_t discord_message_activity_to_json_v(char *json, size_t len, void *p) {
@@ -1707,12 +1722,15 @@ size_t discord_message_types_list_to_json(char *str, size_t len, enum discord_me
 }
 
 
-void discord_message_from_json(char *json, size_t len, struct discord_message **pp)
+void discord_message_from_json_p(char *json, size_t len, struct discord_message **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_message_from_json(json, len, *pp);
+}
+void discord_message_from_json(char *json, size_t len, struct discord_message *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_message *p = *pp;
   discord_message_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:184:79
@@ -1816,10 +1834,10 @@ void discord_message_from_json(char *json, size_t len, struct discord_message **
                 cee_strtoull, &p->guild_id,
   /* specs/discord/channel.json:187:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
-                discord_user_from_json, &p->author,
+                discord_user_from_json_p, &p->author,
   /* specs/discord/channel.json:188:77
      '{"type":{"base":"struct discord_guild_member", "dec":"*"}, "name":"member", "option":true, "comment":"partial guild member object"}' */
-                discord_guild_member_from_json, &p->member,
+                discord_guild_member_from_json_p, &p->member,
   /* specs/discord/channel.json:189:54
      '{"type":{"base":"char", "dec":"*"}, "name":"content"}' */
                 &p->content,
@@ -1867,25 +1885,25 @@ void discord_message_from_json(char *json, size_t len, struct discord_message **
                 &p->type,
   /* specs/discord/channel.json:204:81
      '{"type":{"base":"struct discord_message_activity", "dec":"*"}, "name":"activity", "option":true, "inject_if_not":null }' */
-                discord_message_activity_from_json, &p->activity,
+                discord_message_activity_from_json_p, &p->activity,
   /* specs/discord/channel.json:205:86
      '{"type":{"base":"struct discord_message_application", "dec":"ntl"}, "name":"application", "option":true, "inject_if_not":null }' */
                 discord_message_application_list_from_json, &p->application,
   /* specs/discord/channel.json:206:82
      '{"type":{"base":"struct discord_message_reference", "dec":"*"}, "name":"message_reference", "option":true, "inject_if_not":null }' */
-                discord_message_reference_from_json, &p->message_reference,
+                discord_message_reference_from_json_p, &p->message_reference,
   /* specs/discord/channel.json:207:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_flags"}, "name":"flags", "option":true, "inject_if_not":0 }' */
                 &p->flags,
   /* specs/discord/channel.json:208:72
      '{"type":{"base":"struct discord_message", "dec":"*"}, "name":"referenced_message", "lazy_init":true, "option":true, "inject_if_not":null, "comment":"this will cause recursive allocation if allocating as the parent"}' */
-                discord_message_from_json, &p->referenced_message,
+                discord_message_from_json_p, &p->referenced_message,
   /* specs/discord/channel.json:209:84
      '{"type":{"base":"struct discord_message_interaction", "dec":"*"}, "name":"interaction", "option":true, "inject_if_not":null, "comment":"the message associated with the message_reference"}' */
-                discord_message_interaction_from_json, &p->interaction,
+                discord_message_interaction_from_json_p, &p->interaction,
   /* specs/discord/channel.json:210:72
      '{"type":{"base":"struct discord_channel", "dec":"*"}, "name":"thread", "option":true, "inject_if_not":null, "comment":"the channel that was started from this message, includes thread member obejct"}' */
-                discord_channel_from_json, &p->thread,
+                discord_channel_from_json_p, &p->thread,
   /* specs/discord/channel.json:211:76
      '{"type":{"base":"struct discord_component", "dec":"ntl"}, "name":"components", "option":true, "inject_if_not":null, "comment":"sent if the message contains components like buttons, actions rows, or other interactive components"}' */
                 discord_component_list_from_json, &p->components,
@@ -2232,8 +2250,8 @@ void discord_message_init_v(void *p) {
   discord_message_init((struct discord_message *)p);
 }
 
-void discord_message_from_json_v(char *json, size_t len, void *pp) {
- discord_message_from_json(json, len, (struct discord_message**)pp);
+void discord_message_from_json_v(char *json, size_t len, void *p) {
+ discord_message_from_json(json, len, (struct discord_message*)p);
 }
 
 size_t discord_message_to_json_v(char *json, size_t len, void *p) {
@@ -2493,12 +2511,15 @@ size_t discord_message_list_to_json(char *str, size_t len, struct discord_messag
 }
 
 
-void discord_followed_channel_from_json(char *json, size_t len, struct discord_followed_channel **pp)
+void discord_followed_channel_from_json_p(char *json, size_t len, struct discord_followed_channel **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_followed_channel_from_json(json, len, *pp);
+}
+void discord_followed_channel_from_json(char *json, size_t len, struct discord_followed_channel *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_followed_channel *p = *pp;
   discord_followed_channel_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:222:20
@@ -2558,8 +2579,8 @@ void discord_followed_channel_init_v(void *p) {
   discord_followed_channel_init((struct discord_followed_channel *)p);
 }
 
-void discord_followed_channel_from_json_v(char *json, size_t len, void *pp) {
- discord_followed_channel_from_json(json, len, (struct discord_followed_channel**)pp);
+void discord_followed_channel_from_json_v(char *json, size_t len, void *p) {
+ discord_followed_channel_from_json(json, len, (struct discord_followed_channel*)p);
 }
 
 size_t discord_followed_channel_to_json_v(char *json, size_t len, void *p) {
@@ -2618,12 +2639,15 @@ size_t discord_followed_channel_list_to_json(char *str, size_t len, struct disco
 }
 
 
-void discord_reaction_from_json(char *json, size_t len, struct discord_reaction **pp)
+void discord_reaction_from_json_p(char *json, size_t len, struct discord_reaction **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_reaction_from_json(json, len, *pp);
+}
+void discord_reaction_from_json(char *json, size_t len, struct discord_reaction *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_reaction *p = *pp;
   discord_reaction_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:232:20
@@ -2643,7 +2667,7 @@ void discord_reaction_from_json(char *json, size_t len, struct discord_reaction 
                 &p->me,
   /* specs/discord/channel.json:234:20
      '{ "name": "emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "comment":"partial emoji object"}' */
-                discord_emoji_from_json, &p->emoji);
+                discord_emoji_from_json_p, &p->emoji);
   ret = r;
 }
 
@@ -2699,8 +2723,8 @@ void discord_reaction_init_v(void *p) {
   discord_reaction_init((struct discord_reaction *)p);
 }
 
-void discord_reaction_from_json_v(char *json, size_t len, void *pp) {
- discord_reaction_from_json(json, len, (struct discord_reaction**)pp);
+void discord_reaction_from_json_v(char *json, size_t len, void *p) {
+ discord_reaction_from_json(json, len, (struct discord_reaction*)p);
 }
 
 size_t discord_reaction_to_json_v(char *json, size_t len, void *p) {
@@ -2768,12 +2792,15 @@ size_t discord_reaction_list_to_json(char *str, size_t len, struct discord_react
 }
 
 
-void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrite **pp)
+void discord_overwrite_from_json_p(char *json, size_t len, struct discord_overwrite **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_overwrite_from_json(json, len, *pp);
+}
+void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrite *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_overwrite *p = *pp;
   discord_overwrite_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:242:20
@@ -2875,8 +2902,8 @@ void discord_overwrite_init_v(void *p) {
   discord_overwrite_init((struct discord_overwrite *)p);
 }
 
-void discord_overwrite_from_json_v(char *json, size_t len, void *pp) {
- discord_overwrite_from_json(json, len, (struct discord_overwrite**)pp);
+void discord_overwrite_from_json_v(char *json, size_t len, void *p) {
+ discord_overwrite_from_json(json, len, (struct discord_overwrite*)p);
 }
 
 size_t discord_overwrite_to_json_v(char *json, size_t len, void *p) {
@@ -2951,12 +2978,15 @@ size_t discord_overwrite_list_to_json(char *str, size_t len, struct discord_over
 }
 
 
-void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata **pp)
+void discord_thread_metadata_from_json_p(char *json, size_t len, struct discord_thread_metadata **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_thread_metadata_from_json(json, len, *pp);
+}
+void discord_thread_metadata_from_json(char *json, size_t len, struct discord_thread_metadata *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_thread_metadata *p = *pp;
   discord_thread_metadata_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:257:20
@@ -3064,8 +3094,8 @@ void discord_thread_metadata_init_v(void *p) {
   discord_thread_metadata_init((struct discord_thread_metadata *)p);
 }
 
-void discord_thread_metadata_from_json_v(char *json, size_t len, void *pp) {
- discord_thread_metadata_from_json(json, len, (struct discord_thread_metadata**)pp);
+void discord_thread_metadata_from_json_v(char *json, size_t len, void *p) {
+ discord_thread_metadata_from_json(json, len, (struct discord_thread_metadata*)p);
 }
 
 size_t discord_thread_metadata_to_json_v(char *json, size_t len, void *p) {
@@ -3142,12 +3172,15 @@ size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member **pp)
+void discord_thread_member_from_json_p(char *json, size_t len, struct discord_thread_member **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_thread_member_from_json(json, len, *pp);
+}
+void discord_thread_member_from_json(char *json, size_t len, struct discord_thread_member *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_thread_member *p = *pp;
   discord_thread_member_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:271:20
@@ -3239,8 +3272,8 @@ void discord_thread_member_init_v(void *p) {
   discord_thread_member_init((struct discord_thread_member *)p);
 }
 
-void discord_thread_member_from_json_v(char *json, size_t len, void *pp) {
- discord_thread_member_from_json(json, len, (struct discord_thread_member**)pp);
+void discord_thread_member_from_json_v(char *json, size_t len, void *p) {
+ discord_thread_member_from_json(json, len, (struct discord_thread_member*)p);
 }
 
 size_t discord_thread_member_to_json_v(char *json, size_t len, void *p) {
@@ -3311,12 +3344,15 @@ size_t discord_thread_member_list_to_json(char *str, size_t len, struct discord_
 }
 
 
-void discord_attachment_from_json(char *json, size_t len, struct discord_attachment **pp)
+void discord_attachment_from_json_p(char *json, size_t len, struct discord_attachment **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_attachment_from_json(json, len, *pp);
+}
+void discord_attachment_from_json(char *json, size_t len, struct discord_attachment *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_attachment *p = *pp;
   discord_attachment_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:285:20
@@ -3518,8 +3554,8 @@ void discord_attachment_init_v(void *p) {
   discord_attachment_init((struct discord_attachment *)p);
 }
 
-void discord_attachment_from_json_v(char *json, size_t len, void *pp) {
- discord_attachment_from_json(json, len, (struct discord_attachment**)pp);
+void discord_attachment_from_json_v(char *json, size_t len, void *p) {
+ discord_attachment_from_json(json, len, (struct discord_attachment*)p);
 }
 
 size_t discord_attachment_to_json_v(char *json, size_t len, void *p) {
@@ -3638,12 +3674,15 @@ size_t discord_attachment_list_to_json(char *str, size_t len, struct discord_att
 }
 
 
-void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention **pp)
+void discord_channel_mention_from_json_p(char *json, size_t len, struct discord_channel_mention **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_channel_mention_from_json(json, len, *pp);
+}
+void discord_channel_mention_from_json(char *json, size_t len, struct discord_channel_mention *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_channel_mention *p = *pp;
   discord_channel_mention_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:304:20
@@ -3735,8 +3774,8 @@ void discord_channel_mention_init_v(void *p) {
   discord_channel_mention_init((struct discord_channel_mention *)p);
 }
 
-void discord_channel_mention_from_json_v(char *json, size_t len, void *pp) {
- discord_channel_mention_from_json(json, len, (struct discord_channel_mention**)pp);
+void discord_channel_mention_from_json_v(char *json, size_t len, void *p) {
+ discord_channel_mention_from_json(json, len, (struct discord_channel_mention*)p);
 }
 
 size_t discord_channel_mention_to_json_v(char *json, size_t len, void *p) {
@@ -3808,12 +3847,15 @@ size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_allowed_mentions_from_json(char *json, size_t len, struct discord_allowed_mentions **pp)
+void discord_allowed_mentions_from_json_p(char *json, size_t len, struct discord_allowed_mentions **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_allowed_mentions_from_json(json, len, *pp);
+}
+void discord_allowed_mentions_from_json(char *json, size_t len, struct discord_allowed_mentions *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_allowed_mentions *p = *pp;
   discord_allowed_mentions_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:316:20
@@ -3905,8 +3947,8 @@ void discord_allowed_mentions_init_v(void *p) {
   discord_allowed_mentions_init((struct discord_allowed_mentions *)p);
 }
 
-void discord_allowed_mentions_from_json_v(char *json, size_t len, void *pp) {
- discord_allowed_mentions_from_json(json, len, (struct discord_allowed_mentions**)pp);
+void discord_allowed_mentions_from_json_v(char *json, size_t len, void *p) {
+ discord_allowed_mentions_from_json(json, len, (struct discord_allowed_mentions*)p);
 }
 
 size_t discord_allowed_mentions_to_json_v(char *json, size_t len, void *p) {
@@ -3980,12 +4022,15 @@ size_t discord_allowed_mentions_list_to_json(char *str, size_t len, struct disco
 }
 
 
-void discord_embed_from_json(char *json, size_t len, struct discord_embed **pp)
+void discord_embed_from_json_p(char *json, size_t len, struct discord_embed **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_from_json(json, len, *pp);
+}
+void discord_embed_from_json(char *json, size_t len, struct discord_embed *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed *p = *pp;
   discord_embed_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:328:20
@@ -4047,22 +4092,22 @@ void discord_embed_from_json(char *json, size_t len, struct discord_embed **pp)
                 &p->color,
   /* specs/discord/channel.json:334:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
-                discord_embed_footer_from_json, &p->footer,
+                discord_embed_footer_from_json_p, &p->footer,
   /* specs/discord/channel.json:335:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_image_from_json, &p->image,
+                discord_embed_image_from_json_p, &p->image,
   /* specs/discord/channel.json:336:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_thumbnail_from_json, &p->thumbnail,
+                discord_embed_thumbnail_from_json_p, &p->thumbnail,
   /* specs/discord/channel.json:337:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_video_from_json, &p->video,
+                discord_embed_video_from_json_p, &p->video,
   /* specs/discord/channel.json:338:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_provider_from_json, &p->provider,
+                discord_embed_provider_from_json_p, &p->provider,
   /* specs/discord/channel.json:339:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
-                discord_embed_author_from_json, &p->author,
+                discord_embed_author_from_json_p, &p->author,
   /* specs/discord/channel.json:340:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 discord_embed_field_list_from_json, &p->fields);
@@ -4234,8 +4279,8 @@ void discord_embed_init_v(void *p) {
   discord_embed_init((struct discord_embed *)p);
 }
 
-void discord_embed_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_from_json(json, len, (struct discord_embed**)pp);
+void discord_embed_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_from_json(json, len, (struct discord_embed*)p);
 }
 
 size_t discord_embed_to_json_v(char *json, size_t len, void *p) {
@@ -4382,12 +4427,15 @@ size_t discord_embed_list_to_json(char *str, size_t len, struct discord_embed **
 }
 
 
-void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail **pp)
+void discord_embed_thumbnail_from_json_p(char *json, size_t len, struct discord_embed_thumbnail **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_thumbnail_from_json(json, len, *pp);
+}
+void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_embed_thumbnail *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_thumbnail *p = *pp;
   discord_embed_thumbnail_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:349:20
@@ -4483,8 +4531,8 @@ void discord_embed_thumbnail_init_v(void *p) {
   discord_embed_thumbnail_init((struct discord_embed_thumbnail *)p);
 }
 
-void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_thumbnail_from_json(json, len, (struct discord_embed_thumbnail**)pp);
+void discord_embed_thumbnail_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_thumbnail_from_json(json, len, (struct discord_embed_thumbnail*)p);
 }
 
 size_t discord_embed_thumbnail_to_json_v(char *json, size_t len, void *p) {
@@ -4557,12 +4605,15 @@ size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct discor
 }
 
 
-void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video **pp)
+void discord_embed_video_from_json_p(char *json, size_t len, struct discord_embed_video **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_video_from_json(json, len, *pp);
+}
+void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_video *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_video *p = *pp;
   discord_embed_video_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:361:20
@@ -4658,8 +4709,8 @@ void discord_embed_video_init_v(void *p) {
   discord_embed_video_init((struct discord_embed_video *)p);
 }
 
-void discord_embed_video_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_video_from_json(json, len, (struct discord_embed_video**)pp);
+void discord_embed_video_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_video_from_json(json, len, (struct discord_embed_video*)p);
 }
 
 size_t discord_embed_video_to_json_v(char *json, size_t len, void *p) {
@@ -4732,12 +4783,15 @@ size_t discord_embed_video_list_to_json(char *str, size_t len, struct discord_em
 }
 
 
-void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image **pp)
+void discord_embed_image_from_json_p(char *json, size_t len, struct discord_embed_image **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_image_from_json(json, len, *pp);
+}
+void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_image *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_image *p = *pp;
   discord_embed_image_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:373:20
@@ -4833,8 +4887,8 @@ void discord_embed_image_init_v(void *p) {
   discord_embed_image_init((struct discord_embed_image *)p);
 }
 
-void discord_embed_image_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_image_from_json(json, len, (struct discord_embed_image**)pp);
+void discord_embed_image_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_image_from_json(json, len, (struct discord_embed_image*)p);
 }
 
 size_t discord_embed_image_to_json_v(char *json, size_t len, void *p) {
@@ -4907,12 +4961,15 @@ size_t discord_embed_image_list_to_json(char *str, size_t len, struct discord_em
 }
 
 
-void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider **pp)
+void discord_embed_provider_from_json_p(char *json, size_t len, struct discord_embed_provider **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_provider_from_json(json, len, *pp);
+}
+void discord_embed_provider_from_json(char *json, size_t len, struct discord_embed_provider *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_provider *p = *pp;
   discord_embed_provider_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:385:20
@@ -4974,8 +5031,8 @@ void discord_embed_provider_init_v(void *p) {
   discord_embed_provider_init((struct discord_embed_provider *)p);
 }
 
-void discord_embed_provider_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_provider_from_json(json, len, (struct discord_embed_provider**)pp);
+void discord_embed_provider_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_provider_from_json(json, len, (struct discord_embed_provider*)p);
 }
 
 size_t discord_embed_provider_to_json_v(char *json, size_t len, void *p) {
@@ -5036,12 +5093,15 @@ size_t discord_embed_provider_list_to_json(char *str, size_t len, struct discord
 }
 
 
-void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author **pp)
+void discord_embed_author_from_json_p(char *json, size_t len, struct discord_embed_author **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_author_from_json(json, len, *pp);
+}
+void discord_embed_author_from_json(char *json, size_t len, struct discord_embed_author *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_author *p = *pp;
   discord_embed_author_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:395:20
@@ -5137,8 +5197,8 @@ void discord_embed_author_init_v(void *p) {
   discord_embed_author_init((struct discord_embed_author *)p);
 }
 
-void discord_embed_author_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_author_from_json(json, len, (struct discord_embed_author**)pp);
+void discord_embed_author_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_author_from_json(json, len, (struct discord_embed_author*)p);
 }
 
 size_t discord_embed_author_to_json_v(char *json, size_t len, void *p) {
@@ -5213,12 +5273,15 @@ size_t discord_embed_author_list_to_json(char *str, size_t len, struct discord_e
 }
 
 
-void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer **pp)
+void discord_embed_footer_from_json_p(char *json, size_t len, struct discord_embed_footer **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_footer_from_json(json, len, *pp);
+}
+void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed_footer *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_footer *p = *pp;
   discord_embed_footer_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:407:20
@@ -5297,8 +5360,8 @@ void discord_embed_footer_init_v(void *p) {
   discord_embed_footer_init((struct discord_embed_footer *)p);
 }
 
-void discord_embed_footer_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_footer_from_json(json, len, (struct discord_embed_footer**)pp);
+void discord_embed_footer_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_footer_from_json(json, len, (struct discord_embed_footer*)p);
 }
 
 size_t discord_embed_footer_to_json_v(char *json, size_t len, void *p) {
@@ -5366,12 +5429,15 @@ size_t discord_embed_footer_list_to_json(char *str, size_t len, struct discord_e
 }
 
 
-void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field **pp)
+void discord_embed_field_from_json_p(char *json, size_t len, struct discord_embed_field **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_embed_field_from_json(json, len, *pp);
+}
+void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_field *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_embed_field *p = *pp;
   discord_embed_field_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.json:418:20
@@ -5449,8 +5515,8 @@ void discord_embed_field_init_v(void *p) {
   discord_embed_field_init((struct discord_embed_field *)p);
 }
 
-void discord_embed_field_from_json_v(char *json, size_t len, void *pp) {
- discord_embed_field_from_json(json, len, (struct discord_embed_field**)pp);
+void discord_embed_field_from_json_v(char *json, size_t len, void *p) {
+ discord_embed_field_from_json(json, len, (struct discord_embed_field*)p);
 }
 
 size_t discord_embed_field_to_json_v(char *json, size_t len, void *p) {

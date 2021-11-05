@@ -26,7 +26,7 @@
  *     * :code:`void discord_application_list_free(struct discord_application **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_from_json(char *rbuf, size_t len, struct discord_application **)`
+ *     * :code:`void discord_application_from_json(char *rbuf, size_t len, struct discord_application *)`
  *     * :code:`void discord_application_list_from_json(char *rbuf, size_t len, struct discord_application ***)`
  *   * JSON Encoder:
 
@@ -96,8 +96,9 @@ extern void discord_application_cleanup_v(void *p);
 extern void discord_application_cleanup(struct discord_application *p);
 extern void discord_application_init_v(void *p);
 extern void discord_application_init(struct discord_application *p);
-extern void discord_application_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_from_json(char *json, size_t len, struct discord_application **pp);
+extern void discord_application_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_from_json_p(char *json, size_t len, struct discord_application **pp);
+extern void discord_application_from_json(char *json, size_t len, struct discord_application *p);
 extern size_t discord_application_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_to_json(char *json, size_t len, struct discord_application *p);
 extern void discord_application_list_free_v(void **p);

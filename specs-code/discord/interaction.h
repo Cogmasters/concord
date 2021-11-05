@@ -26,7 +26,7 @@
  *     * :code:`void discord_interaction_list_free(struct discord_interaction **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction **)`
+ *     * :code:`void discord_interaction_from_json(char *rbuf, size_t len, struct discord_interaction *)`
  *     * :code:`void discord_interaction_list_from_json(char *rbuf, size_t len, struct discord_interaction ***)`
  *   * JSON Encoder:
 
@@ -80,8 +80,9 @@ extern void discord_interaction_cleanup_v(void *p);
 extern void discord_interaction_cleanup(struct discord_interaction *p);
 extern void discord_interaction_init_v(void *p);
 extern void discord_interaction_init(struct discord_interaction *p);
-extern void discord_interaction_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp);
+extern void discord_interaction_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_from_json_p(char *json, size_t len, struct discord_interaction **pp);
+extern void discord_interaction_from_json(char *json, size_t len, struct discord_interaction *p);
 extern size_t discord_interaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_to_json(char *json, size_t len, struct discord_interaction *p);
 extern void discord_interaction_list_free_v(void **p);
@@ -143,7 +144,7 @@ extern size_t discord_interaction_types_list_to_json(char *str, size_t len, enum
  *     * :code:`void discord_interaction_data_list_free(struct discord_interaction_data **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_data_from_json(char *rbuf, size_t len, struct discord_interaction_data **)`
+ *     * :code:`void discord_interaction_data_from_json(char *rbuf, size_t len, struct discord_interaction_data *)`
  *     * :code:`void discord_interaction_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_data ***)`
  *   * JSON Encoder:
 
@@ -189,8 +190,9 @@ extern void discord_interaction_data_cleanup_v(void *p);
 extern void discord_interaction_data_cleanup(struct discord_interaction_data *p);
 extern void discord_interaction_data_init_v(void *p);
 extern void discord_interaction_data_init(struct discord_interaction_data *p);
-extern void discord_interaction_data_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data **pp);
+extern void discord_interaction_data_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_data_from_json_p(char *json, size_t len, struct discord_interaction_data **pp);
+extern void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data *p);
 extern size_t discord_interaction_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_interaction_data *p);
 extern void discord_interaction_data_list_free_v(void **p);
@@ -221,7 +223,7 @@ extern size_t discord_interaction_data_list_to_json(char *str, size_t len, struc
  *     * :code:`void discord_resolved_data_list_free(struct discord_resolved_data **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_resolved_data_from_json(char *rbuf, size_t len, struct discord_resolved_data **)`
+ *     * :code:`void discord_resolved_data_from_json(char *rbuf, size_t len, struct discord_resolved_data *)`
  *     * :code:`void discord_resolved_data_list_from_json(char *rbuf, size_t len, struct discord_resolved_data ***)`
  *   * JSON Encoder:
 
@@ -255,8 +257,9 @@ extern void discord_resolved_data_cleanup_v(void *p);
 extern void discord_resolved_data_cleanup(struct discord_resolved_data *p);
 extern void discord_resolved_data_init_v(void *p);
 extern void discord_resolved_data_init(struct discord_resolved_data *p);
-extern void discord_resolved_data_from_json_v(char *json, size_t len, void *pp);
-extern void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data **pp);
+extern void discord_resolved_data_from_json_v(char *json, size_t len, void *p);
+extern void discord_resolved_data_from_json_p(char *json, size_t len, struct discord_resolved_data **pp);
+extern void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data *p);
 extern size_t discord_resolved_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_resolved_data *p);
 extern void discord_resolved_data_list_free_v(void **p);
@@ -287,7 +290,7 @@ extern size_t discord_resolved_data_list_to_json(char *str, size_t len, struct d
  *     * :code:`void discord_message_interaction_list_free(struct discord_message_interaction **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction **)`
+ *     * :code:`void discord_message_interaction_from_json(char *rbuf, size_t len, struct discord_message_interaction *)`
  *     * :code:`void discord_message_interaction_list_from_json(char *rbuf, size_t len, struct discord_message_interaction ***)`
  *   * JSON Encoder:
 
@@ -317,8 +320,9 @@ extern void discord_message_interaction_cleanup_v(void *p);
 extern void discord_message_interaction_cleanup(struct discord_message_interaction *p);
 extern void discord_message_interaction_init_v(void *p);
 extern void discord_message_interaction_init(struct discord_message_interaction *p);
-extern void discord_message_interaction_from_json_v(char *json, size_t len, void *pp);
-extern void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp);
+extern void discord_message_interaction_from_json_v(char *json, size_t len, void *p);
+extern void discord_message_interaction_from_json_p(char *json, size_t len, struct discord_message_interaction **pp);
+extern void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction *p);
 extern size_t discord_message_interaction_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_message_interaction_to_json(char *json, size_t len, struct discord_message_interaction *p);
 extern void discord_message_interaction_list_free_v(void **p);
@@ -349,7 +353,7 @@ extern size_t discord_message_interaction_list_to_json(char *str, size_t len, st
  *     * :code:`void discord_interaction_response_list_free(struct discord_interaction_response **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response **)`
+ *     * :code:`void discord_interaction_response_from_json(char *rbuf, size_t len, struct discord_interaction_response *)`
  *     * :code:`void discord_interaction_response_list_from_json(char *rbuf, size_t len, struct discord_interaction_response ***)`
  *   * JSON Encoder:
 
@@ -371,8 +375,9 @@ extern void discord_interaction_response_cleanup_v(void *p);
 extern void discord_interaction_response_cleanup(struct discord_interaction_response *p);
 extern void discord_interaction_response_init_v(void *p);
 extern void discord_interaction_response_init(struct discord_interaction_response *p);
-extern void discord_interaction_response_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response **pp);
+extern void discord_interaction_response_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_response_from_json_p(char *json, size_t len, struct discord_interaction_response **pp);
+extern void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response *p);
 extern size_t discord_interaction_response_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_response_to_json(char *json, size_t len, struct discord_interaction_response *p);
 extern void discord_interaction_response_list_free_v(void **p);
@@ -436,7 +441,7 @@ extern size_t discord_interaction_callback_types_list_to_json(char *str, size_t 
  *     * :code:`void discord_interaction_callback_data_list_free(struct discord_interaction_callback_data **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_interaction_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_callback_data **)`
+ *     * :code:`void discord_interaction_callback_data_from_json(char *rbuf, size_t len, struct discord_interaction_callback_data *)`
  *     * :code:`void discord_interaction_callback_data_list_from_json(char *rbuf, size_t len, struct discord_interaction_callback_data ***)`
  *   * JSON Encoder:
 
@@ -478,8 +483,9 @@ extern void discord_interaction_callback_data_cleanup_v(void *p);
 extern void discord_interaction_callback_data_cleanup(struct discord_interaction_callback_data *p);
 extern void discord_interaction_callback_data_init_v(void *p);
 extern void discord_interaction_callback_data_init(struct discord_interaction_callback_data *p);
-extern void discord_interaction_callback_data_from_json_v(char *json, size_t len, void *pp);
-extern void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data **pp);
+extern void discord_interaction_callback_data_from_json_v(char *json, size_t len, void *p);
+extern void discord_interaction_callback_data_from_json_p(char *json, size_t len, struct discord_interaction_callback_data **pp);
+extern void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data *p);
 extern size_t discord_interaction_callback_data_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct discord_interaction_callback_data *p);
 extern void discord_interaction_callback_data_list_free_v(void **p);

@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params **pp)
+void discord_create_guild_params_from_json_p(char *json, size_t len, struct discord_create_guild_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_guild_params_from_json(json, len, *pp);
+}
+void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_guild_params *p = *pp;
   discord_create_guild_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:12:20
@@ -232,8 +235,8 @@ void discord_create_guild_params_init_v(void *p) {
   discord_create_guild_params_init((struct discord_create_guild_params *)p);
 }
 
-void discord_create_guild_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_guild_params_from_json(json, len, (struct discord_create_guild_params**)pp);
+void discord_create_guild_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_guild_params_from_json(json, len, (struct discord_create_guild_params*)p);
 }
 
 size_t discord_create_guild_params_to_json_v(char *json, size_t len, void *p) {
@@ -351,12 +354,15 @@ size_t discord_create_guild_params_list_to_json(char *str, size_t len, struct di
 }
 
 
-void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params **pp)
+void discord_modify_guild_params_from_json_p(char *json, size_t len, struct discord_modify_guild_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_guild_params_from_json(json, len, *pp);
+}
+void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_guild_params *p = *pp;
   discord_modify_guild_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:31:20
@@ -703,8 +709,8 @@ void discord_modify_guild_params_init_v(void *p) {
   discord_modify_guild_params_init((struct discord_modify_guild_params *)p);
 }
 
-void discord_modify_guild_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_guild_params_from_json(json, len, (struct discord_modify_guild_params**)pp);
+void discord_modify_guild_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_guild_params_from_json(json, len, (struct discord_modify_guild_params*)p);
 }
 
 size_t discord_modify_guild_params_to_json_v(char *json, size_t len, void *p) {
@@ -874,12 +880,15 @@ size_t discord_modify_guild_params_list_to_json(char *str, size_t len, struct di
 }
 
 
-void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params **pp)
+void discord_create_guild_channel_params_from_json_p(char *json, size_t len, struct discord_create_guild_channel_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_guild_channel_params_from_json(json, len, *pp);
+}
+void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_guild_channel_params *p = *pp;
   discord_create_guild_channel_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:58:20
@@ -1072,8 +1081,8 @@ void discord_create_guild_channel_params_init_v(void *p) {
   discord_create_guild_channel_params_init((struct discord_create_guild_channel_params *)p);
 }
 
-void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_guild_channel_params_from_json(json, len, (struct discord_create_guild_channel_params**)pp);
+void discord_create_guild_channel_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_guild_channel_params_from_json(json, len, (struct discord_create_guild_channel_params*)p);
 }
 
 size_t discord_create_guild_channel_params_to_json_v(char *json, size_t len, void *p) {
@@ -1183,12 +1192,15 @@ size_t discord_create_guild_channel_params_list_to_json(char *str, size_t len, s
 }
 
 
-void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp)
+void discord_modify_guild_channel_positions_params_from_json_p(char *json, size_t len, struct discord_modify_guild_channel_positions_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_guild_channel_positions_params_from_json(json, len, *pp);
+}
+void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_guild_channel_positions_params *p = *pp;
   discord_modify_guild_channel_positions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:76:20
@@ -1284,8 +1296,8 @@ void discord_modify_guild_channel_positions_params_init_v(void *p) {
   discord_modify_guild_channel_positions_params_init((struct discord_modify_guild_channel_positions_params *)p);
 }
 
-void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_guild_channel_positions_params_from_json(json, len, (struct discord_modify_guild_channel_positions_params**)pp);
+void discord_modify_guild_channel_positions_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_guild_channel_positions_params_from_json(json, len, (struct discord_modify_guild_channel_positions_params*)p);
 }
 
 size_t discord_modify_guild_channel_positions_params_to_json_v(char *json, size_t len, void *p) {
@@ -1356,12 +1368,15 @@ size_t discord_modify_guild_channel_positions_params_list_to_json(char *str, siz
 }
 
 
-void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params **pp)
+void discord_list_guild_members_params_from_json_p(char *json, size_t len, struct discord_list_guild_members_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_list_guild_members_params_from_json(json, len, *pp);
+}
+void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_list_guild_members_params *p = *pp;
   discord_list_guild_members_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:88:20
@@ -1423,8 +1438,8 @@ void discord_list_guild_members_params_init_v(void *p) {
   discord_list_guild_members_params_init((struct discord_list_guild_members_params *)p);
 }
 
-void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *pp) {
- discord_list_guild_members_params_from_json(json, len, (struct discord_list_guild_members_params**)pp);
+void discord_list_guild_members_params_from_json_v(char *json, size_t len, void *p) {
+ discord_list_guild_members_params_from_json(json, len, (struct discord_list_guild_members_params*)p);
 }
 
 size_t discord_list_guild_members_params_to_json_v(char *json, size_t len, void *p) {
@@ -1483,12 +1498,15 @@ size_t discord_list_guild_members_params_list_to_json(char *str, size_t len, str
 }
 
 
-void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params **pp)
+void discord_search_guild_members_params_from_json_p(char *json, size_t len, struct discord_search_guild_members_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_search_guild_members_params_from_json(json, len, *pp);
+}
+void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_search_guild_members_params *p = *pp;
   discord_search_guild_members_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:98:20
@@ -1550,8 +1568,8 @@ void discord_search_guild_members_params_init_v(void *p) {
   discord_search_guild_members_params_init((struct discord_search_guild_members_params *)p);
 }
 
-void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *pp) {
- discord_search_guild_members_params_from_json(json, len, (struct discord_search_guild_members_params**)pp);
+void discord_search_guild_members_params_from_json_v(char *json, size_t len, void *p) {
+ discord_search_guild_members_params_from_json(json, len, (struct discord_search_guild_members_params*)p);
 }
 
 size_t discord_search_guild_members_params_to_json_v(char *json, size_t len, void *p) {
@@ -1611,12 +1629,15 @@ size_t discord_search_guild_members_params_list_to_json(char *str, size_t len, s
 }
 
 
-void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params **pp)
+void discord_add_guild_member_params_from_json_p(char *json, size_t len, struct discord_add_guild_member_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_add_guild_member_params_from_json(json, len, *pp);
+}
+void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_add_guild_member_params *p = *pp;
   discord_add_guild_member_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:108:20
@@ -1729,8 +1750,8 @@ void discord_add_guild_member_params_init_v(void *p) {
   discord_add_guild_member_params_init((struct discord_add_guild_member_params *)p);
 }
 
-void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *pp) {
- discord_add_guild_member_params_from_json(json, len, (struct discord_add_guild_member_params**)pp);
+void discord_add_guild_member_params_from_json_v(char *json, size_t len, void *p) {
+ discord_add_guild_member_params_from_json(json, len, (struct discord_add_guild_member_params*)p);
 }
 
 size_t discord_add_guild_member_params_to_json_v(char *json, size_t len, void *p) {
@@ -1810,12 +1831,15 @@ size_t discord_add_guild_member_params_list_to_json(char *str, size_t len, struc
 }
 
 
-void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params **pp)
+void discord_modify_guild_member_params_from_json_p(char *json, size_t len, struct discord_modify_guild_member_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_guild_member_params_from_json(json, len, *pp);
+}
+void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_guild_member_params *p = *pp;
   discord_modify_guild_member_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:121:20
@@ -1927,8 +1951,8 @@ void discord_modify_guild_member_params_init_v(void *p) {
   discord_modify_guild_member_params_init((struct discord_modify_guild_member_params *)p);
 }
 
-void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_guild_member_params_from_json(json, len, (struct discord_modify_guild_member_params**)pp);
+void discord_modify_guild_member_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_guild_member_params_from_json(json, len, (struct discord_modify_guild_member_params*)p);
 }
 
 size_t discord_modify_guild_member_params_to_json_v(char *json, size_t len, void *p) {
@@ -2007,12 +2031,15 @@ size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, st
 }
 
 
-void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params **pp)
+void discord_modify_current_member_params_from_json_p(char *json, size_t len, struct discord_modify_current_member_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_current_member_params_from_json(json, len, *pp);
+}
+void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_current_member_params *p = *pp;
   discord_modify_current_member_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:134:20
@@ -2056,8 +2083,8 @@ void discord_modify_current_member_params_init_v(void *p) {
   discord_modify_current_member_params_init((struct discord_modify_current_member_params *)p);
 }
 
-void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_current_member_params_from_json(json, len, (struct discord_modify_current_member_params**)pp);
+void discord_modify_current_member_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_current_member_params_from_json(json, len, (struct discord_modify_current_member_params*)p);
 }
 
 size_t discord_modify_current_member_params_to_json_v(char *json, size_t len, void *p) {
@@ -2111,12 +2138,15 @@ size_t discord_modify_current_member_params_list_to_json(char *str, size_t len, 
 }
 
 
-void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params **pp)
+void discord_modify_current_user_nick_params_from_json_p(char *json, size_t len, struct discord_modify_current_user_nick_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_current_user_nick_params_from_json(json, len, *pp);
+}
+void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_current_user_nick_params *p = *pp;
   discord_modify_current_user_nick_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:143:20
@@ -2160,8 +2190,8 @@ void discord_modify_current_user_nick_params_init_v(void *p) {
   discord_modify_current_user_nick_params_init((struct discord_modify_current_user_nick_params *)p);
 }
 
-void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_current_user_nick_params_from_json(json, len, (struct discord_modify_current_user_nick_params**)pp);
+void discord_modify_current_user_nick_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_current_user_nick_params_from_json(json, len, (struct discord_modify_current_user_nick_params*)p);
 }
 
 size_t discord_modify_current_user_nick_params_to_json_v(char *json, size_t len, void *p) {
@@ -2215,12 +2245,15 @@ size_t discord_modify_current_user_nick_params_list_to_json(char *str, size_t le
 }
 
 
-void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params **pp)
+void discord_create_guild_ban_params_from_json_p(char *json, size_t len, struct discord_create_guild_ban_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_guild_ban_params_from_json(json, len, *pp);
+}
+void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_guild_ban_params *p = *pp;
   discord_create_guild_ban_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:152:20
@@ -2281,8 +2314,8 @@ void discord_create_guild_ban_params_init_v(void *p) {
   discord_create_guild_ban_params_init((struct discord_create_guild_ban_params *)p);
 }
 
-void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_guild_ban_params_from_json(json, len, (struct discord_create_guild_ban_params**)pp);
+void discord_create_guild_ban_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_guild_ban_params_from_json(json, len, (struct discord_create_guild_ban_params*)p);
 }
 
 size_t discord_create_guild_ban_params_to_json_v(char *json, size_t len, void *p) {
@@ -2342,12 +2375,15 @@ size_t discord_create_guild_ban_params_list_to_json(char *str, size_t len, struc
 }
 
 
-void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params **pp)
+void discord_create_guild_role_params_from_json_p(char *json, size_t len, struct discord_create_guild_role_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_guild_role_params_from_json(json, len, *pp);
+}
+void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_guild_role_params *p = *pp;
   discord_create_guild_role_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:162:20
@@ -2459,8 +2495,8 @@ void discord_create_guild_role_params_init_v(void *p) {
   discord_create_guild_role_params_init((struct discord_create_guild_role_params *)p);
 }
 
-void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_guild_role_params_from_json(json, len, (struct discord_create_guild_role_params**)pp);
+void discord_create_guild_role_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_guild_role_params_from_json(json, len, (struct discord_create_guild_role_params*)p);
 }
 
 size_t discord_create_guild_role_params_to_json_v(char *json, size_t len, void *p) {
@@ -2538,12 +2574,15 @@ size_t discord_create_guild_role_params_list_to_json(char *str, size_t len, stru
 }
 
 
-void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp)
+void discord_modify_guild_role_positions_params_from_json_p(char *json, size_t len, struct discord_modify_guild_role_positions_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_guild_role_positions_params_from_json(json, len, *pp);
+}
+void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_guild_role_positions_params *p = *pp;
   discord_modify_guild_role_positions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:175:20
@@ -2605,8 +2644,8 @@ void discord_modify_guild_role_positions_params_init_v(void *p) {
   discord_modify_guild_role_positions_params_init((struct discord_modify_guild_role_positions_params *)p);
 }
 
-void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_guild_role_positions_params_from_json(json, len, (struct discord_modify_guild_role_positions_params**)pp);
+void discord_modify_guild_role_positions_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_guild_role_positions_params_from_json(json, len, (struct discord_modify_guild_role_positions_params*)p);
 }
 
 size_t discord_modify_guild_role_positions_params_to_json_v(char *json, size_t len, void *p) {
@@ -2665,12 +2704,15 @@ size_t discord_modify_guild_role_positions_params_list_to_json(char *str, size_t
 }
 
 
-void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params **pp)
+void discord_modify_guild_role_params_from_json_p(char *json, size_t len, struct discord_modify_guild_role_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_guild_role_params_from_json(json, len, *pp);
+}
+void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_guild_role_params *p = *pp;
   discord_modify_guild_role_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:185:20
@@ -2783,8 +2825,8 @@ void discord_modify_guild_role_params_init_v(void *p) {
   discord_modify_guild_role_params_init((struct discord_modify_guild_role_params *)p);
 }
 
-void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_guild_role_params_from_json(json, len, (struct discord_modify_guild_role_params**)pp);
+void discord_modify_guild_role_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_guild_role_params_from_json(json, len, (struct discord_modify_guild_role_params*)p);
 }
 
 size_t discord_modify_guild_role_params_to_json_v(char *json, size_t len, void *p) {
@@ -2862,12 +2904,15 @@ size_t discord_modify_guild_role_params_list_to_json(char *str, size_t len, stru
 }
 
 
-void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params **pp)
+void discord_get_guild_prune_count_params_from_json_p(char *json, size_t len, struct discord_get_guild_prune_count_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_get_guild_prune_count_params_from_json(json, len, *pp);
+}
+void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_get_guild_prune_count_params *p = *pp;
   discord_get_guild_prune_count_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:198:20
@@ -2929,8 +2974,8 @@ void discord_get_guild_prune_count_params_init_v(void *p) {
   discord_get_guild_prune_count_params_init((struct discord_get_guild_prune_count_params *)p);
 }
 
-void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *pp) {
- discord_get_guild_prune_count_params_from_json(json, len, (struct discord_get_guild_prune_count_params**)pp);
+void discord_get_guild_prune_count_params_from_json_v(char *json, size_t len, void *p) {
+ discord_get_guild_prune_count_params_from_json(json, len, (struct discord_get_guild_prune_count_params*)p);
 }
 
 size_t discord_get_guild_prune_count_params_to_json_v(char *json, size_t len, void *p) {
@@ -2990,12 +3035,15 @@ size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_t len, 
 }
 
 
-void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params **pp)
+void discord_begin_guild_prune_params_from_json_p(char *json, size_t len, struct discord_begin_guild_prune_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_begin_guild_prune_params_from_json(json, len, *pp);
+}
+void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_begin_guild_prune_params *p = *pp;
   discord_begin_guild_prune_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild.endpoints-params.json:208:20
@@ -3091,8 +3139,8 @@ void discord_begin_guild_prune_params_init_v(void *p) {
   discord_begin_guild_prune_params_init((struct discord_begin_guild_prune_params *)p);
 }
 
-void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *pp) {
- discord_begin_guild_prune_params_from_json(json, len, (struct discord_begin_guild_prune_params**)pp);
+void discord_begin_guild_prune_params_from_json_v(char *json, size_t len, void *p) {
+ discord_begin_guild_prune_params_from_json(json, len, (struct discord_begin_guild_prune_params*)p);
 }
 
 size_t discord_begin_guild_prune_params_to_json_v(char *json, size_t len, void *p) {

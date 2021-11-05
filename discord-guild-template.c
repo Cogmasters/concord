@@ -24,7 +24,7 @@ discord_get_guild_template(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = discord_guild_template_from_json_v,
-                              .ok_obj = &p_template },
+                              .ok_obj = p_template },
     NULL, HTTP_GET, "/guilds/templates/%s", code);
 }
 
@@ -57,7 +57,7 @@ discord_create_guild_template(
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_guild_template_from_json_v,
-                              .ok_obj = &p_template },
+                              .ok_obj = p_template },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/guilds/%" PRIu64 "/templates", guild_id);
 }
@@ -81,6 +81,6 @@ discord_sync_guild_template(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_guild_template_from_json_v,
-                              .ok_obj = &p_template },
+                              .ok_obj = p_template },
     NULL, HTTP_PUT, "/guilds/%" PRIu64 "/templates/%s", guild_id, code);
 }

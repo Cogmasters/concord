@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_component_from_json(char *json, size_t len, struct discord_component **pp)
+void discord_component_from_json_p(char *json, size_t len, struct discord_component **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_component_from_json(json, len, *pp);
+}
+void discord_component_from_json(char *json, size_t len, struct discord_component *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_component *p = *pp;
   discord_component_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:12:18
@@ -74,7 +77,7 @@ void discord_component_from_json(char *json, size_t len, struct discord_componen
                 p->label,
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-                discord_emoji_from_json, &p->emoji,
+                discord_emoji_from_json_p, &p->emoji,
   /* specs/discord/message_components.json:18:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
                 &p->url,
@@ -250,8 +253,8 @@ void discord_component_init_v(void *p) {
   discord_component_init((struct discord_component *)p);
 }
 
-void discord_component_from_json_v(char *json, size_t len, void *pp) {
- discord_component_from_json(json, len, (struct discord_component**)pp);
+void discord_component_from_json_v(char *json, size_t len, void *p) {
+ discord_component_from_json(json, len, (struct discord_component*)p);
 }
 
 size_t discord_component_to_json_v(char *json, size_t len, void *p) {
@@ -431,12 +434,15 @@ size_t discord_component_types_list_to_json(char *str, size_t len, enum discord_
 }
 
 
-void discord_button_from_json(char *json, size_t len, struct discord_button **pp)
+void discord_button_from_json_p(char *json, size_t len, struct discord_button **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_button_from_json(json, len, *pp);
+}
+void discord_button_from_json(char *json, size_t len, struct discord_button *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_button *p = *pp;
   discord_button_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:44:18
@@ -471,7 +477,7 @@ void discord_button_from_json(char *json, size_t len, struct discord_button **pp
                 p->label,
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
-                discord_emoji_from_json, &p->emoji,
+                discord_emoji_from_json_p, &p->emoji,
   /* specs/discord/message_components.json:48:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
                 p->custom_id,
@@ -583,8 +589,8 @@ void discord_button_init_v(void *p) {
   discord_button_init((struct discord_button *)p);
 }
 
-void discord_button_from_json_v(char *json, size_t len, void *pp) {
- discord_button_from_json(json, len, (struct discord_button**)pp);
+void discord_button_from_json_v(char *json, size_t len, void *p) {
+ discord_button_from_json(json, len, (struct discord_button*)p);
 }
 
 size_t discord_button_to_json_v(char *json, size_t len, void *p) {
@@ -736,12 +742,15 @@ size_t discord_button_styles_list_to_json(char *str, size_t len, enum discord_bu
 }
 
 
-void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu **pp)
+void discord_select_menu_from_json_p(char *json, size_t len, struct discord_select_menu **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_select_menu_from_json(json, len, *pp);
+}
+void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_select_menu *p = *pp;
   discord_select_menu_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:73:18
@@ -887,8 +896,8 @@ void discord_select_menu_init_v(void *p) {
   discord_select_menu_init((struct discord_select_menu *)p);
 }
 
-void discord_select_menu_from_json_v(char *json, size_t len, void *pp) {
- discord_select_menu_from_json(json, len, (struct discord_select_menu**)pp);
+void discord_select_menu_from_json_v(char *json, size_t len, void *p) {
+ discord_select_menu_from_json(json, len, (struct discord_select_menu*)p);
 }
 
 size_t discord_select_menu_to_json_v(char *json, size_t len, void *p) {
@@ -978,12 +987,15 @@ size_t discord_select_menu_list_to_json(char *str, size_t len, struct discord_se
 }
 
 
-void discord_select_option_from_json(char *json, size_t len, struct discord_select_option **pp)
+void discord_select_option_from_json_p(char *json, size_t len, struct discord_select_option **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_select_option_from_json(json, len, *pp);
+}
+void discord_select_option_from_json(char *json, size_t len, struct discord_select_option *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_select_option *p = *pp;
   discord_select_option_init(p);
   r=json_extract(json, len, 
   /* specs/discord/message_components.json:88:18
@@ -1012,7 +1024,7 @@ void discord_select_option_from_json(char *json, size_t len, struct discord_sele
                 p->description,
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */
-                discord_emoji_from_json, &p->emoji,
+                discord_emoji_from_json_p, &p->emoji,
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
                 &p->Default);
@@ -1095,8 +1107,8 @@ void discord_select_option_init_v(void *p) {
   discord_select_option_init((struct discord_select_option *)p);
 }
 
-void discord_select_option_from_json_v(char *json, size_t len, void *pp) {
- discord_select_option_from_json(json, len, (struct discord_select_option**)pp);
+void discord_select_option_from_json_v(char *json, size_t len, void *p) {
+ discord_select_option_from_json(json, len, (struct discord_select_option*)p);
 }
 
 size_t discord_select_option_to_json_v(char *json, size_t len, void *p) {

@@ -25,19 +25,18 @@ void on_from_json_init(struct discord *client,
   char *json_str = cee_load_whole_file(JSON_FILE, &json_len);
 
   /* load a embed from the json string */
-  struct discord_embed *embed = NULL;
+  struct discord_embed embed;
   discord_embed_from_json(json_str, json_len, &embed);
-  embed->timestamp = cee_timestamp_ms(); // get current timestamp
+  embed.timestamp = cee_timestamp_ms(); // get current timestamp
 
   struct discord_create_message_params params = { .content =
                                                     "This is an embed",
-                                                  .embed = embed };
+                                                  .embed = &embed };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   free(json_str);
 
-  discord_embed_cleanup(embed);
-  free(embed);
+  discord_embed_cleanup(&embed);
 }
 
 void on_designated_init(struct discord *client,
@@ -143,13 +142,12 @@ int main(int argc, char *argv[])
 
   printf("\n\nThis bot demonstrates how to embeds"
          " with three different methods.\n"
-         "1 - From JSON init (type !from_json_init): This is the easiest "
-         "method by far, you can use it"
-         " with a JSON library of your preference.\n"
-         "2 - Designated init (type !designated_init): This is a 'clean' "
+         "1 - From JSON init (type !from_json_init): Load the embed from a raw JSON "
+         "string.,"
+         "2 - Designated init (type !designated_init): A stack-based "
          "initialization approach"
          " but is not very flexible.\n"
-         "3 - Builder init (type !builder_init): This is a very flexible "
+         "3 - Builder init (type !builder_init): This is dynamic and flexible "
          "approach, it relies on utility functions from discord-misc.c.\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input

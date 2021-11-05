@@ -121,12 +121,15 @@ size_t discord_sticker_format_types_list_to_json(char *str, size_t len, enum dis
 }
 
 
-void discord_sticker_from_json(char *json, size_t len, struct discord_sticker **pp)
+void discord_sticker_from_json_p(char *json, size_t len, struct discord_sticker **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_sticker_from_json(json, len, *pp);
+}
+void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_sticker *p = *pp;
   discord_sticker_init(p);
   r=json_extract(json, len, 
   /* specs/discord/sticker.json:31:18
@@ -197,7 +200,7 @@ void discord_sticker_from_json(char *json, size_t len, struct discord_sticker **
                 cee_strtoull, &p->guild_id,
   /* specs/discord/sticker.json:41:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "inject_if_not":null, "comment":"the user that uploaded the guild sticker"}' */
-                discord_user_from_json, &p->user,
+                discord_user_from_json_p, &p->user,
   /* specs/discord/sticker.json:42:18
      '{"name":"sort_value", "type":{"base":"int"}, "comment":"the standard sticker's sort order within its pack"}' */
                 &p->sort_value);
@@ -350,8 +353,8 @@ void discord_sticker_init_v(void *p) {
   discord_sticker_init((struct discord_sticker *)p);
 }
 
-void discord_sticker_from_json_v(char *json, size_t len, void *pp) {
- discord_sticker_from_json(json, len, (struct discord_sticker**)pp);
+void discord_sticker_from_json_v(char *json, size_t len, void *p) {
+ discord_sticker_from_json(json, len, (struct discord_sticker*)p);
 }
 
 size_t discord_sticker_to_json_v(char *json, size_t len, void *p) {
@@ -477,12 +480,15 @@ size_t discord_sticker_list_to_json(char *str, size_t len, struct discord_sticke
 }
 
 
-void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item **pp)
+void discord_sticker_item_from_json_p(char *json, size_t len, struct discord_sticker_item **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_sticker_item_from_json(json, len, *pp);
+}
+void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_sticker_item *p = *pp;
   discord_sticker_item_init(p);
   r=json_extract(json, len, 
   /* specs/discord/sticker.json:50:18
@@ -558,8 +564,8 @@ void discord_sticker_item_init_v(void *p) {
   discord_sticker_item_init((struct discord_sticker_item *)p);
 }
 
-void discord_sticker_item_from_json_v(char *json, size_t len, void *pp) {
- discord_sticker_item_from_json(json, len, (struct discord_sticker_item**)pp);
+void discord_sticker_item_from_json_v(char *json, size_t len, void *p) {
+ discord_sticker_item_from_json(json, len, (struct discord_sticker_item*)p);
 }
 
 size_t discord_sticker_item_to_json_v(char *json, size_t len, void *p) {
@@ -625,12 +631,15 @@ size_t discord_sticker_item_list_to_json(char *str, size_t len, struct discord_s
 }
 
 
-void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack **pp)
+void discord_sticker_pack_from_json_p(char *json, size_t len, struct discord_sticker_pack **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_sticker_pack_from_json(json, len, *pp);
+}
+void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_sticker_pack *p = *pp;
   discord_sticker_pack_init(p);
   r=json_extract(json, len, 
   /* specs/discord/sticker.json:60:18
@@ -771,8 +780,8 @@ void discord_sticker_pack_init_v(void *p) {
   discord_sticker_pack_init((struct discord_sticker_pack *)p);
 }
 
-void discord_sticker_pack_from_json_v(char *json, size_t len, void *pp) {
- discord_sticker_pack_from_json(json, len, (struct discord_sticker_pack**)pp);
+void discord_sticker_pack_from_json_v(char *json, size_t len, void *p) {
+ discord_sticker_pack_from_json(json, len, (struct discord_sticker_pack*)p);
 }
 
 size_t discord_sticker_pack_to_json_v(char *json, size_t len, void *p) {

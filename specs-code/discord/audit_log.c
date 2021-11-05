@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log **pp)
+void discord_audit_log_from_json_p(char *json, size_t len, struct discord_audit_log **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_audit_log_from_json(json, len, *pp);
+}
+void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_audit_log *p = *pp;
   discord_audit_log_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:12:18
@@ -131,8 +134,8 @@ void discord_audit_log_init_v(void *p) {
   discord_audit_log_init((struct discord_audit_log *)p);
 }
 
-void discord_audit_log_from_json_v(char *json, size_t len, void *pp) {
- discord_audit_log_from_json(json, len, (struct discord_audit_log**)pp);
+void discord_audit_log_from_json_v(char *json, size_t len, void *p) {
+ discord_audit_log_from_json(json, len, (struct discord_audit_log*)p);
 }
 
 size_t discord_audit_log_to_json_v(char *json, size_t len, void *p) {
@@ -214,12 +217,15 @@ size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audi
 }
 
 
-void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp)
+void discord_audit_log_entry_from_json_p(char *json, size_t len, struct discord_audit_log_entry **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_audit_log_entry_from_json(json, len, *pp);
+}
+void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_audit_log_entry *p = *pp;
   discord_audit_log_entry_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:26:18
@@ -366,8 +372,8 @@ void discord_audit_log_entry_init_v(void *p) {
   discord_audit_log_entry_init((struct discord_audit_log_entry *)p);
 }
 
-void discord_audit_log_entry_from_json_v(char *json, size_t len, void *pp) {
- discord_audit_log_entry_from_json(json, len, (struct discord_audit_log_entry**)pp);
+void discord_audit_log_entry_from_json_v(char *json, size_t len, void *p) {
+ discord_audit_log_entry_from_json(json, len, (struct discord_audit_log_entry*)p);
 }
 
 size_t discord_audit_log_entry_to_json_v(char *json, size_t len, void *p) {
@@ -595,12 +601,15 @@ size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum discord
 }
 
 
-void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info **pp)
+void discord_optional_audit_entry_info_from_json_p(char *json, size_t len, struct discord_optional_audit_entry_info **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_optional_audit_entry_info_from_json(json, len, *pp);
+}
+void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_optional_audit_entry_info *p = *pp;
   discord_optional_audit_entry_info_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:94:20
@@ -764,8 +773,8 @@ void discord_optional_audit_entry_info_init_v(void *p) {
   discord_optional_audit_entry_info_init((struct discord_optional_audit_entry_info *)p);
 }
 
-void discord_optional_audit_entry_info_from_json_v(char *json, size_t len, void *pp) {
- discord_optional_audit_entry_info_from_json(json, len, (struct discord_optional_audit_entry_info**)pp);
+void discord_optional_audit_entry_info_from_json_v(char *json, size_t len, void *p) {
+ discord_optional_audit_entry_info_from_json(json, len, (struct discord_optional_audit_entry_info*)p);
 }
 
 size_t discord_optional_audit_entry_info_to_json_v(char *json, size_t len, void *p) {
@@ -865,12 +874,15 @@ size_t discord_optional_audit_entry_info_list_to_json(char *str, size_t len, str
 }
 
 
-void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change **pp)
+void discord_audit_log_change_from_json_p(char *json, size_t len, struct discord_audit_log_change **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_audit_log_change_from_json(json, len, *pp);
+}
+void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_audit_log_change *p = *pp;
   discord_audit_log_change_init(p);
   r=json_extract(json, len, 
   /* specs/discord/audit_log.json:111:18
@@ -949,8 +961,8 @@ void discord_audit_log_change_init_v(void *p) {
   discord_audit_log_change_init((struct discord_audit_log_change *)p);
 }
 
-void discord_audit_log_change_from_json_v(char *json, size_t len, void *pp) {
- discord_audit_log_change_from_json(json, len, (struct discord_audit_log_change**)pp);
+void discord_audit_log_change_from_json_v(char *json, size_t len, void *p) {
+ discord_audit_log_change_from_json(json, len, (struct discord_audit_log_change*)p);
 }
 
 size_t discord_audit_log_change_to_json_v(char *json, size_t len, void *p) {

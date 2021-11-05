@@ -95,7 +95,7 @@ extern size_t discord_user_premium_types_list_to_json(char *str, size_t len, enu
  *     * :code:`void discord_user_list_free(struct discord_user **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_user_from_json(char *rbuf, size_t len, struct discord_user **)`
+ *     * :code:`void discord_user_from_json(char *rbuf, size_t len, struct discord_user *)`
  *     * :code:`void discord_user_list_from_json(char *rbuf, size_t len, struct discord_user ***)`
  *   * JSON Encoder:
 
@@ -165,8 +165,9 @@ extern void discord_user_cleanup_v(void *p);
 extern void discord_user_cleanup(struct discord_user *p);
 extern void discord_user_init_v(void *p);
 extern void discord_user_init(struct discord_user *p);
-extern void discord_user_from_json_v(char *json, size_t len, void *pp);
-extern void discord_user_from_json(char *json, size_t len, struct discord_user **pp);
+extern void discord_user_from_json_v(char *json, size_t len, void *p);
+extern void discord_user_from_json_p(char *json, size_t len, struct discord_user **pp);
+extern void discord_user_from_json(char *json, size_t len, struct discord_user *p);
 extern size_t discord_user_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_user_to_json(char *json, size_t len, struct discord_user *p);
 extern void discord_user_list_free_v(void **p);
@@ -227,7 +228,7 @@ extern size_t discord_visibility_types_list_to_json(char *str, size_t len, enum 
  *     * :code:`void discord_connection_list_free(struct discord_connection **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection **)`
+ *     * :code:`void discord_connection_from_json(char *rbuf, size_t len, struct discord_connection *)`
  *     * :code:`void discord_connection_list_from_json(char *rbuf, size_t len, struct discord_connection ***)`
  *   * JSON Encoder:
 
@@ -277,8 +278,9 @@ extern void discord_connection_cleanup_v(void *p);
 extern void discord_connection_cleanup(struct discord_connection *p);
 extern void discord_connection_init_v(void *p);
 extern void discord_connection_init(struct discord_connection *p);
-extern void discord_connection_from_json_v(char *json, size_t len, void *pp);
-extern void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp);
+extern void discord_connection_from_json_v(char *json, size_t len, void *p);
+extern void discord_connection_from_json_p(char *json, size_t len, struct discord_connection **pp);
+extern void discord_connection_from_json(char *json, size_t len, struct discord_connection *p);
 extern size_t discord_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_connection_to_json(char *json, size_t len, struct discord_connection *p);
 extern void discord_connection_list_free_v(void **p);

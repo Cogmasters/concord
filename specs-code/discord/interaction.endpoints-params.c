@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_edit_original_interaction_response_params_from_json(char *json, size_t len, struct discord_edit_original_interaction_response_params **pp)
+void discord_edit_original_interaction_response_params_from_json_p(char *json, size_t len, struct discord_edit_original_interaction_response_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_edit_original_interaction_response_params_from_json(json, len, *pp);
+}
+void discord_edit_original_interaction_response_params_from_json(char *json, size_t len, struct discord_edit_original_interaction_response_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_edit_original_interaction_response_params *p = *pp;
   discord_edit_original_interaction_response_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.endpoints-params.json:12:20
@@ -50,7 +53,7 @@ void discord_edit_original_interaction_response_params_from_json(char *json, siz
                 &p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:15:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_allowed_mentions_from_json, &p->allowed_mentions,
+                discord_allowed_mentions_from_json_p, &p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:16:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 discord_attachment_list_from_json, &p->attachments,
@@ -148,8 +151,8 @@ void discord_edit_original_interaction_response_params_init_v(void *p) {
   discord_edit_original_interaction_response_params_init((struct discord_edit_original_interaction_response_params *)p);
 }
 
-void discord_edit_original_interaction_response_params_from_json_v(char *json, size_t len, void *pp) {
- discord_edit_original_interaction_response_params_from_json(json, len, (struct discord_edit_original_interaction_response_params**)pp);
+void discord_edit_original_interaction_response_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_original_interaction_response_params_from_json(json, len, (struct discord_edit_original_interaction_response_params*)p);
 }
 
 size_t discord_edit_original_interaction_response_params_to_json_v(char *json, size_t len, void *p) {
@@ -240,12 +243,15 @@ size_t discord_edit_original_interaction_response_params_list_to_json(char *str,
 }
 
 
-void discord_create_followup_message_params_from_json(char *json, size_t len, struct discord_create_followup_message_params **pp)
+void discord_create_followup_message_params_from_json_p(char *json, size_t len, struct discord_create_followup_message_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_followup_message_params_from_json(json, len, *pp);
+}
+void discord_create_followup_message_params_from_json(char *json, size_t len, struct discord_create_followup_message_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_followup_message_params *p = *pp;
   discord_create_followup_message_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.endpoints-params.json:29:20
@@ -295,13 +301,13 @@ void discord_create_followup_message_params_from_json(char *json, size_t len, st
                 discord_attachment_list_from_json, &p->attachments,
   /* specs/discord/interaction.endpoints-params.json:34:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-                discord_embed_from_json, &p->embeds,
+                discord_embed_from_json_p, &p->embeds,
   /* specs/discord/interaction.endpoints-params.json:35:20
      '{ "name": "payload_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON encoded body of non-file params", "inject_if_not": null }' */
                 &p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:36:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-                discord_allowed_mentions_from_json, &p->allowed_mentions,
+                discord_allowed_mentions_from_json_p, &p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:37:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
                 discord_component_list_from_json, &p->components,
@@ -452,8 +458,8 @@ void discord_create_followup_message_params_init_v(void *p) {
   discord_create_followup_message_params_init((struct discord_create_followup_message_params *)p);
 }
 
-void discord_create_followup_message_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_followup_message_params_from_json(json, len, (struct discord_create_followup_message_params**)pp);
+void discord_create_followup_message_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_followup_message_params_from_json(json, len, (struct discord_create_followup_message_params*)p);
 }
 
 size_t discord_create_followup_message_params_to_json_v(char *json, size_t len, void *p) {
@@ -584,12 +590,15 @@ size_t discord_create_followup_message_params_list_to_json(char *str, size_t len
 }
 
 
-void discord_edit_followup_message_params_from_json(char *json, size_t len, struct discord_edit_followup_message_params **pp)
+void discord_edit_followup_message_params_from_json_p(char *json, size_t len, struct discord_edit_followup_message_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_edit_followup_message_params_from_json(json, len, *pp);
+}
+void discord_edit_followup_message_params_from_json(char *json, size_t len, struct discord_edit_followup_message_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_edit_followup_message_params *p = *pp;
   discord_edit_followup_message_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.endpoints-params.json:47:20
@@ -621,7 +630,7 @@ void discord_edit_followup_message_params_from_json(char *json, size_t len, stru
                 &p->payload_json,
   /* specs/discord/interaction.endpoints-params.json:50:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_allowed_mentions_from_json, &p->allowed_mentions,
+                discord_allowed_mentions_from_json_p, &p->allowed_mentions,
   /* specs/discord/interaction.endpoints-params.json:51:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 discord_attachment_list_from_json, &p->attachments,
@@ -719,8 +728,8 @@ void discord_edit_followup_message_params_init_v(void *p) {
   discord_edit_followup_message_params_init((struct discord_edit_followup_message_params *)p);
 }
 
-void discord_edit_followup_message_params_from_json_v(char *json, size_t len, void *pp) {
- discord_edit_followup_message_params_from_json(json, len, (struct discord_edit_followup_message_params**)pp);
+void discord_edit_followup_message_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_followup_message_params_from_json(json, len, (struct discord_edit_followup_message_params*)p);
 }
 
 size_t discord_edit_followup_message_params_to_json_v(char *json, size_t len, void *p) {

@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_list_nitro_sticker_packs_response_from_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response **pp)
+void discord_list_nitro_sticker_packs_response_from_json_p(char *json, size_t len, struct discord_list_nitro_sticker_packs_response **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_list_nitro_sticker_packs_response_from_json(json, len, *pp);
+}
+void discord_list_nitro_sticker_packs_response_from_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_list_nitro_sticker_packs_response *p = *pp;
   discord_list_nitro_sticker_packs_response_init(p);
   r=json_extract(json, len, 
   /* specs/discord/sticker.endpoints-params.json:11:18
@@ -62,8 +65,8 @@ void discord_list_nitro_sticker_packs_response_init_v(void *p) {
   discord_list_nitro_sticker_packs_response_init((struct discord_list_nitro_sticker_packs_response *)p);
 }
 
-void discord_list_nitro_sticker_packs_response_from_json_v(char *json, size_t len, void *pp) {
- discord_list_nitro_sticker_packs_response_from_json(json, len, (struct discord_list_nitro_sticker_packs_response**)pp);
+void discord_list_nitro_sticker_packs_response_from_json_v(char *json, size_t len, void *p) {
+ discord_list_nitro_sticker_packs_response_from_json(json, len, (struct discord_list_nitro_sticker_packs_response*)p);
 }
 
 size_t discord_list_nitro_sticker_packs_response_to_json_v(char *json, size_t len, void *p) {
@@ -117,12 +120,15 @@ size_t discord_list_nitro_sticker_packs_response_list_to_json(char *str, size_t 
 }
 
 
-void discord_create_guild_sticker_params_from_json(char *json, size_t len, struct discord_create_guild_sticker_params **pp)
+void discord_create_guild_sticker_params_from_json_p(char *json, size_t len, struct discord_create_guild_sticker_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_guild_sticker_params_from_json(json, len, *pp);
+}
+void discord_create_guild_sticker_params_from_json(char *json, size_t len, struct discord_create_guild_sticker_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_guild_sticker_params *p = *pp;
   discord_create_guild_sticker_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/sticker.endpoints-params.json:20:18
@@ -202,8 +208,8 @@ void discord_create_guild_sticker_params_init_v(void *p) {
   discord_create_guild_sticker_params_init((struct discord_create_guild_sticker_params *)p);
 }
 
-void discord_create_guild_sticker_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_guild_sticker_params_from_json(json, len, (struct discord_create_guild_sticker_params**)pp);
+void discord_create_guild_sticker_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_guild_sticker_params_from_json(json, len, (struct discord_create_guild_sticker_params*)p);
 }
 
 size_t discord_create_guild_sticker_params_to_json_v(char *json, size_t len, void *p) {
@@ -280,12 +286,15 @@ size_t discord_create_guild_sticker_params_list_to_json(char *str, size_t len, s
 }
 
 
-void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struct discord_modify_guild_sticker_params **pp)
+void discord_modify_guild_sticker_params_from_json_p(char *json, size_t len, struct discord_modify_guild_sticker_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_guild_sticker_params_from_json(json, len, *pp);
+}
+void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struct discord_modify_guild_sticker_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_guild_sticker_params *p = *pp;
   discord_modify_guild_sticker_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/sticker.endpoints-params.json:32:18
@@ -361,8 +370,8 @@ void discord_modify_guild_sticker_params_init_v(void *p) {
   discord_modify_guild_sticker_params_init((struct discord_modify_guild_sticker_params *)p);
 }
 
-void discord_modify_guild_sticker_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_guild_sticker_params_from_json(json, len, (struct discord_modify_guild_sticker_params**)pp);
+void discord_modify_guild_sticker_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_guild_sticker_params_from_json(json, len, (struct discord_modify_guild_sticker_params*)p);
 }
 
 size_t discord_modify_guild_sticker_params_to_json_v(char *json, size_t len, void *p) {

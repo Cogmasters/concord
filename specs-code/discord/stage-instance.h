@@ -52,7 +52,7 @@ extern size_t discord_stage_instance_privacy_level_list_to_json(char *str, size_
  *     * :code:`void discord_stage_instance_list_free(struct discord_stage_instance **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_stage_instance_from_json(char *rbuf, size_t len, struct discord_stage_instance **)`
+ *     * :code:`void discord_stage_instance_from_json(char *rbuf, size_t len, struct discord_stage_instance *)`
  *     * :code:`void discord_stage_instance_list_from_json(char *rbuf, size_t len, struct discord_stage_instance ***)`
  *   * JSON Encoder:
 
@@ -90,8 +90,9 @@ extern void discord_stage_instance_cleanup_v(void *p);
 extern void discord_stage_instance_cleanup(struct discord_stage_instance *p);
 extern void discord_stage_instance_init_v(void *p);
 extern void discord_stage_instance_init(struct discord_stage_instance *p);
-extern void discord_stage_instance_from_json_v(char *json, size_t len, void *pp);
-extern void discord_stage_instance_from_json(char *json, size_t len, struct discord_stage_instance **pp);
+extern void discord_stage_instance_from_json_v(char *json, size_t len, void *p);
+extern void discord_stage_instance_from_json_p(char *json, size_t len, struct discord_stage_instance **pp);
+extern void discord_stage_instance_from_json(char *json, size_t len, struct discord_stage_instance *p);
 extern size_t discord_stage_instance_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_stage_instance_to_json(char *json, size_t len, struct discord_stage_instance *p);
 extern void discord_stage_instance_list_free_v(void **p);

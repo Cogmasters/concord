@@ -141,12 +141,15 @@ size_t discord_user_premium_types_list_to_json(char *str, size_t len, enum disco
 }
 
 
-void discord_user_from_json(char *json, size_t len, struct discord_user **pp)
+void discord_user_from_json_p(char *json, size_t len, struct discord_user **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_user_from_json(json, len, *pp);
+}
+void discord_user_from_json(char *json, size_t len, struct discord_user *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_user *p = *pp;
   discord_user_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.json:44:24
@@ -398,8 +401,8 @@ void discord_user_init_v(void *p) {
   discord_user_init((struct discord_user *)p);
 }
 
-void discord_user_from_json_v(char *json, size_t len, void *pp) {
- discord_user_from_json(json, len, (struct discord_user**)pp);
+void discord_user_from_json_v(char *json, size_t len, void *p) {
+ discord_user_from_json(json, len, (struct discord_user*)p);
 }
 
 size_t discord_user_to_json_v(char *json, size_t len, void *p) {
@@ -585,12 +588,15 @@ size_t discord_visibility_types_list_to_json(char *str, size_t len, enum discord
 }
 
 
-void discord_connection_from_json(char *json, size_t len, struct discord_connection **pp)
+void discord_connection_from_json_p(char *json, size_t len, struct discord_connection **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_connection_from_json(json, len, *pp);
+}
+void discord_connection_from_json(char *json, size_t len, struct discord_connection *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_connection *p = *pp;
   discord_connection_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.json:77:24
@@ -762,8 +768,8 @@ void discord_connection_init_v(void *p) {
   discord_connection_init((struct discord_connection *)p);
 }
 
-void discord_connection_from_json_v(char *json, size_t len, void *pp) {
- discord_connection_from_json(json, len, (struct discord_connection**)pp);
+void discord_connection_from_json_v(char *json, size_t len, void *p) {
+ discord_connection_from_json(json, len, (struct discord_connection*)p);
 }
 
 size_t discord_connection_to_json_v(char *json, size_t len, void *p) {

@@ -23,7 +23,7 @@ discord_get_channel(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_channel_from_json_v,
-                              .ok_obj = &p_channel },
+                              .ok_obj = p_channel },
     NULL, HTTP_GET, "/channels/%" PRIu64, channel_id);
 }
 
@@ -50,7 +50,7 @@ discord_modify_channel(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_channel ? &discord_channel_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_channel },
+                              .ok_obj = p_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH, "/channels/%" PRIu64,
     channel_id);
 }
@@ -69,7 +69,7 @@ discord_delete_channel(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_channel ? &discord_channel_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_channel },
+                              .ok_obj = p_channel },
     NULL, HTTP_DELETE, "/channels/%" PRIu64, channel_id);
 }
 
@@ -147,7 +147,7 @@ discord_get_channel_message(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_message_from_json_v,
-                              .ok_obj = &p_message },
+                              .ok_obj = p_message },
     NULL, HTTP_GET, "/channels/%" PRIu64 "/messages/%" PRIu64, channel_id,
     message_id);
 }
@@ -169,7 +169,7 @@ discord_create_message(struct discord *client,
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = &p_message
+    .ok_obj = p_message
   };
 
   char payload[16384]; /**< @todo dynamic buffer */
@@ -221,7 +221,7 @@ discord_crosspost_message(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_message ? &discord_message_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_message },
+                              .ok_obj = p_message },
     NULL, HTTP_POST, "/channels/%" PRIu64 "/messages/%" PRIu64 "/crosspost",
     channel_id, message_id);
 }
@@ -488,7 +488,7 @@ discord_edit_message(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_message ? &discord_message_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_message },
+                              .ok_obj = p_message },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/channels/%" PRIu64 "/messages/%" PRIu64, channel_id, message_id);
 }
@@ -633,7 +633,7 @@ discord_create_channel_invite(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb =
                                 p_invite ? &discord_invite_from_json_v : NULL,
-                              .ok_obj = &p_invite },
+                              .ok_obj = p_invite },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/channels/%" PRIu64 "/invites", channel_id);
 }
@@ -680,7 +680,7 @@ discord_follow_news_channel(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_followed_channel ? &discord_channel_from_json_v : NULL,
-      .ok_obj = &p_followed_channel },
+      .ok_obj = p_followed_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/channels/%" PRIu64 "/followers", channel_id);
 }
@@ -834,7 +834,7 @@ discord_start_thread_with_message(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_channel ? &discord_channel_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_channel },
+                              .ok_obj = p_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/channels/%" PRIu64 "/messages/%" PRIu64 "/threads", channel_id,
     message_id);
@@ -864,7 +864,7 @@ discord_start_thread_without_message(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_channel ? &discord_channel_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_channel },
+                              .ok_obj = p_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/channels/%" PRIu64 "/threads", channel_id);
 }
@@ -972,7 +972,7 @@ discord_list_active_threads(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = &body },
+      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = body },
     NULL, HTTP_GET, "/channels/%" PRIu64 "/threads/active", channel_id);
 }
 
@@ -1008,7 +1008,7 @@ discord_list_public_archived_threads(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = &body },
+      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = body },
     NULL, HTTP_GET, "/channels/%" PRIu64 "/threads/archived/public%s%s",
     channel_id, (*query) ? "?" : "", query);
 }
@@ -1046,7 +1046,7 @@ discord_list_private_archived_threads(
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = &body },
+      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = body },
     NULL, HTTP_GET, "/channels/%" PRIu64 "/threads/archived/private%s%s",
     channel_id, (*query) ? "?" : "", query);
 }
@@ -1084,7 +1084,7 @@ discord_list_joined_private_archived_threads(
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = &body },
+      .ok_cb = &discord_thread_response_body_from_json_v, .ok_obj = body },
     NULL, HTTP_GET,
     "/channels/%" PRIu64 "/users/@me/threads/archived/private%s%s", channel_id,
     (*query) ? "?" : "", query);

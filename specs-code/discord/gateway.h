@@ -232,7 +232,7 @@ extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum di
  *     * :code:`void discord_identify_list_free(struct discord_identify **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_identify_from_json(char *rbuf, size_t len, struct discord_identify **)`
+ *     * :code:`void discord_identify_from_json(char *rbuf, size_t len, struct discord_identify *)`
  *     * :code:`void discord_identify_list_from_json(char *rbuf, size_t len, struct discord_identify ***)`
  *   * JSON Encoder:
 
@@ -278,8 +278,9 @@ extern void discord_identify_cleanup_v(void *p);
 extern void discord_identify_cleanup(struct discord_identify *p);
 extern void discord_identify_init_v(void *p);
 extern void discord_identify_init(struct discord_identify *p);
-extern void discord_identify_from_json_v(char *json, size_t len, void *pp);
-extern void discord_identify_from_json(char *json, size_t len, struct discord_identify **pp);
+extern void discord_identify_from_json_v(char *json, size_t len, void *p);
+extern void discord_identify_from_json_p(char *json, size_t len, struct discord_identify **pp);
+extern void discord_identify_from_json(char *json, size_t len, struct discord_identify *p);
 extern size_t discord_identify_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_identify_to_json(char *json, size_t len, struct discord_identify *p);
 extern void discord_identify_list_free_v(void **p);
@@ -310,7 +311,7 @@ extern size_t discord_identify_list_to_json(char *str, size_t len, struct discor
  *     * :code:`void discord_voice_state_status_list_free(struct discord_voice_state_status **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_voice_state_status_from_json(char *rbuf, size_t len, struct discord_voice_state_status **)`
+ *     * :code:`void discord_voice_state_status_from_json(char *rbuf, size_t len, struct discord_voice_state_status *)`
  *     * :code:`void discord_voice_state_status_list_from_json(char *rbuf, size_t len, struct discord_voice_state_status ***)`
  *   * JSON Encoder:
 
@@ -340,8 +341,9 @@ extern void discord_voice_state_status_cleanup_v(void *p);
 extern void discord_voice_state_status_cleanup(struct discord_voice_state_status *p);
 extern void discord_voice_state_status_init_v(void *p);
 extern void discord_voice_state_status_init(struct discord_voice_state_status *p);
-extern void discord_voice_state_status_from_json_v(char *json, size_t len, void *pp);
-extern void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status **pp);
+extern void discord_voice_state_status_from_json_v(char *json, size_t len, void *p);
+extern void discord_voice_state_status_from_json_p(char *json, size_t len, struct discord_voice_state_status **pp);
+extern void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status *p);
 extern size_t discord_voice_state_status_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord_voice_state_status *p);
 extern void discord_voice_state_status_list_free_v(void **p);
@@ -372,7 +374,7 @@ extern size_t discord_voice_state_status_list_to_json(char *str, size_t len, str
  *     * :code:`void discord_presence_status_list_free(struct discord_presence_status **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_presence_status_from_json(char *rbuf, size_t len, struct discord_presence_status **)`
+ *     * :code:`void discord_presence_status_from_json(char *rbuf, size_t len, struct discord_presence_status *)`
  *     * :code:`void discord_presence_status_list_from_json(char *rbuf, size_t len, struct discord_presence_status ***)`
  *   * JSON Encoder:
 
@@ -402,8 +404,9 @@ extern void discord_presence_status_cleanup_v(void *p);
 extern void discord_presence_status_cleanup(struct discord_presence_status *p);
 extern void discord_presence_status_init_v(void *p);
 extern void discord_presence_status_init(struct discord_presence_status *p);
-extern void discord_presence_status_from_json_v(char *json, size_t len, void *pp);
-extern void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status **pp);
+extern void discord_presence_status_from_json_v(char *json, size_t len, void *p);
+extern void discord_presence_status_from_json_p(char *json, size_t len, struct discord_presence_status **pp);
+extern void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status *p);
 extern size_t discord_presence_status_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_presence_status_to_json(char *json, size_t len, struct discord_presence_status *p);
 extern void discord_presence_status_list_free_v(void **p);
@@ -434,7 +437,7 @@ extern size_t discord_presence_status_list_to_json(char *str, size_t len, struct
  *     * :code:`void discord_identify_connection_list_free(struct discord_identify_connection **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_identify_connection_from_json(char *rbuf, size_t len, struct discord_identify_connection **)`
+ *     * :code:`void discord_identify_connection_from_json(char *rbuf, size_t len, struct discord_identify_connection *)`
  *     * :code:`void discord_identify_connection_list_from_json(char *rbuf, size_t len, struct discord_identify_connection ***)`
  *   * JSON Encoder:
 
@@ -460,8 +463,9 @@ extern void discord_identify_connection_cleanup_v(void *p);
 extern void discord_identify_connection_cleanup(struct discord_identify_connection *p);
 extern void discord_identify_connection_init_v(void *p);
 extern void discord_identify_connection_init(struct discord_identify_connection *p);
-extern void discord_identify_connection_from_json_v(char *json, size_t len, void *pp);
-extern void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection **pp);
+extern void discord_identify_connection_from_json_v(char *json, size_t len, void *p);
+extern void discord_identify_connection_from_json_p(char *json, size_t len, struct discord_identify_connection **pp);
+extern void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection *p);
 extern size_t discord_identify_connection_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_identify_connection_to_json(char *json, size_t len, struct discord_identify_connection *p);
 extern void discord_identify_connection_list_free_v(void **p);
@@ -492,7 +496,7 @@ extern size_t discord_identify_connection_list_to_json(char *str, size_t len, st
  *     * :code:`void discord_activity_list_free(struct discord_activity **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_activity_from_json(char *rbuf, size_t len, struct discord_activity **)`
+ *     * :code:`void discord_activity_from_json(char *rbuf, size_t len, struct discord_activity *)`
  *     * :code:`void discord_activity_list_from_json(char *rbuf, size_t len, struct discord_activity ***)`
  *   * JSON Encoder:
 
@@ -538,8 +542,9 @@ extern void discord_activity_cleanup_v(void *p);
 extern void discord_activity_cleanup(struct discord_activity *p);
 extern void discord_activity_init_v(void *p);
 extern void discord_activity_init(struct discord_activity *p);
-extern void discord_activity_from_json_v(char *json, size_t len, void *pp);
-extern void discord_activity_from_json(char *json, size_t len, struct discord_activity **pp);
+extern void discord_activity_from_json_v(char *json, size_t len, void *p);
+extern void discord_activity_from_json_p(char *json, size_t len, struct discord_activity **pp);
+extern void discord_activity_from_json(char *json, size_t len, struct discord_activity *p);
 extern size_t discord_activity_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_activity_to_json(char *json, size_t len, struct discord_activity *p);
 extern void discord_activity_list_free_v(void **p);
@@ -603,7 +608,7 @@ extern size_t discord_activity_types_list_to_json(char *str, size_t len, enum di
  *     * :code:`void discord_session_start_limit_list_free(struct discord_session_start_limit **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_session_start_limit_from_json(char *rbuf, size_t len, struct discord_session_start_limit **)`
+ *     * :code:`void discord_session_start_limit_from_json(char *rbuf, size_t len, struct discord_session_start_limit *)`
  *     * :code:`void discord_session_start_limit_list_from_json(char *rbuf, size_t len, struct discord_session_start_limit ***)`
  *   * JSON Encoder:
 
@@ -633,8 +638,9 @@ extern void discord_session_start_limit_cleanup_v(void *p);
 extern void discord_session_start_limit_cleanup(struct discord_session_start_limit *p);
 extern void discord_session_start_limit_init_v(void *p);
 extern void discord_session_start_limit_init(struct discord_session_start_limit *p);
-extern void discord_session_start_limit_from_json_v(char *json, size_t len, void *pp);
-extern void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit **pp);
+extern void discord_session_start_limit_from_json_v(char *json, size_t len, void *p);
+extern void discord_session_start_limit_from_json_p(char *json, size_t len, struct discord_session_start_limit **pp);
+extern void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit *p);
 extern size_t discord_session_start_limit_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_session_start_limit_to_json(char *json, size_t len, struct discord_session_start_limit *p);
 extern void discord_session_start_limit_list_free_v(void **p);

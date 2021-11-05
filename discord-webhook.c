@@ -32,7 +32,7 @@ discord_create_webhook(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_webhook_from_json_v,
-                              .ok_obj = &p_webhook },
+                              .ok_obj = p_webhook },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/channels/%" PRIu64 "/webhooks", channel_id);
 }
@@ -96,7 +96,7 @@ discord_get_webhook(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_webhook_from_json_v,
-                              .ok_obj = &p_webhook },
+                              .ok_obj = p_webhook },
     NULL, HTTP_GET, "/webhooks/%" PRIu64, webhook_id);
 }
 
@@ -122,7 +122,7 @@ discord_get_webhook_with_token(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_webhook_from_json_v,
-                              .ok_obj = &p_webhook },
+                              .ok_obj = p_webhook },
     NULL, HTTP_GET, "/webhooks/%" PRIu64 "/%s", webhook_id, webhook_token);
 }
 
@@ -144,7 +144,7 @@ discord_modify_webhook(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_webhook_from_json_v,
-                              .ok_obj = &p_webhook },
+                              .ok_obj = p_webhook },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH, "/webhooks/%" PRIu64,
     webhook_id);
 }
@@ -173,7 +173,7 @@ discord_modify_webhook_with_token(
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_webhook_from_json_v,
-                              .ok_obj = &p_webhook },
+                              .ok_obj = p_webhook },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/webhooks/%" PRIu64 "/%s", webhook_id, webhook_token);
 }
@@ -245,7 +245,7 @@ discord_execute_webhook(struct discord *client,
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_webhook ? &discord_webhook_from_json_v : NULL,
-    .ok_obj = &p_webhook
+    .ok_obj = p_webhook
   };
 
   char payload[16384]; /**< @todo dynamic buffer */
@@ -307,7 +307,7 @@ discord_get_webhook_message(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_message_from_json_v,
-                              .ok_obj = &p_message },
+                              .ok_obj = p_message },
     NULL, HTTP_GET, "/webhooks/%" PRIu64 "/%s/%" PRIu64, webhook_id,
     webhook_token, message_id);
 }
@@ -340,7 +340,7 @@ discord_edit_webhook_message(
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = &p_message
+    .ok_obj = p_message
   };
 
   char payload[16384]; /**< @todo dynamic buffer */

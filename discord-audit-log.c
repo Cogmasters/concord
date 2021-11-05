@@ -52,6 +52,6 @@ discord_get_guild_audit_log(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_audit_log ? &discord_audit_log_from_json_v : NULL,
-      .ok_obj = &p_audit_log },
+      .ok_obj = p_audit_log },
     NULL, HTTP_GET, "/guilds/%" PRIu64 "/audit-logs%s", guild_id, query);
 }

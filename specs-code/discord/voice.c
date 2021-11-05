@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state **pp)
+void discord_voice_state_from_json_p(char *json, size_t len, struct discord_voice_state **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_voice_state_from_json(json, len, *pp);
+}
+void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_voice_state *p = *pp;
   discord_voice_state_init(p);
   r=json_extract(json, len, 
   /* specs/discord/voice.json:13:20
@@ -68,7 +71,7 @@ void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_
                 cee_strtoull, &p->user_id,
   /* specs/discord/voice.json:16:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
-                discord_guild_member_from_json, &p->member,
+                discord_guild_member_from_json_p, &p->member,
   /* specs/discord/voice.json:17:20
      '{ "name": "session_id", "type":{ "base":"char", "dec":"*" }}' */
                 &p->session_id,
@@ -238,8 +241,8 @@ void discord_voice_state_init_v(void *p) {
   discord_voice_state_init((struct discord_voice_state *)p);
 }
 
-void discord_voice_state_from_json_v(char *json, size_t len, void *pp) {
- discord_voice_state_from_json(json, len, (struct discord_voice_state**)pp);
+void discord_voice_state_from_json_v(char *json, size_t len, void *p) {
+ discord_voice_state_from_json(json, len, (struct discord_voice_state*)p);
 }
 
 size_t discord_voice_state_to_json_v(char *json, size_t len, void *p) {
@@ -362,12 +365,15 @@ size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_vo
 }
 
 
-void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region **pp)
+void discord_voice_region_from_json_p(char *json, size_t len, struct discord_voice_region **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_voice_region_from_json(json, len, *pp);
+}
+void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_voice_region *p = *pp;
   discord_voice_region_init(p);
   r=json_extract(json, len, 
   /* specs/discord/voice.json:34:20
@@ -491,8 +497,8 @@ void discord_voice_region_init_v(void *p) {
   discord_voice_region_init((struct discord_voice_region *)p);
 }
 
-void discord_voice_region_from_json_v(char *json, size_t len, void *pp) {
- discord_voice_region_from_json(json, len, (struct discord_voice_region**)pp);
+void discord_voice_region_from_json_v(char *json, size_t len, void *p) {
+ discord_voice_region_from_json(json, len, (struct discord_voice_region*)p);
 }
 
 size_t discord_voice_region_to_json_v(char *json, size_t len, void *p) {

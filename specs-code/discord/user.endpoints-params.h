@@ -24,7 +24,7 @@
  *     * :code:`void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params **)`
+ *     * :code:`void discord_modify_current_user_params_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params *)`
  *     * :code:`void discord_modify_current_user_params_list_from_json(char *rbuf, size_t len, struct discord_modify_current_user_params ***)`
  *   * JSON Encoder:
 
@@ -46,8 +46,9 @@ extern void discord_modify_current_user_params_cleanup_v(void *p);
 extern void discord_modify_current_user_params_cleanup(struct discord_modify_current_user_params *p);
 extern void discord_modify_current_user_params_init_v(void *p);
 extern void discord_modify_current_user_params_init(struct discord_modify_current_user_params *p);
-extern void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params **pp);
+extern void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_modify_current_user_params_from_json_p(char *json, size_t len, struct discord_modify_current_user_params **pp);
+extern void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params *p);
 extern size_t discord_modify_current_user_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct discord_modify_current_user_params *p);
 extern void discord_modify_current_user_params_list_free_v(void **p);
@@ -76,7 +77,7 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
  *     * :code:`void discord_create_dm_params_list_free(struct discord_create_dm_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_dm_params_from_json(char *rbuf, size_t len, struct discord_create_dm_params **)`
+ *     * :code:`void discord_create_dm_params_from_json(char *rbuf, size_t len, struct discord_create_dm_params *)`
  *     * :code:`void discord_create_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_dm_params ***)`
  *   * JSON Encoder:
 
@@ -94,8 +95,9 @@ extern void discord_create_dm_params_cleanup_v(void *p);
 extern void discord_create_dm_params_cleanup(struct discord_create_dm_params *p);
 extern void discord_create_dm_params_init_v(void *p);
 extern void discord_create_dm_params_init(struct discord_create_dm_params *p);
-extern void discord_create_dm_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params **pp);
+extern void discord_create_dm_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_dm_params_from_json_p(char *json, size_t len, struct discord_create_dm_params **pp);
+extern void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params *p);
 extern size_t discord_create_dm_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_dm_params_to_json(char *json, size_t len, struct discord_create_dm_params *p);
 extern void discord_create_dm_params_list_free_v(void **p);
@@ -124,7 +126,7 @@ extern size_t discord_create_dm_params_list_to_json(char *str, size_t len, struc
  *     * :code:`void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params **)`
+ *     * :code:`void discord_create_group_dm_params_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params *)`
  *     * :code:`void discord_create_group_dm_params_list_from_json(char *rbuf, size_t len, struct discord_create_group_dm_params ***)`
  *   * JSON Encoder:
 
@@ -148,8 +150,9 @@ extern void discord_create_group_dm_params_cleanup_v(void *p);
 extern void discord_create_group_dm_params_cleanup(struct discord_create_group_dm_params *p);
 extern void discord_create_group_dm_params_init_v(void *p);
 extern void discord_create_group_dm_params_init(struct discord_create_group_dm_params *p);
-extern void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params **pp);
+extern void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_create_group_dm_params_from_json_p(char *json, size_t len, struct discord_create_group_dm_params **pp);
+extern void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params *p);
 extern size_t discord_create_group_dm_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct discord_create_group_dm_params *p);
 extern void discord_create_group_dm_params_list_free_v(void **p);

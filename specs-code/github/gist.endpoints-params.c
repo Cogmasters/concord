@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "github.h"
 
-void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params **pp)
+void github_gist_create_params_from_json_p(char *json, size_t len, struct github_gist_create_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  github_gist_create_params_from_json(json, len, *pp);
+}
+void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct github_gist_create_params *p = *pp;
   github_gist_create_params_init(p);
   r=json_extract(json, len, 
   /* specs/github/gist.endpoints-params.json:13:28
@@ -110,8 +113,8 @@ void github_gist_create_params_init_v(void *p) {
   github_gist_create_params_init((struct github_gist_create_params *)p);
 }
 
-void github_gist_create_params_from_json_v(char *json, size_t len, void *pp) {
- github_gist_create_params_from_json(json, len, (struct github_gist_create_params**)pp);
+void github_gist_create_params_from_json_v(char *json, size_t len, void *p) {
+ github_gist_create_params_from_json(json, len, (struct github_gist_create_params*)p);
 }
 
 size_t github_gist_create_params_to_json_v(char *json, size_t len, void *p) {

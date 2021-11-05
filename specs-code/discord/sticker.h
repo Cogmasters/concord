@@ -81,7 +81,7 @@ extern size_t discord_sticker_format_types_list_to_json(char *str, size_t len, e
  *     * :code:`void discord_sticker_list_free(struct discord_sticker **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_sticker_from_json(char *rbuf, size_t len, struct discord_sticker **)`
+ *     * :code:`void discord_sticker_from_json(char *rbuf, size_t len, struct discord_sticker *)`
  *     * :code:`void discord_sticker_list_from_json(char *rbuf, size_t len, struct discord_sticker ***)`
  *   * JSON Encoder:
 
@@ -143,8 +143,9 @@ extern void discord_sticker_cleanup_v(void *p);
 extern void discord_sticker_cleanup(struct discord_sticker *p);
 extern void discord_sticker_init_v(void *p);
 extern void discord_sticker_init(struct discord_sticker *p);
-extern void discord_sticker_from_json_v(char *json, size_t len, void *pp);
-extern void discord_sticker_from_json(char *json, size_t len, struct discord_sticker **pp);
+extern void discord_sticker_from_json_v(char *json, size_t len, void *p);
+extern void discord_sticker_from_json_p(char *json, size_t len, struct discord_sticker **pp);
+extern void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p);
 extern size_t discord_sticker_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p);
 extern void discord_sticker_list_free_v(void **p);
@@ -173,7 +174,7 @@ extern size_t discord_sticker_list_to_json(char *str, size_t len, struct discord
  *     * :code:`void discord_sticker_item_list_free(struct discord_sticker_item **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_sticker_item_from_json(char *rbuf, size_t len, struct discord_sticker_item **)`
+ *     * :code:`void discord_sticker_item_from_json(char *rbuf, size_t len, struct discord_sticker_item *)`
  *     * :code:`void discord_sticker_item_list_from_json(char *rbuf, size_t len, struct discord_sticker_item ***)`
  *   * JSON Encoder:
 
@@ -199,8 +200,9 @@ extern void discord_sticker_item_cleanup_v(void *p);
 extern void discord_sticker_item_cleanup(struct discord_sticker_item *p);
 extern void discord_sticker_item_init_v(void *p);
 extern void discord_sticker_item_init(struct discord_sticker_item *p);
-extern void discord_sticker_item_from_json_v(char *json, size_t len, void *pp);
-extern void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item **pp);
+extern void discord_sticker_item_from_json_v(char *json, size_t len, void *p);
+extern void discord_sticker_item_from_json_p(char *json, size_t len, struct discord_sticker_item **pp);
+extern void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item *p);
 extern size_t discord_sticker_item_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_sticker_item_to_json(char *json, size_t len, struct discord_sticker_item *p);
 extern void discord_sticker_item_list_free_v(void **p);
@@ -229,7 +231,7 @@ extern size_t discord_sticker_item_list_to_json(char *str, size_t len, struct di
  *     * :code:`void discord_sticker_pack_list_free(struct discord_sticker_pack **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_sticker_pack_from_json(char *rbuf, size_t len, struct discord_sticker_pack **)`
+ *     * :code:`void discord_sticker_pack_from_json(char *rbuf, size_t len, struct discord_sticker_pack *)`
  *     * :code:`void discord_sticker_pack_list_from_json(char *rbuf, size_t len, struct discord_sticker_pack ***)`
  *   * JSON Encoder:
 
@@ -271,8 +273,9 @@ extern void discord_sticker_pack_cleanup_v(void *p);
 extern void discord_sticker_pack_cleanup(struct discord_sticker_pack *p);
 extern void discord_sticker_pack_init_v(void *p);
 extern void discord_sticker_pack_init(struct discord_sticker_pack *p);
-extern void discord_sticker_pack_from_json_v(char *json, size_t len, void *pp);
-extern void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack **pp);
+extern void discord_sticker_pack_from_json_v(char *json, size_t len, void *p);
+extern void discord_sticker_pack_from_json_p(char *json, size_t len, struct discord_sticker_pack **pp);
+extern void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack *p);
 extern size_t discord_sticker_pack_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_sticker_pack *p);
 extern void discord_sticker_pack_list_free_v(void **p);

@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "github.h"
 
-void github_user_from_json(char *json, size_t len, struct github_user **pp)
+void github_user_from_json_p(char *json, size_t len, struct github_user **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  github_user_from_json(json, len, *pp);
+}
+void github_user_from_json(char *json, size_t len, struct github_user *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct github_user *p = *pp;
   github_user_init(p);
   r=json_extract(json, len, 
   /* specs/github/user.json:12:28
@@ -382,8 +385,8 @@ void github_user_init_v(void *p) {
   github_user_init((struct github_user *)p);
 }
 
-void github_user_from_json_v(char *json, size_t len, void *pp) {
- github_user_from_json(json, len, (struct github_user**)pp);
+void github_user_from_json_v(char *json, size_t len, void *p) {
+ github_user_from_json(json, len, (struct github_user*)p);
 }
 
 size_t github_user_to_json_v(char *json, size_t len, void *p) {

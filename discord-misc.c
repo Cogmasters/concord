@@ -362,7 +362,7 @@ discord_disconnect_guild_member(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-      .ok_obj = &p_member,
+      .ok_obj = p_member,
     },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id, user_id);

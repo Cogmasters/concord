@@ -84,7 +84,7 @@ extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t le
  *     * :code:`void discord_role_list_free(struct discord_role **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_role_from_json(char *rbuf, size_t len, struct discord_role **)`
+ *     * :code:`void discord_role_from_json(char *rbuf, size_t len, struct discord_role *)`
  *     * :code:`void discord_role_list_from_json(char *rbuf, size_t len, struct discord_role ***)`
  *   * JSON Encoder:
 
@@ -134,8 +134,9 @@ extern void discord_role_cleanup_v(void *p);
 extern void discord_role_cleanup(struct discord_role *p);
 extern void discord_role_init_v(void *p);
 extern void discord_role_init(struct discord_role *p);
-extern void discord_role_from_json_v(char *json, size_t len, void *pp);
-extern void discord_role_from_json(char *json, size_t len, struct discord_role **pp);
+extern void discord_role_from_json_v(char *json, size_t len, void *p);
+extern void discord_role_from_json_p(char *json, size_t len, struct discord_role **pp);
+extern void discord_role_from_json(char *json, size_t len, struct discord_role *p);
 extern size_t discord_role_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_role_to_json(char *json, size_t len, struct discord_role *p);
 extern void discord_role_list_free_v(void **p);
@@ -166,7 +167,7 @@ extern size_t discord_role_list_to_json(char *str, size_t len, struct discord_ro
  *     * :code:`void discord_role_tags_list_free(struct discord_role_tags **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_role_tags_from_json(char *rbuf, size_t len, struct discord_role_tags **)`
+ *     * :code:`void discord_role_tags_from_json(char *rbuf, size_t len, struct discord_role_tags *)`
  *     * :code:`void discord_role_tags_list_from_json(char *rbuf, size_t len, struct discord_role_tags ***)`
  *   * JSON Encoder:
 
@@ -192,8 +193,9 @@ extern void discord_role_tags_cleanup_v(void *p);
 extern void discord_role_tags_cleanup(struct discord_role_tags *p);
 extern void discord_role_tags_init_v(void *p);
 extern void discord_role_tags_init(struct discord_role_tags *p);
-extern void discord_role_tags_from_json_v(char *json, size_t len, void *pp);
-extern void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags **pp);
+extern void discord_role_tags_from_json_v(char *json, size_t len, void *p);
+extern void discord_role_tags_from_json_p(char *json, size_t len, struct discord_role_tags **pp);
+extern void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags *p);
 extern size_t discord_role_tags_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_role_tags_to_json(char *json, size_t len, struct discord_role_tags *p);
 extern void discord_role_tags_list_free_v(void **p);

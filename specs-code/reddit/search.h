@@ -26,7 +26,7 @@
  *     * :code:`void reddit_search_params_list_free(struct reddit_search_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params **)`
+ *     * :code:`void reddit_search_params_from_json(char *rbuf, size_t len, struct reddit_search_params *)`
  *     * :code:`void reddit_search_params_list_from_json(char *rbuf, size_t len, struct reddit_search_params ***)`
  *   * JSON Encoder:
 
@@ -92,8 +92,9 @@ extern void reddit_search_params_cleanup_v(void *p);
 extern void reddit_search_params_cleanup(struct reddit_search_params *p);
 extern void reddit_search_params_init_v(void *p);
 extern void reddit_search_params_init(struct reddit_search_params *p);
-extern void reddit_search_params_from_json_v(char *json, size_t len, void *pp);
-extern void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params **pp);
+extern void reddit_search_params_from_json_v(char *json, size_t len, void *p);
+extern void reddit_search_params_from_json_p(char *json, size_t len, struct reddit_search_params **pp);
+extern void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params *p);
 extern size_t reddit_search_params_to_json_v(char *json, size_t len, void *p);
 extern size_t reddit_search_params_to_json(char *json, size_t len, struct reddit_search_params *p);
 extern void reddit_search_params_list_free_v(void **p);

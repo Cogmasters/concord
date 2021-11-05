@@ -49,7 +49,7 @@ discord_get_guild_emoji(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_emoji_from_json_v,
-                              .ok_obj = &p_emoji },
+                              .ok_obj = p_emoji },
     NULL, HTTP_GET, "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id, emoji_id);
 }
 
@@ -83,7 +83,7 @@ discord_create_guild_emoji(struct discord *client,
     discord_adapter_run(&client->adapter,
                         &(struct ua_resp_handle){
                           .ok_cb = p_emoji ? &discord_emoji_from_json_v : NULL,
-                          .ok_obj = &p_emoji },
+                          .ok_obj = p_emoji },
                         &(struct sized_buffer){ payload, ret }, HTTP_POST,
                         "/guilds/%" PRIu64 "/emojis", guild_id);
 
@@ -134,7 +134,7 @@ discord_modify_guild_emoji(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb =
                                 p_emoji ? &discord_emoji_from_json_v : NULL,
-                              .ok_obj = &p_emoji },
+                              .ok_obj = p_emoji },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id, emoji_id);
 

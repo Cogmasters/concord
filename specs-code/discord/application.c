@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_application_from_json(char *json, size_t len, struct discord_application **pp)
+void discord_application_from_json_p(char *json, size_t len, struct discord_application **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_application_from_json(json, len, *pp);
+}
+void discord_application_from_json(char *json, size_t len, struct discord_application *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_application *p = *pp;
   discord_application_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application.json:12:20
@@ -273,8 +276,8 @@ void discord_application_init_v(void *p) {
   discord_application_init((struct discord_application *)p);
 }
 
-void discord_application_from_json_v(char *json, size_t len, void *pp) {
- discord_application_from_json(json, len, (struct discord_application**)pp);
+void discord_application_from_json_v(char *json, size_t len, void *p) {
+ discord_application_from_json(json, len, (struct discord_application*)p);
 }
 
 size_t discord_application_to_json_v(char *json, size_t len, void *p) {

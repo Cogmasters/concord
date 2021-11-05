@@ -26,7 +26,7 @@
  *     * :code:`void discord_application_command_list_free(struct discord_application_command **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command **)`
+ *     * :code:`void discord_application_command_from_json(char *rbuf, size_t len, struct discord_application_command *)`
  *     * :code:`void discord_application_command_list_from_json(char *rbuf, size_t len, struct discord_application_command ***)`
  *   * JSON Encoder:
 
@@ -72,8 +72,9 @@ extern void discord_application_command_cleanup_v(void *p);
 extern void discord_application_command_cleanup(struct discord_application_command *p);
 extern void discord_application_command_init_v(void *p);
 extern void discord_application_command_init(struct discord_application_command *p);
-extern void discord_application_command_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_from_json(char *json, size_t len, struct discord_application_command **pp);
+extern void discord_application_command_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_from_json_p(char *json, size_t len, struct discord_application_command **pp);
+extern void discord_application_command_from_json(char *json, size_t len, struct discord_application_command *p);
 extern size_t discord_application_command_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_to_json(char *json, size_t len, struct discord_application_command *p);
 extern void discord_application_command_list_free_v(void **p);
@@ -135,7 +136,7 @@ extern size_t discord_application_command_types_list_to_json(char *str, size_t l
  *     * :code:`void discord_application_command_option_list_free(struct discord_application_command_option **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option **)`
+ *     * :code:`void discord_application_command_option_from_json(char *rbuf, size_t len, struct discord_application_command_option *)`
  *     * :code:`void discord_application_command_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_option ***)`
  *   * JSON Encoder:
 
@@ -173,8 +174,9 @@ extern void discord_application_command_option_cleanup_v(void *p);
 extern void discord_application_command_option_cleanup(struct discord_application_command_option *p);
 extern void discord_application_command_option_init_v(void *p);
 extern void discord_application_command_option_init(struct discord_application_command_option *p);
-extern void discord_application_command_option_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option **pp);
+extern void discord_application_command_option_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_option_from_json_p(char *json, size_t len, struct discord_application_command_option **pp);
+extern void discord_application_command_option_from_json(char *json, size_t len, struct discord_application_command_option *p);
 extern size_t discord_application_command_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_to_json(char *json, size_t len, struct discord_application_command_option *p);
 extern void discord_application_command_option_list_free_v(void **p);
@@ -243,7 +245,7 @@ extern size_t discord_application_command_option_types_list_to_json(char *str, s
  *     * :code:`void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice **)`
+ *     * :code:`void discord_application_command_option_choice_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice *)`
  *     * :code:`void discord_application_command_option_choice_list_from_json(char *rbuf, size_t len, struct discord_application_command_option_choice ***)`
  *   * JSON Encoder:
 
@@ -265,8 +267,9 @@ extern void discord_application_command_option_choice_cleanup_v(void *p);
 extern void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *p);
 extern void discord_application_command_option_choice_init_v(void *p);
 extern void discord_application_command_option_choice_init(struct discord_application_command_option_choice *p);
-extern void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice **pp);
+extern void discord_application_command_option_choice_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_option_choice_from_json_p(char *json, size_t len, struct discord_application_command_option_choice **pp);
+extern void discord_application_command_option_choice_from_json(char *json, size_t len, struct discord_application_command_option_choice *p);
 extern size_t discord_application_command_option_choice_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_option_choice_to_json(char *json, size_t len, struct discord_application_command_option_choice *p);
 extern void discord_application_command_option_choice_list_free_v(void **p);
@@ -297,7 +300,7 @@ extern size_t discord_application_command_option_choice_list_to_json(char *str, 
  *     * :code:`void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions **)`
+ *     * :code:`void discord_guild_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions *)`
  *     * :code:`void discord_guild_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_guild_application_command_permissions ***)`
  *   * JSON Encoder:
 
@@ -327,8 +330,9 @@ extern void discord_guild_application_command_permissions_cleanup_v(void *p);
 extern void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *p);
 extern void discord_guild_application_command_permissions_init_v(void *p);
 extern void discord_guild_application_command_permissions_init(struct discord_guild_application_command_permissions *p);
-extern void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *pp);
-extern void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions **pp);
+extern void discord_guild_application_command_permissions_from_json_v(char *json, size_t len, void *p);
+extern void discord_guild_application_command_permissions_from_json_p(char *json, size_t len, struct discord_guild_application_command_permissions **pp);
+extern void discord_guild_application_command_permissions_from_json(char *json, size_t len, struct discord_guild_application_command_permissions *p);
 extern size_t discord_guild_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_guild_application_command_permissions_to_json(char *json, size_t len, struct discord_guild_application_command_permissions *p);
 extern void discord_guild_application_command_permissions_list_free_v(void **p);
@@ -359,7 +363,7 @@ extern size_t discord_guild_application_command_permissions_list_to_json(char *s
  *     * :code:`void discord_application_command_permissions_list_free(struct discord_application_command_permissions **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions **)`
+ *     * :code:`void discord_application_command_permissions_from_json(char *rbuf, size_t len, struct discord_application_command_permissions *)`
  *     * :code:`void discord_application_command_permissions_list_from_json(char *rbuf, size_t len, struct discord_application_command_permissions ***)`
  *   * JSON Encoder:
 
@@ -385,8 +389,9 @@ extern void discord_application_command_permissions_cleanup_v(void *p);
 extern void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *p);
 extern void discord_application_command_permissions_init_v(void *p);
 extern void discord_application_command_permissions_init(struct discord_application_command_permissions *p);
-extern void discord_application_command_permissions_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions **pp);
+extern void discord_application_command_permissions_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_permissions_from_json_p(char *json, size_t len, struct discord_application_command_permissions **pp);
+extern void discord_application_command_permissions_from_json(char *json, size_t len, struct discord_application_command_permissions *p);
 extern size_t discord_application_command_permissions_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_permissions_to_json(char *json, size_t len, struct discord_application_command_permissions *p);
 extern void discord_application_command_permissions_list_free_v(void **p);
@@ -447,7 +452,7 @@ extern size_t discord_application_command_permission_types_list_to_json(char *st
  *     * :code:`void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option **)`
+ *     * :code:`void discord_application_command_interaction_data_option_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option *)`
  *     * :code:`void discord_application_command_interaction_data_option_list_from_json(char *rbuf, size_t len, struct discord_application_command_interaction_data_option ***)`
  *   * JSON Encoder:
 
@@ -477,8 +482,9 @@ extern void discord_application_command_interaction_data_option_cleanup_v(void *
 extern void discord_application_command_interaction_data_option_cleanup(struct discord_application_command_interaction_data_option *p);
 extern void discord_application_command_interaction_data_option_init_v(void *p);
 extern void discord_application_command_interaction_data_option_init(struct discord_application_command_interaction_data_option *p);
-extern void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *pp);
-extern void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option **pp);
+extern void discord_application_command_interaction_data_option_from_json_v(char *json, size_t len, void *p);
+extern void discord_application_command_interaction_data_option_from_json_p(char *json, size_t len, struct discord_application_command_interaction_data_option **pp);
+extern void discord_application_command_interaction_data_option_from_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
 extern size_t discord_application_command_interaction_data_option_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_application_command_interaction_data_option_to_json(char *json, size_t len, struct discord_application_command_interaction_data_option *p);
 extern void discord_application_command_interaction_data_option_list_free_v(void **p);

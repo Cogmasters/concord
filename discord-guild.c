@@ -24,7 +24,7 @@ discord_create_guild(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb =
                                 p_guild ? &discord_guild_from_json_v : NULL,
-                              .ok_obj = &p_guild },
+                              .ok_obj = p_guild },
     &(struct sized_buffer){ payload, ret }, HTTP_POST, "/guilds");
 }
 
@@ -45,7 +45,7 @@ discord_get_guild(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_guild_from_json_v,
-                              .ok_obj = &p_guild },
+                              .ok_obj = p_guild },
     NULL, HTTP_GET, "/guilds/%" PRIu64, guild_id);
 }
 
@@ -66,7 +66,7 @@ discord_get_guild_preview(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_guild_preview_from_json_v,
-                              .ok_obj = &p_guild_preview },
+                              .ok_obj = p_guild_preview },
     NULL, HTTP_GET, "/guilds/%" PRIu64 "/preview", guild_id);
 }
 
@@ -93,7 +93,7 @@ discord_modify_guild(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb =
                                 p_guild ? &discord_guild_from_json_v : NULL,
-                              .ok_obj = &p_guild },
+                              .ok_obj = p_guild },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH, "/guilds/%" PRIu64,
     guild_id);
 }
@@ -155,7 +155,7 @@ discord_create_guild_channel(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = p_channel ? &discord_channel_from_json_v
                                                  : NULL,
-                              .ok_obj = &p_channel },
+                              .ok_obj = p_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/guilds/%" PRIu64 "/channels", guild_id);
 }
@@ -206,7 +206,7 @@ discord_get_guild_member(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = discord_guild_member_from_json_v,
-                              .ok_obj = &p_member },
+                              .ok_obj = p_member },
     NULL, HTTP_GET, "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id, user_id);
 }
 
@@ -317,7 +317,7 @@ discord_add_guild_member(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = discord_guild_member_from_json_v,
-                              .ok_obj = &p_member },
+                              .ok_obj = p_member },
     &(struct sized_buffer){ payload, ret }, HTTP_PUT,
     "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id, user_id);
 }
@@ -350,7 +350,7 @@ discord_modify_guild_member(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-      .ok_obj = &p_member,
+      .ok_obj = p_member,
     },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id, user_id);
@@ -383,7 +383,7 @@ discord_modify_current_member(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-      .ok_obj = &p_member },
+      .ok_obj = p_member },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/guilds/%" PRIu64 "/members/@me", guild_id);
 }
@@ -419,7 +419,7 @@ discord_modify_current_user_nick(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_member ? &discord_guild_member_from_json_v : NULL,
-      .ok_obj = &p_member },
+      .ok_obj = p_member },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/guilds/%" PRIu64 "/members/@me/nick", guild_id);
 }
@@ -536,7 +536,7 @@ discord_get_guild_ban(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_ban_from_json_v,
-                              .ok_obj = &p_ban },
+                              .ok_obj = p_ban },
     NULL, HTTP_GET, "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id, user_id);
 }
 
@@ -559,7 +559,8 @@ discord_create_guild_ban(struct discord *client,
     return ORCA_MISSING_PARAMETER;
   }
   if (params->delete_message_days < 0 || params->delete_message_days > 7) {
-    logconf_error(client->conf,
+    logconf_error(
+      client->conf,
       "'delete_message_days' is outside the interval (client->conf, 0, 7)");
     return ORCA_BAD_PARAMETER;
   }
@@ -630,7 +631,7 @@ discord_create_guild_role(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = p_role ? &discord_role_from_json_v : NULL, .ok_obj = &p_role },
+      .ok_cb = p_role ? &discord_role_from_json_v : NULL, .ok_obj = p_role },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/guilds/%" PRIu64 "/roles", guild_id);
 }
@@ -691,7 +692,7 @@ discord_modify_guild_role(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = p_role ? &discord_role_from_json_v : NULL, .ok_obj = &p_role },
+      .ok_cb = p_role ? &discord_role_from_json_v : NULL, .ok_obj = p_role },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH,
     "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id, role_id);
 }
@@ -794,7 +795,7 @@ discord_get_guild_vanity_url(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_invite_from_json_v,
-                              .ok_obj = &p_invite },
+                              .ok_obj = p_invite },
     NULL, HTTP_GET, "/guilds/%" PRIu64 "/vanity-url", guild_id);
 }
 
@@ -815,7 +816,7 @@ discord_get_guild_welcome_screen(struct discord *client,
   return discord_adapter_run(&client->adapter,
                              &(struct ua_resp_handle){
                                .ok_cb = &discord_welcome_screen_from_json_v,
-                               .ok_obj = &p_screen,
+                               .ok_obj = p_screen,
                              },
                              NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/welcome-screen", guild_id);

@@ -35,7 +35,7 @@ discord_create_interaction_response(
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_response ? &discord_interaction_response_from_json_v : NULL,
-      .ok_obj = &p_response },
+      .ok_obj = p_response },
     &(struct sized_buffer){ payload, ret }, HTTP_POST,
     "/interactions/%" PRIu64 "/%s/callback", interaction_id,
     interaction_token);
@@ -65,7 +65,7 @@ discord_get_original_interaction_response(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb =
                                 &discord_interaction_response_from_json_v,
-                              .ok_obj = &p_response },
+                              .ok_obj = p_response },
     NULL, HTTP_GET, "/webhooks/%" PRIu64 "/%s/messages/@original",
     interaction_id, interaction_token);
 }
@@ -93,7 +93,7 @@ discord_edit_original_interaction_response(
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_response ? &discord_interaction_response_from_json_v : NULL,
-    .ok_obj = &p_response
+    .ok_obj = p_response
   };
 
   char payload[16384]; /**< @todo dynamic buffer */
@@ -178,7 +178,7 @@ discord_create_followup_message(
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_webhook ? &discord_webhook_from_json_v : NULL,
-    .ok_obj = &p_webhook
+    .ok_obj = p_webhook
   };
 
   char payload[16384]; /**< @todo dynamic buffer */
@@ -238,7 +238,7 @@ discord_get_followup_message(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_message_from_json_v,
-                              .ok_obj = &p_message },
+                              .ok_obj = p_message },
     NULL, HTTP_GET, "/webhooks/%" PRIu64 "/%s/%" PRIu64, application_id,
     interaction_token, message_id);
 }
@@ -271,7 +271,7 @@ discord_edit_followup_message(
 
   struct ua_resp_handle resp_handle = {
     .ok_cb = p_message ? &discord_message_from_json_v : NULL,
-    .ok_obj = &p_message
+    .ok_obj = p_message
   };
 
   char payload[16384]; /**< @todo dynamic buffer */

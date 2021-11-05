@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_interaction_from_json(char *json, size_t len, struct discord_interaction **pp)
+void discord_interaction_from_json_p(char *json, size_t len, struct discord_interaction **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_interaction_from_json(json, len, *pp);
+}
+void discord_interaction_from_json(char *json, size_t len, struct discord_interaction *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_interaction *p = *pp;
   discord_interaction_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.json:12:18
@@ -62,7 +65,7 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
                 &p->type,
   /* specs/discord/interaction.json:15:18
      '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
-                discord_interaction_data_from_json, &p->data,
+                discord_interaction_data_from_json_p, &p->data,
   /* specs/discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
                 cee_strtoull, &p->guild_id,
@@ -71,16 +74,16 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
                 cee_strtoull, &p->channel_id,
   /* specs/discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
-                discord_guild_member_from_json, &p->member,
+                discord_guild_member_from_json_p, &p->member,
   /* specs/discord/interaction.json:19:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "option":true, "comment":"user object for the invoking user, if invoked in a DM", "inject_if_not":null}' */
-                discord_user_from_json, &p->user,
+                discord_user_from_json_p, &p->user,
   /* specs/discord/interaction.json:20:18
      '{"name":"token", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a continuation token for responding to the interaction", "inject_if_not":null}' */
                 &p->token,
   /* specs/discord/interaction.json:21:18
      '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
-                discord_message_from_json, &p->message);
+                discord_message_from_json_p, &p->message);
   ret = r;
 }
 
@@ -213,8 +216,8 @@ void discord_interaction_init_v(void *p) {
   discord_interaction_init((struct discord_interaction *)p);
 }
 
-void discord_interaction_from_json_v(char *json, size_t len, void *pp) {
- discord_interaction_from_json(json, len, (struct discord_interaction**)pp);
+void discord_interaction_from_json_v(char *json, size_t len, void *p) {
+ discord_interaction_from_json(json, len, (struct discord_interaction*)p);
 }
 
 size_t discord_interaction_to_json_v(char *json, size_t len, void *p) {
@@ -389,12 +392,15 @@ size_t discord_interaction_types_list_to_json(char *str, size_t len, enum discor
 }
 
 
-void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data **pp)
+void discord_interaction_data_from_json_p(char *json, size_t len, struct discord_interaction_data **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_interaction_data_from_json(json, len, *pp);
+}
+void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_interaction_data *p = *pp;
   discord_interaction_data_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.json:43:18
@@ -432,7 +438,7 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
                 &p->type,
   /* specs/discord/interaction.json:46:18
      '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
-                discord_resolved_data_from_json, &p->resolved,
+                discord_resolved_data_from_json_p, &p->resolved,
   /* specs/discord/interaction.json:47:18
      '{"name":"options", "type":{"base":"struct discord_application_command_interaction_data_option", "dec":"ntl"}, "option":true, "comment":"the parameters for the command, max 25", "inject_if_not":null}' */
                 discord_application_command_interaction_data_option_list_from_json, &p->options,
@@ -555,8 +561,8 @@ void discord_interaction_data_init_v(void *p) {
   discord_interaction_data_init((struct discord_interaction_data *)p);
 }
 
-void discord_interaction_data_from_json_v(char *json, size_t len, void *pp) {
- discord_interaction_data_from_json(json, len, (struct discord_interaction_data**)pp);
+void discord_interaction_data_from_json_v(char *json, size_t len, void *p) {
+ discord_interaction_data_from_json(json, len, (struct discord_interaction_data*)p);
 }
 
 size_t discord_interaction_data_to_json_v(char *json, size_t len, void *p) {
@@ -658,12 +664,15 @@ size_t discord_interaction_data_list_to_json(char *str, size_t len, struct disco
 }
 
 
-void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data **pp)
+void discord_resolved_data_from_json_p(char *json, size_t len, struct discord_resolved_data **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_resolved_data_from_json(json, len, *pp);
+}
+void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_resolved_data *p = *pp;
   discord_resolved_data_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.json:60:18
@@ -776,8 +785,8 @@ void discord_resolved_data_init_v(void *p) {
   discord_resolved_data_init((struct discord_resolved_data *)p);
 }
 
-void discord_resolved_data_from_json_v(char *json, size_t len, void *pp) {
- discord_resolved_data_from_json(json, len, (struct discord_resolved_data**)pp);
+void discord_resolved_data_from_json_v(char *json, size_t len, void *p) {
+ discord_resolved_data_from_json(json, len, (struct discord_resolved_data*)p);
 }
 
 size_t discord_resolved_data_to_json_v(char *json, size_t len, void *p) {
@@ -859,12 +868,15 @@ size_t discord_resolved_data_list_to_json(char *str, size_t len, struct discord_
 }
 
 
-void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction **pp)
+void discord_message_interaction_from_json_p(char *json, size_t len, struct discord_message_interaction **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_message_interaction_from_json(json, len, *pp);
+}
+void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_message_interaction *p = *pp;
   discord_message_interaction_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.json:74:18
@@ -890,7 +902,7 @@ void discord_message_interaction_from_json(char *json, size_t len, struct discor
                 &p->name,
   /* specs/discord/interaction.json:77:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
-                discord_user_from_json, &p->user);
+                discord_user_from_json_p, &p->user);
   ret = r;
 }
 
@@ -956,8 +968,8 @@ void discord_message_interaction_init_v(void *p) {
   discord_message_interaction_init((struct discord_message_interaction *)p);
 }
 
-void discord_message_interaction_from_json_v(char *json, size_t len, void *pp) {
- discord_message_interaction_from_json(json, len, (struct discord_message_interaction**)pp);
+void discord_message_interaction_from_json_v(char *json, size_t len, void *p) {
+ discord_message_interaction_from_json(json, len, (struct discord_message_interaction*)p);
 }
 
 size_t discord_message_interaction_to_json_v(char *json, size_t len, void *p) {
@@ -1032,12 +1044,15 @@ size_t discord_message_interaction_list_to_json(char *str, size_t len, struct di
 }
 
 
-void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response **pp)
+void discord_interaction_response_from_json_p(char *json, size_t len, struct discord_interaction_response **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_interaction_response_from_json(json, len, *pp);
+}
+void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_interaction_response *p = *pp;
   discord_interaction_response_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.json:87:18
@@ -1051,7 +1066,7 @@ void discord_interaction_response_from_json(char *json, size_t len, struct disco
                 &p->type,
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
-                discord_interaction_callback_data_from_json, &p->data);
+                discord_interaction_callback_data_from_json_p, &p->data);
   ret = r;
 }
 
@@ -1098,8 +1113,8 @@ void discord_interaction_response_init_v(void *p) {
   discord_interaction_response_init((struct discord_interaction_response *)p);
 }
 
-void discord_interaction_response_from_json_v(char *json, size_t len, void *pp) {
- discord_interaction_response_from_json(json, len, (struct discord_interaction_response**)pp);
+void discord_interaction_response_from_json_v(char *json, size_t len, void *p) {
+ discord_interaction_response_from_json(json, len, (struct discord_interaction_response*)p);
 }
 
 size_t discord_interaction_response_to_json_v(char *json, size_t len, void *p) {
@@ -1220,12 +1235,15 @@ size_t discord_interaction_callback_types_list_to_json(char *str, size_t len, en
 }
 
 
-void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data **pp)
+void discord_interaction_callback_data_from_json_p(char *json, size_t len, struct discord_interaction_callback_data **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_interaction_callback_data_from_json(json, len, *pp);
+}
+void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_interaction_callback_data *p = *pp;
   discord_interaction_callback_data_init(p);
   r=json_extract(json, len, 
   /* specs/discord/interaction.json:112:18
@@ -1260,7 +1278,7 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
                 discord_embed_list_from_json, &p->embeds,
   /* specs/discord/interaction.json:115:18
      '{"name":"allowed_mentions", "type":{"base":"struct discord_allowed_mentions", "dec":"*"}, "option":true, "comment":"allowed mentions object", "inject_if_not":null}' */
-                discord_allowed_mentions_from_json, &p->allowed_mentions,
+                discord_allowed_mentions_from_json_p, &p->allowed_mentions,
   /* specs/discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
                 &p->flags,
@@ -1371,8 +1389,8 @@ void discord_interaction_callback_data_init_v(void *p) {
   discord_interaction_callback_data_init((struct discord_interaction_callback_data *)p);
 }
 
-void discord_interaction_callback_data_from_json_v(char *json, size_t len, void *pp) {
- discord_interaction_callback_data_from_json(json, len, (struct discord_interaction_callback_data**)pp);
+void discord_interaction_callback_data_from_json_v(char *json, size_t len, void *p) {
+ discord_interaction_callback_data_from_json(json, len, (struct discord_interaction_callback_data*)p);
 }
 
 size_t discord_interaction_callback_data_to_json_v(char *json, size_t len, void *p) {

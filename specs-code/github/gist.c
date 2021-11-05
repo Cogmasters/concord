@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "github.h"
 
-void github_gist_from_json(char *json, size_t len, struct github_gist **pp)
+void github_gist_from_json_p(char *json, size_t len, struct github_gist **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  github_gist_from_json(json, len, *pp);
+}
+void github_gist_from_json(char *json, size_t len, struct github_gist *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct github_gist *p = *pp;
   github_gist_init(p);
   r=json_extract(json, len, 
   /* specs/github/gist.json:12:28
@@ -174,8 +177,8 @@ void github_gist_init_v(void *p) {
   github_gist_init((struct github_gist *)p);
 }
 
-void github_gist_from_json_v(char *json, size_t len, void *pp) {
- github_gist_from_json(json, len, (struct github_gist**)pp);
+void github_gist_from_json_v(char *json, size_t len, void *p) {
+ github_gist_from_json(json, len, (struct github_gist*)p);
 }
 
 size_t github_gist_to_json_v(char *json, size_t len, void *p) {

@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params **pp)
+void discord_create_webhook_params_from_json_p(char *json, size_t len, struct discord_create_webhook_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_webhook_params_from_json(json, len, *pp);
+}
+void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_webhook_params *p = *pp;
   discord_create_webhook_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.endpoints-params.json:12:20
@@ -79,8 +82,8 @@ void discord_create_webhook_params_init_v(void *p) {
   discord_create_webhook_params_init((struct discord_create_webhook_params *)p);
 }
 
-void discord_create_webhook_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_webhook_params_from_json(json, len, (struct discord_create_webhook_params**)pp);
+void discord_create_webhook_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_webhook_params_from_json(json, len, (struct discord_create_webhook_params*)p);
 }
 
 size_t discord_create_webhook_params_to_json_v(char *json, size_t len, void *p) {
@@ -141,12 +144,15 @@ size_t discord_create_webhook_params_list_to_json(char *str, size_t len, struct 
 }
 
 
-void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params **pp)
+void discord_modify_webhook_params_from_json_p(char *json, size_t len, struct discord_modify_webhook_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_webhook_params_from_json(json, len, *pp);
+}
+void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_webhook_params *p = *pp;
   discord_modify_webhook_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.endpoints-params.json:22:20
@@ -225,8 +231,8 @@ void discord_modify_webhook_params_init_v(void *p) {
   discord_modify_webhook_params_init((struct discord_modify_webhook_params *)p);
 }
 
-void discord_modify_webhook_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_webhook_params_from_json(json, len, (struct discord_modify_webhook_params**)pp);
+void discord_modify_webhook_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_webhook_params_from_json(json, len, (struct discord_modify_webhook_params*)p);
 }
 
 size_t discord_modify_webhook_params_to_json_v(char *json, size_t len, void *p) {
@@ -293,12 +299,15 @@ size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, struct 
 }
 
 
-void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params **pp)
+void discord_modify_webhook_with_token_params_from_json_p(char *json, size_t len, struct discord_modify_webhook_with_token_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_webhook_with_token_params_from_json(json, len, *pp);
+}
+void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_webhook_with_token_params *p = *pp;
   discord_modify_webhook_with_token_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.endpoints-params.json:33:20
@@ -360,8 +369,8 @@ void discord_modify_webhook_with_token_params_init_v(void *p) {
   discord_modify_webhook_with_token_params_init((struct discord_modify_webhook_with_token_params *)p);
 }
 
-void discord_modify_webhook_with_token_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_webhook_with_token_params_from_json(json, len, (struct discord_modify_webhook_with_token_params**)pp);
+void discord_modify_webhook_with_token_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_webhook_with_token_params_from_json(json, len, (struct discord_modify_webhook_with_token_params*)p);
 }
 
 size_t discord_modify_webhook_with_token_params_to_json_v(char *json, size_t len, void *p) {
@@ -422,12 +431,15 @@ size_t discord_modify_webhook_with_token_params_list_to_json(char *str, size_t l
 }
 
 
-void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params **pp)
+void discord_execute_webhook_params_from_json_p(char *json, size_t len, struct discord_execute_webhook_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_execute_webhook_params_from_json(json, len, *pp);
+}
+void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_execute_webhook_params *p = *pp;
   discord_execute_webhook_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.endpoints-params.json:46:20
@@ -468,10 +480,10 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
                 &p->tts,
   /* specs/discord/webhook.endpoints-params.json:50:20
      '{ "name": "embeds", "type":{ "base":"struct discord_embed", "dec":"*" }, "comment":"embedded rich content", "inject_if_not":null }' */
-                discord_embed_from_json, &p->embeds,
+                discord_embed_from_json_p, &p->embeds,
   /* specs/discord/webhook.endpoints-params.json:51:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not": null }' */
-                discord_allowed_mentions_from_json, &p->allowed_mentions,
+                discord_allowed_mentions_from_json_p, &p->allowed_mentions,
   /* specs/discord/webhook.endpoints-params.json:52:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not": null }' */
                 discord_component_list_from_json, &p->components,
@@ -600,8 +612,8 @@ void discord_execute_webhook_params_init_v(void *p) {
   discord_execute_webhook_params_init((struct discord_execute_webhook_params *)p);
 }
 
-void discord_execute_webhook_params_from_json_v(char *json, size_t len, void *pp) {
- discord_execute_webhook_params_from_json(json, len, (struct discord_execute_webhook_params**)pp);
+void discord_execute_webhook_params_from_json_v(char *json, size_t len, void *p) {
+ discord_execute_webhook_params_from_json(json, len, (struct discord_execute_webhook_params*)p);
 }
 
 size_t discord_execute_webhook_params_to_json_v(char *json, size_t len, void *p) {
@@ -719,12 +731,15 @@ size_t discord_execute_webhook_params_list_to_json(char *str, size_t len, struct
 }
 
 
-void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params **pp)
+void discord_edit_webhook_message_params_from_json_p(char *json, size_t len, struct discord_edit_webhook_message_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_edit_webhook_message_params_from_json(json, len, *pp);
+}
+void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_edit_webhook_message_params *p = *pp;
   discord_edit_webhook_message_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.endpoints-params.json:62:20
@@ -750,7 +765,7 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
                 discord_embed_list_from_json, &p->embeds,
   /* specs/discord/webhook.endpoints-params.json:64:20
      '{ "name": "allowed_mentions", "type":{ "base":"struct discord_allowed_mentions", "dec":"*" }, "comment":"allowed mentions for the message", "inject_if_not":null }' */
-                discord_allowed_mentions_from_json, &p->allowed_mentions,
+                discord_allowed_mentions_from_json_p, &p->allowed_mentions,
   /* specs/discord/webhook.endpoints-params.json:65:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 discord_attachment_list_from_json, &p->attachments,
@@ -837,8 +852,8 @@ void discord_edit_webhook_message_params_init_v(void *p) {
   discord_edit_webhook_message_params_init((struct discord_edit_webhook_message_params *)p);
 }
 
-void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *pp) {
- discord_edit_webhook_message_params_from_json(json, len, (struct discord_edit_webhook_message_params**)pp);
+void discord_edit_webhook_message_params_from_json_v(char *json, size_t len, void *p) {
+ discord_edit_webhook_message_params_from_json(json, len, (struct discord_edit_webhook_message_params*)p);
 }
 
 size_t discord_edit_webhook_message_params_to_json_v(char *json, size_t len, void *p) {

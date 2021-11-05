@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "github.h"
 
-void github_topic_from_json(char *json, size_t len, struct github_topic **pp)
+void github_topic_from_json_p(char *json, size_t len, struct github_topic **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  github_topic_from_json(json, len, *pp);
+}
+void github_topic_from_json(char *json, size_t len, struct github_topic *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct github_topic *p = *pp;
   github_topic_init(p);
   r=json_extract(json, len, 
   /* specs/github/repository.json:12:28
@@ -62,8 +65,8 @@ void github_topic_init_v(void *p) {
   github_topic_init((struct github_topic *)p);
 }
 
-void github_topic_from_json_v(char *json, size_t len, void *pp) {
- github_topic_from_json(json, len, (struct github_topic**)pp);
+void github_topic_from_json_v(char *json, size_t len, void *p) {
+ github_topic_from_json(json, len, (struct github_topic*)p);
 }
 
 size_t github_topic_to_json_v(char *json, size_t len, void *p) {

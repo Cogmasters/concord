@@ -24,7 +24,7 @@
  *     * :code:`void github_topic_list_free(struct github_topic **)`
  *   * JSON Decoder:
 
- *     * :code:`void github_topic_from_json(char *rbuf, size_t len, struct github_topic **)`
+ *     * :code:`void github_topic_from_json(char *rbuf, size_t len, struct github_topic *)`
  *     * :code:`void github_topic_list_from_json(char *rbuf, size_t len, struct github_topic ***)`
  *   * JSON Encoder:
 
@@ -42,8 +42,9 @@ extern void github_topic_cleanup_v(void *p);
 extern void github_topic_cleanup(struct github_topic *p);
 extern void github_topic_init_v(void *p);
 extern void github_topic_init(struct github_topic *p);
-extern void github_topic_from_json_v(char *json, size_t len, void *pp);
-extern void github_topic_from_json(char *json, size_t len, struct github_topic **pp);
+extern void github_topic_from_json_v(char *json, size_t len, void *p);
+extern void github_topic_from_json_p(char *json, size_t len, struct github_topic **pp);
+extern void github_topic_from_json(char *json, size_t len, struct github_topic *p);
 extern size_t github_topic_to_json_v(char *json, size_t len, void *p);
 extern size_t github_topic_to_json(char *json, size_t len, struct github_topic *p);
 extern void github_topic_list_free_v(void **p);

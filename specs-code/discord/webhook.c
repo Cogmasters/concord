@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **pp)
+void discord_webhook_from_json_p(char *json, size_t len, struct discord_webhook **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_webhook_from_json(json, len, *pp);
+}
+void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_webhook *p = *pp;
   discord_webhook_init(p);
   r=json_extract(json, len, 
   /* specs/discord/webhook.json:12:20
@@ -71,7 +74,7 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **
                 cee_strtoull, &p->channel_id,
   /* specs/discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null }' */
-                discord_user_from_json, &p->user,
+                discord_user_from_json_p, &p->user,
   /* specs/discord/webhook.json:17:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*", "comment":"the default name of the webhook", "inject_if_not":null }}' */
                 &p->name,
@@ -86,10 +89,10 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook **
                 cee_strtoull, &p->application_id,
   /* specs/discord/webhook.json:21:20
      '{ "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null }' */
-                discord_guild_from_json, &p->source_guild,
+                discord_guild_from_json_p, &p->source_guild,
   /* specs/discord/webhook.json:22:20
      '{ "name": "source_channel", "type":{ "base":"struct discord_channel", "dec":"*" }, "comment":"the channel that this webhook is following (returned for Channel Follower Webhooks)", "inject_if_not":null }' */
-                discord_channel_from_json, &p->source_channel,
+                discord_channel_from_json_p, &p->source_channel,
   /* specs/discord/webhook.json:23:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }' */
                 &p->url);
@@ -247,8 +250,8 @@ void discord_webhook_init_v(void *p) {
   discord_webhook_init((struct discord_webhook *)p);
 }
 
-void discord_webhook_from_json_v(char *json, size_t len, void *pp) {
- discord_webhook_from_json(json, len, (struct discord_webhook**)pp);
+void discord_webhook_from_json_v(char *json, size_t len, void *p) {
+ discord_webhook_from_json(json, len, (struct discord_webhook*)p);
 }
 
 size_t discord_webhook_to_json_v(char *json, size_t len, void *p) {

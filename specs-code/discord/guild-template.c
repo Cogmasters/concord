@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template **pp)
+void discord_guild_template_from_json_p(char *json, size_t len, struct discord_guild_template **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_guild_template_from_json(json, len, *pp);
+}
+void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_guild_template *p = *pp;
   discord_guild_template_init(p);
   r=json_extract(json, len, 
   /* specs/discord/guild-template.json:12:20
@@ -71,7 +74,7 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
                 cee_strtoull, &p->creator_id,
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
-                discord_user_from_json, &p->creator,
+                discord_user_from_json_p, &p->creator,
   /* specs/discord/guild-template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_iso8601_to_unix_ms, &p->created_at,
@@ -83,7 +86,7 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
                 cee_strtoull, &p->source_guild_id,
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
-                discord_guild_from_json, &p->serialized_source_guild,
+                discord_guild_from_json_p, &p->serialized_source_guild,
   /* specs/discord/guild-template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"char", "dec":"*", "converter":"mixed"}}' */
                 cee_strndup, &p->is_dirty);
@@ -222,8 +225,8 @@ void discord_guild_template_init_v(void *p) {
   discord_guild_template_init((struct discord_guild_template *)p);
 }
 
-void discord_guild_template_from_json_v(char *json, size_t len, void *pp) {
- discord_guild_template_from_json(json, len, (struct discord_guild_template**)pp);
+void discord_guild_template_from_json_v(char *json, size_t len, void *p) {
+ discord_guild_template_from_json(json, len, (struct discord_guild_template*)p);
 }
 
 size_t discord_guild_template_to_json_v(char *json, size_t len, void *p) {

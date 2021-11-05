@@ -23,7 +23,7 @@
  *     * :code:`void discord_get_guild_audit_log_params_list_free(struct discord_get_guild_audit_log_params **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params **)`
+ *     * :code:`void discord_get_guild_audit_log_params_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params *)`
  *     * :code:`void discord_get_guild_audit_log_params_list_from_json(char *rbuf, size_t len, struct discord_get_guild_audit_log_params ***)`
  *   * JSON Encoder:
 
@@ -53,8 +53,9 @@ extern void discord_get_guild_audit_log_params_cleanup_v(void *p);
 extern void discord_get_guild_audit_log_params_cleanup(struct discord_get_guild_audit_log_params *p);
 extern void discord_get_guild_audit_log_params_init_v(void *p);
 extern void discord_get_guild_audit_log_params_init(struct discord_get_guild_audit_log_params *p);
-extern void discord_get_guild_audit_log_params_from_json_v(char *json, size_t len, void *pp);
-extern void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params **pp);
+extern void discord_get_guild_audit_log_params_from_json_v(char *json, size_t len, void *p);
+extern void discord_get_guild_audit_log_params_from_json_p(char *json, size_t len, struct discord_get_guild_audit_log_params **pp);
+extern void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
 extern size_t discord_get_guild_audit_log_params_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p);
 extern void discord_get_guild_audit_log_params_list_free_v(void **p);

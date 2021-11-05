@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params **pp)
+void discord_modify_current_user_params_from_json_p(char *json, size_t len, struct discord_modify_current_user_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_modify_current_user_params_from_json(json, len, *pp);
+}
+void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_modify_current_user_params *p = *pp;
   discord_modify_current_user_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:12:20
@@ -78,8 +81,8 @@ void discord_modify_current_user_params_init_v(void *p) {
   discord_modify_current_user_params_init((struct discord_modify_current_user_params *)p);
 }
 
-void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *pp) {
- discord_modify_current_user_params_from_json(json, len, (struct discord_modify_current_user_params**)pp);
+void discord_modify_current_user_params_from_json_v(char *json, size_t len, void *p) {
+ discord_modify_current_user_params_from_json(json, len, (struct discord_modify_current_user_params*)p);
 }
 
 size_t discord_modify_current_user_params_to_json_v(char *json, size_t len, void *p) {
@@ -140,12 +143,15 @@ size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, st
 }
 
 
-void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params **pp)
+void discord_create_dm_params_from_json_p(char *json, size_t len, struct discord_create_dm_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_dm_params_from_json(json, len, *pp);
+}
+void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_dm_params *p = *pp;
   discord_create_dm_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:22:20
@@ -190,8 +196,8 @@ void discord_create_dm_params_init_v(void *p) {
   discord_create_dm_params_init((struct discord_create_dm_params *)p);
 }
 
-void discord_create_dm_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_dm_params_from_json(json, len, (struct discord_create_dm_params**)pp);
+void discord_create_dm_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_dm_params_from_json(json, len, (struct discord_create_dm_params*)p);
 }
 
 size_t discord_create_dm_params_to_json_v(char *json, size_t len, void *p) {
@@ -244,12 +250,15 @@ size_t discord_create_dm_params_list_to_json(char *str, size_t len, struct disco
 }
 
 
-void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params **pp)
+void discord_create_group_dm_params_from_json_p(char *json, size_t len, struct discord_create_group_dm_params **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_create_group_dm_params_from_json(json, len, *pp);
+}
+void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_create_group_dm_params *p = *pp;
   discord_create_group_dm_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/user.endpoints-params.json:31:20
@@ -319,8 +328,8 @@ void discord_create_group_dm_params_init_v(void *p) {
   discord_create_group_dm_params_init((struct discord_create_group_dm_params *)p);
 }
 
-void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *pp) {
- discord_create_group_dm_params_from_json(json, len, (struct discord_create_group_dm_params**)pp);
+void discord_create_group_dm_params_from_json_v(char *json, size_t len, void *p) {
+ discord_create_group_dm_params_from_json(json, len, (struct discord_create_group_dm_params*)p);
 }
 
 size_t discord_create_group_dm_params_to_json_v(char *json, size_t len, void *p) {

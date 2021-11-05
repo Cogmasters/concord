@@ -13,12 +13,15 @@
 #include "cee-utils.h"
 #include "discord.h"
 
-void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
+void discord_emoji_from_json_p(char *json, size_t len, struct discord_emoji **pp)
+{
+  if (!*pp) *pp = malloc(sizeof **pp);
+  discord_emoji_from_json(json, len, *pp);
+}
+void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p)
 {
   static size_t ret=0; /**< used for debugging */
   size_t r=0;
-  if (!*pp) *pp = malloc(sizeof **pp);
-  struct discord_emoji *p = *pp;
   discord_emoji_init(p);
   r=json_extract(json, len, 
   /* specs/discord/emoji.json:12:20
@@ -56,7 +59,7 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp)
                 discord_role_list_from_json, &p->roles,
   /* specs/discord/emoji.json:15:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "option":true, "comment":"user that created this emoji" }' */
-                discord_user_from_json, &p->user,
+                discord_user_from_json_p, &p->user,
   /* specs/discord/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
                 &p->require_colons,
@@ -174,8 +177,8 @@ void discord_emoji_init_v(void *p) {
   discord_emoji_init((struct discord_emoji *)p);
 }
 
-void discord_emoji_from_json_v(char *json, size_t len, void *pp) {
- discord_emoji_from_json(json, len, (struct discord_emoji**)pp);
+void discord_emoji_from_json_v(char *json, size_t len, void *p) {
+ discord_emoji_from_json(json, len, (struct discord_emoji*)p);
 }
 
 size_t discord_emoji_to_json_v(char *json, size_t len, void *p) {

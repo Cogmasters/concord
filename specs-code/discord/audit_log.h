@@ -26,7 +26,7 @@
  *     * :code:`void discord_audit_log_list_free(struct discord_audit_log **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log **)`
+ *     * :code:`void discord_audit_log_from_json(char *rbuf, size_t len, struct discord_audit_log *)`
  *     * :code:`void discord_audit_log_list_from_json(char *rbuf, size_t len, struct discord_audit_log ***)`
  *   * JSON Encoder:
 
@@ -60,8 +60,9 @@ extern void discord_audit_log_cleanup_v(void *p);
 extern void discord_audit_log_cleanup(struct discord_audit_log *p);
 extern void discord_audit_log_init_v(void *p);
 extern void discord_audit_log_init(struct discord_audit_log *p);
-extern void discord_audit_log_from_json_v(char *json, size_t len, void *pp);
-extern void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log **pp);
+extern void discord_audit_log_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_from_json_p(char *json, size_t len, struct discord_audit_log **pp);
+extern void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log *p);
 extern size_t discord_audit_log_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_log *p);
 extern void discord_audit_log_list_free_v(void **p);
@@ -92,7 +93,7 @@ extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct disco
  *     * :code:`void discord_audit_log_entry_list_free(struct discord_audit_log_entry **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry **)`
+ *     * :code:`void discord_audit_log_entry_from_json(char *rbuf, size_t len, struct discord_audit_log_entry *)`
  *     * :code:`void discord_audit_log_entry_list_from_json(char *rbuf, size_t len, struct discord_audit_log_entry ***)`
  *   * JSON Encoder:
 
@@ -134,8 +135,9 @@ extern void discord_audit_log_entry_cleanup_v(void *p);
 extern void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *p);
 extern void discord_audit_log_entry_init_v(void *p);
 extern void discord_audit_log_entry_init(struct discord_audit_log_entry *p);
-extern void discord_audit_log_entry_from_json_v(char *json, size_t len, void *pp);
-extern void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry **pp);
+extern void discord_audit_log_entry_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_entry_from_json_p(char *json, size_t len, struct discord_audit_log_entry **pp);
+extern void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry *p);
 extern size_t discord_audit_log_entry_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_audit_log_entry *p);
 extern void discord_audit_log_entry_list_free_v(void **p);
@@ -237,7 +239,7 @@ extern size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum 
  *     * :code:`void discord_optional_audit_entry_info_list_free(struct discord_optional_audit_entry_info **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_optional_audit_entry_info_from_json(char *rbuf, size_t len, struct discord_optional_audit_entry_info **)`
+ *     * :code:`void discord_optional_audit_entry_info_from_json(char *rbuf, size_t len, struct discord_optional_audit_entry_info *)`
  *     * :code:`void discord_optional_audit_entry_info_list_from_json(char *rbuf, size_t len, struct discord_optional_audit_entry_info ***)`
  *   * JSON Encoder:
 
@@ -283,8 +285,9 @@ extern void discord_optional_audit_entry_info_cleanup_v(void *p);
 extern void discord_optional_audit_entry_info_cleanup(struct discord_optional_audit_entry_info *p);
 extern void discord_optional_audit_entry_info_init_v(void *p);
 extern void discord_optional_audit_entry_info_init(struct discord_optional_audit_entry_info *p);
-extern void discord_optional_audit_entry_info_from_json_v(char *json, size_t len, void *pp);
-extern void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info **pp);
+extern void discord_optional_audit_entry_info_from_json_v(char *json, size_t len, void *p);
+extern void discord_optional_audit_entry_info_from_json_p(char *json, size_t len, struct discord_optional_audit_entry_info **pp);
+extern void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info *p);
 extern size_t discord_optional_audit_entry_info_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_optional_audit_entry_info_to_json(char *json, size_t len, struct discord_optional_audit_entry_info *p);
 extern void discord_optional_audit_entry_info_list_free_v(void **p);
@@ -315,7 +318,7 @@ extern size_t discord_optional_audit_entry_info_list_to_json(char *str, size_t l
  *     * :code:`void discord_audit_log_change_list_free(struct discord_audit_log_change **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change **)`
+ *     * :code:`void discord_audit_log_change_from_json(char *rbuf, size_t len, struct discord_audit_log_change *)`
  *     * :code:`void discord_audit_log_change_list_from_json(char *rbuf, size_t len, struct discord_audit_log_change ***)`
  *   * JSON Encoder:
 
@@ -341,8 +344,9 @@ extern void discord_audit_log_change_cleanup_v(void *p);
 extern void discord_audit_log_change_cleanup(struct discord_audit_log_change *p);
 extern void discord_audit_log_change_init_v(void *p);
 extern void discord_audit_log_change_init(struct discord_audit_log_change *p);
-extern void discord_audit_log_change_from_json_v(char *json, size_t len, void *pp);
-extern void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change **pp);
+extern void discord_audit_log_change_from_json_v(char *json, size_t len, void *p);
+extern void discord_audit_log_change_from_json_p(char *json, size_t len, struct discord_audit_log_change **pp);
+extern void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change *p);
 extern size_t discord_audit_log_change_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_audit_log_change_to_json(char *json, size_t len, struct discord_audit_log_change *p);
 extern void discord_audit_log_change_list_free_v(void **p);

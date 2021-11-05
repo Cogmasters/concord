@@ -18,7 +18,7 @@ discord_get_current_user(struct discord *client, struct discord_user *p_user)
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_user_from_json_v,
-                              .ok_obj = &p_user },
+                              .ok_obj = p_user },
     NULL, HTTP_GET, "/users/@me");
 }
 
@@ -39,7 +39,7 @@ discord_get_user(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &discord_user_from_json_v,
-                              .ok_obj = &p_user },
+                              .ok_obj = p_user },
     NULL, HTTP_GET, "/users/%" PRIu64, user_id);
 }
 
@@ -60,7 +60,7 @@ discord_modify_current_user(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){
-      .ok_cb = p_user ? &discord_user_from_json_v : NULL, .ok_obj = &p_user },
+      .ok_cb = p_user ? &discord_user_from_json_v : NULL, .ok_obj = p_user },
     &(struct sized_buffer){ payload, ret }, HTTP_PATCH, "/users/@me");
 }
 
@@ -86,7 +86,7 @@ sb_discord_get_current_user(struct discord *client,
   return discord_adapter_run(
     &client->adapter,
     &(struct ua_resp_handle){ .ok_cb = &sized_buffer_from_json,
-                              .ok_obj = &p_sb_user },
+                              .ok_obj = p_sb_user },
     NULL, HTTP_GET, "/users/@me");
 }
 
@@ -137,7 +137,7 @@ discord_create_dm(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
-      .ok_obj = &p_dm_channel },
+      .ok_obj = p_dm_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_POST, "/users/@me/channels");
 }
 
@@ -167,7 +167,7 @@ discord_create_group_dm(struct discord *client,
     &client->adapter,
     &(struct ua_resp_handle){
       .ok_cb = p_dm_channel ? &discord_channel_from_json_v : NULL,
-      .ok_obj = &p_dm_channel },
+      .ok_obj = p_dm_channel },
     &(struct sized_buffer){ payload, ret }, HTTP_POST, "/users/@me/channels");
 }
 

@@ -26,7 +26,7 @@
  *     * :code:`void discord_emoji_list_free(struct discord_emoji **)`
  *   * JSON Decoder:
 
- *     * :code:`void discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji **)`
+ *     * :code:`void discord_emoji_from_json(char *rbuf, size_t len, struct discord_emoji *)`
  *     * :code:`void discord_emoji_list_from_json(char *rbuf, size_t len, struct discord_emoji ***)`
  *   * JSON Encoder:
 
@@ -72,8 +72,9 @@ extern void discord_emoji_cleanup_v(void *p);
 extern void discord_emoji_cleanup(struct discord_emoji *p);
 extern void discord_emoji_init_v(void *p);
 extern void discord_emoji_init(struct discord_emoji *p);
-extern void discord_emoji_from_json_v(char *json, size_t len, void *pp);
-extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji **pp);
+extern void discord_emoji_from_json_v(char *json, size_t len, void *p);
+extern void discord_emoji_from_json_p(char *json, size_t len, struct discord_emoji **pp);
+extern void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p);
 extern size_t discord_emoji_to_json_v(char *json, size_t len, void *p);
 extern size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p);
 extern void discord_emoji_list_free_v(void **p);
