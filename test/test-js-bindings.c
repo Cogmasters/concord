@@ -6,12 +6,12 @@
 #include "mujs.h"
 #include "js_user-agent.h"
 
-const char *handle=NULL; /* handle to stowed away js function */
+const char *handle = NULL; /* handle to stowed away js function */
 const char *g_config_file;
 
 void js_request(js_State *J)
 {
-  struct logconf config={0};
+  struct logconf config = { 0 };
   logconf_setup(&config, "JS_TEST", NULL);
 
   struct user_agent *ua = ua_init(&config);

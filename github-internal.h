@@ -3,7 +3,6 @@
 
 #include "user-agent.h"
 
-
 struct github_presets {
   char *owner;
   char *username;
@@ -16,14 +15,16 @@ struct github_adapter {
   struct user_agent *ua;
 };
 
-void github_adapter_init(struct github_adapter *adapter, struct logconf *conf, struct github_presets *presets);
+void github_adapter_init(struct github_adapter *adapter,
+                         struct logconf *conf,
+                         struct github_presets *presets);
 
-ORCAcode github_adapter_run(
-  struct github_adapter *adapter,
-  struct ua_resp_handle *resp_handle,
-  struct sized_buffer *req_body,
-  enum http_method http_method,
-  char endpoint_fmt[], ...);
+ORCAcode github_adapter_run(struct github_adapter *adapter,
+                            struct ua_resp_handle *resp_handle,
+                            struct sized_buffer *req_body,
+                            enum http_method http_method,
+                            char endpoint_fmt[],
+                            ...);
 
 struct github {
   struct logconf conf;
@@ -31,5 +32,4 @@ struct github {
   struct github_presets presets;
 };
 
-/* GITHUB_INTERNAL_H */
-#endif
+#endif /* GITHUB_INTERNAL_H */

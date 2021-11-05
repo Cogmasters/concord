@@ -5,30 +5,25 @@
 
 #include "discord.h"
 
-
-void on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client, const struct discord_user *bot)
+{
   log_info("Invite-Bot succesfully connected to Discord as %s#%s!",
-      bot->username, bot->discriminator);
+           bot->username, bot->discriminator);
 }
 
-void on_invite_get(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_message *msg)
+void on_invite_get(struct discord *client,
+                   const struct discord_user *bot,
+                   const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  struct discord_invite invite={0};
+  struct discord_invite invite = { 0 };
 
   ORCAcode code;
-  code = discord_get_invite(
-           client, 
-           msg->content,
-           &(struct discord_get_invite_params){
-             .with_counts = true,
-             .with_expiration = true
-           },
-           &invite);
+  code = discord_get_invite(client, msg->content,
+                            &(struct discord_get_invite_params){
+                              .with_counts = true, .with_expiration = true },
+                            &invite);
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   if (ORCA_OK == code)
@@ -42,14 +37,13 @@ void on_invite_get(
   discord_invite_cleanup(&invite);
 }
 
-void on_invite_delete(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_message *msg)
+void on_invite_delete(struct discord *client,
+                      const struct discord_user *bot,
+                      const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  struct discord_create_message_params params={0};
+  struct discord_create_message_params params = { 0 };
   if (ORCA_OK == discord_delete_invite(client, msg->content, NULL))
     params.content = "Succesfully deleted invite.";
   else
@@ -78,11 +72,12 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "delete", &on_invite_delete);
 
   printf("\n\nThis bot demonstrates how easy it is to fetch/delete invites\n"
-         "1. Type 'invite.get <invite_code>' to get a invite object from its particular code\n"
-         "2. Type 'invite.delete <invite_code>' to delete a invite object by its particular code\n"
+         "1. Type 'invite.get <invite_code>' to get a invite object from its "
+         "particular code\n"
+         "2. Type 'invite.delete <invite_code>' to delete a invite object by "
+         "its particular code\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
-
 
   discord_run(client);
 

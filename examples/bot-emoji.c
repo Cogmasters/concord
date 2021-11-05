@@ -5,20 +5,19 @@
 
 #include "discord.h"
 
-
-void on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client, const struct discord_user *bot)
+{
   log_info("Emoji-Bot succesfully connected to Discord as %s#%s!",
-      bot->username, bot->discriminator);
+           bot->username, bot->discriminator);
 }
 
-void on_list(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_message *msg)
+void on_list(struct discord *client,
+             const struct discord_user *bot,
+             const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_emoji) emojis=NULL;
+  NTL_T(struct discord_emoji) emojis = NULL;
   ORCAcode code;
   code = discord_list_guild_emojis(client, msg->guild_id, &emojis);
 
@@ -28,16 +27,13 @@ void on_list(
   }
   else {
     char *cur = text;
-    char *end = &text[sizeof(text)-1];
+    char *end = &text[sizeof(text) - 1];
     char *prev;
-    for (size_t i=0; emojis[i]; ++i) {
+    for (size_t i = 0; emojis[i]; ++i) {
       prev = cur;
-      cur += snprintf(cur, end-cur,             \
-              "<%s:%s:%"PRIu64">(%"PRIu64")\n", \
-              emojis[i]->animated ? "a" : "",   \
-              emojis[i]->name,                  \
-              emojis[i]->id,                    \
-              emojis[i]->id);
+      cur += snprintf(cur, end - cur, "<%s:%s:%" PRIu64 ">(%" PRIu64 ")\n",
+                      emojis[i]->animated ? "a" : "", emojis[i]->name,
+                      emojis[i]->id, emojis[i]->id);
 
       if (cur >= end) { // to make sure no emoji is skipped
         *prev = '\0'; // end string before truncation
@@ -57,27 +53,25 @@ void on_list(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_get(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_message *msg)
+void on_get(struct discord *client,
+            const struct discord_user *bot,
+            const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
   char text[DISCORD_MAX_MESSAGE_LEN];
-  u64_snowflake_t emoji_id=0;
-  sscanf(msg->content, "%"SCNu64, &emoji_id);
+  u64_snowflake_t emoji_id = 0;
+  sscanf(msg->content, "%" SCNu64, &emoji_id);
   if (!emoji_id) {
     sprintf(text, "Missing 'emoji_id'");
   }
   else {
-    struct discord_emoji emoji={0};
+    struct discord_emoji emoji = { 0 };
 
     discord_get_guild_emoji(client, msg->guild_id, emoji_id, &emoji);
     if (emoji.id)
-      sprintf(text, "Here you go: <%s:%s:%"PRIu64">", \
-          emoji.animated ? "a" : "",                  \
-          emoji.name, emoji.id);
+      sprintf(text, "Here you go: <%s:%s:%" PRIu64 ">",
+              emoji.animated ? "a" : "", emoji.name, emoji.id);
     else
       sprintf(text, "Unknown emoji");
 
@@ -113,11 +107,9 @@ int main(int argc, char *argv[])
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
-
   discord_run(client);
 
   discord_cleanup(client);
 
   discord_global_cleanup();
 }
-

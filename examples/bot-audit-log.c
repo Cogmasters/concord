@@ -8,45 +8,45 @@
 
 #include "discord.h"
 
-
-void on_ready(struct discord *client, const struct discord_user *bot) {
-  log_info("Audit-Log-Bot succesfully connected to Discord as %s#%s!", bot->username, bot->discriminator);
+void on_ready(struct discord *client, const struct discord_user *bot)
+{
+  log_info("Audit-Log-Bot succesfully connected to Discord as %s#%s!",
+           bot->username, bot->discriminator);
 }
 
-void on_log_guild_member_add(
-  struct discord *client,
-  const struct discord_user *bot,
-  const uint64_t guild_id, 
-  const struct discord_guild_member *member)
+void on_log_guild_member_add(struct discord *client,
+                             const struct discord_user *bot,
+                             const uint64_t guild_id,
+                             const struct discord_guild_member *member)
 {
-  log_info("%s#%s joined guild %"PRIu64, member->user->username, member->user->discriminator, guild_id);
+  log_info("%s#%s joined guild %" PRIu64, member->user->username,
+           member->user->discriminator, guild_id);
 }
 
-void on_log_guild_member_update(
-  struct discord *client,
-  const struct discord_user *bot,
-  const uint64_t guild_id, 
-  const struct discord_guild_member *member)
+void on_log_guild_member_update(struct discord *client,
+                                const struct discord_user *bot,
+                                const uint64_t guild_id,
+                                const struct discord_guild_member *member)
 {
-  char nick[128]="";
+  char nick[128] = "";
   if (member->nick && *member->nick)
     snprintf(nick, sizeof(nick), " (%s)", member->nick);
-  log_info("%s#%s%s updated (guild %"PRIu64")", member->user->username, member->user->discriminator, nick, guild_id);
+  log_info("%s#%s%s updated (guild %" PRIu64 ")", member->user->username,
+           member->user->discriminator, nick, guild_id);
 }
 
-void on_log_guild_member_remove(
-  struct discord *client,
-  const struct discord_user *bot,
-  const uint64_t guild_id, 
-  const struct discord_user *user)
+void on_log_guild_member_remove(struct discord *client,
+                                const struct discord_user *bot,
+                                const uint64_t guild_id,
+                                const struct discord_user *user)
 {
-  log_info("%s#%s left guild %"PRIu64, user->username, user->discriminator, guild_id);
+  log_info("%s#%s left guild %" PRIu64, user->username, user->discriminator,
+           guild_id);
 }
 
-void on_audit_channel_create(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_audit_channel_create(struct discord *client,
+                             const struct discord_user *bot,
+                             const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -55,13 +55,11 @@ void on_audit_channel_create(
 
   ORCAcode code;
   code = discord_get_guild_audit_log(
-           client,
-           msg->guild_id,
-           &(struct discord_get_guild_audit_log_params){
-             .user_id = msg->author->id,
-             .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE
-           },
-           &audit_log);
+    client, msg->guild_id,
+    &(struct discord_get_guild_audit_log_params){
+      .user_id = msg->author->id,
+      .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE },
+    &audit_log);
 
   if (code != ORCA_OK) {
     log_error("%s", discord_strerror(code, client));
@@ -77,7 +75,8 @@ void on_audit_channel_create(
   }
 
   char text[1028]; // should be large enough
-  sprintf(text, "<@!%"PRIu64"> has created <#%s>!", entry->user_id, entry->target_id);
+  sprintf(text, "<@!%" PRIu64 "> has created <#%s>!", entry->user_id,
+          entry->target_id);
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
@@ -111,11 +110,14 @@ int main(int argc, char *argv[])
 
   discord_set_on_command(client, "!last_channel", &on_audit_channel_create);
 
-  printf("\n\nThis bot demonstrates how easy it is to log"
-         " for certain events.\n"
-         "1. Type '!last_channel' to check the most recent channel created by you\n"
-         "\tsee: https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events\n"
-         "\nTYPE ANY KEY TO START BOT\n");
+  printf(
+    "\n\nThis bot demonstrates how easy it is to log"
+    " for certain events.\n"
+    "1. Type '!last_channel' to check the most recent channel created by you\n"
+    "\tsee: "
+    "https://discord.com/developers/docs/resources/"
+    "audit-log#audit-log-entry-object-audit-log-events\n"
+    "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
   discord_run(client);

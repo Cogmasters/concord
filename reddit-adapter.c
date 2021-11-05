@@ -8,7 +8,6 @@
 #include "reddit-internal.h"
 #include "cee-utils.h"
 
-
 static void
 curl_setopt_cb(CURL *ehandle, void *p_client)
 {
@@ -16,9 +15,11 @@ curl_setopt_cb(CURL *ehandle, void *p_client)
 
   int ret; // check return length
   char client_id[512], client_secret[512];
-  ret = snprintf(client_id, sizeof(client_id), "%.*s", (int)client->client_id.size, client->client_id.start);
+  ret = snprintf(client_id, sizeof(client_id), "%.*s",
+                 (int)client->client_id.size, client->client_id.start);
   ASSERT_S(ret < sizeof(client_id), "Out of bounds write attempt");
-  ret = snprintf(client_secret, sizeof(client_secret), "%.*s", (int)client->client_secret.size, client->client_secret.start);
+  ret = snprintf(client_secret, sizeof(client_secret), "%.*s",
+                 (int)client->client_secret.size, client->client_secret.start);
   ASSERT_S(ret < sizeof(client_secret), "Out of bounds write attempt");
 
   CURLcode ecode;
@@ -38,20 +39,22 @@ reddit_adapter_init(struct reddit_adapter *adapter, struct logconf *conf)
   ua_curl_easy_setopt(adapter->ua, adapter->p_client, &curl_setopt_cb);
 
   char auth[512];
-  snprintf(auth, sizeof(auth), "orca:github.com/cee-studio/orca:v.0 (by /u/%.*s)",
-      (int)adapter->p_client->username.size,
-      adapter->p_client->username.start);
+  snprintf(
+    auth, sizeof(auth), "orca:github.com/cee-studio/orca:v.0 (by /u/%.*s)",
+    (int)adapter->p_client->username.size, adapter->p_client->username.start);
   ua_reqheader_add(adapter->ua, "User-Agent", auth);
-  ua_reqheader_add(adapter->ua, "Content-Type", "application/x-www-form-urlencoded");
+  ua_reqheader_add(adapter->ua, "Content-Type",
+                   "application/x-www-form-urlencoded");
 }
 
 void
-reddit_adapter_cleanup(struct reddit_adapter *adapter) {
+reddit_adapter_cleanup(struct reddit_adapter *adapter)
+{
   ua_cleanup(adapter->ua);
 }
 
-static void 
-sized_buffer_from_json(char *json, size_t len, void *data) 
+static void
+sized_buffer_from_json(char *json, size_t len, void *data)
 {
   struct sized_buffer *p = data;
   p->size = asprintf(&p->start, "%.*s", (int)len, json);
@@ -59,11 +62,12 @@ sized_buffer_from_json(char *json, size_t len, void *data)
 
 /* template function for performing requests */
 ORCAcode
-reddit_adapter_run(
-  struct reddit_adapter *adapter, 
-  struct sized_buffer *resp_body,
-  struct sized_buffer *req_body,
-  enum http_method http_method, char endpoint_fmt[], ...)
+reddit_adapter_run(struct reddit_adapter *adapter,
+                   struct sized_buffer *resp_body,
+                   struct sized_buffer *req_body,
+                   enum http_method http_method,
+                   char endpoint_fmt[],
+                   ...)
 {
   va_list args;
   char endpoint[2048];
@@ -73,15 +77,11 @@ reddit_adapter_run(
   ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
 
   ORCAcode code;
-  code = ua_run(
-           adapter->ua,
-           NULL,
-           &(struct ua_resp_handle){
-             .ok_cb = resp_body ? &sized_buffer_from_json : NULL,
-             .ok_obj = resp_body
-           },
-           req_body,
-           http_method, endpoint);
+  code = ua_run(adapter->ua, NULL,
+                &(struct ua_resp_handle){
+                  .ok_cb = resp_body ? &sized_buffer_from_json : NULL,
+                  .ok_obj = resp_body },
+                req_body, http_method, endpoint);
 
   va_end(args);
 

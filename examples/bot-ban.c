@@ -5,19 +5,21 @@
 
 #include "discord.h"
 
-
-void on_ready(struct discord *client, const struct discord_user *bot) {
-  log_info("Ban-Bot succesfully connected to Discord as %s#%s!", bot->username, bot->discriminator);
+void on_ready(struct discord *client, const struct discord_user *bot)
+{
+  log_info("Ban-Bot succesfully connected to Discord as %s#%s!", bot->username,
+           bot->discriminator);
 }
 
-void on_guild_ban_add(
-    struct discord *client,
-    const struct discord_user *bot,
-    const u64_snowflake_t guild_id,
-    const struct discord_user *user)
+void on_guild_ban_add(struct discord *client,
+                      const struct discord_user *bot,
+                      const u64_snowflake_t guild_id,
+                      const struct discord_user *user)
 {
-  struct discord_channel general={0};
-  if (discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general)) {
+  struct discord_channel general = { 0 };
+  if (discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT,
+                                 0, &general))
+  {
     log_error("Couldn't fetch channel at position 0");
     return;
   }
@@ -29,14 +31,15 @@ void on_guild_ban_add(
   discord_channel_cleanup(&general);
 }
 
-void on_guild_ban_remove(
-    struct discord *client,
-    const struct discord_user *bot,
-    const u64_snowflake_t guild_id,
-    const struct discord_user *user)
+void on_guild_ban_remove(struct discord *client,
+                         const struct discord_user *bot,
+                         const u64_snowflake_t guild_id,
+                         const struct discord_user *user)
 {
-  struct discord_channel general={0};
-  if (discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT, 0, &general)) {
+  struct discord_channel general = { 0 };
+  if (discord_get_channel_at_pos(client, guild_id, DISCORD_CHANNEL_GUILD_TEXT,
+                                 0, &general))
+  {
     log_error("Couldn't fetch channel at position 0");
     return;
   }
@@ -48,34 +51,29 @@ void on_guild_ban_remove(
   discord_channel_cleanup(&general);
 }
 
-void on_ban(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_ban(struct discord *client,
+            const struct discord_user *bot,
+            const struct discord_message *msg)
 {
   // get member list
   NTL_T(struct discord_guild_member) members = NULL;
   ORCAcode code = discord_list_guild_members(
-                    client, 
-                    msg->guild_id, 
-                    &(struct discord_list_guild_members_params){
-                      .limit = 1000,
-                      .after = 0
-                    }, 
-                    &members);
+    client, msg->guild_id,
+    &(struct discord_list_guild_members_params){ .limit = 1000, .after = 0 },
+    &members);
   if (code != ORCA_OK || !members) return;
 
   // get username and discriminator of the to be banned user
-  char username[128]="";
-  char discriminator[5]="";
+  char username[128] = "";
+  char discriminator[5] = "";
   sscanf(msg->content, "%[^#]#%s", username, discriminator);
   if (!*username || !*discriminator) return;
 
   // try to find match for to be banned user
-  struct discord_user *target=NULL;
-  for (size_t i=0; members[i]; ++i) {
-    if (0 == strcmp(members[i]->user->username, username)
-        && 0 == strcmp(members[i]->user->discriminator, discriminator))
+  struct discord_user *target = NULL;
+  for (size_t i = 0; members[i]; ++i) {
+    if (0 == strcmp(members[i]->user->username, username) &&
+        0 == strcmp(members[i]->user->discriminator, discriminator))
     {
       target = members[i]->user;
       break; /* EARLY BREAK */
@@ -85,41 +83,35 @@ void on_ban(
 
   char reason[128];
   snprintf(reason, sizeof(reason), "%s said so", msg->author->username);
-  discord_create_guild_ban(
-    client, 
-    msg->guild_id, 
-    target->id, 
-    &(struct discord_create_guild_ban_params){
-      .delete_message_days = 1,
-      .reason = reason
-    });
+  discord_create_guild_ban(client, msg->guild_id, target->id,
+                           &(struct discord_create_guild_ban_params){
+                             .delete_message_days = 1, .reason = reason });
 
   discord_guild_member_list_free(members);
 }
 
-void on_unban(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_unban(struct discord *client,
+              const struct discord_user *bot,
+              const struct discord_message *msg)
 {
   // get banned list
-  NTL_T(struct discord_ban) bans=NULL;
+  NTL_T(struct discord_ban) bans = NULL;
 
   ORCAcode code;
   code = discord_get_guild_bans(client, msg->guild_id, &bans);
   if (code != ORCA_OK || !bans) return;
 
   // get username and discriminator of the to be banned user
-  char username[128]="";
-  char discriminator[5]="";
+  char username[128] = "";
+  char discriminator[5] = "";
   sscanf(msg->content, "%[^#]#%s", username, discriminator);
   if (!*username || !*discriminator) return;
 
   // try to find match for to be banned user
-  struct discord_user *target=NULL;
-  for (size_t i=0; bans[i]; ++i) {
-    if (0 == strcmp(bans[i]->user->username, username)
-        && 0 == strcmp(bans[i]->user->discriminator, discriminator))
+  struct discord_user *target = NULL;
+  for (size_t i = 0; bans[i]; ++i) {
+    if (0 == strcmp(bans[i]->user->username, username) &&
+        0 == strcmp(bans[i]->user->discriminator, discriminator))
     {
       target = bans[i]->user;
       break; /* EARLY BREAK */
@@ -156,7 +148,6 @@ int main(int argc, char *argv[])
          "2. Type '!unban user#1234' to unban user\n"
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
-
 
   discord_run(client);
 

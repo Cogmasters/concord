@@ -5,33 +5,31 @@
 
 #include "discord.h"
 
-
-
-void on_ready(struct discord *client, const struct discord_user *bot) {
+void on_ready(struct discord *client, const struct discord_user *bot)
+{
   log_info("Echo-Bot succesfully connected to Discord as %s#%s!",
-      bot->username, bot->discriminator);
+           bot->username, bot->discriminator);
 }
 
-void on_reaction_add(
-    struct discord *client,
-    const struct discord_user *bot,
-    const uint64_t user_id, 
-    const uint64_t channel_id, 
-    const uint64_t message_id, 
-    const uint64_t guild_id, 
-    const struct discord_guild_member *member,
-    const struct discord_emoji *emoji)
-{ 
+void on_reaction_add(struct discord *client,
+                     const struct discord_user *bot,
+                     const uint64_t user_id,
+                     const uint64_t channel_id,
+                     const uint64_t message_id,
+                     const uint64_t guild_id,
+                     const struct discord_guild_member *member,
+                     const struct discord_emoji *emoji)
+{
   // make sure bot doesn't echoes other bots
   if (member->user->bot) return;
 
-  discord_create_reaction(client, channel_id, message_id, emoji->id, emoji->name);
+  discord_create_reaction(client, channel_id, message_id, emoji->id,
+                          emoji->name);
 }
 
-void on_message_create(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_message_create(struct discord *client,
+                       const struct discord_user *bot,
+                       const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot) return;
@@ -51,10 +49,9 @@ void on_message_create(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_message_update(
-    struct discord *client,
-    const struct discord_user *bot,
-    const struct discord_message *msg)
+void on_message_update(struct discord *client,
+                       const struct discord_user *bot,
+                       const struct discord_message *msg)
 {
   struct discord_create_message_params params = {
     .content = "I see what you did there."
@@ -62,12 +59,11 @@ void on_message_update(
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_message_delete(
-    struct discord *client,
-    const struct discord_user *bot,
-    const uint64_t id,
-    const uint64_t channel_id,
-    const uint64_t guild_id)
+void on_message_delete(struct discord *client,
+                       const struct discord_user *bot,
+                       const uint64_t id,
+                       const uint64_t channel_id,
+                       const uint64_t guild_id)
 {
   struct discord_create_message_params params = {
     .content = "Did that message just disappear?"
@@ -75,25 +71,23 @@ void on_message_delete(
   discord_create_message(client, channel_id, &params, NULL);
 }
 
-void on_message_delete_bulk(
-    struct discord *client,
-    const struct discord_user *bot,
-    const NTL_T(ja_u64) ids,
-    const uint64_t channel_id,
-    const uint64_t guild_id)
+void on_message_delete_bulk(struct discord *client,
+                            const struct discord_user *bot,
+                            const NTL_T(ja_u64) ids,
+                            const uint64_t channel_id,
+                            const uint64_t guild_id)
 {
   char text[128];
-  snprintf(text, sizeof(text), "Ouch! Where did those %zu messages go?", ntl_length((ntl_t)ids));
+  snprintf(text, sizeof(text), "Ouch! Where did those %zu messages go?",
+           ntl_length((ntl_t)ids));
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, channel_id, &params, NULL);
 }
 
-enum discord_event_scheduler 
-scheduler(
-  struct discord *client,
-  struct discord_user *bot,
-  struct sized_buffer *event_data,
-  enum discord_gateway_events event) 
+enum discord_event_scheduler scheduler(struct discord *client,
+                                       struct discord_user *bot,
+                                       struct sized_buffer *event_data,
+                                       enum discord_gateway_events event)
 {
   return DISCORD_EVENT_WORKER_THREAD;
 }
@@ -137,5 +131,3 @@ int main(int argc, char *argv[])
 
   discord_global_cleanup();
 }
-
-

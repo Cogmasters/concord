@@ -7,10 +7,9 @@
 #include "cee-utils.h"
 
 ORCAcode
-discord_get_guild_template(
-  struct discord *client,
-  char *code,
-  struct discord_guild_template *p_template)
+discord_get_guild_template(struct discord *client,
+                           char *code,
+                           struct discord_guild_template *p_template)
 {
   if (!code) {
     log_error("Missing 'code'");
@@ -23,15 +22,10 @@ discord_get_guild_template(
   }
 
   return discord_adapter_run(
-          &client->adapter,
-          &(struct ua_resp_handle){
-            .ok_cb = discord_guild_template_from_json_v,
-            .ok_obj = &p_template
-          },
-          NULL,
-          HTTP_GET,
-          "/guilds/templates/%s",
-          code);
+    &client->adapter,
+    &(struct ua_resp_handle){ .ok_cb = discord_guild_template_from_json_v,
+                              .ok_obj = &p_template },
+    NULL, HTTP_GET, "/guilds/templates/%s", code);
 }
 
 ORCAcode
@@ -57,26 +51,22 @@ discord_create_guild_template(
   }
 
   char payload[256];
-  size_t ret = discord_create_guild_template_params_to_json_v(payload, sizeof(payload), params);
+  size_t ret = discord_create_guild_template_params_to_json_v(
+    payload, sizeof(payload), params);
 
   return discord_adapter_run(
-          &client->adapter,
-          &(struct ua_resp_handle){
-            .ok_cb = &discord_guild_template_from_json_v,
-            .ok_obj = &p_template
-          },
-          &(struct sized_buffer){ payload, ret },
-          HTTP_POST,
-          "/guilds/%"PRIu64"/templates",
-          guild_id);
+    &client->adapter,
+    &(struct ua_resp_handle){ .ok_cb = &discord_guild_template_from_json_v,
+                              .ok_obj = &p_template },
+    &(struct sized_buffer){ payload, ret }, HTTP_POST,
+    "/guilds/%" PRIu64 "/templates", guild_id);
 }
 
 ORCAcode
-discord_sync_guild_template(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  char *code,
-  struct discord_guild_template *p_template)
+discord_sync_guild_template(struct discord *client,
+                            u64_snowflake_t guild_id,
+                            char *code,
+                            struct discord_guild_template *p_template)
 {
   if (!guild_id) {
     log_error("Missing 'guild_id'");
@@ -89,14 +79,8 @@ discord_sync_guild_template(
   }
 
   return discord_adapter_run(
-          &client->adapter,
-          &(struct ua_resp_handle){
-            .ok_cb = &discord_guild_template_from_json_v,
-            .ok_obj = &p_template
-          },
-          NULL,
-          HTTP_PUT,
-          "/guilds/%"PRIu64"/templates/%s",
-          guild_id,
-          code);
+    &client->adapter,
+    &(struct ua_resp_handle){ .ok_cb = &discord_guild_template_from_json_v,
+                              .ok_obj = &p_template },
+    NULL, HTTP_PUT, "/guilds/%" PRIu64 "/templates/%s", guild_id, code);
 }
