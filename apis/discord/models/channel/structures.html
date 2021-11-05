@@ -1221,7 +1221,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_channel_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_channel</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_channel_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_channel</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_channel_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_channel</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1360,7 +1360,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_sticker_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_sticker</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_sticker_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_sticker</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_sticker_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_sticker</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1444,7 +1444,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_reference_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_reference</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_reference_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_reference</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_reference_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_reference</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1508,7 +1508,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_application_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_application</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_application_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_application</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_application_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_application</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1577,7 +1577,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_activity_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_activity</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_activity_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_activity</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_activity_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_activity</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1631,7 +1631,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1835,7 +1835,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_followed_channel_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_followed_channel</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_followed_channel_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_followed_channel</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_followed_channel_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_followed_channel</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1889,7 +1889,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_reaction_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_reaction</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_reaction_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_reaction</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_reaction_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_reaction</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -1949,7 +1949,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_overwrite_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_overwrite</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_overwrite_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_overwrite</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_overwrite_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_overwrite</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2011,7 +2011,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_thread_metadata_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_thread_metadata</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_thread_metadata_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_thread_metadata</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_thread_metadata_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_thread_metadata</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2080,7 +2080,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_thread_member_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_thread_member</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_thread_member_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_thread_member</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_thread_member_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_thread_member</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2144,7 +2144,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_attachment_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_attachment</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_attachment_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_attachment</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_attachment_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_attachment</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2254,7 +2254,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_channel_mention_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_channel_mention</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_channel_mention_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_channel_mention</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_channel_mention_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_channel_mention</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2318,7 +2318,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_allowed_mentions_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_allowed_mentions</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_allowed_mentions_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_allowed_mentions</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_allowed_mentions_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_allowed_mentions</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2384,7 +2384,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2493,7 +2493,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_thumbnail_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_thumbnail</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_thumbnail_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_thumbnail</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_thumbnail_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_thumbnail</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2557,7 +2557,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_video_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_video</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_video_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_video</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_video_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_video</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2621,7 +2621,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_image_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_image</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_image_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_image</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_image_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_image</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2685,7 +2685,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_provider_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_provider</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_provider_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_provider</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_provider_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_provider</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2739,7 +2739,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_author_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_author</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_author_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_author</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_author_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_author</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2803,7 +2803,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_footer_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_footer</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_footer_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_footer</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_footer_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_footer</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
@@ -2862,7 +2862,7 @@
 </li>
 <li><p>JSON Decoder:</p>
 <ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_field_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_field</span> <span class="pre">**)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_field_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_field</span> <span class="pre">*)</span></code></p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_embed_field_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_embed_field</span> <span class="pre">***)</span></code></p></li>
 </ul>
 </li>
