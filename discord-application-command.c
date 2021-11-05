@@ -13,11 +13,11 @@ discord_get_global_application_commands(
   NTL_T(struct discord_application_command) * p_app_cmds)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_app_cmds) {
-    log_error("Missing 'p_app_cmds'");
+    logconf_error(client->conf, "Missing 'p_app_cmds'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -37,19 +37,19 @@ discord_create_global_application_command(
   struct discord_application_command *p_app_cmd)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(params->name)) {
-    log_error("Missing 'params.name'");
+    logconf_error(client->conf, "Missing 'params.name'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(params->description)) {
-    log_error("Missing 'params.description'");
+    logconf_error(client->conf, "Missing 'params.description'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -74,15 +74,15 @@ discord_get_global_application_command(
   struct discord_application_command *p_app_cmd)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_app_cmd) {
-    log_error("Missing 'p_app_cmd'");
+    logconf_error(client->conf, "Missing 'p_app_cmd'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -104,11 +104,11 @@ discord_edit_global_application_command(
   struct discord_application_command *p_app_cmd)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -131,11 +131,11 @@ discord_delete_global_application_command(struct discord *client,
                                           const u64_snowflake_t command_id)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -152,11 +152,11 @@ discord_bulk_overwrite_global_application_command(
   NTL_T(struct discord_application_command) * p_app_cmds)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -182,15 +182,15 @@ discord_get_guild_application_commands(
   NTL_T(struct discord_application_command) * p_app_cmds)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_app_cmds) {
-    log_error("Missing 'p_app_cmds'");
+    logconf_error(client->conf, "Missing 'p_app_cmds'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -212,23 +212,23 @@ discord_create_guild_application_command(
   struct discord_application_command *p_app_cmd)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(params->name)) {
-    log_error("Missing 'params.name'");
+    logconf_error(client->conf, "Missing 'params.name'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(params->description)) {
-    log_error("Missing 'params.description'");
+    logconf_error(client->conf, "Missing 'params.description'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -255,19 +255,19 @@ discord_get_guild_application_command(
   struct discord_application_command *p_app_cmd)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_app_cmd) {
-    log_error("Missing 'p_app_cmd'");
+    logconf_error(client->conf, "Missing 'p_app_cmd'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -291,15 +291,15 @@ discord_edit_guild_application_command(
   struct discord_application_command *p_app_cmd)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -324,15 +324,15 @@ discord_delete_guild_application_command(struct discord *client,
                                          const u64_snowflake_t command_id)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -351,15 +351,15 @@ discord_bulk_overwrite_guild_application_command(
   NTL_T(struct discord_application_command) * p_app_cmds)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -386,15 +386,15 @@ discord_get_guild_application_command_permissions(
   NTL_T(struct discord_guild_application_command_permissions) * p_permissions)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_permissions) {
-    log_error("Missing 'p_permissions'");
+    logconf_error(client->conf, "Missing 'p_permissions'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -417,19 +417,19 @@ discord_get_application_command_permissions(
   struct discord_guild_application_command_permissions *p_permissions)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_permissions) {
-    log_error("Missing 'p_permissions'");
+    logconf_error(client->conf, "Missing 'p_permissions'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -454,15 +454,15 @@ discord_edit_application_command_permissions(
   struct discord_guild_application_command_permissions *p_permissions)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!command_id) {
-    log_error("Missing 'command_id'");
+    logconf_error(client->conf, "Missing 'command_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -492,15 +492,15 @@ discord_batch_edit_application_command_permissions(
   NTL_T(struct discord_guild_application_command_permissions) * p_permissions)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 

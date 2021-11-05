@@ -12,11 +12,11 @@ discord_list_guild_emojis(struct discord *client,
                           NTL_T(struct discord_emoji) * p_emojis)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_emojis) {
-    log_error("Missing 'p_emojis'");
+    logconf_error(client->conf, "Missing 'p_emojis'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -34,15 +34,15 @@ discord_get_guild_emoji(struct discord *client,
                         struct discord_emoji *p_emoji)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!emoji_id) {
-    log_error("Missing 'emoji_id'");
+    logconf_error(client->conf, "Missing 'emoji_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_emoji) {
-    log_error("Missing 'p_emoji'");
+    logconf_error(client->conf, "Missing 'p_emoji'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -60,11 +60,11 @@ discord_create_guild_emoji(struct discord *client,
                            struct discord_emoji *p_emoji)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -74,7 +74,7 @@ discord_create_guild_emoji(struct discord *client,
                  params->image, &ja_u64_list_to_json, params->roles);
 
   if (!payload) {
-    log_error("Couldn't create JSON Payload");
+    logconf_error(client->conf, "Couldn't create JSON Payload");
     return ORCA_BAD_JSON;
   }
 
@@ -100,15 +100,15 @@ discord_modify_guild_emoji(struct discord *client,
                            struct discord_emoji *p_emoji)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!emoji_id) {
-    log_error("Missing 'emoji_id'");
+    logconf_error(client->conf, "Missing 'emoji_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -125,7 +125,7 @@ discord_modify_guild_emoji(struct discord *client,
                             A, sizeof(A));
 
   if (!payload) {
-    log_error("Couldn't create JSON Payload");
+    logconf_error(client->conf, "Couldn't create JSON Payload");
     return ORCA_BAD_JSON;
   }
 
@@ -149,11 +149,11 @@ discord_delete_guild_emoji(struct discord *client,
                            const u64_snowflake_t emoji_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!emoji_id) {
-    log_error("Missing 'emoji_id'");
+    logconf_error(client->conf, "Missing 'emoji_id'");
     return ORCA_MISSING_PARAMETER;
   }
 

@@ -138,7 +138,7 @@ void
 discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 {
   if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
-    log_error("Can't set intents to a running client.");
+    logconf_error(client->conf, "Can't set intents to a running client.");
     return;
   }
 
@@ -150,7 +150,7 @@ discord_remove_intents(struct discord *client,
                        enum discord_gateway_intents code)
 {
   if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
-    log_error("Can't remove intents from a running client.");
+    logconf_error(client->conf, "Can't remove intents from a running client.");
     return;
   }
 
@@ -184,7 +184,9 @@ discord_set_on_command(struct discord *client,
   const size_t CMD_LEN = 64;
   ssize_t len;
   if (!(len = cee_str_bounds_check(command, CMD_LEN))) {
-    log_error("Command length greater than threshold (%zu chars)", CMD_LEN);
+    logconf_error(client->conf,
+      "Command length greater than threshold (client->conf, %zu chars)",
+      CMD_LEN);
     return;
   }
 

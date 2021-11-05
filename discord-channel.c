@@ -12,11 +12,11 @@ discord_get_channel(struct discord *client,
                     struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id");
+    logconf_error(client->conf, "Missing 'channel_id");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_channel) {
-    log_error("Missing 'p_channel'");
+    logconf_error(client->conf, "Missing 'p_channel'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -34,11 +34,11 @@ discord_modify_channel(struct discord *client,
                        struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -61,7 +61,7 @@ discord_delete_channel(struct discord *client,
                        struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id");
+    logconf_error(client->conf, "Missing 'channel_id");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -81,11 +81,11 @@ discord_get_channel_messages(
   NTL_T(struct discord_message) * p_messages)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_messages) {
-    log_error("Missing 'p_messages'");
+    logconf_error(client->conf, "Missing 'p_messages'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -132,15 +132,15 @@ discord_get_channel_message(struct discord *client,
                             struct discord_message *p_message)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_message) {
-    log_error("Missing 'p_message'");
+    logconf_error(client->conf, "Missing 'p_message'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -159,11 +159,11 @@ discord_create_message(struct discord *client,
                        struct discord_message *p_message)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -209,11 +209,11 @@ discord_crosspost_message(struct discord *client,
                           struct discord_message *p_message)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -234,11 +234,11 @@ discord_create_reaction(struct discord *client,
                         const char emoji_name[])
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -270,11 +270,11 @@ discord_delete_own_reaction(struct discord *client,
                             const char emoji_name[])
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -307,15 +307,15 @@ discord_delete_user_reaction(struct discord *client,
                              const char emoji_name[])
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -349,22 +349,22 @@ discord_get_reactions(struct discord *client,
                       NTL_T(struct discord_user) * p_users)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_users) {
-    log_error("Missing 'p_users'");
+    logconf_error(client->conf, "Missing 'p_users'");
     return ORCA_MISSING_PARAMETER;
   }
 
   char query[1024] = "";
   if (params) {
     if (params->limit <= 0 || params->limit > 100) {
-      log_error("'params.limit' should be between [1-100]");
+      logconf_error(client->conf, "'params.limit' should be between [1-100]");
       return ORCA_BAD_PARAMETER;
     }
 
@@ -410,11 +410,11 @@ discord_delete_all_reactions(struct discord *client,
                              u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -432,11 +432,11 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
                                        const char emoji_name[])
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -468,15 +468,15 @@ discord_edit_message(struct discord *client,
                      struct discord_message *p_message)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -499,11 +499,11 @@ discord_delete_message(struct discord *client,
                        u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -519,13 +519,13 @@ discord_bulk_delete_messages(struct discord *client,
                              NTL_T(u64_snowflake_t) messages)
 {
   if (!messages) {
-    log_error("Missing 'messages'");
+    logconf_error(client->conf, "Missing 'messages'");
     return ORCA_MISSING_PARAMETER;
   }
 
   size_t count = ntl_length_max((ntl_t)messages, 101);
   if (count < 2 || count > 100) {
-    log_error("Message count should be between 2 and 100");
+    logconf_error(client->conf, "Message count should be between 2 and 100");
     return ORCA_BAD_PARAMETER;
   }
 
@@ -534,7 +534,8 @@ discord_bulk_delete_messages(struct discord *client,
   for (i = 0; messages[i]; i++) {
     u64_unix_ms_t timestamp = (*messages[i] >> 22) + 1420070400000;
     if (now > timestamp && now - timestamp > 1209600000) {
-      log_error("Messages should not be older than 2 weeks.");
+      logconf_error(client->conf,
+                    "Messages should not be older than 2 weeks.");
       return ORCA_BAD_PARAMETER;
     }
   }
@@ -544,7 +545,7 @@ discord_bulk_delete_messages(struct discord *client,
                             (NTL_T(ja_u64))messages);
 
   if (!payload) {
-    log_error("Couldn't create JSON Payload");
+    logconf_error(client->conf, "Couldn't create JSON Payload");
     return ORCA_BAD_JSON;
   }
 
@@ -566,15 +567,15 @@ discord_edit_channel_permissions(
   struct discord_edit_channel_permissions_params *params)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!overwrite_id) {
-    log_error("Missing 'overwrite_id'");
+    logconf_error(client->conf, "Missing 'overwrite_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -593,11 +594,11 @@ discord_get_channel_invites(struct discord *client,
                             NTL_T(struct discord_invite) * p_invites)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_invites) {
-    log_error("Missing 'p_invites'");
+    logconf_error(client->conf, "Missing 'p_invites'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -616,7 +617,7 @@ discord_create_channel_invite(
   struct discord_invite *p_invite)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -643,11 +644,11 @@ discord_delete_channel_permission(struct discord *client,
                                   const u64_snowflake_t overwrite_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!overwrite_id) {
-    log_error("Missing 'overwrite_id'");
+    logconf_error(client->conf, "Missing 'overwrite_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -663,11 +664,11 @@ discord_follow_news_channel(struct discord *client,
                             struct discord_channel *p_followed_channel)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params || !params->webhook_channel_id) {
-    log_error("Missing 'params.webhook_channel_id'");
+    logconf_error(client->conf, "Missing 'params.webhook_channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -689,7 +690,7 @@ discord_trigger_typing_indicator(struct discord *client,
                                  u64_snowflake_t channel_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id");
+    logconf_error(client->conf, "Missing 'channel_id");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -703,11 +704,11 @@ discord_get_pinned_messages(struct discord *client,
                             NTL_T(struct discord_message) * p_messages)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_messages) {
-    log_error("Missing 'p_messages'");
+    logconf_error(client->conf, "Missing 'p_messages'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -724,11 +725,11 @@ discord_pin_message(struct discord *client,
                     const u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -743,11 +744,11 @@ discord_unpin_message(struct discord *client,
                       const u64_snowflake_t message_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -764,15 +765,15 @@ discord_group_dm_add_recipient(
   struct discord_group_dm_add_recipient_params *params)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -791,11 +792,11 @@ discord_group_dm_remove_recipient(struct discord *client,
                                   const u64_snowflake_t user_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -813,15 +814,15 @@ discord_start_thread_with_message(
   struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -847,11 +848,11 @@ discord_start_thread_without_message(
   struct discord_channel *p_channel)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -872,7 +873,7 @@ ORCAcode
 discord_join_thread(struct discord *client, const u64_snowflake_t channel_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -887,11 +888,11 @@ discord_add_thread_member(struct discord *client,
                           const u64_snowflake_t user_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -904,7 +905,7 @@ ORCAcode
 discord_leave_thread(struct discord *client, const u64_snowflake_t channel_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -919,11 +920,11 @@ discord_remove_thread_member(struct discord *client,
                              const u64_snowflake_t user_id)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -939,11 +940,11 @@ discord_list_thread_members(struct discord *client,
                               p_thread_members)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_thread_members) {
-    log_error("Missing 'p_thread_members'");
+    logconf_error(client->conf, "Missing 'p_thread_members'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -960,11 +961,11 @@ discord_list_active_threads(struct discord *client,
                             struct discord_thread_response_body *body)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!body) {
-    log_error("Missing 'body'");
+    logconf_error(client->conf, "Missing 'body'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -983,11 +984,11 @@ discord_list_public_archived_threads(struct discord *client,
                                      struct discord_thread_response_body *body)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!body) {
-    log_error("Missing 'body'");
+    logconf_error(client->conf, "Missing 'body'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -1021,11 +1022,11 @@ discord_list_private_archived_threads(
   struct discord_thread_response_body *body)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!body) {
-    log_error("Missing 'body'");
+    logconf_error(client->conf, "Missing 'body'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -1059,11 +1060,11 @@ discord_list_joined_private_archived_threads(
   struct discord_thread_response_body *body)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!body) {
-    log_error("Missing 'body'");
+    logconf_error(client->conf, "Missing 'body'");
     return ORCA_MISSING_PARAMETER;
   }
 

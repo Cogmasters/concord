@@ -15,15 +15,15 @@ discord_create_interaction_response(
   struct discord_interaction_response *p_response)
 {
   if (!interaction_id) {
-    log_error("Missing 'interaction_id'");
+    logconf_error(client->conf, "Missing 'interaction_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -49,15 +49,15 @@ discord_get_original_interaction_response(
   struct discord_interaction_response *p_response)
 {
   if (!interaction_id) {
-    log_error("Missing 'interaction_id'");
+    logconf_error(client->conf, "Missing 'interaction_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_response) {
-    log_error("Missing 'p_response'");
+    logconf_error(client->conf, "Missing 'p_response'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -79,15 +79,15 @@ discord_edit_original_interaction_response(
   struct discord_interaction_response *p_response)
 {
   if (!interaction_id) {
-    log_error("Missing 'interaction_id'");
+    logconf_error(client->conf, "Missing 'interaction_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -133,11 +133,11 @@ discord_delete_original_interaction_response(
   const char interaction_token[])
 {
   if (!interaction_id) {
-    log_error("Missing 'interaction_id'");
+    logconf_error(client->conf, "Missing 'interaction_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -155,15 +155,15 @@ discord_create_followup_message(
   struct discord_webhook *p_webhook)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -219,19 +219,19 @@ discord_get_followup_message(struct discord *client,
                              struct discord_message *p_message)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_message) {
-    log_error("Missing 'p_message'");
+    logconf_error(client->conf, "Missing 'p_message'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -253,19 +253,19 @@ discord_edit_followup_message(
   struct discord_message *p_message)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -311,15 +311,15 @@ discord_delete_followup_message(struct discord *client,
                                 const u64_snowflake_t message_id)
 {
   if (!application_id) {
-    log_error("Missing 'application_id'");
+    logconf_error(client->conf, "Missing 'application_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(interaction_token)) {
-    log_error("Missing 'interaction_token'");
+    logconf_error(client->conf, "Missing 'interaction_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 

@@ -58,7 +58,7 @@ opcode_print(enum discord_gateway_opcodes opcode)
 {
   const char *str = discord_gateway_opcodes_print(opcode);
   if (NULL == str) {
-    log_warn("Invalid Gateway opcode (code: %d)", opcode);
+    log_warn("Invalid Gateway opcode (client->conf, code: %d)", opcode);
     str = "Invalid Gateway opcode";
   }
   return str;
@@ -71,7 +71,7 @@ close_opcode_print(enum discord_gateway_close_opcodes opcode)
   if (str) return str;
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;
-  log_warn("Unknown WebSockets close opcode (code: %d)", opcode);
+  log_warn("Unknown WebSockets close opcode (client->conf, code: %d)", opcode);
   return "Unknown WebSockets close opcode";
 }
 

@@ -13,15 +13,15 @@ discord_create_webhook(struct discord *client,
                        struct discord_webhook *p_webhook)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params || IS_EMPTY_STRING(params->name)) {
-    log_error("Missing 'params.name'");
+    logconf_error(client->conf, "Missing 'params.name'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_webhook) {
-    log_error("Missing 'p_webhook'");
+    logconf_error(client->conf, "Missing 'p_webhook'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -43,11 +43,11 @@ discord_get_channel_webhooks(struct discord *client,
                              NTL_T(struct discord_webhook) * p_webhooks)
 {
   if (!channel_id) {
-    log_error("Missing 'channel_id'");
+    logconf_error(client->conf, "Missing 'channel_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_webhooks) {
-    log_error("Missing 'p_webhooks'");
+    logconf_error(client->conf, "Missing 'p_webhooks'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -64,11 +64,11 @@ discord_get_guild_webhooks(struct discord *client,
                            NTL_T(struct discord_webhook) * p_webhooks)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_webhooks) {
-    log_error("Missing 'p_webhooks'");
+    logconf_error(client->conf, "Missing 'p_webhooks'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -85,11 +85,11 @@ discord_get_webhook(struct discord *client,
                     struct discord_webhook *p_webhook)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_webhook) {
-    log_error("Missing 'p_webhook'");
+    logconf_error(client->conf, "Missing 'p_webhook'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -107,15 +107,15 @@ discord_get_webhook_with_token(struct discord *client,
                                struct discord_webhook *p_webhook)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_webhook) {
-    log_error("Missing 'p_webhook'");
+    logconf_error(client->conf, "Missing 'p_webhook'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -133,7 +133,7 @@ discord_modify_webhook(struct discord *client,
                        struct discord_webhook *p_webhook)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -158,11 +158,11 @@ discord_modify_webhook_with_token(
   struct discord_webhook *p_webhook)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -183,7 +183,7 @@ discord_delete_webhook(struct discord *client,
                        const u64_snowflake_t webhook_id)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -197,11 +197,11 @@ discord_delete_webhook_with_token(struct discord *client,
                                   const char webhook_token[])
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -218,15 +218,15 @@ discord_execute_webhook(struct discord *client,
                         struct discord_webhook *p_webhook)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -288,19 +288,19 @@ discord_get_webhook_message(struct discord *client,
                             struct discord_message *p_message)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_message) {
-    log_error("Missing 'p_message'");
+    logconf_error(client->conf, "Missing 'p_message'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -322,19 +322,19 @@ discord_edit_webhook_message(
   struct discord_message *p_message)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -381,15 +381,15 @@ discord_delete_webhook_message(struct discord *client,
                                const u64_snowflake_t message_id)
 {
   if (!webhook_id) {
-    log_error("Missing 'webhook_id'");
+    logconf_error(client->conf, "Missing 'webhook_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (IS_EMPTY_STRING(webhook_token)) {
-    log_error("Missing 'webhook_token'");
+    logconf_error(client->conf, "Missing 'webhook_token'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!message_id) {
-    log_error("Missing 'message_id'");
+    logconf_error(client->conf, "Missing 'message_id'");
     return ORCA_MISSING_PARAMETER;
   }
 

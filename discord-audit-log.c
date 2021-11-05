@@ -13,11 +13,11 @@ discord_get_guild_audit_log(struct discord *client,
                             struct discord_audit_log *p_audit_log)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_audit_log) {
-    log_error("Missing 'p_audit_log'");
+    logconf_error(client->conf, "Missing 'p_audit_log'");
     return ORCA_MISSING_PARAMETER;
   }
 

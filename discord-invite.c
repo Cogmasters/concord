@@ -13,15 +13,15 @@ discord_get_invite(struct discord *client,
                    struct discord_invite *p_invite)
 {
   if (!invite_code) {
-    log_error("Missing 'invite_code'");
+    logconf_error(client->conf, "Missing 'invite_code'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_invite) {
-    log_error("Missing 'p_invite'");
+    logconf_error(client->conf, "Missing 'p_invite'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -43,7 +43,7 @@ discord_delete_invite(struct discord *client,
                       struct discord_invite *p_invite)
 {
   if (!invite_code) {
-    log_error("Missing 'invite_code'");
+    logconf_error(client->conf, "Missing 'invite_code'");
     return ORCA_MISSING_PARAMETER;
   }
 

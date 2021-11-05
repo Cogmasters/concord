@@ -12,7 +12,7 @@ discord_create_guild(struct discord *client,
                      struct discord_guild *p_guild)
 {
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -34,11 +34,11 @@ discord_get_guild(struct discord *client,
                   struct discord_guild *p_guild)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_guild) {
-    log_error("Missing 'p_guild'");
+    logconf_error(client->conf, "Missing 'p_guild'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -55,11 +55,11 @@ discord_get_guild_preview(struct discord *client,
                           struct discord_guild_preview *p_guild_preview)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_guild_preview) {
-    log_error("Missing 'p_guild_preview'");
+    logconf_error(client->conf, "Missing 'p_guild_preview'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -77,11 +77,11 @@ discord_modify_guild(struct discord *client,
                      struct discord_guild *p_guild)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -102,7 +102,7 @@ ORCAcode
 discord_delete_guild(struct discord *client, const u64_snowflake_t guild_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -116,11 +116,11 @@ discord_get_guild_channels(struct discord *client,
                            NTL_T(struct discord_channel) * p_channels)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_channels) {
-    log_error("Missing 'p_channels'");
+    logconf_error(client->conf, "Missing 'p_channels'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -139,11 +139,11 @@ discord_create_guild_channel(
   struct discord_channel *p_channel)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id");
+    logconf_error(client->conf, "Missing 'guild_id");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params");
+    logconf_error(client->conf, "Missing 'params");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -167,11 +167,11 @@ discord_modify_guild_channel_positions(
   NTL_T(struct discord_modify_guild_channel_positions_params) params)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id");
+    logconf_error(client->conf, "Missing 'guild_id");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params");
+    logconf_error(client->conf, "Missing 'params");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -191,15 +191,15 @@ discord_get_guild_member(struct discord *client,
                          struct discord_guild_member *p_member)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_member) {
-    log_error("Missing 'p_member'");
+    logconf_error(client->conf, "Missing 'p_member'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -217,11 +217,11 @@ discord_list_guild_members(struct discord *client,
                            NTL_T(struct discord_guild_member) * p_members)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_members) {
-    log_error("Missing 'p_members'");
+    logconf_error(client->conf, "Missing 'p_members'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -257,11 +257,11 @@ discord_search_guild_members(
   NTL_T(struct discord_guild_member) * p_members)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_members) {
-    log_error("Missing 'p_members'");
+    logconf_error(client->conf, "Missing 'p_members'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -298,15 +298,15 @@ discord_add_guild_member(struct discord *client,
                          struct discord_guild_member *p_member)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params || !params->access_token) {
-    log_error("Missing 'params.access_token'");
+    logconf_error(client->conf, "Missing 'params.access_token'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -330,15 +330,15 @@ discord_modify_guild_member(struct discord *client,
                             struct discord_guild_member *p_member)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -363,15 +363,15 @@ discord_modify_current_member(
   struct discord_guild_member *p_member)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params->nick) {
-    log_error("Missing 'params.nick'");
+    logconf_error(client->conf, "Missing 'params.nick'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -395,20 +395,21 @@ discord_modify_current_user_nick(
   struct discord_guild_member *p_member)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params->nick) {
-    log_error("Missing 'params.nick'");
+    logconf_error(client->conf, "Missing 'params.nick'");
     return ORCA_MISSING_PARAMETER;
   }
 
-  log_warn("This endpoint is now deprecated by Discord. Please use "
-           "discord_modify_current_member instead");
+  logconf_warn(client->conf,
+               "This endpoint is now deprecated by Discord. Please use "
+               "discord_modify_current_member instead");
 
   char payload[512];
   size_t ret = discord_modify_current_user_nick_params_to_json(
@@ -430,15 +431,15 @@ discord_add_guild_member_role(struct discord *client,
                               const u64_snowflake_t role_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!role_id) {
-    log_error("Missing 'role_id'");
+    logconf_error(client->conf, "Missing 'role_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -455,15 +456,15 @@ discord_remove_guild_member_role(struct discord *client,
                                  const u64_snowflake_t role_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!role_id) {
-    log_error("Missing 'role_id'");
+    logconf_error(client->conf, "Missing 'role_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -479,11 +480,11 @@ discord_remove_guild_member(struct discord *client,
                             const u64_snowflake_t user_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -498,11 +499,11 @@ discord_get_guild_bans(struct discord *client,
                        NTL_T(struct discord_ban) * p_bans)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_bans) {
-    log_error("Missing 'p_bans'");
+    logconf_error(client->conf, "Missing 'p_bans'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -520,15 +521,15 @@ discord_get_guild_ban(struct discord *client,
                       struct discord_ban *p_ban)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_ban) {
-    log_error("Missing 'p_ban'");
+    logconf_error(client->conf, "Missing 'p_ban'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -546,19 +547,20 @@ discord_create_guild_ban(struct discord *client,
                          struct discord_create_guild_ban_params *params)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
   if (params->delete_message_days < 0 || params->delete_message_days > 7) {
-    log_error("'delete_message_days' is outside the interval (0, 7)");
+    logconf_error(client->conf,
+      "'delete_message_days' is outside the interval (client->conf, 0, 7)");
     return ORCA_BAD_PARAMETER;
   }
 
@@ -576,11 +578,11 @@ discord_remove_guild_ban(struct discord *client,
                          const u64_snowflake_t user_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!user_id) {
-    log_error("Missing 'user_id'");
+    logconf_error(client->conf, "Missing 'user_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -595,11 +597,11 @@ discord_get_guild_roles(struct discord *client,
                         NTL_T(struct discord_role) * p_roles)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_roles) {
-    log_error("Missing 'p_roles'");
+    logconf_error(client->conf, "Missing 'p_roles'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -617,7 +619,7 @@ discord_create_guild_role(struct discord *client,
                           struct discord_role *p_role)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -641,11 +643,11 @@ discord_modify_guild_role_positions(
   NTL_T(struct discord_role) * p_roles)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!params) {
-    log_error("Missing 'params'");
+    logconf_error(client->conf, "Missing 'params'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -670,11 +672,11 @@ discord_modify_guild_role(struct discord *client,
                           struct discord_role *p_role)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!role_id) {
-    log_error("Missing 'role_id'");
+    logconf_error(client->conf, "Missing 'role_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -700,11 +702,11 @@ discord_delete_guild_role(struct discord *client,
                           const u64_snowflake_t role_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!role_id) {
-    log_error("Missing 'role_id'");
+    logconf_error(client->conf, "Missing 'role_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -718,7 +720,7 @@ discord_begin_guild_prune(struct discord *client,
                           struct discord_begin_guild_prune_params *params)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -742,11 +744,11 @@ discord_get_guild_invites(struct discord *client,
                           NTL_T(struct discord_invite) * p_invites)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_invites) {
-    log_error("Missing 'p_invites'");
+    logconf_error(client->conf, "Missing 'p_invites'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -762,11 +764,11 @@ discord_delete_guild_integrations(struct discord *client,
                                   const u64_snowflake_t integration_id)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!integration_id) {
-    log_error("Missing 'integration_id'");
+    logconf_error(client->conf, "Missing 'integration_id'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -781,11 +783,11 @@ discord_get_guild_vanity_url(struct discord *client,
                              struct discord_invite *p_invite)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_invite) {
-    log_error("Missing 'p_invites'");
+    logconf_error(client->conf, "Missing 'p_invites'");
     return ORCA_MISSING_PARAMETER;
   }
 
@@ -802,11 +804,11 @@ discord_get_guild_welcome_screen(struct discord *client,
                                  struct discord_welcome_screen *p_screen)
 {
   if (!guild_id) {
-    log_error("Missing 'guild_id'");
+    logconf_error(client->conf, "Missing 'guild_id'");
     return ORCA_MISSING_PARAMETER;
   }
   if (!p_screen) {
-    log_error("Missing 'p_screen'");
+    logconf_error(client->conf, "Missing 'p_screen'");
     return ORCA_MISSING_PARAMETER;
   }
 
