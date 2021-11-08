@@ -1,0 +1,1720 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Structures &#8212; Orca  documentation</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Discord Models" href="../../models/index.html" />
+    <link rel="prev" title="Message Components" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../../../index.html">
+  <img src="../../../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../../index.html">
+  Supported Web-APIs
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../orca_api/index.html">
+  Orca API Reference
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Discord API Reference
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../client/index.html">
+     Client
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/structures.html">
+       Structures
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/initialization.html">
+       Initialization / Cleanup
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/settings.html">
+       Settings
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/scheduler.html">
+       Event Scheduler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/error.html">
+       Error Handling
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/connecting.html">
+       Connecting
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/utils.html">
+       Utils
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../constants.html">
+     Constants
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../events/index.html">
+     Event Reference
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../events/triggers.html">
+       Callback Triggers
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../events/types.html">
+       Callback Types
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Interactions
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../application_commands/index.html">
+       Application Commands
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+      <label for="toctree-checkbox-5">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/batch_edit_application_command_permissions.html">
+         Batch Edit Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/bulk_overwrite_global_application_commands.html">
+         Bulk Overwrite Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/bulk_overwrite_guild_application_command.html">
+         Bulk Overwrite Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/create_global_application_command.html">
+         Create Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/create_guild_application_command.html">
+         Create Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/delete_global_application_command.html">
+         Delete Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/delete_guild_application_command.html">
+         Delete Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/edit_application_command_permissions.html">
+         Edit Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/edit_global_application_command.html">
+         Edit Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/edit_guild_application_command.html">
+         Edit Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/get_application_command_permissions.html">
+         Get Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/get_global_application_command.html">
+         Get Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/get_global_application_commands.html">
+         Get Global Application Commands
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/get_guild_application_command.html">
+         Get Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/get_guild_application_command_permissions.html">
+         Get Guild Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application_commands/methods/get_guild_application_commands.html">
+         Get Guild Application Commands
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../interaction/index.html">
+       Interaction
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+      <label for="toctree-checkbox-6">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/create_followup_message.html">
+         Create Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/create_interaction_response.html">
+         Create Interaction Response
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/delete_followup_message.html">
+         Delete Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/delete_original_interaction_response.html">
+         Delete Original Interaction Response
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/edit_followup_message.html">
+         Edit Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/edit_original_interaction_response.html">
+         Edit Original Interaction Response
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/get_followup_message.html">
+         Get Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../interaction/methods/get_original_interaction_response.html">
+         Get Original Interaction Response
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 current active has-children">
+      <a class="reference internal" href="index.html">
+       Message Components
+      </a>
+      <input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+      <label for="toctree-checkbox-7">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul class="current">
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         Structures
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../models/index.html">
+     Discord Models
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/application/index.html">
+       Application
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+      <label for="toctree-checkbox-9">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/application/structures.html">
+         Structures
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/audit_log/index.html">
+       Audit Log
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+      <label for="toctree-checkbox-10">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/audit_log/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/audit_log/methods/get_guild_audit_log.html">
+         Get Guild Audit Log
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/channel/index.html">
+       Channel
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+      <label for="toctree-checkbox-11">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/utils/methods.html">
+         Utils
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/embed_builder/methods.html">
+         Embed Builder
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/add_thread_member.html">
+         Add Thread Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/bulk_delete_messages.html">
+         Bulk Delete Messages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/create_channel_invite.html">
+         Create Channel Invite
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/create_message.html">
+         Create Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/crosspost_message.html">
+         Crosspost Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_all_reactions.html">
+         Delete All Reactions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_all_reactions_for_emoji.html">
+         Delete All Reactions For Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_channel.html">
+         Delete Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_channel_permission.html">
+         Delete Channel Permission
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_create_reaction.html">
+         Delete Create Reaction
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_message.html">
+         Delete Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_own_reaction.html">
+         Delete Own Reaction
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/delete_user_reaction.html">
+         Delete User Reaction
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/edit_channel_permissions.html">
+         Edit Channel Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/edit_message.html">
+         Edit Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/follow_news_channel.html">
+         Follow News Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/get_channel.html">
+         Get Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/get_channel_invites.html">
+         Get Channel Invites
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/get_channel_message.html">
+         Get Channel Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/get_channel_messages.html">
+         Get Channel Messages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/get_pinned_messages.html">
+         Get Pinned Messages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/get_reactions.html">
+         Get Reactions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/group_dm_add_recipient.html">
+         Group DM Add Recipient
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/group_dm_remove_recipient.html">
+         Group DM Remove Recipient
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/join_thread.html">
+         Join Thread
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/leave_thread.html">
+         Leave Thread
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/list_active_threads.html">
+         List Active Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/list_joined_private_archived_threads.html">
+         List Joined Private Archived Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/list_private_archived_threads.html">
+         List Private Archived Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/list_public_archived_threads.html">
+         List Public Archived Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/list_thread_members.html">
+         List Thread Members
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/modify_channel.html">
+         Modify Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/pin_message.html">
+         Pin Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/remove_thread_member.html">
+         Remove Thread Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/start_thread_with_message.html">
+         Start Thread With Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/start_thread_without_message.html">
+         Start Thread Without Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/trigger_typing_indicator.html">
+         Trigger Typing Indicator
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/channel/methods/unpin_message.html">
+         Unpin Message
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/emoji/index.html">
+       Emoji
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+      <label for="toctree-checkbox-12">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/emoji/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/emoji/methods/create_guild_emoji.html">
+         Create Guild Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/emoji/methods/delete_guild_emoji.html">
+         Delete Guild Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/emoji/methods/get_guild_emoji.html">
+         Get Guild Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/emoji/methods/list_guild_emoji.html">
+         List Guild Emojis
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/emoji/methods/modify_guild_emoji.html">
+         Modify Guild Emoji
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/guild/index.html">
+       Guild
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+      <label for="toctree-checkbox-13">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/utils/methods.html">
+         Utils
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/add_guild_member.html">
+         Add Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/add_guild_member_role.html">
+         Add Guild Member Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/craete_guild_channel.html">
+         Create Guild Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/create_guild.html">
+         Create Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/create_guild_ban.html">
+         Create Guild Ban
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/create_guild_role.html">
+         Create Guild Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/delete_guild.html">
+         Delete Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/delete_guild_role.html">
+         Delete Guild Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild.html">
+         Get Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild_ban.html">
+         Get Guild Ban
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild_bans.html">
+         Get Guild Bans
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild_channels.html">
+         Get Guild Channels
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild_member.html">
+         Get Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild_preview.html">
+         Get Guild Preview
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/get_guild_roles.html">
+         Get Guild Roles
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/list_guild_members.html">
+         List Guild Members
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/modify_current_user_nick.html">
+         Modify Current User Nick
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/modify_guild.html">
+         Modify Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/modify_guild_channel_positions.html">
+         Modify Guild Channel Positions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/modify_guild_member.html">
+         Modify Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/modify_guild_role.html">
+         Modify Guild Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/modify_guild_role_positions.html">
+         Modify Guild Role Positions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/remove_guild_ban.html">
+         Remove Guild Ban
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/remove_guild_member.html">
+         Remove Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/remove_guild_member_role.html">
+         Remove Guild Member Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild/methods/search_guild_members.html">
+         Search Guild Members
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/guild_template/index.html">
+       Guild Template
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+      <label for="toctree-checkbox-14">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/guild_template/structures.html">
+         Structures
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/invite/index.html">
+       Invite
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+      <label for="toctree-checkbox-15">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/invite/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/invite/methods/delete_invite.html">
+         Delete Invite
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/invite/methods/get_invite.html">
+         Get Invite
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/stage_instance/index.html">
+       Stage Instance
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+      <label for="toctree-checkbox-16">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/stage_instance/structures.html">
+         Structures
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/sticker/index.html">
+       Sticker
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+      <label for="toctree-checkbox-17">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/sticker/structures.html">
+         Structures
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/user/index.html">
+       User
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+      <label for="toctree-checkbox-18">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/create_dm.html">
+         Create DM
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/create_group_dm.html">
+         Create Group DM
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/get_current_user.html">
+         Get Current User
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/get_current_user_guilds.html">
+         Get Current User Guilds
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/get_user.html">
+         Get User
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/get_user_connections.html">
+         Get User Connections
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/leave_guild.html">
+         Leave Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/user/methods/modify_current_user.html">
+         Modify Current User
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/voice/index.html">
+       Voice
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+      <label for="toctree-checkbox-19">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/voice/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/voice/methods/list_voice_regions.html">
+         List Voice Regions
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/webhook/index.html">
+       Webhook
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+      <label for="toctree-checkbox-20">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/create_webhook.html">
+         Create Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/delete_webhook.html">
+         Delete Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/delete_webhook_message.html">
+         Delete Webhook Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/delete_webhook_with_token.html">
+         Delete Webhook with Token
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/edit_webhook_message.html">
+         Edit Webhook Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/execute_webhook.html">
+         Execute Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/get_channel_webhooks.html">
+         Get Channel Webhooks
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/get_guild_webhooks.html">
+         Get Guild Webhooks
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/get_webhook.html">
+         Get Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/get_webhook_message.html">
+         Get Webhook Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/get_webhook_with_token.html">
+         Get Webhook with Token
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/modify_webhook.html">
+         Modify Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/webhook/methods/modify_webhook_with_token.html">
+         Modify Webhook with Token
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/gateway/index.html">
+       Gateway
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+      <label for="toctree-checkbox-21">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/gateway/structures.html">
+         Structures
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/gateway/utils/methods.html">
+         Utils
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/gateway/methods/get_gateway.html">
+         Get Gateway
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/gateway/methods/get_gateway_bot.html">
+         Get Gateway Bot
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../models/permissions/index.html">
+       Permissions
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+      <label for="toctree-checkbox-22">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../models/permissions/structures.html">
+         Structures
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/web_apis/discord/interactions/message_components/structures.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="structures">
+<h1>Structures<a class="headerlink" href="#structures" title="Permalink to this headline">¶</a></h1>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#message-components">https://discord.com/developers/docs/interactions/message-components#message-components</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_component">
+<span class="target" id="structdiscord__component"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_component</span></span></span><a class="headerlink" href="#c.discord_component" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_init(struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_cleanup(struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_list_free(struct</span> <span class="pre">discord_component</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#component-object-component-structure">https://discord.com/developers/docs/interactions/message-components#component-object-component-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.type">
+<span class="target" id="structdiscord__component_1a35503ea32c59eaad2cf0e389e0564dc8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component_types" title="discord_component_types"><span class="n"><span class="pre">discord_component_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_component.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>component type </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.custom_id">
+<span class="target" id="structdiscord__component_1a1aa0442cb0c533b6aca8a9515ecd7eff"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_component.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a developer-defined identifier for the component, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.disabled">
+<span class="target" id="structdiscord__component_1aef289819cd584601e589b35c25b2fe62"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disabled</span></span></span><a class="headerlink" href="#c.discord_component.disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether the component is disabled, default false </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.style">
+<span class="target" id="structdiscord__component_1abaa285203b66bbc5bceb517031709e5e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_button_styles" title="discord_button_styles"><span class="n"><span class="pre">discord_button_styles</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">style</span></span></span><a class="headerlink" href="#c.discord_component.style" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>one of button styles </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.label">
+<span class="target" id="structdiscord__component_1af39487794179d2c3a4469ea26cf5431a"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">label</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">80</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_component.label" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>text that appears on the button, max 80 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.emoji">
+<span class="target" id="structdiscord__component_1a6623fd5c27ecd1f6550415599f44c10e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../models/emoji/structures.html#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emoji</span></span></span><a class="headerlink" href="#c.discord_component.emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name, id and animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.url">
+<span class="target" id="structdiscord__component_1afb1967e57163487f17e4223976f19eaa"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">url</span></span></span><a class="headerlink" href="#c.discord_component.url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a url for link-style buttons </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.options">
+<span class="target" id="structdiscord__component_1ad99946033fc6e1edde7684258b09b4b5"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_select_option" title="discord_select_option"><span class="n"><span class="pre">discord_select_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_component.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the choices in the select, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.placeholder">
+<span class="target" id="structdiscord__component_1ae18e58208c0e95553d9794bc799adc1f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">placeholder</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_component.placeholder" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>custom placeholder text if nothing is selected, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.min_values">
+<span class="target" id="structdiscord__component_1ae5d76aee147629ddcc557223b1e99f3c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_values</span></span></span><a class="headerlink" href="#c.discord_component.min_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the minimum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.max_values">
+<span class="target" id="structdiscord__component_1a583903a61ea85201f16c84834af843f9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_values</span></span></span><a class="headerlink" href="#c.discord_component.max_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the maximum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.components">
+<span class="target" id="structdiscord__component_1a2e18820f5c71bad5d5b3f980fefa82f4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component" title="discord_component"><span class="n"><span class="pre">discord_component</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">components</span></span></span><a class="headerlink" href="#c.discord_component.components" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a list of child components </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_button">
+<span class="target" id="structdiscord__button"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_button</span></span></span><a class="headerlink" href="#c.discord_button" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_init(struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_cleanup(struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_list_free(struct</span> <span class="pre">discord_button</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#button-object-button-structure">https://discord.com/developers/docs/interactions/message-components#button-object-button-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.type">
+<span class="target" id="structdiscord__button_1ad1e9a398caafcd5ed43c968689eab6cd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component_types" title="discord_component_types"><span class="n"><span class="pre">discord_component_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_button.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>2 for a button </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.style">
+<span class="target" id="structdiscord__button_1ac13e559d5245d152164772ab8b456673"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_button_styles" title="discord_button_styles"><span class="n"><span class="pre">discord_button_styles</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">style</span></span></span><a class="headerlink" href="#c.discord_button.style" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>one of button styles </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.label">
+<span class="target" id="structdiscord__button_1a823bdcd8afd65f014e192b999617b638"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">label</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">80</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_button.label" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>text that appears on the button, max 80 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.emoji">
+<span class="target" id="structdiscord__button_1a025e88c52635d1f324ec53051f811a71"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../models/emoji/structures.html#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emoji</span></span></span><a class="headerlink" href="#c.discord_button.emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name, id and animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.custom_id">
+<span class="target" id="structdiscord__button_1a59d467e09ea7e2cacab5f1f482fdc414"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_button.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a developer-defined identifier for the component, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.url">
+<span class="target" id="structdiscord__button_1a5ca9d62564668ebe04efe394bdbbe58f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">url</span></span></span><a class="headerlink" href="#c.discord_button.url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a url for link-style buttons </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.disabled">
+<span class="target" id="structdiscord__button_1a0b7a6ecffcf53d593ac133dc654242d9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disabled</span></span></span><a class="headerlink" href="#c.discord_button.disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether the component is disabled, default false </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_select_menu">
+<span class="target" id="structdiscord__select__menu"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_select_menu</span></span></span><a class="headerlink" href="#c.discord_select_menu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_init(struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_cleanup(struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_list_free(struct</span> <span class="pre">discord_select_menu</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure">https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.type">
+<span class="target" id="structdiscord__select__menu_1aab5c2577f0f15c742ca940ca3cf92161"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component_types" title="discord_component_types"><span class="n"><span class="pre">discord_component_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_select_menu.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>3 for a select menu </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.custom_id">
+<span class="target" id="structdiscord__select__menu_1a4f24bdec6379464a3de94b4b58f09948"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_select_menu.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a developer-defined identifier for the component, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.options">
+<span class="target" id="structdiscord__select__menu_1a6d5a0a7c25f592cde28428c152ec9625"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_select_option" title="discord_select_option"><span class="n"><span class="pre">discord_select_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_select_menu.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the choices in the select, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.placeholder">
+<span class="target" id="structdiscord__select__menu_1adfca631684547c96ef03d9e3bb44490f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">placeholder</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_select_menu.placeholder" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>custom placeholder text if nothing is selected, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.min_values">
+<span class="target" id="structdiscord__select__menu_1a759497142a47dfa17df16092b524ec10"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_values</span></span></span><a class="headerlink" href="#c.discord_select_menu.min_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the minimum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.max_values">
+<span class="target" id="structdiscord__select__menu_1a2482d13c77cfed8fb93de51dcb5ebe78"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_values</span></span></span><a class="headerlink" href="#c.discord_select_menu.max_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the maximum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.disabled">
+<span class="target" id="structdiscord__select__menu_1a728b17adcc128ab3eb2aae72d4fb0dda"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disabled</span></span></span><a class="headerlink" href="#c.discord_select_menu.disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>disable the select, default false </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_select_option">
+<span class="target" id="structdiscord__select__option"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_select_option</span></span></span><a class="headerlink" href="#c.discord_select_option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_init(struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_cleanup(struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_list_free(struct</span> <span class="pre">discord_select_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure">https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.label">
+<span class="target" id="structdiscord__select__option_1a62511421105338819f4051b30bf13019"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">label</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">25</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_select_option.label" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user-facing name of the option, max 25 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.value">
+<span class="target" id="structdiscord__select__option_1a82fdebd65d79ffc1652887a3ddfbd345"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_select_option.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the dev define value of the option, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.description">
+<span class="target" id="structdiscord__select__option_1a3cac6450d79ed8314f70b5c2b45bf0a4"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">50</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_select_option.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a additional description of the option, max 50 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.emoji">
+<span class="target" id="structdiscord__select__option_1ac7c86cde01705e0a0aede26122e76a01"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../models/emoji/structures.html#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emoji</span></span></span><a class="headerlink" href="#c.discord_select_option.emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name, id and animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.Default">
+<span class="target" id="structdiscord__select__option_1a0728c52bc495b26e9486127298e46965"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Default</span></span></span><a class="headerlink" href="#c.discord_select_option.Default" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>will render this option as selected by default </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_component_types">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_component_types</span></span></span><a class="headerlink" href="#c.discord_component_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_component_types_print(enum</span> <span class="pre">discord_component_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_component_types</span> <span class="pre">discord_component_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#component-object-component-types">https://discord.com/developers/docs/interactions/message-components#component-object-component-types</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_component_types.DISCORD_COMPONENT_ACTION_ROW">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552ca7757d541a7e5c21b2191a7e656470e93"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_COMPONENT_ACTION_ROW</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_component_types.DISCORD_COMPONENT_ACTION_ROW" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_component_types.DISCORD_COMPONENT_BUTTON">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552ca19caf222528f799a21a77ffd5cf6888e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_COMPONENT_BUTTON</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_component_types.DISCORD_COMPONENT_BUTTON" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_component_types.DISCORD_COMPONENT_SELECT_MENU">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552caecc2c8835eaa4aa34cbf60ec8f05b17f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_COMPONENT_SELECT_MENU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_component_types.DISCORD_COMPONENT_SELECT_MENU" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_button_styles">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_button_styles</span></span></span><a class="headerlink" href="#c.discord_button_styles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_button_styles_print(enum</span> <span class="pre">discord_button_styles</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_button_styles</span> <span class="pre">discord_button_styles_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#button-object-button-styles">https://discord.com/developers/docs/interactions/message-components#button-object-button-styles</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_PRIMARY">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889af59c747dc53af3c9f511a0cf25aa9bd0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_PRIMARY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_PRIMARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>blurple, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_SECONDARY">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889a0365a3c0f65bdbcf84bce888cc29c176"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_SECONDARY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_SECONDARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>grey, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_SUCCESS">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889aae9efd069d300db7853ec9405322e97e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_SUCCESS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>green, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_DANGER">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889a5332690695481b5c2a29f566c02fcab4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_DANGER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_DANGER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>red, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_LINK">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889a455bec2257da12a8b3ea336e3a764b66"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_LINK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_LINK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>grey, requires url </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Message Components</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../../models/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Discord Models</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.2.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

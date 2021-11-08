@@ -13,25 +13,13 @@ A Multi-REST API library that is easy to reason about, easy to debug, and easy t
 Reference
 ---------
 
-Supported APIs
-~~~~~~~~~~~~~~
-
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :glob:
 
-   Discord <apis/discord/index>
-
-Building with Orca
-~~~~~~~~~~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 1
+   web_apis/index
+   orca_api/index
   
-   Types <types/index>
-   Null-Terminated List <ntl/index>
-   WebSockets <websockets/index>
-
 Help
 ----
 
