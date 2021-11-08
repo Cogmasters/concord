@@ -220,7 +220,7 @@ STATIC size_t ntl_to_abuf2(char **buf_p, struct ntl_serializer *serializer)
 /*
  *
  */
-STATIC size_t ntl_to_buf(char *buf, size_t size, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer *x)
+STATIC size_t ntl_to_buf(char *buf, size_t size, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer x)
 {
   static struct ntl_str_delimiter dx = 
   { .start_delimiter = '[', 
@@ -288,7 +288,7 @@ STATIC size_t ntl_to_buf(char *buf, size_t size, ntl_t p, struct ntl_str_delimit
   return tsize;
 }
 
-STATIC size_t ntl_to_abuf(char **buf_p, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer *x)
+STATIC size_t ntl_to_abuf(char **buf_p, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer x)
 {
   if (p == NULL)
     return 0;
@@ -301,24 +301,16 @@ STATIC size_t ntl_to_abuf(char **buf_p, ntl_t p, struct ntl_str_delimiter *d, nt
   return ntl_to_buf(*buf_p, s, p, d, x);
 }
 
-/*
- * This is like Haskell list's fmap
- *
- * @cxt  points to any context data need for this transformation
- * @in_list the input ntl
- * @out_elem_size, the size of each output element
- * @f the function transform each in element to one out element
- */
-STATIC ntl_t ntl_fmap(void *cxt, ntl_t in_list, size_t out_elem_size, elem_converter *f)
+STATIC ntl_t ntl_fmap(void *cxt, ntl_t in_list, size_t out_elem_size, ntl_elem_map map)
 {
   size_t i;
   if (in_list == NULL)
     return NULL;
 
   ntl_t out_list = ntl_calloc(ntl_length(in_list), out_elem_size);
-  if (f)
+  if (map)
     for (i = 0; in_list[i]; i++)
-      (*f)(cxt, in_list[i], out_list[i]);
+      (*map)(cxt, in_list[i], out_list[i]);
 
   return out_list;
 }
@@ -341,16 +333,6 @@ STATIC ntl_t ntl_append(ntl_t p, size_t elem_size, void *added_elem)
 }
 
 
-/*
- * @p the address that stores a NTL
- * @esize the element size of the new element
- * @added_elem  the memory of element to be appended
- * @free_elem  free the memory of each element
- *
- * this function will allocate memory for a new list
- * and free the old list.
- *
- */
 STATIC void ntl_append2(ntl_t *p, size_t esize, void * added_elem)
 {
   ntl_t ntl1 = *p;
@@ -410,7 +392,7 @@ STATIC size_t ntl_from_buf2(char *buf, size_t len, struct ntl_deserializer *dese
   return n_elems;
 }
 
-STATIC int ntl_is_a_member(ntl_t p, void *addr)
+STATIC _Bool ntl_is_a_member(ntl_t p, void *elem)
 {
   size_t i;
 
@@ -418,7 +400,7 @@ STATIC int ntl_is_a_member(ntl_t p, void *addr)
     return 0;
 
   for (i = 0; p[i]; i++)
-    if (p[i] == addr)
+    if (p[i] == elem)
       return 1;
 
   return 0;
