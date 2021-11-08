@@ -81,13 +81,19 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/types.html">
+ <a class="reference internal nav-link" href="../../../../../types/index.html">
   Types
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/websockets.html">
+ <a class="reference internal nav-link" href="../../../../../ntl/index.html">
+  Null-Terminated List
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../websockets/index.html">
   WebSockets
  </a>
 </li>
@@ -1197,7 +1203,7 @@
 <h1>Edit Original Interaction Response<a class="headerlink" href="#edit-original-interaction-response" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_edit_original_interaction_response">
-<span class="target" id="group__DiscordEditOriginalInteractionResponse_1ga199923d581cfbc984d384a2dd8115d2a"></span><a class="reference internal" href="../../../../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_edit_original_interaction_response</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">interaction_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">interaction_token</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_edit_original_interaction_response_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_interaction_response" title="discord_interaction_response"><span class="n"><span class="pre">discord_interaction_response</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_response</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_edit_original_interaction_response" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordEditOriginalInteractionResponse_1ga199923d581cfbc984d384a2dd8115d2a"></span><a class="reference internal" href="../../../../../types/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_edit_original_interaction_response</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">interaction_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">interaction_token</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_edit_original_interaction_response_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_interaction_response" title="discord_interaction_response"><span class="n"><span class="pre">discord_interaction_response</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_response</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_edit_original_interaction_response" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><strong>PATCH</strong> /webhooks/{interaction.id}/{interaction.token}/messages/&#64;original </p>
 <p>Edit the initial Interaction response. <dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#edit-original-interaction-response">https://discord.com/developers/docs/interactions/receiving-and-responding#edit-original-interaction-response</a> </p>

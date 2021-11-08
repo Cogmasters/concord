@@ -5,23 +5,12 @@
   The following files contains the documentation used to generate this page: 
   - common/websockets.h
 
-====================
-WebSockets Reference
-====================
-
-Datatypes
----------
+==========
+Structures
+==========
 
 .. doxygenstruct:: websockets
 .. doxygenstruct:: ws_info
 .. doxygenstruct:: ws_callbacks
 .. doxygenenum:: ws_status
 .. doxygenenum:: ws_close_reason
-
-Functions
----------
-
-.. doxygenfile:: common/websockets.h
-    :sections: detaileddescription briefdescription func
-
-

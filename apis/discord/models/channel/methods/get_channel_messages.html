@@ -81,13 +81,19 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/types.html">
+ <a class="reference internal nav-link" href="../../../../../types/index.html">
   Types
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/websockets.html">
+ <a class="reference internal nav-link" href="../../../../../ntl/index.html">
+  Null-Terminated List
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../websockets/index.html">
   WebSockets
  </a>
 </li>
@@ -1197,7 +1203,7 @@
 <h1>Get Channel Messages<a class="headerlink" href="#get-channel-messages" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_get_channel_messages">
-<span class="target" id="group__DiscordGetChannelMessages_1ga82c80d017413c06e9738de351f9922b5"></span><a class="reference internal" href="../../../../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_channel_messages</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_get_channel_messages_params" title="discord_get_channel_messages_params"><span class="n"><span class="pre">discord_get_channel_messages_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_message" title="discord_message"><span class="n"><span class="pre">discord_message</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_messages</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_channel_messages" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordGetChannelMessages_1ga82c80d017413c06e9738de351f9922b5"></span><a class="reference internal" href="../../../../../types/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_channel_messages</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_get_channel_messages_params" title="discord_get_channel_messages_params"><span class="n"><span class="pre">discord_get_channel_messages_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_message" title="discord_message"><span class="n"><span class="pre">discord_message</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_messages</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_channel_messages" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><strong>GET</strong> /channels/{channel.id}/messages </p>
 <p>Returns the messages for a channel. <dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/channel#get-channel-messages">https://discord.com/developers/docs/resources/channel#get-channel-messages</a> </p>
@@ -1270,19 +1276,19 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_get_channel_messages_params.around">
-<span class="target" id="structdiscord__get__channel__messages__params_1a237ce7ab37f3dbdfc71ca5b792289949"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">around</span></span></span><a class="headerlink" href="#c.discord_get_channel_messages_params.around" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__get__channel__messages__params_1a237ce7ab37f3dbdfc71ca5b792289949"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">around</span></span></span><a class="headerlink" href="#c.discord_get_channel_messages_params.around" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>get messages around this message ID </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_get_channel_messages_params.before">
-<span class="target" id="structdiscord__get__channel__messages__params_1a9467da28de9e8d215e182d8e08329f91"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">before</span></span></span><a class="headerlink" href="#c.discord_get_channel_messages_params.before" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__get__channel__messages__params_1a9467da28de9e8d215e182d8e08329f91"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">before</span></span></span><a class="headerlink" href="#c.discord_get_channel_messages_params.before" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>get messages before this message ID </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_get_channel_messages_params.after">
-<span class="target" id="structdiscord__get__channel__messages__params_1aad7b4da3f2202d0e1943529939c50d0e"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">after</span></span></span><a class="headerlink" href="#c.discord_get_channel_messages_params.after" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__get__channel__messages__params_1aad7b4da3f2202d0e1943529939c50d0e"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">after</span></span></span><a class="headerlink" href="#c.discord_get_channel_messages_params.after" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>get messages after this message ID </p>
 </dd></dl>
 

@@ -81,13 +81,19 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/types.html">
+ <a class="reference internal nav-link" href="../../../../../types/index.html">
   Types
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/websockets.html">
+ <a class="reference internal nav-link" href="../../../../../ntl/index.html">
+  Null-Terminated List
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../websockets/index.html">
   WebSockets
  </a>
 </li>
@@ -1197,7 +1203,7 @@
 <h1>Modify Guild<a class="headerlink" href="#modify-guild" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_modify_guild">
-<span class="target" id="group__DiscordModifyGuild_1ga5e43a85d9a19cb7d48ccb4486581f3d9"></span><a class="reference internal" href="../../../../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_params" title="discord_modify_guild_params"><span class="n"><span class="pre">discord_modify_guild_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_guild</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordModifyGuild_1ga5e43a85d9a19cb7d48ccb4486581f3d9"></span><a class="reference internal" href="../../../../../types/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_params" title="discord_modify_guild_params"><span class="n"><span class="pre">discord_modify_guild_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_guild</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><strong>PATCH</strong> /guilds/{guild.id} </p>
 <p>Modify a guild’s settings. Requires the MANAGE_GUILD permission. Returns the updated guild object on success. Fires a Guild Update Gateway event. <dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#modify-guild">https://discord.com/developers/docs/resources/guild#modify-guild</a> </p>
@@ -1288,7 +1294,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_modify_guild_params.afk_channel_id">
-<span class="target" id="structdiscord__modify__guild__params_1adab2e0940600d45fe7e69fbc68f1bd4b"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.afk_channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__modify__guild__params_1adab2e0940600d45fe7e69fbc68f1bd4b"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.afk_channel_id" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>id for afk channel </p>
 </dd></dl>
 
@@ -1306,7 +1312,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_modify_guild_params.owner_id">
-<span class="target" id="structdiscord__modify__guild__params_1adc8281ad322b0c16e9ac59b364528d91"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">owner_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.owner_id" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__modify__guild__params_1adc8281ad322b0c16e9ac59b364528d91"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">owner_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.owner_id" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>user id to transfer guild ownership to (must be owner) </p>
 </dd></dl>
 
@@ -1330,7 +1336,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_modify_guild_params.system_channel_id">
-<span class="target" id="structdiscord__modify__guild__params_1ac5b628cc06555dfef6e51bcf7ff82cdc"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">system_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.system_channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__modify__guild__params_1ac5b628cc06555dfef6e51bcf7ff82cdc"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">system_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.system_channel_id" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>cannot unescape an ill-formed-string the id of the channel where guild notices such as welcome </p>
 </dd></dl>
 
@@ -1342,13 +1348,13 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_modify_guild_params.rules_channel_id">
-<span class="target" id="structdiscord__modify__guild__params_1a6924cc717f363dfc9f1959540dc7ec7e"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rules_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.rules_channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__modify__guild__params_1a6924cc717f363dfc9f1959540dc7ec7e"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rules_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.rules_channel_id" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>the id of the channel where Community guilds display rules and/or guidelines </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_modify_guild_params.public_updates_channel_id">
-<span class="target" id="structdiscord__modify__guild__params_1a14749dee3e7caa203808d01f8e22dd18"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">public_updates_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.public_updates_channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__modify__guild__params_1a14749dee3e7caa203808d01f8e22dd18"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">public_updates_channel_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_params.public_updates_channel_id" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>the id of the channel where admins and moderators of Community guilds receive notices from Discord </p>
 </dd></dl>
 

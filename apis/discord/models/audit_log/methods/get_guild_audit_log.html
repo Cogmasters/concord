@@ -81,13 +81,19 @@
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/types.html">
+ <a class="reference internal nav-link" href="../../../../../types/index.html">
   Types
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../../../common/websockets.html">
+ <a class="reference internal nav-link" href="../../../../../ntl/index.html">
+  Null-Terminated List
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../../websockets/index.html">
   WebSockets
  </a>
 </li>
@@ -1197,7 +1203,7 @@
 <h1>Get Guild Audit Log<a class="headerlink" href="#get-guild-audit-log" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_get_guild_audit_log">
-<span class="target" id="group__DiscordGetGuildAuditLog_1ga81d7889c378d15e3cbe5a8fffe1489a2"></span><a class="reference internal" href="../../../../../common/types.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_guild_audit_log</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_get_guild_audit_log_params" title="discord_get_guild_audit_log_params"><span class="n"><span class="pre">discord_get_guild_audit_log_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_audit_log" title="discord_audit_log"><span class="n"><span class="pre">discord_audit_log</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_audit_log</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_guild_audit_log" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordGetGuildAuditLog_1ga81d7889c378d15e3cbe5a8fffe1489a2"></span><a class="reference internal" href="../../../../../types/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_guild_audit_log</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_get_guild_audit_log_params" title="discord_get_guild_audit_log_params"><span class="n"><span class="pre">discord_get_guild_audit_log_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.discord_audit_log" title="discord_audit_log"><span class="n"><span class="pre">discord_audit_log</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">p_audit_log</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_guild_audit_log" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><strong>GET</strong> /guilds/{guild.id}/audit-logs </p>
 <p>Returns an audit log object for the guild. <dl class="simple">
 <dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log">https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log</a> </p>
@@ -1262,7 +1268,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_get_guild_audit_log_params.user_id">
-<span class="target" id="structdiscord__get__guild__audit__log__params_1a4021897974f2db54c42f54166871f6b0"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">user_id</span></span></span><a class="headerlink" href="#c.discord_get_guild_audit_log_params.user_id" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__get__guild__audit__log__params_1a4021897974f2db54c42f54166871f6b0"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">user_id</span></span></span><a class="headerlink" href="#c.discord_get_guild_audit_log_params.user_id" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>filter the log for actions made by a user </p>
 </dd></dl>
 
@@ -1274,7 +1280,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_get_guild_audit_log_params.before">
-<span class="target" id="structdiscord__get__guild__audit__log__params_1a6eaab7904941231a2dc0b39bd364ec03"></span><a class="reference internal" href="../../../../../common/types.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">before</span></span></span><a class="headerlink" href="#c.discord_get_guild_audit_log_params.before" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__get__guild__audit__log__params_1a6eaab7904941231a2dc0b39bd364ec03"></span><a class="reference internal" href="../../../../../types/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">before</span></span></span><a class="headerlink" href="#c.discord_get_guild_audit_log_params.before" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>filter the log before a certain entry id </p>
 </dd></dl>
 
