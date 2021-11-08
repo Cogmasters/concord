@@ -394,60 +394,16 @@ enum discord_event_scheduler {
   /** handle this event in a worker thread */
   DISCORD_EVENT_WORKER_THREAD
 };
+
 /**
- * @brief Specify how events should execute their callbacks, in a blocking or
- * non-blocking fashion
+ * @brief Provides the user with a fine-grained control of the Discord's
+ * event-loop
  *
- * This is a very important function that provides the user a more fine-grained
- * control of the Discord Gateway's event-loop. By default, every event
- * callback will block the event-loop, but for a scalable bot application this
- * is undesirable. To circumvent this the user can specify which events
- * should be executed in parallel.
- *
- * In the following example code, a MESSAGE_CREATE event callback will be
- * executed non-blocking and READY callback on the main thread, while anything
- * else will be ignored and won't be executed.
- *
- * @code{.c}
- * ...
- * enum discord_event_scheduler
- * scheduler(
- *   struct discord *client,
- *   struct discord_user *bot,
- *   struct sized_buffer *event_data,
- *   enum discord_gateway_events event)
- * {
- *   switch (event) {
- *   case DISCORD_GATEWAY_EVENTS_READY:
- *      return DISCORD_EVENT_MAIN_THREAD;
- *   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
- *      return DISCORD_EVENT_WORKER_THREAD;
- *   default:
- *      return DISCORD_EVENT_IGNORE;
- *   }
- * }
- *
- * int main()
- * {
- *   struct discord *client = discord_init(TOKEN);
- *
- *   discord_set_event_scheduler(client, &scheduler);
- *
- *   // The following will be executed on main thread
- *   discord_set_on_ready(client, &on_ready);
- *   // The following will be executed on a worker thread
- *   discord_set_on_message_create(client, &on_message_create);
- *   // The following will be ignored
- *   discord_set_on_message_delete(client, &on_message_delete);
- *   discord_set_on_channel_create(client, &on_channel_create);
- *
- *   discord_run(client);
- * }
- * @endcode
+ * Allows the user to specify which events should be executed from the
+ * main-thread, in parallel from a worker-thread, or completely ignored.
  *
  * @param client the client created_with discord_init()
  * @param fn the function that will be executed
- *
  * @warning The user is responsible for providing his own locking mechanism to
  * avoid race-condition on sensitive data.
  * @see enum discord_event_scheduler
