@@ -138,13 +138,18 @@
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="../../logconf/index.html">
+   Logging
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="../../types/index.html">
    Types
   </a>
  </li>
  <li class="toctree-l1 has-children">
   <a class="reference internal" href="../../ntl/index.html">
-   Null-Terminated List (NTL)
+   NTL (null-terminated lists)
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
@@ -285,7 +290,7 @@
 <h2>Initializer<a class="headerlink" href="#initializer" title="Permalink to this headline">¶</a></h2>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_init">
-<span class="target" id="websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ws_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_callbacks" title="ws_callbacks"><span class="n"><span class="pre">ws_callbacks</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cbs</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">logconf</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_init" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ws_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_callbacks" title="ws_callbacks"><span class="n"><span class="pre">ws_callbacks</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cbs</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../logconf/index.html#c.logconf" title="logconf"><span class="n"><span class="pre">logconf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_init" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a new (CURL-based) WebSockets handle. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
