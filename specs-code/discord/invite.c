@@ -326,14 +326,14 @@ void discord_invite_list_from_json(char *str, size_t len, struct discord_invite 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_invite);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_invite_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_invite_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_invite_list_to_json(char *str, size_t len, struct discord_invite **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_invite_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_invite_to_json);
 }
 
 
@@ -520,13 +520,13 @@ void discord_invite_metadata_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_invite_metadata);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_invite_metadata_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_invite_metadata_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_invite_metadata_list_to_json(char *str, size_t len, struct discord_invite_metadata **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_invite_metadata_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_invite_metadata_to_json);
 }
 

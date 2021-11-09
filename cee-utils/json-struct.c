@@ -1366,8 +1366,8 @@ static void gen_default(FILE *fp, struct jc_def *d)
   char * prefix;
   if (d->is_struct) {
     gen_init(fp, (struct jc_struct*)d);
-    snprintf(extractor, sizeof(extractor), "%s_from_json_v", type);
-    snprintf(injector, sizeof(injector), "%s_to_json_v", type);
+    snprintf(extractor, sizeof(extractor), "(vfcpsvp)%s_from_json_p", type);
+    snprintf(injector, sizeof(injector), "(sfcpsvp)%s_to_json", type);
     snprintf(cleanup, sizeof(cleanup), "(vfvp)%s_cleanup", type);
     prefix = "struct";
   }

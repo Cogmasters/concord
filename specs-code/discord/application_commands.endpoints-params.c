@@ -201,14 +201,14 @@ void discord_create_global_application_command_params_list_from_json(char *str, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_global_application_command_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_create_global_application_command_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_create_global_application_command_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_global_application_command_params_list_to_json(char *str, size_t len, struct discord_create_global_application_command_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_create_global_application_command_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_global_application_command_params_to_json);
 }
 
 
@@ -380,14 +380,14 @@ void discord_edit_global_application_command_params_list_from_json(char *str, si
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_global_application_command_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_edit_global_application_command_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_edit_global_application_command_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_global_application_command_params_list_to_json(char *str, size_t len, struct discord_edit_global_application_command_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_edit_global_application_command_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_edit_global_application_command_params_to_json);
 }
 
 
@@ -579,14 +579,14 @@ void discord_create_guild_application_command_params_list_from_json(char *str, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_application_command_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_create_guild_application_command_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_create_guild_application_command_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_application_command_params_list_to_json(char *str, size_t len, struct discord_create_guild_application_command_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_create_guild_application_command_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_application_command_params_to_json);
 }
 
 
@@ -758,14 +758,14 @@ void discord_edit_guild_application_command_params_list_from_json(char *str, siz
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_guild_application_command_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_edit_guild_application_command_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_edit_guild_application_command_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_guild_application_command_params_list_to_json(char *str, size_t len, struct discord_edit_guild_application_command_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_edit_guild_application_command_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_edit_guild_application_command_params_to_json);
 }
 
 
@@ -865,13 +865,13 @@ void discord_edit_application_command_permissions_params_list_from_json(char *st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_application_command_permissions_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_edit_application_command_permissions_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_edit_application_command_permissions_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_application_command_permissions_params_list_to_json(char *str, size_t len, struct discord_edit_application_command_permissions_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_edit_application_command_permissions_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_edit_application_command_permissions_params_to_json);
 }
 

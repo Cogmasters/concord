@@ -1148,14 +1148,14 @@ void discord_guild_list_from_json(char *str, size_t len, struct discord_guild **
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_guild_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_guild_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_list_to_json(char *str, size_t len, struct discord_guild **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_guild_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_to_json);
 }
 
 
@@ -1685,14 +1685,14 @@ void discord_unavailable_guild_list_from_json(char *str, size_t len, struct disc
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_unavailable_guild);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_unavailable_guild_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_unavailable_guild_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_unavailable_guild_list_to_json(char *str, size_t len, struct discord_unavailable_guild **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_unavailable_guild_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_unavailable_guild_to_json);
 }
 
 
@@ -1996,14 +1996,14 @@ void discord_guild_preview_list_from_json(char *str, size_t len, struct discord_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_preview);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_guild_preview_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_guild_preview_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_preview_list_to_json(char *str, size_t len, struct discord_guild_preview **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_guild_preview_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_preview_to_json);
 }
 
 
@@ -2124,14 +2124,14 @@ void discord_guild_widget_list_from_json(char *str, size_t len, struct discord_g
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_widget);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_guild_widget_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_guild_widget_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_widget_list_to_json(char *str, size_t len, struct discord_guild_widget **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_guild_widget_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_widget_to_json);
 }
 
 
@@ -2412,14 +2412,14 @@ void discord_guild_member_list_from_json(char *str, size_t len, struct discord_g
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_member);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_guild_member_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_guild_member_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_member_list_to_json(char *str, size_t len, struct discord_guild_member **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_guild_member_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_member_to_json);
 }
 
 
@@ -2837,14 +2837,14 @@ void discord_integration_list_from_json(char *str, size_t len, struct discord_in
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_integration);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_integration_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_integration_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_integration_list_to_json(char *str, size_t len, struct discord_integration **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_integration_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_integration_to_json);
 }
 
 
@@ -3019,14 +3019,14 @@ void discord_integration_account_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_integration_account);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_integration_account_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_integration_account_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_integration_account_list_to_json(char *str, size_t len, struct discord_integration_account **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_integration_account_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_integration_account_to_json);
 }
 
 
@@ -3241,14 +3241,14 @@ void discord_integration_application_list_from_json(char *str, size_t len, struc
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_integration_application);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_integration_application_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_integration_application_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_integration_application_list_to_json(char *str, size_t len, struct discord_integration_application **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_integration_application_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_integration_application_to_json);
 }
 
 
@@ -3373,14 +3373,14 @@ void discord_ban_list_from_json(char *str, size_t len, struct discord_ban ***p)
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_ban);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_ban_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_ban_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_ban_list_to_json(char *str, size_t len, struct discord_ban **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_ban_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_ban_to_json);
 }
 
 
@@ -3505,14 +3505,14 @@ void discord_welcome_screen_list_from_json(char *str, size_t len, struct discord
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_welcome_screen);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_welcome_screen_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_welcome_screen_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_welcome_screen_list_to_json(char *str, size_t len, struct discord_welcome_screen **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_welcome_screen_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_welcome_screen_to_json);
 }
 
 
@@ -3679,13 +3679,13 @@ void discord_welcome_screen_channel_list_from_json(char *str, size_t len, struct
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_welcome_screen_channel);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_welcome_screen_channel_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_welcome_screen_channel_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_welcome_screen_channel_list_to_json(char *str, size_t len, struct discord_welcome_screen_channel **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_welcome_screen_channel_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_welcome_screen_channel_to_json);
 }
 

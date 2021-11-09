@@ -354,14 +354,14 @@ void discord_voice_state_list_from_json(char *str, size_t len, struct discord_vo
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_voice_state);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_voice_state_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_voice_state_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_voice_state_list_to_json(char *str, size_t len, struct discord_voice_state **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_voice_state_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_voice_state_to_json);
 }
 
 
@@ -572,13 +572,13 @@ void discord_voice_region_list_from_json(char *str, size_t len, struct discord_v
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_voice_region);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_voice_region_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_voice_region_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_voice_region_list_to_json(char *str, size_t len, struct discord_voice_region **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_voice_region_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_voice_region_to_json);
 }
 

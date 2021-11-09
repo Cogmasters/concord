@@ -673,14 +673,14 @@ void discord_channel_list_from_json(char *str, size_t len, struct discord_channe
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_channel_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_channel_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_list_to_json(char *str, size_t len, struct discord_channel **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_channel_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_channel_to_json);
 }
 
 
@@ -999,14 +999,14 @@ void discord_message_sticker_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_sticker);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_message_sticker_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_message_sticker_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_sticker_list_to_json(char *str, size_t len, struct discord_message_sticker **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_message_sticker_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_sticker_to_json);
 }
 
 
@@ -1234,14 +1234,14 @@ void discord_message_reference_list_from_json(char *str, size_t len, struct disc
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_reference);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_message_reference_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_message_reference_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_reference_list_to_json(char *str, size_t len, struct discord_message_reference **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_message_reference_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_reference_to_json);
 }
 
 
@@ -1434,14 +1434,14 @@ void discord_message_application_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_application);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_message_application_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_message_application_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_application_list_to_json(char *str, size_t len, struct discord_message_application **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_message_application_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_application_to_json);
 }
 
 
@@ -1628,14 +1628,14 @@ void discord_message_activity_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_activity);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_message_activity_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_message_activity_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_activity_list_to_json(char *str, size_t len, struct discord_message_activity **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_message_activity_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_activity_to_json);
 }
 
 
@@ -2500,14 +2500,14 @@ void discord_message_list_from_json(char *str, size_t len, struct discord_messag
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_message_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_message_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_list_to_json(char *str, size_t len, struct discord_message **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_message_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_to_json);
 }
 
 
@@ -2628,14 +2628,14 @@ void discord_followed_channel_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_followed_channel);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_followed_channel_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_followed_channel_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_followed_channel_list_to_json(char *str, size_t len, struct discord_followed_channel **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_followed_channel_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_followed_channel_to_json);
 }
 
 
@@ -2781,14 +2781,14 @@ void discord_reaction_list_from_json(char *str, size_t len, struct discord_react
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_reaction);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_reaction_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_reaction_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_reaction_list_to_json(char *str, size_t len, struct discord_reaction **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_reaction_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_reaction_to_json);
 }
 
 
@@ -2967,14 +2967,14 @@ void discord_overwrite_list_from_json(char *str, size_t len, struct discord_over
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_overwrite);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_overwrite_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_overwrite_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_overwrite_list_to_json(char *str, size_t len, struct discord_overwrite **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_overwrite_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_overwrite_to_json);
 }
 
 
@@ -3161,14 +3161,14 @@ void discord_thread_metadata_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_thread_metadata);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_thread_metadata_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_thread_metadata_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_thread_metadata_list_to_json(char *str, size_t len, struct discord_thread_metadata **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_thread_metadata_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_thread_metadata_to_json);
 }
 
 
@@ -3333,14 +3333,14 @@ void discord_thread_member_list_from_json(char *str, size_t len, struct discord_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_thread_member);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_thread_member_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_thread_member_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_thread_member_list_to_json(char *str, size_t len, struct discord_thread_member **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_thread_member_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_thread_member_to_json);
 }
 
 
@@ -3663,14 +3663,14 @@ void discord_attachment_list_from_json(char *str, size_t len, struct discord_att
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_attachment);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_attachment_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_attachment_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_attachment_list_to_json(char *str, size_t len, struct discord_attachment **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_attachment_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_attachment_to_json);
 }
 
 
@@ -3836,14 +3836,14 @@ void discord_channel_mention_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_channel_mention);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_channel_mention_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_channel_mention_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_channel_mention_list_to_json(char *str, size_t len, struct discord_channel_mention **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_channel_mention_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_channel_mention_to_json);
 }
 
 
@@ -4011,14 +4011,14 @@ void discord_allowed_mentions_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_allowed_mentions);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_allowed_mentions_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_allowed_mentions_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_allowed_mentions_list_to_json(char *str, size_t len, struct discord_allowed_mentions **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_allowed_mentions_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_allowed_mentions_to_json);
 }
 
 
@@ -4416,14 +4416,14 @@ void discord_embed_list_from_json(char *str, size_t len, struct discord_embed **
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_list_to_json(char *str, size_t len, struct discord_embed **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_to_json);
 }
 
 
@@ -4594,14 +4594,14 @@ void discord_embed_thumbnail_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_thumbnail);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_thumbnail_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_thumbnail_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_thumbnail_list_to_json(char *str, size_t len, struct discord_embed_thumbnail **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_thumbnail_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_thumbnail_to_json);
 }
 
 
@@ -4772,14 +4772,14 @@ void discord_embed_video_list_from_json(char *str, size_t len, struct discord_em
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_video);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_video_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_video_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_video_list_to_json(char *str, size_t len, struct discord_embed_video **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_video_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_video_to_json);
 }
 
 
@@ -4950,14 +4950,14 @@ void discord_embed_image_list_from_json(char *str, size_t len, struct discord_em
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_image);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_image_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_image_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_image_list_to_json(char *str, size_t len, struct discord_embed_image **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_image_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_image_to_json);
 }
 
 
@@ -5082,14 +5082,14 @@ void discord_embed_provider_list_from_json(char *str, size_t len, struct discord
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_provider);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_provider_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_provider_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_provider_list_to_json(char *str, size_t len, struct discord_embed_provider **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_provider_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_provider_to_json);
 }
 
 
@@ -5262,14 +5262,14 @@ void discord_embed_author_list_from_json(char *str, size_t len, struct discord_e
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_author);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_author_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_author_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_author_list_to_json(char *str, size_t len, struct discord_embed_author **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_author_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_author_to_json);
 }
 
 
@@ -5418,14 +5418,14 @@ void discord_embed_footer_list_from_json(char *str, size_t len, struct discord_e
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_footer);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_footer_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_footer_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_footer_list_to_json(char *str, size_t len, struct discord_embed_footer **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_footer_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_footer_to_json);
 }
 
 
@@ -5572,13 +5572,13 @@ void discord_embed_field_list_from_json(char *str, size_t len, struct discord_em
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_embed_field);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_embed_field_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_embed_field_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_embed_field_list_to_json(char *str, size_t len, struct discord_embed_field **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_embed_field_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_embed_field_to_json);
 }
 

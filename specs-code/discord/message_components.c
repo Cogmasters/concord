@@ -368,14 +368,14 @@ void discord_component_list_from_json(char *str, size_t len, struct discord_comp
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_component);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_component_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_component_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_component_list_to_json(char *str, size_t len, struct discord_component **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_component_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_component_to_json);
 }
 
 
@@ -672,14 +672,14 @@ void discord_button_list_from_json(char *str, size_t len, struct discord_button 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_button);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_button_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_button_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_button_list_to_json(char *str, size_t len, struct discord_button **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_button_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_button_to_json);
 }
 
 
@@ -976,14 +976,14 @@ void discord_select_menu_list_from_json(char *str, size_t len, struct discord_se
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_select_menu);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_select_menu_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_select_menu_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_select_menu_list_to_json(char *str, size_t len, struct discord_select_menu **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_select_menu_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_select_menu_to_json);
 }
 
 
@@ -1177,13 +1177,13 @@ void discord_select_option_list_from_json(char *str, size_t len, struct discord_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_select_option);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_select_option_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_select_option_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_select_option_list_to_json(char *str, size_t len, struct discord_select_option **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_select_option_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_select_option_to_json);
 }
 

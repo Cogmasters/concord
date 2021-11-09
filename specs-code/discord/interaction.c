@@ -326,14 +326,14 @@ void discord_interaction_list_from_json(char *str, size_t len, struct discord_in
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_interaction_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_interaction_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_list_to_json(char *str, size_t len, struct discord_interaction **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_interaction_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_to_json);
 }
 
 
@@ -653,14 +653,14 @@ void discord_interaction_data_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction_data);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_interaction_data_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_interaction_data_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_data_list_to_json(char *str, size_t len, struct discord_interaction_data **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_interaction_data_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_data_to_json);
 }
 
 
@@ -857,14 +857,14 @@ void discord_resolved_data_list_from_json(char *str, size_t len, struct discord_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_resolved_data);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_resolved_data_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_resolved_data_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_resolved_data_list_to_json(char *str, size_t len, struct discord_resolved_data **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_resolved_data_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_resolved_data_to_json);
 }
 
 
@@ -1033,14 +1033,14 @@ void discord_message_interaction_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_interaction);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_message_interaction_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_message_interaction_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_interaction_list_to_json(char *str, size_t len, struct discord_message_interaction **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_message_interaction_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_interaction_to_json);
 }
 
 
@@ -1165,14 +1165,14 @@ void discord_interaction_response_list_from_json(char *str, size_t len, struct d
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction_response);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_interaction_response_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_interaction_response_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_response_list_to_json(char *str, size_t len, struct discord_interaction_response **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_interaction_response_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_response_to_json);
 }
 
 
@@ -1475,14 +1475,14 @@ void discord_interaction_callback_data_list_from_json(char *str, size_t len, str
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction_callback_data);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_interaction_callback_data_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_interaction_callback_data_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_callback_data_list_to_json(char *str, size_t len, struct discord_interaction_callback_data **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_interaction_callback_data_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_callback_data_to_json);
 }
 
 

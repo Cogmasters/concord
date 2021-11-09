@@ -206,14 +206,14 @@ void discord_audit_log_list_from_json(char *str, size_t len, struct discord_audi
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_audit_log_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_audit_log_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audit_log **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_audit_log_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_audit_log_to_json);
 }
 
 
@@ -455,14 +455,14 @@ void discord_audit_log_entry_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_entry);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_audit_log_entry_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_audit_log_entry_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct discord_audit_log_entry **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_audit_log_entry_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_audit_log_entry_to_json);
 }
 
 
@@ -863,14 +863,14 @@ void discord_optional_audit_entry_info_list_from_json(char *str, size_t len, str
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_optional_audit_entry_info);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_optional_audit_entry_info_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_optional_audit_entry_info_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_optional_audit_entry_info_list_to_json(char *str, size_t len, struct discord_optional_audit_entry_info **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_optional_audit_entry_info_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_optional_audit_entry_info_to_json);
 }
 
 
@@ -1019,13 +1019,13 @@ void discord_audit_log_change_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_change);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_audit_log_change_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_audit_log_change_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_change_list_to_json(char *str, size_t len, struct discord_audit_log_change **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_audit_log_change_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_audit_log_change_to_json);
 }
 

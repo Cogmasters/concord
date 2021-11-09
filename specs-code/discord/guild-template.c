@@ -338,13 +338,13 @@ void discord_guild_template_list_from_json(char *str, size_t len, struct discord
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_template);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_guild_template_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_guild_template_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_template_list_to_json(char *str, size_t len, struct discord_guild_template **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_guild_template_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_template_to_json);
 }
 

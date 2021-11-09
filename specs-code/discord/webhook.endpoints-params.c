@@ -133,14 +133,14 @@ void discord_create_webhook_params_list_from_json(char *str, size_t len, struct 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_webhook_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_create_webhook_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_create_webhook_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_webhook_params_list_to_json(char *str, size_t len, struct discord_create_webhook_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_create_webhook_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_webhook_params_to_json);
 }
 
 
@@ -288,14 +288,14 @@ void discord_modify_webhook_params_list_from_json(char *str, size_t len, struct 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_webhook_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_modify_webhook_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_modify_webhook_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_webhook_params_list_to_json(char *str, size_t len, struct discord_modify_webhook_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_modify_webhook_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_webhook_params_to_json);
 }
 
 
@@ -420,14 +420,14 @@ void discord_modify_webhook_with_token_params_list_from_json(char *str, size_t l
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_webhook_with_token_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_modify_webhook_with_token_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_modify_webhook_with_token_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_webhook_with_token_params_list_to_json(char *str, size_t len, struct discord_modify_webhook_with_token_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_modify_webhook_with_token_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_webhook_with_token_params_to_json);
 }
 
 
@@ -720,14 +720,14 @@ void discord_execute_webhook_params_list_from_json(char *str, size_t len, struct
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_execute_webhook_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_execute_webhook_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_execute_webhook_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_execute_webhook_params_list_to_json(char *str, size_t len, struct discord_execute_webhook_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_execute_webhook_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_execute_webhook_params_to_json);
 }
 
 
@@ -926,13 +926,13 @@ void discord_edit_webhook_message_params_list_from_json(char *str, size_t len, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_webhook_message_params);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_edit_webhook_message_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_edit_webhook_message_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_webhook_message_params_list_to_json(char *str, size_t len, struct discord_edit_webhook_message_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_edit_webhook_message_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_edit_webhook_message_params_to_json);
 }
 

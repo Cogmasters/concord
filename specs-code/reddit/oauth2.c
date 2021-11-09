@@ -201,13 +201,13 @@ void reddit_access_token_params_list_from_json(char *str, size_t len, struct red
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct reddit_access_token_params);
   d.init_elem = NULL;
-  d.elem_from_buf = reddit_access_token_params_from_json_v;
+  d.elem_from_buf = (vfcpsvp)reddit_access_token_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t reddit_access_token_params_list_to_json(char *str, size_t len, struct reddit_access_token_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, reddit_access_token_params_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)reddit_access_token_params_to_json);
 }
 

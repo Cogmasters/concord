@@ -266,14 +266,14 @@ void discord_application_command_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_application_command_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_application_command_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_list_to_json(char *str, size_t len, struct discord_application_command **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_application_command_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_to_json);
 }
 
 
@@ -541,14 +541,14 @@ void discord_application_command_option_list_from_json(char *str, size_t len, st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_option);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_application_command_option_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_application_command_option_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_option_list_to_json(char *str, size_t len, struct discord_application_command_option **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_application_command_option_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_option_to_json);
 }
 
 
@@ -739,14 +739,14 @@ void discord_application_command_option_choice_list_from_json(char *str, size_t 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_option_choice);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_application_command_option_choice_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_application_command_option_choice_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_option_choice_list_to_json(char *str, size_t len, struct discord_application_command_option_choice **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_application_command_option_choice_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_option_choice_to_json);
 }
 
 
@@ -912,14 +912,14 @@ void discord_guild_application_command_permissions_list_from_json(char *str, siz
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_application_command_permissions);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_guild_application_command_permissions_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_guild_application_command_permissions_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_application_command_permissions_list_to_json(char *str, size_t len, struct discord_guild_application_command_permissions **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_guild_application_command_permissions_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_application_command_permissions_to_json);
 }
 
 
@@ -1062,14 +1062,14 @@ void discord_application_command_permissions_list_from_json(char *str, size_t le
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_permissions);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_application_command_permissions_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_application_command_permissions_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_permissions_list_to_json(char *str, size_t len, struct discord_application_command_permissions **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_application_command_permissions_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_permissions_to_json);
 }
 
 
@@ -1291,13 +1291,13 @@ void discord_application_command_interaction_data_option_list_from_json(char *st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_interaction_data_option);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_application_command_interaction_data_option_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_application_command_interaction_data_option_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_interaction_data_option_list_to_json(char *str, size_t len, struct discord_application_command_interaction_data_option **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_application_command_interaction_data_option_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_interaction_data_option_to_json);
 }
 

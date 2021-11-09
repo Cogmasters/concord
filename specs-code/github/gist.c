@@ -269,13 +269,13 @@ void github_gist_list_from_json(char *str, size_t len, struct github_gist ***p)
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct github_gist);
   d.init_elem = NULL;
-  d.elem_from_buf = github_gist_from_json_v;
+  d.elem_from_buf = (vfcpsvp)github_gist_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t github_gist_list_to_json(char *str, size_t len, struct github_gist **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, github_gist_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)github_gist_to_json);
 }
 

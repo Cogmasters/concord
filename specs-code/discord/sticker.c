@@ -469,14 +469,14 @@ void discord_sticker_list_from_json(char *str, size_t len, struct discord_sticke
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_sticker);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_sticker_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_sticker_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_sticker_list_to_json(char *str, size_t len, struct discord_sticker **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_sticker_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_sticker_to_json);
 }
 
 
@@ -620,14 +620,14 @@ void discord_sticker_item_list_from_json(char *str, size_t len, struct discord_s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_sticker_item);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_sticker_item_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_sticker_item_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_sticker_item_list_to_json(char *str, size_t len, struct discord_sticker_item **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_sticker_item_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_sticker_item_to_json);
 }
 
 
@@ -862,13 +862,13 @@ void discord_sticker_pack_list_from_json(char *str, size_t len, struct discord_s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_sticker_pack);
   d.init_elem = NULL;
-  d.elem_from_buf = discord_sticker_pack_from_json_v;
+  d.elem_from_buf = (vfcpsvp)discord_sticker_pack_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_sticker_pack_list_to_json(char *str, size_t len, struct discord_sticker_pack **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, discord_sticker_pack_to_json_v);
+  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_sticker_pack_to_json);
 }
 
