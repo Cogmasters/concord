@@ -6,7 +6,45 @@
 #include "discord.h"
 #include "cee-utils.h" /* cee_timestamp_ms() */
 
-#define JSON_FILE "bot-embed.json"
+char JSON_STRING[] =
+  "{\n"
+  "  \"title\": \"Orca\",\n"
+  "  \"description\": \"Multi-REST Api library\",\n"
+  "  \"url\": \"https://github.com/cee-studio/orca\",\n"
+  "  \"color\": 3447003,\n"
+  "  \"footer\": {\n"
+  "    \"text\": \"github.com/cee-studio/orca\",\n"
+  "    \"icon_url\": "
+  "\"https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/"
+  "source/images/icon.svg\"\n"
+  "  },\n"
+  "  \"image\": {\n"
+  "    \"url\": "
+  "\"https://github.com/cee-studio/orca-docs/blob/master/docs/source/images/"
+  "social-preview.png?raw=true\"\n"
+  "  },\n"
+  "  \"author\": {\n"
+  "    \"name\": \"cee-studio\",\n"
+  "    \"url\": \"https://github.com/cee-studio\",\n"
+  "    \"icon_url\": \"https://cee.dev/static/images/cee.png\"\n"
+  "  },\n"
+  "  \"fields\": [\n"
+  "    {\n"
+  "      \"name\":\"Want to learn more?\", \n"
+  "      \"value\":\"Read our "
+  "[documentation](https://cee-studio.github.io/orca/"
+  "discord_api.html#c.discord_embed)!\"\n"
+  "    },\n"
+  "    {\n"
+  "      \"name\":\"Need help troubleshooting?\", \n"
+  "      \"value\":\"Debug with [Saiph-C](https://www.cee.studio/)\"\n"
+  "    },\n"
+  "    {\n"
+  "      \"name\":\"Looking for support?\", \n"
+  "      \"value\":\"Join our server [here](https://discord.gg/x4hhGQYu)!\"\n"
+  "    }\n"
+  "  ]\n"
+  "}";
 
 void on_ready(struct discord *client, const struct discord_user *bot)
 {
@@ -14,19 +52,15 @@ void on_ready(struct discord *client, const struct discord_user *bot)
            bot->username, bot->discriminator);
 }
 
-void on_from_json_init(struct discord *client,
-                       const struct discord_user *bot,
-                       const struct discord_message *msg)
+void on_dynamic(struct discord *client,
+                const struct discord_user *bot,
+                const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  /* load JSON file contents into json_str */
-  size_t json_len;
-  char *json_str = cee_load_whole_file(JSON_FILE, &json_len);
-
   /* load a embed from the json string */
   struct discord_embed embed;
-  discord_embed_from_json(json_str, json_len, &embed);
+  discord_embed_from_json(JSON_STRING, sizeof(JSON_STRING), &embed);
   embed.timestamp = cee_timestamp_ms(); // get current timestamp
 
   struct discord_create_message_params params = { .content =
@@ -34,14 +68,13 @@ void on_from_json_init(struct discord *client,
                                                   .embed = &embed };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
-  free(json_str);
-
+  /* must cleanup 'embed' afterwards */
   discord_embed_cleanup(&embed);
 }
 
-void on_designated_init(struct discord *client,
-                        const struct discord_user *bot,
-                        const struct discord_message *msg)
+void on_static(struct discord *client,
+               const struct discord_user *bot,
+               const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -82,9 +115,9 @@ void on_designated_init(struct discord *client,
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_builder_init(struct discord *client,
-                     const struct discord_user *bot,
-                     const struct discord_message *msg)
+void on_builder(struct discord *client,
+                const struct discord_user *bot,
+                const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -118,6 +151,7 @@ void on_builder_init(struct discord *client,
   struct discord_create_message_params params = { .embed = &embed };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
+  /* must cleanup 'embed' afterwards */
   discord_embed_cleanup(&embed);
 }
 
@@ -136,20 +170,20 @@ int main(int argc, char *argv[])
   discord_set_on_ready(client, &on_ready);
 
   discord_set_prefix(client, "!");
-  discord_set_on_command(client, "from_json_init", &on_from_json_init);
-  discord_set_on_command(client, "designated_init", &on_designated_init);
-  discord_set_on_command(client, "builder_init", &on_builder_init);
+  discord_set_on_command(client, "dynamic", &on_dynamic);
+  discord_set_on_command(client, "static", &on_static);
+  discord_set_on_command(client, "builder", &on_builder);
 
-  printf("\n\nThis bot demonstrates how to embeds"
-         " with three different methods.\n"
-         "1 - From JSON init (type !from_json_init): Load the embed from a raw JSON "
-         "string.,"
-         "2 - Designated init (type !designated_init): A stack-based "
-         "initialization approach"
-         " but is not very flexible.\n"
-         "3 - Builder init (type !builder_init): This is dynamic and flexible "
-         "approach, it relies on utility functions from discord-misc.c.\n"
-         "\nTYPE ANY KEY TO START BOT\n");
+  printf(
+    "\n\nThis bot demonstrates how to embeds"
+    " with three different methods.\n"
+    "1 - Dynamic-approach (type !dynamic): Load the embed from "
+    "a JSON string.\n"
+    "2 - Static-approach (type !static): A  clean  initialization approach "
+    "using the combination of designated initialization and compound literals.\n"
+    "3 - Builder-approach (type !builder): A dynamic and flexible "
+    "approach that relies on embed builder functions.\n"
+    "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
   discord_run(client);
