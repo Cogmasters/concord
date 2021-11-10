@@ -14,7 +14,7 @@ extern "C" {
  * @see Read `log.c` <a href="https://github.com/rxi/log.c#usage">documentation</a>
  * @{ */
 /**
- * @enum log_Level
+ * @var log_Level
  * @struct log_Logger
  * @struct log_Callback
  * @struct log_Event
