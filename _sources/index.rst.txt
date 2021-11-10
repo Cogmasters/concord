@@ -18,7 +18,7 @@ Reference
    :glob:
 
    web_apis/index
-   orca_api/index
+   Orca API <orca_api/index>
   
 Help
 ----
