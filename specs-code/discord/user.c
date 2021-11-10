@@ -196,7 +196,7 @@ void discord_user_from_json(char *json, size_t len, struct discord_user *p)
                 "(public_flags):d,",
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/user.json:45:24
      '{ "name": "username", "type":{ "base":"char", "dec":"*"}}' */
                 &p->username,
@@ -345,7 +345,7 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
                 "@arg_switches:b",
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/user.json:45:24
      '{ "name": "username", "type":{ "base":"char", "dec":"*"}}' */
                 p->username,

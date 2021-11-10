@@ -170,10 +170,10 @@ void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p
                 "(sort_value):d,",
   /* specs/discord/sticker.json:31:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/sticker.json:32:18
      '{"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"for standard stickers, id of the pack the sticker is from"}' */
-                cee_strtoull, &p->pack_id,
+                cee_strtou64, &p->pack_id,
   /* specs/discord/sticker.json:33:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
                 &p->name,
@@ -197,7 +197,7 @@ void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p
                 &p->available,
   /* specs/discord/sticker.json:40:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of the guild that owns this sticker"}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/sticker.json:41:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "inject_if_not":null, "comment":"the user that uploaded the guild sticker"}' */
                 discord_user_from_json_p, &p->user,
@@ -303,10 +303,10 @@ size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p
                 "@arg_switches:b",
   /* specs/discord/sticker.json:31:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/sticker.json:32:18
      '{"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"for standard stickers, id of the pack the sticker is from"}' */
-                cee_ulltostr, &p->pack_id,
+                cee_u64tostr, &p->pack_id,
   /* specs/discord/sticker.json:33:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
                 p->name,
@@ -330,7 +330,7 @@ size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p
                 &p->available,
   /* specs/discord/sticker.json:40:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of the guild that owns this sticker"}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/sticker.json:41:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "inject_if_not":null, "comment":"the user that uploaded the guild sticker"}' */
                 discord_user_to_json, p->user,
@@ -502,7 +502,7 @@ void discord_sticker_item_from_json(char *json, size_t len, struct discord_stick
                 "(format_type):d,",
   /* specs/discord/sticker.json:50:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/sticker.json:51:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
                 &p->name,
@@ -541,7 +541,7 @@ size_t discord_sticker_item_to_json(char *json, size_t len, struct discord_stick
                 "@arg_switches:b",
   /* specs/discord/sticker.json:50:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/sticker.json:51:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
                 p->name,
@@ -665,7 +665,7 @@ void discord_sticker_pack_from_json(char *json, size_t len, struct discord_stick
                 "(banner_asset_id):F,",
   /* specs/discord/sticker.json:60:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/sticker.json:61:18
      '{"name":"stickers", "type":{"base":"struct discord_sticker", "dec":"ntl"}, "comment":"the stickers in the pack"}' */
                 discord_sticker_list_from_json, &p->stickers,
@@ -674,16 +674,16 @@ void discord_sticker_pack_from_json(char *json, size_t len, struct discord_stick
                 &p->name,
   /* specs/discord/sticker.json:63:18
      '{"name":"sku_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the pack's SKU"}' */
-                cee_strtoull, &p->sku_id,
+                cee_strtou64, &p->sku_id,
   /* specs/discord/sticker.json:64:18
      '{"name":"cover_sticker_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of a sticker in the pack which is shown as the pack's icon"}' */
-                cee_strtoull, &p->cover_sticker_id,
+                cee_strtou64, &p->cover_sticker_id,
   /* specs/discord/sticker.json:65:18
      '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker pack"}' */
                 &p->description,
   /* specs/discord/sticker.json:66:18
      '{"name":"banner_asset_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack's banner image"}' */
-                cee_strtoull, &p->banner_asset_id);
+                cee_strtou64, &p->banner_asset_id);
   ret = r;
 }
 
@@ -745,7 +745,7 @@ size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_stick
                 "@arg_switches:b",
   /* specs/discord/sticker.json:60:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/sticker.json:61:18
      '{"name":"stickers", "type":{"base":"struct discord_sticker", "dec":"ntl"}, "comment":"the stickers in the pack"}' */
                 discord_sticker_list_to_json, p->stickers,
@@ -754,16 +754,16 @@ size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_stick
                 p->name,
   /* specs/discord/sticker.json:63:18
      '{"name":"sku_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the pack's SKU"}' */
-                cee_ulltostr, &p->sku_id,
+                cee_u64tostr, &p->sku_id,
   /* specs/discord/sticker.json:64:18
      '{"name":"cover_sticker_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of a sticker in the pack which is shown as the pack's icon"}' */
-                cee_ulltostr, &p->cover_sticker_id,
+                cee_u64tostr, &p->cover_sticker_id,
   /* specs/discord/sticker.json:65:18
      '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker pack"}' */
                 p->description,
   /* specs/discord/sticker.json:66:18
      '{"name":"banner_asset_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack's banner image"}' */
-                cee_ulltostr, &p->banner_asset_id,
+                cee_u64tostr, &p->banner_asset_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }

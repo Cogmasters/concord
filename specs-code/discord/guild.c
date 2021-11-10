@@ -168,7 +168,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
                 "(welcome_screen):F,",
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/guild.json:13:53
      '{"type":{"base":"char", "dec":"*"}, "name":"name"}' */
                 &p->name,
@@ -189,7 +189,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
                 &p->owner,
   /* specs/discord/guild.json:19:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"}' */
-                cee_strtoull, &p->owner_id,
+                cee_strtou64, &p->owner_id,
   /* specs/discord/guild.json:20:41
      '{"type":{"base":"int"}, "name":"permissions", "option":true}' */
                 &p->permissions,
@@ -198,7 +198,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
                 p->region,
   /* specs/discord/guild.json:22:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"}' */
-                cee_strtoull, &p->afk_channel_id,
+                cee_strtou64, &p->afk_channel_id,
   /* specs/discord/guild.json:23:41
      '{"type":{"base":"int"}, "name":"afk_timeout"}' */
                 &p->afk_timeout,
@@ -207,7 +207,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
                 &p->widget_enabled,
   /* specs/discord/guild.json:25:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id", "option":true}' */
-                cee_strtoull, &p->widget_channel_id,
+                cee_strtou64, &p->widget_channel_id,
   /* specs/discord/guild.json:26:88
      '{"type":{"base":"int", "int_alias":"enum discord_verification_level"}, "name":"verification_level"}' */
                 &p->verification_level,
@@ -233,16 +233,16 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
                 &p->mfa_level,
   /* specs/discord/guild.json:35:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}' */
-                cee_strtoull, &p->application_id,
+                cee_strtou64, &p->application_id,
   /* specs/discord/guild.json:36:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"}' */
-                cee_strtoull, &p->system_channel_id,
+                cee_strtou64, &p->system_channel_id,
   /* specs/discord/guild.json:37:90
      '{"type":{"base":"int", "int_alias":"enum discord_system_channel_flags"}, "name":"system_channel_flags"}' */
                 &p->system_channel_flags,
   /* specs/discord/guild.json:38:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}' */
-                cee_strtoull, &p->rules_channel_id,
+                cee_strtou64, &p->rules_channel_id,
   /* specs/discord/guild.json:39:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true}' */
                 cee_iso8601_to_unix_ms, &p->joined_at,
@@ -295,7 +295,7 @@ void discord_guild_from_json(char *json, size_t len, struct discord_guild *p)
   /* specs/discord/guild.json:57:27
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
          "name":"public_updates_channel_id"}' */
-                cee_strtoull, &p->public_updates_channel_id,
+                cee_strtou64, &p->public_updates_channel_id,
   /* specs/discord/guild.json:58:41
      '{"type":{"base":"int"}, "name":"max_video_channel_users", "option":true}' */
                 &p->max_video_channel_users,
@@ -653,7 +653,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
                 "@arg_switches:b",
   /* specs/discord/guild.json:12:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/guild.json:13:53
      '{"type":{"base":"char", "dec":"*"}, "name":"name"}' */
                 p->name,
@@ -674,7 +674,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
                 &p->owner,
   /* specs/discord/guild.json:19:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id"}' */
-                cee_ulltostr, &p->owner_id,
+                cee_u64tostr, &p->owner_id,
   /* specs/discord/guild.json:20:41
      '{"type":{"base":"int"}, "name":"permissions", "option":true}' */
                 &p->permissions,
@@ -683,7 +683,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
                 p->region,
   /* specs/discord/guild.json:22:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"afk_channel_id"}' */
-                cee_ulltostr, &p->afk_channel_id,
+                cee_u64tostr, &p->afk_channel_id,
   /* specs/discord/guild.json:23:41
      '{"type":{"base":"int"}, "name":"afk_timeout"}' */
                 &p->afk_timeout,
@@ -692,7 +692,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
                 &p->widget_enabled,
   /* specs/discord/guild.json:25:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"widget_channel_id", "option":true}' */
-                cee_ulltostr, &p->widget_channel_id,
+                cee_u64tostr, &p->widget_channel_id,
   /* specs/discord/guild.json:26:88
      '{"type":{"base":"int", "int_alias":"enum discord_verification_level"}, "name":"verification_level"}' */
                 &p->verification_level,
@@ -718,16 +718,16 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
                 &p->mfa_level,
   /* specs/discord/guild.json:35:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"application_id"}' */
-                cee_ulltostr, &p->application_id,
+                cee_u64tostr, &p->application_id,
   /* specs/discord/guild.json:36:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"system_channel_id"}' */
-                cee_ulltostr, &p->system_channel_id,
+                cee_u64tostr, &p->system_channel_id,
   /* specs/discord/guild.json:37:90
      '{"type":{"base":"int", "int_alias":"enum discord_system_channel_flags"}, "name":"system_channel_flags"}' */
                 &p->system_channel_flags,
   /* specs/discord/guild.json:38:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"rules_channel_id"}' */
-                cee_ulltostr, &p->rules_channel_id,
+                cee_u64tostr, &p->rules_channel_id,
   /* specs/discord/guild.json:39:76
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601"}, "name":"joined_at", "option":true}' */
                 cee_unix_ms_to_iso8601, &p->joined_at,
@@ -780,7 +780,7 @@ size_t discord_guild_to_json(char *json, size_t len, struct discord_guild *p)
   /* specs/discord/guild.json:57:27
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, 
          "name":"public_updates_channel_id"}' */
-                cee_ulltostr, &p->public_updates_channel_id,
+                cee_u64tostr, &p->public_updates_channel_id,
   /* specs/discord/guild.json:58:41
      '{"type":{"base":"int"}, "name":"max_video_channel_users", "option":true}' */
                 &p->max_video_channel_users,
@@ -1587,7 +1587,7 @@ void discord_unavailable_guild_from_json(char *json, size_t len, struct discord_
                 "(unavailable):b,",
   /* specs/discord/guild.json:152:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/guild.json:153:18
      '{"name":"unavailable", "type":{"base":"bool"}}' */
                 &p->unavailable);
@@ -1616,7 +1616,7 @@ size_t discord_unavailable_guild_to_json(char *json, size_t len, struct discord_
                 "@arg_switches:b",
   /* specs/discord/guild.json:152:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/guild.json:153:18
      '{"name":"unavailable", "type":{"base":"bool"}}' */
                 &p->unavailable,
@@ -1739,7 +1739,7 @@ void discord_guild_preview_from_json(char *json, size_t len, struct discord_guil
                 "(description):?s,",
   /* specs/discord/guild.json:162:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/guild.json:163:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
                 &p->name,
@@ -1848,7 +1848,7 @@ size_t discord_guild_preview_to_json(char *json, size_t len, struct discord_guil
                 "@arg_switches:b",
   /* specs/discord/guild.json:162:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/guild.json:163:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
                 p->name,
@@ -2029,7 +2029,7 @@ void discord_guild_widget_from_json(char *json, size_t len, struct discord_guild
                 &p->enabled,
   /* specs/discord/guild.json:181:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}}' */
-                cee_strtoull, &p->channel_id);
+                cee_strtou64, &p->channel_id);
   ret = r;
 }
 
@@ -2058,7 +2058,7 @@ size_t discord_guild_widget_to_json(char *json, size_t len, struct discord_guild
                 &p->enabled,
   /* specs/discord/guild.json:181:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }
@@ -2481,7 +2481,7 @@ void discord_integration_from_json(char *json, size_t len, struct discord_integr
                 "(application):F,",
   /* specs/discord/guild.json:208:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/guild.json:209:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 &p->name,
@@ -2496,7 +2496,7 @@ void discord_integration_from_json(char *json, size_t len, struct discord_integr
                 &p->syncing,
   /* specs/discord/guild.json:213:20
      '{ "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->role_id,
+                cee_strtou64, &p->role_id,
   /* specs/discord/guild.json:214:20
      '{ "name": "enable_emotions", "type":{ "base":"bool"}}' */
                 &p->enable_emotions,
@@ -2640,7 +2640,7 @@ size_t discord_integration_to_json(char *json, size_t len, struct discord_integr
                 "@arg_switches:b",
   /* specs/discord/guild.json:208:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/guild.json:209:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 p->name,
@@ -2655,7 +2655,7 @@ size_t discord_integration_to_json(char *json, size_t len, struct discord_integr
                 &p->syncing,
   /* specs/discord/guild.json:213:20
      '{ "name": "role_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->role_id,
+                cee_u64tostr, &p->role_id,
   /* specs/discord/guild.json:214:20
      '{ "name": "enable_emotions", "type":{ "base":"bool"}}' */
                 &p->enable_emotions,
@@ -2920,7 +2920,7 @@ void discord_integration_account_from_json(char *json, size_t len, struct discor
                 "(name):?s,",
   /* specs/discord/guild.json:241:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/guild.json:242:19
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->name);
@@ -2949,7 +2949,7 @@ size_t discord_integration_account_to_json(char *json, size_t len, struct discor
                 "@arg_switches:b",
   /* specs/discord/guild.json:241:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/guild.json:242:19
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
@@ -3061,7 +3061,7 @@ void discord_integration_application_from_json(char *json, size_t len, struct di
                 "(bot):F,",
   /* specs/discord/guild.json:251:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/guild.json:252:19
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->name,
@@ -3130,7 +3130,7 @@ size_t discord_integration_application_to_json(char *json, size_t len, struct di
                 "@arg_switches:b",
   /* specs/discord/guild.json:251:19
      '{ "name":"id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/guild.json:252:19
      '{ "name":"name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
@@ -3541,13 +3541,13 @@ void discord_welcome_screen_channel_from_json(char *json, size_t len, struct dis
                 "(emoji_name):?s,",
   /* specs/discord/guild.json:286:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/guild.json:287:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 &p->description,
   /* specs/discord/guild.json:288:20
      '{ "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->emoji_id,
+                cee_strtou64, &p->emoji_id,
   /* specs/discord/guild.json:289:20
      '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->emoji_name);
@@ -3590,13 +3590,13 @@ size_t discord_welcome_screen_channel_to_json(char *json, size_t len, struct dis
                 "@arg_switches:b",
   /* specs/discord/guild.json:286:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/guild.json:287:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 p->description,
   /* specs/discord/guild.json:288:20
      '{ "name": "emoji_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->emoji_id,
+                cee_u64tostr, &p->emoji_id,
   /* specs/discord/guild.json:289:20
      '{ "name": "emoji_name", "type":{ "base":"char", "dec":"*" }}' */
                 p->emoji_name,

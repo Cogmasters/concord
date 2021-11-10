@@ -373,7 +373,7 @@ discord_get_reactions(struct discord *client,
       ret = query_inject(query, sizeof(query),
                          "(after):F"
                          "(limit):d",
-                         &cee_ulltostr, &params->after, &params->limit);
+                         &cee_u64tostr, &params->after, &params->limit);
     }
     else {
       ret = query_inject(query, sizeof(query), "(limit):d", &params->limit);

@@ -56,10 +56,10 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
                 "(message):F,",
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/interaction.json:13:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-                cee_strtoull, &p->application_id,
+                cee_strtou64, &p->application_id,
   /* specs/discord/interaction.json:14:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
                 &p->type,
@@ -68,10 +68,10 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
                 discord_interaction_data_from_json_p, &p->data,
   /* specs/discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/interaction.json:17:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
                 discord_guild_member_from_json_p, &p->member,
@@ -172,10 +172,10 @@ size_t discord_interaction_to_json(char *json, size_t len, struct discord_intera
                 "@arg_switches:b",
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/interaction.json:13:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-                cee_ulltostr, &p->application_id,
+                cee_u64tostr, &p->application_id,
   /* specs/discord/interaction.json:14:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
                 &p->type,
@@ -184,10 +184,10 @@ size_t discord_interaction_to_json(char *json, size_t len, struct discord_intera
                 discord_interaction_data_to_json, p->data,
   /* specs/discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/interaction.json:17:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
                 discord_guild_member_to_json, p->member,
@@ -429,7 +429,7 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
                 "(target_id):F,",
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/interaction.json:44:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
                 &p->name,
@@ -450,7 +450,7 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
                 ja_str_list_from_json, &p->values,
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-                cee_strtoull, &p->target_id);
+                cee_strtou64, &p->target_id);
   ret = r;
 }
 
@@ -523,7 +523,7 @@ size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_i
                 "@arg_switches:b",
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/interaction.json:44:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
                 p->name,
@@ -544,7 +544,7 @@ size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_i
                 ja_str_list_to_json, p->values,
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-                cee_ulltostr, &p->target_id,
+                cee_u64tostr, &p->target_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }
@@ -893,7 +893,7 @@ void discord_message_interaction_from_json(char *json, size_t len, struct discor
                 "(user):F,",
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/interaction.json:75:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
                 &p->type,
@@ -942,7 +942,7 @@ size_t discord_message_interaction_to_json(char *json, size_t len, struct discor
                 "@arg_switches:b",
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/interaction.json:75:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
                 &p->type,

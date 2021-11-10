@@ -50,16 +50,16 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
                 "(default_permission):b,",
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/application_commands.json:13:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
                 &p->type,
   /* specs/discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-                cee_strtoull, &p->application_id,
+                cee_strtou64, &p->application_id,
   /* specs/discord/application_commands.json:15:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/application_commands.json:16:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
                 p->name,
@@ -142,16 +142,16 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
                 "@arg_switches:b",
   /* specs/discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/application_commands.json:13:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
                 &p->type,
   /* specs/discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-                cee_ulltostr, &p->application_id,
+                cee_u64tostr, &p->application_id,
   /* specs/discord/application_commands.json:15:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/application_commands.json:16:18
      '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
                 p->name,
@@ -775,13 +775,13 @@ void discord_guild_application_command_permissions_from_json(char *json, size_t 
                 "(permissions):F,",
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/application_commands.json:87:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-                cee_strtoull, &p->application_id,
+                cee_strtou64, &p->application_id,
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 discord_application_command_permissions_list_from_json, &p->permissions);
@@ -824,13 +824,13 @@ size_t discord_guild_application_command_permissions_to_json(char *json, size_t 
                 "@arg_switches:b",
   /* specs/discord/application_commands.json:86:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/application_commands.json:87:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-                cee_ulltostr, &p->application_id,
+                cee_u64tostr, &p->application_id,
   /* specs/discord/application_commands.json:88:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/application_commands.json:89:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 discord_application_command_permissions_list_to_json, p->permissions,
@@ -945,7 +945,7 @@ void discord_application_command_permissions_from_json(char *json, size_t len, s
                 "(permission):b,",
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
                 &p->type,
@@ -984,7 +984,7 @@ size_t discord_application_command_permissions_to_json(char *json, size_t len, s
                 "@arg_switches:b",
   /* specs/discord/application_commands.json:99:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/application_commands.json:100:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
                 &p->type,

@@ -268,7 +268,7 @@ void on_command(struct discord *client,
   int ret = query_inject(query, sizeof(query),
                          "(system):s"
                          "(timeMax):F",
-                         msg->content, &cee_ulltostr, &tick_ms);
+                         msg->content, &cee_u64tostr, &tick_ms);
   ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
 
   discord_trigger_typing_indicator(client, msg->channel_id);

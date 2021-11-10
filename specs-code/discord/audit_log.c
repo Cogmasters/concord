@@ -257,10 +257,10 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
                 discord_audit_log_change_list_from_json, &p->changes,
   /* specs/discord/audit_log.json:28:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the user who made the changes", "inject_if_not":0 }' */
-                cee_strtoull, &p->user_id,
+                cee_strtou64, &p->user_id,
   /* specs/discord/audit_log.json:29:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 }' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/audit_log.json:30:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 }' */
                 &p->action_type,
@@ -343,10 +343,10 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
                 discord_audit_log_change_list_to_json, p->changes,
   /* specs/discord/audit_log.json:28:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the user who made the changes", "inject_if_not":0 }' */
-                cee_ulltostr, &p->user_id,
+                cee_u64tostr, &p->user_id,
   /* specs/discord/audit_log.json:29:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 }' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/audit_log.json:30:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 }' */
                 &p->action_type,
@@ -644,16 +644,16 @@ void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct 
                 &p->members_removed,
   /* specs/discord/audit_log.json:96:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"channel in which the entities were targeted", "inject_if_not":0 }' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/audit_log.json:97:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the message that was targeted", "inject_if_not":0 }' */
-                cee_strtoull, &p->message_id,
+                cee_strtou64, &p->message_id,
   /* specs/discord/audit_log.json:98:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"number of entities that were targeted", "inject_if_not":null }' */
                 &p->count,
   /* specs/discord/audit_log.json:99:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the ovewritten entity", "inject_if_not":0 }' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
                 &p->type,
@@ -741,16 +741,16 @@ size_t discord_optional_audit_entry_info_to_json(char *json, size_t len, struct 
                 p->members_removed,
   /* specs/discord/audit_log.json:96:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"channel in which the entities were targeted", "inject_if_not":0 }' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/audit_log.json:97:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the message that was targeted", "inject_if_not":0 }' */
-                cee_ulltostr, &p->message_id,
+                cee_u64tostr, &p->message_id,
   /* specs/discord/audit_log.json:98:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"number of entities that were targeted", "inject_if_not":null }' */
                 p->count,
   /* specs/discord/audit_log.json:99:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the ovewritten entity", "inject_if_not":0 }' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
                 p->type,

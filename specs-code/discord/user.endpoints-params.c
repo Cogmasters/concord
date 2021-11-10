@@ -159,7 +159,7 @@ void discord_create_dm_params_from_json(char *json, size_t len, struct discord_c
                 "(recipient_id):F,",
   /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
-                cee_strtoull, &p->recipient_id);
+                cee_strtou64, &p->recipient_id);
   ret = r;
 }
 
@@ -179,7 +179,7 @@ size_t discord_create_dm_params_to_json(char *json, size_t len, struct discord_c
                 "@arg_switches:b",
   /* specs/discord/user.endpoints-params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
-                cee_ulltostr, &p->recipient_id,
+                cee_u64tostr, &p->recipient_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }

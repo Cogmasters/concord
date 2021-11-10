@@ -166,7 +166,7 @@ void discord_role_from_json(char *json, size_t len, struct discord_role *p)
                 "(tags):F,",
   /* specs/discord/permissions.json:53:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/permissions.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->name,
@@ -265,7 +265,7 @@ size_t discord_role_to_json(char *json, size_t len, struct discord_role *p)
                 "@arg_switches:b",
   /* specs/discord/permissions.json:53:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/permissions.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
@@ -435,10 +435,10 @@ void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tag
                 "(premium_subscriber):d,",
   /* specs/discord/permissions.json:71:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->bot_id,
+                cee_strtou64, &p->bot_id,
   /* specs/discord/permissions.json:72:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->integration_id,
+                cee_strtou64, &p->integration_id,
   /* specs/discord/permissions.json:73:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 &p->premium_subscriber);
@@ -474,10 +474,10 @@ size_t discord_role_tags_to_json(char *json, size_t len, struct discord_role_tag
                 "@arg_switches:b",
   /* specs/discord/permissions.json:71:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->bot_id,
+                cee_u64tostr, &p->bot_id,
   /* specs/discord/permissions.json:72:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->integration_id,
+                cee_u64tostr, &p->integration_id,
   /* specs/discord/permissions.json:73:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 &p->premium_subscriber,

@@ -172,7 +172,7 @@ void discord_modify_webhook_params_from_json(char *json, size_t len, struct disc
                 &p->avatar,
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-                cee_strtoull, &p->channel_id);
+                cee_strtou64, &p->channel_id);
   ret = r;
 }
 
@@ -214,7 +214,7 @@ size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct disc
                 p->avatar,
   /* specs/discord/webhook.endpoints-params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }

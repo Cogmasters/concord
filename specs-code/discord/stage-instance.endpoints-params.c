@@ -35,7 +35,7 @@ void discord_create_stage_instance_params_from_json(char *json, size_t len, stru
                 "(privacy_level):d,",
   /* specs/discord/stage-instance.endpoints-params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/stage-instance.endpoints-params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 &p->topic,
@@ -75,7 +75,7 @@ size_t discord_create_stage_instance_params_to_json(char *json, size_t len, stru
                 "@arg_switches:b",
   /* specs/discord/stage-instance.endpoints-params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/stage-instance.endpoints-params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 p->topic,

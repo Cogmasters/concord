@@ -62,13 +62,13 @@ void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_
                 "(supress):b,",
   /* specs/discord/voice.json:13:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/voice.json:14:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/voice.json:15:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->user_id,
+                cee_strtou64, &p->user_id,
   /* specs/discord/voice.json:16:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
                 discord_guild_member_from_json_p, &p->member,
@@ -191,13 +191,13 @@ size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_
                 "@arg_switches:b",
   /* specs/discord/voice.json:13:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/voice.json:14:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/voice.json:15:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->user_id,
+                cee_u64tostr, &p->user_id,
   /* specs/discord/voice.json:16:20
      '{ "name": "member", "type":{ "base":"struct discord_guild_member", "dec":"*" }}' */
                 discord_guild_member_to_json, p->member,

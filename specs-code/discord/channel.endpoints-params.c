@@ -104,7 +104,7 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
                 discord_overwrite_list_from_json, &p->permission_overwrites,
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
-                cee_strtoull, &p->parent_id,
+                cee_strtou64, &p->parent_id,
   /* specs/discord/channel.endpoints-params.json:23:20
      '{ "name": "rtc_region", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 &p->rtc_region,
@@ -288,7 +288,7 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
                 discord_overwrite_list_to_json, p->permission_overwrites,
   /* specs/discord/channel.endpoints-params.json:22:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0 }' */
-                cee_ulltostr, &p->parent_id,
+                cee_u64tostr, &p->parent_id,
   /* specs/discord/channel.endpoints-params.json:23:20
      '{ "name": "rtc_region", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 p->rtc_region,
@@ -1439,7 +1439,7 @@ void discord_follow_news_channel_params_from_json(char *json, size_t len, struct
                 "(webhook_channel_id):F,",
   /* specs/discord/channel.endpoints-params.json:101:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-                cee_strtoull, &p->webhook_channel_id);
+                cee_strtou64, &p->webhook_channel_id);
   ret = r;
 }
 
@@ -1458,7 +1458,7 @@ size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct
                 "@arg_switches:b",
   /* specs/discord/channel.endpoints-params.json:101:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-                cee_ulltostr, &p->webhook_channel_id,
+                cee_u64tostr, &p->webhook_channel_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }
@@ -1578,10 +1578,10 @@ void discord_create_channel_invite_params_from_json(char *json, size_t len, stru
                 &p->target_type,
   /* specs/discord/channel.endpoints-params.json:115:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
-                cee_strtoull, &p->target_user_id,
+                cee_strtou64, &p->target_user_id,
   /* specs/discord/channel.endpoints-params.json:116:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
-                cee_strtoull, &p->target_application_id);
+                cee_strtou64, &p->target_application_id);
   ret = r;
 }
 
@@ -1660,10 +1660,10 @@ size_t discord_create_channel_invite_params_to_json(char *json, size_t len, stru
                 &p->target_type,
   /* specs/discord/channel.endpoints-params.json:115:20
      '{ "name": "target_user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
-                cee_ulltostr, &p->target_user_id,
+                cee_u64tostr, &p->target_user_id,
   /* specs/discord/channel.endpoints-params.json:116:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
-                cee_ulltostr, &p->target_application_id,
+                cee_u64tostr, &p->target_application_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }

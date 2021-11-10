@@ -71,7 +71,7 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
                 &p->usage_count,
   /* specs/discord/guild-template.json:16:20
      '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->creator_id,
+                cee_strtou64, &p->creator_id,
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 discord_user_from_json_p, &p->creator,
@@ -83,7 +83,7 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
                 cee_iso8601_to_unix_ms, &p->updated_at,
   /* specs/discord/guild-template.json:20:20
      '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->source_guild_id,
+                cee_strtou64, &p->source_guild_id,
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
                 discord_guild_from_json_p, &p->serialized_source_guild,
@@ -190,7 +190,7 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
                 &p->usage_count,
   /* specs/discord/guild-template.json:16:20
      '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->creator_id,
+                cee_u64tostr, &p->creator_id,
   /* specs/discord/guild-template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
                 discord_user_to_json, p->creator,
@@ -202,7 +202,7 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
                 cee_unix_ms_to_iso8601, &p->updated_at,
   /* specs/discord/guild-template.json:20:20
      '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->source_guild_id,
+                cee_u64tostr, &p->source_guild_id,
   /* specs/discord/guild-template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
                 discord_guild_to_json, p->serialized_source_guild,

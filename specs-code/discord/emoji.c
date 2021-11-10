@@ -50,7 +50,7 @@ void discord_emoji_from_json(char *json, size_t len, struct discord_emoji *p)
                 "(available):b,",
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
                 &p->name,
@@ -139,7 +139,7 @@ size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p)
                 "@arg_switches:b",
   /* specs/discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
                 p->name,

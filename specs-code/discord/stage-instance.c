@@ -97,13 +97,13 @@ void discord_stage_instance_from_json(char *json, size_t len, struct discord_sta
                 "(discoverable_disabled):b,",
   /* specs/discord/stage-instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/stage-instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/stage-instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/stage-instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 &p->topic,
@@ -166,13 +166,13 @@ size_t discord_stage_instance_to_json(char *json, size_t len, struct discord_sta
                 "@arg_switches:b",
   /* specs/discord/stage-instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/stage-instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/stage-instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/stage-instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 p->topic,

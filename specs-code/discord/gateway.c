@@ -684,10 +684,10 @@ void discord_voice_state_status_from_json(char *json, size_t len, struct discord
                 "(self_deaf):b,",
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/gateway.json:160:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
                 &p->self_mute,
@@ -735,10 +735,10 @@ size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord
                 "@arg_switches:b",
   /* specs/discord/gateway.json:159:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/gateway.json:160:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/gateway.json:161:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
                 &p->self_mute,
@@ -1214,7 +1214,7 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
                 cee_iso8601_to_unix_ms, &p->created_at,
   /* specs/discord/gateway.json:200:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
-                cee_strtoull, &p->application_id,
+                cee_strtou64, &p->application_id,
   /* specs/discord/gateway.json:201:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 &p->details,
@@ -1309,7 +1309,7 @@ size_t discord_activity_to_json(char *json, size_t len, struct discord_activity 
                 cee_unix_ms_to_iso8601, &p->created_at,
   /* specs/discord/gateway.json:200:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
-                cee_ulltostr, &p->application_id,
+                cee_u64tostr, &p->application_id,
   /* specs/discord/gateway.json:201:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 p->details,

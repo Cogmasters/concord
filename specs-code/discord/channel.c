@@ -165,14 +165,14 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel *p
                 "(messages):F,",
   /* specs/discord/channel.json:32:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:33:83
      '{"type":{"base":"int", "int_alias":"enum discord_channel_types"}, "name":"type"}' */
                 &p->type,
   /* specs/discord/channel.json:34:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
          "option":true, "inject_if_not":0 }' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/channel.json:36:41
      '{"type":{"base":"int"}, "name":"position",
          "option":true, "inject_if_not":0 }' */
@@ -193,7 +193,7 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel *p
   /* specs/discord/channel.json:43:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
          "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->last_message_id,
+                cee_strtou64, &p->last_message_id,
   /* specs/discord/channel.json:45:41
      '{"type":{"base":"int"}, "name":"bitrate", "option":true, "inject_if_not":0}' */
                 &p->bitrate,
@@ -215,15 +215,15 @@ void discord_channel_from_json(char *json, size_t len, struct discord_channel *p
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
          "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->owner_id,
+                cee_strtou64, &p->owner_id,
   /* specs/discord/channel.json:55:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
          "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->application_id,
+                cee_strtou64, &p->application_id,
   /* specs/discord/channel.json:57:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"parent_id",
          "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->parent_id,
+                cee_strtou64, &p->parent_id,
   /* specs/discord/channel.json:59:93
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
          "option":true, "inject_if_not":0}' */
@@ -413,14 +413,14 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
                 "@arg_switches:b",
   /* specs/discord/channel.json:32:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:33:83
      '{"type":{"base":"int", "int_alias":"enum discord_channel_types"}, "name":"type"}' */
                 &p->type,
   /* specs/discord/channel.json:34:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id",
          "option":true, "inject_if_not":0 }' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/channel.json:36:41
      '{"type":{"base":"int"}, "name":"position",
          "option":true, "inject_if_not":0 }' */
@@ -441,7 +441,7 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
   /* specs/discord/channel.json:43:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"last_message_id",
          "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->last_message_id,
+                cee_u64tostr, &p->last_message_id,
   /* specs/discord/channel.json:45:41
      '{"type":{"base":"int"}, "name":"bitrate", "option":true, "inject_if_not":0}' */
                 &p->bitrate,
@@ -463,15 +463,15 @@ size_t discord_channel_to_json(char *json, size_t len, struct discord_channel *p
   /* specs/discord/channel.json:53:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
          "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->owner_id,
+                cee_u64tostr, &p->owner_id,
   /* specs/discord/channel.json:55:78
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
          "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->application_id,
+                cee_u64tostr, &p->application_id,
   /* specs/discord/channel.json:57:95
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake", "nullable":true}, "name":"parent_id",
          "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->parent_id,
+                cee_u64tostr, &p->parent_id,
   /* specs/discord/channel.json:59:93
      '{"type":{"base":"char", "dec":"*", "converter":"iso8601", "nullable":true}, "name":"last_pin_timestamp",
          "option":true, "inject_if_not":0}' */
@@ -777,10 +777,10 @@ void discord_message_sticker_from_json(char *json, size_t len, struct discord_me
                 "(type):d,",
   /* specs/discord/channel.json:82:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:83:18
      '{"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->pack_id,
+                cee_strtou64, &p->pack_id,
   /* specs/discord/channel.json:84:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
                 &p->name,
@@ -870,10 +870,10 @@ size_t discord_message_sticker_to_json(char *json, size_t len, struct discord_me
                 "@arg_switches:b",
   /* specs/discord/channel.json:82:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:83:18
      '{"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->pack_id,
+                cee_u64tostr, &p->pack_id,
   /* specs/discord/channel.json:84:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}}' */
                 p->name,
@@ -1094,13 +1094,13 @@ void discord_message_reference_from_json(char *json, size_t len, struct discord_
                 "(fail_if_not_exists):b,",
   /* specs/discord/channel.json:112:18
      '{"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->message_id,
+                cee_strtou64, &p->message_id,
   /* specs/discord/channel.json:113:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/channel.json:114:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/channel.json:115:18
      '{"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 &p->fail_if_not_exists);
@@ -1147,13 +1147,13 @@ size_t discord_message_reference_to_json(char *json, size_t len, struct discord_
                 "@arg_switches:b",
   /* specs/discord/channel.json:112:18
      '{"name":"message_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->message_id,
+                cee_u64tostr, &p->message_id,
   /* specs/discord/channel.json:113:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/channel.json:114:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/channel.json:115:18
      '{"name":"fail_if_not_exists", "type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 &p->fail_if_not_exists,
@@ -1273,7 +1273,7 @@ void discord_message_application_from_json(char *json, size_t len, struct discor
                 "(name):?s,",
   /* specs/discord/channel.json:124:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:125:18
      '{"name":"cover_image", "type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 &p->cover_image,
@@ -1334,7 +1334,7 @@ size_t discord_message_application_to_json(char *json, size_t len, struct discor
                 "@arg_switches:b",
   /* specs/discord/channel.json:124:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:125:18
      '{"name":"cover_image", "type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 p->cover_image,
@@ -1825,13 +1825,13 @@ void discord_message_from_json(char *json, size_t len, struct discord_message *p
                 "(stickers):F,",
   /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:185:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/channel.json:186:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/channel.json:187:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
                 discord_user_from_json_p, &p->author,
@@ -1879,7 +1879,7 @@ void discord_message_from_json(char *json, size_t len, struct discord_message *p
                 &p->pinned,
   /* specs/discord/channel.json:202:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
-                cee_strtoull, &p->webhook_id,
+                cee_strtou64, &p->webhook_id,
   /* specs/discord/channel.json:203:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
                 &p->type,
@@ -2146,13 +2146,13 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
                 "@arg_switches:b",
   /* specs/discord/channel.json:184:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"id"}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:185:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"channel_id"}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/channel.json:186:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"guild_id", "option":true, "inject_if_not":0}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/channel.json:187:69
      '{"type":{"base":"struct discord_user", "dec":"*"}, "name":"author"}' */
                 discord_user_to_json, p->author,
@@ -2200,7 +2200,7 @@ size_t discord_message_to_json(char *json, size_t len, struct discord_message *p
                 &p->pinned,
   /* specs/discord/channel.json:202:79
      '{"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"webhook_id", "option":true }' */
-                cee_ulltostr, &p->webhook_id,
+                cee_u64tostr, &p->webhook_id,
   /* specs/discord/channel.json:203:84
      '{"type":{"base":"int", "int_alias":"enum discord_message_types"}, "name":"type"}' */
                 &p->type,
@@ -2530,10 +2530,10 @@ void discord_followed_channel_from_json(char *json, size_t len, struct discord_f
                 "(webhook_id):F,",
   /* specs/discord/channel.json:222:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->channel_id,
+                cee_strtou64, &p->channel_id,
   /* specs/discord/channel.json:223:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->webhook_id);
+                cee_strtou64, &p->webhook_id);
   ret = r;
 }
 
@@ -2559,10 +2559,10 @@ size_t discord_followed_channel_to_json(char *json, size_t len, struct discord_f
                 "@arg_switches:b",
   /* specs/discord/channel.json:222:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->channel_id,
+                cee_u64tostr, &p->channel_id,
   /* specs/discord/channel.json:223:20
      '{ "name": "webhook_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->webhook_id,
+                cee_u64tostr, &p->webhook_id,
                 arg_switches, sizeof(arg_switches), true);
   return r;
 }
@@ -2819,7 +2819,7 @@ void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrit
                 "(deny):s_as_hex_uint,",
   /* specs/discord/channel.json:242:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:243:20
      '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
@@ -2874,7 +2874,7 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
                 "@arg_switches:b",
   /* specs/discord/channel.json:242:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:243:20
      '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
@@ -3009,7 +3009,7 @@ void discord_thread_metadata_from_json(char *json, size_t len, struct discord_th
                 &p->archived,
   /* specs/discord/channel.json:258:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->archiver_id,
+                cee_strtou64, &p->archiver_id,
   /* specs/discord/channel.json:259:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
                 &p->auto_archive_duration,
@@ -3068,7 +3068,7 @@ size_t discord_thread_metadata_to_json(char *json, size_t len, struct discord_th
                 &p->archived,
   /* specs/discord/channel.json:258:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->archiver_id,
+                cee_u64tostr, &p->archiver_id,
   /* specs/discord/channel.json:259:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
                 &p->auto_archive_duration,
@@ -3197,10 +3197,10 @@ void discord_thread_member_from_json(char *json, size_t len, struct discord_thre
                 "(flags):d,",
   /* specs/discord/channel.json:271:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:272:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->user_id,
+                cee_strtou64, &p->user_id,
   /* specs/discord/channel.json:273:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_iso8601_to_unix_ms, &p->join_timestamp,
@@ -3246,10 +3246,10 @@ size_t discord_thread_member_to_json(char *json, size_t len, struct discord_thre
                 "@arg_switches:b",
   /* specs/discord/channel.json:271:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:272:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->user_id,
+                cee_u64tostr, &p->user_id,
   /* specs/discord/channel.json:273:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_unix_ms_to_iso8601, &p->join_timestamp,
@@ -3699,10 +3699,10 @@ void discord_channel_mention_from_json(char *json, size_t len, struct discord_ch
                 "(name):?s,",
   /* specs/discord/channel.json:304:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/channel.json:305:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/channel.json:306:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 &p->type,
@@ -3748,10 +3748,10 @@ size_t discord_channel_mention_to_json(char *json, size_t len, struct discord_ch
                 "@arg_switches:b",
   /* specs/discord/channel.json:304:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/channel.json:305:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/channel.json:306:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 &p->type,

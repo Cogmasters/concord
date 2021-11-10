@@ -67,7 +67,7 @@ void discord_application_from_json(char *json, size_t len, struct discord_applic
                 "(flags):d,",
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
-                cee_strtoull, &p->id,
+                cee_strtou64, &p->id,
   /* specs/discord/application.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"the name of the app" }' */
                 &p->name,
@@ -96,10 +96,10 @@ void discord_application_from_json(char *json, size_t len, struct discord_applic
      '{ "name":"team","type":{"base":"struct discord_team", "dec":"*"}, "comment":"if the application belongs to a team, this will be a list of the members of that team", "inject_if_not":null, "todo":true }' */
   /* specs/discord/application.json:22:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the guild on which it has been linked", "inject_if_not":0 }' */
-                cee_strtoull, &p->guild_id,
+                cee_strtou64, &p->guild_id,
   /* specs/discord/application.json:23:20
      '{ "name": "primary_sku_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the id of the \"Game SKU\" that is created, if exists", "inject_if_not":0 }' */
-                cee_strtoull, &p->primary_sku_id,
+                cee_strtou64, &p->primary_sku_id,
   /* specs/discord/application.json:24:20
      '{ "name": "slug", "type":{ "base":"char", "dec":"*"}, "comment":"if this application is a game sold on Discord, this field will be the URL slug that links to the store page", "inject_if_not":null }' */
                 &p->slug,
@@ -221,7 +221,7 @@ size_t discord_application_to_json(char *json, size_t len, struct discord_applic
                 "@arg_switches:b",
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
-                cee_ulltostr, &p->id,
+                cee_u64tostr, &p->id,
   /* specs/discord/application.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"the name of the app" }' */
                 p->name,
@@ -250,10 +250,10 @@ size_t discord_application_to_json(char *json, size_t len, struct discord_applic
      '{ "name":"team","type":{"base":"struct discord_team", "dec":"*"}, "comment":"if the application belongs to a team, this will be a list of the members of that team", "inject_if_not":null, "todo":true }' */
   /* specs/discord/application.json:22:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the guild on which it has been linked", "inject_if_not":0 }' */
-                cee_ulltostr, &p->guild_id,
+                cee_u64tostr, &p->guild_id,
   /* specs/discord/application.json:23:20
      '{ "name": "primary_sku_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the id of the \"Game SKU\" that is created, if exists", "inject_if_not":0 }' */
-                cee_ulltostr, &p->primary_sku_id,
+                cee_u64tostr, &p->primary_sku_id,
   /* specs/discord/application.json:24:20
      '{ "name": "slug", "type":{ "base":"char", "dec":"*"}, "comment":"if this application is a game sold on Discord, this field will be the URL slug that links to the store page", "inject_if_not":null }' */
                 p->slug,
