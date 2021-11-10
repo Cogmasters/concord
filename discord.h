@@ -325,6 +325,7 @@ const char *discord_strerror(ORCAcode code, struct discord *client);
  *
  * @param token the bot token
  * @return the newly created Discord Client handle
+ * @see discord_get_logconf() to configure logging behavior
  */
 struct discord *discord_init(const char token[]);
 /**
@@ -809,6 +810,15 @@ void discord_set_presence(struct discord *client,
  * @return the ping in milliseconds
  */
 int discord_get_ping(struct discord *client);
+
+/**
+ * @brief Retrieve client's logging module for configuration purposes
+ *
+ * @param client the client created with discord_init()
+ * @return the client's logging module
+ * @see logconf_setup(), logconf_set_quiet(), logconf_set_level(), ...
+ */
+struct logconf *discord_get_logconf(struct discord *client);
 
 /* * * * * * * * * * * * * * * * */
 /* * * * ENDPOINT FUNCTIONS * * * */

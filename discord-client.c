@@ -25,6 +25,7 @@ discord_init(const char token[])
   struct discord *new_client = calloc(1, sizeof(*new_client));
   new_client->conf = calloc(1, sizeof(*new_client->conf));
   logconf_setup(new_client->conf, "DISCORD", NULL);
+  logconf_set_quiet(new_client->conf, true); /* Silence it by default */
 
   new_client->token =
     (struct sized_buffer){ .start = (char *)token,
@@ -184,7 +185,8 @@ discord_set_on_command(struct discord *client,
   const size_t CMD_LEN = 64;
   ssize_t len;
   if (!(len = cee_str_bounds_check(command, CMD_LEN))) {
-    logconf_error(client->conf,
+    logconf_error(
+      client->conf,
       "Command length greater than threshold (client->conf, %zu chars)",
       CMD_LEN);
     return;
@@ -536,4 +538,10 @@ discord_get_ping(struct discord *client)
   ping_ms = client->gw.hbeat->ping_ms;
   ws_unlock(client->gw.ws);
   return ping_ms;
+}
+
+struct logconf *
+discord_get_logconf(struct discord *client)
+{
+  return client->conf;
 }
