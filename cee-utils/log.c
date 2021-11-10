@@ -65,13 +65,13 @@ static void file_callback(log_Event *ev) {
 }
 
 
-static void lock(void)   {
-  if (L.lock) { L.lock(true, L.udata); }
+static void lock(log_Logger *L)   {
+  if (L->lock) { L->lock(true, L->udata); }
 }
 
 
-static void unlock(void) {
-  if (L.lock) { L.lock(false, L.udata); }
+static void unlock(log_Logger *L) {
+  if (L->lock) { L->lock(false, L->udata); }
 }
 
 
@@ -132,7 +132,7 @@ void _log_log(log_Logger *L, int level, const char *file, int line, const char *
     .level = level,
   };
 
-  lock();
+  lock(L);
 
   if (!L->quiet && level >= L->level) {
     init_event(&ev, stderr);
@@ -151,5 +151,5 @@ void _log_log(log_Logger *L, int level, const char *file, int line, const char *
     }
   }
 
-  unlock();
+  unlock(L);
 }

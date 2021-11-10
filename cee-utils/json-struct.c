@@ -146,8 +146,8 @@ init_converters(void)
   converters[1]->input_type = "char*";
   converters[1]->output_type = "u64_snowflake_t";
   converters[1]->free = NULL;
-  converters[1]->extractor = "cee_strtoull";
-  converters[1]->injector = "cee_ulltostr";
+  converters[1]->extractor = "cee_strtou64";
+  converters[1]->injector = "cee_u64tostr";
   converters[1]->extractor_addrof = "&";
   converters[1]->injector_addrof = "&";
   converters[1]->converted_builtin_type = "uint64_t";

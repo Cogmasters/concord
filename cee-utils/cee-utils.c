@@ -127,7 +127,7 @@ cee_unix_ms_to_iso8601(char *str, size_t len, uint64_t *p_value)
 }
 
 int
-cee_strtoull(char *str, size_t len, uint64_t *p_value) 
+cee_strtou64(char *str, size_t len, uint64_t *p_value) 
 {
   char fmt[512];
   int ret = snprintf(fmt, sizeof(fmt), "%%%zu"SCNu64, len);
@@ -136,7 +136,7 @@ cee_strtoull(char *str, size_t len, uint64_t *p_value)
 }
 
 int
-cee_ulltostr(char *str, size_t len, uint64_t *p_value) {
+cee_u64tostr(char *str, size_t len, uint64_t *p_value) {
   return snprintf(str, len, "%" PRIu64 , *p_value);
 }
 
