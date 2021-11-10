@@ -14,3 +14,4 @@ Settings
 .. doxygenfunction:: discord_add_intents
 .. doxygenfunction:: discord_remove_intents
 .. doxygenfunction:: discord_set_prefix
+.. doxygenfunction:: discord_get_logconf

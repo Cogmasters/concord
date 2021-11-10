@@ -7,9 +7,9 @@
   - discord-internal.h (for private datatypes)
   - specs/discord/ (for generated datatypes)
 
-======================
-Delete Create Reaction
-======================
+===============
+Create Reaction
+===============
 
 .. doxygengroup:: DiscordCreateReaction
    :content-only:
