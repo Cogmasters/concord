@@ -1,3 +1,4 @@
+/* Edited by Lucas Müller https://github.com/lcsmuller */
 /**
  * Copyright (c) 2020 rxi
  *
@@ -12,9 +13,8 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <time.h>
-#include <pthread.h>
 
-#define LOG_VERSION "0.1.0"
+#define LOG_VERSION "x.x.x modified"
 
 typedef struct {
   va_list ap;
@@ -45,7 +45,7 @@ typedef struct {
   log_Callback callbacks[LOG_MAX_CALLBACKS];
 } log_Logger;
 
-enum { LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL };
+typedef enum { LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARN, LOG_ERROR, LOG_FATAL } log_Level;
 
 #define log_trace(...) log_log(LOG_TRACE, __FILE__, __LINE__, __VA_ARGS__)
 #define log_debug(...) log_log(LOG_DEBUG, __FILE__, __LINE__, __VA_ARGS__)

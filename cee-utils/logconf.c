@@ -71,9 +71,9 @@ module_is_disabled(struct logconf *conf)
       /* reset presets (if any) */
       memset(&conf->L, 0, sizeof conf->L);
       /* silence output */
-      _log_set_quiet(&conf->L, true);
+      logconf_set_quiet(conf, true);
       /* make sure fatal still prints to stderr */
-      _log_add_callback(&conf->L, &log_nocolor_cb, stderr, LOG_FATAL);
+      logconf_add_callback(conf, &log_nocolor_cb, stderr, LOG_FATAL);
       return true; /* EARLY RETURN */
     }
   }
@@ -187,8 +187,8 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     conf->logger->f = fopen(conf->logger->fname, l.overwrite ? "w+" : "a+");
     ASSERT_S(NULL != conf->logger->f, "Could not create logger file");
 
-    _log_add_callback(&conf->L, l.use_color ? &log_color_cb : &log_nocolor_cb,
-                      conf->logger->f, get_log_level(l.level));
+    logconf_add_callback(conf, l.use_color ? &log_color_cb : &log_nocolor_cb,
+                         conf->logger->f, get_log_level(l.level));
   }
 
   /* SET HTTP DUMP CONFIGS */
@@ -199,11 +199,11 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
   }
 
   /* disable default log.c callbacks */
-  _log_set_quiet(&conf->L, true);
+  logconf_set_quiet(conf, true);
 
   /* make sure fatal still prints to stderr */
-  _log_add_callback(&conf->L, l.use_color ? &log_color_cb : &log_nocolor_cb,
-                    stderr, l.quiet ? LOG_FATAL : get_log_level(l.level));
+  logconf_add_callback(conf, l.use_color ? &log_color_cb : &log_nocolor_cb,
+                       stderr, l.quiet ? LOG_FATAL : get_log_level(l.level));
 }
 
 void
@@ -283,4 +283,37 @@ logconf_get_field(struct logconf *conf, char *json_field)
   json_extract(conf->file.start, conf->file.size, fmt, &field);
 
   return field;
+}
+
+void
+logconf_set_lock(struct logconf *conf, log_LockFn fn, void *udata)
+{
+  _log_set_lock(&conf->L, fn, udata);
+}
+
+void
+logconf_set_level(struct logconf *conf, int level)
+{
+  _log_set_level(&conf->L, level);
+}
+
+void
+logconf_set_quiet(struct logconf *conf, bool enable)
+{
+  _log_set_quiet(&conf->L, enable);
+}
+
+void
+logconf_add_callback(struct logconf *conf,
+                     log_LogFn fn,
+                     void *udata,
+                     int level)
+{
+  _log_add_callback(&conf->L, fn, udata, level);
+}
+
+int
+logconf_add_fp(struct logconf *conf, FILE *fp, int level)
+{
+  return _log_add_fp(&conf->L, fp, level);
 }

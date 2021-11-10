@@ -9,6 +9,21 @@ extern "C" {
 #include "ntl.h" /* struct sized_buffer */
 #include "debug.h"
 
+/** @defgroup Log_C_Datatypes
+ * @brief Relevant datatypes borrowed from `log.c`
+ * @see Read `log.c` <a href="https://github.com/rxi/log.c#usage">documentation</a>
+ * @{ */
+/**
+ * @enum log_Level
+ * @struct log_Logger
+ * @struct log_Callback
+ * @struct log_Event
+ * @typedef log_LockFn
+ * @typedef log_LogFn
+ * @def LOG_MAX_CALLBACKS
+ */
+/** @} */
+
 /**
  * @brief Log level trace
  *
@@ -98,7 +113,6 @@ struct logconf {
   _Bool is_branch;
   /** config file conents */
   struct sized_buffer file;
-  /** logging output */
   struct {
     /** name of logging output file */
     char fname[LOGCONF_PATH_MAX];
@@ -118,12 +132,13 @@ struct loginfo {
 };
 
 /**
- * @brief Initialize a `struct logconf` module
+ * @brief Initialize a `struct logconf` module from a config file
  *
  * @param conf pointer to the `struct logconf` structure to be initialized
  * @param id the `struct logconf` module id
  * @param fp the configuration file pointer that will fill `struct logconf`
  * fields
+ * @see logconf_get_field() for fetching config file field's value
  */
 void logconf_setup(struct logconf *conf, const char id[], FILE *fp);
 
@@ -131,7 +146,7 @@ void logconf_setup(struct logconf *conf, const char id[], FILE *fp);
  * @brief Branch and link a `struct logconf` module to a existing one
  *
  * Initialize a `branch` logging module thats expected to share common
- * resources with its parent parent module `orig`. The common resources
+ * resources with its parent module `orig`. The common resources
  * include: config file directives, logging output and disabled modules list.
  * @param branch pointer to the `struct logconf` structure to be initialized as
  * `orig` branch
@@ -151,11 +166,12 @@ void logconf_branch(struct logconf *branch,
 void logconf_cleanup(struct logconf *conf);
 
 /**
- * @brief Get the value from a given `json_field`
+ * @brief Get the value from a given JSON field of the config file
  *
  * @param conf the `struct logconf` module
  * @param json_field the field to fetch the value of
  * @return a read-only sized buffer containing the field's value
+ * @see logconf_setup() for initializing `conf` with a config file
  */
 struct sized_buffer logconf_get_field(struct logconf *conf, char *json_field);
 
@@ -179,6 +195,69 @@ void logconf_http(struct logconf *conf,
                   struct sized_buffer body,
                   char label_fmt[],
                   ...);
+
+/**
+ * @brief If the log will be written to from multiple threads a lock function
+ * can be set.
+ *
+ * The function is passed the boolean true if the lock should be acquired or
+ * false if the lock should be released and the given udata value.
+ * @param conf the `struct logconf` module
+ * @param fn lock callback
+ * @param udata user arbitrary data
+ */
+void logconf_set_lock(struct logconf *conf, log_LockFn fn, void *udata);
+
+/**
+ * @brief Set the current logging level
+ *
+ * All logs below the given level will not be written to stderr. By default the
+ * level is LOG_TRACE, such that nothing is ignored.
+ * @param conf the `struct logconf` module
+ * @param level logging level
+ */
+void logconf_set_level(struct logconf *conf, int level);
+
+/**
+ * @brief Toggle quiet mode
+ *
+ * Quiet-mode can be enabled by settings `enable` to `true`. While this mode is
+ * enabled the library will not output anything to stderr, but will continue to
+ * write to files and callbacks if any are set.
+ * @param conf the `struct logconf` module
+ * @param enable `true` enables quiet-mode
+ */
+void logconf_set_quiet(struct logconf *conf, bool enable);
+
+/**
+ * @brief Callback functions called when logging data
+ *
+ * One or more callback functions which are called with the log data can be
+ * provided to the library. A callback function is passed a log_Event structure
+ * containing the line number, filename, fmt string, va printf va_list, level
+ * and the given udata.
+ * @param conf the `struct logconf` module
+ * @param fn the callback function
+ * @param udata user arbitrary data
+ * @param level logging level to trigger callback
+ */
+
+void logconf_add_callback(struct logconf *conf,
+                          log_LogFn fn,
+                          void *udata,
+                          int level);
+
+/**
+ * @brief File where the log will be written
+ *
+ * One or more file pointers where the log will be written can be provided to
+ * the library. Any messages below the given `level` are ignored. If the
+ * library failed to add a file pointer a value less-than-zero is returned.
+ * @param conf the `struct logconf` module
+ * @param fp the write-to file pointer
+ * @param level logging level condition for writing to `fp`
+ */
+int logconf_add_fp(struct logconf *conf, FILE *fp, int level);
 
 #ifdef __cplusplus
 }

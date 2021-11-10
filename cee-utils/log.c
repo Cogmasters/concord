@@ -1,3 +1,4 @@
+/* Edited by Lucas Müller https://github.com/lcsmuller */
 /*
  * Copyright (c) 2020 rxi
  *
@@ -21,6 +22,7 @@
  */
 
 #include "log.h"
+#include <pthread.h>
 
 log_Logger L;
 
