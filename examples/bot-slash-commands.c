@@ -3,7 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
-#include <inttypes.h> /* PRIu64 */
+#include <inttypes.h> /* SCNu64, PRIu64 */
 
 #include "discord.h"
 
@@ -115,7 +115,7 @@ void on_interaction_create(struct discord *client,
       gender = value;
     }
     else if (0 == strcmp("favorite", name)) {
-      sscanf(value, "%" PRIu64, &channel_id);
+      sscanf(value, "%" SCNu64, &channel_id);
     }
   }
 
@@ -165,9 +165,7 @@ int main(int argc, char *argv[])
          "https://discord.com/developers/applications\n");
   do {
     printf("Application ID:\n");
-    char input[32];
-    fgets(input, sizeof(input), stdin);
-    g_application_id = strtoull(input, NULL, 10);
+    fscanf(stdin, "%llu", &g_application_id);
   } while (!g_application_id || errno == ERANGE);
 
   printf(
