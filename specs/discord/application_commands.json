@@ -43,7 +43,11 @@
         {"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"},
         {"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"},
         {"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null},
-        {"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null}
+        {"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"if the option is a subcommand or subcommand group type, this nested options will be the parameters", "inject_if_not":null},
+        {"name":"channel_types", "type":{"base":"ja_u64", "dec":"ntl"}, "comment":"if the option is a channel type, the channels shown will be restricted to these types", "inject_if_not":null},
+        {"name":"min_value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"if the option is an INTEGER or NUMBER type, the minimum value permitted", "inject_if_not":null},
+        {"name":"max_value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"if the option is an INTEGER or NUMBER type, the maximum value permitted", "inject_if_not":null},
+        {"name":"autocomplete", "type":{"base":"bool"}, "comment":"enable autocomplete interactions for this option", "inject_if_not":false}
       ]
     },
     {
