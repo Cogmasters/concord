@@ -9,15 +9,13 @@
 
 unsigned long long g_application_id;
 
-void
-on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client, const struct discord_user *bot)
 {
   log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void
-log_on_application_command_create(
+void log_on_application_command_create(
   struct discord *client,
   const struct discord_user *bot,
   const struct discord_application_command *cmd)
@@ -25,10 +23,9 @@ log_on_application_command_create(
   log_info("Application Command %s created", cmd->name);
 }
 
-void
-on_slash_command_create(struct discord *client,
-                        const struct discord_user *bot,
-                        const struct discord_message *msg)
+void on_slash_command_create(struct discord *client,
+                             const struct discord_user *bot,
+                             const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -41,13 +38,14 @@ on_slash_command_create(struct discord *client,
       (struct discord_application_command_option *[]){
         &(struct discord_application_command_option){
           .type = DISCORD_APPLICATION_COMMAND_OPTION_STRING,
-          .name = "name",
-          .description = "Your name",
-          .required = true },
+          .name = "nick",
+          .description = "Your nick",
+          .required = true,
+        },
         &(struct discord_application_command_option){
           .type = DISCORD_APPLICATION_COMMAND_OPTION_INTEGER,
-          .name = "age",
-          .description = "Your age",
+          .name = "pets",
+          .description = "How many pets you got",
         },
         &(struct discord_application_command_option){
           .type = DISCORD_APPLICATION_COMMAND_OPTION_STRING,
@@ -56,13 +54,30 @@ on_slash_command_create(struct discord *client,
           .choices =
             (struct discord_application_command_option_choice *[]){
               &(struct discord_application_command_option_choice){
-                .name = "male", .value = "male" },
+                .name = "male",
+                .value = "male",
+              },
               &(struct discord_application_command_option_choice){
-                .name = "female", .value = "female" },
+                .name = "female",
+                .value = "female",
+              },
               &(struct discord_application_command_option_choice){
-                .name = "other", .value = "other" },
+                .name = "other",
+                .value = "other",
+              },
               NULL // END OF CHOICES
-            } },
+            },
+        },
+        &(struct discord_application_command_option){
+          .type = DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL,
+          .name = "favorite",
+          .description = "Favorite channel",
+          .channel_types =
+            (ja_u64 *[]){
+              &(ja_u64){ DISCORD_CHANNEL_GUILD_TEXT },
+              NULL, // END OF CHANNEL TYPES
+            },
+        },
         NULL // END OF OPTIONS
       }
   };
@@ -72,39 +87,46 @@ on_slash_command_create(struct discord *client,
                                            msg->guild_id, &params, NULL);
 }
 
-void
-on_interaction_create(struct discord *client,
-                      const struct discord_user *bot,
-                      const struct discord_interaction *interaction)
+void on_interaction_create(struct discord *client,
+                           const struct discord_user *bot,
+                           const struct discord_interaction *interaction)
 {
   /* We're only interested on slash commands */
   if (interaction->type != DISCORD_INTERACTION_APPLICATION_COMMAND) return;
   /* Return in case user input is missing for some reason */
   if (!interaction->data || !interaction->data->options) return;
 
-  char *name = "blank";
-  int age = 0;
+  char *nick = "blank";
+  int pets = 0;
   char *gender = "blank";
+  u64_snowflake_t channel_id = 0;
 
   for (int i = 0; interaction->data->options[i]; ++i) {
-    if (0 == strcmp("name", interaction->data->options[i]->name)) {
-      name = interaction->data->options[i]->value;
+    char *name = interaction->data->options[i]->name;
+    char *value = interaction->data->options[i]->value;
+
+    if (0 == strcmp("nick", name)) {
+      nick = value;
     }
-    else if (0 == strcmp("age", interaction->data->options[i]->name)) {
-      age = strtol(interaction->data->options[i]->value, NULL, 10);
+    else if (0 == strcmp("pets", name)) {
+      pets = strtol(value, NULL, 10);
     }
-    else if (0 == strcmp("gender", interaction->data->options[i]->name)) {
-      gender = interaction->data->options[i]->value;
+    else if (0 == strcmp("gender", name)) {
+      gender = value;
+    }
+    else if (0 == strcmp("favorite", name)) {
+      sscanf(value, "%" PRIu64, &channel_id);
     }
   }
 
   char buf[DISCORD_MAX_MESSAGE_LEN] = "";
   snprintf(buf, sizeof(buf),
            "Fun-facts about <@%" PRIu64 ">!\n"
-           "Name: %s\n"
-           "Age: %d\n"
-           "Gender: %s\n",
-           interaction->member->user->id, name, age, gender);
+           "Nick: %s\n"
+           "Pets: %d\n"
+           "Gender: %s\n"
+           "Favorite channel: <#%" PRIu64 ">\n",
+           interaction->member->user->id, nick, pets, gender, channel_id);
 
   struct discord_interaction_response params = {
     .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
@@ -119,8 +141,7 @@ on_interaction_create(struct discord *client,
   }
 }
 
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   const char *config_file;
   if (argc > 1)
