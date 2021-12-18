@@ -295,7 +295,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="run.html#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="run.html#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -307,62 +307,24 @@
 </section>
 <section id="is-connection-alive-bool">
 <h2>Is Connection Alive (Bool)<a class="headerlink" href="#is-connection-alive-bool" title="Permalink to this headline">¶</a></h2>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.ws_is_alive">
-<span class="target" id="websockets_8h_1acc7d4f818e65c5af96619d507fd27b49"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_is_alive</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_is_alive" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Check if a WebSockets connection is alive. </p>
-<p>This will only return true if the connection status is different than WS_DISCONNECTED </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="run.html#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>TRUE if WebSockets status is different than WS_DISCONNECTED, FALSE otherwise. </p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “ws_is_alive” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </section>
 <section id="is-handle-functional-bool">
 <h2>Is Handle Functional (Bool)<a class="headerlink" href="#is-handle-functional-bool" title="Permalink to this headline">¶</a></h2>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.ws_is_functional">
-<span class="target" id="websockets_8h_1a3e893a76e1030e2e81e8e2981cec3dc2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_is_functional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_is_functional" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Check if WebSockets connection is functional. </p>
-<p>This will only return true if the connection status is WS_CONNECTED </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="run.html#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>true if is functional, false otherwise </p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “ws_is_functional” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </section>
 <section id="main-loop-thread-bool">
 <h2>Main-Loop Thread (Bool)<a class="headerlink" href="#main-loop-thread-bool" title="Permalink to this headline">¶</a></h2>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.ws_same_thread">
-<span class="target" id="websockets_8h_1ad8c8d337b38d18386668ce800013f172"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_same_thread</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_same_thread" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Check if current thread is the same as the event-loop main-thread. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="run.html#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>true if its the same thread, false otherwise </p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “ws_same_thread” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </section>
 </section>
 

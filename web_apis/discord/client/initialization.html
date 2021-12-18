@@ -1205,12 +1205,26 @@
 <dt class="sig sig-object c" id="c.discord_global_init">
 <span class="target" id="discord_8h_1a4df1c61716cd01011c7a7bde928a31ca"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_global_init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_global_init" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Initialize resources of globals used by discord.h. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Deprecated:</span></em></dt>
+<dd><p>use orca_global_init() instead </p>
+</dd></dl>
+
+</p>
 </dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_global_cleanup">
 <span class="target" id="discord_8h_1aee069a2483ef9bf92f56b492ebedf1d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_global_cleanup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_global_cleanup" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Free resources of globals used by discord.h. </p>
+<p><dl>
+<dt class="sig sig-object cpp">
+<em><span class="pre">Deprecated:</span></em></dt>
+<dd><p>use orca_global_cleanup() instead </p>
+</dd></dl>
+
+</p>
 </dd></dl>
 
 <dl class="c function">
@@ -1254,7 +1268,7 @@
 <dt class="sig sig-object c" id="c.discord_clone">
 <span class="target" id="discord_8h_1aa350d6bc95fb4b4969a9a8025233d38f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">orig_client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_clone" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Clone a discord client. </p>
-<p>This is useful in a multithreading scenario. For example, making sure each client instance has its own shared url, headers, return codes. </p>
+<p>Should be called before entering a thread, to ensure each thread has its own client instance with unique buffers, url and headers. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

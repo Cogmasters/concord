@@ -1245,29 +1245,29 @@
 <h2>Schedule Types<a class="headerlink" href="#schedule-types" title="Permalink to this headline">¶</a></h2>
 <dl class="c enum">
 <dt class="sig sig-object c" id="c.discord_event_scheduler">
-<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_event_scheduler</span></span></span><a class="headerlink" href="#c.discord_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>return value of <a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> callback </p>
+<span class="target" id="group__DiscordScheduler_1gad871630e69eb4355566dc8c1031bae76"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_event_scheduler</span></span></span><a class="headerlink" href="#c.discord_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>return value of <a class="reference internal" href="#group__DiscordScheduler_1ga21df575b931f0dc554049c9f825fe829"><span class="std std-ref">discord_set_event_scheduler()</span></a> callback </p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#discord_8h_1a711b3197c991b6a435bea981d516b70c"><span class="std std-ref">discord_set_event_scheduler()</span></a> </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="#group__DiscordScheduler_1ga21df575b931f0dc554049c9f825fe829"><span class="std std-ref">discord_set_event_scheduler()</span></a> </p>
 </dd>
 </dl>
 </p>
 <p><em>Values:</em></p>
 <dl class="c enumerator">
 <dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_IGNORE">
-<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76aa592f84b7c8c98d876e01f6370eaa9bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_IGNORE</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_IGNORE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordScheduler_1ggad871630e69eb4355566dc8c1031bae76aa592f84b7c8c98d876e01f6370eaa9bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_IGNORE</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_IGNORE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>this event has been handled </p>
 </dd></dl>
 
 <dl class="c enumerator">
 <dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD">
-<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76a37aa110da76890681fbeec022ec8a29f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_MAIN_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordScheduler_1ggad871630e69eb4355566dc8c1031bae76a37aa110da76890681fbeec022ec8a29f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_MAIN_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_MAIN_THREAD" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>handle this event in main thread </p>
 </dd></dl>
 
 <dl class="c enumerator">
 <dt class="sig sig-object c" id="c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD">
-<span class="target" id="discord_8h_1ad871630e69eb4355566dc8c1031bae76a79c17442662efa88d24ddcc450bc4684"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_WORKER_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordScheduler_1ggad871630e69eb4355566dc8c1031bae76a79c17442662efa88d24ddcc450bc4684"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_EVENT_WORKER_THREAD</span></span></span><a class="headerlink" href="#c.discord_event_scheduler.DISCORD_EVENT_WORKER_THREAD" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>handle this event in a worker thread </p>
 </dd></dl>
 
@@ -1278,11 +1278,11 @@
 <h2>Set Event Scheduler<a class="headerlink" href="#set-event-scheduler" title="Permalink to this headline">¶</a></h2>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_set_event_scheduler">
-<span class="target" id="discord_8h_1a711b3197c991b6a435bea981d516b70c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_scheduler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../events/types.html#c.discord_event_scheduler_cb" title="discord_event_scheduler_cb"><span class="n"><span class="pre">discord_event_scheduler_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="group__DiscordScheduler_1ga21df575b931f0dc554049c9f825fe829"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_event_scheduler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="#c.discord_event_scheduler" title="discord_event_scheduler"><span class="n"><span class="pre">discord_event_scheduler</span></span></a><span class="w"> </span><span class="n"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_event_scheduler" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Provides the user with a fine-grained control of the Discord’s event-loop. </p>
 <p>Allows the user to specify which events should be executed from the main-thread, in parallel from a worker-thread, or completely ignored.</p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p>enum <a class="reference internal" href="#discord_8h_1ad871630e69eb4355566dc8c1031bae76"><span class="std std-ref">discord_event_scheduler</span></a> </p>
+<dt><strong>See</strong></dt><dd><p>discord_event_scheduler_t </p>
 </dd>
 <dt><strong>See</strong></dt><dd><p>enum <a class="reference internal" href="../models/gateway/structures.html#gateway_8h_1a90ebb76de1682ce02a67a08b0510145b"><span class="std std-ref">discord_gateway_events</span></a> </p>
 </dd>

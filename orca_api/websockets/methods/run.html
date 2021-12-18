@@ -290,13 +290,14 @@
 <h2>Initializer<a class="headerlink" href="#initializer" title="Permalink to this headline">¶</a></h2>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_init">
-<span class="target" id="websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ws_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_callbacks" title="ws_callbacks"><span class="n"><span class="pre">ws_callbacks</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cbs</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../logconf/index.html#c.logconf" title="logconf"><span class="n"><span class="pre">logconf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">config</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_init" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ws_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_callbacks" title="ws_callbacks"><span class="n"><span class="pre">ws_callbacks</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">cbs</span></span>, <span class="n"><span class="pre">CURLM</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">mhandle</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">ws_attr</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">attr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_init" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a new (CURL-based) WebSockets handle. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cbs</strong> – set of functions to call back when server report events. </p></li>
-<li><p><strong>config</strong> – optional parent logconf struct </p></li>
+<li><p><strong>mhandle</strong> – user-owned curl_multi handle for performing non-blocking transfers </p></li>
+<li><p><strong>attr</strong> – optional attributes to override defaults </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -308,11 +309,11 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_cleanup">
 <span class="target" id="websockets_8h_1ad45b500790fffec540211cda5d1dbd0f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_cleanup</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_cleanup" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Free a WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p>
+<dd><p>Free a WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 </ul>
 </dd>
 </dl>
@@ -328,7 +329,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 <li><p><strong>base_url</strong> – the URL to connect, such as ws://echo.websockets.org </p></li>
 <li><p><strong>ws_protocols</strong> – NULL or something like “chat”, “superchat”,… </p></li>
 </ul>
@@ -340,70 +341,38 @@
 <dt class="sig sig-object c" id="c.ws_start">
 <span class="target" id="websockets_8h_1a66074fd9ea27d36bafd1dcd9a8fe8cc8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_start</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_start" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Signals connecting state before entering the WebSockets event loop. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Helper over _ws_set_status(ws, WS_CONNECTING) </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “ws_reqheader_add” in doxygen xml output for project “Orca” from directory: ../xml</p>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="c function">
-<dt class="sig sig-object c" id="c.ws_reqheader_add">
-<span class="target" id="websockets_8h_1aee5abb56ada842de6419b30e009c4302"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_reqheader_add</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">field</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_reqheader_add" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Add a header field/value pair. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
-<li><p><strong>field</strong> – the header field </p></li>
-<li><p><strong>value</strong> – the header value </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="maintain-connection">
 <h2>Maintain Connection<a class="headerlink" href="#maintain-connection" title="Permalink to this headline">¶</a></h2>
-<dl class="c function">
-<dt class="sig sig-object c" id="c.ws_perform">
-<span class="target" id="websockets_8h_1a0ee64c7a7e5fc1c34a311bb4777bdafc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_perform</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="kt"><span class="pre">_Bool</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">is_running</span></span>, <span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n"><span class="pre">wait_ms</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_perform" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Reads/Write available data from WebSockets. </p>
-<p>Helper over curl_multi_perform()</p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://curl.se/libcurl/c/curl_multi_perform.html">https://curl.se/libcurl/c/curl_multi_perform.html</a> </p>
-</dd>
-</dl>
-</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
-<li><p><strong>is_running</strong> – receives true if the client is running and false otherwise </p></li>
-<li><p><strong>wait_ms</strong> – limit amount in milliseconds to wait for until activity </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenfunction: Cannot find function “ws_perform” in doxygen xml output for project “Orca” from directory: ../xml</p>
+</div>
 </section>
 <section id="send-control-frames">
 <h2>Send Control-frames<a class="headerlink" href="#send-control-frames" title="Permalink to this headline">¶</a></h2>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_send_binary">
-<span class="target" id="websockets_8h_1a0984231cfbfede5def311aacce707779"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_send_binary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">msglen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_send_binary" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="websockets_8h_1aa765041b1f3bbc8d1706289fd0f7f81c"></span><span class="kt"><span class="pre">_Bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_send_binary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">msglen</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_send_binary" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Send a binary message of given size. </p>
 <p>Binary messages do not need to include the null terminator (\0), they will be read up to <em>msglen</em>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 <li><p><strong>info</strong> – get information on how this transfer went </p></li>
 <li><p><strong>msg</strong> – the pointer to memory (linear) to send. </p></li>
 <li><p><strong>msglen</strong> – the length in bytes of <em>msg</em>. </p></li>
@@ -417,13 +386,13 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_send_text">
-<span class="target" id="websockets_8h_1a317a2eeff2ac2c04752e1990910ec902"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_send_text</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_send_text" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="websockets_8h_1a21afc90e4fac706f08089d21ac29219f"></span><span class="kt"><span class="pre">_Bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_send_text</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_send_text" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Send a text message of given size. </p>
 <p>Text messages do not need to include the null terminator (\0), they will be read up to <em>len</em>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 <li><p><strong>info</strong> – get information on how this transfer went </p></li>
 <li><p><strong>text</strong> – the pointer to memory (linear) to send. </p></li>
 <li><p><strong>len</strong> – the length in bytes of <em>text</em>. </p></li>
@@ -437,12 +406,12 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_ping">
-<span class="target" id="websockets_8h_1a75b6ebdc56cbb00850d9d848cce238be"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_ping</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_ping" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="websockets_8h_1a68b39b4037a097677244a42b642e6dd8"></span><span class="kt"><span class="pre">_Bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_ping</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_ping" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Send a PING (opcode 0x9) frame with <em>reason</em> as payload. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 <li><p><strong>info</strong> – get information on how this transfer went </p></li>
 <li><p><strong>reason</strong> – NULL or some UTF-8 string null (‘\0’) terminated. </p></li>
 <li><p><strong>len</strong> – the length of <em>reason</em> in bytes. If SIZE_MAX, uses strlen() on <em>reason</em> if it’s not NULL. </p></li>
@@ -456,13 +425,13 @@
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.ws_pong">
-<span class="target" id="websockets_8h_1a05815c7f0d0a923afd7f0e96c2411131"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_pong</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_pong" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="websockets_8h_1a56df312506b866285a9d3b4638580484"></span><span class="kt"><span class="pre">_Bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ws_pong</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.websockets" title="websockets"><span class="n"><span class="pre">websockets</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ws</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../structures.html#c.ws_info" title="ws_info"><span class="n"><span class="pre">ws_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">info</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">len</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ws_pong" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Send a PONG (opcode 0xA) frame with <em>reason</em> as payload. </p>
 <p>Note that pong is sent automatically if no “on_ping” callback is defined. If one is defined you must send pong manually.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 <li><p><strong>info</strong> – get information on how this transfer went </p></li>
 <li><p><strong>reason</strong> – NULL or some UTF-8 string null (‘\0’) terminated. </p></li>
 <li><p><strong>len</strong> – the length of <em>reason</em> in bytes. If SIZE_MAX, uses strlen() on <em>reason</em> if it’s not NULL. </p></li>
@@ -486,7 +455,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1a4ff8bbffc8cf3172ff02f5233315796b"><span class="std std-ref">ws_init()</span></a> </p></li>
+<li><p><strong>ws</strong> – the WebSockets handle created with <a class="reference internal" href="#websockets_8h_1aa6088ca5a9cbda8616ca3ca0bdd12d5d"><span class="std std-ref">ws_init()</span></a> </p></li>
 <li><p><strong>code</strong> – the WebSockets CLOSE opcode </p></li>
 <li><p><strong>reason</strong> – the close reason </p></li>
 <li><p><strong>len</strong> – the reason length </p></li>
