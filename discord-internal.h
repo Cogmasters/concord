@@ -1,7 +1,6 @@
 /**
  * @file discord-internal.h
  * @author cee-studio
- * @date 18 Jun 2021
  * @brief File containing internal functions and datatypes
  */
 
@@ -10,60 +9,115 @@
 
 #include <inttypes.h>
 #include <pthread.h>
-#include "uthash.h"
 
 #include "json-actor.h"
-#include "json-actor-boxed.h"
 
 #include "logconf.h" /* struct logconf */
 #include "user-agent.h"
 #include "websockets.h"
+#include "work.h"
 #include "cee-utils.h"
-#include "threadpool.h"
+
+#include "uthash.h"
+#include "queue.h"
+#include "heap-inl.h"
 
 #include "discord-voice-connections.h"
 
+/** @brief Get client from its nested field */
+#define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
+
+/** @brief Behavior of request return object */
+struct discord_request_attr {
+  /** the object itself */
+  void *obj;
+  /** size of `obj` in bytes */
+  size_t size;
+  /** initialize `obj` fields */
+  void (*init)(void *obj);
+  /** callback for filling `obj` with JSON values */
+  void (*from_json)(char *json, size_t len, void *obj);
+  /** perform a cleanup on `obj` */
+  void (*cleanup)(void *obj);
+
+  /** in case of HTTP_MIMEPOST, provide attachments */
+  struct discord_attachment **attachments;
+};
+
 /**
- * @brief The handle used for performing HTTP Requests
- *
- * This is a wrapper over struct user_agent
- *
- * - Initializer:
- *   - discord_adapter_init()
- * - Cleanup:
- *   - discord_adapter_cleanup()
+ * @brief Context of individual requests that are scheduled to run
+ *        asynchronously
  */
+struct discord_context {
+  /** async attributes */
+  struct discord_request_attr attr;
+  /** the request's bucket */
+  struct discord_bucket *bucket;
+  /** callback to be executed on request completion */
+  discord_on_done done;
+
+  /** the request's body @note buffer is kept and recycled */
+  struct {
+    struct sized_buffer buf;
+    size_t memsize;
+  } body;
+
+  /** the request's http method */
+  enum http_method method;
+  /** the request's endpoint */
+  char endpoint[2048];
+  /** the connection handler assigned */
+  struct ua_conn *conn;
+  /** the request bucket's queue entry */
+  QUEUE entry;
+  /** the min-heap node (for selecting timeouts) */
+  struct heap_node node;
+  /** the timeout timestamp */
+  u64_unix_ms_t timeout_ms;
+};
+
+/** @brief The handle used for performing HTTP Requests */
 struct discord_adapter {
   /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
   struct logconf conf;
-  /** The user agent handle for performing requests */
+  /** the user agent handle for performing requests */
   struct user_agent *ua;
-  /** Ratelimiting structure */
-  struct {
-    /** DISCORD_RATELIMIT logging module */
-    struct logconf conf;
-    /** Endpoint/routes discovered, check a endpoint/bucket match with tree
-     * search functions */
-    struct discord_bucket *buckets;
-    /** Mutex used when adding to or searching for buckets */
-    pthread_mutex_t lock;
-  } * ratelimit;
+  /** if true next request will be dealt with asynchronously */
+  bool async_enable;
+  /** curl_multi handle for non-blocking requests */
+  CURLM *mhandle;
+  /** buckets discovered */
+  struct discord_bucket *buckets;
+  /** for undefined routes */
+  struct discord_bucket *b_null;
 
-  /** Error storage context */
+  /* client-wide ratelimiting timeout */
   struct {
-    /** Informational on the latest transfer */
-    struct ua_info info;
-    /** JSON error code on failed request */
-    int jsoncode;
-    /** The entire JSON response of the error */
-    char jsonstr[512];
-  } err;
+    /** global ratelimit */
+    u64_unix_ms_t wait_ms;
+    /** global rwlock  */
+    pthread_rwlock_t rwlock;
+    /** global lock */
+    pthread_mutex_t lock;
+  } * global;
+
+  /** async requests handling */
+  struct {
+    /** attributes for next async request */
+    struct discord_async_attr attr;
+    /** reusable buffer for async return objects */
+    struct sized_buffer obj;
+    /** idle request handles of type 'struct discord_context' */
+    QUEUE *idleq;
+    /* request timeouts */
+    struct heap timeouts;
+  } async;
 };
 
 /**
  * @brief Initialize the fields of a Discord Adapter handle
  *
- * @param adapter a pointer to the allocated handle
+ * @param adapter a pointer to the http handle
  * @param conf optional pointer to a pre-initialized logconf
  * @param token the bot token
  */
@@ -79,302 +133,354 @@ void discord_adapter_init(struct discord_adapter *adapter,
 void discord_adapter_cleanup(struct discord_adapter *adapter);
 
 /**
- * @brief Start a HTTP Request to Discord
+ * @brief Perform a request to Discord
  *
+ * This functions is a selector over discord_adapter_run() or
+ *        discord_adapter_run_async()
  * @param adapter the handle initialized with discord_adapter_init()
- * @param resp_handle the callbacks that will be triggered should the request
- * fail or succeed
- * @param req_body the body sent for methods that require (ex: POST), leave as
- * NULL if unecessary
- * @param http_method the method in opcode format of the request being sent
- * @param endpoint the format endpoint that be appended to base_url when
- * performing a request, same behavior as printf()
- * @return a code for checking on how the transfer went ORCA_OK means the
- * transfer was succesful
- * @note Helper over ua_run()
+ * @param attr attributes of request
+ * @param body the body sent for methods that require (ex: post), leave as
+ *        null if unecessary
+ * @param method the method in opcode format of the request being sent
+ * @param endpoint_fmt the format endpoint that be appended to base_url when
+ *        performing a request, same behavior as printf()
+ * @return a code for checking on how the operation went, ORCA_OK means
+ *        nothing out of ordinary
+ * @note if async is set then this function will enqueue the request instead of
+ * performing it immediately
  */
 ORCAcode discord_adapter_run(struct discord_adapter *adapter,
-                             struct ua_resp_handle *resp_handle,
-                             struct sized_buffer *req_body,
-                             enum http_method http_method,
+                             struct discord_request_attr *attr,
+                             struct sized_buffer *body,
+                             enum http_method method,
                              char endpoint_fmt[],
                              ...);
 
 /**
- * @brief The bucket struct that will handle ratelimiting
+ * @brief Set next request to run asynchronously
  *
- * - Initializer:
- *   - discord_bucket_build()
- * - Cleanup:
- *   - discord_buckets_cleanup()
- *
- * @see https://discord.com/developers/docs/topics/rate-limits
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param attr async attributes for next request
  */
+void discord_adapter_async_next(struct discord_adapter *adapter,
+                                struct discord_async_attr *attr);
+
+/**
+ * @brief Check and manage on-going, pending and timed-out requests
+ *
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @return `ORCA_OK` means nothing out of the ordinary
+ */
+ORCAcode discord_adapter_perform(struct discord_adapter *adapter);
+
+/**
+ * @brief Get global timeout timestamp
+ *
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @return the most recent global timeout timestamp
+ */
+u64_unix_ms_t discord_adapter_get_global_wait(struct discord_adapter *adapter);
+
+/**
+ * @brief Stop all on-going, pending and timed-out requests
+ *
+ * The requests will be moved over to client's 'idleq' queue
+ * @param adapter the handle initialized with discord_adapter_init()
+ */
+void discord_adapter_stop_all(struct discord_adapter *adapter);
+
+/** @brief The bucket struct for handling ratelimiting */
 struct discord_bucket {
-  /** this bucket 'key' */
-  char route[256];
-  /** the unique hash associated with this bucket */
-  char hash[128];
-  /** amount of busy connections that have not yet finished its requests */
-  int busy;
+  /** the route associated with this bucket */
+  char route[128];
+  /** the hash associated with this bucket (logging purposes) */
+  char hash[64];
+  /** maximum connections this bucket can handle before ratelimit */
+  long limit;
   /** connections this bucket can do before waiting for cooldown */
-  int remaining;
+  long remaining;
   /** timestamp of when cooldown timer resets */
   u64_unix_ms_t reset_tstamp;
-  /** timestamp of the most recent request */
-  u64_unix_ms_t update_tstamp;
-
-  /** synchronize buckets between threads */
+  /** synchronize ratelimiting between threads */
   pthread_mutex_t lock;
+  /** pending requests of type 'struct discord_context' */
+  QUEUE waitq;
+  /** busy requests of type 'struct discord_context' */
+  QUEUE busyq;
+  /** avoid excessive timeouts */
+  bool freeze;
   /** makes this structure hashable */
   UT_hash_handle hh;
 };
 
 /**
- * @brief Free client buckets
+ * @brief Initialize a individual bucket and assign it to `adapter`
  *
- * @param adapter the client adapter containinig every bucket found
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param route the bucket's route
+ * @param hash the bucket's hash (for identification purposes)
+ * @param limit the bucket's request threshold
+ */
+struct discord_bucket *discord_bucket_init(struct discord_adapter *adapter,
+                                           const char route[],
+                                           const struct sized_buffer *hash,
+                                           const long limit);
+
+/**
+ * @brief Cleanup all buckets allocated
+ *
+ * @param adapter the handle initialized with discord_adapter_init()
  */
 void discord_buckets_cleanup(struct discord_adapter *adapter);
 
 /**
- * @brief Check bucket for ratelimit cooldown
+ * @brief Return bucket timeout timestamp
  *
- * Check if connections from a bucket hit its threshold, and lock every
- * connection associated with the bucket until cooldown time elapses
- * @param adapter the client adapter containinig every bucket found
- * @param bucket check if bucket expects a cooldown before performing a request
- * @return timespan to wait for in milliseconds
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param b the bucket to be checked for time out
+ * @return the timeout timestamp
  */
-long discord_bucket_get_cooldown(struct discord_adapter *adapter,
-                                 struct discord_bucket *bucket);
+u64_unix_ms_t discord_bucket_get_timeout(struct discord_adapter *adapter,
+                                         struct discord_bucket *b);
 
 /**
- * @brief Get existing bucket with @p route
+ * @brief Get bucket pending cooldown time in milliseconds
  *
- * Check if bucket associated with @p route has already been discovered
- * @param adapter the handle created with discord_adapter_init()
- * @param route that will be checked for a bucket match
- * @return bucket associated with route or NULL if no match found
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param the bucket to wait on cooldown
+ * @return amount to sleep for in milliseconds
  */
-struct discord_bucket *discord_bucket_try_get(struct discord_adapter *adapter,
-                                              const char route[]);
+int64_t discord_bucket_get_wait(struct discord_adapter *adapter,
+                                struct discord_bucket *bucket);
+
+/**
+ * @brief Get a `struct discord_bucket` assigned to `route`
+ *
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param endpoint endpoint that will be checked for a bucket match
+ * @return bucket assigned to `route` or `adapter->b_null` if no match found
+ */
+struct discord_bucket *discord_bucket_get(struct discord_adapter *adapter,
+                                          const char route[]);
 
 /**
  * @brief Update the bucket with response header data
  *
- * @param adapter the handle created with discord_adapter_init()
+ * @param adapter the handle initialized with discord_adapter_init()
  * @param bucket NULL when bucket is first discovered
  * @param route the route associated with the bucket
- * @param code numerical information for the current transfer
  * @param info informational struct containing details on the current transfer
  * @note If the bucket was just discovered it will be created here.
  */
 void discord_bucket_build(struct discord_adapter *adapter,
                           struct discord_bucket *bucket,
                           const char route[],
-                          ORCAcode code,
                           struct ua_info *info);
 
 struct discord_gateway_cmd_cbs {
   char *start;
   size_t size;
-  discord_message_cb cb;
+  discord_on_message cb;
 };
 
 struct discord_gateway_cbs {
   /** triggers on every event loop iteration */
-  discord_idle_cb on_idle;
-  /** triggers for every event if set, receive its raw JSON string */
-  discord_event_raw_cb on_event_raw;
+  discord_on_idle on_idle;
 
   /** triggers when connection first establishes */
-  discord_idle_cb on_ready;
+  discord_on_idle on_ready;
 
   /** triggers when a command is created */
-  discord_application_command_cb on_application_command_create;
+  discord_on_application_command on_application_command_create;
   /** triggers when a command is updated */
-  discord_application_command_cb on_application_command_update;
+  discord_on_application_command on_application_command_update;
   /** triggers when a command is deleted */
-  discord_application_command_cb on_application_command_delete;
+  discord_on_application_command on_application_command_delete;
 
   /** triggers when a channel is created */
-  discord_channel_cb on_channel_create;
+  discord_on_channel on_channel_create;
   /** triggers when a channel is updated */
-  discord_channel_cb on_channel_update;
+  discord_on_channel on_channel_update;
   /** triggers when a channel is deleted */
-  discord_channel_cb on_channel_delete;
+  discord_on_channel on_channel_delete;
   /** triggers when a channel pinned messages updates */
-  discord_channel_pins_update_cb on_channel_pins_update;
+  discord_on_channel_pins_update on_channel_pins_update;
   /** triggers when a thread is created */
-  discord_channel_cb on_thread_create;
+  discord_on_channel on_thread_create;
   /** triggers when a thread is updated */
-  discord_channel_cb on_thread_update;
+  discord_on_channel on_thread_update;
   /** triggers when a thread is deleted */
-  discord_channel_cb on_thread_delete;
+  discord_on_channel on_thread_delete;
+
+  /** triggers when guild info is ready, or a guild has joined */
+  discord_on_guild on_guild_create;
+  /** triggers when a guild's information is updated */
+  discord_on_guild on_guild_update;
+  /** triggers when removed from guild */
+  discord_on_guild_delete on_guild_delete;
 
   /** triggers when a ban occurs */
-  discord_guild_ban_cb on_guild_ban_add;
+  discord_on_guild_ban on_guild_ban_add;
   /** triggers when a ban is removed */
-  discord_guild_ban_cb on_guild_ban_remove;
+  discord_on_guild_ban on_guild_ban_remove;
 
   /** triggers when a guild member joins a guild */
-  discord_guild_member_cb on_guild_member_add;
+  discord_on_guild_member on_guild_member_add;
   /** triggers when a guild member is removed from a guild */
-  discord_guild_member_remove_cb on_guild_member_remove;
+  discord_on_guild_member_remove on_guild_member_remove;
   /** triggers when a guild member status is updated (ex: receive role) */
-  discord_guild_member_cb on_guild_member_update;
+  discord_on_guild_member on_guild_member_update;
 
   /** triggers when a guild role is created */
-  discord_guild_role_cb on_guild_role_create;
+  discord_on_guild_role on_guild_role_create;
   /** triggers when a guild role is updated */
-  discord_guild_role_cb on_guild_role_update;
+  discord_on_guild_role on_guild_role_update;
   /** triggers when a guild role is deleted */
-  discord_guild_role_delete_cb on_guild_role_delete;
+  discord_on_guild_role_delete on_guild_role_delete;
 
   /** triggers when a interaction is created  */
-  discord_interaction_cb on_interaction_create;
+  discord_on_interaction on_interaction_create;
 
   /** triggers when a message is created */
-  discord_message_cb on_message_create;
-  /** @todo this is temporary */
-  discord_sb_message_cb sb_on_message_create;
+  discord_on_message on_message_create;
   /** trigger when a message is updated */
-  discord_message_cb on_message_update;
-  /** @todo this is temporary */
-  discord_sb_message_cb sb_on_message_update;
+  discord_on_message on_message_update;
   /** triggers when a message is deleted */
-  discord_message_delete_cb on_message_delete;
+  discord_on_message_delete on_message_delete;
   /** triggers when a bulk of messages is deleted */
-  discord_message_delete_bulk_cb on_message_delete_bulk;
+  discord_on_message_delete_bulk on_message_delete_bulk;
   /** triggers when a reaction is added to a message */
-  discord_message_reaction_add_cb on_message_reaction_add;
+  discord_on_message_reaction_add on_message_reaction_add;
   /** triggers when a reaction is removed from a message */
-  discord_message_reaction_remove_cb on_message_reaction_remove;
+  discord_on_message_reaction_remove on_message_reaction_remove;
   /** triggers when all reactions are removed from a message */
-  discord_message_reaction_remove_all_cb on_message_reaction_remove_all;
+  discord_on_message_reaction_remove_all on_message_reaction_remove_all;
   /** triggers when all occurences of a specific reaction is removed from a
    * message */
-  discord_message_reaction_remove_emoji_cb on_message_reaction_remove_emoji;
+  discord_on_message_reaction_remove_emoji on_message_reaction_remove_emoji;
 
   /** triggers when a voice state is updated */
-  discord_voice_state_update_cb on_voice_state_update;
+  discord_on_voice_state_update on_voice_state_update;
   /** triggers when a voice server is updated */
-  discord_voice_server_update_cb on_voice_server_update;
+  discord_on_voice_server_update on_voice_server_update;
 };
 
-/**
- * @brief The handle used for establishing a Discord Gateway connection
- *        via WebSockets
- *
- * - Initializer:
- *   - discord_gateway_init()
- * - Cleanup:
- *   - discord_gateway_cleanup()
- *
- * @note A wrapper over struct websockets
- */
+/** @brief The handle used for establishing a WebSockets connection */
 struct discord_gateway {
   /** DISCORD_GATEWAY logging module */
   struct logconf conf;
   /** the websockets handle that connects to Discord */
   struct websockets *ws;
-  /** thread-pool manager */
-  threadpool_t *tpool;
+  /** curl_multi handle for non-blocking transfer over websockets */
+  CURLM *mhandle;
 
-  /** Reconnect structure */
+  /** timers kept for synchronization */
   struct {
-    /** will attempt reconnecting if true */
-    bool enable;
-    /** current reconnect attempt (resets to 0 when succesful) */
-    int attempt;
-    /** max amount of reconnects before giving up */
-    int threshold;
-  } * reconnect;
+    /** fixed interval between heartbeats */
+    u64_unix_ms_t interval;
+    /** last heartbeat pulse timestamp */
+    u64_unix_ms_t hbeat;
+    /** Gateway's concept of "now" */
+    u64_unix_ms_t now;
+    /** timestamp of last succesful identify request */
+    u64_unix_ms_t identify;
+    /** timestamp of last succesful event timestamp in ms (resets every 60s) */
+    u64_unix_ms_t event;
+    /** latency obtained from HEARTBEAT and HEARTBEAT_ACK interval */
+    int ping_ms;
+    /** ping rwlock  */
+    pthread_rwlock_t rwlock;
+  } * timer;
 
-  /** Status structure */
-  struct {
-    /** will attempt to resume session if connection shutsdowns */
-    bool is_resumable;
-    /** can start sending/receiving additional events to discord */
-    bool is_ready;
-    /** if true shutdown websockets connection as soon as possible */
-    bool shutdown;
-  } * status;
-
-  /** the info sent for connection authentication */
+  /** the identify structure for client authentication */
   struct discord_identify id;
-  /** the session id (for resuming lost connections) */
-  char session_id[512];
+
+  /** on-going session structure */
   struct {
-    char *url;
+    /** whether client is ready to start sending/receiving events */
+    bool is_ready;
+    /** session id for resuming lost connections */
+    char id[512];
+    /** amount of shards being used by this session */
     int shards;
+    /** session limits */
     struct discord_session_start_limit start_limit;
     /** active concurrent sessions */
     int concurrent;
-    /** timestamp of last succesful identify request */
-    u64_unix_ms_t identify_tstamp;
-    /** timestamp of last succesful event timestamp in ms (resets every 60s) */
-    u64_unix_ms_t event_tstamp;
     /** event counter to avoid reaching limit of 120 events per 60 sec */
     int event_count;
-  } session;
 
-  /** the client's user structure */
-  struct discord_user bot;
-  /** the client's user raw JSON @todo this is temporary */
-  struct sized_buffer sb_bot;
+    /** session status */
+    enum {
+      /** client is currently offline */
+      DISCORD_SESSION_OFFLINE = 0,
+      /** client will attempt to resume session after reconnect */
+      DISCORD_SESSION_RESUMABLE = 1 << 0,
+      /** client in the process of being shutdown */
+      DISCORD_SESSION_SHUTDOWN = 1 << 1
+    } status;
 
-  /* https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
-   */
-  /** Response-payload structure */
+    /** retry connection structure */
+    struct {
+      /** will attempt reconnecting if true */
+      bool enable;
+      /** current retry attempt (resets to 0 when succesful) */
+      int attempt;
+      /** max amount of retries before giving up */
+      int limit;
+    } retry;
+  } * session;
+
+  /** response-payload structure */
   struct {
     /** field 'op' */
     enum discord_gateway_opcodes opcode;
     /** field 's' */
     int seq;
     /** field 't' */
-    char event_name[64];
+    char name[64];
     /** field 'd' */
-    struct sized_buffer event_data;
-  } * payload;
+    struct sized_buffer data;
+  } payload;
 
-  /* Discord expects a proccess called heartbeating in order to keep the
-   * client-server connection alive */
-  /* https://discord.com/developers/docs/topics/gateway#heartbeating */
-  /** Heartbeating (keep-alive) structure */
+  /** user-commands structure */
   struct {
-    /** fixed interval between heartbeats */
-    u64_unix_ms_t interval_ms;
-    /** start pulse timestamp in milliseconds */
-    u64_unix_ms_t tstamp;
-    /** latency calculated by HEARTBEAT and HEARTBEAT_ACK interval */
-    int ping_ms;
-  } * hbeat;
-
-  /** User-Commands structure */
-  struct {
-    /** the prefix expected before every command @see discord_set_prefix() */
+    /** the prefix expected for every command */
     struct sized_buffer prefix;
     /** user's command/callback pair @see discord_set_on_command() */
     struct discord_gateway_cmd_cbs *pool;
     /** amount of command/callback pairs in pool */
     size_t amt;
-    /** user's default callback incase prefix matches but command doesn't */
+    /** fallback function incase prefix matches but command doesn't */
     struct discord_gateway_cmd_cbs on_default;
-
     /** user's callbacks */
     struct discord_gateway_cbs cbs;
-    /** context on how each event callback is executed @see
-     * discord_set_event_scheduler() */
-    discord_event_scheduler_cb scheduler;
-  } * user_cmd;
+    /** event execution flow callback */
+    discord_event_scheduler scheduler;
+  } cmds;
+};
+
+/**
+ * @brief Context in case event is scheduled to be triggered
+ *        from Orca's worker threads
+ */
+struct discord_event {
+  /** the event name */
+  char *name;
+  /** a copy of payload data */
+  struct sized_buffer data;
+  /** the discord gateway client */
+  struct discord_gateway *gw;
+  /** the event unique id value */
+  enum discord_gateway_events event;
+  /** the event callback */
+  void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
 };
 
 /**
  * @brief Initialize the fields of Discord Gateway handle
  *
- * @param gw a pointer to the allocated handle
+ * @param gw the gateway handle to be initialized
  * @param conf optional pointer to a initialized logconf
  * @param token the bot token
  */
@@ -385,18 +491,33 @@ void discord_gateway_init(struct discord_gateway *gw,
 /**
  * @brief Free a Discord Gateway handle
  *
- * @param gw a pointer to the gateway handle
+ * @param gw the handle initialized with discord_gateway_init()
  */
 void discord_gateway_cleanup(struct discord_gateway *gw);
 
 /**
- * @brief Start a connection to the Discord Gateway
+ * @brief Initialize handle with the new session primitives
  *
  * @param gw the handle initialized with discord_gateway_init()
- * @return ORCAcode for how the run went, ORCA_OK means nothing out of the
- * ordinary
+ * @return `ORCA_OK` means nothing out of the ordinary
  */
-ORCAcode discord_gateway_run(struct discord_gateway *gw);
+ORCAcode discord_gateway_start(struct discord_gateway *gw);
+
+/**
+ * @brief Cleanup and reset `gw` session primitives
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @return `true` if session can be retried, `false` otherwise
+ */
+bool discord_gateway_end(struct discord_gateway *gw);
+
+/**
+ * @brief Check and manage on-going Gateway session
+ *
+ * @param req the request handler
+ * @return `ORCA_OK` means nothing out of the ordinary
+ */
+ORCAcode discord_gateway_perform(struct discord_gateway *gw);
 
 /**
  * @brief Gracefully shutdown a ongoing Discord connection over WebSockets
@@ -415,7 +536,7 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
 void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
 
 /**
- * @brief The Discord opaque structure handler
+ * @brief The Discord client handler
  *
  * Used to access/perform public functions from discord.h
  *
@@ -423,62 +544,27 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  *   - discord_init(), discord_config_init()
  * - Cleanup:
  *   - discord_cleanup()
- *
- * @see discord_run()
- * @note defined at discord-internal.h
  */
 struct discord {
   /** @privatesection */
   /** DISCORD logging module */
-  struct logconf *conf;
-
+  struct logconf conf;
   /** whether this is the original client or a clone */
   bool is_original;
-
   /** the bot token */
   struct sized_buffer token;
-
   /** the HTTP adapter for performing requests */
   struct discord_adapter adapter;
   /** the WebSockets handle for establishing a connection to Discord */
   struct discord_gateway gw;
   /** the WebSockets handles for establishing voice connections to Discord */
   struct discord_voice vcs[DISCORD_MAX_VOICE_CONNECTIONS];
-
-  /* @todo? create a analogous struct for gateway */
+  /** @todo create a analogous struct for Gateway's callbacks */
   struct discord_voice_cbs voice_cbs;
-
-  /** space for user arbitrary data @see discord_get_data() and
-   * discord_set_data() */
+  /** the client's user structure */
+  struct discord_user self;
+  /** space for user arbitrary data */
   void *data;
 };
-
-struct discord_event_cxt {
-  char *event_name;
-  /** the thread id */
-  pthread_t tid;
-  /** a copy of payload data */
-  struct sized_buffer data;
-  /** the discord gateway client */
-  struct discord_gateway *p_gw;
-  enum discord_gateway_events event;
-  void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
-  bool is_main_thread;
-};
-
-/* MISCELLANEOUS */
-
-/**
- * @brief Encodes a raw JSON payload to multipart data
- *
- * In order for it to be triggered, it must be set as a callback via
- * ua_curl_mime_setopt(), the Content-Type must be changed to
- * `multipart/form-data` by ua_reqheader_add(), and the HTTP method for
- * discord_adapter_run() should be `HTTP_MIMEPOST`
- * @param mime the pre-initialized curl_mime handler
- * @param p_cxt a `void*[2]` that expects `struct discord_attachment**` and
- * `struct sized_buffer` on each element
- */
-void _discord_params_to_mime(curl_mime *mime, void *p_cxt);
 
 #endif /* DISCORD_INTERNAL_H */

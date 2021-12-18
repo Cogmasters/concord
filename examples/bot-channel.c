@@ -5,56 +5,51 @@
 
 #include "discord.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Channel-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
 void log_on_channel_create(struct discord *client,
-                           const struct discord_user *bot,
                            const struct discord_channel *channel)
 {
   log_info("Channel %s (%" PRIu64 ") created", channel->name, channel->id);
 }
 
 void log_on_channel_update(struct discord *client,
-                           const struct discord_user *bot,
                            const struct discord_channel *channel)
 {
   log_info("Channel %s (%" PRIu64 ") updated", channel->name, channel->id);
 }
 
 void log_on_channel_delete(struct discord *client,
-                           const struct discord_user *bot,
                            const struct discord_channel *channel)
 {
   log_info("Channel %s (%" PRIu64 ") deleted", channel->name, channel->id);
 }
 
 void log_on_thread_create(struct discord *client,
-                          const struct discord_user *bot,
                           const struct discord_channel *thread)
 {
   log_info("Thread %s (%" PRIu64 ") created", thread->name, thread->id);
 }
 
 void log_on_thread_update(struct discord *client,
-                          const struct discord_user *bot,
                           const struct discord_channel *thread)
 {
   log_info("Thread %s (%" PRIu64 ") updated", thread->name, thread->id);
 }
 
 void log_on_thread_delete(struct discord *client,
-                          const struct discord_user *bot,
                           const struct discord_channel *thread)
 {
   log_info("Thread %s (%" PRIu64 ") deleted", thread->name, thread->id);
 }
 
 void on_channel_create(struct discord *client,
-                       const struct discord_user *bot,
                        const struct discord_message *msg)
 {
   if (msg->author->bot) return;
@@ -64,7 +59,6 @@ void on_channel_create(struct discord *client,
 }
 
 void on_channel_rename_this(struct discord *client,
-                            const struct discord_user *bot,
                             const struct discord_message *msg)
 {
   if (msg->author->bot) return;
@@ -74,7 +68,6 @@ void on_channel_rename_this(struct discord *client,
 }
 
 void on_channel_delete_this(struct discord *client,
-                            const struct discord_user *bot,
                             const struct discord_message *msg)
 {
   if (msg->author->bot) return;
@@ -83,15 +76,15 @@ void on_channel_delete_this(struct discord *client,
 }
 
 void on_channel_get_invites(struct discord *client,
-                            const struct discord_user *bot,
                             const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_invite) invites = NULL;
-
+  struct discord_invite **invites = NULL;
   ORCAcode code;
+
   code = discord_get_channel_invites(client, msg->channel_id, &invites);
+
   if (code != ORCA_OK || !invites) {
     log_info("Couldn't fetch invites");
     return;
@@ -100,6 +93,7 @@ void on_channel_get_invites(struct discord *client,
   char text[DISCORD_MAX_MESSAGE_LEN];
   snprintf(text, sizeof(text), "%zu invite links created.",
            ntl_length((ntl_t)invites));
+
   struct discord_create_message_params params = { .content = text };
   discord_create_message(client, msg->channel_id, &params, NULL);
 
@@ -107,16 +101,15 @@ void on_channel_get_invites(struct discord *client,
 }
 
 void on_channel_create_invite(struct discord *client,
-                              const struct discord_user *bot,
                               const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
   struct discord_invite invite = { 0 };
-
   char text[DISCORD_MAX_MESSAGE_LEN];
-  if (ORCA_OK ==
-      discord_create_channel_invite(client, msg->channel_id, NULL, &invite))
+
+  if (ORCA_OK
+      == discord_create_channel_invite(client, msg->channel_id, NULL, &invite))
     sprintf(text, "https://discord.gg/%s", invite.code);
   else
     sprintf(text, "Couldn't create invite.");
@@ -128,15 +121,14 @@ void on_channel_create_invite(struct discord *client,
 }
 
 void on_channel_start_thread(struct discord *client,
-                             const struct discord_user *bot,
                              const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
   struct discord_channel channel = { 0 };
-
   char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;
+
   if (msg->message_reference) {
     code = discord_start_thread_with_message(
       client, msg->channel_id, msg->message_reference->message_id,
@@ -171,8 +163,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Could not initialize client");
 
@@ -209,6 +200,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

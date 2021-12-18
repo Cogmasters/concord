@@ -14,10 +14,10 @@ static void print_usage(char *prog)
 
 int main(int argc, char *argv[])
 {
-  char *webhook_token = NULL;
   u64_snowflake_t webhook_id = 0;
-
+  char *webhook_token = NULL;
   int opt;
+
   while (-1 != (opt = getopt(argc, argv, "i:t:"))) {
     switch (opt) {
     case 't': webhook_token = strdup(optarg); break;
@@ -32,10 +32,10 @@ int main(int argc, char *argv[])
          "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_init(NULL);
   assert(NULL != client && "Couldn't initialize client");
+
   struct discord_webhook webhook;
   discord_webhook_init(&webhook);
 
@@ -47,10 +47,9 @@ int main(int argc, char *argv[])
     &(struct discord_execute_webhook_params){ .content = "Hello world!" },
     NULL);
 
-  discord_cleanup(client);
   free(webhook_token);
-
-  discord_global_cleanup();
+  discord_cleanup(client);
+  orca_global_cleanup();
 
   return EXIT_SUCCESS;
 }

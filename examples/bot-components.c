@@ -53,19 +53,19 @@ char JSON_STRING[] =
   "    }\n"
   "]\n";
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Components-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_dynamic(struct discord *client,
-                const struct discord_user *bot,
-                const struct discord_message *msg)
+void on_dynamic(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_component) components = NULL;
+  struct discord_component **components = NULL;
   discord_component_list_from_json(JSON_STRING, sizeof(JSON_STRING),
                                    &components);
 
@@ -80,53 +80,61 @@ void on_dynamic(struct discord *client,
   discord_component_list_free(components);
 }
 
-void on_static(struct discord *client,
-               const struct discord_user *bot,
-               const struct discord_message *msg)
+void on_static(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  struct discord_component **components =
-    (struct discord_component *[]){
-      &(struct discord_component){
-        .type = DISCORD_COMPONENT_ACTION_ROW,
-        .components =
-          (struct discord_component *[]){
-            &(struct discord_component){
-              .type = DISCORD_COMPONENT_SELECT_MENU,
-              .custom_id = "class_select_1",
-              .options =
-                (struct discord_select_option *[]){
-                  &(struct discord_select_option){
-                    .label = "Rogue",
-                    .value = "rogue",
-                    .description = "Sneak n stab",
-                    .emoji =
-                      &(struct discord_emoji){ .name = "rogue",
-                                               .id = 625891304148303894ULL } },
-                  &(struct discord_select_option){
-                    .label = "Mage",
-                    .value = "mage",
-                    .description = "Turn 'em into a sheep",
-                    .emoji =
-                      &(struct discord_emoji){
-                        .name = "mage", .id = 625891304081063986ULL } },
-                  &(struct discord_select_option){
-                    .label = "Priest",
-                    .value = "priest",
-                    .description = "You get heals when I'm done doing damage",
-                    .emoji =
-                      &(struct discord_emoji){ .name = "priest",
-                                               .id = 625891303795982337ULL } },
-                  NULL /* ARRAY END */
+  struct discord_component **components = (struct discord_component *[]){
+    &(struct discord_component){
+      .type = DISCORD_COMPONENT_ACTION_ROW,
+      .components =
+        (struct discord_component *[]){
+          &(struct discord_component){
+            .type = DISCORD_COMPONENT_SELECT_MENU,
+            .custom_id = "class_select_1",
+            .options =
+              (struct discord_select_option *[]){
+                &(struct discord_select_option){
+                  .label = "Rogue",
+                  .value = "rogue",
+                  .description = "Sneak n stab",
+                  .emoji =
+                    &(struct discord_emoji){
+                      .name = "rogue",
+                      .id = 625891304148303894ULL,
+                    },
                 },
-              .placeholder = "Choose a class",
-              .min_values = 1,
-              .max_values = 3 },
-            NULL /* ARRAY END */
-          } },
-      NULL /* ARRAY END */
-    };
+                &(struct discord_select_option){
+                  .label = "Mage",
+                  .value = "mage",
+                  .description = "Turn 'em into a sheep",
+                  .emoji =
+                    &(struct discord_emoji){
+                      .name = "mage",
+                      .id = 625891304081063986ULL,
+                    },
+                },
+                &(struct discord_select_option){
+                  .label = "Priest",
+                  .value = "priest",
+                  .description = "You get heals when I'm done doing damage",
+                  .emoji =
+                    &(struct discord_emoji){
+                      .name = "priest",
+                      .id = 625891303795982337ULL,
+                    },
+                },
+                NULL /* ARRAY END */
+              },
+            .placeholder = "Choose a class",
+            .min_values = 1,
+            .max_values = 3,
+          },
+          NULL /* ARRAY END */
+        },
+    },
+    NULL /* ARRAY END */
+  };
 
   struct discord_create_message_params params = {
     .content =
@@ -137,7 +145,6 @@ void on_static(struct discord *client,
 }
 
 void on_interaction_create(struct discord *client,
-                           const struct discord_user *bot,
                            const struct discord_interaction *interaction)
 {
   log_info("Interaction %" PRIu64 " received", interaction->id);
@@ -180,8 +187,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -191,18 +197,18 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "static", &on_static);
   discord_set_on_interaction_create(client, &on_interaction_create);
 
-  printf(
-    "\n\nThis bot demonstrates how to load message components"
-    " with three different methods.\n"
-    "1 - Dynamic-approach (type !dynamic): Load the components from "
-    "a JSON string.\n"
-    "2 - Static-approach (type !static): A clean initialization approach "
-    "using the combination of designated initialization and compound literals.\n"
-    "\nTYPE ANY KEY TO START BOT\n");
+  printf("\n\nThis bot demonstrates how to load message components"
+         " with three different methods.\n"
+         "1 - Dynamic-approach (type !dynamic): Load the components from "
+         "a JSON string.\n"
+         "2 - Static-approach (type !static): A clean initialization approach "
+         "using the combination of designated initialization and compound "
+         "literals.\n"
+         "\nTYPE ANY KEY TO START BOT\n");
   fgetc(stdin); // wait for input
 
   discord_run(client);
 
   discord_cleanup(client);
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

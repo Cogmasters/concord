@@ -29,12 +29,14 @@ struct {
   } R;
   struct { /* DISCORD UTILS */
     struct discord *client;
-    NTL_T(u64_snowflake_t) channel_ids;
+    u64_snowflake_t **channel_ids;
   } D;
 } BOT;
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Reddit-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
@@ -49,11 +51,11 @@ struct discord_embed *embed_reddit_search_result(
 
   code = reddit_search(BOT.R.client,
                        &(struct reddit_search_params){
-                         .q = (keywords && *keywords) ? keywords : NULL,
-                         .before = (before && *before) ? before : NULL,
-                         .after = (after && *after) ? after : NULL,
-                         .sort = (sort && *sort) ? sort : NULL,
-                         .restrict_sr = (strcmp(subreddits, "all") != 0) },
+                         .q = keywords,
+                         .before = before,
+                         .after = after,
+                         .sort = sort,
+                         .restrict_sr = strcmp(subreddits, "all") != 0 },
                        subreddits, &resp_body);
 
   struct discord_embed *embed = malloc(sizeof *embed);
@@ -94,19 +96,18 @@ struct discord_embed *embed_reddit_search_result(
 }
 
 void on_reaction_add(struct discord *client,
-                     const struct discord_user *bot,
-                     const u64_snowflake_t user_id,
-                     const u64_snowflake_t channel_id,
-                     const u64_snowflake_t message_id,
-                     const u64_snowflake_t guild_id,
+                     u64_snowflake_t user_id,
+                     u64_snowflake_t channel_id,
+                     u64_snowflake_t message_id,
+                     u64_snowflake_t guild_id,
                      const struct discord_guild_member *member,
                      const struct discord_emoji *emoji)
 {
   if (member->user->bot) return;
 
+  const struct discord_user *bot = discord_get_self(client);
   struct discord_create_message_params params = { 0 };
   struct discord_message msg;
-  discord_message_init(&msg);
 
   discord_get_channel_message(client, channel_id, message_id, &msg);
 
@@ -188,9 +189,7 @@ void on_reaction_add(struct discord *client,
   discord_message_cleanup(&msg);
 }
 
-void on_search(struct discord *client,
-               const struct discord_user *bot,
-               const struct discord_message *msg)
+void on_search(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -238,7 +237,8 @@ void on_search(struct discord *client,
               return; /* EARLY RETURN */
             }
           case '_':
-          case '+': break;
+          case '+':
+            break;
           }
         }
         snprintf(subreddits, sizeof(subreddits), "%.*s", (int)query_size,
@@ -336,9 +336,7 @@ void search_reddit_cb(void *data)
   free(embed);
 }
 
-void on_comment(struct discord *client,
-                const struct discord_user *bot,
-                const struct discord_message *msg)
+void on_comment(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -361,8 +359,8 @@ void load_BOT(const char config_file[])
 
   bool enable = false;
   int refresh_seconds = 0;
-  NTL_T(ja_str) ja_q = NULL;
-  NTL_T(ja_str) ja_sr = NULL;
+  ja_str **ja_q = NULL;
+  ja_str **ja_sr = NULL;
   json_extract(BOT.json.start, BOT.json.size,
                "(enable):b"
                "(refresh_seconds):d"
@@ -428,11 +426,10 @@ void cleanup_BOT()
   free(BOT.R.params.q);
   free(BOT.R.srs);
   reddit_cleanup(BOT.R.client);
-  ja_u64_list_free((NTL_T(ja_u64))BOT.D.channel_ids);
+  ja_u64_list_free((ja_u64 **)BOT.D.channel_ids);
 }
 
 enum discord_event_scheduler scheduler(struct discord *client,
-                                       struct discord_user *bot,
                                        struct sized_buffer *event_data,
                                        enum discord_gateway_events event)
 {

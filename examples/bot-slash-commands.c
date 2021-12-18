@@ -7,24 +7,23 @@
 
 #include "discord.h"
 
-unsigned long long g_application_id;
+unsigned long long g_app_id;
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Slash-Commands-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void log_on_application_command_create(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_application_command *cmd)
+void log_on_app_create(struct discord *client,
+                       const struct discord_application_command *cmd)
 {
   log_info("Application Command %s created", cmd->name);
 }
 
 void on_slash_command_create(struct discord *client,
-                             const struct discord_user *bot,
                              const struct discord_message *msg)
 {
   if (msg->author->bot) return;
@@ -83,12 +82,11 @@ void on_slash_command_create(struct discord *client,
   };
 
   /* Create slash command */
-  discord_create_guild_application_command(client, g_application_id,
-                                           msg->guild_id, &params, NULL);
+  discord_create_guild_application_command(client, g_app_id, msg->guild_id,
+                                           &params, NULL);
 }
 
 void on_interaction_create(struct discord *client,
-                           const struct discord_user *bot,
                            const struct discord_interaction *interaction)
 {
   /* We're only interested on slash commands */
@@ -136,6 +134,7 @@ void on_interaction_create(struct discord *client,
   ORCAcode code;
   code = discord_create_interaction_response(
     client, interaction->id, interaction->token, &params, NULL);
+
   if (code) {
     log_error("%s", discord_strerror(code, client));
   }
@@ -149,15 +148,13 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Could not initialize client");
 
   discord_set_on_command(client, "!slash_create", &on_slash_command_create);
   discord_set_on_ready(client, &on_ready);
-  discord_set_on_application_command_create(
-    client, &log_on_application_command_create);
+  discord_set_on_application_command_create(client, &log_on_app_create);
   discord_set_on_interaction_create(client, &on_interaction_create);
 
   printf("Please provide a valid application id in order to test the Slash "
@@ -165,8 +162,8 @@ int main(int argc, char *argv[])
          "https://discord.com/developers/applications\n");
   do {
     printf("Application ID:\n");
-    fscanf(stdin, "%llu", &g_application_id);
-  } while (!g_application_id || errno == ERANGE);
+    fscanf(stdin, "%llu", &g_app_id);
+  } while (!g_app_id || errno == ERANGE);
 
   printf(
     "\n\nThis bot demonstrates how easy it is to create, and react to "
@@ -179,6 +176,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

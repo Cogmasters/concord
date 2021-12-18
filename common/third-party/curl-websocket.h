@@ -204,7 +204,7 @@ bool cws_close(CURL *easy, enum cws_close_reason reason, const char *reason_text
  * @param field the header field
  * @param value the header value
  */
-void cws_reqheader_add(CURL *easy, const char field[],  const char value[]);
+void cws_add_header(CURL *easy, const char field[],  const char value[]);
 
 #ifdef __cplusplus
 }

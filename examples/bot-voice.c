@@ -5,27 +5,31 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "discord-voice-connections.h"
+#include "discord-internal.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Voice-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
 void on_list_voice_regions(struct discord *client,
-                           const struct discord_user *bot,
                            const struct discord_message *msg)
 {
   if (msg->author->bot) return;
-  NTL_T(struct discord_voice_region) voice_regions = NULL;
+
+  struct discord_voice_region **voice_regions = NULL;
+
   discord_list_voice_regions(client, &voice_regions);
+
   if (!voice_regions) {
     log_error("Could not obtain voice regions");
     return;
   }
 
-  struct discord_create_message_params params = {};
+  struct discord_create_message_params params = { 0 };
   for (size_t i = 0; voice_regions[i]; ++i) {
     params.content = voice_regions[i]->name;
     discord_create_message(client, msg->channel_id, &params, NULL);
@@ -34,17 +38,14 @@ void on_list_voice_regions(struct discord *client,
   discord_voice_region_list_free(voice_regions);
 }
 
-void on_voice_join(struct discord *client,
-                   const struct discord_user *bot,
-                   const struct discord_message *msg)
+void on_voice_join(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  int position = -1;
-  sscanf(msg->content, "%d", &position);
-
   struct discord_channel vchannel;
-  discord_channel_init(&vchannel);
+  int position = -1;
+
+  sscanf(msg->content, "%d", &position);
 
   discord_get_channel_at_pos(client, msg->guild_id,
                              DISCORD_CHANNEL_GUILD_VOICE, position - 1,
@@ -59,19 +60,19 @@ void on_voice_join(struct discord *client,
     };
     discord_create_message(client, msg->channel_id, &params, NULL);
   }
+
   discord_channel_cleanup(&vchannel);
 }
 
-void on_voice_kick(struct discord *client,
-                   const struct discord_user *bot,
-                   const struct discord_message *msg)
+void on_voice_kick(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
+  char text[DISCORD_MAX_MESSAGE_LEN];
   u64_snowflake_t user_id = 0;
+
   sscanf(msg->content, "%" SCNu64, &user_id);
 
-  char text[DISCORD_MAX_MESSAGE_LEN];
   if (!user_id) {
     sprintf(text, "Couldn't find user");
   }
@@ -86,7 +87,6 @@ void on_voice_kick(struct discord *client,
 }
 
 void log_on_voice_state_update(struct discord *client,
-                               const struct discord_user *bot,
                                const struct discord_voice_state *vs)
 {
   log_info("User <@!%" PRIu64 "> has joined <#%" PRIu64 ">!", vs->user_id,
@@ -101,10 +101,9 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   discord_set_on_voice_state_update(client, &log_on_voice_state_update);
   discord_set_prefix(client, "voice.");
@@ -126,6 +125,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

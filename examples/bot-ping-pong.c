@@ -3,15 +3,15 @@
 
 #include "discord.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_ping(struct discord *client,
-             const struct discord_user *bot,
-             const struct discord_message *msg)
+void on_ping(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -19,9 +19,7 @@ void on_ping(struct discord *client,
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_pong(struct discord *client,
-             const struct discord_user *bot,
-             const struct discord_message *msg)
+void on_pong(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
@@ -37,8 +35,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
 
   discord_set_on_ready(client, &on_ready);
@@ -54,6 +51,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

@@ -4,10 +4,11 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "cee-utils.h" /* cee_timestamp_ms() */
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Presence-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
@@ -20,8 +21,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -32,22 +32,23 @@ int main(int argc, char *argv[])
   fgetc(stdin); // wait for input
 
   /* custom presence */
-  discord_set_presence(
-    client, &(struct discord_presence_status){
-              .activities =
-                (struct discord_activity *[]){
-                  &(struct discord_activity){ .name = "with Orca",
-                                              .type = DISCORD_ACTIVITY_GAME,
-                                              .details = "Fixing some bugs" },
-                  NULL // END OF ACTIVITY ARRAY
-                },
-              .status = "idle",
-              .afk = false,
-              .since = cee_timestamp_ms() });
+  discord_set_presence(client, &(struct discord_presence_status){
+                                 .activities =
+                                   (struct discord_activity *[]){
+                                     &(struct discord_activity){
+                                       .name = "with Orca",
+                                       .type = DISCORD_ACTIVITY_GAME,
+                                       .details = "Fixing some bugs",
+                                     },
+                                     NULL // END OF ACTIVITY ARRAY
+                                   },
+                                 .status = "idle",
+                                 .afk = false,
+                                 .since = discord_timestamp(client),
+                               });
 
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

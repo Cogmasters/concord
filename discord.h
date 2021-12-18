@@ -1,7 +1,6 @@
 /**
  * @file discord.h
  * @author cee-studio
- * @date 27 Jul 2021
  * @brief File containing public functions and datatypes
  *
  * These symbols are organized in a intuitive fashion to be easily
@@ -14,16 +13,20 @@
 
 #include <stdbool.h>
 #include "json-actor-boxed.h"
-#include "types.h"
+#include "common.h"
 #include "logconf.h"
+
+/* see specs/discord/ for specs */
+#include "specs-code/discord/one-specs.h"
 
 #define DISCORD_API_BASE_URL                 "https://discord.com/api/v9"
 #define DISCORD_GATEWAY_URL_SUFFIX           "?v=9&encoding=json"
 #define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
 
-/* FORWARD DECLARATIONS */
+/* forward declarations */
 struct discord;
 struct discord_voice_cbs;
+/**/
 
 /** @defgroup DiscordLimitsSnowflake
  * @see https://discord.com/developers/docs/reference#snowflakes
@@ -72,120 +75,80 @@ struct discord_voice_cbs;
 #define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
 /** @} */
 
-/* see specs/discord/ for specs */
-#include "specs-code/discord/one-specs.h"
-
 /** @defgroup DiscordCallbacksGeneral
  * @brief General-purpose callbacks
  *  @{ */
-/**
- * @brief Event Handling Mode callback
- *
- * A very important callback that enables the user with a fine-grained control
- * of how each event is handled: blocking, non-blocking or ignored
- *
- * @see discord_set_event_scheduler()
- * @see discord_gateway_events
- */
-typedef enum discord_event_scheduler (*discord_event_scheduler_cb)(
-  struct discord *client,
-  struct discord_user *bot,
-  struct sized_buffer *event_data,
-  enum discord_gateway_events event);
+/** @brief executed on a succesful async request */
+typedef void (*discord_on_done)(struct discord *client, const void *obj);
 
-/**
- * @brief Idle callback
- */
-typedef void (*discord_idle_cb)(struct discord *client,
-                                const struct discord_user *bot);
-
-/**
- * @brief Raw Event callback
- *
- * If activated, this callback is triggered on any event.
- * It is executed after every other callback has been checked.
- * @see discord_set_on_event_raw()
- */
-typedef void (*discord_event_raw_cb)(struct discord *client,
-                                     enum discord_gateway_events event,
-                                     struct sized_buffer *sb_bot,
-                                     struct sized_buffer *event_data);
+/** @brief Idle callback */
+typedef void (*discord_on_idle)(struct discord *client);
 /** @} */
 
 /** @defgroup DiscordCallbacksApplicationCommand
  * @brief Application Command event callbacks
  * @see https://discord.com/developers/docs/topics/gateway#commands
  *  @{ */
-/**
- * @brief Application Command Create/Update/Delete callback
- */
-typedef void (*discord_application_command_cb)(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_application_command *app_cmd);
+/** @brief Application Command Create/Update/Delete callback */
+typedef void (*discord_on_application_command)(
+  struct discord *client, const struct discord_application_command *app_cmd);
 /** @} */
 
 /** @defgroup DiscordCallbacksChannel
  * @brief Channel-event callbacks
  * @see https://discord.com/developers/docs/topics/gateway#channels
  *  @{ */
-/**
- * @brief Channel/Thread Create/Update/Delete callback
- */
-typedef void (*discord_channel_cb)(struct discord *client,
-                                   const struct discord_user *bot,
+
+/** @brief Channel/Thread Create/Update/Delete callback */
+typedef void (*discord_on_channel)(struct discord *client,
                                    const struct discord_channel *channel);
-/**
- * @brief Channel Pins Update callback
- */
-typedef void (*discord_channel_pins_update_cb)(
+
+/** @brief Channel Pins Update callback */
+typedef void (*discord_on_channel_pins_update)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t channel_id,
-  const u64_unix_ms_t last_pin_timestamp);
+  u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id,
+  u64_unix_ms_t last_pin_timestamp);
 /** @} */
 
 /** @defgroup DiscordCallbacksGuild
  * @brief Guild-event callbacks
  * @see https://discord.com/developers/docs/topics/gateway#guilds
  *  @{ */
-/**
- * @brief Guild Role Create/Update callback
- */
-typedef void (*discord_guild_role_cb)(struct discord *client,
-                                      const struct discord_user *bot,
-                                      const u64_snowflake_t guild_id,
+
+/** @brief Guild Create/Update callback */
+typedef void (*discord_on_guild)(struct discord *client,
+                                 const struct discord_guild *guild);
+
+/** @brief Guild Delete callback */
+typedef void (*discord_on_guild_delete)(struct discord *client,
+                                        u64_snowflake_t guild_id);
+
+/** @brief Guild Role Create/Update callback */
+typedef void (*discord_on_guild_role)(struct discord *client,
+                                      u64_snowflake_t guild_id,
                                       const struct discord_role *role);
-/**
- * @brief Guild Role Delete callback
- */
-typedef void (*discord_guild_role_delete_cb)(struct discord *client,
-                                             const struct discord_user *bot,
-                                             const u64_snowflake_t guild_id,
-                                             const u64_snowflake_t role_id);
-/**
- * @brief Guild Member Add/Update callback
- */
-typedef void (*discord_guild_member_cb)(
+
+/** @brief Guild Role Delete callback */
+typedef void (*discord_on_guild_role_delete)(struct discord *client,
+                                             u64_snowflake_t guild_id,
+                                             u64_snowflake_t role_id);
+
+/** @brief Guild Member Add/Update callback */
+typedef void (*discord_on_guild_member)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   const struct discord_guild_member *member);
-/**
- * @brief Guild Member Remove callback
- */
-typedef void (*discord_guild_member_remove_cb)(
+
+/** @brief Guild Member Remove callback */
+typedef void (*discord_on_guild_member_remove)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   const struct discord_user *user);
-/**
- * @brief Guild Ban Add/Remove callback
- */
-typedef void (*discord_guild_ban_cb)(struct discord *client,
-                                     const struct discord_user *bot,
-                                     const u64_snowflake_t guild_id,
+
+/** @brief Guild Ban Add/Remove callback */
+typedef void (*discord_on_guild_ban)(struct discord *client,
+                                     u64_snowflake_t guild_id,
                                      const struct discord_user *user);
 /** @} */
 
@@ -196,10 +159,8 @@ typedef void (*discord_guild_ban_cb)(struct discord *client,
 /**
  * @brief Interaction Create callback
  */
-typedef void (*discord_interaction_cb)(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_interaction *interaction);
+typedef void (*discord_on_interaction)(
+  struct discord *client, const struct discord_interaction *interaction);
 /** @} */
 
 /** @defgroup DiscordCallbacksMessage
@@ -209,72 +170,59 @@ typedef void (*discord_interaction_cb)(
 /**
  * @brief Message Create/Update callback
  */
-typedef void (*discord_message_cb)(struct discord *client,
-                                   const struct discord_user *bot,
+typedef void (*discord_on_message)(struct discord *client,
                                    const struct discord_message *message);
-typedef void (*discord_sb_message_cb)(struct discord *client,
-                                      const struct discord_user *bot,
-                                      struct sized_buffer *sb_bot,
-                                      const struct discord_message *message,
-                                      struct sized_buffer *msg_payload);
 /**
  * @brief Message Delete callback
  */
-typedef void (*discord_message_delete_cb)(struct discord *client,
-                                          const struct discord_user *bot,
-                                          const u64_snowflake_t id,
-                                          const u64_snowflake_t channel_id,
-                                          const u64_snowflake_t guild_id);
+typedef void (*discord_on_message_delete)(struct discord *client,
+                                          u64_snowflake_t id,
+                                          u64_snowflake_t channel_id,
+                                          u64_snowflake_t guild_id);
 /**
  * @brief Message Delete Bulk callback
  */
-typedef void (*discord_message_delete_bulk_cb)(
-  struct discord *client,
-  const struct discord_user *bot,
-  const NTL_T(ja_u64) ids,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t guild_id);
+typedef void (*discord_on_message_delete_bulk)(struct discord *client,
+                                               const u64_snowflake_t **ids,
+                                               u64_snowflake_t channel_id,
+                                               u64_snowflake_t guild_id);
 /**
  * @brief Message Reaction Add callback
  */
-typedef void (*discord_message_reaction_add_cb)(
+typedef void (*discord_on_message_reaction_add)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t user_id,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t message_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t user_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id,
   const struct discord_guild_member *member,
   const struct discord_emoji *emoji);
 /**
  * @brief Message Reaction Remove callback
  */
-typedef void (*discord_message_reaction_remove_cb)(
+typedef void (*discord_on_message_reaction_remove)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t user_id,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t message_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t user_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id,
   const struct discord_emoji *emoji);
 /**
  * @brief Message Reaction Remove All callback
  */
-typedef void (*discord_message_reaction_remove_all_cb)(
+typedef void (*discord_on_message_reaction_remove_all)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t message_id,
-  const u64_snowflake_t guild_id);
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id);
 /**
  * @brief Message Reaction Remove Emoji callback
  */
-typedef void (*discord_message_reaction_remove_emoji_cb)(
+typedef void (*discord_on_message_reaction_remove_emoji)(
   struct discord *client,
-  const struct discord_user *bot,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t message_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id,
   const struct discord_emoji *emoji);
 /** @} */
 
@@ -285,31 +233,17 @@ typedef void (*discord_message_reaction_remove_emoji_cb)(
 /**
  * @brief Voice State Update callback
  */
-typedef void (*discord_voice_state_update_cb)(
-  struct discord *client,
-  const struct discord_user *bot,
-  const struct discord_voice_state *voice_state);
+typedef void (*discord_on_voice_state_update)(
+  struct discord *client, const struct discord_voice_state *voice_state);
 /**
  * @brief Voice Server Update callback
  */
-typedef void (*discord_voice_server_update_cb)(struct discord *client,
-                                               const struct discord_user *bot,
+typedef void (*discord_on_voice_server_update)(struct discord *client,
                                                const char *token,
-                                               const u64_snowflake_t guild_id,
+                                               u64_snowflake_t guild_id,
                                                const char *endpoint);
 /** @} */
 
-/* * * * * * * * * * * * * * * */
-/* * * * CLIENT FUNCTIONS * * * */
-
-/**
- * @brief Initialize resources of globals used by discord.h
- */
-void discord_global_init();
-/**
- * @brief Free resources of globals used by discord.h
- */
-void discord_global_cleanup();
 /**
  * @brief Return the meaning of ORCAcode
  * @note if the client parameter is provided, the raw JSON error string will be
@@ -320,6 +254,7 @@ void discord_global_cleanup();
  * @return a string containing the code meaning
  */
 const char *discord_strerror(ORCAcode code, struct discord *client);
+
 /**
  * @brief Create a Discord Client handle by its token
  *
@@ -328,6 +263,7 @@ const char *discord_strerror(ORCAcode code, struct discord *client);
  * @see discord_get_logconf() to configure logging behavior
  */
 struct discord *discord_init(const char token[]);
+
 /**
  * @brief Create a Discord Client handle by a bot.config file
  *
@@ -335,28 +271,53 @@ struct discord *discord_init(const char token[]);
  * @return the newly created Discord Client handle
  */
 struct discord *discord_config_init(const char config_file[]);
+
 /**
  * @brief Clone a discord client
  *
- * This is useful in a multithreading scenario. For example, making
- *        sure each client instance has its own shared url, headers,
- *        return codes.
+ * Should be called before entering a thread, to ensure each thread
+ *        has its own client instance with unique buffers, url and headers.
  * @param orig_client the original client created with discord_init()
  * @return the original client clone
  */
 struct discord *discord_clone(const struct discord *orig_client);
+
 /**
  * @brief Free a Discord Client handle
  *
  * @param client the client created with discord_init()
  */
 void discord_cleanup(struct discord *client);
+
+/** @brief The async attributes for next request */
+struct discord_async_attr {
+  /** callback to be executed on a succesful request */
+  discord_on_done done;
+  /** whether the next request is high priority */
+  bool high_p;
+};
+
+/**
+ * @brief Set next request to run asynchronously
+ *
+ * @param client the client created with discord_init()
+ * @param attr optional async attributes for next request, can be NULL if not needed
+ */
+void discord_async_next(struct discord *client, struct discord_async_attr *attr);
+
+/**
+ * @brief Get the user structure corresponding to the client
+ *
+ * @param client the client created with discord_init()
+ * @warning the returned structure should NOT be modified
+ */
+const struct discord_user *discord_get_self(struct discord *client);
+
 /**
  * @brief Subscribe to Discord Gateway events
  *
  * @param client the client created with discord_init()
- * @param code the intents opcode, can be set as a bitmask operation (ex: A | B
- * | C)
+ * @param code the intents opcode, can be set as a bitmask operation
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  */
 void discord_add_intents(struct discord *client,
@@ -382,70 +343,44 @@ void discord_remove_intents(struct discord *client,
  * @see discord_set_on_command()
  */
 void discord_set_prefix(struct discord *client, char *prefix);
-/**
- * @brief return value of discord_set_event_scheduler() callback
- *
- * @see discord_set_event_scheduler()
- */
-enum discord_event_scheduler {
-  /** this event has been handled */
-  DISCORD_EVENT_IGNORE,
-  /** handle this event in main thread */
-  DISCORD_EVENT_MAIN_THREAD,
-  /** handle this event in a worker thread */
-  DISCORD_EVENT_WORKER_THREAD
-};
 
 /**
- * @brief Provides the user with a fine-grained control of the Discord's
- * event-loop
+ * @brief Set command/callback pair.
  *
- * Allows the user to specify which events should be executed from the
- * main-thread, in parallel from a worker-thread, or completely ignored.
- *
- * @param client the client created_with discord_init()
- * @param fn the function that will be executed
- * @warning The user is responsible for providing his own locking mechanism to
- * avoid race-condition on sensitive data.
- * @see enum discord_event_scheduler
- * @see enum discord_gateway_events
- */
-void discord_set_event_scheduler(struct discord *client,
-                                 discord_event_scheduler_cb callback);
-/**
- * @brief Set command/callback pair, the callback is triggered if someone
- *        types command in chat.
- *
+ * The callback is triggered when an user types the assigned command in a
+ *        chat visible to the bot.
  * @param client the client created with discord_init()
  * @param command the command to trigger the callback
  * @param callback the callback that will be executed
  * @note The command and any subjacent empty space is left out of
- * discord_message#content
- * @note `command` may be NULL only if a prefix was set by
- * discord_set_prefix(), then `callback` may be triggered as a fallback, in
- * case the prefix matches but the command doesn't.
+ * the message content
  */
 void discord_set_on_command(struct discord *client,
                             char *command,
-                            discord_message_cb callback);
+                            discord_on_message callback);
+
 /**
- * @brief Set a callback that triggers on any event the client is subscribed
- * to.
+ * @brief Set a variadic series of NULL terminated commands to a callback.
  *
- * @note the callback will be executed last, after every other has been checked
- * @note this gives the raw JSON payload associated with the event
+ * The callback is triggered when a user types one of the assigned commands in
+ *        chat visble to the bot.
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
+ * @param ... NULL terminated commands
+ * @note The command and any subjacent empty space is left out of
+ * the message content
  */
-void discord_set_on_event_raw(struct discord *client,
-                              discord_event_raw_cb callback);
+void discord_set_on_commands(struct discord *client,
+                             discord_on_message callback,
+                             ...);
+
 /**
  * @brief Set a callback that triggers at every event-loop iteration.
  *
  * @param client the client created with discord_init()
  * @param callback the callback that will be executed
  */
-void discord_set_on_idle(struct discord *client, discord_idle_cb callback);
+void discord_set_on_idle(struct discord *client, discord_on_idle callback);
 /**
  * @brief Set a callback that triggers when the client is ready
  *
@@ -454,7 +389,7 @@ void discord_set_on_idle(struct discord *client, discord_idle_cb callback);
  * @note this function will automatically set intent(s) to make the callback
  * triggerable
  */
-void discord_set_on_ready(struct discord *client, discord_idle_cb callback);
+void discord_set_on_ready(struct discord *client, discord_on_idle callback);
 /**
  * @brief Set a callback that triggers when a applicat command is created
  *
@@ -462,7 +397,7 @@ void discord_set_on_ready(struct discord *client, discord_idle_cb callback);
  * @param callback the callback that will be executed
  */
 void discord_set_on_application_command_create(
-  struct discord *client, discord_application_command_cb callback);
+  struct discord *client, discord_on_application_command callback);
 /**
  * @brief Set a callback that triggers when a applicat command is updated
  *
@@ -470,7 +405,7 @@ void discord_set_on_application_command_create(
  * @param callback the callback that will be executed
  */
 void discord_set_on_application_command_update(
-  struct discord *client, discord_application_command_cb callback);
+  struct discord *client, discord_on_application_command callback);
 /**
  * @brief Set a callback that triggers when a applicat command is deleted
  *
@@ -478,7 +413,7 @@ void discord_set_on_application_command_update(
  * @param callback the callback that will be executed
  */
 void discord_set_on_application_command_delete(
-  struct discord *client, discord_application_command_cb callback);
+  struct discord *client, discord_on_application_command callback);
 /**
  * @brief Set a callback that triggers when a channel is created
  *
@@ -488,7 +423,7 @@ void discord_set_on_application_command_delete(
  * triggerable
  */
 void discord_set_on_channel_create(struct discord *client,
-                                   discord_channel_cb callback);
+                                   discord_on_channel callback);
 /**
  * @brief Set a callback that triggers when a channel is updated
  *
@@ -498,7 +433,7 @@ void discord_set_on_channel_create(struct discord *client,
  * triggerable
  */
 void discord_set_on_channel_update(struct discord *client,
-                                   discord_channel_cb callback);
+                                   discord_on_channel callback);
 /**
  * @brief Set a callback that triggers when a channel is deleted
  *
@@ -508,7 +443,7 @@ void discord_set_on_channel_update(struct discord *client,
  * triggerable
  */
 void discord_set_on_channel_delete(struct discord *client,
-                                   discord_channel_cb callback);
+                                   discord_on_channel callback);
 /**
  * @brief Set a callback that triggers when some channel pins are updated
  *
@@ -518,7 +453,7 @@ void discord_set_on_channel_delete(struct discord *client,
  * triggerable
  */
 void discord_set_on_channel_pins_update(
-  struct discord *client, discord_channel_pins_update_cb callback);
+  struct discord *client, discord_on_channel_pins_update callback);
 /**
  * @brief Set a callback that triggers when a thread is created
  *
@@ -528,7 +463,7 @@ void discord_set_on_channel_pins_update(
  * triggerable
  */
 void discord_set_on_thread_create(struct discord *client,
-                                  discord_channel_cb callback);
+                                  discord_on_channel callback);
 /**
  * @brief Set a callback that triggers when a thread is updated
  *
@@ -538,7 +473,7 @@ void discord_set_on_thread_create(struct discord *client,
  * triggerable
  */
 void discord_set_on_thread_update(struct discord *client,
-                                  discord_channel_cb callback);
+                                  discord_on_channel callback);
 /**
  * @brief Set a callback that triggers when a thread is deleted
  *
@@ -548,7 +483,42 @@ void discord_set_on_thread_update(struct discord *client,
  * triggerable
  */
 void discord_set_on_thread_delete(struct discord *client,
-                                  discord_channel_cb callback);
+                                  discord_on_channel callback);
+
+/**
+ * @brief Set a callback that triggers when a guild's information becomes
+ *        available
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback
+ * triggerable
+ */
+void discord_set_on_guild_create(struct discord *client,
+                                 discord_on_guild callback);
+
+/**
+ * @brief Set a callback that triggers when a guild's information becomes
+ * updated
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback
+ * triggerable
+ */
+void discord_set_on_guild_update(struct discord *client,
+                                 discord_on_guild callback);
+
+/**
+ * @brief Set a callback that triggers when removed from a guild
+ *
+ * @param client the client created with discord_init()
+ * @param callback the callback that will be executed
+ * @note this function will automatically set intent(s) to make the callback
+ * triggerable
+ */
+void discord_set_on_guild_delete(struct discord *client,
+                                 discord_on_guild_delete callback);
 /**
  * @brief Set a callback that triggers when a guild role is created
  *
@@ -558,7 +528,7 @@ void discord_set_on_thread_delete(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_role_create(struct discord *client,
-                                      discord_guild_role_cb callback);
+                                      discord_on_guild_role callback);
 /**
  * @brief Set a callback that triggers when a guild role is updated
  *
@@ -568,7 +538,7 @@ void discord_set_on_guild_role_create(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_role_update(struct discord *client,
-                                      discord_guild_role_cb callback);
+                                      discord_on_guild_role callback);
 /**
  * @brief Set a callback that triggers when a guild role is deleted
  *
@@ -578,7 +548,7 @@ void discord_set_on_guild_role_update(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_role_delete(struct discord *client,
-                                      discord_guild_role_delete_cb callback);
+                                      discord_on_guild_role_delete callback);
 /**
  * @brief Set a callback that triggers when a guild member is added
  *
@@ -588,7 +558,7 @@ void discord_set_on_guild_role_delete(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_member_add(struct discord *client,
-                                     discord_guild_member_cb callback);
+                                     discord_on_guild_member callback);
 /**
  * @brief Set a callback that triggers when a guild member is updated
  *
@@ -598,7 +568,7 @@ void discord_set_on_guild_member_add(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_member_update(struct discord *client,
-                                        discord_guild_member_cb callback);
+                                        discord_on_guild_member callback);
 /**
  * @brief Set a callback that triggers when a guild member is removed
  *
@@ -608,7 +578,7 @@ void discord_set_on_guild_member_update(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_member_remove(
-  struct discord *client, discord_guild_member_remove_cb callback);
+  struct discord *client, discord_on_guild_member_remove callback);
 /**
  * @brief Set a callback that triggers when a guild ban is added
  *
@@ -618,7 +588,7 @@ void discord_set_on_guild_member_remove(
  * triggerable
  */
 void discord_set_on_guild_ban_add(struct discord *client,
-                                  discord_guild_ban_cb callback);
+                                  discord_on_guild_ban callback);
 /**
  * @brief Set a callback that triggers when a guild ban is removed
  *
@@ -628,7 +598,7 @@ void discord_set_on_guild_ban_add(struct discord *client,
  * triggerable
  */
 void discord_set_on_guild_ban_remove(struct discord *client,
-                                     discord_guild_ban_cb callback);
+                                     discord_on_guild_ban callback);
 /**
  * @brief Set a callback that triggers when a interaction is created
  *
@@ -636,7 +606,7 @@ void discord_set_on_guild_ban_remove(struct discord *client,
  * @param callback the callback that will be executed
  */
 void discord_set_on_interaction_create(struct discord *client,
-                                       discord_interaction_cb callback);
+                                       discord_on_interaction callback);
 /**
  * @brief Set a callback that triggers when a message is created
  *
@@ -646,9 +616,7 @@ void discord_set_on_interaction_create(struct discord *client,
  * triggerable
  */
 void discord_set_on_message_create(struct discord *client,
-                                   discord_message_cb callback);
-void discord_set_on_sb_message_create(struct discord *client,
-                                      discord_sb_message_cb callback);
+                                   discord_on_message callback);
 /**
  * @brief Set a callback that triggers when a message is updated
  *
@@ -658,9 +626,7 @@ void discord_set_on_sb_message_create(struct discord *client,
  * triggerable
  */
 void discord_set_on_message_update(struct discord *client,
-                                   discord_message_cb callback);
-void discord_set_on_sb_message_update(struct discord *client,
-                                      discord_sb_message_cb callback);
+                                   discord_on_message callback);
 /**
  * @brief Set a callback that triggers when a message is deleted
  *
@@ -670,7 +636,7 @@ void discord_set_on_sb_message_update(struct discord *client,
  * triggerable
  */
 void discord_set_on_message_delete(struct discord *client,
-                                   discord_message_delete_cb callback);
+                                   discord_on_message_delete callback);
 /*
  * @brief Set a callback that triggers when a bulk of messages are deleted
  *
@@ -680,7 +646,7 @@ void discord_set_on_message_delete(struct discord *client,
  * triggerable
  */
 void discord_set_on_message_delete_bulk(
-  struct discord *client, discord_message_delete_bulk_cb callback);
+  struct discord *client, discord_on_message_delete_bulk callback);
 /**
  * @brief Set a callback that triggers when a message reaction is added
  *
@@ -690,7 +656,7 @@ void discord_set_on_message_delete_bulk(
  * triggerable
  */
 void discord_set_on_message_reaction_add(
-  struct discord *client, discord_message_reaction_add_cb callback);
+  struct discord *client, discord_on_message_reaction_add callback);
 /**
  * @brief Set a callback that triggers when a message reaction is removed
  *
@@ -700,7 +666,7 @@ void discord_set_on_message_reaction_add(
  * triggerable
  */
 void discord_set_on_message_reaction_remove(
-  struct discord *client, discord_message_reaction_remove_cb callback);
+  struct discord *client, discord_on_message_reaction_remove callback);
 /**
  * @brief Set a callback that triggers when all reaction from some message is
  * removed
@@ -711,7 +677,7 @@ void discord_set_on_message_reaction_remove(
  * triggerable
  */
 void discord_set_on_message_reaction_remove_all(
-  struct discord *client, discord_message_reaction_remove_all_cb callback);
+  struct discord *client, discord_on_message_reaction_remove_all callback);
 /**
  * @brief Set a callback that triggers when all instances of a particular
  * reaction from some message is removed
@@ -722,7 +688,7 @@ void discord_set_on_message_reaction_remove_all(
  * triggerable
  */
 void discord_set_on_message_reaction_remove_emoji(
-  struct discord *client, discord_message_reaction_remove_emoji_cb callback);
+  struct discord *client, discord_on_message_reaction_remove_emoji callback);
 /**
  * @brief Set a callback that triggers when a voice state is updated
  *
@@ -732,7 +698,7 @@ void discord_set_on_message_reaction_remove_emoji(
  * triggerable
  */
 void discord_set_on_voice_state_update(struct discord *client,
-                                       discord_voice_state_update_cb callback);
+                                       discord_on_voice_state_update callback);
 /**
  * @brief Set a callback that triggers when a voice server is updated
  *
@@ -742,7 +708,7 @@ void discord_set_on_voice_state_update(struct discord *client,
  * triggerable
  */
 void discord_set_on_voice_server_update(
-  struct discord *client, discord_voice_server_update_cb callback);
+  struct discord *client, discord_on_voice_server_update callback);
 /**
  * @brief Helper to quickly set voice callbacks
  *
@@ -812,6 +778,14 @@ void discord_set_presence(struct discord *client,
 int discord_get_ping(struct discord *client);
 
 /**
+ * @brief Get the current timestamp (in milliseconds)
+ *
+ * @param client the client created with discord_init()
+ * @return the timestamp in milliseconds
+ */
+uint64_t discord_timestamp(struct discord *client);
+
+/**
  * @brief Retrieve client's logging module for configuration purposes
  *
  * @param client the client created with discord_init()
@@ -834,15 +808,15 @@ struct logconf *discord_get_logconf(struct discord *client);
  * https://discord.com/developers/docs/interactions/application-commands#get-global-application-commands
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
- * @param p_app_cmds the null-terminated array of application command objects
+ * @param ret the null-terminated array of application command objects
  * if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_global_application_commands(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  NTL_T(struct discord_application_command) * p_app_cmds);
+  u64_snowflake_t application_id,
+  struct discord_application_command ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateGlobalApplicationCommand
@@ -857,15 +831,15 @@ ORCAcode discord_get_global_application_commands(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param params request parameters
- * @param p_app_cmd the application command object if successful
+ * @param ret the application command object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   struct discord_create_global_application_command_params *params,
-  struct discord_application_command *p_app_cmd);
+  struct discord_application_command *ret);
 /** @struct discord_create_global_application_command_params */
 /** @} */
 
@@ -881,15 +855,15 @@ ORCAcode discord_create_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
- * @param p_app_cmd the application command object if successful
+ * @param ret the application command object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t command_id,
-  struct discord_application_command *p_app_cmd);
+  u64_snowflake_t application_id,
+  u64_snowflake_t command_id,
+  struct discord_application_command *ret);
 /** @} */
 
 /** @defgroup DiscordEditGlobalApplicationCommand
@@ -905,16 +879,16 @@ ORCAcode discord_get_global_application_command(
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
  * @param params request parameters
- * @param p_app_cmd the application command object if successful
+ * @param ret the application command object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t command_id,
   struct discord_edit_global_application_command_params *params,
-  struct discord_application_command *p_app_cmd);
+  struct discord_application_command *ret);
 /** @struct discord_edit_global_application_command_params */
 /** @} */
 
@@ -934,8 +908,8 @@ ORCAcode discord_edit_global_application_command(
  */
 ORCAcode discord_delete_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t command_id);
+  u64_snowflake_t application_id,
+  u64_snowflake_t command_id);
 /** @} */
 
 /** @defgroup DiscordBulkOverwriteGlobalApplicationCommand
@@ -955,16 +929,16 @@ ORCAcode discord_delete_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param params the request parameters, a list of application commands
- * @param p_app_cmds the null-terminated array of application command objects
+ * @param ret the null-terminated array of application command objects
  * if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_bulk_overwrite_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  NTL_T(struct discord_application_command) params,
-  NTL_T(struct discord_application_command) * p_app_cmds);
+  u64_snowflake_t application_id,
+  struct discord_application_command **params,
+  struct discord_application_command ***ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildApplicationCommands
@@ -979,16 +953,16 @@ ORCAcode discord_bulk_overwrite_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @param p_app_cmds the null-terminated array of application command objects
+ * @param ret the null-terminated array of application command objects
  * if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_application_commands(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  NTL_T(struct discord_application_command) * p_app_cmds);
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  struct discord_application_command ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateGuildApplicationCommand
@@ -1008,16 +982,16 @@ ORCAcode discord_get_guild_application_commands(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param params request parameters
- * @param p_app_cmd the application command object if successful
+ * @param ret the application command object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
   struct discord_create_guild_application_command_params *params,
-  struct discord_application_command *p_app_cmd);
+  struct discord_application_command *ret);
 /** @struct discord_create_guild_application_command_params */
 /** @} */
 
@@ -1035,16 +1009,16 @@ ORCAcode discord_create_guild_application_command(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @param p_app_cmd the application command object if successful
+ * @param ret the application command object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
-  struct discord_application_command *p_app_cmd);
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
+  struct discord_application_command *ret);
 /** @} */
 
 /** @defgroup DiscordEditGuildApplicationCommand
@@ -1062,17 +1036,17 @@ ORCAcode discord_get_guild_application_command(
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
  * @param params request parameters
- * @param p_app_cmd the application command object if successful
+ * @param ret the application command object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
   struct discord_edit_guild_application_command_params *params,
-  struct discord_application_command *p_app_cmd);
+  struct discord_application_command *ret);
 /** @struct discord_edit_guild_application_command_params */
 /** @} */
 
@@ -1094,9 +1068,9 @@ ORCAcode discord_edit_guild_application_command(
  */
 ORCAcode discord_delete_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id);
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id);
 /** @} */
 
 /** @defgroup DiscordBulkOverwriteGuildApplicationCommand
@@ -1114,16 +1088,16 @@ ORCAcode discord_delete_guild_application_command(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of application commands
- * @param p_app_cmds the null-terminated array of application command objects
+ * @param ret the null-terminated array of application command objects
  * if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_bulk_overwrite_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  NTL_T(struct discord_application_command) params,
-  NTL_T(struct discord_application_command) * p_app_cmds);
+  u64_snowflake_t application_id,
+  struct discord_application_command **params,
+  struct discord_application_command ***ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildApplicationCommandPermissions
@@ -1139,16 +1113,16 @@ ORCAcode discord_bulk_overwrite_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @param p_permissions the null-terminated array of guild application command
+ * @param ret the null-terminated array of guild application command
  * permissions objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  NTL_T(struct discord_guild_application_command_permissions) * p_permissions);
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  struct discord_guild_application_command_permissions ***ret);
 /** @} */
 
 /** @defgroup DiscordGetApplicationCommandPermissions
@@ -1165,17 +1139,17 @@ ORCAcode discord_get_guild_application_command_permissions(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @param p_permissions the application command permissions object if
+ * @param ret the application command permissions object if
  * successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
-  struct discord_guild_application_command_permissions *p_permissions);
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
+  struct discord_guild_application_command_permissions *ret);
 /** @} */
 
 /** @defgroup DiscordEditApplicationCommandPermissions
@@ -1194,18 +1168,18 @@ ORCAcode discord_get_application_command_permissions(
  * @param guild_id the guild where the commands are located
  * @param command_id the registered command id
  * @param params the request parameters
- * @param p_permissions the application command permissions object if
+ * @param ret the application command permissions object if
  * successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
   struct discord_edit_application_command_permissions_params *params,
-  struct discord_guild_application_command_permissions *p_permissions);
+  struct discord_guild_application_command_permissions *ret);
 /** @struct discord_edit_application_command_permissions_params */
 /** @} */
 
@@ -1229,17 +1203,17 @@ ORCAcode discord_edit_application_command_permissions(
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of guild application commands
  * permissions
- * @param p_permissions the null-terminated array of guild application command
+ * @param ret the null-terminated array of guild application command
  * permissions objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_batch_edit_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  NTL_T(struct discord_guild_application_command_permissions) params,
-  NTL_T(struct discord_guild_application_command_permissions) * p_permissions);
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  struct discord_guild_application_command_permissions **params,
+  struct discord_guild_application_command_permissions ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateInteractionResponse
@@ -1255,16 +1229,16 @@ ORCAcode discord_batch_edit_application_command_permissions(
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
  * @param params the request parameters
- * @param p_response the interaction response object if successful
+ * @param ret the interaction response object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[],
   struct discord_interaction_response *params,
-  struct discord_interaction_response *p_response);
+  struct discord_interaction_response *ret);
 /** @} */
 
 /** @defgroup DiscordGetOriginalInteractionResponse
@@ -1279,15 +1253,15 @@ ORCAcode discord_create_interaction_response(
  * @param client the client created with discord_init()
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
- * @param p_response the interaction response object if successful
+ * @param ret the interaction response object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_original_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[],
-  struct discord_interaction_response *p_response);
+  struct discord_interaction_response *ret);
 /** @} */
 
 /** @defgroup DiscordEditOriginalInteractionResponse
@@ -1303,16 +1277,16 @@ ORCAcode discord_get_original_interaction_response(
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
- * @param p_response the interaction response object if successful
+ * @param ret the interaction response object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_original_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[],
   struct discord_edit_original_interaction_response_params *params,
-  struct discord_interaction_response *p_response);
+  struct discord_interaction_response *ret);
 /** @} */
 
 /** @defgroup DiscordDeleteOriginalInteractionResponse
@@ -1332,7 +1306,7 @@ ORCAcode discord_edit_original_interaction_response(
  */
 ORCAcode discord_delete_original_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[]);
 /** @} */
 
@@ -1348,16 +1322,16 @@ ORCAcode discord_delete_original_interaction_response(
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_followup_message(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
   struct discord_create_followup_message_params *params,
-  struct discord_webhook *p_webhook);
+  struct discord_webhook *ret);
 /** @struct discord_create_followup_message_params */
 /** @} */
 
@@ -1374,15 +1348,15 @@ ORCAcode discord_create_followup_message(
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_followup_message(struct discord *client,
-                                      const u64_snowflake_t application_id,
+                                      u64_snowflake_t application_id,
                                       const char interaction_token[],
-                                      const u64_snowflake_t message_id,
-                                      struct discord_message *p_message);
+                                      u64_snowflake_t message_id,
+                                      struct discord_message *ret);
 /** @} */
 
 /** @defgroup DiscordEditFollowupMessage
@@ -1399,17 +1373,17 @@ ORCAcode discord_get_followup_message(struct discord *client,
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
  * @param params request parameters
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_followup_message(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
-  const u64_snowflake_t message_id,
+  u64_snowflake_t message_id,
   struct discord_edit_followup_message_params *params,
-  struct discord_message *p_message);
+  struct discord_message *ret);
 /** @struct discord_edit_followup_message_params */
 /** @} */
 
@@ -1430,9 +1404,9 @@ ORCAcode discord_edit_followup_message(
  * request
  */
 ORCAcode discord_delete_followup_message(struct discord *client,
-                                         const u64_snowflake_t application_id,
+                                         u64_snowflake_t application_id,
                                          const char interaction_token[],
-                                         const u64_snowflake_t message_id);
+                                         u64_snowflake_t message_id);
 /** @} */
 
 /** @defgroup DiscordGetGuildAuditLog
@@ -1447,15 +1421,15 @@ ORCAcode discord_delete_followup_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to retrieve the audit log from
  * @param params request parameters
- * @param p_audit_log the audit log object if successful
+ * @param ret the audit log object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_audit_log(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_get_guild_audit_log_params *params,
-  struct discord_audit_log *p_audit_log);
+  struct discord_audit_log *ret);
 /** @struct discord_get_guild_audit_log_params */
 /** @} */
 
@@ -1469,13 +1443,13 @@ ORCAcode discord_get_guild_audit_log(
  * @see https://discord.com/developers/docs/resources/channel#get-channel
  * @param client the client created with discord_init()
  * @param channel_id the channel to be retrieved
- * @param p_channel the channel object if successful
+ * @param ret the channel object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_channel(struct discord *client,
-                             const u64_snowflake_t channel_id,
-                             struct discord_channel *p_channel);
+                             u64_snowflake_t channel_id,
+                             struct discord_channel *ret);
 /** @} */
 
 /** @defgroup DiscordModifyChannel
@@ -1488,14 +1462,14 @@ ORCAcode discord_get_channel(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel to be modified
  * @param params request parameters
- * @param p_channel the channel object if successful
+ * @param ret the channel object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_channel(struct discord *client,
-                                const u64_snowflake_t channel_id,
+                                u64_snowflake_t channel_id,
                                 struct discord_modify_channel_params *params,
-                                struct discord_channel *p_channel);
+                                struct discord_channel *ret);
 /** @struct discord_modify_channel_params */
 /** @} */
 
@@ -1515,13 +1489,13 @@ ORCAcode discord_modify_channel(struct discord *client,
  * https://discord.com/developers/docs/resources/channel#deleteclose-channel
  * @param client the client created with discord_init()
  * @param channel_id the channel to be deleted
- * @param p_channel the channel object if successful
+ * @param ret the channel object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_delete_channel(struct discord *client,
-                                const u64_snowflake_t channel_id,
-                                struct discord_channel *p_channel);
+                                u64_snowflake_t channel_id,
+                                struct discord_channel *ret);
 /** @} */
 
 /** @defgroup DiscordGetChannelMessages
@@ -1542,15 +1516,15 @@ ORCAcode discord_delete_channel(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel to get messages from
  * @param params request parameters
- * @param p_messages the null-terminated array of messages if successful
+ * @param ret the null-terminated array of messages if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_channel_messages(
   struct discord *client,
-  const u64_snowflake_t channel_id,
+  u64_snowflake_t channel_id,
   struct discord_get_channel_messages_params *params,
-  NTL_T(struct discord_message) * p_messages);
+  struct discord_message ***ret);
 /** @struct discord_get_channel_messages_params */
 /** @} */
 
@@ -1567,14 +1541,14 @@ ORCAcode discord_get_channel_messages(
  * @param client the client created with discord_init()
  * @param channel_id the channel where the message resides
  * @param message_id the message itself
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_channel_message(struct discord *client,
-                                     const u64_snowflake_t channel_id,
-                                     const u64_snowflake_t message_id,
-                                     struct discord_message *p_message);
+                                     u64_snowflake_t channel_id,
+                                     u64_snowflake_t message_id,
+                                     struct discord_message *ret);
 /** @} */
 
 /** @defgroup DiscordCreateMessage
@@ -1588,14 +1562,15 @@ ORCAcode discord_get_channel_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel to send the message at
  * @param params request parameters
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_message(struct discord *client,
-                                const u64_snowflake_t channel_id,
+                                u64_snowflake_t channel_id,
                                 struct discord_create_message_params *params,
-                                struct discord_message *p_message);
+                                struct discord_message *ret);
+
 /** @struct discord_create_message_params */
 /** @} */
 
@@ -1612,14 +1587,14 @@ ORCAcode discord_create_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the news channel that will crosspost
  * @param message_id the message that will crospost
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_crosspost_message(struct discord *client,
-                                   const u64_snowflake_t channel_id,
-                                   const u64_snowflake_t message_id,
-                                   struct discord_message *p_message);
+                                   u64_snowflake_t channel_id,
+                                   u64_snowflake_t message_id,
+                                   struct discord_message *ret);
 /** @} */
 
 /** @defgroup DiscordCreateReaction
@@ -1639,9 +1614,9 @@ ORCAcode discord_crosspost_message(struct discord *client,
  * request
  */
 ORCAcode discord_create_reaction(struct discord *client,
-                                 const u64_snowflake_t channel_id,
-                                 const u64_snowflake_t message_id,
-                                 const u64_snowflake_t emoji_id,
+                                 u64_snowflake_t channel_id,
+                                 u64_snowflake_t message_id,
+                                 u64_snowflake_t emoji_id,
                                  const char emoji_name[]);
 /** @} */
 
@@ -1663,9 +1638,9 @@ ORCAcode discord_create_reaction(struct discord *client,
  * request
  */
 ORCAcode discord_delete_own_reaction(struct discord *client,
-                                     const u64_snowflake_t channel_id,
-                                     const u64_snowflake_t message_id,
-                                     const u64_snowflake_t emoji_id,
+                                     u64_snowflake_t channel_id,
+                                     u64_snowflake_t message_id,
+                                     u64_snowflake_t emoji_id,
                                      const char emoji_name[]);
 /** @} */
 
@@ -1688,10 +1663,10 @@ ORCAcode discord_delete_own_reaction(struct discord *client,
  * request
  */
 ORCAcode discord_delete_user_reaction(struct discord *client,
-                                      const u64_snowflake_t channel_id,
-                                      const u64_snowflake_t message_id,
-                                      const u64_snowflake_t user_id,
-                                      const u64_snowflake_t emoji_id,
+                                      u64_snowflake_t channel_id,
+                                      u64_snowflake_t message_id,
+                                      u64_snowflake_t user_id,
+                                      u64_snowflake_t emoji_id,
                                       const char emoji_name[]);
 /** @} */
 
@@ -1708,17 +1683,17 @@ ORCAcode discord_delete_user_reaction(struct discord *client,
  * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
  * @param emoji_name the emoji name
  * @param params request parameters
- * @param p_users the null-terminated array of users if successful
+ * @param ret the null-terminated array of users if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_reactions(struct discord *client,
                                u64_snowflake_t channel_id,
                                u64_snowflake_t message_id,
-                               const u64_snowflake_t emoji_id,
+                               u64_snowflake_t emoji_id,
                                const char emoji_name[],
                                struct discord_get_reactions_params *params,
-                               NTL_T(struct discord_user) * p_users);
+                               struct discord_user ***ret);
 /** @struct discord_get_reactions_params */
 /** @} */
 
@@ -1759,12 +1734,11 @@ ORCAcode discord_delete_all_reactions(struct discord *client,
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
-ORCAcode discord_delete_all_reactions_for_emoji(
-  struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t message_id,
-  const u64_snowflake_t emoji_id,
-  const char emoji_name[]);
+ORCAcode discord_delete_all_reactions_for_emoji(struct discord *client,
+                                                u64_snowflake_t channel_id,
+                                                u64_snowflake_t message_id,
+                                                u64_snowflake_t emoji_id,
+                                                const char emoji_name[]);
 /** @} */
 
 /** @defgroup DiscordEditMessage
@@ -1779,15 +1753,15 @@ ORCAcode discord_delete_all_reactions_for_emoji(
  * @param message_id the message that will be purged of reactions from
  * particular emoji
  * @param params request parameters
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_message(struct discord *client,
-                              const u64_snowflake_t channel_id,
-                              const u64_snowflake_t message_id,
+                              u64_snowflake_t channel_id,
+                              u64_snowflake_t message_id,
                               struct discord_edit_message_params *params,
-                              struct discord_message *p_message);
+                              struct discord_message *ret);
 /** @struct discord_edit_message_params */
 /** @} */
 
@@ -1826,7 +1800,7 @@ ORCAcode discord_delete_message(struct discord *client,
  */
 ORCAcode discord_bulk_delete_messages(struct discord *client,
                                       u64_snowflake_t channel_id,
-                                      NTL_T(u64_snowflake_t) messages);
+                                      u64_snowflake_t **messages);
 /** @} */
 
 /** @defgroup DiscordEditChannelPermissions
@@ -1846,8 +1820,8 @@ ORCAcode discord_bulk_delete_messages(struct discord *client,
  */
 ORCAcode discord_edit_channel_permissions(
   struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t overwrite_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t overwrite_id,
   struct discord_edit_channel_permissions_params *params);
 /** @struct discord_edit_channel_permissions_params */
 /** @} */
@@ -1862,13 +1836,13 @@ ORCAcode discord_edit_channel_permissions(
  * https://discord.com/developers/docs/resources/channel#get-channel-invites
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
- * @param p_invites a null-terminated list of invite objects if successful
+ * @param ret a null-terminated list of invite objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_channel_invites(struct discord *client,
-                                     const u64_snowflake_t channel_id,
-                                     NTL_T(struct discord_invite) * p_invites);
+                                     u64_snowflake_t channel_id,
+                                     struct discord_invite ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateChannelInvite
@@ -1882,15 +1856,15 @@ ORCAcode discord_get_channel_invites(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param params request parameters
- * @param p_invite the invite object if successful
+ * @param ret the invite object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_channel_invite(
   struct discord *client,
-  const u64_snowflake_t channel_id,
+  u64_snowflake_t channel_id,
   struct discord_create_channel_invite_params *params,
-  struct discord_invite *p_invite);
+  struct discord_invite *ret);
 /** @struct discord_create_channel_invite_params */
 /** @} */
 
@@ -1906,8 +1880,8 @@ ORCAcode discord_create_channel_invite(
  * request
  */
 ORCAcode discord_delete_channel_permission(struct discord *client,
-                                           const u64_snowflake_t channel_id,
-                                           const u64_snowflake_t overwrite_id);
+                                           u64_snowflake_t channel_id,
+                                           u64_snowflake_t overwrite_id);
 /** @} */
 
 /** @defgroup DiscordTriggerTypingIndicator
@@ -1920,18 +1894,17 @@ ORCAcode discord_trigger_typing_indicator(struct discord *client,
  *  @{ */
 ORCAcode discord_follow_news_channel(
   struct discord *client,
-  const u64_snowflake_t channel_id,
+  u64_snowflake_t channel_id,
   struct discord_follow_news_channel_params *params,
-  struct discord_channel *p_followed_channel);
+  struct discord_channel *ret);
 /** @struct discord_follow_news_channel_params */
 /** @} */
 
 /** @defgroup DiscordGetPinnedMessages
  *  @{ */
 ORCAcode discord_get_pinned_messages(struct discord *client,
-                                     const u64_snowflake_t channel_id,
-                                     NTL_T(struct discord_message) *
-                                       p_messages);
+                                     u64_snowflake_t channel_id,
+                                     struct discord_message ***ret);
 /** @} */
 
 /** @defgroup DiscordPinMessage
@@ -1945,8 +1918,8 @@ ORCAcode discord_get_pinned_messages(struct discord *client,
  * @param message_id message to be pinned
  */
 ORCAcode discord_pin_message(struct discord *client,
-                             const u64_snowflake_t channel_id,
-                             const u64_snowflake_t message_id);
+                             u64_snowflake_t channel_id,
+                             u64_snowflake_t message_id);
 /** @} */
 
 /** @defgroup DiscordUnpinMessage
@@ -1961,8 +1934,8 @@ ORCAcode discord_pin_message(struct discord *client,
  * @
  */
 ORCAcode discord_unpin_message(struct discord *client,
-                               const u64_snowflake_t channel_id,
-                               const u64_snowflake_t message_id);
+                               u64_snowflake_t channel_id,
+                               u64_snowflake_t message_id);
 /** @} */
 
 /** @defgroup DiscordGroupDmAddRecipient
@@ -1979,8 +1952,8 @@ ORCAcode discord_unpin_message(struct discord *client,
  */
 ORCAcode discord_group_dm_add_recipient(
   struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t user_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t user_id,
   struct discord_group_dm_add_recipient_params *params);
 /** @struct discord_group_dm_add_recipient_params */
 /** @} */
@@ -1997,8 +1970,8 @@ ORCAcode discord_group_dm_add_recipient(
  * @param user_id user to be removed
  */
 ORCAcode discord_group_dm_remove_recipient(struct discord *client,
-                                           const u64_snowflake_t channel_id,
-                                           const u64_snowflake_t user_id);
+                                           u64_snowflake_t channel_id,
+                                           u64_snowflake_t user_id);
 /** @} */
 
 /** @defgroup DiscordStartThreadWithMessage
@@ -2012,14 +1985,14 @@ ORCAcode discord_group_dm_remove_recipient(struct discord *client,
  * @param channel_id channel to start a thread on
  * @param message_id message to start a thread from
  * @param params request parameters
- * @param p_channel the thread ID
+ * @param ret the thread ID
  */
 ORCAcode discord_start_thread_with_message(
   struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_snowflake_t message_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
   struct discord_start_thread_with_message_params *params,
-  struct discord_channel *p_channel);
+  struct discord_channel *ret);
 /** @struct discord_start_thread_with_message_params */
 /** @} */
 
@@ -2027,51 +2000,50 @@ ORCAcode discord_start_thread_with_message(
  *  @{ */
 ORCAcode discord_start_thread_without_message(
   struct discord *client,
-  const u64_snowflake_t channel_id,
+  u64_snowflake_t channel_id,
   struct discord_start_thread_without_message_params *params,
-  struct discord_channel *p_channel);
+  struct discord_channel *ret);
 /** @struct discord_start_thread_without_message_params */
 /** @} */
 
 /** @defgroup DiscordJoinThread
  *  @{ */
 ORCAcode discord_join_thread(struct discord *client,
-                             const u64_snowflake_t channel_id);
+                             u64_snowflake_t channel_id);
 /** @} */
 
 /** @defgroup DiscordAddThreadMember
  *  @{ */
 ORCAcode discord_add_thread_member(struct discord *client,
-                                   const u64_snowflake_t channel_id,
-                                   const u64_snowflake_t user_id);
+                                   u64_snowflake_t channel_id,
+                                   u64_snowflake_t user_id);
 /** @} */
 
 /** @defgroup DiscordLeaveThread
  *  @{ */
 ORCAcode discord_leave_thread(struct discord *client,
-                              const u64_snowflake_t channel_id);
+                              u64_snowflake_t channel_id);
 /** @} */
 
 /** @defgroup DiscordRemoveThreadMember
  *  @{ */
 ORCAcode discord_remove_thread_member(struct discord *client,
-                                      const u64_snowflake_t channel_id,
-                                      const u64_snowflake_t user_id);
+                                      u64_snowflake_t channel_id,
+                                      u64_snowflake_t user_id);
 /** @} */
 
 /** @defgroup DiscordListThreadMembers
  *  @{ */
 ORCAcode discord_list_thread_members(struct discord *client,
-                                     const u64_snowflake_t channel_id,
-                                     NTL_T(struct discord_thread_member) *
-                                       p_thread_members);
+                                     u64_snowflake_t channel_id,
+                                     struct discord_thread_member ***ret);
 /** @} */
 
 /** @defgroup DiscordListActiveThreads
  *  @{ */
 ORCAcode discord_list_active_threads(
   struct discord *client,
-  const u64_snowflake_t channel_id,
+  u64_snowflake_t channel_id,
   struct discord_thread_response_body *body);
 /** @} */
 
@@ -2079,9 +2051,9 @@ ORCAcode discord_list_active_threads(
  *  @{ */
 ORCAcode discord_list_public_archived_threads(
   struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_unix_ms_t before,
-  const int limit,
+  u64_snowflake_t channel_id,
+  u64_unix_ms_t before,
+  int limit,
   struct discord_thread_response_body *body);
 /** @} */
 
@@ -2089,9 +2061,9 @@ ORCAcode discord_list_public_archived_threads(
  *  @{ */
 ORCAcode discord_list_private_archived_threads(
   struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_unix_ms_t before,
-  const int limit,
+  u64_snowflake_t channel_id,
+  u64_unix_ms_t before,
+  int limit,
   struct discord_thread_response_body *body);
 /** @} */
 
@@ -2099,34 +2071,34 @@ ORCAcode discord_list_private_archived_threads(
  *  @{ */
 ORCAcode discord_list_joined_private_archived_threads(
   struct discord *client,
-  const u64_snowflake_t channel_id,
-  const u64_unix_ms_t before,
-  const int limit,
+  u64_snowflake_t channel_id,
+  u64_unix_ms_t before,
+  int limit,
   struct discord_thread_response_body *body);
 /** @} */
 
 /** @defgroup DiscordListGuildEmojis
  *  @{ */
 ORCAcode discord_list_guild_emojis(struct discord *client,
-                                   const u64_snowflake_t guild_id,
-                                   NTL_T(struct discord_emoji) * p_emojis);
+                                   u64_snowflake_t guild_id,
+                                   struct discord_emoji ***ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildEmoji
  *  @{ */
 ORCAcode discord_get_guild_emoji(struct discord *client,
-                                 const u64_snowflake_t guild_id,
-                                 const u64_snowflake_t emoji_id,
-                                 struct discord_emoji *p_emoji);
+                                 u64_snowflake_t guild_id,
+                                 u64_snowflake_t emoji_id,
+                                 struct discord_emoji *ret);
 /** @} */
 
 /** @defgroup DiscordCreateGuildEmoji
  *  @{ */
 ORCAcode discord_create_guild_emoji(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_create_guild_emoji_params *params,
-  struct discord_emoji *p_emoji);
+  struct discord_emoji *ret);
 /** @struct discord_create_guild_emoji_params */
 /** @} */
 
@@ -2134,25 +2106,25 @@ ORCAcode discord_create_guild_emoji(
  *  @{ */
 ORCAcode discord_modify_guild_emoji(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t emoji_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t emoji_id,
   struct discord_modify_guild_emoji_params *params,
-  struct discord_emoji *p_emoji);
+  struct discord_emoji *ret);
 /** @struct discord_modify_guild_emoji_params */
 /** @} */
 
 /** @defgroup DiscordDeleteGuildEmoji
  *  @{ */
 ORCAcode discord_delete_guild_emoji(struct discord *client,
-                                    const u64_snowflake_t guild_id,
-                                    const u64_snowflake_t emoji_id);
+                                    u64_snowflake_t guild_id,
+                                    u64_snowflake_t emoji_id);
 /** @} */
 
 /** @defgroup DiscordCreateGuild
  *  @{ */
 ORCAcode discord_create_guild(struct discord *client,
                               struct discord_create_guild_params *params,
-                              struct discord_guild *p_guild);
+                              struct discord_guild *ret);
 /** @struct discord_create_guild_params */
 /** @} */
 
@@ -2167,22 +2139,21 @@ ORCAcode discord_create_guild(struct discord *client,
  * @see https://discord.com/developers/docs/resources/guild#get-guild
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to retrieve
- * @param p_guild the location of the guild object if the operation is
+ * @param ret the location of the guild object if the operation is
  * successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild(struct discord *client,
-                           const u64_snowflake_t guild_id,
-                           struct discord_guild *p_guild);
+                           u64_snowflake_t guild_id,
+                           struct discord_guild *ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildPreview
  *  @{ */
-ORCAcode discord_get_guild_preview(
-  struct discord *client,
-  const u64_snowflake_t guild_id,
-  struct discord_guild_preview *p_guild_preview);
+ORCAcode discord_get_guild_preview(struct discord *client,
+                                   u64_snowflake_t guild_id,
+                                   struct discord_guild_preview *ret);
 /** @} */
 
 /** @defgroup DiscordModifyGuild
@@ -2196,14 +2167,14 @@ ORCAcode discord_get_guild_preview(
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to modify
  * @param params request parameters
- * @param p_guild location of the updated guild object
+ * @param ret location of the updated guild object
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_guild(struct discord *client,
-                              const u64_snowflake_t guild_id,
+                              u64_snowflake_t guild_id,
                               struct discord_modify_guild_params *params,
-                              struct discord_guild *p_guild);
+                              struct discord_guild *ret);
 /** @struct discord_modify_guild_params */
 /** @} */
 
@@ -2221,7 +2192,7 @@ ORCAcode discord_modify_guild(struct discord *client,
  * request
  */
 ORCAcode discord_delete_guild(struct discord *client,
-                              const u64_snowflake_t guild_id);
+                              u64_snowflake_t guild_id);
 /** @} */
 
 /** @defgroup DiscordGetGuildChannels
@@ -2233,14 +2204,13 @@ ORCAcode discord_delete_guild(struct discord *client,
  * @see https://discord.com/developers/docs/resources/guild#get-guild-channels
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to delete
- * @param p_channels the location to store the channels of the guild
+ * @param ret the location to store the channels of the guild
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_channels(struct discord *client,
-                                    const u64_snowflake_t guild_id,
-                                    NTL_T(struct discord_channel) *
-                                      p_channels);
+                                    u64_snowflake_t guild_id,
+                                    struct discord_channel ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateGuildChannel
@@ -2258,15 +2228,15 @@ ORCAcode discord_get_guild_channels(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to create the channel in
  * @param params request parameters
- * @param p_channel the place to store the newly created channel
+ * @param ret the place to store the newly created channel
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_guild_channel(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_create_guild_channel_params *params,
-  struct discord_channel *p_channel);
+  struct discord_channel *ret);
 /** @struct discord_create_guild_channel_params */
 /** @} */
 
@@ -2289,8 +2259,8 @@ ORCAcode discord_create_guild_channel(
  */
 ORCAcode discord_modify_guild_channel_positions(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  NTL_T(struct discord_modify_guild_channel_positions_params) params);
+  u64_snowflake_t guild_id,
+  struct discord_modify_guild_channel_positions_params **params);
 /** @struct discord_modify_guild_channel_positions_params */
 /** @} */
 
@@ -2299,16 +2269,16 @@ ORCAcode discord_modify_guild_channel_positions(
 ORCAcode discord_get_guild_member(struct discord *client,
                                   u64_snowflake_t guild_id,
                                   u64_snowflake_t user_id,
-                                  struct discord_guild_member *p_member);
+                                  struct discord_guild_member *ret);
 /** @} */
 
 /** @defgroup DiscordListGuildMembers
  *  @{ */
 ORCAcode discord_list_guild_members(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_list_guild_members_params *params,
-  NTL_T(struct discord_guild_member) * p_members);
+  struct discord_guild_member ***ret);
 /** @struct discord_list_guild_members_params */
 /** @} */
 
@@ -2316,9 +2286,9 @@ ORCAcode discord_list_guild_members(
  *  @{ */
 ORCAcode discord_search_guild_members(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_search_guild_members_params *params,
-  NTL_T(struct discord_guild_member) * p_members);
+  struct discord_guild_member ***ret);
 /** @struct discord_search_guild_members_params */
 /** @} */
 
@@ -2326,10 +2296,10 @@ ORCAcode discord_search_guild_members(
  *  @{ */
 ORCAcode discord_modify_guild_member(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t user_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t user_id,
   struct discord_modify_guild_member_params *params,
-  struct discord_guild_member *p_member);
+  struct discord_guild_member *ret);
 /** @struct discord_modify_guild_member_params */
 /** @} */
 
@@ -2337,10 +2307,10 @@ ORCAcode discord_modify_guild_member(
  *  @{ */
 ORCAcode discord_add_guild_member(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t user_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t user_id,
   struct discord_add_guild_member_params *params,
-  struct discord_guild_member *p_member);
+  struct discord_guild_member *ret);
 /** @struct discord_add_guild_member_params */
 /** @} */
 
@@ -2356,16 +2326,16 @@ ORCAcode discord_add_guild_member(
  * @param guild_id the unique id of the guild where the member exists
  * @param params the parameters sent to discord. For example the new nickname
  * for the bot
- * @param p_member location where the updated member object is stored if
+ * @param ret location where the updated member object is stored if
  * successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_current_member(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_modify_current_member_params *params,
-  struct discord_guild_member *p_member);
+  struct discord_guild_member *ret);
 /** @struct discord_modify_current_member_params */
 /** @} */
 
@@ -2380,16 +2350,16 @@ ORCAcode discord_modify_current_member(
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild where the member exists
  * @param params the new nickname for the bot
- * @param p_member location where the updated member object is stored if
+ * @param ret location where the updated member object is stored if
  * successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_current_user_nick(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_modify_current_user_nick_params *params,
-  struct discord_guild_member *p_member);
+  struct discord_guild_member *ret);
 /** @struct discord_modify_current_user_nick_params */
 /** @} */
 
@@ -2409,9 +2379,9 @@ ORCAcode discord_modify_current_user_nick(
  * request
  */
 ORCAcode discord_add_guild_member_role(struct discord *client,
-                                       const u64_snowflake_t guild_id,
-                                       const u64_snowflake_t user_id,
-                                       const u64_snowflake_t role_id);
+                                       u64_snowflake_t guild_id,
+                                       u64_snowflake_t user_id,
+                                       u64_snowflake_t role_id);
 /** @} */
 
 /** @defgroup DiscordRemoveGuildMemberRole
@@ -2430,9 +2400,9 @@ ORCAcode discord_add_guild_member_role(struct discord *client,
  * request
  */
 ORCAcode discord_remove_guild_member_role(struct discord *client,
-                                          const u64_snowflake_t guild_id,
-                                          const u64_snowflake_t user_id,
-                                          const u64_snowflake_t role_id);
+                                          u64_snowflake_t guild_id,
+                                          u64_snowflake_t user_id,
+                                          u64_snowflake_t role_id);
 /** @} */
 
 /** @defgroup DiscordRemoveGuildMember
@@ -2449,8 +2419,8 @@ ORCAcode discord_remove_guild_member_role(struct discord *client,
  * request
  */
 ORCAcode discord_remove_guild_member(struct discord *client,
-                                     const u64_snowflake_t guild_id,
-                                     const u64_snowflake_t user_id);
+                                     u64_snowflake_t guild_id,
+                                     u64_snowflake_t user_id);
 /** @} */
 
 /** @defgroup DiscordGetGuildBans
@@ -2462,13 +2432,13 @@ ORCAcode discord_remove_guild_member(struct discord *client,
  * @see https://discord.com/developers/docs/resources/guild#get-guild-bans
  * @param client the client created with discord_init()
  * @param guild_id the guild to get the list from
- * @param p_bans the list of bans
+ * @param ret the list of bans
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_bans(struct discord *client,
-                                const u64_snowflake_t guild_id,
-                                NTL_T(struct discord_ban) * p_bans);
+                                u64_snowflake_t guild_id,
+                                struct discord_ban ***ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildBan
@@ -2482,22 +2452,22 @@ ORCAcode discord_get_guild_bans(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to return the ban from
  * @param user_id the user that is banned
- * @param p_ban the ban object
+ * @param ret the ban object
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_ban(struct discord *client,
-                               const u64_snowflake_t guild_id,
-                               const u64_snowflake_t user_id,
-                               struct discord_ban *p_ban);
+                               u64_snowflake_t guild_id,
+                               u64_snowflake_t user_id,
+                               struct discord_ban *ret);
 /** @} */
 
 /** @defgroup DiscordCreateGuildBan
  *  @{ */
 ORCAcode discord_create_guild_ban(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t user_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t user_id,
   struct discord_create_guild_ban_params *params);
 /** @struct discord_create_guild_ban_params */
 /** @} */
@@ -2505,24 +2475,24 @@ ORCAcode discord_create_guild_ban(
 /** @defgroup DiscordRemoveGuildBan
  *  @{ */
 ORCAcode discord_remove_guild_ban(struct discord *client,
-                                  const u64_snowflake_t guild_id,
-                                  const u64_snowflake_t user_id);
+                                  u64_snowflake_t guild_id,
+                                  u64_snowflake_t user_id);
 /** @} */
 
 /** @defgroup DiscordGetGuildRoles
  *  @{ */
 ORCAcode discord_get_guild_roles(struct discord *client,
-                                 const u64_snowflake_t guild_id,
-                                 NTL_T(struct discord_role) * p_roles);
+                                 u64_snowflake_t guild_id,
+                                 struct discord_role ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateGuildRole
  *  @{ */
 ORCAcode discord_create_guild_role(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_create_guild_role_params *params,
-  struct discord_role *p_role);
+  struct discord_role *ret);
 /** @struct discord_create_guild_role_params */
 /** @} */
 
@@ -2541,7 +2511,7 @@ ORCAcode discord_create_guild_role(
  */
 ORCAcode discord_begin_guild_prune(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_begin_guild_prune_params *params);
 /** @struct discord_begin_guild_prune_params */
 /** @} */
@@ -2556,13 +2526,13 @@ ORCAcode discord_begin_guild_prune(
  * @see https://discord.com/developers/docs/resources/guild#get-guild-invites
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get invites from
- * @param p_invites the location to store the list of invites at
+ * @param ret the location to store the list of invites at
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_invites(struct discord *client,
-                                   const u64_snowflake_t guild_id,
-                                   NTL_T(struct discord_invite) * p_invites);
+                                   u64_snowflake_t guild_id,
+                                   struct discord_invite ***ret);
 /** @struct discord_get_guild_invites_params */
 /** @} */
 
@@ -2581,10 +2551,9 @@ ORCAcode discord_get_guild_invites(struct discord *client,
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
-ORCAcode discord_delete_guild_integrations(
-  struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t integration_id);
+ORCAcode discord_delete_guild_integrations(struct discord *client,
+                                           u64_snowflake_t guild_id,
+                                           u64_snowflake_t integration_id);
 /** @} */
 
 /** @defgroup DiscordGetGuildVanityUrl
@@ -2598,13 +2567,13 @@ ORCAcode discord_delete_guild_integrations(
  * https://discord.com/developers/docs/resources/guild#get-guild-vanity-url
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get vanity url from
- * @param p_invites the location to store the invite at
+ * @param ret the location to store the invite at
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_vanity_url(struct discord *client,
-                                      const u64_snowflake_t guild_id,
-                                      struct discord_invite *p_invites);
+                                      u64_snowflake_t guild_id,
+                                      struct discord_invite *ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildWelcomeScreen
@@ -2617,23 +2586,22 @@ ORCAcode discord_get_guild_vanity_url(struct discord *client,
  * https://discord.com/developers/docs/resources/guild#get-guild-welcome-screen
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get welcome screen of
- * @param p_screen the location to store the welcome screen at
+ * @param ret the location to store the welcome screen at
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
-ORCAcode discord_get_guild_welcome_screen(
-  struct discord *client,
-  const u64_snowflake_t guild_id,
-  struct discord_welcome_screen *p_screen);
+ORCAcode discord_get_guild_welcome_screen(struct discord *client,
+                                          u64_snowflake_t guild_id,
+                                          struct discord_welcome_screen *ret);
 /** @} */
 
 /** @defgroup DiscordModifyGuildRolePositions
  *  @{ */
 ORCAcode discord_modify_guild_role_positions(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  NTL_T(struct discord_modify_guild_role_positions_params) params,
-  NTL_T(struct discord_role) * p_roles);
+  u64_snowflake_t guild_id,
+  struct discord_modify_guild_role_positions_params **params,
+  struct discord_role ***ret);
 /** @struct discord_modify_guild_role_positions_params */
 /** @} */
 
@@ -2649,16 +2617,16 @@ ORCAcode discord_modify_guild_role_positions(
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to modify
  * @param params request parameters
- * @param p_role the updated role
+ * @param ret the updated role
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_guild_role(
   struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t role_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t role_id,
   struct discord_modify_guild_role_params *params,
-  struct discord_role *p_role);
+  struct discord_role *ret);
 /** @struct discord_modify_guild_role_params */
 /** @} */
 
@@ -2677,8 +2645,8 @@ ORCAcode discord_modify_guild_role(
  * request
  */
 ORCAcode discord_delete_guild_role(struct discord *client,
-                                   const u64_snowflake_t guild_id,
-                                   const u64_snowflake_t role_id);
+                                   u64_snowflake_t guild_id,
+                                   u64_snowflake_t role_id);
 /** @} */
 
 /** @defgroup DiscordGetInvite
@@ -2686,7 +2654,7 @@ ORCAcode discord_delete_guild_role(struct discord *client,
 ORCAcode discord_get_invite(struct discord *client,
                             char *invite_code,
                             struct discord_get_invite_params *params,
-                            struct discord_invite *p_invite);
+                            struct discord_invite *ret);
 /** @struct discord_get_invite_params */
 /** @} */
 
@@ -2694,14 +2662,14 @@ ORCAcode discord_get_invite(struct discord *client,
  *  @{ */
 ORCAcode discord_delete_invite(struct discord *client,
                                char *invite_code,
-                               struct discord_invite *p_invite);
+                               struct discord_invite *ret);
 /** @} */
 
 /** @defgroup DiscordGetUser
  *  @{ */
 ORCAcode discord_get_user(struct discord *client,
-                          const u64_snowflake_t user_id,
-                          struct discord_user *p_user);
+                          u64_snowflake_t user_id,
+                          struct discord_user *ret);
 /** @} */
 
 /** @defgroup DiscordModifyCurrentUser
@@ -2709,36 +2677,34 @@ ORCAcode discord_get_user(struct discord *client,
 ORCAcode discord_modify_current_user(
   struct discord *client,
   struct discord_modify_current_user_params *params,
-  struct discord_user *p_user);
+  struct discord_user *ret);
 /** @struct discord_modify_current_user_params */
 /** @} */
 
 /** @defgroup DiscordGetCurrentUser
  *  @{ */
 ORCAcode discord_get_current_user(struct discord *client,
-                                  struct discord_user *p_user);
+                                  struct discord_user *ret);
 ORCAcode sb_discord_get_current_user(struct discord *client,
-                                     struct sized_buffer *p_sb_user);
+                                     struct sized_buffer *ret);
 /** @} */
 
 /** @defgroup DiscordGetCurrentUserGuilds
  *  @{ */
 ORCAcode discord_get_current_user_guilds(struct discord *client,
-                                         NTL_T(struct discord_guild) *
-                                           p_guilds);
+                                         struct discord_guild ***ret);
 /** @} */
 
 /** @defgroup DiscordLeaveGuild
  *  @{ */
-ORCAcode discord_leave_guild(struct discord *client,
-                             const u64_snowflake_t guild_id);
+ORCAcode discord_leave_guild(struct discord *client, u64_snowflake_t guild_id);
 /** @} */
 
 /** @defgroup DiscordCreateDm
  *  @{ */
 ORCAcode discord_create_dm(struct discord *client,
                            struct discord_create_dm_params *params,
-                           struct discord_channel *p_dm_channel);
+                           struct discord_channel *ret);
 /** @struct discord_create_dm_params */
 /** @} */
 
@@ -2746,7 +2712,7 @@ ORCAcode discord_create_dm(struct discord *client,
  *  @{ */
 ORCAcode discord_create_group_dm(struct discord *client,
                                  struct discord_create_group_dm_params *params,
-                                 struct discord_channel *p_dm_channel);
+                                 struct discord_channel *ret);
 /** @struct discord_create_group_dm_params */
 /** @} */
 
@@ -2758,13 +2724,12 @@ ORCAcode discord_create_group_dm(struct discord *client,
  * Returns a list of connection objects.
  * @see https://discord.com/developers/docs/resources/user#get-user-connections
  * @param client the client created with discord_init()
- * @param p_connections the connections object
+ * @param ret the connections object
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_user_connections(struct discord *client,
-                                      NTL_T(struct discord_connection) *
-                                        p_connections);
+                                      struct discord_connection ***ret);
 /** @} */
 
 /** @defgroup DiscordListVoiceRegions
@@ -2776,13 +2741,12 @@ ORCAcode discord_get_user_connections(struct discord *client,
  * voice or stage channel's rtc_region.
  * @see https://discord.com/developers/docs/resources/voice#list-voice-regions
  * @param client the client created with discord_init()
- * @param p_voice_regions the object with voice regions
+ * @param ret the object with voice regions
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_list_voice_regions(struct discord *client,
-                                    NTL_T(struct discord_voice_region) *
-                                      p_voice_regions);
+                                    struct discord_voice_region ***ret);
 /** @} */
 
 /** @defgroup DiscordCreateWebhook
@@ -2796,14 +2760,14 @@ ORCAcode discord_list_voice_regions(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel that the webhook belongs to
  * @param params request parameters
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_create_webhook(struct discord *client,
-                                const u64_snowflake_t channel_id,
+                                u64_snowflake_t channel_id,
                                 struct discord_create_webhook_params *params,
-                                struct discord_webhook *p_webhook);
+                                struct discord_webhook *ret);
 /** @struct discord_create_webhook_params */
 /** @} */
 
@@ -2818,14 +2782,13 @@ ORCAcode discord_create_webhook(struct discord *client,
  * https://discord.com/developers/docs/resources/webhook#get-channel-webhooks
  * @param client the client created with discord_init()
  * @param channel_id the channel that the webhooks belongs to
- * @param p_webhooks a null-terminated list of webhook objects if successful
+ * @param ret a null-terminated list of webhook objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_channel_webhooks(struct discord *client,
-                                      const u64_snowflake_t channel_id,
-                                      NTL_T(struct discord_webhook) *
-                                        p_webhooks);
+                                      u64_snowflake_t channel_id,
+                                      struct discord_webhook ***ret);
 /** @} */
 
 /** @defgroup DiscordGetGuildWebhooks
@@ -2839,14 +2802,13 @@ ORCAcode discord_get_channel_webhooks(struct discord *client,
  * https://discord.com/developers/docs/resources/webhook#get-guild-webhooks
  * @param client the client created with discord_init()
  * @param guild_id the guild that the webhooks belongs to
- * @param p_webhooks a null-terminated list of webhook objects if successful
+ * @param ret a null-terminated list of webhook objects if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_webhooks(struct discord *client,
-                                    const u64_snowflake_t guild_id,
-                                    NTL_T(struct discord_webhook) *
-                                      p_webhooks);
+                                    u64_snowflake_t guild_id,
+                                    struct discord_webhook ***ret);
 /** @} */
 
 /** @defgroup DiscordGetWebhook
@@ -2858,13 +2820,13 @@ ORCAcode discord_get_guild_webhooks(struct discord *client,
  * @see https://discord.com/developers/docs/resources/webhook#get-webhook
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_webhook(struct discord *client,
-                             const u64_snowflake_t webhook_id,
-                             struct discord_webhook *p_webhook);
+                             u64_snowflake_t webhook_id,
+                             struct discord_webhook *ret);
 /** @} */
 
 /** @defgroup DiscordGetWebhookWithToken
@@ -2879,14 +2841,14 @@ ORCAcode discord_get_webhook(struct discord *client,
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_webhook_with_token(struct discord *client,
-                                        const u64_snowflake_t webhook_id,
+                                        u64_snowflake_t webhook_id,
                                         const char webhook_token[],
-                                        struct discord_webhook *p_webhook);
+                                        struct discord_webhook *ret);
 /** @} */
 
 /** @defgroup DiscordModifyWebhook
@@ -2900,14 +2862,14 @@ ORCAcode discord_get_webhook_with_token(struct discord *client,
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param params request parameters
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_webhook(struct discord *client,
-                                const u64_snowflake_t webhook_id,
+                                u64_snowflake_t webhook_id,
                                 struct discord_modify_webhook_params *params,
-                                struct discord_webhook *p_webhook);
+                                struct discord_webhook *ret);
 /** @struct discord_modify_webhook_params */
 /** @} */
 
@@ -2924,16 +2886,16 @@ ORCAcode discord_modify_webhook(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_modify_webhook_with_token(
   struct discord *client,
-  const u64_snowflake_t webhook_id,
+  u64_snowflake_t webhook_id,
   const char webhook_token[],
   struct discord_modify_webhook_with_token_params *params,
-  struct discord_webhook *p_webhook);
+  struct discord_webhook *ret);
 /** @struct discord_modify_webhook_with_token_params */
 /** @} */
 
@@ -2950,7 +2912,7 @@ ORCAcode discord_modify_webhook_with_token(
  * request
  */
 ORCAcode discord_delete_webhook(struct discord *client,
-                                const u64_snowflake_t webhook_id);
+                                u64_snowflake_t webhook_id);
 /** @} */
 
 /** @defgroup DiscordDeleteWebhookWithToken
@@ -2969,7 +2931,7 @@ ORCAcode discord_delete_webhook(struct discord *client,
  * request
  */
 ORCAcode discord_delete_webhook_with_token(struct discord *client,
-                                           const u64_snowflake_t webhook_id,
+                                           u64_snowflake_t webhook_id,
                                            const char webhook_token[]);
 /** @} */
 
@@ -2983,15 +2945,15 @@ ORCAcode discord_delete_webhook_with_token(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
- * @param p_webhook the webhook object if successful
+ * @param ret the webhook object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_execute_webhook(struct discord *client,
-                                 const u64_snowflake_t webhook_id,
+                                 u64_snowflake_t webhook_id,
                                  const char webhook_token[],
                                  struct discord_execute_webhook_params *params,
-                                 struct discord_webhook *p_webhook);
+                                 struct discord_webhook *ret);
 /** @struct discord_execute_webhook_params */
 /** @} */
 
@@ -3008,15 +2970,15 @@ ORCAcode discord_execute_webhook(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_webhook_message(struct discord *client,
-                                     const u64_snowflake_t webhook_id,
+                                     u64_snowflake_t webhook_id,
                                      const char webhook_token[],
-                                     const u64_snowflake_t message_id,
-                                     struct discord_message *p_message);
+                                     u64_snowflake_t message_id,
+                                     struct discord_message *ret);
 /** @} */
 
 /** @defgroup DiscordEditWebhookMessage
@@ -3033,17 +2995,17 @@ ORCAcode discord_get_webhook_message(struct discord *client,
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
  * @param params request parameters
- * @param p_message the message object if successful
+ * @param ret the message object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_edit_webhook_message(
   struct discord *client,
-  const u64_snowflake_t webhook_id,
+  u64_snowflake_t webhook_id,
   const char webhook_token[],
-  const u64_snowflake_t message_id,
+  u64_snowflake_t message_id,
   struct discord_edit_webhook_message_params *params,
-  struct discord_message *p_message);
+  struct discord_message *ret);
 /** @struct discord_edit_webhook_message_params */
 /** @} */
 
@@ -3065,21 +3027,20 @@ ORCAcode discord_edit_webhook_message(
  * request
  */
 ORCAcode discord_delete_webhook_message(struct discord *client,
-                                        const u64_snowflake_t webhook_id,
+                                        u64_snowflake_t webhook_id,
                                         const char webhook_token[],
-                                        const u64_snowflake_t message_id);
+                                        u64_snowflake_t message_id);
 /** @} */
 
 /** @defgroup DiscordGetGateway
  *  @{ */
-ORCAcode discord_get_gateway(struct discord *client,
-                             struct sized_buffer *p_json);
+ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *ret);
 /** @} */
 
 /** @defgroup DiscordGetGatewayBot
  *  @{ */
 ORCAcode discord_get_gateway_bot(struct discord *client,
-                                 struct sized_buffer *p_json);
+                                 struct sized_buffer *ret);
 /** @} */
 
 /* * * * * * * * * * * * * * * * * * * */
@@ -3127,17 +3088,17 @@ void discord_embed_add_field(struct discord_embed *embed,
 
 /** @defgroup DiscordMiscChannel
  *  @{ */
-void discord_overwrite_append(NTL_T(struct discord_overwrite) *
-                                permission_overwrites,
-                              u64_snowflake_t id,
-                              int type,
-                              enum discord_bitwise_permission_flags allow,
-                              enum discord_bitwise_permission_flags deny);
+void discord_overwrite_append(
+  struct discord_overwrite ***permission_overwrites,
+  u64_snowflake_t id,
+  int type,
+  enum discord_bitwise_permission_flags allow,
+  enum discord_bitwise_permission_flags deny);
 ORCAcode discord_get_channel_at_pos(struct discord *client,
-                                    const u64_snowflake_t guild_id,
-                                    const enum discord_channel_types type,
-                                    const size_t position,
-                                    struct discord_channel *p_channel);
+                                    u64_snowflake_t guild_id,
+                                    enum discord_channel_types type,
+                                    size_t position,
+                                    struct discord_channel *ret);
 ORCAcode discord_delete_messages_by_author_id(struct discord *client,
                                               u64_snowflake_t channel_id,
                                               u64_snowflake_t author_id);
@@ -3145,11 +3106,10 @@ ORCAcode discord_delete_messages_by_author_id(struct discord *client,
 
 /** @defgroup DiscordMiscGuild
  *  @{ */
-ORCAcode discord_disconnect_guild_member(
-  struct discord *client,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t user_id,
-  struct discord_guild_member *p_member);
+ORCAcode discord_disconnect_guild_member(struct discord *client,
+                                         u64_snowflake_t guild_id,
+                                         u64_snowflake_t user_id,
+                                         struct discord_guild_member *ret);
 /** @} */
 
 /** @defgroup DiscordMiscGateway
@@ -3171,13 +3131,13 @@ void discord_presence_add_activity(struct discord_presence_status *presence,
  *
  * @param client the client created with discord_init()
  * @param code the code of the guild template
- * @param p_template the location to store the template
+ * @param ret the guild template object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
 ORCAcode discord_get_guild_template(struct discord *client,
                                     char *code,
-                                    struct discord_guild_template *p_template);
+                                    struct discord_guild_template *ret);
 /** @} */
 
 /** @defgroup DiscordCreateGuildTemplate
@@ -3190,7 +3150,7 @@ ORCAcode discord_get_guild_template(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to create a template of
  * @param params the parameters to create the guild template
- * @param p_template the location to store the created template at
+ * @param ret the guild template object if successful
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
@@ -3198,7 +3158,8 @@ ORCAcode discord_create_guild_template(
   struct discord *client,
   u64_snowflake_t guild_id,
   struct discord_create_guild_template_params *params,
-  struct discord_guild_template *p_template);
+  struct discord_guild_template *ret);
+/** @struct discord_create_guild_template_params */
 /** @} */
 
 /** @defgroup DiscordSyncGuildTemplate
@@ -3211,15 +3172,76 @@ ORCAcode discord_create_guild_template(
  * @param client the client created with discord_init()
  * @param guild_id the guild to sync the template of
  * @param code the identifier of the template to sync
- * @param p_template the location to store the updated template at
+ * @param ret the location to store the updated template at
  * @return ORCAcode for how the transfer went, ORCA_OK means a successful
  * request
  */
-ORCAcode discord_sync_guild_template(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  char *code,
-  struct discord_guild_template *p_template);
+ORCAcode discord_sync_guild_template(struct discord *client,
+                                     u64_snowflake_t guild_id,
+                                     char *code,
+                                     struct discord_guild_template *ret);
 /** @} */
+
+/** @defgroup DiscordScheduler
+ * @brief Control Discord event scheduling
+ *  @{ */
+/**
+ * @brief return value of discord_set_event_scheduler() callback
+ *
+ * @see discord_set_event_scheduler()
+ */
+typedef enum discord_event_scheduler {
+  /** this event has been handled */
+  DISCORD_EVENT_IGNORE,
+  /** handle this event in main thread */
+  DISCORD_EVENT_MAIN_THREAD,
+  /** handle this event in a worker thread */
+  DISCORD_EVENT_WORKER_THREAD
+} discord_event_scheduler_t;
+
+/**
+ * @brief Event Handling Mode callback
+ *
+ * A very important callback that enables the user with a fine-grained control
+ *        of how each event is handled: blocking, non-blocking or ignored
+ * @see discord_set_event_scheduler()
+ * @see discord_gateway_events
+ */
+typedef discord_event_scheduler_t (*discord_event_scheduler)(
+  struct discord *client,
+  struct sized_buffer *event_data,
+  enum discord_gateway_events event);
+
+/**
+ * @brief Provides the user with a fine-grained control of the Discord's
+ * event-loop
+ *
+ * Allows the user to specify which events should be executed from the
+ * main-thread, in parallel from a worker-thread, or completely ignored.
+ *
+ * @param client the client created_with discord_init()
+ * @param fn the function that will be executed
+ * @warning The user is responsible for providing his own locking mechanism to
+ * avoid race-condition on sensitive data.
+ * @see discord_event_scheduler_t
+ * @see enum discord_gateway_events
+ */
+void discord_set_event_scheduler(struct discord *client,
+                                 discord_event_scheduler callback);
+/** @} */
+
+/**
+ * @brief Initialize resources of globals used by discord.h
+ *
+ * @deprecated use orca_global_init() instead
+ */
+void discord_global_init();
+
+/**
+ * @brief Free resources of globals used by discord.h
+ *
+ * @deprecated use orca_global_cleanup() instead
+ */
+void discord_global_cleanup();
 
 #endif /* DISCORD_H */

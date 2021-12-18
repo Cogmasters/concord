@@ -1018,7 +1018,7 @@ cws_free(CURL *easy)
 }
 
 void
-cws_reqheader_add(CURL *easy, const char field[],  const char value[])
+cws_add_header(CURL *easy, const char field[],  const char value[])
 {
     struct cws_data *priv;
     char *p = NULL;

@@ -19,26 +19,25 @@ char *SPAM[] = {
   "It should be any different with you?" // 10
 };
 
-void on_spam(struct discord *client,
-             const struct discord_user *bot,
-             const struct discord_message *msg)
+void on_spam(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  struct discord_create_message_params params = {};
+  struct discord_create_message_params params = { 0 };
   for (size_t i = 0; i < 10; ++i) {
     params.content = SPAM[i];
     discord_create_message(client, msg->channel_id, &params, NULL);
   }
 }
 
-void on_clear(struct discord *client,
-              const struct discord_user *bot,
-              const struct discord_message *msg)
+void on_clear(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
+  const struct discord_user *bot = discord_get_self(client);
+
   discord_delete_messages_by_author_id(client, msg->channel_id, bot->id);
+
   struct discord_create_message_params params = {
     .content = "Deleted 100 messages or less"
   };
@@ -53,8 +52,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -71,5 +69,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

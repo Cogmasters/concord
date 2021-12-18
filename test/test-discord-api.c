@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
   assert(ORCA_OK == discord_get_current_user(client, &me));
   printf("Greetings, %s#%s!\n", me.username, me.discriminator);
 
-  NTL_T(struct discord_guild) guilds = NULL;
+  struct discord_guild **guilds = NULL;
   assert(ORCA_OK == discord_get_current_user_guilds(client, &guilds));
   for (size_t i = 0; guilds[i]; ++i)
     fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name,

@@ -54,9 +54,10 @@ void update_last_tick_ms(uint64_t *tick_ms)
 {
   struct ua_resp_handle resp_handle = { .ok_cb = &ticks_from_json,
                                         .ok_obj = tick_ms };
+  struct ua_conn_attr conn_attr = { HTTP_GET, NULL, "/ticks" };
 
   /* Fetch ticks from ELITEBGS API */
-  ua_run(g_elitebgs_ua, NULL, &resp_handle, NULL, HTTP_GET, "/ticks");
+  ua_easy_run(g_elitebgs_ua, NULL, &resp_handle, &conn_attr);
 }
 
 char *happiness_localised(char *happiness_band)
@@ -78,12 +79,12 @@ void embed_from_json(char *str, size_t len, void *p_embed)
 {
   struct discord_embed *embed = p_embed;
 
-  NTL_T(struct sized_buffer) l_docs = NULL;
-  NTL_T(struct sized_buffer) l_fpresence = NULL;
-  NTL_T(struct sized_buffer) l_history = NULL;
-  NTL_T(struct sized_buffer) l_active_states = NULL;
-  NTL_T(struct sized_buffer) l_pending_states = NULL;
-  NTL_T(struct sized_buffer) l_recovering_states = NULL;
+  struct sized_buffer **l_docs = NULL;
+  struct sized_buffer **l_fpresence = NULL;
+  struct sized_buffer **l_history = NULL;
+  struct sized_buffer **l_active_states = NULL;
+  struct sized_buffer **l_pending_states = NULL;
+  struct sized_buffer **l_recovering_states = NULL;
 
   struct doc_s *doc = malloc(sizeof *doc);
   struct faction_presence_s *fpresence = malloc(sizeof *fpresence);
@@ -238,15 +239,15 @@ void embed_from_json(char *str, size_t len, void *p_embed)
   free(l_docs);
 }
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("EliteBGS-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_command(struct discord *client,
-                const struct discord_user *bot,
-                const struct discord_message *msg)
+void on_command(struct discord *client, const struct discord_message *msg)
 {
   // make sure bot doesn't echoes other bots
   if (msg->author->bot) return;
@@ -256,7 +257,7 @@ void on_command(struct discord *client,
 
   /* Initialize embed struct that will be loaded to  */
   struct discord_embed new_embed = {
-    .timestamp = cee_timestamp_ms(),
+    .timestamp = discord_timestamp(client),
     .color = 15844367 // gold
   };
   /* Set embed fields */
@@ -277,10 +278,10 @@ void on_command(struct discord *client,
   snprintf(endpoint, sizeof(endpoint), "/factions%s", query);
 
   /* Fetch factions from ELITEBGS API */
-  ua_run(g_elitebgs_ua, NULL,
-         &(struct ua_resp_handle){ .ok_cb = &embed_from_json,
-                                   .ok_obj = &new_embed },
-         NULL, HTTP_GET, endpoint);
+  struct ua_resp_handle handle = { &embed_from_json, &new_embed };
+  struct ua_conn_attr conn_attr = { HTTP_GET, NULL, endpoint };
+
+  ua_easy_run(g_elitebgs_ua, NULL, &handle, &conn_attr);
 
   /* Send embed to channel if embed was loaded */
   struct discord_create_message_params params = { 0 };
@@ -303,12 +304,12 @@ int main(int argc, char *argv[])
     config_file = "../config.json";
 
   /* Initialize Discord User Agent */
-  discord_global_init();
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
 
   /* Initialize ELITEBGS User Agent (share discord logconf) */
-  g_elitebgs_ua = ua_init(client->conf);
+  g_elitebgs_ua = ua_init(&(struct ua_attr){ .conf = &client->conf });
   ua_set_url(g_elitebgs_ua, ELITEBGS_API_URL);
 
   /* Set discord callbacks */
@@ -339,7 +340,7 @@ int main(int argc, char *argv[])
   /* Cleanup resources */
   ua_cleanup(g_elitebgs_ua);
   discord_cleanup(client);
-  discord_global_cleanup();
+  orca_global_cleanup();
 
   return EXIT_SUCCESS;
 }

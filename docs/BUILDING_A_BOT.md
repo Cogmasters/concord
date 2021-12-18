@@ -26,14 +26,15 @@ The entire code of ping-pong bot is below. We will go over it in further down:
 #include "discord.h"
 
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
       bot->username, bot->discriminator);
 }
 
-void on_ping(struct discord *client, const struct discord_user *bot,
-             const struct discord_message *msg)
+void on_ping(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return; // ignore bots
 
@@ -41,8 +42,7 @@ void on_ping(struct discord *client, const struct discord_user *bot,
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_pong(struct discord *client, const struct discord_user *bot,
-             const struct discord_message *msg)
+void on_pong(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return; // ignore bots
 
@@ -112,12 +112,12 @@ discord_run(client);
 
 ### [discord\_set\_on\_ready()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_ready)
 
-`discord_set_on_ready(struct discord*, discord_idle_cb*)`: calls `on_ready` callback when the connection is succesfully established
+`discord_set_on_ready(struct discord*, discord_on_idle*)`: calls `on_ready` callback when the connection is succesfully established
 
 | Member Parameters                                                                            | Description                                           |
 | :------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
 | [struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)              | the client stucture                                   |
-| [discord\_idle\_cb](https://cee-studio.github.io/orca/apis/discord.html#c.discord_idle_cb)\* | the callback to run when the READY event is triggered |
+| [discord\_on\_idle](https://cee-studio.github.io/orca/apis/discord.html#c.discord_idle_cb)\* | the callback to run when the READY event is triggered |
 
 ### [discord\_set\_on\_command()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_command)
 
@@ -127,7 +127,7 @@ discord_run(client);
 | :------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
 | [struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)                    | the client stucture                                                                 |
 | char[]                                                                                             | The chat command expected to trigger a callback response                            |
-| [discord\_message\_cb](https://cee-studio.github.io/orca/apis/discord.html#c.discord_message_cb)\* | the message type function callback to run when its corresponding event is triggered |
+| [discord\_on\_message](https://cee-studio.github.io/orca/apis/discord.html#c.discord_message_cb)\* | the message type function callback to run when its corresponding event is triggered |
 
 ### [discord\_run()](https://cee-studio.github.io/orca/apis/discord.html#c.discord_run)
 

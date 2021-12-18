@@ -38,23 +38,44 @@ int main(int argc, char **argv)
   int opt;
   while (-1 != (opt = getopt(argc, argv, "ahcdfSEFOo:i:"))) {
     switch (opt) {
-    case 'a': open_mode = "a"; break;
-    case 'o': config_file = strdup(optarg); break;
+    case 'a':
+      open_mode = "a";
+      break;
+    case 'o':
+      config_file = strdup(optarg);
+      break;
     case 'i': {
       name_t header = "";
       snprintf(header, sizeof(name_t), "%s", optarg);
       ntl_append2((ntl_t *)&incl_headers, sizeof(name_t), &header);
       break;
     }
-    case 'h': eo.type = FILE_HEADER; break;
-    case 'c': eo.type = FILE_CODE; break;
-    case 'd': eo.type = FILE_DECLARATION; break;
-    case 'f': eo.type = FILE_DEFINITION; break;
-    case 'S': eo.type = FILE_STRUCT_DECLARATION; break;
-    case 'E': eo.type = FILE_ENUM_DECLARATION; break;
-    case 'F': eo.type = FILE_FUN_DECLARATION; break;
-    case 'O': eo.type = FILE_OPAQUE_STRUCT_DECLARATION; break;
-    default: /* '?' */ print_usage(argv[0]);
+    case 'h':
+      eo.type = FILE_HEADER;
+      break;
+    case 'c':
+      eo.type = FILE_CODE;
+      break;
+    case 'd':
+      eo.type = FILE_DECLARATION;
+      break;
+    case 'f':
+      eo.type = FILE_DEFINITION;
+      break;
+    case 'S':
+      eo.type = FILE_STRUCT_DECLARATION;
+      break;
+    case 'E':
+      eo.type = FILE_ENUM_DECLARATION;
+      break;
+    case 'F':
+      eo.type = FILE_FUN_DECLARATION;
+      break;
+    case 'O':
+      eo.type = FILE_OPAQUE_STRUCT_DECLARATION;
+      break;
+    default: /* '?' */
+      print_usage(argv[0]);
     }
   }
 

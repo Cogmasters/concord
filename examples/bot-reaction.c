@@ -6,32 +6,34 @@
 
 #include "discord.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Reaction-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_get_users(struct discord *client,
-                  const struct discord_user *bot,
-                  const struct discord_message *msg)
+void on_get_users(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot || !msg->referenced_message) return;
 
-  NTL_T(struct discord_user) users = NULL;
+  struct discord_user **users = NULL;
+  char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;
+
   code = discord_get_reactions(
     client, msg->referenced_message->channel_id, msg->referenced_message->id,
     0, msg->content, &(struct discord_get_reactions_params){ .limit = 25 },
     &users);
 
-  char text[DISCORD_MAX_MESSAGE_LEN];
   if (code != ORCA_OK || !users) {
     snprintf(text, sizeof(text), "Nobody reacted with '%s'!", msg->content);
   }
   else {
     char *cur = text;
     char *end = &text[sizeof(text) - 1];
+
     for (size_t i = 0; users[i]; ++i) {
       cur += snprintf(cur, end - cur, "%s (%" PRIu64 ")\n", users[i]->username,
                       users[i]->id);
@@ -44,9 +46,7 @@ void on_get_users(struct discord *client,
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_create(struct discord *client,
-               const struct discord_user *bot,
-               const struct discord_message *msg)
+void on_create(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot || !msg->referenced_message) return;
 
@@ -54,9 +54,7 @@ void on_create(struct discord *client,
                           msg->referenced_message->id, 0, msg->content);
 }
 
-void on_delete(struct discord *client,
-               const struct discord_user *bot,
-               const struct discord_message *msg)
+void on_delete(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot || !msg->referenced_message) return;
 
@@ -65,9 +63,7 @@ void on_delete(struct discord *client,
     0, msg->content);
 }
 
-void on_delete_all(struct discord *client,
-                   const struct discord_user *bot,
-                   const struct discord_message *msg)
+void on_delete_all(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot || !msg->referenced_message) return;
 
@@ -75,9 +71,7 @@ void on_delete_all(struct discord *client,
                                msg->referenced_message->id);
 }
 
-void on_delete_self(struct discord *client,
-                    const struct discord_user *bot,
-                    const struct discord_message *msg)
+void on_delete_self(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot || !msg->referenced_message) return;
 
@@ -85,14 +79,13 @@ void on_delete_self(struct discord *client,
                               msg->referenced_message->id, 0, msg->content);
 }
 
-void on_delete_user(struct discord *client,
-                    const struct discord_user *bot,
-                    const struct discord_message *msg)
+void on_delete_user(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot || !msg->referenced_message) return;
 
   u64_snowflake_t user_id = 0;
   char emoji_name[256] = "";
+
   sscanf(msg->content, "%" SCNu64 " %s", &user_id, emoji_name);
 
   discord_delete_user_reaction(client, msg->referenced_message->channel_id,
@@ -108,8 +101,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -143,6 +135,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

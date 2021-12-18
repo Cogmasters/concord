@@ -38,7 +38,7 @@ GITHUB_SRC   := $(wildcard github-*.c $(SPECS_WDIR)/github/*.c)
 GITHUB_OBJS  := $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
 REDDIT_SRC   := $(wildcard reddit-*.c $(SPECS_WDIR)/reddit/*.c)
 REDDIT_OBJS  := $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
-SLACK_SRC    := $(wildcard slack-*.c)
+SLACK_SRC    := $(wildcard slack-*.c $(SPECS_WDIR)/slack/*.c)
 SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs cflags

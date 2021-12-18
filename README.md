@@ -40,18 +40,18 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 #include <string.h> // strcmp()
 #include <orca/discord.h>
 
-void on_ready(struct discord *client, const struct discord_user *bot) 
+void on_ready(struct discord *client) 
 {
+  const struct discord_user *bot = discord_get_self(client);
   log_info("Logged in as %s!", bot->username);
 }
 
-void on_message(struct discord *client, 
-                const struct discord_user *bot, 
-                const struct discord_message *msg)
+void on_message(struct discord *client, const struct discord_message *msg)
 {
-  // if message content is equal to 'ping', then the bot will respond with 'pong'.
-  if (0 == strcmp(msg->content, "ping")) {
+  if (0 == strcmp(msg->content, "ping")) { // if 'ping' received, reply with 'pong'
     struct discord_create_message_params params = { .content = "pong" };
+
+    discord_async_next(client, NULL); // make next request non-blocking (OPTIONAL)
     discord_create_message(client, msg->channel_id, &params, NULL);
   }
 }
@@ -164,7 +164,6 @@ $ sudo make install
 Included headers must be `orca/` prefixed:
 ```c
 #include <orca/discord.h>
-#include <orca/github.h>
 ```
 
 ### Standalone executable

@@ -5,97 +5,69 @@
 #include <assert.h>
 #include <locale.h>
 #include <limits.h>
+#include <errno.h>
+#include <inttypes.h> /* SCNu64 */
 
 #include "discord.h"
 
-struct {
-  char username[64];
-  char *discriminator;
-} SUDO;
+u64_snowflake_t g_sudo_id;
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Shell-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_cd(struct discord *client,
-           const struct discord_user *bot,
-           const struct discord_message *msg)
+void on_cd(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
-
-  if (strcmp(SUDO.discriminator, msg->author->discriminator) ||
-      strcmp(SUDO.username, msg->author->username))
-  {
-    return; // EARLY RETURN IF NOT SUDO USER
-  }
+  if (msg->author->id != g_sudo_id) return;
 
   chdir(*msg->content ? msg->content : ".");
+
   char path[PATH_MAX];
-  struct discord_create_message_params params = { .content = getcwd(
-                                                    path, sizeof(path)) };
+  struct discord_create_message_params params = {
+    .content = getcwd(path, sizeof(path)),
+  };
+
+  discord_async_next(client, NULL);
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_less_like(struct discord *client,
-                  const struct discord_user *bot,
-                  const struct discord_message *msg)
+void on_less_like(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
-
-  if (strcmp(SUDO.discriminator, msg->author->discriminator) ||
-      strcmp(SUDO.username, msg->author->username))
-  {
-    return; // EARLY RETURN IF NOT SUDO USER
-  }
+  if (msg->author->id != g_sudo_id) return;
 
   struct discord_create_message_params params = { 0 };
-  if (*msg->content) {
-    char attachment_url[512];
-    snprintf(attachment_url, sizeof(attachment_url), "attachment://%s",
-             msg->content);
+  char buf[512];
 
-    params.embeds = (struct discord_embed *[]){
-      &(struct discord_embed){
-        .title = msg->content,
-        .thumbnail =
-          &(struct discord_embed_thumbnail){ .url = attachment_url } },
-      (void *){ NULL } // end of array
-    };
-    params.attachments = (struct discord_attachment *[]){
-      &(struct discord_attachment){ .filename = msg->content },
-      (void *){ NULL } // end of array
-    };
-  }
-  else {
+  if (!msg->content) {
     params.content = "No file specified";
   }
+  else {
+    snprintf(buf, sizeof(buf), "attachment://%s", msg->content);
 
+    params.embeds = (struct discord_embed *[]){
+      &(struct discord_embed){ .title = msg->content },
+      NULL // end of array
+    };
+
+    params.attachments = (struct discord_attachment *[]){
+      &(struct discord_attachment){ .filename = msg->content },
+      NULL // end of array
+    };
+  }
+
+  discord_async_next(client, NULL);
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_default(struct discord *client,
-                const struct discord_user *bot,
-                const struct discord_message *msg)
+void on_fallback(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+  const size_t MAX_FSIZE = 5e6; // 5 mb
 
-  if (strcmp(SUDO.discriminator, msg->author->discriminator) ||
-      strcmp(SUDO.username, msg->author->username))
-  {
-    return; // EARLY RETURN IF NOT SUDO USER
-  }
-
-  char *cmd = strchr(msg->content, ' '); // get first occurence of space
-  size_t len;
-  if (cmd) {
-    len = cmd - msg->content;
-    ++cmd; // skip space
-  }
-  else {
-    len = strlen(msg->content);
-  }
+  if (msg->author->id != g_sudo_id) return;
 
   FILE *fp = popen(msg->content, "r");
   if (NULL == fp) {
@@ -103,7 +75,6 @@ void on_default(struct discord *client,
     return;
   }
 
-  const size_t MAX_FSIZE = 5e6; // 5 mb
   char *path = calloc(1, MAX_FSIZE);
   char *pathtmp = calloc(1, MAX_FSIZE);
 
@@ -112,17 +83,22 @@ void on_default(struct discord *client,
   }
 
   const size_t fsize = strlen(pathtmp);
-  struct discord_create_message_params params;
-  if (fsize > DISCORD_MAX_MESSAGE_LEN)
-    params = (struct discord_create_message_params){
-      .attachments =
-        (struct discord_attachment *[]){
-          &(struct discord_attachment){ .content = pathtmp, .size = fsize },
-          (void *){ NULL } // end of array
-        }
+  struct discord_create_message_params params = { 0 };
+
+  if (fsize <= DISCORD_MAX_MESSAGE_LEN) {
+    params.content = pathtmp;
+  }
+  else {
+    params.attachments = (struct discord_attachment *[]){
+      &(struct discord_attachment){
+        .content = pathtmp,
+        .size = fsize,
+      },
+      NULL // end of array
     };
-  else
-    params = (struct discord_create_message_params){ .content = pathtmp };
+  }
+
+  discord_async_next(client, NULL);
   discord_create_message(client, msg->channel_id, &params, NULL);
 
   pclose(fp);
@@ -132,25 +108,23 @@ void on_default(struct discord *client,
 
 int main(int argc, char *argv[])
 {
+  setlocale(LC_ALL, "");
+
   const char *config_file;
   if (argc > 1)
     config_file = argv[1];
   else
     config_file = "../config.json";
 
-  setlocale(LC_ALL, "");
-
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
-  assert(NULL != client);
+  assert(NULL != client && "Couldn't initialize client");
 
   discord_set_prefix(client, "$");
-  discord_set_on_command(client, NULL, &on_default);
+  discord_set_on_command(client, NULL, &on_fallback);
   discord_set_on_command(client, "cd", &on_cd);
-  discord_set_on_command(client, "less", &on_less_like);
-  discord_set_on_command(client, "cat", &on_less_like);
-  discord_set_on_command(client, "hexdump", &on_less_like);
+  discord_set_on_commands(client, &on_less_like, "less", "cat", "hexdump",
+                          NULL);
 
   printf("\n\nThis bot allows navigating its host machine like"
          " a shell terminal.\n\n"
@@ -158,21 +132,13 @@ int main(int argc, char *argv[])
          " used with care.\nOnly give admin privileges to yourself"
          " or someone trustworthy.\n\n\n");
 
-  fputs("\n\nType name of user with admin privileges (eg. user#1234)\n",
-        stderr);
-  fgets(SUDO.username, sizeof(SUDO.username), stdin);
-
-  SUDO.discriminator = strchr(SUDO.username, '#');
-  assert(NULL != SUDO.discriminator &&
-         "Missing '#' delimiter (eg. user#1234)");
-
-  SUDO.discriminator[strlen(SUDO.discriminator) - 1] = '\0'; // remove \n
-  *SUDO.discriminator = '\0'; // split at #
-  ++SUDO.discriminator;
+  do {
+    printf("User ID to have sudo privileges\n");
+    fscanf(stdin, "%" SCNu64, &g_sudo_id);
+  } while (!g_sudo_id || errno == ERANGE);
 
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

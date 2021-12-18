@@ -23,7 +23,8 @@
         { "name":"CLOSE_REASON_SHARDING_REQUIRED", "value":4011 },
         { "name":"CLOSE_REASON_INVALID_API_VERSION", "value":4012 },
         { "name":"CLOSE_REASON_INVALID_INTENTS", "value":4013 },
-        { "name":"CLOSE_REASON_DISALLOWED_INTENTS", "value":4014 }
+        { "name":"CLOSE_REASON_DISALLOWED_INTENTS", "value":4014 },
+        { "name":"CLOSE_REASON_RECONNECT", "value":4900 }
       ]
     },
     {

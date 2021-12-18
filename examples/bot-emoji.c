@@ -5,23 +5,24 @@
 
 #include "discord.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("Emoji-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_list(struct discord *client,
-             const struct discord_user *bot,
-             const struct discord_message *msg)
+void on_list(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  NTL_T(struct discord_emoji) emojis = NULL;
+  struct discord_emoji **emojis = NULL;
+  char text[DISCORD_MAX_MESSAGE_LEN];
   ORCAcode code;
+
   code = discord_list_guild_emojis(client, msg->guild_id, &emojis);
 
-  char text[DISCORD_MAX_MESSAGE_LEN];
   if (code != ORCA_OK || !emojis) {
     sprintf(text, "No guild emojis found.");
   }
@@ -29,6 +30,7 @@ void on_list(struct discord *client,
     char *cur = text;
     char *end = &text[sizeof(text) - 1];
     char *prev;
+
     for (size_t i = 0; emojis[i]; ++i) {
       prev = cur;
       cur += snprintf(cur, end - cur, "<%s:%s:%" PRIu64 ">(%" PRIu64 ")\n",
@@ -43,6 +45,7 @@ void on_list(struct discord *client,
 
         struct discord_create_message_params params = { .content = text };
         discord_create_message(client, msg->channel_id, &params, NULL);
+
         continue;
       }
     }
@@ -53,15 +56,15 @@ void on_list(struct discord *client,
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_get(struct discord *client,
-            const struct discord_user *bot,
-            const struct discord_message *msg)
+void on_get(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
   char text[DISCORD_MAX_MESSAGE_LEN];
   u64_snowflake_t emoji_id = 0;
+
   sscanf(msg->content, "%" SCNu64, &emoji_id);
+
   if (!emoji_id) {
     sprintf(text, "Missing 'emoji_id'");
   }
@@ -90,8 +93,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Could not initialize client");
 
@@ -110,6 +112,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

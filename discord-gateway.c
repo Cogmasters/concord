@@ -8,91 +8,53 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-/* get client from gw pointer */
-#define CLIENT(p_gw)                                                          \
-  (struct discord *)((int8_t *)(p_gw)-offsetof(struct discord, gw))
-
 /* shorten event callback for maintainability purposes */
-#define ON(event, ...)                                                        \
-  (*gw->user_cmd->cbs.on_##event)(CLIENT(gw), &gw->bot, ##__VA_ARGS__)
-
-static void
-sized_buffer_from_json(char *json, size_t len, void *data)
-{
-  struct sized_buffer *p = data;
-  p->size = asprintf(&p->start, "%.*s", (int)len, json);
-}
-
-ORCAcode
-discord_get_gateway(struct discord *client, struct sized_buffer *p_json)
-{
-  if (!p_json) {
-    logconf_error(client->conf, "Missing 'p_json'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  return discord_adapter_run(
-    &client->adapter,
-    &(struct ua_resp_handle){ .ok_cb = &sized_buffer_from_json,
-                              .ok_obj = p_json },
-    NULL, HTTP_GET, "/gateway");
-}
-
-ORCAcode
-discord_get_gateway_bot(struct discord *client, struct sized_buffer *p_json)
-{
-  if (!p_json) {
-    logconf_error(client->conf, "Missing 'p_json'");
-    return ORCA_MISSING_PARAMETER;
-  }
-
-  return discord_adapter_run(
-    &client->adapter,
-    &(struct ua_resp_handle){ .ok_cb = &sized_buffer_from_json,
-                              .ok_obj = p_json },
-    NULL, HTTP_GET, "/gateway/bot");
-}
+#define ON(event, ...) gw->cmds.cbs.on_##event(CLIENT(gw, gw), ##__VA_ARGS__)
 
 static const char *
 opcode_print(enum discord_gateway_opcodes opcode)
 {
   const char *str = discord_gateway_opcodes_print(opcode);
-  if (NULL == str) {
-    log_warn("Invalid Gateway opcode (client->conf, code: %d)", opcode);
-    str = "Invalid Gateway opcode";
-  }
+  if (!str) str = "Invalid Gateway opcode";
   return str;
 }
 
 static const char *
 close_opcode_print(enum discord_gateway_close_opcodes opcode)
 {
-  const char *str = discord_gateway_close_opcodes_print(opcode);
+  const char *str;
+
+  str = discord_gateway_close_opcodes_print(opcode);
   if (str) return str;
+
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;
-  log_warn("Unknown WebSockets close opcode (client->conf, code: %d)", opcode);
+
+  log_warn("Unknown WebSockets close opcode (code: %d)", opcode);
   return "Unknown WebSockets close opcode";
 }
 
 static void
 send_resume(struct discord_gateway *gw)
 {
-  gw->status->is_resumable = false; /* reset */
-
-  char payload[1024];
-  size_t ret = json_inject(payload, sizeof(payload),
-                           "(op):6" /* RESUME OPCODE */
-                           "(d):{"
-                           "(token):s"
-                           "(session_id):s"
-                           "(seq):d"
-                           "}",
-                           gw->id.token, gw->session_id, &gw->payload->seq);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
-
+  char buf[1024];
+  size_t ret;
   struct ws_info info = { 0 };
-  ws_send_text(gw->ws, &info, payload, ret);
+
+  /* reset */
+  gw->session->status ^= DISCORD_SESSION_RESUMABLE;
+
+  ret = json_inject(buf, sizeof(buf),
+                    "(op):6" /* RESUME OPCODE */
+                    "(d):{"
+                    "(token):s"
+                    "(session_id):s"
+                    "(seq):d"
+                    "}",
+                    gw->id.token, gw->session->id, &gw->payload.seq);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
+
+  ws_send_text(gw->ws, &info, buf, ret);
 
   logconf_info(
     &gw->conf,
@@ -103,26 +65,29 @@ send_resume(struct discord_gateway *gw)
 static void
 send_identify(struct discord_gateway *gw)
 {
+  char buf[1024];
+  size_t ret;
+  struct ws_info info = { 0 };
+
   /* Ratelimit check */
-  if ((ws_timestamp(gw->ws) - gw->session.identify_tstamp) < 5) {
-    ++gw->session.concurrent;
-    VASSERT_S(gw->session.concurrent < gw->session.start_limit.max_concurrency,
+  if (gw->timer->now - gw->timer->identify < 5) {
+    ++gw->session->concurrent;
+    VASSERT_S(gw->session->concurrent
+                < gw->session->start_limit.max_concurrency,
               "Reach identify request threshold (%d every 5 seconds)",
-              gw->session.start_limit.max_concurrency);
+              gw->session->start_limit.max_concurrency);
   }
   else {
-    gw->session.concurrent = 0;
+    gw->session->concurrent = 0;
   }
 
-  char payload[1024];
-  size_t ret = json_inject(payload, sizeof(payload),
-                           "(op):2" /* IDENTIFY OPCODE */
-                           "(d):F",
-                           &discord_identify_to_json_v, &gw->id);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  ret = json_inject(buf, sizeof(buf),
+                    "(op):2" /* IDENTIFY OPCODE */
+                    "(d):F",
+                    &discord_identify_to_json, &gw->id);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
 
-  struct ws_info info = { 0 };
-  ws_send_text(gw->ws, &info, payload, ret);
+  ws_send_text(gw->ws, &info, buf, ret);
 
   logconf_info(
     &gw->conf,
@@ -130,8 +95,8 @@ send_identify(struct discord_gateway *gw)
               ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
     ret, info.loginfo.counter + 1);
 
-  /*get timestamp for this identify */
-  gw->session.identify_tstamp = ws_timestamp(gw->ws);
+  /* get timestamp for this identify */
+  gw->timer->identify = gw->timer->now;
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -139,13 +104,14 @@ send_identify(struct discord_gateway *gw)
 static void
 send_heartbeat(struct discord_gateway *gw)
 {
-  char payload[64];
-  int ret =
-    json_inject(payload, sizeof(payload), "(op):1,(d):d", &gw->payload->seq);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
-
+  char buf[64];
+  int ret;
   struct ws_info info = { 0 };
-  ws_send_text(gw->ws, &info, payload, ret);
+
+  ret = json_inject(buf, sizeof(buf), "(op):1,(d):d", &gw->payload.seq);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
+
+  ws_send_text(gw->ws, &info, buf, ret);
 
   logconf_info(
     &gw->conf,
@@ -153,92 +119,125 @@ send_heartbeat(struct discord_gateway *gw)
               ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
     ret, info.loginfo.counter + 1);
 
-  gw->hbeat->tstamp = ws_timestamp(gw->ws); /*update heartbeat timestamp */
+  /* update heartbeat timestamp */
+  gw->timer->hbeat = gw->timer->now;
 }
 
 static void
 on_hello(struct discord_gateway *gw)
 {
-  gw->hbeat->interval_ms = 0;
-  gw->hbeat->tstamp = cee_timestamp_ms();
+  gw->timer->interval = 0;
+  gw->timer->hbeat = gw->timer->now;
 
-  json_extract(gw->payload->event_data.start, gw->payload->event_data.size,
-               "(heartbeat_interval):ld", &gw->hbeat->interval_ms);
+  json_extract(gw->payload.data.start, gw->payload.data.size,
+               "(heartbeat_interval):ld", &gw->timer->interval);
 
-  if (gw->status->is_resumable)
+  if (gw->session->status & DISCORD_SESSION_RESUMABLE)
     send_resume(gw);
   else
     send_identify(gw);
 }
 
 static enum discord_gateway_events
-get_dispatch_event(char event_name[])
+get_dispatch_event(char name[])
 {
 #define RETURN_IF_MATCH(event, str)                                           \
   if (STREQ(#event, str)) return DISCORD_GATEWAY_EVENTS_##event
-  RETURN_IF_MATCH(READY, event_name);
-  RETURN_IF_MATCH(RESUMED, event_name);
-  RETURN_IF_MATCH(APPLICATION_COMMAND_CREATE, event_name);
-  RETURN_IF_MATCH(APPLICATION_COMMAND_UPDATE, event_name);
-  RETURN_IF_MATCH(APPLICATION_COMMAND_DELETE, event_name);
-  RETURN_IF_MATCH(CHANNEL_CREATE, event_name);
-  RETURN_IF_MATCH(CHANNEL_UPDATE, event_name);
-  RETURN_IF_MATCH(CHANNEL_DELETE, event_name);
-  RETURN_IF_MATCH(CHANNEL_PINS_UPDATE, event_name);
-  RETURN_IF_MATCH(THREAD_CREATE, event_name);
-  RETURN_IF_MATCH(THREAD_UPDATE, event_name);
-  RETURN_IF_MATCH(THREAD_DELETE, event_name);
-  RETURN_IF_MATCH(THREAD_LIST_SYNC, event_name);
-  RETURN_IF_MATCH(THREAD_MEMBER_UPDATE, event_name);
-  RETURN_IF_MATCH(THREAD_MEMBERS_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_CREATE, event_name);
-  RETURN_IF_MATCH(GUILD_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_DELETE, event_name);
-  RETURN_IF_MATCH(GUILD_BAN_ADD, event_name);
-  RETURN_IF_MATCH(GUILD_BAN_REMOVE, event_name);
-  RETURN_IF_MATCH(GUILD_EMOJIS_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_STICKERS_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_INTEGRATIONS_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_MEMBER_ADD, event_name);
-  RETURN_IF_MATCH(GUILD_MEMBER_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_MEMBER_REMOVE, event_name);
-  RETURN_IF_MATCH(GUILD_MEMBERS_CHUNK, event_name);
-  RETURN_IF_MATCH(GUILD_ROLE_CREATE, event_name);
-  RETURN_IF_MATCH(GUILD_ROLE_UPDATE, event_name);
-  RETURN_IF_MATCH(GUILD_ROLE_DELETE, event_name);
-  RETURN_IF_MATCH(INTEGRATION_CREATE, event_name);
-  RETURN_IF_MATCH(INTEGRATION_UPDATE, event_name);
-  RETURN_IF_MATCH(INTEGRATION_DELETE, event_name);
-  RETURN_IF_MATCH(INTERACTION_CREATE, event_name);
-  RETURN_IF_MATCH(INVITE_CREATE, event_name);
-  RETURN_IF_MATCH(INVITE_DELETE, event_name);
-  RETURN_IF_MATCH(MESSAGE_CREATE, event_name);
-  RETURN_IF_MATCH(MESSAGE_UPDATE, event_name);
-  RETURN_IF_MATCH(MESSAGE_DELETE, event_name);
-  RETURN_IF_MATCH(MESSAGE_DELETE_BULK, event_name);
-  RETURN_IF_MATCH(MESSAGE_REACTION_ADD, event_name);
-  RETURN_IF_MATCH(MESSAGE_REACTION_REMOVE, event_name);
-  RETURN_IF_MATCH(MESSAGE_REACTION_REMOVE_ALL, event_name);
-  RETURN_IF_MATCH(MESSAGE_REACTION_REMOVE_EMOJI, event_name);
-  RETURN_IF_MATCH(PRESENCE_UPDATE, event_name);
-  RETURN_IF_MATCH(STAGE_INSTANCE_CREATE, event_name);
-  RETURN_IF_MATCH(STAGE_INSTANCE_DELETE, event_name);
-  RETURN_IF_MATCH(STAGE_INSTANCE_UPDATE, event_name);
-  RETURN_IF_MATCH(TYPING_START, event_name);
-  RETURN_IF_MATCH(USER_UPDATE, event_name);
-  RETURN_IF_MATCH(VOICE_STATE_UPDATE, event_name);
-  RETURN_IF_MATCH(VOICE_SERVER_UPDATE, event_name);
-  RETURN_IF_MATCH(WEBHOOKS_UPDATE, event_name);
+
+  RETURN_IF_MATCH(READY, name);
+  RETURN_IF_MATCH(RESUMED, name);
+  RETURN_IF_MATCH(APPLICATION_COMMAND_CREATE, name);
+  RETURN_IF_MATCH(APPLICATION_COMMAND_UPDATE, name);
+  RETURN_IF_MATCH(APPLICATION_COMMAND_DELETE, name);
+  RETURN_IF_MATCH(CHANNEL_CREATE, name);
+  RETURN_IF_MATCH(CHANNEL_UPDATE, name);
+  RETURN_IF_MATCH(CHANNEL_DELETE, name);
+  RETURN_IF_MATCH(CHANNEL_PINS_UPDATE, name);
+  RETURN_IF_MATCH(THREAD_CREATE, name);
+  RETURN_IF_MATCH(THREAD_UPDATE, name);
+  RETURN_IF_MATCH(THREAD_DELETE, name);
+  RETURN_IF_MATCH(THREAD_LIST_SYNC, name);
+  RETURN_IF_MATCH(THREAD_MEMBER_UPDATE, name);
+  RETURN_IF_MATCH(THREAD_MEMBERS_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_CREATE, name);
+  RETURN_IF_MATCH(GUILD_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_DELETE, name);
+  RETURN_IF_MATCH(GUILD_BAN_ADD, name);
+  RETURN_IF_MATCH(GUILD_BAN_REMOVE, name);
+  RETURN_IF_MATCH(GUILD_EMOJIS_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_STICKERS_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_INTEGRATIONS_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_MEMBER_ADD, name);
+  RETURN_IF_MATCH(GUILD_MEMBER_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_MEMBER_REMOVE, name);
+  RETURN_IF_MATCH(GUILD_MEMBERS_CHUNK, name);
+  RETURN_IF_MATCH(GUILD_ROLE_CREATE, name);
+  RETURN_IF_MATCH(GUILD_ROLE_UPDATE, name);
+  RETURN_IF_MATCH(GUILD_ROLE_DELETE, name);
+  RETURN_IF_MATCH(INTEGRATION_CREATE, name);
+  RETURN_IF_MATCH(INTEGRATION_UPDATE, name);
+  RETURN_IF_MATCH(INTEGRATION_DELETE, name);
+  RETURN_IF_MATCH(INTERACTION_CREATE, name);
+  RETURN_IF_MATCH(INVITE_CREATE, name);
+  RETURN_IF_MATCH(INVITE_DELETE, name);
+  RETURN_IF_MATCH(MESSAGE_CREATE, name);
+  RETURN_IF_MATCH(MESSAGE_UPDATE, name);
+  RETURN_IF_MATCH(MESSAGE_DELETE, name);
+  RETURN_IF_MATCH(MESSAGE_DELETE_BULK, name);
+  RETURN_IF_MATCH(MESSAGE_REACTION_ADD, name);
+  RETURN_IF_MATCH(MESSAGE_REACTION_REMOVE, name);
+  RETURN_IF_MATCH(MESSAGE_REACTION_REMOVE_ALL, name);
+  RETURN_IF_MATCH(MESSAGE_REACTION_REMOVE_EMOJI, name);
+  RETURN_IF_MATCH(PRESENCE_UPDATE, name);
+  RETURN_IF_MATCH(STAGE_INSTANCE_CREATE, name);
+  RETURN_IF_MATCH(STAGE_INSTANCE_DELETE, name);
+  RETURN_IF_MATCH(STAGE_INSTANCE_UPDATE, name);
+  RETURN_IF_MATCH(TYPING_START, name);
+  RETURN_IF_MATCH(USER_UPDATE, name);
+  RETURN_IF_MATCH(VOICE_STATE_UPDATE, name);
+  RETURN_IF_MATCH(VOICE_SERVER_UPDATE, name);
+  RETURN_IF_MATCH(WEBHOOKS_UPDATE, name);
   return DISCORD_GATEWAY_EVENTS_NONE;
+
 #undef RETURN_IF_MATCH
+}
+
+static void
+on_guild_create(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_guild guild = { 0 };
+  discord_guild_from_json(data->start, data->size, &guild);
+
+  ON(guild_create, &guild);
+
+  discord_guild_cleanup(&guild);
+}
+
+static void
+on_guild_update(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  struct discord_guild guild = { 0 };
+  discord_guild_from_json(data->start, data->size, &guild);
+
+  ON(guild_update, &guild);
+
+  discord_guild_cleanup(&guild);
+}
+
+static void
+on_guild_delete(struct discord_gateway *gw, struct sized_buffer *data)
+{
+  u64_snowflake_t guild_id = 0;
+  json_extract(data->start, data->size, "(id):s_as_u64", &guild_id);
+  ON(guild_delete, guild_id);
 }
 
 static void
 on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_role role;
-
   u64_snowflake_t guild_id = 0;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(role):F",
@@ -253,8 +252,8 @@ static void
 on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_role role;
-
   u64_snowflake_t guild_id = 0;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(role):F",
@@ -269,6 +268,7 @@ static void
 on_guild_role_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0, role_id = 0;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(role_id):s_as_u64",
@@ -281,9 +281,10 @@ static void
 on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_guild_member member;
+  u64_snowflake_t guild_id = 0;
+
   discord_guild_member_from_json(data->start, data->size, &member);
 
-  u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
 
   ON(guild_member_add, guild_id, &member);
@@ -295,9 +296,10 @@ static void
 on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_guild_member member;
+  u64_snowflake_t guild_id = 0;
+
   discord_guild_member_from_json(data->start, data->size, &member);
 
-  u64_snowflake_t guild_id = 0;
   json_extract(data->start, data->size, "(guild_id):s_as_u64", &guild_id);
 
   ON(guild_member_update, guild_id, &member);
@@ -310,6 +312,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0;
   struct discord_user user;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(user):F",
@@ -325,6 +328,7 @@ on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0;
   struct discord_user user;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(user):F",
@@ -340,6 +344,7 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0;
   struct discord_user user;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(user):F",
@@ -355,6 +360,7 @@ on_application_command_create(struct discord_gateway *gw,
                               struct sized_buffer *data)
 {
   struct discord_application_command cmd;
+
   discord_application_command_from_json(data->start, data->size, &cmd);
 
   ON(application_command_create, &cmd);
@@ -367,6 +373,7 @@ on_application_command_update(struct discord_gateway *gw,
                               struct sized_buffer *data)
 {
   struct discord_application_command cmd;
+
   discord_application_command_from_json(data->start, data->size, &cmd);
 
   ON(application_command_update, &cmd);
@@ -379,8 +386,8 @@ on_application_command_delete(struct discord_gateway *gw,
                               struct sized_buffer *data)
 {
   struct discord_application_command cmd;
-  discord_application_command_from_json(data->start, data->size, &cmd);
 
+  discord_application_command_from_json(data->start, data->size, &cmd);
   ON(application_command_delete, &cmd);
 
   discord_application_command_cleanup(&cmd);
@@ -390,6 +397,7 @@ static void
 on_channel_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_channel channel;
+
   discord_channel_from_json(data->start, data->size, &channel);
 
   ON(channel_create, &channel);
@@ -401,6 +409,7 @@ static void
 on_channel_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_channel channel;
+
   discord_channel_from_json(data->start, data->size, &channel);
 
   ON(channel_update, &channel);
@@ -412,6 +421,7 @@ static void
 on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_channel channel;
+
   discord_channel_from_json(data->start, data->size, &channel);
 
   ON(channel_delete, &channel);
@@ -424,6 +434,7 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t guild_id = 0, channel_id = 0;
   u64_unix_ms_t last_pin_timestamp = 0;
+
   json_extract(data->start, data->size,
                "(guild_id):s_as_u64"
                "(channel_id):s_as_u64"
@@ -438,6 +449,7 @@ static void
 on_thread_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_channel thread;
+
   discord_channel_from_json(data->start, data->size, &thread);
 
   ON(thread_create, &thread);
@@ -449,6 +461,7 @@ static void
 on_thread_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_channel thread;
+
   discord_channel_from_json(data->start, data->size, &thread);
 
   ON(thread_update, &thread);
@@ -460,6 +473,7 @@ static void
 on_thread_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_channel thread;
+
   discord_channel_from_json(data->start, data->size, &thread);
 
   ON(thread_delete, &thread);
@@ -471,6 +485,7 @@ static void
 on_interaction_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_interaction interaction;
+
   discord_interaction_from_json(data->start, data->size, &interaction);
 
   ON(interaction_create, &interaction);
@@ -482,48 +497,45 @@ static void
 on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_message msg;
+
   discord_message_from_json(data->start, data->size, &msg);
 
-  if (gw->user_cmd->pool && STRNEQ(gw->user_cmd->prefix.start, msg.content,
-                                   gw->user_cmd->prefix.size))
+  if (gw->cmds.pool
+      && STRNEQ(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
   {
     struct discord_gateway_cmd_cbs *cmd = NULL;
     size_t i;
 
-    for (i = 0; i < gw->user_cmd->amt; ++i) {
+    for (i = 0; i < gw->cmds.amt; ++i) {
       /* check if command from channel matches set command */
-      if (STRNEQ(gw->user_cmd->pool[i].start,
-                 msg.content + gw->user_cmd->prefix.size,
-                 gw->user_cmd->pool[i].size))
+      if (STRNEQ(gw->cmds.pool[i].start, msg.content + gw->cmds.prefix.size,
+                 gw->cmds.pool[i].size))
       {
-        cmd = &gw->user_cmd->pool[i];
+        cmd = &gw->cmds.pool[i];
       }
     }
-    if (!cmd && gw->user_cmd->prefix.size) {
-      cmd = &gw->user_cmd->on_default;
+    if (!cmd && gw->cmds.prefix.size) {
+      cmd = &gw->cmds.on_default;
     }
 
     if (cmd && cmd->cb) {
+      struct discord *client = CLIENT(gw, gw);
       char *tmp = msg.content; /* hold original ptr */
-      msg.content = msg.content + gw->user_cmd->prefix.size + cmd->size;
-      while (isspace(*msg.content)) { /* skip blank chars */
+
+      /* skip blank characters */
+      msg.content += (ptrdiff_t)(gw->cmds.prefix.size + cmd->size);
+      while (isspace(*msg.content)) {
         ++msg.content;
       }
 
-      (*cmd->cb)(CLIENT(gw), &gw->bot, &msg);
+      cmd->cb(client, &msg);
 
       msg.content = tmp; /* retrieve original ptr */
     }
-
-    discord_message_cleanup(&msg);
-    return; /* EARLY RETURN */
   }
-
-  if (gw->user_cmd->cbs.sb_on_message_create) /* @todo temporary */
-    (*gw->user_cmd->cbs.sb_on_message_create)(CLIENT(gw), &gw->bot,
-                                              &gw->sb_bot, &msg, data);
-  else if (gw->user_cmd->cbs.on_message_create)
+  else if (gw->cmds.cbs.on_message_create) {
     ON(message_create, &msg);
+  }
 
   discord_message_cleanup(&msg);
 }
@@ -532,13 +544,10 @@ static void
 on_message_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
   struct discord_message msg;
+
   discord_message_from_json(data->start, data->size, &msg);
 
-  if (gw->user_cmd->cbs.sb_on_message_update)
-    (*gw->user_cmd->cbs.sb_on_message_update)(CLIENT(gw), &gw->bot,
-                                              &gw->sb_bot, &msg, data);
-  else if (gw->user_cmd->cbs.on_message_update)
-    ON(message_update, &msg);
+  ON(message_update, &msg);
 
   discord_message_cleanup(&msg);
 }
@@ -547,6 +556,7 @@ static void
 on_message_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
   u64_snowflake_t message_id = 0, channel_id = 0, guild_id = 0;
+
   json_extract(data->start, data->size,
                "(id):s_as_u64"
                "(channel_id):s_as_u64"
@@ -559,15 +569,16 @@ on_message_delete(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_delete_bulk(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  const NTL_T(ja_u64) ids = NULL;
+  u64_snowflake_t **ids = NULL;
   u64_snowflake_t channel_id = 0, guild_id = 0;
+
   json_extract(data->start, data->size,
                "(ids):F"
                "(channel_id):s_as_u64"
                "(guild_id):s_as_u64",
                &ja_u64_list_from_json, &ids, &channel_id, &guild_id);
 
-  ON(message_delete_bulk, ids, channel_id, guild_id);
+  ON(message_delete_bulk, (const u64_snowflake_t **)ids, channel_id, guild_id);
 
   free(ids);
 }
@@ -623,6 +634,7 @@ on_message_reaction_remove_all(struct discord_gateway *gw,
                                struct sized_buffer *data)
 {
   u64_snowflake_t channel_id = 0, message_id = 0, guild_id = 0;
+
   json_extract(data->start, data->size,
                "(channel_id):s_as_u64"
                "(message_id):s_as_u64"
@@ -638,6 +650,7 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw,
 {
   u64_snowflake_t channel_id = 0, guild_id = 0, message_id = 0;
   struct discord_emoji emoji;
+
   json_extract(data->start, data->size,
                "(channel_id):s_as_u64"
                "(guild_id):s_as_u64"
@@ -654,15 +667,17 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw,
 static void
 on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
+  struct discord *client = CLIENT(gw, gw);
   struct discord_voice_state vs;
+
   discord_voice_state_from_json(data->start, data->size, &vs);
 
-  if (vs.user_id == gw->bot.id) {
+  if (vs.user_id == client->self.id) {
     /* we only care about the voice_state_update of bot */
-    _discord_on_voice_state_update(CLIENT(gw), &vs);
+    _discord_on_voice_state_update(client, &vs);
   }
 
-  if (gw->user_cmd->cbs.on_voice_state_update) ON(voice_state_update, &vs);
+  if (gw->cmds.cbs.on_voice_state_update) ON(voice_state_update, &vs);
 
   discord_voice_state_cleanup(&vs);
 }
@@ -670,8 +685,10 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
+  struct discord *client = CLIENT(gw, gw);
   u64_snowflake_t guild_id = 0;
   char token[512], endpoint[1024];
+
   json_extract(data->start, data->size,
                "(token):s"
                "(guild_id):s_as_u64"
@@ -679,9 +696,9 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
                &token, &guild_id, &endpoint);
 
   /* this happens for everyone */
-  _discord_on_voice_server_update(CLIENT(gw), guild_id, token, endpoint);
+  _discord_on_voice_server_update(client, guild_id, token, endpoint);
 
-  if (gw->user_cmd->cbs.on_voice_server_update)
+  if (gw->cmds.cbs.on_voice_server_update)
     ON(voice_server_update, token, guild_id, endpoint);
 }
 
@@ -694,111 +711,109 @@ on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 dispatch_run(void *p_cxt)
 {
-  struct discord_event_cxt *cxt = p_cxt;
-  cxt->tid = pthread_self();
+  struct discord_event *cxt = p_cxt;
+  struct discord *client = CLIENT(cxt->gw, gw);
 
-  if (cxt->is_main_thread) {
-    (*cxt->on_event)(cxt->p_gw, &cxt->data);
-
-    (*cxt->p_gw->user_cmd->cbs.on_event_raw)(CLIENT(cxt->p_gw), cxt->event,
-                                             &cxt->p_gw->sb_bot, &cxt->data);
-    return;
-  }
-
-  logconf_info(&cxt->p_gw->conf,
+  logconf_info(&cxt->gw->conf,
                "Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
-               cxt->event_name);
+               cxt->name);
 
-  (*cxt->on_event)(cxt->p_gw, &cxt->data);
+  cxt->on_event(cxt->gw, &cxt->data);
 
-  (*cxt->p_gw->user_cmd->cbs.on_event_raw)(CLIENT(cxt->p_gw), cxt->event,
-                                           &cxt->p_gw->sb_bot, &cxt->data);
-
-  logconf_info(&cxt->p_gw->conf,
+  logconf_info(&cxt->gw->conf,
                "Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
-               cxt->event_name);
+               cxt->name);
 
-  free(cxt->event_name);
+  /* TODO: move to _discord_event_cleanup() */
+  free(cxt->name);
   free(cxt->data.start);
-  discord_cleanup(CLIENT(cxt->p_gw));
+  discord_cleanup(client);
   free(cxt);
 }
 
 static void
 on_dispatch(struct discord_gateway *gw)
 {
+  struct discord *client = CLIENT(gw, gw);
+
+  /* event-callback selector */
+  void (*on_event)(struct discord_gateway *, struct sized_buffer *) = NULL;
+  /* get dispatch event opcode */
+  enum discord_gateway_events event;
+  enum discord_event_scheduler mode;
+
+  /* TODO: this should only apply for user dispatched payloads? */
+#if 0
   /* Ratelimit check */
-  if ((ws_timestamp(gw->ws) - gw->session.event_tstamp) < 60) {
-    ++gw->session.event_count;
-    ASSERT_S(gw->session.event_count < 120,
+  if (gw->timer->now - gw->timer->event < 60000) {
+    ++gw->session->event_count;
+    ASSERT_S(gw->session->event_count < 120,
              "Reach event dispatch threshold (120 every 60 seconds)");
   }
   else {
-    gw->session.event_tstamp = ws_timestamp(gw->ws);
-    gw->session.event_count = 0;
+    gw->timer->event = gw->timer->now;
+    gw->session->event_count = 0;
   }
+#endif
 
-  /**
-   * Filter through user event's subscriptions. If there are user-defined
-   *      callbacks assigned to the detected event, a new thread will be
-   *      created to run it, otherwise we just return.
-   */
-  void (*on_event)(struct discord_gateway *, struct sized_buffer *) = NULL;
-  enum discord_gateway_events event =
-    get_dispatch_event(gw->payload->event_name);
-  switch (event) {
+  switch (event = get_dispatch_event(gw->payload.name)) {
   case DISCORD_GATEWAY_EVENTS_READY:
     logconf_info(&gw->conf, "Succesfully started a Discord session!");
-    json_extract(gw->payload->event_data.start, gw->payload->event_data.size,
-                 "(session_id):s", gw->session_id);
-    ASSERT_S(!IS_EMPTY_STRING(gw->session_id),
+
+    json_extract(gw->payload.data.start, gw->payload.data.size,
+                 "(session_id):s", gw->session->id);
+    ASSERT_S(!IS_EMPTY_STRING(gw->session->id),
              "Missing session_id from READY event");
 
-    gw->status->is_ready = true;
-    gw->reconnect->attempt = 0;
-    if (gw->user_cmd->cbs.on_ready) on_event = &on_ready;
+    gw->session->is_ready = true;
+    gw->session->retry.attempt = 0;
+
+    if (gw->cmds.cbs.on_ready) on_event = &on_ready;
+
     send_heartbeat(gw);
+
     break;
   case DISCORD_GATEWAY_EVENTS_RESUMED:
     logconf_info(&gw->conf, "Succesfully resumed a Discord session!");
-    gw->status->is_ready = true;
-    gw->reconnect->attempt = 0;
-    /* @todo add callback */
+
+    gw->session->is_ready = true;
+    gw->session->retry.attempt = 0;
+
     send_heartbeat(gw);
+
     break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE:
-    if (gw->user_cmd->cbs.on_application_command_create)
-      on_event = &on_application_command_create;
+    if (gw->cmds.cbs.on_application_command_create)
+      on_event = on_application_command_create;
     break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE:
-    if (gw->user_cmd->cbs.on_application_command_update)
-      on_event = &on_application_command_update;
+    if (gw->cmds.cbs.on_application_command_update)
+      on_event = on_application_command_update;
     break;
   case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE:
-    if (gw->user_cmd->cbs.on_application_command_delete)
-      on_event = &on_application_command_delete;
+    if (gw->cmds.cbs.on_application_command_delete)
+      on_event = on_application_command_delete;
     break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
-    if (gw->user_cmd->cbs.on_channel_create) on_event = &on_channel_create;
+    if (gw->cmds.cbs.on_channel_create) on_event = on_channel_create;
     break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE:
-    if (gw->user_cmd->cbs.on_channel_update) on_event = &on_channel_update;
+    if (gw->cmds.cbs.on_channel_update) on_event = on_channel_update;
     break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE:
-    if (gw->user_cmd->cbs.on_channel_delete) on_event = &on_channel_delete;
+    if (gw->cmds.cbs.on_channel_delete) on_event = on_channel_delete;
     break;
   case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE:
-    if (gw->user_cmd->cbs.on_channel_pins_update)
-      on_event = &on_channel_pins_update;
+    if (gw->cmds.cbs.on_channel_pins_update) on_event = on_channel_pins_update;
     break;
   case DISCORD_GATEWAY_EVENTS_THREAD_CREATE:
-    if (gw->user_cmd->cbs.on_thread_create) on_event = &on_thread_create;
+    if (gw->cmds.cbs.on_thread_create) on_event = on_thread_create;
     break;
   case DISCORD_GATEWAY_EVENTS_THREAD_UPDATE:
-    if (gw->user_cmd->cbs.on_thread_update) on_event = &on_thread_update;
+    if (gw->cmds.cbs.on_thread_update) on_event = on_thread_update;
     break;
   case DISCORD_GATEWAY_EVENTS_THREAD_DELETE:
-    if (gw->user_cmd->cbs.on_thread_delete) on_event = &on_thread_delete;
+    if (gw->cmds.cbs.on_thread_delete) on_event = on_thread_delete;
     break;
   case DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC:
     /** @todo implement */
@@ -810,19 +825,19 @@ on_dispatch(struct discord_gateway *gw)
     /** @todo implement */
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
-    /** @todo implement */
+    if (gw->cmds.cbs.on_guild_create) on_event = on_guild_create;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_UPDATE:
-    /** @todo implement */
+    if (gw->cmds.cbs.on_guild_update) on_event = on_guild_update;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_DELETE:
-    /** @todo implement */
+    if (gw->cmds.cbs.on_guild_delete) on_event = on_guild_delete;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
-    if (gw->user_cmd->cbs.on_guild_ban_add) on_event = &on_guild_ban_add;
+    if (gw->cmds.cbs.on_guild_ban_add) on_event = on_guild_ban_add;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
-    if (gw->user_cmd->cbs.on_guild_ban_remove) on_event = &on_guild_ban_remove;
+    if (gw->cmds.cbs.on_guild_ban_remove) on_event = on_guild_ban_remove;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
     /** @todo implement */
@@ -834,27 +849,22 @@ on_dispatch(struct discord_gateway *gw)
     /** @todo implement */
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
-    if (gw->user_cmd->cbs.on_guild_member_add) on_event = &on_guild_member_add;
+    if (gw->cmds.cbs.on_guild_member_add) on_event = on_guild_member_add;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE:
-    if (gw->user_cmd->cbs.on_guild_member_update)
-      on_event = &on_guild_member_update;
+    if (gw->cmds.cbs.on_guild_member_update) on_event = on_guild_member_update;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
-    if (gw->user_cmd->cbs.on_guild_member_remove)
-      on_event = &on_guild_member_remove;
+    if (gw->cmds.cbs.on_guild_member_remove) on_event = on_guild_member_remove;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE:
-    if (gw->user_cmd->cbs.on_guild_role_create)
-      on_event = &on_guild_role_create;
+    if (gw->cmds.cbs.on_guild_role_create) on_event = on_guild_role_create;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE:
-    if (gw->user_cmd->cbs.on_guild_role_update)
-      on_event = &on_guild_role_update;
+    if (gw->cmds.cbs.on_guild_role_update) on_event = on_guild_role_update;
     break;
   case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
-    if (gw->user_cmd->cbs.on_guild_role_delete)
-      on_event = &on_guild_role_delete;
+    if (gw->cmds.cbs.on_guild_role_delete) on_event = on_guild_role_delete;
     break;
   case DISCORD_GATEWAY_EVENTS_INTEGRATION_CREATE:
     /** @todo implement */
@@ -866,8 +876,7 @@ on_dispatch(struct discord_gateway *gw)
     /** @todo implement */
     break;
   case DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE:
-    if (gw->user_cmd->cbs.on_interaction_create)
-      on_event = &on_interaction_create;
+    if (gw->cmds.cbs.on_interaction_create) on_event = on_interaction_create;
     break;
   case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
     /** @todo implement */
@@ -876,37 +885,33 @@ on_dispatch(struct discord_gateway *gw)
     /** @todo implement */
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
-    if (gw->user_cmd->pool || gw->user_cmd->cbs.sb_on_message_create ||
-        gw->user_cmd->cbs.on_message_create)
+    if (gw->cmds.pool || gw->cmds.cbs.on_message_create)
       on_event = &on_message_create;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
-    if (gw->user_cmd->cbs.sb_on_message_update ||
-        gw->user_cmd->cbs.on_message_update)
-      on_event = &on_message_update;
+    if (gw->cmds.cbs.on_message_update) on_event = on_message_update;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
-    if (gw->user_cmd->cbs.on_message_delete) on_event = &on_message_delete;
+    if (gw->cmds.cbs.on_message_delete) on_event = on_message_delete;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK:
-    if (gw->user_cmd->cbs.on_message_delete_bulk)
-      on_event = &on_message_delete_bulk;
+    if (gw->cmds.cbs.on_message_delete_bulk) on_event = on_message_delete_bulk;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD:
-    if (gw->user_cmd->cbs.on_message_reaction_add)
-      on_event = &on_message_reaction_add;
+    if (gw->cmds.cbs.on_message_reaction_add)
+      on_event = on_message_reaction_add;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE:
-    if (gw->user_cmd->cbs.on_message_reaction_remove)
-      on_event = &on_message_reaction_remove;
+    if (gw->cmds.cbs.on_message_reaction_remove)
+      on_event = on_message_reaction_remove;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL:
-    if (gw->user_cmd->cbs.on_message_reaction_remove_all)
-      on_event = &on_message_reaction_remove_all;
+    if (gw->cmds.cbs.on_message_reaction_remove_all)
+      on_event = on_message_reaction_remove_all;
     break;
   case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
-    if (gw->user_cmd->cbs.on_message_reaction_remove_emoji)
-      on_event = &on_message_reaction_remove_emoji;
+    if (gw->cmds.cbs.on_message_reaction_remove_emoji)
+      on_event = on_message_reaction_remove_emoji;
     break;
   case DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE:
     /** @todo implement */
@@ -927,12 +932,10 @@ on_dispatch(struct discord_gateway *gw)
     /** @todo implement */
     break;
   case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
-    if (gw->user_cmd->cbs.on_voice_state_update)
-      on_event = &on_voice_state_update;
+    if (gw->cmds.cbs.on_voice_state_update) on_event = on_voice_state_update;
     break;
   case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
-    if (gw->user_cmd->cbs.on_voice_server_update)
-      on_event = &on_voice_server_update;
+    if (gw->cmds.cbs.on_voice_server_update) on_event = on_voice_server_update;
     break;
   case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
     /** @todo implement */
@@ -944,80 +947,78 @@ on_dispatch(struct discord_gateway *gw)
     break;
   }
 
-  if (!on_event) return; /* user not subscribed to the event */
+  mode = gw->cmds.scheduler(client, &gw->payload.data, event);
+  if (!on_event) return;
 
-  enum discord_event_scheduler mode;
-  mode = gw->user_cmd->scheduler(CLIENT(gw), &gw->bot,
-                                 &gw->payload->event_data, event);
+  /* user subscribed to event */
   switch (mode) {
-  case DISCORD_EVENT_IGNORE: return;
-  case DISCORD_EVENT_MAIN_THREAD: {
-    struct discord_event_cxt cxt = { .event_name = gw->payload->event_name,
-                                     .p_gw = gw,
-                                     .data = gw->payload->event_data,
-                                     .event = event,
-                                     .on_event = on_event,
-                                     .is_main_thread = true };
-    dispatch_run(&cxt);
-    return;
-  }
+  case DISCORD_EVENT_IGNORE:
+    break;
+  case DISCORD_EVENT_MAIN_THREAD:
+    on_event(gw, &gw->payload.data);
+    break;
   case DISCORD_EVENT_WORKER_THREAD: {
-    struct discord *client_cpy = discord_clone(CLIENT(gw));
-    struct discord_event_cxt *p_cxt = malloc(sizeof *p_cxt);
-    *p_cxt = (struct discord_event_cxt){
-      .event_name = strdup(gw->payload->event_name),
-      .p_gw = &client_cpy->gw,
-      .data = { .start = strndup(gw->payload->event_data.start,
-                                 gw->payload->event_data.size),
-                .size = gw->payload->event_data.size },
-      .event = event,
-      .on_event = on_event,
-      .is_main_thread = false
-    };
-    /** @todo in case all worker threads are stuck on a infinite loop, this
-     *    function will essentially lock the program forever while waiting
-     *    on a queue, how can we get around this? Should we? */
-    int ret = threadpool_add(gw->tpool, &dispatch_run, p_cxt, 0);
+    struct discord_event *cxt = malloc(sizeof *cxt);
+    int ret;
+
+    cxt->name = strdup(gw->payload.name);
+    cxt->gw = &(discord_clone(client)->gw);
+    cxt->data.size =
+      asprintf(&cxt->data.start, "%.*s", (int)gw->payload.data.size,
+               gw->payload.data.start);
+    cxt->event = event;
+    cxt->on_event = on_event;
+
+    ret = work_run(&dispatch_run, cxt);
     VASSERT_S(0 == ret, "Couldn't create task (code %d)", ret);
-    return;
-  }
-  default: ERR("Unknown event handling mode (code: %d)", mode);
+  } break;
+  default:
+    ERR("Unknown event handling mode (code: %d)", mode);
   }
 }
 
 static void
 on_invalid_session(struct discord_gateway *gw)
 {
-  gw->status->is_resumable = strncmp(gw->payload->event_data.start, "false",
-                                     gw->payload->event_data.size);
-  gw->reconnect->enable = true;
+  enum ws_close_reason opcode;
+  const char *reason;
 
-  if (gw->status->is_resumable)
-    logconf_info(&gw->conf, "Session is resumable");
-  else
-    logconf_info(&gw->conf, "Session is not resumable");
+  gw->session->status = DISCORD_SESSION_SHUTDOWN;
+  if (0 != strncmp(gw->payload.data.start, "false", gw->payload.data.size)) {
+    gw->session->status |= DISCORD_SESSION_RESUMABLE;
+    reason = "Invalid session, will attempt to resume";
+    opcode = DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
+  }
+  else {
+    reason = "Invalid session, can't resume";
+    opcode = WS_CLOSE_REASON_NORMAL;
+  }
+  gw->session->retry.enable = true;
 
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+  ws_close(gw->ws, opcode, reason, SIZE_MAX);
 }
 
 static void
 on_reconnect(struct discord_gateway *gw)
 {
-  gw->status->is_resumable = true;
-#if 0
-  gw->reconnect->enable = true;
-#endif
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+  const char reason[] = "Discord expects client to reconnect";
+
+  gw->session->status = DISCORD_SESSION_RESUMABLE | DISCORD_SESSION_SHUTDOWN;
+  gw->session->retry.enable = true;
+
+  ws_close(gw->ws, DISCORD_GATEWAY_CLOSE_REASON_RECONNECT, reason,
+           sizeof(reason));
 }
 
 static void
 on_heartbeat_ack(struct discord_gateway *gw)
 {
   /* get request / response interval in milliseconds */
-  ws_lock(gw->ws);
-  gw->hbeat->ping_ms = cee_timestamp_ms() - gw->hbeat->tstamp;
-  ws_unlock(gw->ws);
-  logconf_trace(&gw->conf, "PING: %d ms", gw->hbeat->ping_ms);
+  pthread_rwlock_wrlock(&gw->timer->rwlock);
+  gw->timer->ping_ms = gw->timer->now - gw->timer->hbeat;
+  pthread_rwlock_unlock(&gw->timer->rwlock);
+
+  logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
 }
 
 static void
@@ -1047,12 +1048,11 @@ on_close_cb(void *p_gw,
     ANSICOLOR("CLOSE %s", ANSI_FG_RED) " (code: %4d, %zu bytes): '%.*s'",
     close_opcode_print(opcode), opcode, len, (int)len, reason);
 
-  if (gw->status->shutdown) {
-    logconf_warn(&gw->conf, "Gateway was shutdown");
-    gw->reconnect->enable = false;
-    gw->status->is_resumable = false;
-    return;
-  }
+  /* user-triggered shutdown */
+  if (gw->session->status & DISCORD_SESSION_SHUTDOWN) return;
+
+  /* mark as in the process of being shutdown */
+  gw->session->status |= DISCORD_SESSION_SHUTDOWN;
 
   switch (opcode) {
   case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
@@ -1068,31 +1068,28 @@ on_close_cb(void *p_gw,
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
   case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
   case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
-    logconf_warn(&gw->conf, "Gateway was shutdown");
-    gw->status->is_resumable = false;
-    gw->reconnect->enable = false;
+    gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
+    gw->session->retry.enable = false;
     break;
   default: /*websocket/clouflare opcodes */
     if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
-#if 0
-        gw->status->is_resumable = true;
-        gw->reconnect->enable = true;
-#endif
+      gw->session->status |= DISCORD_SESSION_RESUMABLE;
+      gw->session->retry.enable = false;
     }
     else {
       logconf_warn(
         &gw->conf,
         "Gateway will attempt to reconnect and start a new session");
-      gw->status->is_resumable = false;
-      gw->reconnect->enable = true;
+      gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
+      gw->session->retry.enable = true;
     }
     break;
   case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
     logconf_warn(
       &gw->conf,
       "Gateway will attempt to reconnect and resume current session");
-    gw->reconnect->enable = true;
-    gw->status->is_resumable = false;
+    gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
+    gw->session->retry.enable = true;
     break;
   }
 }
@@ -1105,55 +1102,48 @@ on_text_cb(void *p_gw,
            size_t len)
 {
   struct discord_gateway *gw = p_gw;
+  /* check sequence value first, then assign */
+  int seq = 0;
 
-  int seq = 0; /*check value first, then assign */
-  json_extract((char *)text, len, "(t):s (s):d (op):d (d):T",
-               gw->payload->event_name, &seq, &gw->payload->opcode,
-               &gw->payload->event_data);
+  json_extract((char *)text, len, "(t):s (s):d (op):d (d):T", gw->payload.name,
+               &seq, &gw->payload.opcode, &gw->payload.data);
 
-  if (seq) {
-    gw->payload->seq = seq;
-  }
+  if (seq) gw->payload.seq = seq;
 
   logconf_trace(
     &gw->conf,
     ANSICOLOR("RCV",
               ANSI_FG_BRIGHT_YELLOW) " %s%s%s (%zu bytes) [@@@_%zu_@@@]",
-    opcode_print(gw->payload->opcode),
-    (*gw->payload->event_name) ? " -> " : "", gw->payload->event_name, len,
-    info->loginfo.counter);
+    opcode_print(gw->payload.opcode), *gw->payload.name ? " -> " : "",
+    gw->payload.name, len, info->loginfo.counter);
 
-  switch (gw->payload->opcode) {
-  case DISCORD_GATEWAY_DISPATCH: on_dispatch(gw); break;
-  case DISCORD_GATEWAY_INVALID_SESSION: on_invalid_session(gw); break;
-  case DISCORD_GATEWAY_RECONNECT: on_reconnect(gw); break;
-  case DISCORD_GATEWAY_HELLO: on_hello(gw); break;
-  case DISCORD_GATEWAY_HEARTBEAT_ACK: on_heartbeat_ack(gw); break;
+  switch (gw->payload.opcode) {
+  case DISCORD_GATEWAY_DISPATCH:
+    on_dispatch(gw);
+    break;
+  case DISCORD_GATEWAY_INVALID_SESSION:
+    on_invalid_session(gw);
+    break;
+  case DISCORD_GATEWAY_RECONNECT:
+    on_reconnect(gw);
+    break;
+  case DISCORD_GATEWAY_HELLO:
+    on_hello(gw);
+    break;
+  case DISCORD_GATEWAY_HEARTBEAT_ACK:
+    on_heartbeat_ack(gw);
+    break;
   default:
     logconf_error(&gw->conf, "Not yet implemented Gateway Event (code: %d)",
-                  gw->payload->opcode);
+                  gw->payload.opcode);
     break;
   }
 }
 
-static void
-noop_idle_cb(struct discord *a, const struct discord_user *b)
-{
-  return;
-}
-static void
-noop_event_raw_cb(struct discord *a,
-                  enum discord_gateway_events b,
-                  struct sized_buffer *c,
-                  struct sized_buffer *d)
-{
-  return;
-}
-static enum discord_event_scheduler
-noop_scheduler(struct discord *a,
-               struct discord_user *b,
-               struct sized_buffer *c,
-               enum discord_gateway_events d)
+static discord_event_scheduler_t
+default_scheduler_cb(struct discord *a,
+                     struct sized_buffer *c,
+                     enum discord_gateway_events d)
 {
   return DISCORD_EVENT_MAIN_THREAD;
 }
@@ -1163,65 +1153,53 @@ discord_gateway_init(struct discord_gateway *gw,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
-  struct ws_callbacks cbs;
+  struct discord *client = CLIENT(gw, gw);
+  /* Web-Sockets callbacks */
+  struct ws_callbacks cbs = { 0 };
+  /* Web-Sockets custom attributes */
+  struct ws_attr attr = { 0 };
+  /* Bot default presence status */
+  struct discord_presence_status presence = { 0 };
   struct sized_buffer buf;
-  /* pre-initialize worker threads */
-  static int nthreads;
-  static int queue_size;
-  const char *val;
 
-  val = getenv("DISCORD_THREADPOOL_SIZE");
-  if (val != NULL) nthreads = atoi(val);
-  if (0 == nthreads) nthreads = 1;
-  val = getenv("DISCORD_THREADPOOL_QUEUE_SIZE");
-  if (val != NULL) queue_size = atoi(val);
-  if (0 == queue_size) queue_size = 8;
-  gw->tpool = threadpool_create(nthreads, queue_size, 0);
+  cbs.data = gw;
+  cbs.on_connect = &on_connect_cb;
+  cbs.on_text = &on_text_cb;
+  cbs.on_close = &on_close_cb;
 
-  cbs = (struct ws_callbacks){ .data = gw,
-                               .on_connect = &on_connect_cb,
-                               .on_text = &on_text_cb,
-                               .on_close = &on_close_cb };
+  attr.conf = conf;
 
-  gw->ws = ws_init(&cbs, conf);
+  /* Web-Sockets handler */
+  gw->mhandle = curl_multi_init();
+  gw->ws = ws_init(&cbs, gw->mhandle, &attr);
   logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
-  gw->reconnect = malloc(sizeof *gw->reconnect);
-  gw->reconnect->enable = true;
-  gw->reconnect->threshold = 5; /**< hard limit for now */
-  gw->reconnect->attempt = 0;
+  gw->timer = calloc(1, sizeof *gw->timer);
+  if (pthread_rwlock_init(&gw->timer->rwlock, NULL))
+    ERR("Couldn't initialize pthread rwlock");
 
-  gw->status = calloc(1, sizeof *gw->status);
+  /* client connection status */
+  gw->session = calloc(1, sizeof *gw->session);
+  gw->session->retry.enable = true;
+  gw->session->retry.limit = 5; /**< hard limit for now */
 
-  gw->id = (struct discord_identify){
-    .token = strndup(token->start, token->size),
-    .properties = malloc(sizeof(struct discord_identify_connection)),
-    .presence = calloc(1, sizeof(struct discord_presence_status))
-  };
-  *gw->id.properties = (struct discord_identify_connection){
-    .os = "POSIX", .browser = "orca", .device = "orca"
-  };
+  /* connection identify token */
+  asprintf(&gw->id.token, "%.*s", (int)token->size, token->start);
+
+  /* connection identify properties */
+  gw->id.properties = calloc(1, sizeof *gw->id.properties);
+  gw->id.properties->os = "POSIX";
+  gw->id.properties->browser = "orca";
+  gw->id.properties->device = "orca";
 
   /* the bot initial presence */
-  discord_set_presence(CLIENT(gw), &(struct discord_presence_status){
-                                     .activities = NULL,
-                                     .status = "online",
-                                     .afk = false,
-                                     .since = cee_timestamp_ms() });
+  gw->id.presence = calloc(1, sizeof *gw->id.presence);
+  strcpy(presence.status, "online");
+  presence.since = cee_timestamp_ms();
+  discord_set_presence(client, &presence);
 
-  gw->payload = calloc(1, sizeof *gw->payload);
-  gw->hbeat = calloc(1, sizeof *gw->hbeat);
-  gw->user_cmd = calloc(1, sizeof *gw->user_cmd);
-
-  gw->user_cmd->cbs.on_idle = &noop_idle_cb;
-  gw->user_cmd->cbs.on_event_raw = &noop_event_raw_cb;
-  gw->user_cmd->scheduler = &noop_scheduler;
-
-  /* fetch and store the bot info */
-  if (token->size) {
-    discord_get_current_user(CLIENT(gw), &gw->bot);
-    sb_discord_get_current_user(CLIENT(gw), &gw->sb_bot);
-  }
+  /* default callbacks */
+  gw->cmds.scheduler = default_scheduler_cb;
 
   /* check for default prefix in config file */
   buf = logconf_get_field(conf, "discord.default_prefix");
@@ -1233,9 +1211,8 @@ discord_gateway_init(struct discord_gateway *gw,
       char *prefix = NULL;
       json_extract(buf.start, buf.size, "(prefix):?s", &prefix);
 
-      gw->user_cmd->prefix =
-        (struct sized_buffer){ .start = prefix,
-                               .size = prefix ? strlen(prefix) : 0 };
+      gw->cmds.prefix.start = prefix;
+      gw->cmds.prefix.size = prefix ? strlen(prefix) : 0;
     }
   }
 }
@@ -1244,137 +1221,158 @@ void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
   /* cleanup WebSockets handle */
+  curl_multi_cleanup(gw->mhandle);
   ws_cleanup(gw->ws);
-  /* cleanup thread-pool manager */
-  threadpool_destroy(gw->tpool, threadpool_graceful);
+  /* cleanup timers */
+  pthread_rwlock_destroy(&gw->timer->rwlock);
+  free(gw->timer);
   /* cleanup bot identification */
   if (gw->id.token) free(gw->id.token);
   free(gw->id.properties);
   free(gw->id.presence);
-  /* cleanup connection url */
-  if (gw->session.url) free(gw->session.url);
-  /* cleanup user bot */
-  discord_user_cleanup(&gw->bot);
-  if (gw->sb_bot.start) free(gw->sb_bot.start);
-  /* cleanup response payload buffer */
-  free(gw->payload);
-  /* cleanup misc fields */
-  free(gw->reconnect);
-  free(gw->status);
-  free(gw->hbeat);
+  /* cleanup client session */
+  free(gw->session);
   /* cleanup user commands */
-  if (gw->user_cmd->pool) free(gw->user_cmd->pool);
-  if (gw->user_cmd->prefix.start) free(gw->user_cmd->prefix.start);
-  free(gw->user_cmd);
+  if (gw->cmds.pool) free(gw->cmds.pool);
+  if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
 }
 
-/*
- * the event loop to serve the events sent by Discord
- */
-static ORCAcode
-event_loop(struct discord_gateway *gw)
+ORCAcode
+discord_gateway_start(struct discord_gateway *gw)
 {
+  struct discord *client = CLIENT(gw, gw);
   /* get gateway bot info */
   struct sized_buffer json = { 0 };
-  if (discord_get_gateway_bot(CLIENT(gw), &json)) {
+  /* build URL that will be used to connect to Discord */
+  char *base_url, url[1024];
+  /* snprintf() OOB check */
+  size_t ret;
+
+  if (gw->session->retry.attempt >= gw->session->retry.limit) {
+    logconf_fatal(&gw->conf, "Failed reconnecting to Discord after %d tries",
+                  gw->session->retry.limit);
+    return ORCA_DISCORD_CONNECTION;
+  }
+
+  if (discord_get_gateway_bot(client, &json)) {
     logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
     return ORCA_DISCORD_BAD_AUTH;
   }
 
   json_extract(json.start, json.size,
-               "(url):?s,(shards):d,(session_start_limit):F", &gw->session.url,
-               &gw->session.shards, &discord_session_start_limit_from_json,
-               &gw->session.start_limit);
-  free(json.start);
+               "(url):?s,(shards):d,(session_start_limit):F", &base_url,
+               &gw->session->shards, &discord_session_start_limit_from_json,
+               &gw->session->start_limit);
 
-  /* build URL that will be used to connect to Discord */
-  char url[1024];
-  size_t ret = snprintf(
-    url, sizeof(url), "%s%s" DISCORD_GATEWAY_URL_SUFFIX, gw->session.url,
-    ('/' == gw->session.url[strlen(gw->session.url) - 1]) ? "" : "/");
+  ret = snprintf(url, sizeof(url), "%s%s" DISCORD_GATEWAY_URL_SUFFIX, base_url,
+                 ('/' == base_url[strlen(base_url) - 1]) ? "" : "/");
   ASSERT_S(ret < sizeof(url), "Out of bounds write attempt");
 
-  ws_set_url(gw->ws, url, NULL);
+  free(json.start);
+  free(base_url);
 
-  ws_start(gw->ws);
-
-  if (!gw->session.start_limit.remaining) {
+  if (!gw->session->start_limit.remaining) {
     logconf_fatal(&gw->conf,
                   "Reach sessions threshold (%d),"
                   "Please wait %d seconds and try again",
-                  gw->session.start_limit.total,
-                  gw->session.start_limit.reset_after / 1000);
+                  gw->session->start_limit.total,
+                  gw->session->start_limit.reset_after / 1000);
+
     return ORCA_DISCORD_RATELIMIT;
   }
 
-  bool is_running = false;
-  while (1) {
-    ws_perform(gw->ws, &is_running, 5);
-    if (!is_running) break; /* exit event loop */
-    if (!gw->status->is_ready) continue; /* wait until on_ready() */
-
-    /* connection is established */
-
-    /*check if timespan since first pulse is greater than
-     * minimum heartbeat interval required*/
-    if (gw->hbeat->interval_ms < (ws_timestamp(gw->ws) - gw->hbeat->tstamp)) {
-      send_heartbeat(gw);
-    }
-    (*gw->user_cmd->cbs.on_idle)(CLIENT(gw), &gw->bot);
-  }
-  gw->status->is_ready = false;
+  ws_set_url(gw->ws, url, NULL);
+  ws_start(gw->ws);
 
   return ORCA_OK;
 }
 
-/*
- * Discord's ws is not reliable. This function is responsible for
- * reconnection/resume/exit
- */
-ORCAcode
-discord_gateway_run(struct discord_gateway *gw)
+bool
+discord_gateway_end(struct discord_gateway *gw)
 {
-  while (gw->reconnect->attempt < gw->reconnect->threshold) {
-    ORCAcode code;
+  ws_end(gw->ws);
 
-    code = event_loop(gw);
+  /* keep only resumable information */
+  gw->session->status &= DISCORD_SESSION_RESUMABLE;
+  gw->session->is_ready = false;
 
-    if (code != ORCA_OK) return code;
+  if (!gw->session->retry.enable) {
+    logconf_warn(&gw->conf, "Discord Gateway Shutdown");
 
-    if (!gw->reconnect->enable) {
-      logconf_warn(&gw->conf, "Discord Gateway Shutdown");
-      return code; /* EARLY RETURN */
-    }
-    ++gw->reconnect->attempt;
-    logconf_info(&gw->conf, "Reconnect attempt #%d", gw->reconnect->attempt);
+    /* reset for next run */
+    gw->session->status = DISCORD_SESSION_OFFLINE;
+    gw->session->is_ready = false;
+    gw->session->retry.enable = false;
+    gw->session->retry.attempt = 0;
+
+    return true;
   }
-  /* reset if set */
-  gw->status->is_resumable = false;
-  gw->reconnect->enable = false;
-  gw->reconnect->attempt = 0;
-  logconf_fatal(&gw->conf,
-                "Could not reconnect to Discord Gateway after %d tries",
-                gw->reconnect->threshold);
-  return ORCA_DISCORD_CONNECTION;
+
+  ++gw->session->retry.attempt;
+
+  logconf_info(&gw->conf, "Reconnect attempt #%d", gw->session->retry.attempt);
+
+  return false;
+}
+
+ORCAcode
+discord_gateway_perform(struct discord_gateway *gw)
+{
+  /* check for pending transfer, exit on failure */
+  if (!ws_easy_run(gw->ws, 5, &gw->timer->now)) {
+    return ORCA_DISCORD_CONNECTION;
+    ;
+  }
+
+  /* client is in the process of shutting down */
+  if (gw->session->status & DISCORD_SESSION_SHUTDOWN) {
+    return ORCA_OK;
+  }
+
+  /* client is in the process of connecting */
+  if (!gw->session->is_ready) {
+    return ORCA_OK;
+  }
+
+  /* check if timespan since first pulse is greater than
+   * minimum heartbeat interval required */
+  if (gw->timer->interval < gw->timer->now - gw->timer->hbeat) {
+    send_heartbeat(gw);
+  }
+
+  if (gw->cmds.cbs.on_idle) ON(idle);
+
+  return ORCA_OK;
 }
 
 void
 discord_gateway_shutdown(struct discord_gateway *gw)
 {
-  ws_lock(gw->ws);
-  gw->reconnect->enable = false;
-  gw->status->is_resumable = false;
-  gw->status->shutdown = true;
-  ws_unlock(gw->ws);
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+  const char reason[] = "Client triggered shutdown";
+
+  /* TODO: MT-Unsafe section */
+  gw->session->retry.enable = false;
+  gw->session->status = DISCORD_SESSION_SHUTDOWN;
+
+  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
 void
 discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
 {
-  ws_lock(gw->ws);
-  gw->reconnect->enable = true;
-  gw->status->is_resumable = resume;
-  ws_unlock(gw->ws);
-  ws_close(gw->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+  const char reason[] = "Client triggered reconnect";
+  enum ws_close_reason opcode;
+
+  /* TODO: MT-Unsafe section */
+  gw->session->retry.enable = true;
+  gw->session->status = DISCORD_SESSION_SHUTDOWN;
+  if (resume) {
+    gw->session->status |= DISCORD_SESSION_RESUMABLE;
+    opcode = DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
+  }
+  else {
+    opcode = WS_CLOSE_REASON_NORMAL;
+  }
+
+  ws_close(gw->ws, opcode, reason, sizeof(reason));
 }

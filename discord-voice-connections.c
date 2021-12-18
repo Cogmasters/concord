@@ -8,75 +8,91 @@
 #include "discord-voice-connections.h"
 #include "cee-utils.h"
 
+/* TODO: use a per-client lock instead */
 static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static const char *
 opcode_print(enum discord_voice_opcodes opcode)
 {
-  const char *str = discord_voice_opcodes_print(opcode);
-  if (NULL == str) str = "Invalid Voice opcode";
+  const char *str;
+
+  str = discord_voice_opcodes_print(opcode);
+  if (NULL == str) {
+    log_warn("Invalid Voice opcode (code: %d)", opcode);
+    str = "Invalid Voice opcode";
+  }
   return str;
 }
 
 static const char *
 close_opcode_print(enum discord_voice_close_event_codes opcode)
 {
-  const char *str = discord_voice_close_event_codes_print(opcode);
+  const char *str;
+
+  str = discord_voice_close_event_codes_print(opcode);
   if (str) return str;
+
   str = ws_close_opcode_print((enum ws_close_reason)opcode);
   if (str) return str;
+
   return "Unknown WebSockets close opcode";
 }
 
 static void
 send_resume(struct discord_voice *vc)
 {
+  char buf[1024];
+  int ret;
+
   vc->is_resumable = false; /* reset */
 
-  char payload[1024];
-  int ret = json_inject(payload, sizeof(payload),
-                        "(op):7" /* RESUME OPCODE */
-                        "(d):{"
-                        "(server_id):s_as_u64"
-                        "(session_id):s"
-                        "(token):s"
-                        "}",
-                        &vc->guild_id, vc->session_id, vc->token);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  ret = json_inject(buf, sizeof(buf),
+                    "(op):7" /* RESUME OPCODE */
+                    "(d):{"
+                    "(server_id):s_as_u64"
+                    "(session_id):s"
+                    "(token):s"
+                    "}",
+                    &vc->guild_id, vc->session_id, vc->token);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
 
   logconf_info(
     &vc->conf,
     ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_RESUME (%d bytes)", ret);
-  ws_send_text(vc->ws, NULL, payload, ret);
+  ws_send_text(vc->ws, NULL, buf, ret);
 }
 
 static void
 send_identify(struct discord_voice *vc)
 {
-  char payload[1024];
-  int ret = json_inject(payload, sizeof(payload),
-                        "(op):0" /* IDENTIFY OPCODE */
-                        "(d):{"
-                        "(server_id):s_as_u64"
-                        "(user_id):s_as_u64"
-                        "(session_id):s"
-                        "(token):s"
-                        "}",
-                        &vc->guild_id, &vc->bot_id, vc->session_id, vc->token);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  const struct discord_user *self = discord_get_self(vc->p_client);
+  char buf[1024];
+  int ret;
+
+  ret = json_inject(buf, sizeof(buf),
+                    "(op):0" /* IDENTIFY OPCODE */
+                    "(d):{"
+                    "(server_id):s_as_u64"
+                    "(user_id):s_as_u64"
+                    "(session_id):s"
+                    "(token):s"
+                    "}",
+                    &vc->guild_id, &self->id, vc->session_id, vc->token);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
 
   logconf_info(
     &vc->conf,
     ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_IDENTIFY (%d bytes)", ret);
-  ws_send_text(vc->ws, NULL, payload, ret);
+  ws_send_text(vc->ws, NULL, buf, ret);
 }
 
 static void
 on_hello(struct discord_voice *vc)
 {
+  float hbeat_interval = 0.0;
+
   vc->hbeat.tstamp = cee_timestamp_ms();
 
-  float hbeat_interval = 0.0;
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
                "(heartbeat_interval):f", &hbeat_interval);
   ASSERT_S(hbeat_interval > 0.0, "Invalid heartbeat_ms");
@@ -92,33 +108,33 @@ on_hello(struct discord_voice *vc)
 static void
 on_ready(struct discord_voice *vc)
 {
+  struct discord *client = vc->p_client;
+
   logconf_info(&vc->conf, "Succesfully started a Discord Voice session!");
   vc->is_ready = true;
   vc->reconnect.attempt = 0;
 
-  struct discord *client = vc->p_client;
-  if (client->voice_cbs.on_ready) {
-    client->voice_cbs.on_ready(vc);
-  }
+  if (client->voice_cbs.on_ready) client->voice_cbs.on_ready(vc);
 }
 
 static void
 on_session_description(struct discord_voice *vc)
 {
   struct discord *client = vc->p_client;
-  if (client->voice_cbs.on_session_descriptor) {
+
+  if (client->voice_cbs.on_session_descriptor)
     client->voice_cbs.on_session_descriptor(vc);
-  }
 }
 
 static void
 on_speaking(struct discord_voice *vc)
 {
   struct discord *client = vc->p_client;
-  if (!client->voice_cbs.on_speaking) return;
-
   u64_snowflake_t user_id;
   int speaking = 0, delay = 0, ssrc = 0;
+
+  if (!client->voice_cbs.on_speaking) return;
+
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
                "(user_id):s_as_u64"
                "(speaking):d"
@@ -126,8 +142,7 @@ on_speaking(struct discord_voice *vc)
                "(ssrc):d",
                &user_id, &speaking, &delay, &ssrc);
 
-  (*client->voice_cbs.on_speaking)(client, vc, &vc->p_client->gw.bot, user_id,
-                                   speaking, delay, ssrc);
+  client->voice_cbs.on_speaking(client, vc, user_id, speaking, delay, ssrc);
 }
 
 static void
@@ -149,23 +164,21 @@ on_client_disconnect(struct discord_voice *vc)
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
                "(user_id):s_as_u64", &user_id);
 
-  (*client->voice_cbs.on_client_disconnect)(client, vc, &client->gw.bot,
-                                            user_id);
+  client->voice_cbs.on_client_disconnect(client, vc, user_id);
 }
 
 static void
 on_codec(struct discord_voice *vc)
 {
   struct discord *client = vc->p_client;
+  char audio_codec[64] = { 0 }, video_codec[64] = { 0 };
 
   if (!client->voice_cbs.on_codec) return;
 
-  char audio_codec[64] = { 0 }, video_codec[64] = { 0 };
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
                "(audio_codec):s, (video_codec):s", &audio_codec, &video_codec);
 
-  (*client->voice_cbs.on_codec)(client, vc, &client->gw.bot, audio_codec,
-                                video_codec);
+  client->voice_cbs.on_codec(client, vc, audio_codec, video_codec);
 }
 
 static void
@@ -183,6 +196,7 @@ on_connect_cb(void *p_vc,
               const char *ws_protocols)
 {
   struct discord_voice *vc = p_vc;
+
   logconf_info(&vc->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
@@ -203,12 +217,8 @@ on_close_cb(void *p_vc,
     ANSICOLOR("CLOSE %s", ANSI_FG_RED) " (code: %4d, %zu bytes): '%.*s'",
     close_opcode_print(opcode), opcode, len, (int)len, reason);
 
-  if (vc->shutdown) {
-    logconf_info(&vc->conf, "Voice was shutdown");
-    vc->is_resumable = false;
-    vc->reconnect.enable = false;
-    return;
-  }
+  /* user-triggered shutdown */
+  if (vc->shutdown) return;
 
   switch (opcode) {
   case DISCORD_VOICE_CLOSE_EVENT_SERVER_CRASH:
@@ -265,14 +275,30 @@ on_text_cb(void *p_vc,
     opcode_print(vc->payload.opcode), len);
 
   switch (vc->payload.opcode) {
-  case DISCORD_VOICE_READY: on_ready(vc); break;
-  case DISCORD_VOICE_SESSION_DESCRIPTION: on_session_description(vc); break;
-  case DISCORD_VOICE_SPEAKING: on_speaking(vc); break;
-  case DISCORD_VOICE_HEARTBEAT_ACK: on_heartbeat_ack(vc); break;
-  case DISCORD_VOICE_HELLO: on_hello(vc); break;
-  case DISCORD_VOICE_RESUMED: on_resumed(vc); break;
-  case DISCORD_VOICE_CLIENT_DISCONNECT: on_client_disconnect(vc); break;
-  case DISCORD_VOICE_CODEC: on_codec(vc); break;
+  case DISCORD_VOICE_READY:
+    on_ready(vc);
+    break;
+  case DISCORD_VOICE_SESSION_DESCRIPTION:
+    on_session_description(vc);
+    break;
+  case DISCORD_VOICE_SPEAKING:
+    on_speaking(vc);
+    break;
+  case DISCORD_VOICE_HEARTBEAT_ACK:
+    on_heartbeat_ack(vc);
+    break;
+  case DISCORD_VOICE_HELLO:
+    on_hello(vc);
+    break;
+  case DISCORD_VOICE_RESUMED:
+    on_resumed(vc);
+    break;
+  case DISCORD_VOICE_CLIENT_DISCONNECT:
+    on_client_disconnect(vc);
+    break;
+  case DISCORD_VOICE_CODEC:
+    on_codec(vc);
+    break;
   default:
     logconf_error(&vc->conf, "Not yet implemented Voice Event(code: %d)",
                   vc->payload.opcode);
@@ -285,16 +311,18 @@ on_text_cb(void *p_vc,
 static void
 send_heartbeat(struct discord_voice *vc)
 {
-  char payload[64];
-  int ret = json_inject(payload, sizeof(payload), "(op):3, (d):ld",
-                        &vc->hbeat.interval_ms);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  char buf[64];
+  int ret;
+
+  ret =
+    json_inject(buf, sizeof(buf), "(op):3, (d):ld", &vc->hbeat.interval_ms);
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
 
   logconf_info(
     &vc->conf,
     ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_HEARTBEAT (%d bytes)",
     ret);
-  ws_send_text(vc->ws, NULL, payload, ret);
+  ws_send_text(vc->ws, NULL, buf, ret);
 }
 
 static void
@@ -302,6 +330,7 @@ _discord_voice_cleanup(struct discord_voice *vc)
 {
   /* close the descriptor */
   /* kill the child process */
+  free(vc->mhandle);
   if (vc->ws) ws_cleanup(vc->ws);
   free(vc);
 }
@@ -322,18 +351,26 @@ _discord_voice_init(struct discord_voice *new_vc,
   new_vc->p_client = client;
   new_vc->guild_id = guild_id;
   new_vc->channel_id = channel_id;
-  new_vc->bot_id = client->gw.bot.id;
-  if (NULL == new_vc->ws) {
-    struct ws_callbacks cbs = { .data = new_vc,
-                                .on_connect = &on_connect_cb,
-                                .on_text = &on_text_cb,
-                                .on_close = &on_close_cb };
-    new_vc->ws = ws_init(&cbs, new_vc->p_client->conf);
-    new_vc->reconnect.threshold = 5; /** hard limit for now */
-    new_vc->reconnect.enable = true;
 
-    logconf_branch(&new_vc->conf, client->conf, "DISCORD_VOICE");
+  if (NULL == new_vc->ws) {
+    struct ws_callbacks cbs = {
+      .data = new_vc,
+      .on_connect = &on_connect_cb,
+      .on_text = &on_text_cb,
+      .on_close = &on_close_cb,
+    };
+    struct ws_attr attr = {
+      .conf = &client->conf,
+    };
+
+    new_vc->mhandle = curl_multi_init();
+    new_vc->ws = ws_init(&cbs, new_vc->mhandle, &attr);
+    logconf_branch(&new_vc->conf, &client->conf, "DISCORD_VOICE");
+
+    new_vc->reconnect.threshold = 5; /**< hard limit for now */
+    new_vc->reconnect.enable = true;
   }
+
   reset_vc(new_vc);
 }
 
@@ -345,8 +382,8 @@ discord_send_speaking(struct discord_voice *vc,
   ASSERT_S(WS_CONNECTED == ws_get_status(vc->ws),
            "Action requires an active connection to Discord");
 
-  char payload[128];
-  int ret = json_inject(payload, sizeof(payload),
+  char buf[128];
+  int ret = json_inject(buf, sizeof(buf),
                         "(op):5," /* VOICE SPEAKING OPCODE */
                         "(d):{"
                         "(speaking):d"
@@ -354,12 +391,12 @@ discord_send_speaking(struct discord_voice *vc,
                         "(ssrc):d"
                         "}",
                         &flag, &delay, &vc->udp_service.ssrc);
-  ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
 
   logconf_info(
     &vc->conf,
     ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_SPEAKING (%d bytes)", ret);
-  ws_send_text(vc->ws, NULL, payload, ret);
+  ws_send_text(vc->ws, NULL, buf, ret);
 }
 
 static void
@@ -383,11 +420,11 @@ send_voice_state_update(struct discord_voice *vc,
                         bool self_deaf)
 {
   struct discord_gateway *gw = &vc->p_client->gw;
-  char payload[256];
+  char buf[256];
   int ret;
 
   if (channel_id) {
-    ret = json_inject(payload, sizeof(payload),
+    ret = json_inject(buf, sizeof(buf),
                       "(op):4," /* VOICE STATE UPDATE OPCODE */
                       "(d):{"
                       "(guild_id):s_as_u64,"
@@ -396,7 +433,7 @@ send_voice_state_update(struct discord_voice *vc,
                       "(self_deaf):b"
                       "}",
                       &guild_id, &channel_id, &self_mute, &self_deaf);
-    ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+    ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
     logconf_info(
       &vc->conf,
       ANSICOLOR(
@@ -405,7 +442,7 @@ send_voice_state_update(struct discord_voice *vc,
       ret);
   }
   else {
-    ret = json_inject(payload, sizeof(payload),
+    ret = json_inject(buf, sizeof(buf),
                       "(op):4," /* VOICE STATE UPDATE OPCODE */
                       "(d):{"
                       "(guild_id):s_as_u64,"
@@ -414,7 +451,7 @@ send_voice_state_update(struct discord_voice *vc,
                       "(self_deaf):b"
                       "}",
                       &guild_id, &self_mute, &self_deaf);
-    ASSERT_S(ret < sizeof(payload), "Out of bounds write attempt");
+    ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
     logconf_info(
       &vc->conf,
       ANSICOLOR(
@@ -422,7 +459,7 @@ send_voice_state_update(struct discord_voice *vc,
         ANSI_FG_BRIGHT_GREEN) " VOICE_STATE_UPDATE (%d bytes): leave channel",
       ret);
   }
-  ws_send_text(gw->ws, NULL, payload, ret);
+  ws_send_text(gw->ws, NULL, buf, ret);
 }
 
 enum discord_voice_status
@@ -432,13 +469,13 @@ discord_voice_join(struct discord *client,
                    bool self_mute,
                    bool self_deaf)
 {
+  bool found_a_running_vcs = false;
+  struct discord_voice *vc = NULL;
+  int i;
+
   if (!ws_is_functional(client->gw.ws)) return DISCORD_VOICE_ERROR;
 
-  bool found_a_running_vcs = false;
   pthread_mutex_lock(&client_lock);
-  struct discord_voice *vc = NULL;
-
-  int i;
   for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     if (0 == client->vcs[i].guild_id) {
       vc = client->vcs + i;
@@ -456,7 +493,7 @@ discord_voice_join(struct discord *client,
   pthread_mutex_unlock(&client_lock);
 
   if (!vc) {
-    logconf_error(client->conf,
+    logconf_error(&client->conf,
                   "All VC are busy, cannot send VOICE_STATE_UPDATE");
     /* run out of vcs connections, report error to users */
     return DISCORD_VOICE_EXHAUST_CAPACITY;
@@ -480,10 +517,10 @@ void
 _discord_on_voice_state_update(struct discord *client,
                                struct discord_voice_state *vs)
 {
-  pthread_mutex_lock(&client_lock);
   struct discord_voice *vc = NULL;
-
   int i;
+
+  pthread_mutex_lock(&client_lock);
   for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     if (vs->guild_id == client->vcs[i].guild_id) {
       vc = client->vcs + i;
@@ -504,7 +541,7 @@ _discord_on_voice_state_update(struct discord *client,
   if (!vc) {
     if (vs->channel_id) {
       logconf_fatal(
-        client->conf,
+        &client->conf,
         "This should not happen, cannot find a discord_voice object");
       /* report this */
     }
@@ -524,27 +561,31 @@ static void
 event_loop(struct discord_voice *vc)
 {
   struct discord *client = vc->p_client;
-  ws_start(vc->ws);
-
-  bool is_running = false;
+  uint64_t tstamp;
 
   /* everything goes well, ws event_loop to serve */
   /* the ws server side events */
+  ws_start(vc->ws);
   while (1) {
-    ws_perform(vc->ws, &is_running, 100);
-    if (!is_running) break; /* exit event loop */
-    if (!vc->is_ready) continue; /* wait until on_ready() */
+    /* break on severed connection */
+    if (!ws_easy_run(vc->ws, 5, &tstamp)) break;
 
-    /* connection is established */
-    /*check if timespan since first pulse is greater than
+    /* wait until connection shutdown */
+    if (vc->shutdown) continue;
+    /* wait until client is ready */
+    if (!vc->is_ready) continue;
+
+    /* check if timespan since first pulse is greater than
      * minimum heartbeat interval required*/
     if (vc->hbeat.interval_ms < (ws_timestamp(vc->ws) - vc->hbeat.tstamp)) {
       send_heartbeat(vc);
       vc->hbeat.tstamp = ws_timestamp(vc->ws); /*update heartbeat timestamp */
     }
-    if (client->voice_cbs.on_idle)
-      (*client->voice_cbs.on_idle)(client, vc, &vc->p_client->gw.bot);
+    if (client->voice_cbs.on_idle) client->voice_cbs.on_idle(client, vc);
   }
+  ws_end(vc->ws);
+
+  vc->shutdown = false;
   vc->is_ready = false;
 }
 
@@ -599,130 +640,55 @@ _discord_on_voice_server_update(struct discord *client,
                                 char *endpoint)
 {
   struct discord_voice *vc = NULL;
-  pthread_mutex_lock(&client_lock);
-
+  int ret;
   int i;
+
+  pthread_mutex_lock(&client_lock);
   for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     if (guild_id == client->vcs[i].guild_id) {
       vc = client->vcs + i;
       break;
     }
   }
-
   pthread_mutex_unlock(&client_lock);
+
   if (!vc) {
-    logconf_fatal(client->conf, "Couldn't match voice server to client");
+    logconf_fatal(&client->conf, "Couldn't match voice server to client");
     return;
   }
 
-  int ret;
   ret = snprintf(vc->new_token, sizeof(vc->new_token), "%s", token);
   ASSERT_S(ret < sizeof(vc->new_token), "Out of bounds write attempt");
   ret = snprintf(vc->new_url, sizeof(vc->new_url),
                  "wss://%s" DISCORD_VOICE_CONNECTIONS_URL_SUFFIX, endpoint);
   ASSERT_S(ret < sizeof(vc->new_url), "Out of bounds write attempt");
 
-  /* @todo: replace with the more reliable thread alive check */
+  /* TODO: replace with the more reliable thread alive check */
   if (ws_is_alive(vc->ws)) {
     /* exits the current event_loop to redirect */
+    const char reason[] = "Attempt to redirect";
+
     vc->is_redirect = true;
-    ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+    ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
   }
   else {
+    pthread_t tid;
+
     memcpy(vc->token, vc->new_token, sizeof(vc->new_token));
     ws_set_url(vc->ws, vc->new_url, NULL);
 
-    /** @todo replace with a threadpool */
-    pthread_t tid;
+    /** TODO: replace with a threadpool */
     if (pthread_create(&tid, NULL, &start_voice_ws_thread, vc))
       ERR("Couldn't create thread");
     if (pthread_detach(tid)) ERR("Couldn't detach thread");
   }
 }
 
-static void
-noop_voice_state_update_cb(struct discord *a,
-                           const struct discord_user *b,
-                           const struct discord_voice_state *c)
-{
-  return;
-}
-static void
-noop_voice_server_update_cb(struct discord *a,
-                            const struct discord_user *b,
-                            const char *c,
-                            const u64_snowflake_t d,
-                            const char *endpoint)
-{
-  return;
-}
-static void
-noop_idle_cb(struct discord *a,
-             struct discord_voice *b,
-             const struct discord_user *c)
-{
-  return;
-}
-static void
-noop_on_speaking(struct discord *a,
-                 struct discord_voice *b,
-                 const struct discord_user *c,
-                 const u64_snowflake_t d,
-                 const int e,
-                 const int f,
-                 const int g)
-{
-  return;
-}
-static void
-noop_on_voice_client_disconnect(struct discord *a,
-                                struct discord_voice *b,
-                                const struct discord_user *c,
-                                const u64_snowflake_t d)
-{
-  return;
-}
-static void
-noop_on_voice_codec(struct discord *a,
-                    struct discord_voice *b,
-                    const struct discord_user *c,
-                    const char d[],
-                    const char e[])
-{
-  return;
-}
-static void
-noop_on_ready(struct discord_voice *a)
-{
-  return;
-}
-static void
-noop_on_session_descriptor(struct discord_voice *a)
-{
-  return;
-}
-static void
-noop_on_udp_server_connected(struct discord_voice *a)
-{
-  return;
-}
-
 void
 discord_voice_connections_init(struct discord *client)
 {
-  client->gw.user_cmd->cbs.on_voice_state_update = noop_voice_state_update_cb;
-  client->gw.user_cmd->cbs.on_voice_server_update =
-    noop_voice_server_update_cb;
-
-  client->voice_cbs.on_idle = noop_idle_cb;
-  client->voice_cbs.on_ready = noop_on_ready;
-  client->voice_cbs.on_client_disconnect = noop_on_voice_client_disconnect;
-  client->voice_cbs.on_session_descriptor = noop_on_session_descriptor;
-  client->voice_cbs.on_codec = noop_on_voice_codec;
-  client->voice_cbs.on_speaking = noop_on_speaking;
-  client->voice_cbs.on_udp_server_connected = noop_on_udp_server_connected;
-
   int i;
+
   for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
     client->vcs[i].p_voice_cbs = &client->voice_cbs;
   }
@@ -731,20 +697,31 @@ discord_voice_connections_init(struct discord *client)
 void
 discord_voice_shutdown(struct discord_voice *vc)
 {
-  vc->reconnect.enable = false;
-  vc->is_resumable = false;
-  vc->shutdown = true;
-  ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+  const char reason[] = "Client triggered voice shutdown";
 
+  vc->reconnect.enable = false;
+  vc->shutdown = true;
+  vc->is_resumable = false;
+
+  /* TODO: check if send_voice_state_update() is not being ignored because of
+   * ws_close() */
   send_voice_state_update(vc, vc->guild_id, 0, false, false);
+  ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, reason, sizeof(reason));
 }
 
 void
 discord_voice_reconnect(struct discord_voice *vc, bool resume)
 {
+  const char reason[] = "Client triggered voice reconnect";
+  enum ws_close_reason opcode;
+
   vc->reconnect.enable = true;
+  vc->shutdown = true;
   vc->is_resumable = resume;
-  ws_close(vc->ws, WS_CLOSE_REASON_NORMAL, "", 0);
+  opcode =
+    vc->is_resumable ? WS_CLOSE_REASON_NO_REASON : WS_CLOSE_REASON_NORMAL;
+
+  ws_close(vc->ws, opcode, reason, sizeof(reason));
 }
 
 bool

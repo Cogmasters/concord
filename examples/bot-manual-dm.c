@@ -7,39 +7,44 @@
 
 #include "discord.h"
 
-void on_ready(struct discord *client, const struct discord_user *bot)
+void on_ready(struct discord *client)
 {
+  const struct discord_user *bot = discord_get_self(client);
+
   log_info("ManualDM-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
-void on_dm_receive(struct discord *client,
-                   const struct discord_user *bot,
-                   const struct discord_message *msg)
+void on_dm_receive(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
+
   printf("%s:%s\n", msg->author->username, msg->content);
 }
 
 void *read_input(void *p_client)
 {
-  pthread_detach(pthread_self());
   struct discord *client = p_client;
-
   char buf[32 + DISCORD_MAX_MESSAGE_LEN];
+  char msg[DISCORD_MAX_MESSAGE_LEN];
   u64_snowflake_t recipient_id;
   u64_snowflake_t dm_channel_id;
-  char msg[DISCORD_MAX_MESSAGE_LEN];
+
+  pthread_detach(pthread_self());
+
   while (1) {
     memset(buf, 0, sizeof(buf));
     fgets(buf, sizeof(buf), stdin);
+
     if (!*buf) continue; // is empty
 
     memset(msg, 0, sizeof(msg));
     recipient_id = 0;
     sscanf(buf, "%" PRIu64 ":%[^\n]", &recipient_id, msg);
+
     if (!recipient_id || !*msg) {
       sscanf(buf, "%[^\n]", msg);
+
       if (!*msg) {
         printf("Expected format: <*recipient_id>:<message>");
         continue;
@@ -47,15 +52,17 @@ void *read_input(void *p_client)
     }
     else { /* reset active chat */
       struct discord_channel dm_channel = { 0 };
+      struct discord_create_dm_params params = {
+        .recipient_id = recipient_id,
+      };
 
-      struct discord_create_dm_params params = { .recipient_id =
-                                                   recipient_id };
       discord_create_dm(client, &params, &dm_channel);
 
       dm_channel_id = dm_channel.id;
 
       discord_channel_cleanup(&dm_channel);
     }
+
     struct discord_create_message_params params = { .content = msg };
     discord_create_message(client, dm_channel_id, &params, NULL);
   }
@@ -71,8 +78,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
-
+  orca_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -100,6 +106,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-
-  discord_global_cleanup();
+  orca_global_cleanup();
 }

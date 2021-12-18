@@ -1,18 +1,9 @@
-/* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
+/* This file is generated from specs/github/gist.json, Please don't edit it. */
 /**
  * @file specs-code/github/one-specs.h
- * @see https://docs.github.com/en/rest/reference/gists
+ * @see https://docs.github.com/en/rest/reference/gists#create-a-gist
  */
 
-
-/* defined at specs/github/gist.endpoints-params.json:10:32 */
-/**
- * @brief Gist Create
- *
- * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
- */
-struct github_gist_create_params;
-/* This file is generated from specs/github/gist.json, Please don't edit it. */
 
 /* defined at specs/github/gist.json:9:33 */
 /**
@@ -20,6 +11,15 @@ struct github_gist_create_params;
  *
  */
 struct github_gist;
+/* This file is generated from specs/github/gist.params.json, Please don't edit it. */
+
+/* defined at specs/github/gist.params.json:10:32 */
+/**
+ * @brief Gist Create
+ *
+ * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
+ */
+struct github_gist_create_params;
 /* This file is generated from specs/github/repository.json, Please don't edit it. */
 
 /* defined at specs/github/repository.json:9:33 */
@@ -36,59 +36,10 @@ struct github_topic;
  *
  */
 struct github_user;
-/* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
 /* This file is generated from specs/github/gist.json, Please don't edit it. */
+/* This file is generated from specs/github/gist.params.json, Please don't edit it. */
 /* This file is generated from specs/github/repository.json, Please don't edit it. */
 /* This file is generated from specs/github/user.json, Please don't edit it. */
-/* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
-
-/* Gist Create */
-/* defined at specs/github/gist.endpoints-params.json:10:32 */
-/**
- * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
- *
- * @verbatim embed:rst:leading-asterisk
- * .. container:: toggle
-
- *   .. container:: header
-
- *     **Methods**
-
- *   * Initializer:
-
- *     * :code:`void github_gist_create_params_init(struct github_gist_create_params *)`
- *   * Cleanup:
-
- *     * :code:`void github_gist_create_params_cleanup(struct github_gist_create_params *)`
- *     * :code:`void github_gist_create_params_list_free(struct github_gist_create_params **)`
- *   * JSON Decoder:
-
- *     * :code:`void github_gist_create_params_from_json(char *rbuf, size_t len, struct github_gist_create_params *)`
- *     * :code:`void github_gist_create_params_list_from_json(char *rbuf, size_t len, struct github_gist_create_params ***)`
- *   * JSON Encoder:
-
- *     * :code:`void github_gist_create_params_to_json(char *wbuf, size_t len, struct github_gist_create_params *)`
- *     * :code:`void github_gist_create_params_list_to_json(char *wbuf, size_t len, struct github_gist_create_params **)`
- * @endverbatim
- */
-struct github_gist_create_params {
-  /* specs/github/gist.endpoints-params.json:13:28
-     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
-  char *description;
-
-  /* specs/github/gist.endpoints-params.json:14:28
-     '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
-  char *title;
-
-  /* specs/github/gist.endpoints-params.json:15:28
-     '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
-  char *contents;
-
-  /* specs/github/gist.endpoints-params.json:16:28
-     '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
-  char *public;
-
-};
 /* This file is generated from specs/github/gist.json, Please don't edit it. */
 
 /* Gist Structure */
@@ -150,6 +101,55 @@ struct github_gist {
   /* specs/github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
   int comments;
+
+};
+/* This file is generated from specs/github/gist.params.json, Please don't edit it. */
+
+/* Gist Create */
+/* defined at specs/github/gist.params.json:10:32 */
+/**
+ * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
+ *
+ * @verbatim embed:rst:leading-asterisk
+ * .. container:: toggle
+
+ *   .. container:: header
+
+ *     **Methods**
+
+ *   * Initializer:
+
+ *     * :code:`void github_gist_create_params_init(struct github_gist_create_params *)`
+ *   * Cleanup:
+
+ *     * :code:`void github_gist_create_params_cleanup(struct github_gist_create_params *)`
+ *     * :code:`void github_gist_create_params_list_free(struct github_gist_create_params **)`
+ *   * JSON Decoder:
+
+ *     * :code:`void github_gist_create_params_from_json(char *rbuf, size_t len, struct github_gist_create_params *)`
+ *     * :code:`void github_gist_create_params_list_from_json(char *rbuf, size_t len, struct github_gist_create_params ***)`
+ *   * JSON Encoder:
+
+ *     * :code:`void github_gist_create_params_to_json(char *wbuf, size_t len, struct github_gist_create_params *)`
+ *     * :code:`void github_gist_create_params_list_to_json(char *wbuf, size_t len, struct github_gist_create_params **)`
+ * @endverbatim
+ */
+struct github_gist_create_params {
+  /* specs/github/gist.params.json:13:28
+     '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
+  char *description;
+
+  /* specs/github/gist.params.json:14:28
+     '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
+  char *title;
+
+  /* specs/github/gist.params.json:15:28
+     '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
+  char *contents;
+
+  /* specs/github/gist.params.json:16:28
+     '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
+  char *public;
 
 };
 /* This file is generated from specs/github/repository.json, Please don't edit it. */
@@ -302,23 +302,6 @@ struct github_user {
   char *updated_at;
 
 };
-/* This file is generated from specs/github/gist.endpoints-params.json, Please don't edit it. */
-
-extern void github_gist_create_params_cleanup_v(void *p);
-extern void github_gist_create_params_cleanup(struct github_gist_create_params *p);
-extern void github_gist_create_params_init_v(void *p);
-extern void github_gist_create_params_init(struct github_gist_create_params *p);
-extern void github_gist_create_params_from_json_v(char *json, size_t len, void *p);
-extern void github_gist_create_params_from_json_p(char *json, size_t len, struct github_gist_create_params **pp);
-extern void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params *p);
-extern size_t github_gist_create_params_to_json_v(char *json, size_t len, void *p);
-extern size_t github_gist_create_params_to_json(char *json, size_t len, struct github_gist_create_params *p);
-extern void github_gist_create_params_list_free_v(void **p);
-extern void github_gist_create_params_list_free(struct github_gist_create_params **p);
-extern void github_gist_create_params_list_from_json_v(char *str, size_t len, void *p);
-extern void github_gist_create_params_list_from_json(char *str, size_t len, struct github_gist_create_params ***p);
-extern size_t github_gist_create_params_list_to_json_v(char *str, size_t len, void *p);
-extern size_t github_gist_create_params_list_to_json(char *str, size_t len, struct github_gist_create_params **p);
 /* This file is generated from specs/github/gist.json, Please don't edit it. */
 
 extern void github_gist_cleanup_v(void *p);
@@ -336,6 +319,23 @@ extern void github_gist_list_from_json_v(char *str, size_t len, void *p);
 extern void github_gist_list_from_json(char *str, size_t len, struct github_gist ***p);
 extern size_t github_gist_list_to_json_v(char *str, size_t len, void *p);
 extern size_t github_gist_list_to_json(char *str, size_t len, struct github_gist **p);
+/* This file is generated from specs/github/gist.params.json, Please don't edit it. */
+
+extern void github_gist_create_params_cleanup_v(void *p);
+extern void github_gist_create_params_cleanup(struct github_gist_create_params *p);
+extern void github_gist_create_params_init_v(void *p);
+extern void github_gist_create_params_init(struct github_gist_create_params *p);
+extern void github_gist_create_params_from_json_v(char *json, size_t len, void *p);
+extern void github_gist_create_params_from_json_p(char *json, size_t len, struct github_gist_create_params **pp);
+extern void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params *p);
+extern size_t github_gist_create_params_to_json_v(char *json, size_t len, void *p);
+extern size_t github_gist_create_params_to_json(char *json, size_t len, struct github_gist_create_params *p);
+extern void github_gist_create_params_list_free_v(void **p);
+extern void github_gist_create_params_list_free(struct github_gist_create_params **p);
+extern void github_gist_create_params_list_from_json_v(char *str, size_t len, void *p);
+extern void github_gist_create_params_list_from_json(char *str, size_t len, struct github_gist_create_params ***p);
+extern size_t github_gist_create_params_list_to_json_v(char *str, size_t len, void *p);
+extern size_t github_gist_create_params_list_to_json(char *str, size_t len, struct github_gist_create_params **p);
 /* This file is generated from specs/github/repository.json, Please don't edit it. */
 
 extern void github_topic_cleanup_v(void *p);

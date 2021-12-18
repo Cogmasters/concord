@@ -9,21 +9,44 @@ void load(char *str, size_t len, void *ptr)
   fprintf(stderr, "%.*s", (int)len, str);
 }
 
-int commit(char *base_url, struct logconf *config)
+int commit(char *base_url, struct logconf *conf)
 {
-  struct user_agent *data = ua_init(config);
-  ua_set_url(data, base_url);
+  struct ua_attr ua_attr = { 0 };
+  struct user_agent *ua;
 
-  curl_global_init(CURL_GLOBAL_ALL);
-  struct sized_buffer body = { .start = "{ }", .size = 3 };
   struct ua_resp_handle handle = { .ok_cb = load, .ok_obj = NULL };
+  struct sized_buffer body = { .start = "{ }", .size = 3 };
+  struct ua_conn_attr conn_attr = { 0 };
   struct ua_info info = { 0 };
 
-  ua_run(data, &info, &handle, &body, HTTP_POST, "/echo?m=POST");
-  ua_run(data, &info, &handle, &body, HTTP_PATCH, "/echo?m=PATCH");
-  ua_run(data, &info, &handle, &body, HTTP_GET, "/echo?m=GET");
-  ua_run(data, &info, &handle, &body, HTTP_PUT, "/echo?m=PUT");
-  ua_run(data, &info, &handle, &body, HTTP_DELETE, "/echo?m=DELETE");
+  curl_global_init(CURL_GLOBAL_ALL);
+
+  /* base url */
+  ua_attr.conf = conf;
+  ua = ua_init(&ua_attr);
+  ua_set_url(ua, base_url);
+
+  conn_attr.body = &body;
+
+  conn_attr.method = HTTP_POST;
+  conn_attr.endpoint = "/echo?m=POST";
+  ua_easy_run(ua, &info, &handle, &conn_attr);
+
+  conn_attr.method = HTTP_PATCH;
+  conn_attr.endpoint = "/echo?m=PATCH";
+  ua_easy_run(ua, &info, &handle, &conn_attr);
+
+  conn_attr.method = HTTP_GET;
+  conn_attr.endpoint = "/echo?m=GET";
+  ua_easy_run(ua, &info, &handle, &conn_attr);
+
+  conn_attr.method = HTTP_PUT;
+  conn_attr.endpoint = "/echo?m=PUT";
+  ua_easy_run(ua, &info, &handle, &conn_attr);
+
+  conn_attr.method = HTTP_DELETE;
+  conn_attr.endpoint = "/echo?m=DELETE";
+  ua_easy_run(ua, &info, &handle, &conn_attr);
 
   curl_global_cleanup();
 
@@ -38,12 +61,12 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  struct logconf config;
+  struct logconf conf;
   FILE *fp = fopen(config_file, "rb");
-  logconf_setup(&config, "CEE_HTTP", fp);
+  logconf_setup(&conf, "CEE_HTTP", fp);
   fclose(fp);
 
-  commit("https://cee.studio", &config);
+  commit("https://cee.studio", &conf);
 
   return 0;
 }

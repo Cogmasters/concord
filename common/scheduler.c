@@ -23,8 +23,10 @@ struct task_s *
 task_init()
 {
   struct task_s *new_task = calloc(1, sizeof *new_task);
+
   if (pthread_mutex_init(&new_task->lock, NULL))
     ERR("Couldn't initialize mutex");
+
   return new_task;
 }
 
@@ -39,9 +41,12 @@ task_cleanup(struct task_s *task)
 static bool
 is_alive(struct task_s *task)
 {
+  bool alive;
+
   pthread_mutex_lock(&task->lock);
-  bool alive = task->keepalive;
+  alive = task->keepalive;
   pthread_mutex_unlock(&task->lock);
+
   return alive;
 }
 
@@ -52,8 +57,9 @@ event_run(void *p_task)
 
   cee_sleep_ms(task->timeout_ms);
   while (is_alive(task)) {
-    (*task->callback)(task->data);
-    if (!task->repeat_ms) break; /* EARLY BREAK */
+    task->callback(task->data);
+    if (!task->repeat_ms) break;
+
     cee_sleep_ms(task->repeat_ms);
   }
   pthread_exit(NULL);
@@ -68,13 +74,12 @@ task_start(struct task_s *task,
 {
   if (!callback) return;
 
-  if (is_alive(task)) {
-    task_stop(task);
-  }
+  if (is_alive(task)) task_stop(task);
 
   pthread_mutex_lock(&task->lock);
 
   task->keepalive = true;
+
   /* add values associated with task */
   task->timeout_ms = timeout_ms;
   task->repeat_ms = repeat_ms;

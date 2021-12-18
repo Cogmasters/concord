@@ -10,10 +10,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-
 /**
  * @brief Compare equality between two strings
- *  
+ *
  * 1 if strings are equal, 0 otherwise
  * @param str1 first string
  * @param str2 second string
@@ -21,7 +20,7 @@ extern "C" {
 #define STREQ(str1, str2) (0 == strcmp(str1, str2))
 /**
  * @brief Compare equality between two strings up to n characters
- *  
+ *
  * 1 if strings are equal, 0 otherwise
  * @param str1 first string
  * @param str2 second string
@@ -40,7 +39,9 @@ extern "C" {
  * @param opcode the enumerator to be checked against
  * @return opcode as a string if there's a match
  */
-#define CASE_RETURN_STR(opcode) case opcode: return #opcode
+#define CASE_RETURN_STR(opcode)                                               \
+  case opcode:                                                                \
+    return #opcode
 /**
  * @brief Return enum value if string matches enum token
  *
@@ -48,7 +49,8 @@ extern "C" {
  * @param str a string to be compared against the `enum` token
  * @return enum opcode if there's a match
  */
-#define STREQ_RETURN_ENUM(enum, str) if(STREQ(#enum, str))return enum
+#define STREQ_RETURN_ENUM(enum, str)                                          \
+  if (STREQ(#enum, str)) return enum
 
 /**
  * @brief Load file contents into a string
@@ -57,7 +59,7 @@ extern "C" {
  * @param len optional pointer to store the amount of bytes read
  * @return the file contents
  */
-char* cee_load_whole_file_fp(FILE *fp, size_t *len);
+char *cee_load_whole_file_fp(FILE *fp, size_t *len);
 /**
  * @brief Load file contents into a string
  *
@@ -67,7 +69,8 @@ char* cee_load_whole_file_fp(FILE *fp, size_t *len);
  * @param len optional pointer to store the amount of bytes read
  * @return the file contents
  */
-char* cee_load_whole_file(const char filename[], size_t *len);
+char *cee_load_whole_file(const char filename[], size_t *len);
+
 /**
  * @brief Fill a structure from a JSON file
  *
@@ -77,10 +80,22 @@ char* cee_load_whole_file(const char filename[], size_t *len);
  *        and then fill the structure
  * @return 1 on success, 0 on failure
  */
-int cee_dati_from_fjson(
-  char filename[], 
-  void *p_data, 
-  void (from_json_cb)(char *str, size_t len, void *p_data));
+int cee_dati_from_fjson(char filename[],
+                        void *p_data,
+                        void(from_json_cb)(char *str,
+                                           size_t len,
+                                           void *p_data));
+
+/**
+ * @brief Create a copy of JSON string to a `struct sized_buffer`
+ *
+ * @param str the JSON string
+ * @param len the JSON string length
+ * @param buf the sized buffer
+ */
+void cee_sized_buffer_from_json(char *str,
+                                size_t len,
+                                struct sized_buffer *buf);
 
 /**
  * @brief Convert a iso8601 string to a unix timestamp (milliseconds)
@@ -88,7 +103,8 @@ int cee_dati_from_fjson(
  * Can be matched to the json_extract() and json_inject() %F specifier
  * @param timestamp the iso8601 string timestamp
  * @param len the string length
- * @param p_value pointer to the `uint64_t` variable to receive the converted timestamp
+ * @param p_value pointer to the `uint64_t` variable to receive the converted
+ * timestamp
  * @return 1 on success, 0 on failure
  */
 int cee_iso8601_to_unix_ms(char *timestamp, size_t len, uint64_t *p_value);
@@ -108,7 +124,8 @@ int cee_unix_ms_to_iso8601(char *str, size_t len, uint64_t *p_value);
  *
  * @param str the numerical string
  * @param len the string length
- * @param p_value pointer to the `uint64_t` variable to receive the converted value
+ * @param p_value pointer to the `uint64_t` variable to receive the converted
+ * value
  * @return 1 on success, 0 on failure
  */
 int cee_strtou64(char *str, size_t len, uint64_t *p_value);
@@ -156,14 +173,15 @@ uint64_t cee_timestamp_ms(void);
  * @param len the string buffer size
  * @return a pointer to `p_str`
  */
-char* cee_timestamp_str(char *p_str, int len);
+char *cee_timestamp_str(char *p_str, int len);
 
 /**
  * @brief Check if arbitrary string length is exceeded
  *
  * @param str the string to be checked
  * @param threshold_len maximum length for success
- * @return the string length on success, -1 on `NULL` string, and 0 if string length is greater than threshold
+ * @return the string length on success, -1 on `NULL` string, and 0 if string
+ * length is greater than threshold
  */
 ssize_t cee_str_bounds_check(const char *str, const size_t threshold_len);
 
@@ -177,7 +195,11 @@ ssize_t cee_str_bounds_check(const char *str, const size_t threshold_len);
  * @param maxlen maximum length supported for resulting buffer
  * @return the buffer of concatenated strings
  */
-char* cee_join_strings(char** strings, const size_t nmemb, const char delim[], const size_t wordlen, const size_t maxlen);
+char *cee_join_strings(char **strings,
+                       const size_t nmemb,
+                       const char delim[],
+                       const size_t wordlen,
+                       const size_t maxlen);
 
 void cee_gen_readlink(char *linkbuf, size_t linkbuf_size);
 

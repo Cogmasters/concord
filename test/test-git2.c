@@ -21,9 +21,14 @@ int main(int argc, char **argv)
 
   while ((opt = getopt(argc, argv, "c:m:")) != -1) {
     switch (opt) {
-    case 'c': config_file = strdup(optarg); break;
-    case 'm': commit_msg = strdup(optarg); break;
-    default: /* '?' */ print_usage(argv[0]);
+    case 'c':
+      config_file = strdup(optarg);
+      break;
+    case 'm':
+      commit_msg = strdup(optarg);
+      break;
+    default: /* '?' */
+      print_usage(argv[0]);
     }
   }
 
@@ -41,8 +46,8 @@ int main(int argc, char **argv)
   }
 
   ORCAcode code;
-  NTL_T(struct github_file)
-  files = (void *)ntl_calloc(argc - optind, sizeof(struct github_file));
+  struct github_file **files =
+    (void *)ntl_calloc(argc - optind, sizeof(struct github_file));
   for (int i = 0; files[i]; ++i)
     files[i]->path = argv[optind + i];
 
