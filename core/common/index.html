@@ -36,8 +36,8 @@
     <link rel="shortcut icon" href="../../_static/icon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="WebSockets Reference" href="../websockets/index.html" />
-    <link rel="prev" title="Orca API Reference" href="../index.html" />
+    <link rel="next" title="User-Agent Reference" href="../user_agent/index.html" />
+    <link rel="prev" title="Orca’s core API Reference" href="../index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -143,11 +143,128 @@
   </a>
  </li>
  <li class="toctree-l1 has-children">
-  <a class="reference internal" href="../websockets/index.html">
-   WebSockets
+  <a class="reference internal" href="../user_agent/index.html">
+   User-Agent
   </a>
   <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
   <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/structures.html">
+     Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/http.html">
+     HTTP - general
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_init.html">
+     ua_init - Create a User-Agent handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_cleanup.html">
+     ua_cleanup - Cleanup a User-Agent handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_set_url.html">
+     ua_set_url - Set User-Agent base URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_get_url.html">
+     ua_get_url - Get User-Agent base URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_set_opt.html">
+     ua_set_opt - Set connection’s default configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_easy_run.html">
+     ua_easy_run - Quickly perform a transfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_start.html">
+     ua_conn_start - Get a individual connection handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_setup.html">
+     ua_conn_setup - Set transfer attributes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_easy_perform.html">
+     ua_conn_easy_perform - Quickly perform a transfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_add_header.html">
+     ua_conn_add_header - Add a header/field pair
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_print_header.html">
+     ua_conn_print_header - Fill a buffer with all headers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_set_mime.html">
+     ua_conn_set_mime - Build a libcurl based multipart body
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_reset.html">
+     ua_conn_reset - Reset a connection for immediate reuse
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_stop.html">
+     ua_conn_stop - Stop a connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_conn_get_easy_handle.html">
+     ua_conn_get_easy_handle - Get the libcurl’s easy_handle assigned
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_info_extract.html">
+     ua_info_extract - Extract information on latest request
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_info_cleanup.html">
+     ua_info_cleanup - Cleanup extracted information
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_info_get_header.html">
+     ua_info_get_header - Get response header’s value from field
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../user_agent/methods/ua_info_get_body.html">
+     ua_info_get_body - Get response body
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../websockets/index.html">
+   WebSockets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -248,8 +365,8 @@
   <a class="reference internal" href="../ntl/index.html">
    NTL (null-terminated lists)
   </a>
-  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-  <label for="toctree-checkbox-2">
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
    <i class="fas fa-chevron-down">
    </i>
   </label>
@@ -593,13 +710,13 @@
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Orca API Reference</p>
+            <p class="prev-next-title">Orca’s core API Reference</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../websockets/index.html" title="next page">
+    <a class='right-next' id="next-link" href="../user_agent/index.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">WebSockets Reference</p>
+        <p class="prev-next-title">User-Agent Reference</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -632,7 +749,7 @@
     
     <div class="footer-item">
       <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.1.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
 </p>
     </div>
     

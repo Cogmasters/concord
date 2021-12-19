@@ -11,5 +11,5 @@
 Structures
 ==========
 
-.. doxygenfile:: specs-code/discord/guild-template.h
+.. doxygenfile:: specs-code/discord/guild_template.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

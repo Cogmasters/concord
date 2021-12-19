@@ -1,0 +1,597 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Structures &#8212; Orca  documentation</title>
+    
+  <link href="../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="HTTP - general" href="http.html" />
+    <link rel="prev" title="User-Agent Reference" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../index.html">
+  <img src="../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../apis/index.html">
+  Supported APIs
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  Orca's core API
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../common/index.html">
+   Common
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="index.html">
+   User-Agent
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="http.html">
+     HTTP - general
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_init.html">
+     ua_init - Create a User-Agent handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_cleanup.html">
+     ua_cleanup - Cleanup a User-Agent handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_set_url.html">
+     ua_set_url - Set User-Agent base URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_get_url.html">
+     ua_get_url - Get User-Agent base URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_set_opt.html">
+     ua_set_opt - Set connection’s default configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_easy_run.html">
+     ua_easy_run - Quickly perform a transfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_start.html">
+     ua_conn_start - Get a individual connection handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_setup.html">
+     ua_conn_setup - Set transfer attributes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_easy_perform.html">
+     ua_conn_easy_perform - Quickly perform a transfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_add_header.html">
+     ua_conn_add_header - Add a header/field pair
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_print_header.html">
+     ua_conn_print_header - Fill a buffer with all headers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_set_mime.html">
+     ua_conn_set_mime - Build a libcurl based multipart body
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_reset.html">
+     ua_conn_reset - Reset a connection for immediate reuse
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_stop.html">
+     ua_conn_stop - Stop a connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_conn_get_easy_handle.html">
+     ua_conn_get_easy_handle - Get the libcurl’s easy_handle assigned
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_info_extract.html">
+     ua_info_extract - Extract information on latest request
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_info_cleanup.html">
+     ua_info_cleanup - Cleanup extracted information
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_info_get_header.html">
+     ua_info_get_header - Get response header’s value from field
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="methods/ua_info_get_body.html">
+     ua_info_get_body - Get response body
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../websockets/index.html">
+   WebSockets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/structures.html">
+     Structures
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_init.html">
+     ws_init - initialize a WebSockets handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_cleanup.html">
+     ws_cleanup - cleanup a WebSockets handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_set_url.html">
+     ws_set_url - set WebSockets URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_add_header.html">
+     ws_add_header - add HTTP header
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_start.html">
+     ws_start - kickstart WebSockets connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_easy_run.html">
+     ws_easy_run - check pending WebSockets transfers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_end.html">
+     ws_end - exit from a WebSockets connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_get_status.html">
+     ws_get_status - get client’s connection status
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_close_opcode_print.html">
+     ws_close_opcode_print - print CLOSE code as string
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_timestamp.html">
+     ws_timestamp - get WebSockets current timestamp
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_timestamp_update.html">
+     ws_timestamp_update - update WebSockets current timestamp
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_send_binary.html">
+     ws_send_binary - send binary control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_send_text.html">
+     ws_send_text - send text control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_ping.html">
+     ws_ping - send PING control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_pong.html">
+     ws_pong - send PONG control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../websockets/methods/ws_close.html">
+     ws_close - send CLOSE control-frame
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../logconf/index.html">
+   Modular Logging
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../ntl/index.html">
+   NTL (null-terminated lists)
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ntl/methods/initializer.html">
+     Initializer / Cleanup
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ntl/methods/utils.html">
+     Utilities
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ntl/methods/serializer.html">
+     Serializer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../ntl/methods/deserializer.html">
+     De-serializer
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/core/user_agent/structures.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="structures">
+<h1>Structures<a class="headerlink" href="#structures" title="Permalink to this headline">¶</a></h1>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.user_agent">
+<span class="target" id="structuser__agent"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">user_agent</span></span></span><a class="headerlink" href="#c.user_agent" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Opaque User-Agent handle. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="methods/ua_init.html#user-agent_8h_1a20fa3d79fe196c1ac342ca7cce89303b"><span class="std std-ref">ua_init()</span></a>, <a class="reference internal" href="methods/ua_cleanup.html#user-agent_8h_1a935bcb1a36c4fea73a8bf40f6a189271"><span class="std std-ref">ua_cleanup()</span></a>, <a class="reference internal" href="methods/ua_set_url.html#user-agent_8h_1adc27f909cc158a7f5178004a475d2928"><span class="std std-ref">ua_set_url()</span></a>, <a class="reference internal" href="methods/ua_get_url.html#user-agent_8h_1ab787756be799fe6bc08308e4eb771e4b"><span class="std std-ref">ua_get_url()</span></a>, <a class="reference internal" href="methods/ua_set_opt.html#user-agent_8h_1a43f87183dba1eca0cd9a15891e940e6c"><span class="std std-ref">ua_set_opt()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ua_attr">
+<span class="target" id="structua__attr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ua_attr</span></span></span><a class="headerlink" href="#c.ua_attr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>User-Agent handle initialization attributes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_attr.conf">
+<span class="target" id="structua__attr_1a7c1f31652938d43bedbeb117b967b909"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../logconf/index.html#c.logconf" title="logconf"><span class="n"><span class="pre">logconf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">conf</span></span></span><a class="headerlink" href="#c.ua_attr.conf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>pre-initialized logging module </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ua_conn">
+<span class="target" id="structua__conn"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ua_conn</span></span></span><a class="headerlink" href="#c.ua_conn" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Opaque connection handle. </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="methods/ua_conn_start.html#user-agent_8h_1a6cfff0e07ffa11c3b866c5dedef07a72"><span class="std std-ref">ua_conn_start()</span></a>, <a class="reference internal" href="methods/ua_conn_setup.html#user-agent_8h_1a083a73919519040de5442541c9ae17e6"><span class="std std-ref">ua_conn_setup()</span></a>, <a class="reference internal" href="methods/ua_conn_reset.html#user-agent_8h_1a2914291ddfb2c1bd54e8381c40c5e550"><span class="std std-ref">ua_conn_reset()</span></a>, <a class="reference internal" href="methods/ua_conn_stop.html#user-agent_8h_1abb20ae991d08f27ea36bb45208b8ef88"><span class="std std-ref">ua_conn_stop()</span></a>, <a class="reference internal" href="methods/ua_conn_easy_perform.html#user-agent_8h_1aa127fbaf5d791dd32efb9177f3ffd4ac"><span class="std std-ref">ua_conn_easy_perform()</span></a>, <a class="reference internal" href="methods/ua_conn_add_header.html#user-agent_8h_1a40b9205169190412649b96469ab21ea8"><span class="std std-ref">ua_conn_add_header()</span></a>, <a class="reference internal" href="methods/ua_conn_print_header.html#user-agent_8h_1a1ab7a16d6940d15d8f8d40ca22cfbb51"><span class="std std-ref">ua_conn_print_header()</span></a>, <a class="reference internal" href="methods/ua_conn_set_mime.html#user-agent_8h_1a41cf5b29ea9d9364ff3d52dddc836548"><span class="std std-ref">ua_conn_set_mime()</span></a>, <a class="reference internal" href="methods/ua_conn_get_easy_handle.html#user-agent_8h_1a761a8ce7521c20fa2c3857b229ebea5f"><span class="std std-ref">ua_conn_get_easy_handle()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ua_conn_attr">
+<span class="target" id="structua__conn__attr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ua_conn_attr</span></span></span><a class="headerlink" href="#c.ua_conn_attr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Connection attributes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_conn_attr.method">
+<span class="target" id="structua__conn__attr_1ad3d99a53592c5ec94f2af890b016d769"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="http.html#c.http_method" title="http_method"><span class="n"><span class="pre">http_method</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">method</span></span></span><a class="headerlink" href="#c.ua_conn_attr.method" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the HTTP method of this transfer (GET, POST, …) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_conn_attr.body">
+<span class="target" id="structua__conn__attr_1aec7c1743245fb3b9a9f23214af04bc3a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../ntl/index.html#c.sized_buffer" title="sized_buffer"><span class="n"><span class="pre">sized_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">body</span></span></span><a class="headerlink" href="#c.ua_conn_attr.body" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the optional request body, can be NULL </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_conn_attr.endpoint">
+<span class="target" id="structua__conn__attr_1ab0f3f13a4c7dccd740b5fca73f1fc3c1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">endpoint</span></span></span><a class="headerlink" href="#c.ua_conn_attr.endpoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the endpoint to be appended to the base URL </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_conn_attr.base_url">
+<span class="target" id="structua__conn__attr_1a39b5c27faf04d226227b98919a8efaa1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">base_url</span></span></span><a class="headerlink" href="#c.ua_conn_attr.base_url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>optional base_url to override <a class="reference internal" href="methods/ua_set_url.html#user-agent_8h_1adc27f909cc158a7f5178004a475d2928"><span class="std std-ref">ua_set_url()</span></a>, can be NULL </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.ua_info">
+<span class="target" id="structua__info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ua_info</span></span></span><a class="headerlink" href="#c.ua_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Informational handle received on request’s completion. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_info.loginfo">
+<span class="target" id="structua__info_1a70056192b306402ea6c8f4c9586c0a59"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.ua_info.loginfo" title="loginfo"><span class="n"><span class="pre">loginfo</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loginfo</span></span></span><a class="headerlink" href="#c.ua_info.loginfo" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>logging informational </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_info.code">
+<span class="target" id="structua__info_1aa32789e402e5a1cbe6db0addad39146d"></span><a class="reference internal" href="../common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.ua_info.code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>response code for latest request </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.ua_info.httpcode">
+<span class="target" id="structua__info_1a10019f3c4e7fd32a6a6edbe7229cd6c4"></span><span class="kt"><span class="pre">long</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">httpcode</span></span></span><a class="headerlink" href="#c.ua_info.httpcode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the HTTP response code </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">User-Agent Reference</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="http.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">HTTP - general</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

@@ -11,5 +11,5 @@
 Structures
 ==========
 
-.. doxygenfile:: specs-code/discord/stage-instance.h
+.. doxygenfile:: specs-code/discord/stage_instance.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
