@@ -17,8 +17,8 @@ Reference
    :maxdepth: 2
    :glob:
 
-   web_apis/index
-   Orca API <orca_api/index>
+   apis/index
+   Orca's core API <core/index>
   
 Help
 ----
