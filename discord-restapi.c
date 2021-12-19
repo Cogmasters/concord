@@ -35,7 +35,7 @@
 ORCAcode
 discord_get_global_application_commands(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   struct discord_application_command ***ret)
 {
   struct discord_request_attr attr =
@@ -52,7 +52,7 @@ discord_get_global_application_commands(
 ORCAcode
 discord_create_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   struct discord_create_global_application_command_params *params,
   struct discord_application_command *ret)
 {
@@ -78,8 +78,8 @@ discord_create_global_application_command(
 
 ORCAcode
 discord_get_global_application_command(struct discord *client,
-                                       const u64_snowflake_t application_id,
-                                       const u64_snowflake_t command_id,
+                                       u64_snowflake_t application_id,
+                                       u64_snowflake_t command_id,
                                        struct discord_application_command *ret)
 {
   struct discord_request_attr attr =
@@ -97,8 +97,8 @@ discord_get_global_application_command(struct discord *client,
 ORCAcode
 discord_edit_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t command_id,
   struct discord_edit_global_application_command_params *params,
   struct discord_application_command *ret)
 {
@@ -121,8 +121,8 @@ discord_edit_global_application_command(
 
 ORCAcode
 discord_delete_global_application_command(struct discord *client,
-                                          const u64_snowflake_t application_id,
-                                          const u64_snowflake_t command_id)
+                                          u64_snowflake_t application_id,
+                                          u64_snowflake_t command_id)
 {
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER);
@@ -135,7 +135,7 @@ discord_delete_global_application_command(struct discord *client,
 ORCAcode
 discord_bulk_overwrite_global_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   struct discord_application_command **params,
   struct discord_application_command ***ret)
 {
@@ -159,8 +159,8 @@ discord_bulk_overwrite_global_application_command(
 ORCAcode
 discord_get_guild_application_commands(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
   struct discord_application_command ***ret)
 {
   struct discord_request_attr attr =
@@ -179,8 +179,8 @@ discord_get_guild_application_commands(
 ORCAcode
 discord_create_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
   struct discord_create_guild_application_command_params *params,
   struct discord_application_command *ret)
 {
@@ -208,9 +208,9 @@ discord_create_guild_application_command(
 
 ORCAcode
 discord_get_guild_application_command(struct discord *client,
-                                      const u64_snowflake_t application_id,
-                                      const u64_snowflake_t guild_id,
-                                      const u64_snowflake_t command_id,
+                                      u64_snowflake_t application_id,
+                                      u64_snowflake_t guild_id,
+                                      u64_snowflake_t command_id,
                                       struct discord_application_command *ret)
 {
   struct discord_request_attr attr =
@@ -230,9 +230,9 @@ discord_get_guild_application_command(struct discord *client,
 ORCAcode
 discord_edit_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
   struct discord_edit_guild_application_command_params *params,
   struct discord_application_command *ret)
 {
@@ -257,9 +257,9 @@ discord_edit_guild_application_command(
 
 ORCAcode
 discord_delete_guild_application_command(struct discord *client,
-                                         const u64_snowflake_t application_id,
-                                         const u64_snowflake_t guild_id,
-                                         const u64_snowflake_t command_id)
+                                         u64_snowflake_t application_id,
+                                         u64_snowflake_t guild_id,
+                                         u64_snowflake_t command_id)
 {
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
@@ -274,8 +274,8 @@ discord_delete_guild_application_command(struct discord *client,
 ORCAcode
 discord_bulk_overwrite_guild_application_command(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
   struct discord_application_command **params,
   struct discord_application_command ***ret)
 {
@@ -301,8 +301,8 @@ discord_bulk_overwrite_guild_application_command(
 ORCAcode
 discord_get_guild_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
   struct discord_guild_application_command_permissions ***ret)
 {
   struct discord_request_attr attr =
@@ -321,9 +321,9 @@ discord_get_guild_application_command_permissions(
 ORCAcode
 discord_get_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
   struct discord_guild_application_command_permissions *ret)
 {
   struct discord_request_attr attr =
@@ -343,9 +343,9 @@ discord_get_application_command_permissions(
 ORCAcode
 discord_edit_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
-  const u64_snowflake_t command_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t command_id,
   struct discord_edit_application_command_permissions_params *params,
   struct discord_guild_application_command_permissions *ret)
 {
@@ -371,8 +371,8 @@ discord_edit_application_command_permissions(
 ORCAcode
 discord_batch_edit_application_command_permissions(
   struct discord *client,
-  const u64_snowflake_t application_id,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t application_id,
+  u64_snowflake_t guild_id,
   struct discord_guild_application_command_permissions **params,
   struct discord_guild_application_command_permissions ***ret)
 {
@@ -401,7 +401,7 @@ discord_batch_edit_application_command_permissions(
 
 ORCAcode
 discord_get_guild_audit_log(struct discord *client,
-                            const u64_snowflake_t guild_id,
+                            u64_snowflake_t guild_id,
                             struct discord_get_guild_audit_log_params *params,
                             struct discord_audit_log *ret)
 {
@@ -1295,7 +1295,7 @@ discord_list_joined_private_archived_threads(
 
 ORCAcode
 discord_list_guild_emojis(struct discord *client,
-                          const u64_snowflake_t guild_id,
+                          u64_snowflake_t guild_id,
                           struct discord_emoji ***ret)
 {
   struct discord_request_attr attr =
@@ -1310,8 +1310,8 @@ discord_list_guild_emojis(struct discord *client,
 
 ORCAcode
 discord_get_guild_emoji(struct discord *client,
-                        const u64_snowflake_t guild_id,
-                        const u64_snowflake_t emoji_id,
+                        u64_snowflake_t guild_id,
+                        u64_snowflake_t emoji_id,
                         struct discord_emoji *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_emoji, ret);
@@ -1327,7 +1327,7 @@ discord_get_guild_emoji(struct discord *client,
 
 ORCAcode
 discord_create_guild_emoji(struct discord *client,
-                           const u64_snowflake_t guild_id,
+                           u64_snowflake_t guild_id,
                            struct discord_create_guild_emoji_params *params,
                            struct discord_emoji *ret)
 {
@@ -1348,8 +1348,8 @@ discord_create_guild_emoji(struct discord *client,
 
 ORCAcode
 discord_modify_guild_emoji(struct discord *client,
-                           const u64_snowflake_t guild_id,
-                           const u64_snowflake_t emoji_id,
+                           u64_snowflake_t guild_id,
+                           u64_snowflake_t emoji_id,
                            struct discord_modify_guild_emoji_params *params,
                            struct discord_emoji *ret)
 {
@@ -1372,8 +1372,8 @@ discord_modify_guild_emoji(struct discord *client,
 
 ORCAcode
 discord_delete_guild_emoji(struct discord *client,
-                           const u64_snowflake_t guild_id,
-                           const u64_snowflake_t emoji_id)
+                           u64_snowflake_t guild_id,
+                           u64_snowflake_t emoji_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, emoji_id != 0, ORCA_BAD_PARAMETER);
@@ -1496,7 +1496,7 @@ discord_create_guild(struct discord *client,
 
 ORCAcode
 discord_get_guild(struct discord *client,
-                  const u64_snowflake_t guild_id,
+                  u64_snowflake_t guild_id,
                   struct discord_guild *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_guild, ret);
@@ -1510,7 +1510,7 @@ discord_get_guild(struct discord *client,
 
 ORCAcode
 discord_get_guild_preview(struct discord *client,
-                          const u64_snowflake_t guild_id,
+                          u64_snowflake_t guild_id,
                           struct discord_guild_preview *ret)
 {
   struct discord_request_attr attr =
@@ -1525,7 +1525,7 @@ discord_get_guild_preview(struct discord *client,
 
 ORCAcode
 discord_modify_guild(struct discord *client,
-                     const u64_snowflake_t guild_id,
+                     u64_snowflake_t guild_id,
                      struct discord_modify_guild_params *params,
                      struct discord_guild *ret)
 {
@@ -1544,7 +1544,7 @@ discord_modify_guild(struct discord *client,
 }
 
 ORCAcode
-discord_delete_guild(struct discord *client, const u64_snowflake_t guild_id)
+discord_delete_guild(struct discord *client, u64_snowflake_t guild_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
 
@@ -1554,7 +1554,7 @@ discord_delete_guild(struct discord *client, const u64_snowflake_t guild_id)
 
 ORCAcode
 discord_get_guild_channels(struct discord *client,
-                           const u64_snowflake_t guild_id,
+                           u64_snowflake_t guild_id,
                            struct discord_channel ***ret)
 {
   struct discord_request_attr attr =
@@ -1570,7 +1570,7 @@ discord_get_guild_channels(struct discord *client,
 ORCAcode
 discord_create_guild_channel(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_create_guild_channel_params *params,
   struct discord_channel *ret)
 {
@@ -1592,7 +1592,7 @@ discord_create_guild_channel(
 ORCAcode
 discord_modify_guild_channel_positions(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_modify_guild_channel_positions_params **params)
 {
   struct sized_buffer body;
@@ -1629,7 +1629,7 @@ discord_get_guild_member(struct discord *client,
 
 ORCAcode
 discord_list_guild_members(struct discord *client,
-                           const u64_snowflake_t guild_id,
+                           u64_snowflake_t guild_id,
                            struct discord_list_guild_members_params *params,
                            struct discord_guild_member ***ret)
 {
@@ -1663,7 +1663,7 @@ discord_list_guild_members(struct discord *client,
 ORCAcode
 discord_search_guild_members(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_search_guild_members_params *params,
   struct discord_guild_member ***ret)
 {
@@ -1699,8 +1699,8 @@ discord_search_guild_members(
 
 ORCAcode
 discord_add_guild_member(struct discord *client,
-                         const u64_snowflake_t guild_id,
-                         const u64_snowflake_t user_id,
+                         u64_snowflake_t guild_id,
+                         u64_snowflake_t user_id,
                          struct discord_add_guild_member_params *params,
                          struct discord_guild_member *ret)
 {
@@ -1725,8 +1725,8 @@ discord_add_guild_member(struct discord *client,
 
 ORCAcode
 discord_modify_guild_member(struct discord *client,
-                            const u64_snowflake_t guild_id,
-                            const u64_snowflake_t user_id,
+                            u64_snowflake_t guild_id,
+                            u64_snowflake_t user_id,
                             struct discord_modify_guild_member_params *params,
                             struct discord_guild_member *ret)
 {
@@ -1750,7 +1750,7 @@ discord_modify_guild_member(struct discord *client,
 ORCAcode
 discord_modify_current_member(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_modify_current_member_params *params,
   struct discord_guild_member *ret)
 {
@@ -1773,7 +1773,7 @@ discord_modify_current_member(
 ORCAcode
 discord_modify_current_user_nick(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_modify_current_user_nick_params *params,
   struct discord_guild_member *ret)
 {
@@ -1800,9 +1800,9 @@ discord_modify_current_user_nick(
 
 ORCAcode
 discord_add_guild_member_role(struct discord *client,
-                              const u64_snowflake_t guild_id,
-                              const u64_snowflake_t user_id,
-                              const u64_snowflake_t role_id)
+                              u64_snowflake_t guild_id,
+                              u64_snowflake_t user_id,
+                              u64_snowflake_t role_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
@@ -1816,9 +1816,9 @@ discord_add_guild_member_role(struct discord *client,
 
 ORCAcode
 discord_remove_guild_member_role(struct discord *client,
-                                 const u64_snowflake_t guild_id,
-                                 const u64_snowflake_t user_id,
-                                 const u64_snowflake_t role_id)
+                                 u64_snowflake_t guild_id,
+                                 u64_snowflake_t user_id,
+                                 u64_snowflake_t role_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
@@ -1832,8 +1832,8 @@ discord_remove_guild_member_role(struct discord *client,
 
 ORCAcode
 discord_remove_guild_member(struct discord *client,
-                            const u64_snowflake_t guild_id,
-                            const u64_snowflake_t user_id)
+                            u64_snowflake_t guild_id,
+                            u64_snowflake_t user_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
@@ -1845,7 +1845,7 @@ discord_remove_guild_member(struct discord *client,
 
 ORCAcode
 discord_get_guild_bans(struct discord *client,
-                       const u64_snowflake_t guild_id,
+                       u64_snowflake_t guild_id,
                        struct discord_ban ***ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_ban, ret);
@@ -1859,8 +1859,8 @@ discord_get_guild_bans(struct discord *client,
 
 ORCAcode
 discord_get_guild_ban(struct discord *client,
-                      const u64_snowflake_t guild_id,
-                      const u64_snowflake_t user_id,
+                      u64_snowflake_t guild_id,
+                      u64_snowflake_t user_id,
                       struct discord_ban *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_ban, ret);
@@ -1876,8 +1876,8 @@ discord_get_guild_ban(struct discord *client,
 
 ORCAcode
 discord_create_guild_ban(struct discord *client,
-                         const u64_snowflake_t guild_id,
-                         const u64_snowflake_t user_id,
+                         u64_snowflake_t guild_id,
+                         u64_snowflake_t user_id,
                          struct discord_create_guild_ban_params *params)
 {
   struct sized_buffer body;
@@ -1901,8 +1901,8 @@ discord_create_guild_ban(struct discord *client,
 }
 ORCAcode
 discord_remove_guild_ban(struct discord *client,
-                         const u64_snowflake_t guild_id,
-                         const u64_snowflake_t user_id)
+                         u64_snowflake_t guild_id,
+                         u64_snowflake_t user_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
@@ -1914,7 +1914,7 @@ discord_remove_guild_ban(struct discord *client,
 
 ORCAcode
 discord_get_guild_roles(struct discord *client,
-                        const u64_snowflake_t guild_id,
+                        u64_snowflake_t guild_id,
                         struct discord_role ***ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_role, ret);
@@ -1928,7 +1928,7 @@ discord_get_guild_roles(struct discord *client,
 
 ORCAcode
 discord_create_guild_role(struct discord *client,
-                          const u64_snowflake_t guild_id,
+                          u64_snowflake_t guild_id,
                           struct discord_create_guild_role_params *params,
                           struct discord_role *ret)
 {
@@ -1949,7 +1949,7 @@ discord_create_guild_role(struct discord *client,
 ORCAcode
 discord_modify_guild_role_positions(
   struct discord *client,
-  const u64_snowflake_t guild_id,
+  u64_snowflake_t guild_id,
   struct discord_modify_guild_role_positions_params **params,
   struct discord_role ***ret)
 {
@@ -1970,8 +1970,8 @@ discord_modify_guild_role_positions(
 
 ORCAcode
 discord_modify_guild_role(struct discord *client,
-                          const u64_snowflake_t guild_id,
-                          const u64_snowflake_t role_id,
+                          u64_snowflake_t guild_id,
+                          u64_snowflake_t role_id,
                           struct discord_modify_guild_role_params *params,
                           struct discord_role *ret)
 {
@@ -1997,8 +1997,8 @@ discord_modify_guild_role(struct discord *client,
 
 ORCAcode
 discord_delete_guild_role(struct discord *client,
-                          const u64_snowflake_t guild_id,
-                          const u64_snowflake_t role_id)
+                          u64_snowflake_t guild_id,
+                          u64_snowflake_t role_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, role_id != 0, ORCA_BAD_PARAMETER);
@@ -2009,7 +2009,7 @@ discord_delete_guild_role(struct discord *client,
 }
 ORCAcode
 discord_begin_guild_prune(struct discord *client,
-                          const u64_snowflake_t guild_id,
+                          u64_snowflake_t guild_id,
                           struct discord_begin_guild_prune_params *params)
 {
   struct sized_buffer body;
@@ -2031,7 +2031,7 @@ discord_begin_guild_prune(struct discord *client,
 
 ORCAcode
 discord_get_guild_invites(struct discord *client,
-                          const u64_snowflake_t guild_id,
+                          u64_snowflake_t guild_id,
                           struct discord_invite ***ret)
 {
   struct discord_request_attr attr =
@@ -2046,8 +2046,8 @@ discord_get_guild_invites(struct discord *client,
 
 ORCAcode
 discord_delete_guild_integrations(struct discord *client,
-                                  const u64_snowflake_t guild_id,
-                                  const u64_snowflake_t integration_id)
+                                  u64_snowflake_t guild_id,
+                                  u64_snowflake_t integration_id)
 {
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, integration_id != 0, ORCA_BAD_PARAMETER);
@@ -2059,7 +2059,7 @@ discord_delete_guild_integrations(struct discord *client,
 
 ORCAcode
 discord_get_guild_vanity_url(struct discord *client,
-                             const u64_snowflake_t guild_id,
+                             u64_snowflake_t guild_id,
                              struct discord_invite *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_invite, ret);
@@ -2073,7 +2073,7 @@ discord_get_guild_vanity_url(struct discord *client,
 
 ORCAcode
 discord_get_guild_welcome_screen(struct discord *client,
-                                 const u64_snowflake_t guild_id,
+                                 u64_snowflake_t guild_id,
                                  struct discord_welcome_screen *ret)
 {
   struct discord_request_attr attr =
@@ -2093,7 +2093,7 @@ discord_get_guild_welcome_screen(struct discord *client,
 ORCAcode
 discord_create_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[],
   struct discord_interaction_response *params,
   struct discord_interaction_response *ret)
@@ -2118,7 +2118,7 @@ discord_create_interaction_response(
 ORCAcode
 discord_get_original_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[],
   struct discord_interaction_response *ret)
 {
@@ -2137,7 +2137,7 @@ discord_get_original_interaction_response(
 ORCAcode
 discord_edit_original_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[],
   struct discord_edit_original_interaction_response_params *params,
   struct discord_interaction_response *ret)
@@ -2172,7 +2172,7 @@ discord_edit_original_interaction_response(
 ORCAcode
 discord_delete_original_interaction_response(
   struct discord *client,
-  const u64_snowflake_t interaction_id,
+  u64_snowflake_t interaction_id,
   const char interaction_token[])
 {
   ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER);
@@ -2186,7 +2186,7 @@ discord_delete_original_interaction_response(
 ORCAcode
 discord_create_followup_message(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
   struct discord_create_followup_message_params *params,
   struct discord_webhook *ret)
@@ -2228,9 +2228,9 @@ discord_create_followup_message(
 
 ORCAcode
 discord_get_followup_message(struct discord *client,
-                             const u64_snowflake_t application_id,
+                             u64_snowflake_t application_id,
                              const char interaction_token[],
-                             const u64_snowflake_t message_id,
+                             u64_snowflake_t message_id,
                              struct discord_message *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_message, ret);
@@ -2248,9 +2248,9 @@ discord_get_followup_message(struct discord *client,
 ORCAcode
 discord_edit_followup_message(
   struct discord *client,
-  const u64_snowflake_t application_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
-  const u64_snowflake_t message_id,
+  u64_snowflake_t message_id,
   struct discord_edit_followup_message_params *params,
   struct discord_message *ret)
 {
@@ -2283,9 +2283,9 @@ discord_edit_followup_message(
 
 ORCAcode
 discord_delete_followup_message(struct discord *client,
-                                const u64_snowflake_t application_id,
+                                u64_snowflake_t application_id,
                                 const char interaction_token[],
-                                const u64_snowflake_t message_id)
+                                u64_snowflake_t message_id)
 {
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
@@ -2351,7 +2351,7 @@ discord_get_current_user(struct discord *client, struct discord_user *ret)
 
 ORCAcode
 discord_get_user(struct discord *client,
-                 const u64_snowflake_t user_id,
+                 u64_snowflake_t user_id,
                  struct discord_user *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_user, ret);
@@ -2396,7 +2396,7 @@ discord_get_current_user_guilds(struct discord *client,
 }
 
 ORCAcode
-discord_leave_guild(struct discord *client, const u64_snowflake_t guild_id)
+discord_leave_guild(struct discord *client, u64_snowflake_t guild_id)
 {
   struct sized_buffer body = { "{}", 2 };
 
@@ -2480,7 +2480,7 @@ discord_list_voice_regions(struct discord *client,
 
 ORCAcode
 discord_create_webhook(struct discord *client,
-                       const u64_snowflake_t channel_id,
+                       u64_snowflake_t channel_id,
                        struct discord_create_webhook_params *params,
                        struct discord_webhook *ret)
 {
@@ -2502,7 +2502,7 @@ discord_create_webhook(struct discord *client,
 
 ORCAcode
 discord_get_channel_webhooks(struct discord *client,
-                             const u64_snowflake_t channel_id,
+                             u64_snowflake_t channel_id,
                              struct discord_webhook ***ret)
 {
   struct discord_request_attr attr =
@@ -2517,7 +2517,7 @@ discord_get_channel_webhooks(struct discord *client,
 
 ORCAcode
 discord_get_guild_webhooks(struct discord *client,
-                           const u64_snowflake_t guild_id,
+                           u64_snowflake_t guild_id,
                            struct discord_webhook ***ret)
 {
   struct discord_request_attr attr =
@@ -2532,7 +2532,7 @@ discord_get_guild_webhooks(struct discord *client,
 
 ORCAcode
 discord_get_webhook(struct discord *client,
-                    const u64_snowflake_t webhook_id,
+                    u64_snowflake_t webhook_id,
                     struct discord_webhook *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_webhook, ret);
@@ -2546,7 +2546,7 @@ discord_get_webhook(struct discord *client,
 
 ORCAcode
 discord_get_webhook_with_token(struct discord *client,
-                               const u64_snowflake_t webhook_id,
+                               u64_snowflake_t webhook_id,
                                const char webhook_token[],
                                struct discord_webhook *ret)
 {
@@ -2563,7 +2563,7 @@ discord_get_webhook_with_token(struct discord *client,
 
 ORCAcode
 discord_modify_webhook(struct discord *client,
-                       const u64_snowflake_t webhook_id,
+                       u64_snowflake_t webhook_id,
                        struct discord_modify_webhook_params *params,
                        struct discord_webhook *ret)
 {
@@ -2583,7 +2583,7 @@ discord_modify_webhook(struct discord *client,
 ORCAcode
 discord_modify_webhook_with_token(
   struct discord *client,
-  const u64_snowflake_t webhook_id,
+  u64_snowflake_t webhook_id,
   const char webhook_token[],
   struct discord_modify_webhook_with_token_params *params,
   struct discord_webhook *ret)
@@ -2606,7 +2606,7 @@ discord_modify_webhook_with_token(
 
 ORCAcode
 discord_delete_webhook(struct discord *client,
-                       const u64_snowflake_t webhook_id)
+                       u64_snowflake_t webhook_id)
 {
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
 
@@ -2616,7 +2616,7 @@ discord_delete_webhook(struct discord *client,
 
 ORCAcode
 discord_delete_webhook_with_token(struct discord *client,
-                                  const u64_snowflake_t webhook_id,
+                                  u64_snowflake_t webhook_id,
                                   const char webhook_token[])
 {
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
@@ -2629,7 +2629,7 @@ discord_delete_webhook_with_token(struct discord *client,
 
 ORCAcode
 discord_execute_webhook(struct discord *client,
-                        const u64_snowflake_t webhook_id,
+                        u64_snowflake_t webhook_id,
                         const char webhook_token[],
                         struct discord_execute_webhook_params *params,
                         struct discord_webhook *ret)
@@ -2673,9 +2673,9 @@ discord_execute_webhook(struct discord *client,
 
 ORCAcode
 discord_get_webhook_message(struct discord *client,
-                            const u64_snowflake_t webhook_id,
+                            u64_snowflake_t webhook_id,
                             const char webhook_token[],
-                            const u64_snowflake_t message_id,
+                            u64_snowflake_t message_id,
                             struct discord_message *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_message, ret);
@@ -2693,9 +2693,9 @@ discord_get_webhook_message(struct discord *client,
 ORCAcode
 discord_edit_webhook_message(
   struct discord *client,
-  const u64_snowflake_t webhook_id,
+  u64_snowflake_t webhook_id,
   const char webhook_token[],
-  const u64_snowflake_t message_id,
+  u64_snowflake_t message_id,
   struct discord_edit_webhook_message_params *params,
   struct discord_message *ret)
 {
@@ -2728,9 +2728,9 @@ discord_edit_webhook_message(
 
 ORCAcode
 discord_delete_webhook_message(struct discord *client,
-                               const u64_snowflake_t webhook_id,
+                               u64_snowflake_t webhook_id,
                                const char webhook_token[],
-                               const u64_snowflake_t message_id)
+                               u64_snowflake_t message_id)
 {
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER);
@@ -2747,8 +2747,8 @@ discord_delete_webhook_message(struct discord *client,
 
 ORCAcode
 discord_disconnect_guild_member(struct discord *client,
-                                const u64_snowflake_t guild_id,
-                                const u64_snowflake_t user_id,
+                                u64_snowflake_t guild_id,
+                                u64_snowflake_t user_id,
                                 struct discord_guild_member *ret)
 {
   struct discord_request_attr attr =

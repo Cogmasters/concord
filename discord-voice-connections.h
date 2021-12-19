@@ -1,7 +1,6 @@
 /**
  * @file discord-voice-connections.h
  * @author cee-studio
- * @date 21 Jun 2021
  * @brief File containing internal functions and datatypes for Voice
  * Connections
  */

@@ -1,6 +1,4 @@
-/**
- * @file user-agent.h
- */
+/** @file user-agent.h */
 
 #ifndef USER_AGENT_H
 #define USER_AGENT_H
@@ -87,8 +85,8 @@ struct user_agent;
  * @brief Opaque connection handle
  *
  * @see ua_conn_start(), ua_conn_setup(), ua_conn_reset(), ua_conn_stop(),
- * ua_conn_easy_perform(), ua_conn_add_header(), ua_conn_print_header(),
- * ua_conn_set_mime(), ua_conn_get_easy_handle()
+ *       ua_conn_easy_perform(), ua_conn_add_header(), ua_conn_print_header(),
+ *       ua_conn_set_mime(), ua_conn_get_easy_handle()
  */
 struct ua_conn;
 
@@ -228,7 +226,7 @@ struct ua_resp_handle {
  * @param body the optional request body, can be NULL
  * @param method the HTTP method of this transfer (GET, POST, ...)
  * @param endpoint the endpoint to be appended to the URL set at ua_set_url()
- * @return ORCAcode for how the transfer went, ORCA_OK means success.
+ * @ORCA_return
  * @note This is an easy, yet highly abstracted way of performing requests.
  *        If a higher control is necessary, users are better off using the
  *        functions of `ua_conn_xxx()` family.
@@ -250,7 +248,7 @@ struct ua_conn *ua_conn_start(struct user_agent *ua);
  * @brief Perform a blocking transfer
  *
  * @param conn the connection handle
- * @return ORCAcode for how the transfer went, ORCA_OK means success.
+ * @ORCA_return
  */
 ORCAcode ua_conn_easy_perform(struct ua_conn *conn);
 
@@ -323,7 +321,7 @@ CURL *ua_conn_get_easy_handle(struct ua_conn *conn);
  *
  * @param conn the connection handle
  * @param info handle to store information on previous request
- * @return ORCAcode for how the operation went, ORCA_OK means success.
+ * @ORCA_return
  */
 ORCAcode ua_info_extract(struct ua_conn *conn, struct ua_info *info);
 

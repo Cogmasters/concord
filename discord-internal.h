@@ -144,8 +144,7 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  * @param method the method in opcode format of the request being sent
  * @param endpoint_fmt the format endpoint that be appended to base_url when
  *        performing a request, same behavior as printf()
- * @return a code for checking on how the operation went, ORCA_OK means
- *        nothing out of ordinary
+ * @ORCA_return
  * @note if async is set then this function will enqueue the request instead of
  * performing it immediately
  */
@@ -169,7 +168,7 @@ void discord_adapter_async_next(struct discord_adapter *adapter,
  * @brief Check and manage on-going, pending and timed-out requests
  *
  * @param adapter the handle initialized with discord_adapter_init()
- * @return `ORCA_OK` means nothing out of the ordinary
+ * @ORCA_return
  */
 ORCAcode discord_adapter_perform(struct discord_adapter *adapter);
 
@@ -499,7 +498,7 @@ void discord_gateway_cleanup(struct discord_gateway *gw);
  * @brief Initialize handle with the new session primitives
  *
  * @param gw the handle initialized with discord_gateway_init()
- * @return `ORCA_OK` means nothing out of the ordinary
+ * @ORCA_return
  */
 ORCAcode discord_gateway_start(struct discord_gateway *gw);
 
@@ -515,7 +514,7 @@ bool discord_gateway_end(struct discord_gateway *gw);
  * @brief Check and manage on-going Gateway session
  *
  * @param req the request handler
- * @return `ORCA_OK` means nothing out of the ordinary
+ * @ORCA_return
  */
 ORCAcode discord_gateway_perform(struct discord_gateway *gw);
 
@@ -539,11 +538,7 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  * @brief The Discord client handler
  *
  * Used to access/perform public functions from discord.h
- *
- * - Initializer:
- *   - discord_init(), discord_config_init()
- * - Cleanup:
- *   - discord_cleanup()
+ * @see discord_init(), discord_config_init(), discord_cleanup()
  */
 struct discord {
   /** @privatesection */
