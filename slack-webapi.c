@@ -81,7 +81,7 @@ _slack_webapi_run_sync(struct slack_webapi *webapi,
 
   do {
     /* perform blocking request, and check results */
-    switch (code = ua_conn_perform(conn)) {
+    switch (code = ua_conn_easy_perform(conn)) {
     case ORCA_OK: {
       struct ua_info info = { 0 };
       struct sized_buffer body;

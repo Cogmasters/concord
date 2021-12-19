@@ -14,10 +14,6 @@ extern "C" {
 #include "common.h" /* ORCAcode */
 #include "logconf.h" /* logging facilities */
 
-/* forward declaration */
-struct user_agent;
-struct ua_conn;
-
 /** @brief HTTP methods */
 enum http_method {
   HTTP_INVALID = -1,
@@ -28,6 +24,73 @@ enum http_method {
   HTTP_PATCH,
   HTTP_PUT
 };
+
+/**
+ * @brief Get the HTTP method name string
+ *
+ * @param method the HTTP method
+ * @return the HTTP method name
+ */
+const char *http_method_print(enum http_method method);
+
+/**
+ * @brief Get the HTTP method enumerator from a string
+ *
+ * @param method the HTTP method string
+ * @return the HTTP method enumerator
+ */
+enum http_method http_method_eval(char method[]);
+
+/** @defgroup HttpStatusCode
+ * @see https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+ *  @{ */
+#define HTTP_OK                   200
+#define HTTP_CREATED              201
+#define HTTP_NO_CONTENT           204
+#define HTTP_NOT_MODIFIED         304
+#define HTTP_BAD_REQUEST          400
+#define HTTP_UNAUTHORIZED         401
+#define HTTP_FORBIDDEN            403
+#define HTTP_NOT_FOUND            404
+#define HTTP_METHOD_NOT_ALLOWED   405
+#define HTTP_UNPROCESSABLE_ENTITY 422
+#define HTTP_TOO_MANY_REQUESTS    429
+#define HTTP_GATEWAY_UNAVAILABLE  502
+/** @} */
+
+/**
+ * @brief Get the HTTP status code name string
+ *
+ * @param httpcode the HTTP status code
+ * @return the HTTP status code name
+ */
+const char *http_code_print(int httpcode);
+
+/**
+ * @brief Get the HTTP status code reason string
+ *
+ * @param httpcode the HTTP status code
+ * @return the HTTP status code reason
+ */
+const char *http_reason_print(int httpcode);
+
+/**
+ * @struct user_agent
+ * @brief Opaque User-Agent handle
+ *
+ * @see ua_init(), ua_cleanup(), ua_set_url(), ua_get_url(), ua_set_opt()
+ */
+struct user_agent;
+
+/**
+ * @struct ua_conn
+ * @brief Opaque connection handle
+ *
+ * @see ua_conn_start(), ua_conn_setup(), ua_conn_reset(), ua_conn_stop(),
+ * ua_conn_easy_perform(), ua_conn_add_header(), ua_conn_print_header(),
+ * ua_conn_set_mime(), ua_conn_get_easy_handle()
+ */
+struct ua_conn;
 
 /** @brief User-Agent handle initialization attributes */
 struct ua_attr {
@@ -47,38 +110,8 @@ struct ua_conn_attr {
   char *base_url;
 };
 
-/* COMMON HTTP RESPONSE CODES
-https://en.wikipedia.org/wiki/List_of_HTTP_status_codes */
-#define HTTP_OK                   200
-#define HTTP_CREATED              201
-#define HTTP_NO_CONTENT           204
-#define HTTP_NOT_MODIFIED         304
-#define HTTP_BAD_REQUEST          400
-#define HTTP_UNAUTHORIZED         401
-#define HTTP_FORBIDDEN            403
-#define HTTP_NOT_FOUND            404
-#define HTTP_METHOD_NOT_ALLOWED   405
-#define HTTP_UNPROCESSABLE_ENTITY 422
-#define HTTP_TOO_MANY_REQUESTS    429
-#define HTTP_GATEWAY_UNAVAILABLE  502
-
 /** Maximum amount of header pairs */
 #define UA_MAX_HEADER_PAIRS 100 + 1
-
-/** @brief Callback for object to be loaded by api response */
-typedef void (*ua_load_obj_cb)(char *str, size_t len, void *p_obj);
-
-/** @brief User callback to be called on request completion */
-struct ua_resp_handle {
-  /** callback called when a successful transfer occurs */
-  ua_load_obj_cb ok_cb;
-  /** the pointer to be passed to ok_cb */
-  void *ok_obj;
-  /** callback called when a failed transfer occurs */
-  ua_load_obj_cb err_cb;
-  /** the pointer to be passed to err_cb */
-  void *err_obj;
-};
 
 /** @brief Structure for storing the request's response header */
 struct ua_resp_header {
@@ -119,16 +152,14 @@ struct ua_info {
   ORCAcode code;
   /** the HTTP response code */
   long httpcode;
+
+  /** @privatesection */
+
   /** the response header */
   struct ua_resp_header header;
   /** the response body */
   struct ua_resp_body body;
 };
-
-const char *http_code_print(int httpcode);
-const char *http_reason_print(int httpcode);
-const char *http_method_print(enum http_method method);
-enum http_method http_method_eval(char method[]);
 
 /**
  * @brief Callback to be called on each libcurl's easy handle initialization
@@ -172,6 +203,21 @@ void ua_set_url(struct user_agent *ua, const char base_url[]);
  */
 const char *ua_get_url(struct user_agent *ua);
 
+/** @brief Callback for object to be loaded by api response */
+typedef void (*ua_load_obj_cb)(char *str, size_t len, void *p_obj);
+
+/** @brief User callback to be called on request completion */
+struct ua_resp_handle {
+  /** callback called when a successful transfer occurs */
+  ua_load_obj_cb ok_cb;
+  /** the pointer to be passed to ok_cb */
+  void *ok_obj;
+  /** callback called when a failed transfer occurs */
+  ua_load_obj_cb err_cb;
+  /** the pointer to be passed to err_cb */
+  void *err_obj;
+};
+
 /**
  * @brief Perform a blocking REST transfer
  *
@@ -201,12 +247,12 @@ ORCAcode ua_easy_run(struct user_agent *ua,
 struct ua_conn *ua_conn_start(struct user_agent *ua);
 
 /**
- * @brief Perform connection assigned to `conn`
+ * @brief Perform a blocking transfer
  *
  * @param conn the connection handle
  * @return ORCAcode for how the transfer went, ORCA_OK means success.
  */
-ORCAcode ua_conn_perform(struct ua_conn *conn);
+ORCAcode ua_conn_easy_perform(struct ua_conn *conn);
 
 /**
  * @brief Add a field/value pair to the request header
@@ -257,12 +303,20 @@ void ua_conn_reset(struct ua_conn *conn);
 void ua_conn_stop(struct ua_conn *conn);
 
 /**
- * @brief Setup a connection handle
+ * @brief Setup transfer attributes
  *
  * @param conn the connection handle
- * @param attr attributes to be set for conn
+ * @param attr attributes to be set for transfer
  */
 void ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr);
+
+/**
+ * @brief Get libcurl's easy handle assigned to `conn`
+ *
+ * @param conn the connection handle
+ * @return the libcurl's easy handle
+ */
+CURL *ua_conn_get_easy_handle(struct ua_conn *conn);
 
 /**
  * @brief Extract information from `conn` previous request
@@ -272,14 +326,6 @@ void ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr);
  * @return ORCAcode for how the operation went, ORCA_OK means success.
  */
 ORCAcode ua_info_extract(struct ua_conn *conn, struct ua_info *info);
-
-/**
- * @brief Get libcurl's easy handle assigned to `conn`
- *
- * @param conn the connection handle
- * @return the libcurl's easy handle
- */
-CURL *ua_conn_get_easy_handle(struct ua_conn *conn);
 
 /**
  * @brief Cleanup informational handle

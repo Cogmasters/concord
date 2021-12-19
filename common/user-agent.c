@@ -739,7 +739,7 @@ ua_conn_get_easy_handle(struct ua_conn *conn)
 }
 
 ORCAcode
-ua_conn_perform(struct ua_conn *conn)
+ua_conn_easy_perform(struct ua_conn *conn)
 {
   CURLcode ecode;
 
@@ -765,16 +765,20 @@ ua_easy_run(struct user_agent *ua,
   if (attr) ua_conn_setup(conn, attr);
 
   /* perform blocking request, and check results */
-  if (ORCA_OK == (code = ua_conn_perform(conn))) {
+  if (ORCA_OK == (code = ua_conn_easy_perform(conn))) {
     struct ua_info _info = { 0 };
 
     code = ua_info_extract(conn, &_info);
 
-    if (_info.httpcode >= 400 && _info.httpcode < 600) {
-      handle->err_cb(_info.body.buf, _info.body.len, handle->err_obj);
-    }
-    else if (_info.httpcode >= 200 && _info.httpcode < 300) {
-      handle->ok_cb(_info.body.buf, _info.body.len, handle->ok_obj);
+    if (handle) {
+      if (_info.httpcode >= 400 && _info.httpcode < 600) {
+        if (handle->err_cb)
+          handle->err_cb(_info.body.buf, _info.body.len, handle->err_obj);
+      }
+      else if (_info.httpcode >= 200 && _info.httpcode < 300) {
+        if (handle->ok_cb)
+          handle->ok_cb(_info.body.buf, _info.body.len, handle->ok_obj);
+      }
     }
 
     if (info)

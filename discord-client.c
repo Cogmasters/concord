@@ -587,7 +587,7 @@ discord_get_logconf(struct discord *client)
 }
 
 /******************************************************************************
- * The functions following are deprecated
+ * The following functions are deprecated
  ******************************************************************************/
 
 void

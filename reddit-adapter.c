@@ -91,7 +91,7 @@ _reddit_adapter_run_sync(struct reddit_adapter *adapter,
 
   do {
     /* perform blocking request, and check results */
-    switch (code = ua_conn_perform(conn)) {
+    switch (code = ua_conn_easy_perform(conn)) {
     case ORCA_OK: {
       struct ua_info info = { 0 };
       struct sized_buffer body;

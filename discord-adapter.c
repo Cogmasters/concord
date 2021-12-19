@@ -355,7 +355,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     }
 
     /* perform blocking request, and check results */
-    switch (code = ua_conn_perform(conn)) {
+    switch (code = ua_conn_easy_perform(conn)) {
     case ORCA_OK: {
       struct discord *client = CLIENT(adapter, adapter);
       struct ua_info info = { 0 };

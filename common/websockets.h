@@ -18,10 +18,7 @@ extern "C" {
  * @struct websockets
  * @brief Opaque handler for WebSockets
  *
- * - Initializer:
- *   - ws_init()
- * - Cleanup:
- *   - ws_cleanup()
+ * @see ws_init(), ws_cleanup()
  */
 struct websockets;
 
