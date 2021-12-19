@@ -210,13 +210,8 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/triggers.html">
-       Callback Triggers
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/types.html">
-       Callback Types
+      <a class="reference internal" href="../../../events/callback_set.html">
+       Set Callbacks
       </a>
      </li>
     </ul>
@@ -1228,12 +1223,8 @@
 <h1>Remove Guild Member<a class="headerlink" href="#remove-guild-member" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_remove_guild_member">
-<span class="target" id="group__DiscordDeleteChannelPermission_1ga5df43b5d17fe6f8bf8da374d2965c452"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_remove_guild_member</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_remove_guild_member" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Remove a member from a guild. <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild#remove-guild-member">https://discord.com/developers/docs/resources/guild#remove-guild-member</a> </p>
-</dd>
-</dl>
-</p>
+<span class="target" id="discord_8h_1a5df43b5d17fe6f8bf8da374d2965c452"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_remove_guild_member</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_remove_guild_member" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove a member from a guild. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1243,7 +1234,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+<dd class="field-even"><p><a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"><span class="std std-ref">ORCAcode</span></a> for how the operation went, <a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"><span class="std std-ref">ORCA_OK</span></a> means nothing out of the ordinary </p>
 </dd>
 </dl>
 </dd></dl>

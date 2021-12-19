@@ -8,5 +8,4 @@ The following section outlines the Discord events
    :caption: Table of Contents
    :maxdepth: 2
 
-   triggers
-   types
+   callback_set

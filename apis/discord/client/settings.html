@@ -210,13 +210,8 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="../events/triggers.html">
-       Callback Triggers
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../events/types.html">
-       Callback Types
+      <a class="reference internal" href="../events/callback_set.html">
+       Set Callbacks
       </a>
      </li>
     </ul>
@@ -1230,11 +1225,6 @@
 <dt class="sig sig-object c" id="c.discord_add_intents">
 <span class="target" id="discord_8h_1ad49194134d7b9e656d3a96cb0b60cfec"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_add_intents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../models/gateway/datatypes.html#c.discord_gateway_intents" title="discord_gateway_intents"><span class="n"><span class="pre">discord_gateway_intents</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_add_intents" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Subscribe to Discord Gateway events. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#gateway-intents">https://discord.com/developers/docs/topics/gateway#gateway-intents</a> </p>
-</dd>
-</dl>
-</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1249,11 +1239,6 @@
 <dt class="sig sig-object c" id="c.discord_remove_intents">
 <span class="target" id="discord_8h_1ac6a9d904378b46a72c64ade07ac02f43"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_remove_intents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../models/gateway/datatypes.html#c.discord_gateway_intents" title="discord_gateway_intents"><span class="n"><span class="pre">discord_gateway_intents</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_remove_intents" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Unsubscribe from Discord Gateway events. </p>
-<p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#gateway-intents">https://discord.com/developers/docs/topics/gateway#gateway-intents</a> </p>
-</dd>
-</dl>
-</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1269,7 +1254,7 @@
 <span class="target" id="discord_8h_1a13d9f16d62fea7cebdb6c24d57f685a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_prefix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">prefix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_prefix" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a mandatory prefix before commands. </p>
 <p>Example: If <em>‘help’</em> is a command and <em>‘!’</em> prefix is set, the command will only be validated if <em>‘!help’</em> is sent <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="../events/triggers.html#discord_8h_1a6ee082ce814c609a658e390035d01c59"><span class="std std-ref">discord_set_on_command()</span></a> </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="../events/callback_set.html#discord_8h_1a6ee082ce814c609a658e390035d01c59"><span class="std std-ref">discord_set_on_command()</span></a> </p>
 </dd>
 </dl>
 </p>

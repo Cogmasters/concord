@@ -210,13 +210,8 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/triggers.html">
-       Callback Triggers
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/types.html">
-       Callback Types
+      <a class="reference internal" href="../../../events/callback_set.html">
+       Set Callbacks
       </a>
      </li>
     </ul>
@@ -1228,13 +1223,9 @@
 <h1>Start Thread With Message<a class="headerlink" href="#start-thread-with-message" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_start_thread_with_message">
-<span class="target" id="group__DiscordDeleteChannelPermission_1gadbe7e7506869d07ae648a9424c35c004"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_start_thread_with_message</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">message_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_start_thread_with_message_params" title="discord_start_thread_with_message_params"><span class="n"><span class="pre">discord_start_thread_with_message_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_start_thread_with_message" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1adbe7e7506869d07ae648a9424c35c004"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_start_thread_with_message</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">message_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_start_thread_with_message_params" title="discord_start_thread_with_message_params"><span class="n"><span class="pre">discord_start_thread_with_message_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_start_thread_with_message" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><strong>POST</strong> /channels/{channel.id}/messages/{message.id}/threads </p>
-<p>Creates a new thread from an existing message. <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/channel#start-thread-with-message">https://discord.com/developers/docs/resources/channel#start-thread-with-message</a> </p>
-</dd>
-</dl>
-</p>
+<p>Creates a new thread from an existing message. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1242,8 +1233,11 @@
 <li><p><strong>channel_id</strong> – channel to start a thread on </p></li>
 <li><p><strong>message_id</strong> – message to start a thread from </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – the thread ID </p></li>
+<li><p><strong>ret</strong> – if successful, the response’s thread channel object </p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"><span class="std std-ref">ORCAcode</span></a> for how the operation went, <a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"><span class="std std-ref">ORCA_OK</span></a> means nothing out of the ordinary </p>
 </dd>
 </dl>
 </dd></dl>

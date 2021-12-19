@@ -210,13 +210,8 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/triggers.html">
-       Callback Triggers
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/types.html">
-       Callback Types
+      <a class="reference internal" href="../../../events/callback_set.html">
+       Set Callbacks
       </a>
      </li>
     </ul>
@@ -1228,7 +1223,7 @@
 <h1>Sync Guild Template<a class="headerlink" href="#sync-guild-template" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_sync_guild_template">
-<span class="target" id="group__DiscordDeleteChannelPermission_1ga987ba1c09b5c3edd1ec64e4b1f5f0fd7"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sync_guild_template</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild_template" title="discord_guild_template"><span class="n"><span class="pre">discord_guild_template</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_sync_guild_template" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a987ba1c09b5c3edd1ec64e4b1f5f0fd7"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sync_guild_template</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild_template" title="discord_guild_template"><span class="n"><span class="pre">discord_guild_template</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_sync_guild_template" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Syncs the template to the guild’s current state. Requires the MANAGE_GUILD permission. Returns the guild template object on success. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1236,11 +1231,11 @@
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>guild_id</strong> – the guild to sync the template of </p></li>
 <li><p><strong>code</strong> – the identifier of the template to sync </p></li>
-<li><p><strong>ret</strong> – the location to store the updated template at </p></li>
+<li><p><strong>ret</strong> – if successful, the response’s guild template object </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+<dd class="field-even"><p><a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"><span class="std std-ref">ORCAcode</span></a> for how the operation went, <a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"><span class="std std-ref">ORCA_OK</span></a> means nothing out of the ordinary </p>
 </dd>
 </dl>
 </dd></dl>

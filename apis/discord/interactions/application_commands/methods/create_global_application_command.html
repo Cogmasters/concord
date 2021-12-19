@@ -210,13 +210,8 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/triggers.html">
-       Callback Triggers
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="../../../events/types.html">
-       Callback Types
+      <a class="reference internal" href="../../../events/callback_set.html">
+       Set Callbacks
       </a>
      </li>
     </ul>
@@ -1229,22 +1224,18 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_global_application_command">
 <span class="target" id="discord_8h_1a100e41fdd1c24210a57750033fc75da6"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_global_application_command</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">application_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_global_application_command_params" title="discord_create_global_application_command_params"><span class="n"><span class="pre">discord_create_global_application_command_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_application_command" title="discord_application_command"><span class="n"><span class="pre">discord_application_command</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_global_application_command" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create a new global command. New global commands will be available in all guilds after 1 hour. <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#create-global-application-command">https://discord.com/developers/docs/interactions/application-commands#create-global-application-command</a> </p>
-</dd>
-</dl>
-</p>
+<dd><p>Create a new global command. New global commands will be available in all guilds after 1 hour. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>application_id</strong> – the unique id of the parent application </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – the application command object if successful </p></li>
+<li><p><strong>ret</strong> – if successful, the response’s application command object </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>ORCAcode for how the transfer went, ORCA_OK means a successful request </p>
+<dd class="field-even"><p><a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"><span class="std std-ref">ORCAcode</span></a> for how the operation went, <a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"><span class="std std-ref">ORCA_OK</span></a> means nothing out of the ordinary </p>
 </dd>
 </dl>
 </dd></dl>

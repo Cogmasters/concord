@@ -36,7 +36,7 @@
     <link rel="shortcut icon" href="../../../_static/icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Callback Triggers" href="triggers.html" />
+    <link rel="next" title="Set Callbacks" href="callback_set.html" />
     <link rel="prev" title="Constants" href="../constants.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -210,13 +210,8 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="triggers.html">
-       Callback Triggers
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="types.html">
-       Callback Types
+      <a class="reference internal" href="callback_set.html">
+       Set Callbacks
       </a>
      </li>
     </ul>
@@ -1230,40 +1225,12 @@
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="triggers.html">Callback Triggers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-command">Set On Command</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-idle">Set On Idle</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-ready">Set On Ready</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-application-command-create">Set On Application Command Create</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-application-command-update">Set On Application Command Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-application-command-delete">Set On Application Command Delete</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-channel-create">Set On Channel Create</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-channel-update">Set On Channel Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-channel-delete">Set On Channel Delete</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-channel-pins-update">Set On Channel Pins Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-thread-create">Set On Thread Create</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-thread-update">Set On Thread Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-thread-delete">Set On Thread Delete</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-guild-role-create">Set On Guild Role Create</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-guild-role-update">Set On Guild Role Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-guild-role-delete">Set On Guild Role Delete</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-guild-member-update">Set On Guild Member Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-guild-ban-add">Set On Guild Ban Add</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-guild-ban-remove">Set On Guild Ban Remove</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-interaction-create">Set On Interaction Create</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-create">Set On Message Create</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-update">Set On Message Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-delete">Set On Message Delete</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-delete-bulk">Set On Message Delete Bulk</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-reaction-add">Set On Message Reaction Add</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-reaction-remove">Set On Message Reaction Remove</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-reaction-remove-all">Set On Message Reaction Remove All</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-message-reaction-remove-emoji">Set On Message Reaction Remove Emoji</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-voice-state-update">Set On Voice State Update</a></li>
-<li class="toctree-l2"><a class="reference internal" href="triggers.html#set-on-voice-server-update">Set On Voice Server Update</a></li>
+<li class="toctree-l1"><a class="reference internal" href="callback_set.html">Set Callbacks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="callback_set.html#on-command">On Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="callback_set.html#on-discord-events">On Discord Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="callback_set.html#types">Types</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="types.html">Callback Types</a></li>
 </ul>
 </div>
 </section>
@@ -1281,10 +1248,10 @@
             <p class="prev-next-title">Constants</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="triggers.html" title="next page">
+    <a class='right-next' id="next-link" href="callback_set.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Callback Triggers</p>
+        <p class="prev-next-title">Set Callbacks</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
