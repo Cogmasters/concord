@@ -1249,19 +1249,18 @@ ORCAcode discord_group_dm_add_recipient(
   u64_snowflake_t user_id,
   struct discord_group_dm_add_recipient_params *params);
 
-/** @brief @b DELETE /channels/{channel.id}/recipients/{user.id}
- *
+/**
  * Removes a recipient from a Group DM.
  * @param client the client created with discord_init()
  * @param channel_id channel for the user to be removed from
  * @param user_id user to be removed
+ * @ORCA_return
  */
 ORCAcode discord_group_dm_remove_recipient(struct discord *client,
                                            u64_snowflake_t channel_id,
                                            u64_snowflake_t user_id);
 
-/** @brief @b POST /channels/{channel.id}/messages/{message.id}/threads
- *
+/**
  * Creates a new thread from an existing message.
  * @param client the client created with discord_init()
  * @param channel_id channel to start a thread on
