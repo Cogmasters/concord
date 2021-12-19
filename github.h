@@ -14,6 +14,11 @@
 /* This limit is fairly arbitrary, find the maximum at a later time. */
 #define GITHUB_MAXIMUM_REPO_TOPICS 30
 
+/* Github error codes */
+#define ORCA_GITHUB_JSON        1
+#define ORCA_GITHUB_BAD_AUTH    2
+#define ORCA_GITHUB_NOT_STARRED 404
+
 struct github_file {
   char *path;
   char *sha;

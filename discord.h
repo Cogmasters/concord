@@ -244,6 +244,18 @@ typedef void (*discord_on_voice_server_update)(struct discord *client,
                                                const char *endpoint);
 /** @} */
 
+/** @defgroup OrcaDiscordCodes
+ *  @{ */
+/** Received a JSON error message */
+#define ORCA_DISCORD_JSON_CODE 1
+/** Bad authentication token */
+#define ORCA_DISCORD_BAD_AUTH 2
+/** Being ratelimited */
+#define ORCA_DISCORD_RATELIMIT 3
+/** Couldn't establish connection to Discord */
+#define ORCA_DISCORD_CONNECTION 4
+/** @} OrcaDiscordCodes */
+
 /**
  * @brief Return the meaning of ORCAcode
  * @note if the client parameter is provided, the raw JSON error string will be
@@ -326,8 +338,8 @@ void discord_add_intents(struct discord *client,
  * @brief Unsubscribe from Discord Gateway events
  *
  * @param client the client created with discord_init()
- * @param code the intents opcode, can be set as a bitmask operation (ex: A | B
- * | C)
+ * @param code the intents opcode, can be set as bitmask operation 
+ *        Ex: 1 << 0 | 1 << 1 | 1 << 4
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  *
  */
@@ -790,7 +802,7 @@ uint64_t discord_timestamp(struct discord *client);
  *
  * @param client the client created with discord_init()
  * @return the client's logging module
- * @see logconf_setup(), logconf_set_quiet(), logconf_set_level(), ...
+ * @see logconf_setup(), logconf_set_quiet(), logconf_set_level()
  */
 struct logconf *discord_get_logconf(struct discord *client);
 
