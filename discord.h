@@ -71,115 +71,52 @@ struct discord_voice_cbs;
 #define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
 /** @} */
 
-/** @defgroup DiscordCallbacksGeneral
- * @brief General-purpose callbacks
+/** @defgroup DiscordCallbackTypes
  *  @{ */
-/** @brief executed on a succesful async request */
 typedef void (*discord_on_done)(struct discord *client, const void *obj);
-
-/** @brief Idle callback */
 typedef void (*discord_on_idle)(struct discord *client);
-/** @} */
-
-/** @defgroup DiscordCallbacksApplicationCommand
- * @brief Application Command event callbacks
- *  @{ */
-/** @brief Application Command Create/Update/Delete callback */
 typedef void (*discord_on_application_command)(
   struct discord *client, const struct discord_application_command *app_cmd);
-/** @} */
-
-/** @defgroup DiscordCallbacksChannel
- * @brief Channel-event callbacks
- *  @{ */
-
-/** @brief Channel/Thread Create/Update/Delete callback */
 typedef void (*discord_on_channel)(struct discord *client,
                                    const struct discord_channel *channel);
-
-/** @brief Channel Pins Update callback */
 typedef void (*discord_on_channel_pins_update)(
   struct discord *client,
   u64_snowflake_t guild_id,
   u64_snowflake_t channel_id,
   u64_unix_ms_t last_pin_timestamp);
-/** @} */
-
-/** @defgroup DiscordCallbacksGuild
- * @brief Guild-event callbacks
- *  @{ */
-
-/** @brief Guild Create/Update callback */
 typedef void (*discord_on_guild)(struct discord *client,
                                  const struct discord_guild *guild);
-
-/** @brief Guild Delete callback */
 typedef void (*discord_on_guild_delete)(struct discord *client,
                                         u64_snowflake_t guild_id);
-
-/** @brief Guild Role Create/Update callback */
 typedef void (*discord_on_guild_role)(struct discord *client,
                                       u64_snowflake_t guild_id,
                                       const struct discord_role *role);
-
-/** @brief Guild Role Delete callback */
 typedef void (*discord_on_guild_role_delete)(struct discord *client,
                                              u64_snowflake_t guild_id,
                                              u64_snowflake_t role_id);
-
-/** @brief Guild Member Add/Update callback */
 typedef void (*discord_on_guild_member)(
   struct discord *client,
   u64_snowflake_t guild_id,
   const struct discord_guild_member *member);
-
-/** @brief Guild Member Remove callback */
 typedef void (*discord_on_guild_member_remove)(
   struct discord *client,
   u64_snowflake_t guild_id,
   const struct discord_user *user);
-
-/** @brief Guild Ban Add/Remove callback */
 typedef void (*discord_on_guild_ban)(struct discord *client,
                                      u64_snowflake_t guild_id,
                                      const struct discord_user *user);
-/** @} */
-
-/** @defgroup DiscordCallbacksInteraction
- * @brief Interaction-event callbacks
- *  @{ */
-/**
- * @brief Interaction Create callback
- */
 typedef void (*discord_on_interaction)(
   struct discord *client, const struct discord_interaction *interaction);
-/** @} */
-
-/** @defgroup DiscordCallbacksMessage
- * @brief Message-event callbacks
- *  @{ */
-/**
- * @brief Message Create/Update callback
- */
 typedef void (*discord_on_message)(struct discord *client,
                                    const struct discord_message *message);
-/**
- * @brief Message Delete callback
- */
 typedef void (*discord_on_message_delete)(struct discord *client,
                                           u64_snowflake_t id,
                                           u64_snowflake_t channel_id,
                                           u64_snowflake_t guild_id);
-/**
- * @brief Message Delete Bulk callback
- */
 typedef void (*discord_on_message_delete_bulk)(struct discord *client,
                                                const u64_snowflake_t **ids,
                                                u64_snowflake_t channel_id,
                                                u64_snowflake_t guild_id);
-/**
- * @brief Message Reaction Add callback
- */
 typedef void (*discord_on_message_reaction_add)(
   struct discord *client,
   u64_snowflake_t user_id,
@@ -188,9 +125,6 @@ typedef void (*discord_on_message_reaction_add)(
   u64_snowflake_t guild_id,
   const struct discord_guild_member *member,
   const struct discord_emoji *emoji);
-/**
- * @brief Message Reaction Remove callback
- */
 typedef void (*discord_on_message_reaction_remove)(
   struct discord *client,
   u64_snowflake_t user_id,
@@ -198,36 +132,19 @@ typedef void (*discord_on_message_reaction_remove)(
   u64_snowflake_t message_id,
   u64_snowflake_t guild_id,
   const struct discord_emoji *emoji);
-/**
- * @brief Message Reaction Remove All callback
- */
 typedef void (*discord_on_message_reaction_remove_all)(
   struct discord *client,
   u64_snowflake_t channel_id,
   u64_snowflake_t message_id,
   u64_snowflake_t guild_id);
-/**
- * @brief Message Reaction Remove Emoji callback
- */
 typedef void (*discord_on_message_reaction_remove_emoji)(
   struct discord *client,
   u64_snowflake_t channel_id,
   u64_snowflake_t message_id,
   u64_snowflake_t guild_id,
   const struct discord_emoji *emoji);
-/** @} */
-
-/** @defgroup DiscordCallbacksVoice
- * @brief Voice-event callbacks
- *  @{ */
-/**
- * @brief Voice State Update callback
- */
 typedef void (*discord_on_voice_state_update)(
   struct discord *client, const struct discord_voice_state *voice_state);
-/**
- * @brief Voice Server Update callback
- */
 typedef void (*discord_on_voice_server_update)(struct discord *client,
                                                const char *token,
                                                u64_snowflake_t guild_id,
@@ -353,7 +270,7 @@ void discord_set_prefix(struct discord *client, char *prefix);
  *        chat visible to the bot.
  * @param client the client created with discord_init()
  * @param command the command to trigger the callback
- * @param callback the callback that will be executed
+ * @param callback the callback to be triggered on event
  * @note The command and any subjacent empty space is left out of
  *       the message content
  */
@@ -367,7 +284,7 @@ void discord_set_on_command(struct discord *client,
  * The callback is triggered when a user types one of the assigned commands in
  *        chat visble to the bot.
  * @param client the client created with discord_init()
- * @param callback the callback that will be executed
+ * @param callback the callback to be triggered on event
  * @param ... NULL terminated commands
  * @note The command and any subjacent empty space is left out of
  *       the message content
@@ -376,371 +293,119 @@ void discord_set_on_commands(struct discord *client,
                              discord_on_message callback,
                              ...);
 
-/**
- * @brief Set a callback that triggers at every event-loop iteration.
- *
+/** @defgroup DiscordCallbackSet
+ * @brief Set callbacks to be triggered on event detection
  * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- */
+ * @param callback the callback to be triggered on event
+ * @note the functions will automatically set the necessary intent(s) to make
+ *        the callback triggerable
+ *  @{ */
+
+/** @brief Triggers at every event-loop iteration.  */
 void discord_set_on_idle(struct discord *client, discord_on_idle callback);
-
-/**
- * @brief Set a callback that triggers when the client is ready
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when the client is ready */
 void discord_set_on_ready(struct discord *client, discord_on_idle callback);
-
-/**
- * @brief Set a callback that triggers when a applicat command is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- */
+/** @brief Triggers when a application command is created */
 void discord_set_on_application_command_create(
   struct discord *client, discord_on_application_command callback);
-
-/**
- * @brief Set a callback that triggers when a applicat command is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- */
+/** @brief Triggers when a application command is updated */
 void discord_set_on_application_command_update(
   struct discord *client, discord_on_application_command callback);
-
-/**
- * @brief Set a callback that triggers when a applicat command is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- */
+/** @brief Triggers when a application command is deleted */
 void discord_set_on_application_command_delete(
   struct discord *client, discord_on_application_command callback);
-
-/**
- * @brief Set a callback that triggers when a channel is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a channel is created */
 void discord_set_on_channel_create(struct discord *client,
                                    discord_on_channel callback);
-
-/**
- * @brief Set a callback that triggers when a channel is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a channel is updated */
 void discord_set_on_channel_update(struct discord *client,
                                    discord_on_channel callback);
-
-/**
- * @brief Set a callback that triggers when a channel is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a channel is deleted */
 void discord_set_on_channel_delete(struct discord *client,
                                    discord_on_channel callback);
-
-/**
- * @brief Set a callback that triggers when some channel pins are updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when some channel pins are updated */
 void discord_set_on_channel_pins_update(
   struct discord *client, discord_on_channel_pins_update callback);
-
-/**
- * @brief Set a callback that triggers when a thread is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a thread is created */
 void discord_set_on_thread_create(struct discord *client,
                                   discord_on_channel callback);
-
-/**
- * @brief Set a callback that triggers when a thread is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a thread is updated */
 void discord_set_on_thread_update(struct discord *client,
                                   discord_on_channel callback);
-
-/**
- * @brief Set a callback that triggers when a thread is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a thread is deleted */
 void discord_set_on_thread_delete(struct discord *client,
                                   discord_on_channel callback);
-
-/**
- * @brief Set a callback that triggers when a guild's information becomes
- *        available
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
+/** @brief Triggers when a guild's information becomes available
  */
 void discord_set_on_guild_create(struct discord *client,
                                  discord_on_guild callback);
-
-/**
- * @brief Set a callback that triggers when a guild's information becomes
- *       updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild's information becomes updated */
 void discord_set_on_guild_update(struct discord *client,
                                  discord_on_guild callback);
-
-/**
- * @brief Set a callback that triggers when removed from a guild
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when removed from a guild */
 void discord_set_on_guild_delete(struct discord *client,
                                  discord_on_guild_delete callback);
-
-/**
- * @brief Set a callback that triggers when a guild role is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild role is created */
 void discord_set_on_guild_role_create(struct discord *client,
                                       discord_on_guild_role callback);
-
-/**
- * @brief Set a callback that triggers when a guild role is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild role is updated */
 void discord_set_on_guild_role_update(struct discord *client,
                                       discord_on_guild_role callback);
-
-/**
- * @brief Set a callback that triggers when a guild role is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild role is deleted */
 void discord_set_on_guild_role_delete(struct discord *client,
                                       discord_on_guild_role_delete callback);
-
-/**
- * @brief Set a callback that triggers when a guild member is added
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild member is added */
 void discord_set_on_guild_member_add(struct discord *client,
                                      discord_on_guild_member callback);
-
-/**
- * @brief Set a callback that triggers when a guild member is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild member is updated */
 void discord_set_on_guild_member_update(struct discord *client,
                                         discord_on_guild_member callback);
-
-/**
- * @brief Set a callback that triggers when a guild member is removed
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild member is removed */
 void discord_set_on_guild_member_remove(
   struct discord *client, discord_on_guild_member_remove callback);
-
-/**
- * @brief Set a callback that triggers when a guild ban is added
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild ban is added */
 void discord_set_on_guild_ban_add(struct discord *client,
                                   discord_on_guild_ban callback);
-
-/**
- * @brief Set a callback that triggers when a guild ban is removed
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a guild ban is removed */
 void discord_set_on_guild_ban_remove(struct discord *client,
                                      discord_on_guild_ban callback);
-
-/**
- * @brief Set a callback that triggers when a interaction is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- */
+/** @brief Triggers when a interaction is created */
 void discord_set_on_interaction_create(struct discord *client,
                                        discord_on_interaction callback);
-
-/**
- * @brief Set a callback that triggers when a message is created
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a message is created */
 void discord_set_on_message_create(struct discord *client,
                                    discord_on_message callback);
-
-/**
- * @brief Set a callback that triggers when a message is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a message is updated */
 void discord_set_on_message_update(struct discord *client,
                                    discord_on_message callback);
-
-/**
- * @brief Set a callback that triggers when a message is deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a message is deleted */
 void discord_set_on_message_delete(struct discord *client,
                                    discord_on_message_delete callback);
-
-/*
- * @brief Set a callback that triggers when a bulk of messages are deleted
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a bulk of messages are deleted */
 void discord_set_on_message_delete_bulk(
   struct discord *client, discord_on_message_delete_bulk callback);
-
-/**
- * @brief Set a callback that triggers when a message reaction is added
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a message reaction is added */
 void discord_set_on_message_reaction_add(
   struct discord *client, discord_on_message_reaction_add callback);
-
-/**
- * @brief Set a callback that triggers when a message reaction is removed
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a message reaction is removed */
 void discord_set_on_message_reaction_remove(
   struct discord *client, discord_on_message_reaction_remove callback);
-
-/**
- * @brief Set a callback that triggers when all reaction from some message is
- *       removed
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
+/** @brief Triggers when all reaction from some message is removed
  */
 void discord_set_on_message_reaction_remove_all(
   struct discord *client, discord_on_message_reaction_remove_all callback);
-
-/**
- * @brief Set a callback that triggers when all instances of a particular
- *       reaction from some message is removed
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when all instances of a particular reaction from some
+ *        message is removed */
 void discord_set_on_message_reaction_remove_emoji(
   struct discord *client, discord_on_message_reaction_remove_emoji callback);
-
-/**
- * @brief Set a callback that triggers when a voice state is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a voice state is updated */
 void discord_set_on_voice_state_update(struct discord *client,
                                        discord_on_voice_state_update callback);
-
-/**
- * @brief Set a callback that triggers when a voice server is updated
- *
- * @param client the client created with discord_init()
- * @param callback the callback that will be executed
- * @note this function will automatically set intent(s) to make the callback
- *       triggerable
- */
+/** @brief Triggers when a voice server is updated */
 void discord_set_on_voice_server_update(
   struct discord *client, discord_on_voice_server_update callback);
+
+/** @} */
 
 /**
  * @brief Helper to quickly set voice callbacks
@@ -1524,11 +1189,8 @@ ORCAcode discord_create_channel_invite(
   struct discord_create_channel_invite_params *params,
   struct discord_invite *ret);
 
-/** @defgroup DiscordDeleteChannelPermission
- * @b DELETE /channels/{channel.id}/permissions/{overwrite.id}
- * Delete a channel permission overwrite for a user or role in a channel.
- * @{ */
 /**
+ * Delete a channel permission overwrite for a user or role in a channel.
  * @param client the client created with discord_init()
  * @param channel_id the channel to the permission deleted
  * @param overwrite_id the id of the overwritten permission
@@ -1551,36 +1213,35 @@ ORCAcode discord_get_pinned_messages(struct discord *client,
                                      u64_snowflake_t channel_id,
                                      struct discord_message ***ret);
 
-/** @brief @b PUT /channels/{channel.id}/pins/{message.id}
- *
+/**
  * Pin a message in a channel.
  * @param client the client created with discord_init()
  * @param channel_id channel to pin the message on
  * @param message_id message to be pinned
+ * @ORCA_return
  */
 ORCAcode discord_pin_message(struct discord *client,
                              u64_snowflake_t channel_id,
                              u64_snowflake_t message_id);
 
-/** @brief @b DELETE /channels/{channel.id}/pins/{message.id}
- *
+/**
  * Unpin a message in a channel.
  * @param client the client created with discord_init()
  * @param channel_id channel for the message to be unpinned
  * @param message_id message to be unpinned
- * @
+ * @ORCA_return
  */
 ORCAcode discord_unpin_message(struct discord *client,
                                u64_snowflake_t channel_id,
                                u64_snowflake_t message_id);
 
-/** @brief @b PUT /channels/{channel.id}/recipients/{user.id}
- *
+/**
  * Adds a recipient to a Group DM using their access token.
  * @param client the client created with discord_init()
  * @param channel_id group to add the user in
  * @param user_id user to be added
  * @param params request parameters
+ * @ORCA_return
  */
 ORCAcode discord_group_dm_add_recipient(
   struct discord *client,
