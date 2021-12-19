@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include "discord.h"
 
-void on_ready(struct discord* client, const struct discord_user* bot)
+void on_ready(struct discord* client)
 {
+  const struct discord_user *bot = discord_get_self(client);
   log_info("Logged in as %s!", bot->username);
 }
 
