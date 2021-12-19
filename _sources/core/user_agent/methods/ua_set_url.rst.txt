@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ====================================
-ua_set_url - Set User-Agent base URL
+ua_set_url - set User-Agent base URL
 ====================================
 
 .. doxygenfunction:: ua_set_url

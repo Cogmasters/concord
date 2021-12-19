@@ -10,6 +10,4 @@
 Add Thread Member
 =================
 
-.. doxygengroup:: DiscordAddThreadMember
-   :content-only:
-
+.. doxygenfunction:: discord_add_thread_member

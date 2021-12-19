@@ -10,6 +10,5 @@
 Create Guild Role
 =================
 
-.. doxygengroup:: DiscordCreateGuildRole
-   :content-only:
-
+.. doxygenfunction:: discord_create_guild_role
+.. doxygenstruct:: discord_create_guild_role_params

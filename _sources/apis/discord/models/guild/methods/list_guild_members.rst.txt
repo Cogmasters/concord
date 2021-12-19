@@ -10,6 +10,5 @@
 List Guild Members
 ==================
 
-.. doxygengroup:: DiscordListGuildMembers
-   :content-only:
-
+.. doxygenfunction:: discord_list_guild_members
+.. doxygenstruct:: discord_list_guild_members_params

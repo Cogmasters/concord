@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ====================================
-ua_init - Create a User-Agent handle
+ua_init - create a User-Agent handle
 ====================================
 
 .. doxygenfunction:: ua_init

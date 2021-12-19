@@ -10,6 +10,4 @@
 Bulk Overwrite Global Application Command
 =========================================
 
-.. doxygengroup:: DiscordBulkOverwriteGlobalApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_bulk_overwrite_global_application_command

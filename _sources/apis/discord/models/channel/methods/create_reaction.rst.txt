@@ -11,5 +11,4 @@
 Create Reaction
 ===============
 
-.. doxygengroup:: DiscordCreateReaction
-   :content-only:
+.. doxygenfunction:: discord_create_reaction

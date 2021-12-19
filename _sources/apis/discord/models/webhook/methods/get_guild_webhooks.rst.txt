@@ -10,6 +10,4 @@
 Get Guild Webhooks
 ==================
 
-.. doxygengroup:: DiscordGetGuildWebhooks
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_webhooks

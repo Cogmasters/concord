@@ -10,6 +10,4 @@
 Get Gateway Bot
 ===============
 
-.. doxygengroup:: DiscordGetGatewayBot
-   :content-only:
-
+.. doxygenfunction:: discord_get_gateway_bot

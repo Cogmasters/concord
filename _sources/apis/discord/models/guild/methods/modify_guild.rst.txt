@@ -10,6 +10,5 @@
 Modify Guild
 ============
 
-.. doxygengroup:: DiscordModifyGuild
-   :content-only:
-
+.. doxygenfunction:: discord_modify_guild
+.. doxygenstruct:: discord_modify_guild_params

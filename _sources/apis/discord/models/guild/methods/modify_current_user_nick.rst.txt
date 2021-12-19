@@ -10,6 +10,4 @@
 Modify Current User Nick
 ========================
 
-.. doxygengroup:: DiscordModifyCurrentUserNick
-   :content-only:
-
+.. doxygenfunction:: discord_modify_current_user_nick

@@ -10,6 +10,4 @@
 Get Webhook with Token
 ======================
 
-.. doxygengroup:: DiscordGetWebhookWithToken
-   :content-only:
-
+.. doxygenfunction:: discord_get_webhook_with_token

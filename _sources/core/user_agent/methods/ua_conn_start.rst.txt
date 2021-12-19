@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ==================================================
-ua_conn_start - Get a individual connection handle
+ua_conn_start - get a individual connection handle
 ==================================================
 
 .. doxygenfunction:: ua_conn_start

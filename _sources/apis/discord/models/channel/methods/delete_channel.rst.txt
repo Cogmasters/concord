@@ -11,6 +11,4 @@
 Delete Channel
 ==============
 
-.. doxygengroup:: DiscordDeleteChannel
-   :content-only:
-
+.. doxygenfunction:: discord_delete_channel

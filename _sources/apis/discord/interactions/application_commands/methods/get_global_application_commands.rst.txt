@@ -10,6 +10,4 @@
 Get Global Application Commands
 ===============================
 
-.. doxygengroup:: DiscordGetGlobalApplicationCommands
-   :content-only:
-
+.. doxygenfunction:: discord_get_global_application_commands

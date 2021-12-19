@@ -10,6 +10,4 @@
 List Private Archived Threads
 =============================
 
-.. doxygengroup:: DiscordListPrivateArchivedThreads
-   :content-only:
-
+.. doxygenfunction:: discord_list_private_archived_threads

@@ -10,6 +10,4 @@
 Delete Webhook Message
 ======================
 
-.. doxygengroup:: DiscordDeleteWebhookMessage
-   :content-only:
-
+.. doxygenfunction:: discord_delete_webhook_message

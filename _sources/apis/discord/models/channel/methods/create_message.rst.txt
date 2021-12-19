@@ -11,6 +11,5 @@
 Create Message
 ==============
 
-.. doxygengroup:: DiscordCreateMessage
-   :content-only:
-
+.. doxygenfunction:: discord_create_message
+.. doxygenstruct:: discord_create_message_params

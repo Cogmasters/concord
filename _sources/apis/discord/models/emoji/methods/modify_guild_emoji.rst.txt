@@ -10,6 +10,5 @@
 Modify Guild Emoji
 ==================
 
-.. doxygengroup:: DiscordModifyGuildEmoji
-   :content-only:
-
+.. doxygenfunction:: discord_modify_guild_emoji
+.. doxygenstruct:: discord_modify_guild_emoji_params

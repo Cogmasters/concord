@@ -10,6 +10,4 @@
 Remove Thread Member
 ====================
 
-.. doxygengroup:: DiscordRemoveThreadMember
-   :content-only:
-
+.. doxygenfunction:: discord_remove_thread_member

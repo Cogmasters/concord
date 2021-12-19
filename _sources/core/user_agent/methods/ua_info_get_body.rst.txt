@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ====================================
-ua_info_get_body - Get response body
+ua_info_get_body - get response body
 ====================================
 
 .. doxygenfunction:: ua_info_get_body

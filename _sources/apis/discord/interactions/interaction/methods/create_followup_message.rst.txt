@@ -10,6 +10,5 @@
 Create Followup Message
 =======================
 
-.. doxygengroup:: DiscordCreateFollowupMessage
-   :content-only:
-
+.. doxygenfunction:: discord_create_followup_message
+.. doxygenstruct:: discord_create_followup_message_params

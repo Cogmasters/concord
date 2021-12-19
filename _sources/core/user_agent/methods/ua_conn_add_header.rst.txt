@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ============================================
-ua_conn_add_header - Add a header/field pair
+ua_conn_add_header - add a header/field pair
 ============================================
 
 .. doxygenfunction:: ua_conn_add_header

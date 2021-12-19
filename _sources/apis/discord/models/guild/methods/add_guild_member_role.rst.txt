@@ -10,6 +10,4 @@
 Add Guild Member Role
 =====================
 
-.. doxygengroup:: DiscordAddGuildMemberRole
-   :content-only:
-
+.. doxygenfunction:: discord_add_guild_member_role

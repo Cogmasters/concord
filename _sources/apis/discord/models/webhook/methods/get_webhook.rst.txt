@@ -10,6 +10,4 @@
 Get Webhook
 ===========
 
-.. doxygengroup:: DiscordGetWebhook
-   :content-only:
-
+.. doxygenfunction:: discord_get_webhook

@@ -11,5 +11,4 @@
 Get Channel
 ===========
 
-.. doxygengroup:: DiscordGetChannel
-   :content-only:
+.. doxygenfunction:: discord_get_channel

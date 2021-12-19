@@ -10,6 +10,4 @@
 Delete Guild Emoji
 ==================
 
-.. doxygengroup:: DiscordDeleteGuildEmoji
-   :content-only:
-
+.. doxygenfunction:: discord_delete_guild_emoji

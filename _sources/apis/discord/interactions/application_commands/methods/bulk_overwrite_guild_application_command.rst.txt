@@ -10,6 +10,4 @@
 Bulk Overwrite Guild Application Command
 ========================================
 
-.. doxygengroup:: DiscordBulkOverwriteGuildApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_bulk_overwrite_guild_application_command

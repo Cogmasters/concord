@@ -10,6 +10,5 @@
 Add Guild Member
 ================
 
-.. doxygengroup:: DiscordAddGuildMember
-   :content-only:
-
+.. doxygenfunction:: discord_add_guild_member
+.. doxygenstruct:: discord_add_guild_member_params

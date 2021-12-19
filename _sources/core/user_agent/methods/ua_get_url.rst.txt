@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ====================================
-ua_get_url - Get User-Agent base URL
+ua_get_url - get user-agent base url
 ====================================
 
 .. doxygenfunction:: ua_get_url

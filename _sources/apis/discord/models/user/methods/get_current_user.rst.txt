@@ -10,6 +10,4 @@
 Get Current User
 ================
 
-.. doxygengroup:: DiscordGetCurrentUser
-   :content-only:
-
+.. doxygenfunction:: discord_get_current_user

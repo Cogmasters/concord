@@ -16,6 +16,5 @@ Gateway
    :glob:
    :maxdepth: 2
 
-   structures
-   utils/*
+   datatypes
    methods/*

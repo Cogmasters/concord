@@ -10,6 +10,5 @@
 Edit Webhook Message
 ====================
 
-.. doxygengroup:: DiscordEditWebhookMessage
-   :content-only:
-
+.. doxygenfunction:: discord_edit_webhook_message
+.. doxygenstruct:: discord_edit_webhook_message_params

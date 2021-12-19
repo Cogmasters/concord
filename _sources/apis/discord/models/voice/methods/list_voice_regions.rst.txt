@@ -10,6 +10,4 @@
 List Voice Regions
 ==================
 
-.. doxygengroup:: DiscordListVoiceRegions
-   :content-only:
-
+.. doxygenfunction:: discord_list_voice_regions

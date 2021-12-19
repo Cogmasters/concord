@@ -10,6 +10,4 @@
 Delete Message
 ==============
 
-.. doxygengroup:: DiscordDeleteMessage
-   :content-only:
-
+.. doxygenfunction:: discord_delete_message

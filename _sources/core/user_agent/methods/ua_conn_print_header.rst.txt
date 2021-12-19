@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 =====================================================
-ua_conn_print_header - Fill a buffer with all headers
+ua_conn_print_header - fill a buffer with all headers
 =====================================================
 
 .. doxygenfunction:: ua_conn_print_header

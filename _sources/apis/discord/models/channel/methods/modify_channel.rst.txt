@@ -11,5 +11,5 @@
 Modify Channel
 ==============
 
-.. doxygengroup:: DiscordModifyChannel
-   :content-only:
+.. doxygenfunction:: discord_modify_channel
+.. doxygenstruct:: discord_modify_channel_params

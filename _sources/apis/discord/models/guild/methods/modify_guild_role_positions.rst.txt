@@ -10,6 +10,5 @@
 Modify Guild Role Positions
 ===========================
 
-.. doxygengroup:: DiscordModifyGuildRolePositions
-   :content-only:
-
+.. doxygenfunction:: discord_modify_guild_role_positions
+.. doxygenstruct:: discord_modify_guild_role_positions_params

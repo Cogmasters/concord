@@ -10,6 +10,5 @@
 Create Guild
 ============
 
-.. doxygengroup:: DiscordCreateGuild
-   :content-only:
-
+.. doxygenfunction:: discord_create_guild
+.. doxygenstruct:: discord_create_guild_params

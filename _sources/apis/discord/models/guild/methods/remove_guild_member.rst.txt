@@ -10,6 +10,4 @@
 Remove Guild Member
 ===================
 
-.. doxygengroup:: DiscordRemoveGuildMember
-   :content-only:
-
+.. doxygenfunction:: discord_remove_guild_member

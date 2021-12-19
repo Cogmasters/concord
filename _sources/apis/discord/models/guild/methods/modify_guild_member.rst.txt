@@ -10,6 +10,5 @@
 Modify Guild Member
 ===================
 
-.. doxygengroup:: DiscordModifyGuildMember
-   :content-only:
-
+.. doxygenfunction:: discord_modify_guild_member
+.. doxygenstruct:: discord_modify_guild_member_params

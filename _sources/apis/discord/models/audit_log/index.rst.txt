@@ -16,5 +16,5 @@ Audit Log
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes
    methods/*

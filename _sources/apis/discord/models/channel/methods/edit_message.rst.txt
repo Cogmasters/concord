@@ -11,6 +11,5 @@
 Edit Message
 ============
 
-.. doxygengroup:: DiscordEditMessage
-   :content-only:
-
+.. doxygenfunction:: discord_edit_message
+.. doxygenstruct:: discord_edit_message_params

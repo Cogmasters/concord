@@ -16,7 +16,7 @@ Channel
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes
    utils/*
    embed_builder/*
    methods/*

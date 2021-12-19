@@ -10,6 +10,4 @@
 Get Current User Guilds
 =======================
 
-.. doxygengroup:: DiscordGetCurrentUserGuilds
-   :content-only:
-
+.. doxygenfunction:: discord_get_current_user_guilds

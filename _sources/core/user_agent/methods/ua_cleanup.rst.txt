@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ========================================
-ua_cleanup - Cleanup a User-Agent handle
+ua_cleanup - cleanup a User-Agent handle
 ========================================
 
 .. doxygenfunction:: ua_cleanup

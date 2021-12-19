@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ================================================================
-ua_conn_get_easy_handle - Get the libcurl's easy_handle assigned
+ua_conn_get_easy_handle - get the libcurl's easy_handle assigned
 ================================================================
 
 .. doxygenfunction:: ua_conn_get_easy_handle

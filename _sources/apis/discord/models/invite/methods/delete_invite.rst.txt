@@ -10,6 +10,4 @@
 Delete Invite
 =============
 
-.. doxygengroup:: DiscordDeleteInvite
-   :content-only:
-
+.. doxygenfunction:: discord_delete_invite

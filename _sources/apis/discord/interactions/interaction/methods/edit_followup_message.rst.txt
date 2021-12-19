@@ -10,6 +10,5 @@
 Edit Followup Message
 =====================
 
-.. doxygengroup:: DiscordEditFollowupMessage
-   :content-only:
-
+.. doxygenfunction:: discord_edit_followup_message
+.. doxygenstruct:: discord_edit_followup_message_params

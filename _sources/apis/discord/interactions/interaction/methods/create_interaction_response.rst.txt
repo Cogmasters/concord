@@ -10,6 +10,4 @@
 Create Interaction Response
 ===========================
 
-.. doxygengroup:: DiscordCreateInteractionResponse
-   :content-only:
-
+.. doxygenfunction:: discord_create_interaction_response

@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ========================================
-ua_easy_run - Quickly perform a transfer
+ua_easy_run - quickly perform a transfer
 ========================================
 
 .. doxygenfunction:: ua_easy_run

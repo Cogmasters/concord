@@ -11,5 +11,4 @@
 Delete User Reaction
 ====================
 
-.. doxygengroup:: DiscordDeleteUserReaction
-   :content-only:
+.. doxygenfunction:: discord_delete_user_reaction

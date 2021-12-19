@@ -10,6 +10,4 @@
 Get Pinned Messages
 ===================
 
-.. doxygengroup:: DiscordGetPinnedMessages
-   :content-only:
-
+.. doxygenfunction:: discord_get_pinned_messages

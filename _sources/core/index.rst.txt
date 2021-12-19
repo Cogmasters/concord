@@ -11,5 +11,4 @@ The following section outlines Orca's core API
    Common <common/index>
    User-Agent <user_agent/index>
    WebSockets <websockets/index>
-   Modular Logging <logconf/index>
-   NTL (null-terminated lists) <ntl/index>
+   Cee-Utils <cee-utils/index>

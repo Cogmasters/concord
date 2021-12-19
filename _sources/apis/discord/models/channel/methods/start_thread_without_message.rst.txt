@@ -10,6 +10,5 @@
 Start Thread Without Message
 ============================
 
-.. doxygengroup:: DiscordStartThreadWithoutMessage
-   :content-only:
-
+.. doxygenfunction:: discord_start_thread_without_message
+.. doxygenstruct:: discord_start_thread_without_message_params

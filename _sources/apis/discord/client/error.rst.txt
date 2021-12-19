@@ -11,4 +11,5 @@
 Error Handling
 ==============
 
+.. doxygengroup:: OrcaDiscordCodes
 .. doxygenfunction:: discord_strerror

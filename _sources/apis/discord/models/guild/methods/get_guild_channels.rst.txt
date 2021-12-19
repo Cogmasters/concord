@@ -10,6 +10,4 @@
 Get Guild Channels
 ==================
 
-.. doxygengroup:: DiscordGetGuildChannels
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_channels

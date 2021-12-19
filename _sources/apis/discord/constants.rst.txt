@@ -11,15 +11,15 @@
 Constants
 =========
 
-General
--------
-
-.. doxygengroup:: DiscordLimitsGeneral
-
 Snowflake
 ---------
 
 .. doxygengroup:: DiscordLimitsSnowflake
+
+General
+-------
+
+.. doxygengroup:: DiscordLimitsGeneral
 
 Embed
 -----

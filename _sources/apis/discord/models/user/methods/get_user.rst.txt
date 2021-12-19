@@ -10,6 +10,4 @@
 Get User
 ========
 
-.. doxygengroup:: DiscordGetUser
-   :content-only:
-
+.. doxygenfunction:: discord_get_user

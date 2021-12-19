@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 =======================================================
-ua_info_extract - Extract information on latest request
+ua_info_extract - extract information on latest request
 =======================================================
 
 .. doxygenfunction:: ua_info_extract

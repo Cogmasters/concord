@@ -10,6 +10,4 @@
 Delete Guild Role
 =================
 
-.. doxygengroup:: DiscordDeleteGuildRole
-   :content-only:
-
+.. doxygenfunction:: discord_delete_guild_role

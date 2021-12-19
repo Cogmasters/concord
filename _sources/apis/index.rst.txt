@@ -8,4 +8,4 @@ The following section outlines the APIs officially supported by Orca
    :caption: Table of Contents
    :maxdepth: 1
 
-   discord/index
+   Discord <discord/index>

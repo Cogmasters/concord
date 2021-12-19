@@ -10,6 +10,4 @@
 Remove Guild Ban
 ================
 
-.. doxygengroup:: DiscordRemoveGuildBan
-   :content-only:
-
+.. doxygenfunction:: discord_remove_guild_ban

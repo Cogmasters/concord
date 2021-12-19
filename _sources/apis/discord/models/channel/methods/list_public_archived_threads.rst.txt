@@ -10,6 +10,4 @@
 List Public Archived Threads
 ============================
 
-.. doxygengroup:: DiscordListPublicArchivedThreads
-   :content-only:
-
+.. doxygenfunction:: discord_list_public_archived_threads

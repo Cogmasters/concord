@@ -10,6 +10,5 @@
 Create Webhook
 ==============
 
-.. doxygengroup:: DiscordCreateWebhook
-   :content-only:
-
+.. doxygenfunction:: discord_create_webhook
+.. doxygenstruct:: discord_create_webhook_params

@@ -10,6 +10,5 @@
 Modify Webhook with Token
 =========================
 
-.. doxygengroup:: DiscordModifyWebhookWithToken
-   :content-only:
-
+.. doxygenfunction:: discord_modify_webhook_with_token
+.. doxygenstruct:: discord_modify_webhook_with_token_params

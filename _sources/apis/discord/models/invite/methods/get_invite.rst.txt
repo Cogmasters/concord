@@ -10,6 +10,5 @@
 Get Invite
 ==========
 
-.. doxygengroup:: DiscordGetInvite
-   :content-only:
-
+.. doxygenfunction:: discord_get_invite
+.. doxygenstruct:: discord_get_invite_params

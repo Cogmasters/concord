@@ -10,6 +10,4 @@
 Get Guild Member
 ================
 
-.. doxygengroup:: DiscordGetGuildMember
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_member

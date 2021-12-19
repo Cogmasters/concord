@@ -16,4 +16,4 @@ Sticker
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes

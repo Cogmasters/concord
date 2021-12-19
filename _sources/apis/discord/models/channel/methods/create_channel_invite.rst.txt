@@ -10,6 +10,5 @@
 Create Channel Invite
 =====================
 
-.. doxygengroup:: DiscordCreateChannelInvite
-   :content-only:
-
+.. doxygenfunction:: discord_create_channel_invite
+.. doxygenstruct:: discord_create_channel_invite_params

@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ===========================================================
-ua_info_get_header - Get response header's value from field
+ua_info_get_header - get response header's value from field
 ===========================================================
 
 .. doxygenfunction:: ua_info_get_header

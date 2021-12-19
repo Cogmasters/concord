@@ -10,6 +10,4 @@
 Get Webhook Message
 ===================
 
-.. doxygengroup:: DiscordGetWebhookMessage
-   :content-only:
-
+.. doxygenfunction:: discord_get_webhook_message

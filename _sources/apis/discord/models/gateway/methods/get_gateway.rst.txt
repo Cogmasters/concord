@@ -10,6 +10,4 @@
 Get Gateway
 ===========
 
-.. doxygengroup:: DiscordGetGateway
-   :content-only:
-
+.. doxygenfunction:: discord_get_gateway

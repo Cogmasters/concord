@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ================================
-ua_conn_stop - Stop a connection
+ua_conn_stop - stop a connection
 ================================
 
 .. doxygenfunction:: ua_conn_stop

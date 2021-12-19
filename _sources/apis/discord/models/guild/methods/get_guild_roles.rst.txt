@@ -10,6 +10,4 @@
 Get Guild Roles
 ===============
 
-.. doxygengroup:: DiscordGetGuildRoles
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_roles

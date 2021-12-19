@@ -10,6 +10,4 @@
 Delete Guild Application Command
 ================================
 
-.. doxygengroup:: DiscordDeleteGuildApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_delete_guild_application_command

@@ -11,5 +11,6 @@
 Utils
 =====
 
-.. doxygengroup:: DiscordMiscChannel
-   :content-only:
+.. doxygenfunction:: discord_overwrite_append
+.. doxygenfunction:: discord_get_channel_at_pos
+.. doxygenfunction:: discord_delete_messages_by_author_id

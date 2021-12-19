@@ -10,6 +10,4 @@
 Delete Webhook with Token
 =========================
 
-.. doxygengroup:: DiscordDeleteWebhookWithToken
-   :content-only:
-
+.. doxygenfunction:: discord_delete_webhook_with_token

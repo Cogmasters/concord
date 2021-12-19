@@ -16,4 +16,4 @@ Message Components
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes

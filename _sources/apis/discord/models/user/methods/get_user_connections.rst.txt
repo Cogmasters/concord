@@ -10,6 +10,4 @@
 Get User Connections
 ====================
 
-.. doxygengroup:: DiscordGetUserConnections
-   :content-only:
-
+.. doxygenfunction:: discord_get_user_connections

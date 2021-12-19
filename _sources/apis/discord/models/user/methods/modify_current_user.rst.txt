@@ -10,6 +10,5 @@
 Modify Current User
 ===================
 
-.. doxygengroup:: DiscordModifyCurrentUser
-   :content-only:
-
+.. doxygenfunction:: discord_modify_current_user
+.. doxygenstruct:: discord_modify_current_user_params

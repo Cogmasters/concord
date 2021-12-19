@@ -10,6 +10,4 @@
 List Guild Emojis
 =================
 
-.. doxygengroup:: DiscordListGuildEmojis
-   :content-only:
-
+.. doxygenfunction:: discord_list_guild_emojis

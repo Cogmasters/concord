@@ -10,6 +10,4 @@
 Get Channel Webhooks
 ====================
 
-.. doxygengroup:: DiscordGetChannelWebhooks
-   :content-only:
-
+.. doxygenfunction:: discord_get_channel_webhooks

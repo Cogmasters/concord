@@ -10,6 +10,4 @@
 Bulk Delete Messages
 ====================
 
-.. doxygengroup:: DiscordBulkDeleteMessages
-   :content-only:
-
+.. doxygenfunction:: discord_bulk_delete_messages

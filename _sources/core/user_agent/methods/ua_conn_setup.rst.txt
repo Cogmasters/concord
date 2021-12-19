@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 =======================================
-ua_conn_setup - Set transfer attributes
+ua_conn_setup - set transfer attributes
 =======================================
 
 .. doxygenfunction:: ua_conn_setup

@@ -10,6 +10,5 @@
 Create Guild Application Command
 ================================
 
-.. doxygengroup:: DiscordCreateGuildApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_create_guild_application_command
+.. doxygenstruct:: discord_create_guild_application_command_params

@@ -10,6 +10,4 @@
 Join Thread
 ===========
 
-.. doxygengroup:: DiscordJoinThread
-   :content-only:
-
+.. doxygenfunction:: discord_join_thread

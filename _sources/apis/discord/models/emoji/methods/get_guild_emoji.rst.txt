@@ -10,6 +10,4 @@
 Get Guild Emoji
 ===============
 
-.. doxygengroup:: DiscordGetGuildEmoji
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_emoji

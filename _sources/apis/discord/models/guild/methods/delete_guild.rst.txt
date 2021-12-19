@@ -10,6 +10,4 @@
 Delete Guild
 ============
 
-.. doxygengroup:: DiscordDeleteGuild
-   :content-only:
-
+.. doxygenfunction:: discord_delete_guild

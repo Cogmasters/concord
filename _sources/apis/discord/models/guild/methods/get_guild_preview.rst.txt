@@ -10,6 +10,4 @@
 Get Guild Preview
 =================
 
-.. doxygengroup:: DiscordGetGuildPreview
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_preview

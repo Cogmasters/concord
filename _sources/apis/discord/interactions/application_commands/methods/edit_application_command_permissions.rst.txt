@@ -10,6 +10,4 @@
 Edit Application Command Permissions
 ====================================
 
-.. doxygengroup:: DiscordEditApplicationCommandPermissions
-   :content-only:
-
+.. doxygenfunction:: discord_edit_application_command_permissions

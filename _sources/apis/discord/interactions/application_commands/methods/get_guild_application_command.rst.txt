@@ -10,6 +10,4 @@
 Get Guild Application Command
 =============================
 
-.. doxygengroup:: DiscordGetGuildApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_application_command

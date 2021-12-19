@@ -10,6 +10,4 @@
 Edit Original Interaction Response
 ==================================
 
-.. doxygengroup:: DiscordEditOriginalInteractionResponse
-   :content-only:
-
+.. doxygenfunction:: discord_edit_original_interaction_response

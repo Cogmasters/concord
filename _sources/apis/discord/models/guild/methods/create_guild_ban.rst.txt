@@ -10,6 +10,5 @@
 Create Guild Ban
 ================
 
-.. doxygengroup:: DiscordCreateGuildBan
-   :content-only:
-
+.. doxygenfunction:: discord_create_guild_ban
+.. doxygenstruct:: discord_create_guild_ban_params

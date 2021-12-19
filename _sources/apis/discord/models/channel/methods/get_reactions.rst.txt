@@ -11,5 +11,5 @@
 Get Reactions
 =============
 
-.. doxygengroup:: DiscordGetReactions
-   :content-only:
+.. doxygenfunction:: discord_get_reactions
+.. doxygenstruct:: discord_get_reactions_params

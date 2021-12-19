@@ -10,6 +10,4 @@
 Get Application Command Permissions
 ===================================
 
-.. doxygengroup:: DiscordGetApplicationCommandPermissions
-   :content-only:
-
+.. doxygenfunction:: discord_get_application_command_permissions

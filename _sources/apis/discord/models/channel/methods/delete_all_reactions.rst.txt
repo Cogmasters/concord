@@ -11,5 +11,4 @@
 Delete All Reactions
 ====================
 
-.. doxygengroup:: DiscordDeleteAllReactions
-   :content-only:
+.. doxygenfunction:: discord_delete_all_reactions

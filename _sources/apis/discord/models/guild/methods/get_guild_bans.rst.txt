@@ -10,6 +10,4 @@
 Get Guild Bans
 ==============
 
-.. doxygengroup:: DiscordGetGuildBans
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild_bans

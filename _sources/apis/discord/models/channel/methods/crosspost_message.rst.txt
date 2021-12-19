@@ -11,5 +11,4 @@
 Crosspost Message
 =================
 
-.. doxygengroup:: DiscordCrosspostMessage
-   :content-only:
+.. doxygenfunction:: discord_crosspost_message

@@ -10,6 +10,4 @@
 Pin Message
 ===========
 
-.. doxygengroup:: DiscordPinMessage
-   :content-only:
-
+.. doxygenfunction:: discord_pin_message

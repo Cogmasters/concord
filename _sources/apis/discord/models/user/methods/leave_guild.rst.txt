@@ -10,6 +10,4 @@
 Leave Guild
 ===========
 
-.. doxygengroup:: DiscordLeaveGuild
-   :content-only:
-
+.. doxygenfunction:: discord_leave_guild

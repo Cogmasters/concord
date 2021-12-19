@@ -10,6 +10,5 @@
 Follow News Channel
 ===================
 
-.. doxygengroup:: DiscordFollowNewsChannel
-   :content-only:
-
+.. doxygenfunction:: discord_follow_news_channel
+.. doxygenstruct:: discord_follow_news_channel_params

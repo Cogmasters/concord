@@ -10,6 +10,5 @@
 Modify Webhook
 ==============
 
-.. doxygengroup:: DiscordModifyWebhook
-   :content-only:
-
+.. doxygenfunction:: discord_modify_webhook
+.. doxygenstruct:: discord_modify_webhook_params

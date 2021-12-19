@@ -10,6 +10,4 @@
 Get Channel Invites
 ===================
 
-.. doxygengroup:: DiscordGetChannelInvites
-   :content-only:
-
+.. doxygenfunction:: discord_get_channel_invites

@@ -10,6 +10,5 @@
 Create DM
 =========
 
-.. doxygengroup:: DiscordCreateDm
-   :content-only:
-
+.. doxygenfunction:: discord_create_dm
+.. doxygenstruct:: discord_create_dm_params

@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ===================================================
-ua_set_opt - Set connection's default configuration
+ua_set_opt - set connection's default configuration
 ===================================================
 
 .. doxygenfunction:: ua_set_opt

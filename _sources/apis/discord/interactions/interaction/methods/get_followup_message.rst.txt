@@ -10,6 +10,4 @@
 Get Followup Message
 ====================
 
-.. doxygengroup:: DiscordGetFollowupMessage
-   :content-only:
-
+.. doxygenfunction:: discord_get_followup_message

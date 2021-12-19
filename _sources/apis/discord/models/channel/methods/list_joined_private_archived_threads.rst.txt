@@ -10,6 +10,4 @@
 List Joined Private Archived Threads
 ====================================
 
-.. doxygengroup:: DiscordListJoinedPrivateArchivedThreads
-   :content-only:
-
+.. doxygenfunction:: discord_list_joined_private_archived_threads

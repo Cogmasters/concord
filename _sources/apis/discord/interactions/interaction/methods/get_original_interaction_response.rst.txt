@@ -10,6 +10,4 @@
 Get Original Interaction Response
 =================================
 
-.. doxygengroup:: DiscordGetOriginalInteractionResponse
-   :content-only:
-
+.. doxygenfunction:: discord_get_original_interaction_response

@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 =======================================================
-ua_conn_set_mime - Build a libcurl based multipart body
+ua_conn_set_mime - build a libcurl based multipart body
 =======================================================
 
 .. doxygenfunction:: ua_conn_set_mime

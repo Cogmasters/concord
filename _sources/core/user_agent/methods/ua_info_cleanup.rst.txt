@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ===============================================
-ua_info_cleanup - Cleanup extracted information
+ua_info_cleanup - cleanup extracted information
 ===============================================
 
 .. doxygenfunction:: ua_info_cleanup

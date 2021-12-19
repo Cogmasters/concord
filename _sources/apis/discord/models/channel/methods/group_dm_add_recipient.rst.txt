@@ -10,6 +10,5 @@
 Group DM Add Recipient
 ======================
 
-.. doxygengroup:: DiscordGroupDmAddRecipient
-   :content-only:
-
+.. doxygenfunction:: discord_group_dm_add_recipient
+.. doxygenstruct:: discord_group_dm_add_recipient_params

@@ -16,5 +16,5 @@ Invite
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes
    methods/*

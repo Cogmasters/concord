@@ -10,6 +10,5 @@
 Execute Webhook
 ===============
 
-.. doxygengroup:: DiscordExecuteWebhook
-   :content-only:
-
+.. doxygenfunction:: discord_execute_webhook
+.. doxygenstruct:: discord_execute_webhook_params

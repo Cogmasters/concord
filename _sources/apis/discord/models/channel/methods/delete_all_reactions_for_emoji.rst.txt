@@ -11,5 +11,4 @@
 Delete All Reactions For Emoji
 ==============================
 
-.. doxygengroup:: DiscordDeleteAllReactionsForEmoji
-   :content-only:
+.. doxygenfunction:: discord_delete_all_reactions_for_emoji

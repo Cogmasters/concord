@@ -10,6 +10,4 @@
 Leave Thread
 ============
 
-.. doxygengroup:: DiscordLeaveThread
-   :content-only:
-
+.. doxygenfunction:: discord_leave_thread

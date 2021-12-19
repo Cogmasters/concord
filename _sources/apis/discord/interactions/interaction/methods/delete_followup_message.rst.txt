@@ -10,6 +10,4 @@
 Delete Followup Message
 =======================
 
-.. doxygengroup:: DiscordDeleteFollowupMessage
-   :content-only:
-
+.. doxygenfunction:: discord_delete_followup_message

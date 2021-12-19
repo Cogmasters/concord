@@ -10,6 +10,5 @@
 Create Guild Emoji
 ==================
 
-.. doxygengroup:: DiscordCreateGuildEmoji
-   :content-only:
-
+.. doxygenfunction:: discord_create_guild_emoji
+.. doxygenstruct:: discord_create_guild_emoji_params

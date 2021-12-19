@@ -13,7 +13,7 @@ WebSockets Reference
    :caption: Table of Contents
    :maxdepth: 1
 
-   structures
+   datatypes
    methods/ws_init
    methods/ws_cleanup
    methods/ws_set_url

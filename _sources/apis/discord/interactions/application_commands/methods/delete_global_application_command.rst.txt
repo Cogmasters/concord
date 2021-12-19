@@ -10,6 +10,4 @@
 Delete Global Application Command
 =================================
 
-.. doxygengroup:: DiscordDeleteGlobalApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_delete_global_application_command

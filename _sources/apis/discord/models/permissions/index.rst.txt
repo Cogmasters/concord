@@ -16,4 +16,4 @@ Permissions
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes

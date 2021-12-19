@@ -11,5 +11,4 @@
 Delete Own Reaction
 ===================
 
-.. doxygengroup:: DiscordDeleteOwnReaction
-   :content-only:
+.. doxygenfunction:: discord_delete_own_reaction

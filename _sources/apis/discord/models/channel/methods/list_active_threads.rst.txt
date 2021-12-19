@@ -10,6 +10,4 @@
 List Active Threads
 ===================
 
-.. doxygengroup:: DiscordListActiveThreads
-   :content-only:
-
+.. doxygenfunction:: discord_list_active_threads

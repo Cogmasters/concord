@@ -10,6 +10,5 @@
 Create Group DM
 ===============
 
-.. doxygengroup:: DiscordCreateGroupDm
-   :content-only:
-
+.. doxygenfunction:: discord_create_group_dm
+.. doxygenstruct:: discord_create_group_dm_params

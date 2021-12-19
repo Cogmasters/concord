@@ -10,6 +10,6 @@
 Edit Global Application Command
 ===============================
 
-.. doxygengroup:: DiscordEditGlobalApplicationCommand
-   :content-only:
+.. doxygenfunction:: discord_edit_global_application_command
+.. doxygenstruct:: discord_edit_global_application_command_params
 

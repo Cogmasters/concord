@@ -10,6 +10,4 @@
 List Thread Members
 ===================
 
-.. doxygengroup:: DiscordListThreadMembers
-   :content-only:
-
+.. doxygenfunction:: discord_list_thread_members

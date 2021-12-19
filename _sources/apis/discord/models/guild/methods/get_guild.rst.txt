@@ -10,6 +10,4 @@
 Get Guild
 =========
 
-.. doxygengroup:: DiscordGetGuild
-   :content-only:
-
+.. doxygenfunction:: discord_get_guild

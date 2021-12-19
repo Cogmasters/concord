@@ -13,7 +13,7 @@ User-Agent Reference
    :caption: Table of Contents
    :maxdepth: 1
 
-   structures
+   datatypes
    http
    methods/ua_init
    methods/ua_cleanup

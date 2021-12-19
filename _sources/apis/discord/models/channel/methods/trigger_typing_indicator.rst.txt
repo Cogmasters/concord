@@ -10,6 +10,4 @@
 Trigger Typing Indicator
 ========================
 
-.. doxygengroup:: DiscordTriggerTypingIndicator
-   :content-only:
-
+.. doxygenfunction:: discord_trigger_typing_indicator

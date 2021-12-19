@@ -10,6 +10,4 @@
 Unpin Message
 =============
 
-.. doxygengroup:: DiscordUnpinMessage
-   :content-only:
-
+.. doxygenfunction:: discord_unpin_message

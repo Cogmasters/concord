@@ -10,6 +10,5 @@
 Edit Guild Application Command
 ==============================
 
-.. doxygengroup:: DiscordEditGuildApplicationCommand
-   :content-only:
-
+.. doxygenfunction:: discord_edit_guild_application_command
+.. doxygenstruct:: discord_edit_guild_application_command_params

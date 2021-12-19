@@ -10,6 +10,4 @@
 Remove Guild Member Role
 ========================
 
-.. doxygengroup:: DiscordRemoveGuildMemberRole
-   :content-only:
-
+.. doxygenfunction:: discord_remove_guild_member_role

@@ -6,7 +6,7 @@
   - common/user-agent.h
 
 ======================================================
-ua_conn_reset - Reset a connection for immediate reuse
+ua_conn_reset - reset a connection for immediate reuse
 ======================================================
 
 .. doxygenfunction:: ua_conn_reset

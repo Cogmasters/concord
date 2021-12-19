@@ -10,6 +10,4 @@
 Group DM Remove Recipient
 =========================
 
-.. doxygengroup:: DiscordGroupDmRemoveRecipient
-   :content-only:
-
+.. doxygenfunction:: discord_group_dm_remove_recipient

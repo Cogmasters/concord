@@ -10,6 +10,5 @@
 Modify Guild Channel Positions
 ==============================
 
-.. doxygengroup:: DiscordModifyGuildChannelPositions
-   :content-only:
-
+.. doxygenfunction:: discord_modify_guild_channel_positions
+.. doxygenstruct:: discord_modify_guild_channel_positions_params

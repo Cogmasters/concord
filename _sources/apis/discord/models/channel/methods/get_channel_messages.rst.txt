@@ -11,6 +11,5 @@
 Get Channel Messages
 ====================
 
-.. doxygengroup:: DiscordGetChannelMessages
-   :content-only:
-
+.. doxygenfunction:: discord_get_channel_messages
+.. doxygenstruct:: discord_get_channel_messages_params

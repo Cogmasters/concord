@@ -16,5 +16,5 @@ Application Commands
    :glob:
    :maxdepth: 2
 
-   structures
+   datatypes
    methods/*

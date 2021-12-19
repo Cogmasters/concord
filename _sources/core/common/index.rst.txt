@@ -23,16 +23,8 @@ Global Resources
 Error Codes
 -----------
 
-Common
-^^^^^^
-
 .. doxygengroup:: OrcaCodes
 .. doxygenfunction:: orca_strerror
-
-Discord
-^^^^^^^
-
-.. doxygengroup:: OrcaDiscordCodes
 
 Limits
 ------

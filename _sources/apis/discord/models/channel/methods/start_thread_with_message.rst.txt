@@ -10,6 +10,5 @@
 Start Thread With Message
 =========================
 
-.. doxygengroup:: DiscordStartThreadWithMessage
-   :content-only:
-
+.. doxygenfunction:: discord_start_thread_with_message
+.. doxygenstruct:: discord_start_thread_with_message_params

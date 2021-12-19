@@ -10,6 +10,4 @@
 Delete Channel Permission
 =========================
 
-.. doxygengroup:: DiscordDeleteChannelPermission
-   :content-only:
-
+.. doxygenfunction:: discord_delete_channel_permission
