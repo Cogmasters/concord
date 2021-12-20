@@ -4,7 +4,7 @@
  * @brief File containing public functions and datatypes
  *
  * These symbols are organized in a intuitive fashion to be easily
- *        matched to the official Discord API docs.
+ *        matched to the official Discord API docs
  * @see https://discord.com/developers/docs/intro
  */
 
@@ -91,6 +91,7 @@ struct discord_voice_cbs;
  * @brief Return the meaning of ORCAcode
  * @note if the client parameter is provided, the raw JSON error string will be
  *        given for ORCA_DISCORD_JSON_CODE code
+ *
  * @param code the ORCAcode to be explained
  * @param client the client created with discord_init(), NULL for generic error
  *        descriptions
@@ -100,10 +101,10 @@ const char *discord_strerror(ORCAcode code, struct discord *client);
 
 /**
  * @brief Create a Discord Client handle by its token
+ * @see discord_get_logconf() to configure logging behavior
  *
  * @param token the bot token
  * @return the newly created Discord Client handle
- * @see discord_get_logconf() to configure logging behavior
  */
 struct discord *discord_init(const char token[]);
 
@@ -119,7 +120,7 @@ struct discord *discord_config_init(const char config_file[]);
  * @brief Clone a discord client
  *
  * Should be called before entering a thread, to ensure each thread
- *        has its own client instance with unique buffers, url and headers.
+ *        has its own client instance with unique buffers, url and headers
  * @param orig_client the original client created with discord_init()
  * @return the original client clone
  */
@@ -133,16 +134,14 @@ struct discord *discord_clone(const struct discord *orig_client);
 void discord_cleanup(struct discord *client);
 
 /**
- * @brief Initialize resources of globals used by discord.h
- *
  * @deprecated use orca_global_init() instead
+ * @brief Initialize resources of globals used by discord.h
  */
 void discord_global_init();
 
 /**
- * @brief Free resources of globals used by discord.h
- *
  * @deprecated use orca_global_cleanup() instead
+ * @brief Free resources of globals used by discord.h
  */
 void discord_global_cleanup();
 
@@ -155,7 +154,7 @@ void discord_global_cleanup();
 const struct discord_user *discord_get_self(struct discord *client);
 
 /**
- * @brief Subscribe to Discord Gateway events
+ * @brief Subscribe to Discord Events
  *
  * @param client the client created with discord_init()
  * @param code the intents opcode, can be set as a bitmask operation
@@ -163,7 +162,7 @@ const struct discord_user *discord_get_self(struct discord *client);
 void discord_add_intents(struct discord *client,
                          enum discord_gateway_intents code);
 /**
- * @brief Unsubscribe from Discord Gateway events
+ * @brief Unsubscribe from Discord Events
  *
  * @param client the client created with discord_init()
  * @param code the intents opcode, can be set as bitmask operation
@@ -174,12 +173,12 @@ void discord_remove_intents(struct discord *client,
                             enum discord_gateway_intents code);
 /**
  * @brief Set a mandatory prefix before commands
+ * @see discord_set_on_command()
  *
  * Example: If @a 'help' is a command and @a '!' prefix is set, the command
  *       will only be validated if @a '!help' is sent
  * @param client the client created with discord_init()
  * @param prefix the prefix that should accompany any command
- * @see discord_set_on_command()
  */
 void discord_set_prefix(struct discord *client, char *prefix);
 
@@ -230,10 +229,10 @@ void *discord_get_data(struct discord *client);
 
 /**
  * @brief Set the Client presence state
+ * @see discord_presence_add_activity()
  *
  * @param client the client created with discord_init()
  * @param presence overwrite client's presence with it
- * @see discord_presence_add_activity()
  */
 void discord_set_presence(struct discord *client,
                           struct discord_presence_status *presence);
@@ -257,10 +256,10 @@ uint64_t discord_timestamp(struct discord *client);
 
 /**
  * @brief Retrieve client's logging module for configuration purposes
+ * @see logconf_setup(), logconf_set_quiet(), logconf_set_level()
  *
  * @param client the client created with discord_init()
  * @return the client's logging module
- * @see logconf_setup(), logconf_set_quiet(), logconf_set_level()
  */
 struct logconf *discord_get_logconf(struct discord *client);
 
@@ -290,11 +289,11 @@ void discord_async_next(struct discord *client,
                         struct discord_async_attr *attr);
 
 /**
- * Fetch all of the global commands for your application. Returns an array of
- *       application command objects.
+ * @brief Fetch all of the global commands for your application
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
- * @ORCA_ret_list{ret, application command}
+ * @ORCA_ret_list{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_get_global_application_commands(
@@ -303,12 +302,13 @@ ORCAcode discord_get_global_application_commands(
   struct discord_application_command ***ret);
 
 /**
- * Create a new global command. New global commands will be available in all
- *       guilds after 1 hour.
+ * @brief Create a new global command
+ * @note New global commands will be available in all guilds after 1 hour
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param params request parameters
- * @ORCA_ret_obj{ret, application command}
+ * @ORCA_ret_obj{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_create_global_application_command(
@@ -318,12 +318,12 @@ ORCAcode discord_create_global_application_command(
   struct discord_application_command *ret);
 
 /**
- * Fetch a global command for your application. Returns an application command
- *       object.
+ * @brief Fetch a global command for your application
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
- * @ORCA_ret_obj{ret, application command}
+ * @ORCA_ret_obj{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_get_global_application_command(
@@ -333,13 +333,14 @@ ORCAcode discord_get_global_application_command(
   struct discord_application_command *ret);
 
 /**
- * Edit a global command. Updates will be available in all guilds
- *       after 1 hour. Returns an application command object.
+ * @brief Edit a global command
+ * @note Updates will be available in all guilds after 1 hour
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
  * @param params request parameters
- * @ORCA_ret_obj{ret, application command}
+ * @ORCA_ret_obj{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_edit_global_application_command(
@@ -350,7 +351,8 @@ ORCAcode discord_edit_global_application_command(
   struct discord_application_command *ret);
 
 /**
- * Deletes a global command.
+ * @brief Deletes a global command
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
@@ -362,17 +364,15 @@ ORCAcode discord_delete_global_application_command(
   u64_snowflake_t command_id);
 
 /**
- * Takes a list of application commands, overwriting existing commands
- *       that are registered globally for this application. Updates will be
- *       available in all guilds after 1 hour. Returns a list of application
- *       command objects. Commands that do not already exist will count
- *       toward daily application command create limits.
- * @warning This will overwrite all types of application commands: slash
- *        commands, user commands, and message commands.
+ * @brief Overwrite existing global application commands
+ * @note Updates will be available in all guilds after 1 hour
+ * @warning Will overwrite all types of application commands: slash
+ *        commands, user commands, and message commands
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param params the request parameters, a list of application commands
- * @ORCA_ret_list{ret, application command}
+ * @ORCA_ret_list{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_bulk_overwrite_global_application_command(
@@ -382,12 +382,12 @@ ORCAcode discord_bulk_overwrite_global_application_command(
   struct discord_application_command ***ret);
 
 /**
- * Fetch all of the guild commands for your application for a specific guild.
- * Returns an array of application command objects.
+ * @brief Fetch all of the guild commands of a given guild
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @ORCA_ret_list{ret, application command}
+ * @ORCA_ret_list{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_application_commands(
@@ -397,17 +397,15 @@ ORCAcode discord_get_guild_application_commands(
   struct discord_application_command ***ret);
 
 /**
- * Create a new guild command. New guild commands will be available in
- *       the guild immediately. Returns an application command object. If
- *       the command did not already exist, it will count toward daily
- *       application command create limits.
- * @note Creating a command with the same name as an existing command for your
- *        application will overwrite the old command.
+ * @brief Create a new guild command
+ * @note Commands will be available in the guild immediately
+ * @note Will overwrite any existing guild command with the same name
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param params request parameters
- * @ORCA_ret_obj{ret, application command}
+ * @ORCA_ret_obj{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_create_guild_application_command(
@@ -418,13 +416,13 @@ ORCAcode discord_create_guild_application_command(
   struct discord_application_command *ret);
 
 /**
- * Fetch a guild command for your application. Returns an application command
- *       object.
+ * @brief Fetch a guild command for your application
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @ORCA_ret_obj{ret, application command}
+ * @ORCA_ret_obj{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_application_command(
@@ -435,14 +433,15 @@ ORCAcode discord_get_guild_application_command(
   struct discord_application_command *ret);
 
 /**
- * Edit a guild command. Updates for guild commands will be available
- *       immediately. Returns an application command object.
+ * @brief Edit a guild command
+ * @note Updates for guild commands will be available immediately
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
  * @param params request parameters
- * @ORCA_ret_obj{ret, application command}
+ * @ORCA_ret_obj{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_edit_guild_application_command(
@@ -454,7 +453,8 @@ ORCAcode discord_edit_guild_application_command(
   struct discord_application_command *ret);
 
 /**
- * Deletes a guild command.
+ * @brief Deletes a guild command
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
@@ -468,15 +468,15 @@ ORCAcode discord_delete_guild_application_command(
   u64_snowflake_t command_id);
 
 /**
- * Takes a list of application commands, overwriting existing commands
- *       for the guild. Returns a list of application command objects.
+ * @brief Overwrite existing guild application commands
  * @warning This will overwrite all types of application commands: slash
- *        commands, user commands, and message commands.
+ *        commands, user commands, and message commands
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of application commands
- * @ORCA_ret_list{ret, application command}
+ * @ORCA_ret_list{ret, discord_application_command}
  * @ORCA_return
  */
 ORCAcode discord_bulk_overwrite_guild_application_command(
@@ -487,13 +487,12 @@ ORCAcode discord_bulk_overwrite_guild_application_command(
   struct discord_application_command ***ret);
 
 /**
- * Fetches command permissions for all commands for your application in a
- *       guild. Returns an array of guild application command permissions
- * objects.
+ * @brief Fetches command permissions for all commands in a given guild
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @ORCA_ret_list{ret, guild application command permissions}
+ * @ORCA_ret_list{ret, discord_guild_application_command_permissions}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_application_command_permissions(
@@ -503,13 +502,13 @@ ORCAcode discord_get_guild_application_command_permissions(
   struct discord_guild_application_command_permissions ***ret);
 
 /**
- * Fetches command permissions for a specific command for your application in a
- *       guild. Returns a guild application command permissions object.
+ * @brief Fetches command permissions for a specific command in a given guild
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @ORCA_ret_obj{ret, application command permissions}
+ * @ORCA_ret_obj{ret, discord_application_command_permissions}
  * @ORCA_return
  */
 ORCAcode discord_get_application_command_permissions(
@@ -520,15 +519,15 @@ ORCAcode discord_get_application_command_permissions(
   struct discord_guild_application_command_permissions *ret);
 
 /**
- * Edits command permissions for a specific command for your application in a
- *       guild. You can only add up to 10 permission overwrites for a command.
- * Returns a guild application command permissions object.
+ * @brief Edits command permissions for a specific command in a given guild
+ * @note You can only add up to 10 permission overwrites for a command
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
  * @param command_id the registered command id
  * @param params the request parameters
- * @ORCA_ret_obj{ret, application command permissions}
+ * @ORCA_ret_obj{ret, discord_application_command_permissions}
  * @ORCA_return
  */
 ORCAcode discord_edit_application_command_permissions(
@@ -540,19 +539,17 @@ ORCAcode discord_edit_application_command_permissions(
   struct discord_guild_application_command_permissions *ret);
 
 /**
- * Batch edits permissions for all commands in a guild. Takes an array
- *       of partial guild application command permissions objects including
- *       id and permissions.
- * You can only add up to 10 permission overwrites for a command.
- * Returns an array of GuildApplicationCommandPermissions objects.
+ * @brief Batch edits permissions for all commands in a guild
+ * @note You can only add up to 10 permission overwrites for a command
  * @warning This will overwrite all types of application commands: slash
- *       commands, user commands, and message commands.
+ *       commands, user commands, and message commands
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of guild application commands
  *       permissions
- * @ORCA_ret_list{ret, guild application command permissions}
+ * @ORCA_ret_list{ret, discord_guild_application_command_permissions}
  * @ORCA_return
  */
 ORCAcode discord_batch_edit_application_command_permissions(
@@ -563,13 +560,13 @@ ORCAcode discord_batch_edit_application_command_permissions(
   struct discord_guild_application_command_permissions ***ret);
 
 /**
- * Create a response to an Interaction from the gateway. Takes an interaction
- *       response.
+ * @brief Create a response to an Interaction from the gateway
+ *
  * @param client the client created with discord_init()
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
  * @param params the request parameters
- * @ORCA_ret_obj{ret, interaction response}
+ * @ORCA_ret_obj{ret, discord_interaction_response}
  * @ORCA_return
  */
 ORCAcode discord_create_interaction_response(
@@ -580,11 +577,12 @@ ORCAcode discord_create_interaction_response(
   struct discord_interaction_response *ret);
 
 /**
- * Returns the initial Interaction response.
+ * @brief Get the initial Interaction response
+ *
  * @param client the client created with discord_init()
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
- * @ORCA_ret_obj{ret, interaction response}
+ * @ORCA_ret_obj{ret, discord_interaction_response}
  * @ORCA_return
  */
 ORCAcode discord_get_original_interaction_response(
@@ -594,12 +592,13 @@ ORCAcode discord_get_original_interaction_response(
   struct discord_interaction_response *ret);
 
 /**
- * Edit the initial Interaction response.
+ * @brief Edit the initial Interaction response
+ *
  * @param client the client created with discord_init()
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
- * @ORCA_ret_obj{ret, interaction response}
+ * @ORCA_ret_obj{ret, discord_interaction_response}
  * @ORCA_return
  */
 ORCAcode discord_edit_original_interaction_response(
@@ -610,7 +609,8 @@ ORCAcode discord_edit_original_interaction_response(
   struct discord_interaction_response *ret);
 
 /**
- * Delete the initial Interaction response.
+ * @brief Delete the initial Interaction response
+ *
  * @param client the client created with discord_init()
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
@@ -622,12 +622,13 @@ ORCAcode discord_delete_original_interaction_response(
   const char interaction_token[]);
 
 /**
- * Create a followup message for an Interaction.
+ * @brief Create a followup message for an Interaction
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_create_followup_message(
@@ -638,12 +639,13 @@ ORCAcode discord_create_followup_message(
   struct discord_webhook *ret);
 
 /**
- * Returns a followup message for an interaction.
+ * @brief Get a followup message for an interaction
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_get_followup_message(struct discord *client,
@@ -653,13 +655,14 @@ ORCAcode discord_get_followup_message(struct discord *client,
                                       struct discord_message *ret);
 
 /**
- * Edits a followup message for an interaction.
+ * @brief Edits a followup message for an interaction
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
  * @param params request parameters
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_edit_followup_message(
@@ -671,7 +674,8 @@ ORCAcode discord_edit_followup_message(
   struct discord_message *ret);
 
 /**
- * Edits a followup message for an interaction.
+ * @brief Edits a followup message for an interaction
+ *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
@@ -684,12 +688,13 @@ ORCAcode discord_delete_followup_message(struct discord *client,
                                          u64_snowflake_t message_id);
 
 /**
- * Returns an audit log object for the guild.
+ * @brief Get audit log for a given guild
+ *
  * @note Requires the 'VIEW_AUDIT_LOG' permission
  * @param client the client created with discord_init()
  * @param guild_id the guild to retrieve the audit log from
  * @param params request parameters
- * @ORCA_ret_obj{ret, audit log}
+ * @ORCA_ret_obj{ret, discord_audit_log}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_audit_log(
@@ -699,11 +704,13 @@ ORCAcode discord_get_guild_audit_log(
   struct discord_audit_log *ret);
 
 /**
- * Get a channel by ID. Returns a channel object. If the channel is a thread, a
- *       thread member object is included in the returned result.
+ * @brief Get channel from given id
+ * @note If the channel is a thread, a thread member object is included in the
+ * returned result
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be retrieved
- * @ORCA_ret_obj{ret, channel}
+ * @ORCA_ret_obj{ret, discord_channel}
  * @ORCA_return
  */
 ORCAcode discord_get_channel(struct discord *client,
@@ -711,11 +718,12 @@ ORCAcode discord_get_channel(struct discord *client,
                              struct discord_channel *ret);
 
 /**
- * Update a channel's settings.
+ * @brief Update a channel's settings
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be modified
  * @param params request parameters
- * @ORCA_ret_obj{ret, channel}
+ * @ORCA_ret_obj{ret, discord_channel}
  * @ORCA_return
  */
 ORCAcode discord_modify_channel(struct discord *client,
@@ -724,16 +732,18 @@ ORCAcode discord_modify_channel(struct discord *client,
                                 struct discord_channel *ret);
 
 /**
- * Delete a channel, or close a private message.
+ * @brief Delete a channel, or close a private message
  * @note Requires the MANAGE_CHANNELS permission for the guild, or
- * MANAGE_THREADS if the channel is a thread. Deleting a category does not
- *       delete its child channels; they will have their parent_id removed and
- * a Channel Update Gateway event will fire for each of them.
- * @note Fires a Channel Delete Gateway event (or Thread Delete if the channel
- *       was a thread).
+ *        MANAGE_THREADS if the channel is a thread
+ * @note Deleting a category does not delete its child channels; they will have
+ *        their parent_id removed and a `Channel Update Gateway` event will
+ * fire for each of them
+ * @note Fires a `Channel Delete` event (or `Thread Delete` if the channel
+ *       was a thread)
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be deleted
- * @ORCA_ret_obj{ret, channel}
+ * @ORCA_ret_obj{ret, discord_channel}
  * @ORCA_return
  */
 ORCAcode discord_delete_channel(struct discord *client,
@@ -741,18 +751,19 @@ ORCAcode discord_delete_channel(struct discord *client,
                                 struct discord_channel *ret);
 
 /**
- * Returns the messages for a channel.
+ * @brief Get messages for a given channel
  * @note If operating on a guild channel, this endpoint requires the
- * VIEW_CHANNEL permission to be present on the current user.
- * @note If the current user is missing the 'READ_MESSAGE_HISTORY' permission
+ *        VIEW_CHANNEL permission to be present on the current user
+ * @note If the current user is missing the READ_MESSAGE_HISTORY permission
  *       in the channel then this will return no messages (since they cannot
- * read the message history).
+ *        read the message history)
  * @note The before, after, and around keys are mutually exclusive, only one
- *       may be passed at a time.
+ *       may be passed at a time
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel to get messages from
  * @param params request parameters
- * @ORCA_ret_list{ret, message}
+ * @ORCA_ret_list{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_get_channel_messages(
@@ -762,13 +773,13 @@ ORCAcode discord_get_channel_messages(
   struct discord_message ***ret);
 
 /**
- * Returns a specific message in the channel.
+ * @brief Get a specific message in the channel
  * @note If operating on a guild channel, this endpoint requires the
- * 'READ_MESSAGE_HISTORY' permission to be present on the current user.
+ * 'READ_MESSAGE_HISTORY' permission to be present on the current user
  * @param client the client created with discord_init()
  * @param channel_id the channel where the message resides
  * @param message_id the message itself
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_get_channel_message(struct discord *client,
@@ -777,12 +788,13 @@ ORCAcode discord_get_channel_message(struct discord *client,
                                      struct discord_message *ret);
 
 /**
- * Post a message to a guild text or DM channel. Fires a Message Create Gateway
- *       event.
+ * @brief Post a message to a guild text or DM channel
+ * @note Fires a `Message Create` event
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel to send the message at
  * @param params request parameters
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_create_message(struct discord *client,
@@ -791,14 +803,16 @@ ORCAcode discord_create_message(struct discord *client,
                                 struct discord_message *ret);
 
 /**
- * Crosspost a message in a News Channel to following channels. This endpoint
- *       requires the 'SEND_MESSAGES' permission, if the current user sent the
- *       message, or additionally the 'MANAGE_MESSAGES' permission, for all
- * other messages, to be present for the current user.
+ * @brief Crosspost a message in a News Channel to following channels
+ * @note This endpoint requires the 'SEND_MESSAGES' permission, if the current
+ *        user sent the message, or additionally the 'MANAGE_MESSAGES'
+ *        permission, for all other messages, to be present for the current
+ *        user
+ *
  * @param client the client created with discord_init()
  * @param channel_id the news channel that will crosspost
  * @param message_id the message that will crospost
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_crosspost_message(struct discord *client,
@@ -807,7 +821,8 @@ ORCAcode discord_crosspost_message(struct discord *client,
                                    struct discord_message *ret);
 
 /**
- * Create a reaction for the message.
+ * @brief Create a reaction for the message
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message to receive a reaction
@@ -822,7 +837,8 @@ ORCAcode discord_create_reaction(struct discord *client,
                                  const char emoji_name[]);
 
 /**
- * Delete a reaction the current user has made for the message.
+ * @brief Delete a reaction the current user has made for the message
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message to have a reaction deleted
@@ -837,7 +853,8 @@ ORCAcode discord_delete_own_reaction(struct discord *client,
                                      const char emoji_name[]);
 
 /**
- * Deletes another user's reaction.
+ * @brief Deletes another user's reaction
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message to have a reaction deleted
@@ -854,14 +871,15 @@ ORCAcode discord_delete_user_reaction(struct discord *client,
                                       const char emoji_name[]);
 
 /**
- * Get a list of users that reacted with this emoji.
+ * @brief Get a list of users that reacted with given emoji
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message reacted to
  * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
  * @param emoji_name the emoji name
  * @param params request parameters
- * @ORCA_ret_list{ret, user}
+ * @ORCA_ret_list{ret, discord_user}
  * @ORCA_return
  */
 ORCAcode discord_get_reactions(struct discord *client,
@@ -873,7 +891,8 @@ ORCAcode discord_get_reactions(struct discord *client,
                                struct discord_user ***ret);
 
 /**
- * Deletes all reactions on a message.
+ * @brief Deletes all reactions from message
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions
@@ -884,7 +903,8 @@ ORCAcode discord_delete_all_reactions(struct discord *client,
                                       u64_snowflake_t message_id);
 
 /**
- * Deletes all the reactions for a given emoji on a message.
+ * @brief Deletes all the reactions for a given emoji on message
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
@@ -900,13 +920,14 @@ ORCAcode discord_delete_all_reactions_for_emoji(struct discord *client,
                                                 const char emoji_name[]);
 
 /**
- * Edit a previously sent message.
+ * @brief Edit a previously sent message
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
  *       particular emoji
  * @param params request parameters
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_edit_message(struct discord *client,
@@ -916,7 +937,8 @@ ORCAcode discord_edit_message(struct discord *client,
                               struct discord_message *ret);
 
 /**
- * Delete a message.
+ * @brief Delete a message
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param message_id the message that will be purged of reactions from
@@ -928,7 +950,8 @@ ORCAcode discord_delete_message(struct discord *client,
                                 u64_snowflake_t message_id);
 
 /**
- * Delete multiple messages in a single request.
+ * @brief Delete multiple messages in a single request
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param messages the null-terminated list of messages to be deleted
@@ -939,7 +962,9 @@ ORCAcode discord_bulk_delete_messages(struct discord *client,
                                       u64_snowflake_t **messages);
 
 /**
- * Edit the channel permission overwrites for a user or role in a channel.
+ * @brief Edit the channel permission overwrites for a user or role in a
+ *        channel
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param overwrite_id
@@ -953,10 +978,11 @@ ORCAcode discord_edit_channel_permissions(
   struct discord_edit_channel_permissions_params *params);
 
 /**
- * Returns a list of invite objects (with invite metadata) for the channel.
+ * @brief Get invites (with invite metadata) for the channel
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
- * @ORCA_ret_list{ret, invite}
+ * @ORCA_ret_list{ret, discord_invite}
  * @ORCA_return
  */
 ORCAcode discord_get_channel_invites(struct discord *client,
@@ -964,11 +990,12 @@ ORCAcode discord_get_channel_invites(struct discord *client,
                                      struct discord_invite ***ret);
 
 /**
- * Create a new invite object for the channel.
+ * @brief Create a new invite for the channel
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param params request parameters
- * @ORCA_ret_obj{ret, invite}
+ * @ORCA_ret_obj{ret, discord_invite}
  * @ORCA_return
  */
 ORCAcode discord_create_channel_invite(
@@ -978,7 +1005,9 @@ ORCAcode discord_create_channel_invite(
   struct discord_invite *ret);
 
 /**
- * Delete a channel permission overwrite for a user or role in a channel.
+ * @brief Delete a channel permission overwrite for a user or role in a
+ *        channel
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel to the permission deleted
  * @param overwrite_id the id of the overwritten permission
@@ -988,9 +1017,25 @@ ORCAcode discord_delete_channel_permission(struct discord *client,
                                            u64_snowflake_t channel_id,
                                            u64_snowflake_t overwrite_id);
 
+/**
+ * @brief Post a typing indicator for the specified channel
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to post the typing indicator to
+ * @ORCA_return
+ */
 ORCAcode discord_trigger_typing_indicator(struct discord *client,
                                           u64_snowflake_t channel_id);
 
+/**
+ * @brief Follow a News Channel to send messages to a target channel
+ * @note Requires MANAGE_WEBHOOKS permission in the target channel
+ *        MANAGE_WEBHOOKS permission in the target channel
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to post the typing indicator to
+ * @ORCA_return
+ */
 ORCAcode discord_follow_news_channel(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1002,7 +1047,8 @@ ORCAcode discord_get_pinned_messages(struct discord *client,
                                      struct discord_message ***ret);
 
 /**
- * Pin a message in a channel.
+ * @brief Pin a message to a channel
+ *
  * @param client the client created with discord_init()
  * @param channel_id channel to pin the message on
  * @param message_id message to be pinned
@@ -1013,7 +1059,8 @@ ORCAcode discord_pin_message(struct discord *client,
                              u64_snowflake_t message_id);
 
 /**
- * Unpin a message in a channel.
+ * @brief Unpin a message from a channel
+ *
  * @param client the client created with discord_init()
  * @param channel_id channel for the message to be unpinned
  * @param message_id message to be unpinned
@@ -1024,7 +1071,8 @@ ORCAcode discord_unpin_message(struct discord *client,
                                u64_snowflake_t message_id);
 
 /**
- * Adds a recipient to a Group DM using their access token.
+ * @brief Adds a recipient to a Group DM using their access token
+ *
  * @param client the client created with discord_init()
  * @param channel_id group to add the user in
  * @param user_id user to be added
@@ -1038,7 +1086,8 @@ ORCAcode discord_group_dm_add_recipient(
   struct discord_group_dm_add_recipient_params *params);
 
 /**
- * Removes a recipient from a Group DM.
+ * @brief Removes a recipient from a Group DM
+ *
  * @param client the client created with discord_init()
  * @param channel_id channel for the user to be removed from
  * @param user_id user to be removed
@@ -1049,12 +1098,14 @@ ORCAcode discord_group_dm_remove_recipient(struct discord *client,
                                            u64_snowflake_t user_id);
 
 /**
- * Creates a new thread from an existing message.
+ * @brief Creates a new thread from an existing message
+ * @note Fires a `Thread Create` event
+ *
  * @param client the client created with discord_init()
  * @param channel_id channel to start a thread on
  * @param message_id message to start a thread from
  * @param params request parameters
- * @ORCA_ret_obj{ret, thread channel}
+ * @ORCA_ret_obj{ret, discord_thread_channel}
  * @ORCA_return
  */
 ORCAcode discord_start_thread_with_message(
@@ -1064,35 +1115,111 @@ ORCAcode discord_start_thread_with_message(
   struct discord_start_thread_with_message_params *params,
   struct discord_channel *ret);
 
+/**
+ * @brief Creates a new thread that is not connected to an existing message
+ * @note Fires a `Thread Create` event
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id channel to start a thread on
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_thread_channel}
+ * @ORCA_return
+ */
 ORCAcode discord_start_thread_without_message(
   struct discord *client,
   u64_snowflake_t channel_id,
   struct discord_start_thread_without_message_params *params,
   struct discord_channel *ret);
 
+/**
+ * @brief Adds the current user to an un-archived thread
+ * @note Fires a `Thread Members Update` event
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the thread to be joined
+ * @ORCA_return
+ */
 ORCAcode discord_join_thread(struct discord *client,
                              u64_snowflake_t channel_id);
 
+/**
+ * @brief Adds another member to an un-archived thread
+ * @note Fires a `Thread Members Update` event
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the thread to be joined
+ * @param user_id user to be added to thread
+ * @ORCA_return
+ */
 ORCAcode discord_add_thread_member(struct discord *client,
                                    u64_snowflake_t channel_id,
                                    u64_snowflake_t user_id);
 
+/**
+ * @brief Removes the current user from a un-archived thread
+ * @note Fires a `Thread Members Update` event
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the thread to be removed from
+ * @ORCA_return
+ */
 ORCAcode discord_leave_thread(struct discord *client,
                               u64_snowflake_t channel_id);
 
+/**
+ * @brief Removes another member from a un-archived thread
+ * @note Fires a `Thread Members Update` event
+ * @note Requires `MANAGE_THREADS` permission
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the thread to be removed from
+ * @param user_id user to be removed
+ * @ORCA_return
+ */
 ORCAcode discord_remove_thread_member(struct discord *client,
                                       u64_snowflake_t channel_id,
                                       u64_snowflake_t user_id);
 
+/**
+ * @brief Get members from a given thread channel
+ * @note Fires a `Thread Members Update` event
+ * @note Requires `MANAGE_THREADS` permission
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the thread to be joined
+ * @ORCA_ret_list{ret, discord_thread_member}
+ * @ORCA_return
+ */
 ORCAcode discord_list_thread_members(struct discord *client,
                                      u64_snowflake_t channel_id,
                                      struct discord_thread_member ***ret);
 
+/**
+ * @todo replace with
+ * https://discord.com/developers/docs/resources/guild#list-active-threads
+ * @deprecated Discord will deprecate this in V10
+ * @brief Get all active threads in a given channel
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be searched for threads
+ * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_return
+ */
 ORCAcode discord_list_active_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
   struct discord_thread_response_body *body);
 
+/**
+ * @brief Get public archived threads in a given channel
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be searched for threads
+ * @param before return threads before this timestamp
+ * @param limit maximum number of threads to return
+ * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_return
+ */
 ORCAcode discord_list_public_archived_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1100,6 +1227,16 @@ ORCAcode discord_list_public_archived_threads(
   int limit,
   struct discord_thread_response_body *body);
 
+/**
+ * @brief Get private archived threads in a given channel
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be searched for threads
+ * @param before return threads before this timestamp
+ * @param limit maximum number of threads to return
+ * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_return
+ */
 ORCAcode discord_list_private_archived_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1107,6 +1244,16 @@ ORCAcode discord_list_private_archived_threads(
   int limit,
   struct discord_thread_response_body *body);
 
+/**
+ * @brief Get private archived threads that current user has joined
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel to be searched for threads
+ * @param before return threads before this timestamp
+ * @param limit maximum number of threads to return
+ * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_return
+ */
 ORCAcode discord_list_joined_private_archived_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1114,21 +1261,59 @@ ORCAcode discord_list_joined_private_archived_threads(
   int limit,
   struct discord_thread_response_body *body);
 
+/**
+ * @brief Get emojis of a given guild
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to get emojis from
+ * @ORCA_ret_list{ret, discord_emoji}
+ * @ORCA_return
+ */
 ORCAcode discord_list_guild_emojis(struct discord *client,
                                    u64_snowflake_t guild_id,
                                    struct discord_emoji ***ret);
 
+/**
+ * @brief Get a specific emoji from a guild
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the emoji belongs to
+ * @param emoji_id the emoji to be fetched
+ * @ORCA_ret_obj{ret, discord_emoji}
+ * @ORCA_return
+ */
 ORCAcode discord_get_guild_emoji(struct discord *client,
                                  u64_snowflake_t guild_id,
                                  u64_snowflake_t emoji_id,
                                  struct discord_emoji *ret);
 
+/**
+ * @brief Create a new emoji for the guild
+ * @note Fires a `Guild Emojis Update` event
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to add the new emoji to
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_emoji}
+ * @ORCA_return
+ */
 ORCAcode discord_create_guild_emoji(
   struct discord *client,
   u64_snowflake_t guild_id,
   struct discord_create_guild_emoji_params *params,
   struct discord_emoji *ret);
 
+/**
+ * @brief Modify the given emoji
+ * @note Fires a `Guild Emojis Update` event
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the emoji belongs to
+ * @param emoji_id the emoji to be modified
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_emoji}
+ * @ORCA_return
+ */
 ORCAcode discord_modify_guild_emoji(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1136,38 +1321,69 @@ ORCAcode discord_modify_guild_emoji(
   struct discord_modify_guild_emoji_params *params,
   struct discord_emoji *ret);
 
+/**
+ * @brief Deletes the given emoji
+ * @note Fires a `Guild Emojis Update` event
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the emoji belongs to
+ * @param emoji_id the emoji to be deleted
+ * @ORCA_return
+ */
 ORCAcode discord_delete_guild_emoji(struct discord *client,
                                     u64_snowflake_t guild_id,
                                     u64_snowflake_t emoji_id);
 
+/**
+ * @brief Create a new guild
+ * @note Fires a `Guild Create` event
+ *
+ * @param client the client created with discord_init()
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_guild}
+ * @ORCA_return
+ */
 ORCAcode discord_create_guild(struct discord *client,
                               struct discord_create_guild_params *params,
                               struct discord_guild *ret);
 
 /**
- * Returns the guild object for the given id. If with_counts is set to true,
- *       this endpoint will also return approximate_member_count and
- *       approximate_presence_count for the guild.
+ * @brief Get the guild with given id
+ * @note If with_counts is set to true, this endpoint will also return
+ *        approximate_member_count and approximate_presence_count for the
+ *        guild
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to retrieve
- * @ORCA_ret_obj{ret, guild preview}
+ * @ORCA_ret_obj{ret, discord_guild_preview}
  * @ORCA_return
  */
 ORCAcode discord_get_guild(struct discord *client,
                            u64_snowflake_t guild_id,
                            struct discord_guild *ret);
 
+/**
+ * @brief Get the preview for the given guild
+ * @note If the user is not in the guild, then the guild must be lurkable
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to get preview from
+ * @ORCA_ret_obj{ret, discord_guild_preview}
+ * @ORCA_return
+ */
 ORCAcode discord_get_guild_preview(struct discord *client,
                                    u64_snowflake_t guild_id,
                                    struct discord_guild_preview *ret);
 
 /**
- * Modify a guild's settings. Requires the MANAGE_GUILD permission. Returns the
- *       updated guild object on success. Fires a Guild Update Gateway event.
+ * @brief Modify a guild's settings
+ * @note Requires the MANAGE_GUILD permission
+ * @note Fires a `Guild Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to modify
  * @param params request parameters
- * @ORCA_ret_obj{ret, guild}
+ * @ORCA_ret_obj{ret, discord_guild}
  * @ORCA_return
  */
 ORCAcode discord_modify_guild(struct discord *client,
@@ -1176,8 +1392,9 @@ ORCAcode discord_modify_guild(struct discord *client,
                               struct discord_guild *ret);
 
 /**
- * Delete a guild permanently. User must be owner. Returns 204 No Content on
- *       success. Fires a Guild Delete Gateway event.
+ * @brief Delete a guild permanently, user must be owner
+ * @note Fires a `Guild Delete` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id id of guild to delete
  * @ORCA_return
@@ -1186,10 +1403,11 @@ ORCAcode discord_delete_guild(struct discord *client,
                               u64_snowflake_t guild_id);
 
 /**
- * Returns a list of guild channel objects. Does not include threads.
+ * @brief Fetch channels from given guild. Does not include threads
+ *
  * @param client the client created with discord_init()
  * @param guild_id id of guild to fetch channels from
- * @ORCA_ret_list{ret, channel}
+ * @ORCA_ret_list{ret, discord_channel}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_channels(struct discord *client,
@@ -1197,15 +1415,17 @@ ORCAcode discord_get_guild_channels(struct discord *client,
                                     struct discord_channel ***ret);
 
 /**
- * Create a new channel object for the guild. Requires the MANAGE_CHANNELS
- *       permission. If setting permission overwrites, only permissions your
- * bot has in the guild can be allowed/denied. Setting MANAGE_ROLES permission
- * in channels is only possible for guild administrators. Returns the new
- * channel object on success. Fires a Channel Create Gateway event.
+ * @brief Create a new guild channel
+ * @note Requires the MANAGE_CHANNELS permission
+ * @note If setting permission overwrites, only permissions your
+ *       bot has in the guild can be allowed/denied. Setting MANAGE_ROLES
+ *       permission in channels is only possible for guild administrators
+ * @note Fires a `Channel Create` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id id of the guild to create a channel at
  * @param params request parameters
- * @ORCA_ret_obj{ret, channel}
+ * @ORCA_ret_obj{ret, discord_channel}
  * @ORCA_return
  */
 ORCAcode discord_create_guild_channel(
@@ -1215,9 +1435,9 @@ ORCAcode discord_create_guild_channel(
   struct discord_channel *ret);
 
 /**
- * Modify the positions of a set of channel objects for the guild. Requires
- * MANAGE_CHANNELS permission. Returns a 204 empty response on success. Fires
- *       multiple Channel Update Gateway events.
+ * @brief Modify guild channel positions
+ * @note Requires MANAGE_CHANNELS permission
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to change the positions of the
  *       channels in
@@ -1229,30 +1449,66 @@ ORCAcode discord_modify_guild_channel_positions(
   u64_snowflake_t guild_id,
   struct discord_modify_guild_channel_positions_params **params);
 
+/**
+ * @brief Get guild member of a guild from given user id
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the member belongs to
+ * @param user_id unique user id of member
+ * @ORCA_ret_obj{ret, discord_guild_member}
+ * @ORCA_return
+ */
 ORCAcode discord_get_guild_member(struct discord *client,
                                   u64_snowflake_t guild_id,
                                   u64_snowflake_t user_id,
                                   struct discord_guild_member *ret);
 
+/**
+ * @brief Get guild members of a guild
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the members belongs to
+ * @param request parameters
+ * @ORCA_ret_list{ret, discord_guild_member}
+ * @ORCA_return
+ */
 ORCAcode discord_list_guild_members(
   struct discord *client,
   u64_snowflake_t guild_id,
   struct discord_list_guild_members_params *params,
   struct discord_guild_member ***ret);
 
+/**
+ * @brief Get guild members whose username or nickname starts with a provided
+ *        string
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the members belongs to
+ * @param request parameters
+ * @ORCA_ret_list{ret, discord_guild_member}
+ * @ORCA_return
+ */
 ORCAcode discord_search_guild_members(
   struct discord *client,
   u64_snowflake_t guild_id,
   struct discord_search_guild_members_params *params,
   struct discord_guild_member ***ret);
 
-ORCAcode discord_modify_guild_member(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t user_id,
-  struct discord_modify_guild_member_params *params,
-  struct discord_guild_member *ret);
-
+/**
+ * @brief Adds a user to the guild
+ * @note Requires valid oauth2 access token for the user with `guilds.join`
+ *       scope
+ * @note Fires a `Guild Member Add` event
+ * @note The bot must be a member of the guild with CREATE_INSTANT_INVITE
+ *       permission
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to add the member to
+ * @param user_id the user to be added
+ * @param request parameters
+ * @ORCA_ret_obj{ret, discord_guild_member}
+ * @ORCA_return
+ */
 ORCAcode discord_add_guild_member(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1261,13 +1517,32 @@ ORCAcode discord_add_guild_member(
   struct discord_guild_member *ret);
 
 /**
- * Modifies the current member in the guild. Used to modify nicknames.
+ * @brief Modify attributes of a guild member
+ * @note Fires a `Guild Member Update` event
+ * @see discord_disconnect_guild_member()
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the member belongs to
+ * @param user_id the user id of member
+ * @param request parameters
+ * @ORCA_ret_obj{ret, discord_guild_member}
+ * @ORCA_return
+ */
+ORCAcode discord_modify_guild_member(
+  struct discord *client,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t user_id,
+  struct discord_modify_guild_member_params *params,
+  struct discord_guild_member *ret);
+
+/**
+ * @brief Modifies the current member in the guild
+ * @note Fires a `Guild Member Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild where the member exists
- * @param params the parameters sent to discord. For example the new nickname
- *       for the bot
- * @ORCA_ret_obj{ret, guild member}
- *       successful
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_guild_member}
  * @ORCA_return
  */
 ORCAcode discord_modify_current_member(
@@ -1278,10 +1553,13 @@ ORCAcode discord_modify_current_member(
 
 /**
  * @deprecated use discord_modify_current_member() instead
+ * @brief Modify the nickname of the current user in a guild
+ * @note Fires a `Guild Member Update` event
+ *
  * @param client the client created with discord_init()
- * @param guild_id the unique id of the guild where the member exists
- * @param params the new nickname for the bot
- * @ORCA_ret_obj{ret, guild member}
+ * @param guild_id guild the member belongs to
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_guild_member}
  * @ORCA_return
  */
 ORCAcode discord_modify_current_user_nick(
@@ -1291,7 +1569,9 @@ ORCAcode discord_modify_current_user_nick(
   struct discord_guild_member *ret);
 
 /**
- * Adds a role to a guild member.
+ * @brief Adds a role to a guild member
+ * @note Fires a `Guild Member Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild where the member exists
  * @param user_id the unique id of the user
@@ -1304,7 +1584,10 @@ ORCAcode discord_add_guild_member_role(struct discord *client,
                                        u64_snowflake_t role_id);
 
 /**
- * Removes a role from a guild member.
+ * @brief Removes a role from a guild member
+ * @note Requires the MANAGE_ROLES permission
+ * @note Fires a `Guild Member Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild where the member exists
  * @param user_id the unique id of the user
@@ -1317,7 +1600,10 @@ ORCAcode discord_remove_guild_member_role(struct discord *client,
                                           u64_snowflake_t role_id);
 
 /**
- * Remove a member from a guild.
+ * @brief Remove a member from a guild
+ * @note Requires the KICK_MEMBERS permission
+ * @note Fires a `Guild Member Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the guild to remove the member from
  * @param user_id the user to be removed
@@ -1328,10 +1614,12 @@ ORCAcode discord_remove_guild_member(struct discord *client,
                                      u64_snowflake_t user_id);
 
 /**
- * Returns a list of ban objects for the users banned from this guild.
+ * @brief Fetch banned users for given guild
+ * @note Requires the BAN_MEMBERS permission
+ *
  * @param client the client created with discord_init()
  * @param guild_id the guild to get the list from
- * @ORCA_ret_list{ret, ban}
+ * @ORCA_ret_list{ret, discord_ban}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_bans(struct discord *client,
@@ -1339,12 +1627,13 @@ ORCAcode discord_get_guild_bans(struct discord *client,
                                 struct discord_ban ***ret);
 
 /**
- * Returns a ban object for the given user or a 404 not found if the ban cannot
- *       be found.
+ * @brief Fetch banned user from given guild
+ * @note Requires the BAN_MEMBERS permission
+ *
  * @param client the client created with discord_init()
  * @param guild_id the guild to return the ban from
  * @param user_id the user that is banned
- * @ORCA_ret_obj{ret, ban}
+ * @ORCA_ret_obj{ret, discord_ban}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_ban(struct discord *client,
@@ -1352,20 +1641,60 @@ ORCAcode discord_get_guild_ban(struct discord *client,
                                u64_snowflake_t user_id,
                                struct discord_ban *ret);
 
+/**
+ * @brief Bans user from a given guild
+ * @note Requires the BAN_MEMBERS permission
+ * @note Fires a `Guild Ban Add` event
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the user belongs to
+ * @param user_id the user to be banned
+ * @param params request parameters
+ * @ORCA_return
+ */
 ORCAcode discord_create_guild_ban(
   struct discord *client,
   u64_snowflake_t guild_id,
   u64_snowflake_t user_id,
   struct discord_create_guild_ban_params *params);
 
+/**
+ * @brief Remove the ban for a user
+ * @note Requires the BAN_MEMBERS permission
+ * @note Fires a `Guild Ban Remove` event
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the user belonged to
+ * @param user_id the user to have its ban revoked
+ * @ORCA_return
+ */
 ORCAcode discord_remove_guild_ban(struct discord *client,
                                   u64_snowflake_t guild_id,
                                   u64_snowflake_t user_id);
 
+/**
+ * @brief Get guild roles
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to get roles from
+ * @ORCA_ret_list{ret, discord_role}
+ * @ORCA_return
+ */
 ORCAcode discord_get_guild_roles(struct discord *client,
                                  u64_snowflake_t guild_id,
                                  struct discord_role ***ret);
 
+/**
+ * @brief Create a new guild role
+ * @note Requires MANAGE_ROLES permission
+ * @note Fires a `Guild Role Create` event
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to add a role to
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_role}
+ * @ORCA_return
+ */
 ORCAcode discord_create_guild_role(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1373,8 +1702,12 @@ ORCAcode discord_create_guild_role(
   struct discord_role *ret);
 
 /**
- * Begin a guild prune. Discord recommends for larger servers to set
- * "compute_prune_count" to false. Requires the KICK_MEMBERS permission.
+ * @brief Begin guild prune operation
+ * @note Discord recommends for larger servers to set "compute_prune_count" to
+ *       false
+ * @note Requires the KICK_MEMBERS permission
+ * @note Fires multiple `Guild Member Remove` events
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to start the prune
  * @ORCA_return
@@ -1385,11 +1718,12 @@ ORCAcode discord_begin_guild_prune(
   struct discord_begin_guild_prune_params *params);
 
 /**
- * Returns a list of invite objects (with invite metadata) for the guild.
- * Requires the MANAGE_GUILD permission.
+ * @brief Get guild invites
+ *
+ * @note requires the MANAGE_GUILD permission
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get invites from
- * @ORCA_ret_list{ret, invite}
+ * @ORCA_ret_list{ret, discord_invite}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_invites(struct discord *client,
@@ -1397,8 +1731,11 @@ ORCAcode discord_get_guild_invites(struct discord *client,
                                    struct discord_invite ***ret);
 
 /**
- * Deletes the integration for the guild. It will also delete any associated
- *       webhooks and bots. Requires the MANAGE_GUILD permission.
+ * @brief Deletes the integration for the guild. It will also delete any
+ * associated webhooks and bots
+ * @note Requires the MANAGE_GUILD permission
+ * @note Fires a `Guild Integrations Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to delete the integrations from
  * @param integration_id the id of the integration to delete
@@ -1409,11 +1746,12 @@ ORCAcode discord_delete_guild_integrations(struct discord *client,
                                            u64_snowflake_t integration_id);
 
 /**
- * Returns a partial invite object from the guild. Requires the MANAGE_GUILD
- *       permission.
+ * @brief Get invite from a given guild
+ * @note Requires the MANAGE_GUILD permission
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get vanity url from
- * @ORCA_ret_obj{ret, invite}
+ * @ORCA_ret_obj{ret, discord_invite}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_vanity_url(struct discord *client,
@@ -1421,16 +1759,28 @@ ORCAcode discord_get_guild_vanity_url(struct discord *client,
                                       struct discord_invite *ret);
 
 /**
- * Returns the Welcome Screen object for the guild.
+ * @brief Get the Welcome Screen for the guild
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get welcome screen of
- * @ORCA_ret_obj{ret, guild welcome screen}
+ * @ORCA_ret_obj{ret, discord_guild_welcome_screen}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_welcome_screen(struct discord *client,
                                           u64_snowflake_t guild_id,
                                           struct discord_welcome_screen *ret);
 
+/**
+ * @brief Modify the positions of a given role list for the guild
+ * @note Requires the MANAGE_ROLES permission
+ * @note Fires multiple `Guild Role Update` events
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the unique id of the guild to get welcome screen of
+ * @param params request parameters
+ * @ORCA_ret_list{ret, discord_role}
+ * @ORCA_return
+ */
 ORCAcode discord_modify_guild_role_positions(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1438,13 +1788,15 @@ ORCAcode discord_modify_guild_role_positions(
   struct discord_role ***ret);
 
 /**
- * Modify a guild role. Requires the MANAGE_ROLES permission. Returns the
- *       updated role on success. Fires a Guild Role Update Gateway event.
+ * @brief Modify a guild role
+ * @note Requires the MANAGE_ROLES permission
+ * @note Fires a `Guild Role Update` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to modify
  * @param params request parameters
- * @ORCA_ret_obj{ret, role}
+ * @ORCA_ret_obj{ret, discord_role}
  * @ORCA_return
  */
 ORCAcode discord_modify_guild_role(
@@ -1455,8 +1807,10 @@ ORCAcode discord_modify_guild_role(
   struct discord_role *ret);
 
 /**
- * Delete a guild role. Requires the MANAGE_ROLES permission. Returns a 204
- *       empty response on success. Fires a Guild Role Delete Gateway event.
+ * @brief Delete a guild role
+ * @note Requires the MANAGE_ROLES permission
+ * @note Fires a `Guild Role Delete` event
+ *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to delete
@@ -1467,9 +1821,11 @@ ORCAcode discord_delete_guild_role(struct discord *client,
                                    u64_snowflake_t role_id);
 
 /**
+ * @brief Get a guild template for the given code
+ *
  * @param client the client created with discord_init()
- * @param code the code of the guild template
- * @ORCA_ret_obj{ret, guild template}
+ * @param code the guild template code
+ * @ORCA_ret_obj{ret, discord_guild_template}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_template(struct discord *client,
@@ -1477,12 +1833,13 @@ ORCAcode discord_get_guild_template(struct discord *client,
                                     struct discord_guild_template *ret);
 
 /**
- * Creates a template for the guild. Requires the MANAGE_GUILD permission.
- * Returns the created guild template object on success.
+ * @brief Creates a template for the guild
+ * @note Requires the MANAGE_GUILD permission
+ *
  * @param client the client created with discord_init()
- * @param guild_id the guild to create a template of
- * @param params the parameters to create the guild template
- * @ORCA_ret_obj{ret, guild template}
+ * @param guild_id the guild to create a template from
+ * @param params the request parameters
+ * @ORCA_ret_obj{ret, discord_guild_template}
  * @ORCA_return
  */
 ORCAcode discord_create_guild_template(
@@ -1492,12 +1849,13 @@ ORCAcode discord_create_guild_template(
   struct discord_guild_template *ret);
 
 /**
- * Syncs the template to the guild's current state. Requires the MANAGE_GUILD
- *       permission. Returns the guild template object on success.
+ * @brief Syncs the template to the guild's current state
+ * @note Requires the MANAGE_GUILD permission
+ *
  * @param client the client created with discord_init()
- * @param guild_id the guild to sync the template of
- * @param code the identifier of the template to sync
- * @ORCA_ret_obj{ret, guild template}
+ * @param guild_id the guild to sync the template from
+ * @param code the guild template code
+ * @ORCA_ret_obj{ret, discord_guild_template}
  * @ORCA_return
  */
 ORCAcode discord_sync_guild_template(struct discord *client,
@@ -1505,66 +1863,149 @@ ORCAcode discord_sync_guild_template(struct discord *client,
                                      char *code,
                                      struct discord_guild_template *ret);
 
+/**
+ * @brief Get an invite for the given code
+ *
+ * @param client the client created with discord_init()
+ * @param invite_code the invite code
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_invite}
+ * @ORCA_return
+ */
 ORCAcode discord_get_invite(struct discord *client,
                             char *invite_code,
                             struct discord_get_invite_params *params,
                             struct discord_invite *ret);
 
+/**
+ * @brief Delete an invite
+ * @note Requires the MANAGE_CHANNELS permission on the channel this invite
+ *        belongs to, or MANAGE_GUILD to remove any invite across the guild.
+ * @note Fires a `Invite Delete` event
+ *
+ * @param client the client created with discord_init()
+ * @param invite_code the invite code
+ * @ORCA_ret_obj{ret, discord_invite}
+ * @ORCA_return
+ */
 ORCAcode discord_delete_invite(struct discord *client,
                                char *invite_code,
                                struct discord_invite *ret);
 
+/**
+ * @brief Get client's user
+ *
+ * @param client the client created with discord_init()
+ * @ORCA_ret_obj{ret, discord_user}
+ * @ORCA_return
+ */
+ORCAcode discord_get_current_user(struct discord *client,
+                                  struct discord_user *ret);
+
+/**
+ * @brief Get user for a given id
+ *
+ * @param client the client created with discord_init()
+ * @param user_id user to be fetched
+ * @ORCA_ret_obj{ret, discord_user}
+ * @ORCA_return
+ */
 ORCAcode discord_get_user(struct discord *client,
                           u64_snowflake_t user_id,
                           struct discord_user *ret);
 
+/**
+ * @brief Modify client's user account settings
+ *
+ * @param client the client created with discord_init()
+ * @param params request parameters
+ * @ORCA_ret_obj{ret, discord_user}
+ * @ORCA_return
+ */
 ORCAcode discord_modify_current_user(
   struct discord *client,
   struct discord_modify_current_user_params *params,
   struct discord_user *ret);
 
-ORCAcode discord_get_current_user(struct discord *client,
-                                  struct discord_user *ret);
-
+/**
+ * @brief Get guilds client is a member of
+ * @note Requires the `guilds` oauth2 scope
+ *
+ * @param client the client created with discord_init()
+ * @ORCA_ret_list{ret, discord_guild}
+ * @ORCA_return
+ */
 ORCAcode discord_get_current_user_guilds(struct discord *client,
                                          struct discord_guild ***ret);
 
+/**
+ * @brief Leave a guild
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild to exit from
+ * @ORCA_return
+ */
 ORCAcode discord_leave_guild(struct discord *client, u64_snowflake_t guild_id);
 
+/**
+ * @brief Create a new DM channel with a given user
+ * @warning DMs should generally be initiated by a user action. If you open a
+ *        significant amount of DMs too quickly, your bot may be rate limited
+ *        or blocked from opening new ones
+ *
+ * @param client the client created with discord_init()
+ * @param params the request parameters
+ * @ORCA_ret_obj{ret, discord_channel}
+ * @ORCA_return
+ */
 ORCAcode discord_create_dm(struct discord *client,
                            struct discord_create_dm_params *params,
                            struct discord_channel *ret);
 
+/**
+ * @brief Create a new group DM channel with multiple users
+ * @note DMs created with this function will not be shown in the Discord client
+ * @note Limited to 10 active group DMs
+ *
+ * @param client the client created with discord_init()
+ * @param params the request parameters
+ * @ORCA_ret_obj{ret, discord_channel}
+ * @ORCA_return
+ */
 ORCAcode discord_create_group_dm(struct discord *client,
                                  struct discord_create_group_dm_params *params,
                                  struct discord_channel *ret);
 
 /**
- * Returns a list of connection objects.
+ * @brief Get a list of connection objects
+ * @note Requires the `connections` oauth2 scope
+ *
  * @param client the client created with discord_init()
- * @ORCA_ret_list{ret, connection}
+ * @ORCA_ret_list{ret, discord_connection}
  * @ORCA_return
  */
 ORCAcode discord_get_user_connections(struct discord *client,
                                       struct discord_connection ***ret);
 
 /**
- * Returns an array of voice region objects that can be used when setting a
- *       voice or stage channel's rtc_region.
+ * @brief Get voice regions that can be used when setting a
+ *        voice or stage channel's `rtc_region`
+ *
  * @param client the client created with discord_init()
- * @ORCA_ret_list{ret, voice region}
+ * @ORCA_ret_list{ret, discord_voice_region}
  * @ORCA_return
  */
 ORCAcode discord_list_voice_regions(struct discord *client,
                                     struct discord_voice_region ***ret);
 
 /**
- * Create a new webhook. Requires the MANAGE_WEBHOOKS permission. Returns a
- *       webhook object on success.
+ * @brief Create a new webhook
+ * @note Requires the MANAGE_WEBHOOKS permission
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the webhook belongs to
  * @param params request parameters
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_create_webhook(struct discord *client,
@@ -1573,11 +2014,12 @@ ORCAcode discord_create_webhook(struct discord *client,
                                 struct discord_webhook *ret);
 
 /**
- * Returns a list of channel webhook objects. Requires the MANAGE_WEBHOOKS
- *       permission.
+ * @brief Get webhooks from a given channel
+ * @note Requires the MANAGE_WEBHOOKS permission
+ *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the webhooks belongs to
- * @ORCA_ret_list{ret, webhook}
+ * @ORCA_ret_list{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_get_channel_webhooks(struct discord *client,
@@ -1585,11 +2027,12 @@ ORCAcode discord_get_channel_webhooks(struct discord *client,
                                       struct discord_webhook ***ret);
 
 /**
- * Returns a list of guild webhook objects. Requires the MANAGE_WEBHOOKS
- *       permission.
+ * @brief Get webhooks from a given guild webhook objects
+ * @note Requires the MANAGE_WEBHOOKS permission
+ *
  * @param client the client created with discord_init()
  * @param guild_id the guild that the webhooks belongs to
- * @ORCA_ret_list{ret, webhook}
+ * @ORCA_ret_list{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_get_guild_webhooks(struct discord *client,
@@ -1597,10 +2040,11 @@ ORCAcode discord_get_guild_webhooks(struct discord *client,
                                     struct discord_webhook ***ret);
 
 /**
- * Returns the new webhook object for the given id.
+ * @brief Get the new webhook object for the given id
+ *
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_get_webhook(struct discord *client,
@@ -1609,11 +2053,11 @@ ORCAcode discord_get_webhook(struct discord *client,
 
 /**
  * Same as discord_get_webhook(), except this call does not require
- *        authentication and returns no user in the webhook object.
+ *        authentication and returns no user in the webhook object
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_get_webhook_with_token(struct discord *client,
@@ -1622,12 +2066,13 @@ ORCAcode discord_get_webhook_with_token(struct discord *client,
                                         struct discord_webhook *ret);
 
 /**
- * Modify a webhook. Requires the MANAGE_WEBHOOKS permission. Returns the
- *       updated webhook object on success.
+ * @brief Modify a webhook
+ * @note Requires the MANAGE_WEBHOOKS permission
+ *
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param params request parameters
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_modify_webhook(struct discord *client,
@@ -1642,7 +2087,7 @@ ORCAcode discord_modify_webhook(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_modify_webhook_with_token(
@@ -1653,7 +2098,7 @@ ORCAcode discord_modify_webhook_with_token(
   struct discord_webhook *ret);
 
 /**
- * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission.
+ * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @ORCA_return
@@ -1663,7 +2108,7 @@ ORCAcode discord_delete_webhook(struct discord *client,
 
 /**
  * Same discord_delete_webhook(), except this call does not require
- *       authentication.
+ *       authentication
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
@@ -1678,7 +2123,7 @@ ORCAcode discord_delete_webhook_with_token(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
- * @ORCA_ret_obj{ret, webhook}
+ * @ORCA_ret_obj{ret, discord_webhook}
  * @ORCA_return
  */
 ORCAcode discord_execute_webhook(struct discord *client,
@@ -1688,13 +2133,13 @@ ORCAcode discord_execute_webhook(struct discord *client,
                                  struct discord_webhook *ret);
 
 /**
- * Returns a previously-sent webhook message from the same token. Returns a
- *       message object on success.
+ * @brief Get previously-sent webhook message from the same token
+ *
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_get_webhook_message(struct discord *client,
@@ -1704,14 +2149,14 @@ ORCAcode discord_get_webhook_message(struct discord *client,
                                      struct discord_message *ret);
 
 /**
- * Edits a previously-sent webhook message from the same token. Returns a
- *       message object on success.
+ * @brief Edits a previously-sent webhook message from the same token
+ *
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
  * @param params request parameters
- * @ORCA_ret_obj{ret, message}
+ * @ORCA_ret_obj{ret, discord_message}
  * @ORCA_return
  */
 ORCAcode discord_edit_webhook_message(
@@ -1723,8 +2168,8 @@ ORCAcode discord_edit_webhook_message(
   struct discord_message *ret);
 
 /**
- * Deletes a message that was created by the webhook. Returns a 204 NO CONTENT
- *       response on success.
+ * @brief Deletes a message that was created by the webhook
+ *
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
@@ -1736,10 +2181,71 @@ ORCAcode discord_delete_webhook_message(struct discord *client,
                                         const char webhook_token[],
                                         u64_snowflake_t message_id);
 
+/**
+ * @brief Get a single valid WSS URL, which the client can use for connecting
+ * @note This route should be cached, and only call the function again if
+ *        unable to properly establishing a connection with the cached version
+ *
+ * @param client the client created with discord_init()
+ * @ORCA_ret_obj{ret, discord_JSON}
+ * @ORCA_return
+ */
 ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *ret);
 
+/**
+ * @brief Get a single valid WSS URL, and additional metadata that can help
+ *        during the operation of large bots.
+ * @note This route should not be cached for extended periods of time as the
+ *        value is not guaranteed to be the same per-call, and changes as the
+ *        bot joins/leaves guilds
+ *
+ * @param client the client created with discord_init()
+ * @ORCA_ret_obj{ret, discord_JSON}
+ * @ORCA_return
+ */
 ORCAcode discord_get_gateway_bot(struct discord *client,
                                  struct sized_buffer *ret);
+
+/**
+ * @brief Get a guild's channel from its given numerical position
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the channel belongs to
+ * @param type the channel type where to take position reference from
+ * @ORCA_ret_obj{ret, discord_channel}
+ * @ORCA_return
+ */
+ORCAcode discord_get_channel_at_pos(struct discord *client,
+                                    u64_snowflake_t guild_id,
+                                    enum discord_channel_types type,
+                                    size_t position,
+                                    struct discord_channel *ret);
+
+/**
+ * @brief Delete messages from a channel by a given author
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id channel where the messages resides
+ * @param author_id the user who sent those messages
+ * @ORCA_return
+ */
+ORCAcode discord_delete_messages_by_author_id(struct discord *client,
+                                              u64_snowflake_t channel_id,
+                                              u64_snowflake_t author_id);
+
+/**
+ * @brief Disconnect a member from voice channel
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id the guild the member belongs to
+ * @param user_id the user to be disconnected
+ * @ORCA_ret_obj{ret, discord_member}
+ * @ORCA_return
+ */
+ORCAcode discord_disconnect_guild_member(struct discord *client,
+                                         u64_snowflake_t guild_id,
+                                         u64_snowflake_t user_id,
+                                         struct discord_guild_member *ret);
 
 /******************************************************************************
  * Functions specific to Discord's Gateway
@@ -1747,7 +2253,6 @@ ORCAcode discord_get_gateway_bot(struct discord *client,
 
 /**
  * @brief return value of discord_set_event_scheduler() callback
- *
  * @see discord_set_event_scheduler()
  */
 typedef enum discord_event_scheduler {
@@ -1776,12 +2281,12 @@ typedef enum discord_event_scheduler (*discord_event_scheduler)(
  *       event-loop
  *
  * Allows the user to specify which events should be executed from the
- *       main-thread, in parallel from a worker-thread, or completely ignored.
+ *       main-thread, in parallel from a worker-thread, or completely ignored
  *
  * @param client the client created_with discord_init()
  * @param fn the function that will be executed
  * @warning The user is responsible for providing his own locking mechanism to
- *       avoid race-condition on sensitive data.
+ *       avoid race-condition on sensitive data
  * @see @ref discord_event_scheduler, @ref discord_gateway_events
  */
 void discord_set_event_scheduler(struct discord *client,
@@ -1868,10 +2373,10 @@ typedef void (*discord_on_voice_server_update)(struct discord *client,
 /** @} */
 
 /**
- * @brief Set command/callback pair.
+ * @brief Set command/callback pair
  *
  * The callback is triggered when a user types the assigned command in a
- *        chat visible to the client.
+ *        chat visible to the client
  * @param client the client created with discord_init()
  * @param command the command to trigger the callback
  * @param callback the callback to be triggered on event
@@ -1883,10 +2388,10 @@ void discord_set_on_command(struct discord *client,
                             discord_on_message cb);
 
 /**
- * @brief Set a variadic series of NULL terminated commands to a callback.
+ * @brief Set a variadic series of NULL terminated commands to a callback
  *
  * The callback is triggered when a user types one of the assigned commands in
- *        a chat visble to the client.
+ *        a chat visble to the client
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
  * @param ... commands and a NULL terminator
@@ -2018,46 +2523,166 @@ void discord_set_on_voice_server_update(struct discord *client,
 /** @} */
 
 /******************************************************************************
- * Miscellaneous
+ * Dynamic builder functions
  ******************************************************************************/
 
+/**
+ * @brief Add title to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param format printf-like formatting string
+ * @param ... variadic arguments to be matched to format
+ */
 void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
+
+/**
+ * @brief Add description to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param format printf-like formatting string
+ * @param ... variadic arguments to be matched to format
+ */
 void discord_embed_set_description(struct discord_embed *embed,
                                    char format[],
                                    ...);
+
+/**
+ * @brief Add URL to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param format printf-like formatting string
+ * @param ... variadic arguments to be matched to format
+ */
 void discord_embed_set_url(struct discord_embed *embed, char format[], ...);
+
+/**
+ * @brief Add thumbnail to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param url source url of thumbnail
+ * @param proxy_url a proxied url of the thumbnail
+ * @param height height of thumbnail
+ * @param width width of thumbnail
+ */
 void discord_embed_set_thumbnail(struct discord_embed *embed,
                                  char url[],
                                  char proxy_url[],
                                  int height,
                                  int width);
+
+/**
+ * @brief Add image to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param url source url of image
+ * @param proxy_url a proxied url of the image
+ * @param height height of image
+ * @param width width of image
+ */
 void discord_embed_set_image(struct discord_embed *embed,
                              char url[],
                              char proxy_url[],
                              int height,
                              int width);
+
+/**
+ * @brief Add video to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param url source url of video
+ * @param proxy_url a proxied url of the video
+ * @param height height of video
+ * @param width width of video
+ */
 void discord_embed_set_video(struct discord_embed *embed,
                              char url[],
                              char proxy_url[],
                              int height,
                              int width);
+
+/**
+ * @brief Add footer to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param text footer text
+ * @param icon_url url of footer icon
+ * @param proxy_icon_url a proxied url of footer icon
+ */
 void discord_embed_set_footer(struct discord_embed *embed,
                               char text[],
                               char icon_url[],
                               char proxy_icon_url[]);
+
+/**
+ * @brief Add provider to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param name name of provider
+ * @param url url of provider
+ */
 void discord_embed_set_provider(struct discord_embed *embed,
                                 char name[],
                                 char url[]);
+
+/**
+ * @brief Add author to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ *        longer being used
+ *
+ * @param embed the embed being modified
+ * @param name name of author
+ * @param url url of author
+ * @param icon_url url of author icon
+ * @param proxy_icon_url a proxied url of author icon
+ */
 void discord_embed_set_author(struct discord_embed *embed,
                               char name[],
                               char url[],
                               char icon_url[],
                               char proxy_icon_url[]);
+
+/**
+ * @brief Add field to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ *        longer being used
+ *
+ * @param embed the embed being modified
+ * @param name name of the field
+ * @param value value of the field
+ * @param Inline whether or not this field should display inline
+ */
 void discord_embed_add_field(struct discord_embed *embed,
                              char name[],
                              char value[],
                              bool Inline);
 
+/**
+ * @brief Append to an overwrite list
+ * @note the list should be freed with `discord_overwrite_list_free()` after
+ *        its no longer being used
+ *
+ * @param permission_overwrites list to be appended to
+ * @param id role or user id
+ * @param type either 0 (role) or 1 (member)
+ * @param allow permission bit set
+ * @param deny permission bit set
+ */
 void discord_overwrite_append(
   struct discord_overwrite ***permission_overwrites,
   u64_snowflake_t id,
@@ -2065,26 +2690,11 @@ void discord_overwrite_append(
   enum discord_bitwise_permission_flags allow,
   enum discord_bitwise_permission_flags deny);
 
-ORCAcode discord_get_channel_at_pos(struct discord *client,
-                                    u64_snowflake_t guild_id,
-                                    enum discord_channel_types type,
-                                    size_t position,
-                                    struct discord_channel *ret);
-
-ORCAcode discord_delete_messages_by_author_id(struct discord *client,
-                                              u64_snowflake_t channel_id,
-                                              u64_snowflake_t author_id);
-
-ORCAcode discord_disconnect_guild_member(struct discord *client,
-                                         u64_snowflake_t guild_id,
-                                         u64_snowflake_t user_id,
-                                         struct discord_guild_member *ret);
-
 /**
  * @brief Helper function to add presence activities
+ * @see discord_set_presence()
  *
  * This function is a wrapper over ntl_append2()
- * @see discord_set_presence()
  */
 void discord_presence_add_activity(struct discord_presence_status *presence,
                                    struct discord_activity *activity);
