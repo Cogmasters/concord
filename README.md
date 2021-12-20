@@ -48,12 +48,12 @@ void on_ready(struct discord *client)
 
 void on_message(struct discord *client, const struct discord_message *msg)
 {
-  if (0 == strcmp(msg->content, "ping")) { // if 'ping' received, reply with 'pong'
-    struct discord_create_message_params params = { .content = "pong" };
+  if (strcmp(msg->content, "ping") != 0)
+    return; // ignore messages that aren't 'ping'
 
-    discord_async_next(client, NULL); // make next request non-blocking (OPTIONAL)
-    discord_create_message(client, msg->channel_id, &params, NULL);
-  }
+  discord_async_next(client, NULL); // make next request non-blocking (OPTIONAL)
+  struct discord_create_message_params params = { .content = "pong" };
+  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 int main(void)
