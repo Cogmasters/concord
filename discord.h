@@ -71,86 +71,6 @@ struct discord_voice_cbs;
 #define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
 /** @} */
 
-/** @defgroup DiscordCallbackTypes
- *  @{ */
-typedef void (*discord_on_done)(struct discord *client, const void *obj);
-typedef void (*discord_on_idle)(struct discord *client);
-typedef void (*discord_on_application_command)(
-  struct discord *client, const struct discord_application_command *app_cmd);
-typedef void (*discord_on_channel)(struct discord *client,
-                                   const struct discord_channel *channel);
-typedef void (*discord_on_channel_pins_update)(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id,
-  u64_unix_ms_t last_pin_timestamp);
-typedef void (*discord_on_guild)(struct discord *client,
-                                 const struct discord_guild *guild);
-typedef void (*discord_on_guild_delete)(struct discord *client,
-                                        u64_snowflake_t guild_id);
-typedef void (*discord_on_guild_role)(struct discord *client,
-                                      u64_snowflake_t guild_id,
-                                      const struct discord_role *role);
-typedef void (*discord_on_guild_role_delete)(struct discord *client,
-                                             u64_snowflake_t guild_id,
-                                             u64_snowflake_t role_id);
-typedef void (*discord_on_guild_member)(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  const struct discord_guild_member *member);
-typedef void (*discord_on_guild_member_remove)(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  const struct discord_user *user);
-typedef void (*discord_on_guild_ban)(struct discord *client,
-                                     u64_snowflake_t guild_id,
-                                     const struct discord_user *user);
-typedef void (*discord_on_interaction)(
-  struct discord *client, const struct discord_interaction *interaction);
-typedef void (*discord_on_message)(struct discord *client,
-                                   const struct discord_message *message);
-typedef void (*discord_on_message_delete)(struct discord *client,
-                                          u64_snowflake_t id,
-                                          u64_snowflake_t channel_id,
-                                          u64_snowflake_t guild_id);
-typedef void (*discord_on_message_delete_bulk)(struct discord *client,
-                                               const u64_snowflake_t **ids,
-                                               u64_snowflake_t channel_id,
-                                               u64_snowflake_t guild_id);
-typedef void (*discord_on_message_reaction_add)(
-  struct discord *client,
-  u64_snowflake_t user_id,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id,
-  const struct discord_guild_member *member,
-  const struct discord_emoji *emoji);
-typedef void (*discord_on_message_reaction_remove)(
-  struct discord *client,
-  u64_snowflake_t user_id,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id,
-  const struct discord_emoji *emoji);
-typedef void (*discord_on_message_reaction_remove_all)(
-  struct discord *client,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id);
-typedef void (*discord_on_message_reaction_remove_emoji)(
-  struct discord *client,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id,
-  const struct discord_emoji *emoji);
-typedef void (*discord_on_voice_state_update)(
-  struct discord *client, const struct discord_voice_state *voice_state);
-typedef void (*discord_on_voice_server_update)(struct discord *client,
-                                               const char *token,
-                                               u64_snowflake_t guild_id,
-                                               const char *endpoint);
-/** @} */
-
 /** @defgroup OrcaDiscordCodes
  *  @{ */
 /** Received a JSON error message */
@@ -162,6 +82,10 @@ typedef void (*discord_on_voice_server_update)(struct discord *client,
 /** Couldn't establish connection to Discord */
 #define ORCA_DISCORD_CONNECTION 4
 /** @} OrcaDiscordCodes */
+
+/******************************************************************************
+ * Functions specific to the Discord client
+ ******************************************************************************/
 
 /**
  * @brief Return the meaning of ORCAcode
@@ -208,23 +132,19 @@ struct discord *discord_clone(const struct discord *orig_client);
  */
 void discord_cleanup(struct discord *client);
 
-/** @brief The async attributes for next request */
-struct discord_async_attr {
-  /** callback to be executed on a succesful request */
-  discord_on_done done;
-  /** whether the next request is high priority */
-  bool high_p;
-};
+/**
+ * @brief Initialize resources of globals used by discord.h
+ *
+ * @deprecated use orca_global_init() instead
+ */
+void discord_global_init();
 
 /**
- * @brief Set next request to run asynchronously
+ * @brief Free resources of globals used by discord.h
  *
- * @param client the client created with discord_init()
- * @param attr optional async attributes for next request, can be NULL if not
- *        needed
+ * @deprecated use orca_global_cleanup() instead
  */
-void discord_async_next(struct discord *client,
-                        struct discord_async_attr *attr);
+void discord_global_cleanup();
 
 /**
  * @brief Get the user structure corresponding to the client
@@ -262,159 +182,6 @@ void discord_remove_intents(struct discord *client,
  * @see discord_set_on_command()
  */
 void discord_set_prefix(struct discord *client, char *prefix);
-
-/**
- * @brief Set command/callback pair.
- *
- * The callback is triggered when an user types the assigned command in a
- *        chat visible to the bot.
- * @param client the client created with discord_init()
- * @param command the command to trigger the callback
- * @param callback the callback to be triggered on event
- * @note The command and any subjacent empty space is left out of
- *       the message content
- */
-void discord_set_on_command(struct discord *client,
-                            char *command,
-                            discord_on_message callback);
-
-/**
- * @brief Set a variadic series of NULL terminated commands to a callback.
- *
- * The callback is triggered when a user types one of the assigned commands in
- *        chat visble to the bot.
- * @param client the client created with discord_init()
- * @param callback the callback to be triggered on event
- * @param ... NULL terminated commands
- * @note The command and any subjacent empty space is left out of
- *       the message content
- */
-void discord_set_on_commands(struct discord *client,
-                             discord_on_message callback,
-                             ...);
-
-/** @defgroup DiscordCallbackSet
- * @brief Set callbacks to be triggered on event detection
- * @param client the client created with discord_init()
- * @param callback the callback to be triggered on event
- * @note the functions will automatically set the necessary intent(s) to make
- *        the callback triggerable
- *  @{ */
-
-/** @brief Triggers at every event-loop iteration.  */
-void discord_set_on_idle(struct discord *client, discord_on_idle callback);
-/** @brief Triggers when the client is ready */
-void discord_set_on_ready(struct discord *client, discord_on_idle callback);
-/** @brief Triggers when a application command is created */
-void discord_set_on_application_command_create(
-  struct discord *client, discord_on_application_command callback);
-/** @brief Triggers when a application command is updated */
-void discord_set_on_application_command_update(
-  struct discord *client, discord_on_application_command callback);
-/** @brief Triggers when a application command is deleted */
-void discord_set_on_application_command_delete(
-  struct discord *client, discord_on_application_command callback);
-/** @brief Triggers when a channel is created */
-void discord_set_on_channel_create(struct discord *client,
-                                   discord_on_channel callback);
-/** @brief Triggers when a channel is updated */
-void discord_set_on_channel_update(struct discord *client,
-                                   discord_on_channel callback);
-/** @brief Triggers when a channel is deleted */
-void discord_set_on_channel_delete(struct discord *client,
-                                   discord_on_channel callback);
-/** @brief Triggers when some channel pins are updated */
-void discord_set_on_channel_pins_update(
-  struct discord *client, discord_on_channel_pins_update callback);
-/** @brief Triggers when a thread is created */
-void discord_set_on_thread_create(struct discord *client,
-                                  discord_on_channel callback);
-/** @brief Triggers when a thread is updated */
-void discord_set_on_thread_update(struct discord *client,
-                                  discord_on_channel callback);
-/** @brief Triggers when a thread is deleted */
-void discord_set_on_thread_delete(struct discord *client,
-                                  discord_on_channel callback);
-/** @brief Triggers when a guild's information becomes available
- */
-void discord_set_on_guild_create(struct discord *client,
-                                 discord_on_guild callback);
-/** @brief Triggers when a guild's information becomes updated */
-void discord_set_on_guild_update(struct discord *client,
-                                 discord_on_guild callback);
-/** @brief Triggers when removed from a guild */
-void discord_set_on_guild_delete(struct discord *client,
-                                 discord_on_guild_delete callback);
-/** @brief Triggers when a guild role is created */
-void discord_set_on_guild_role_create(struct discord *client,
-                                      discord_on_guild_role callback);
-/** @brief Triggers when a guild role is updated */
-void discord_set_on_guild_role_update(struct discord *client,
-                                      discord_on_guild_role callback);
-/** @brief Triggers when a guild role is deleted */
-void discord_set_on_guild_role_delete(struct discord *client,
-                                      discord_on_guild_role_delete callback);
-/** @brief Triggers when a guild member is added */
-void discord_set_on_guild_member_add(struct discord *client,
-                                     discord_on_guild_member callback);
-/** @brief Triggers when a guild member is updated */
-void discord_set_on_guild_member_update(struct discord *client,
-                                        discord_on_guild_member callback);
-/** @brief Triggers when a guild member is removed */
-void discord_set_on_guild_member_remove(
-  struct discord *client, discord_on_guild_member_remove callback);
-/** @brief Triggers when a guild ban is added */
-void discord_set_on_guild_ban_add(struct discord *client,
-                                  discord_on_guild_ban callback);
-/** @brief Triggers when a guild ban is removed */
-void discord_set_on_guild_ban_remove(struct discord *client,
-                                     discord_on_guild_ban callback);
-/** @brief Triggers when a interaction is created */
-void discord_set_on_interaction_create(struct discord *client,
-                                       discord_on_interaction callback);
-/** @brief Triggers when a message is created */
-void discord_set_on_message_create(struct discord *client,
-                                   discord_on_message callback);
-/** @brief Triggers when a message is updated */
-void discord_set_on_message_update(struct discord *client,
-                                   discord_on_message callback);
-/** @brief Triggers when a message is deleted */
-void discord_set_on_message_delete(struct discord *client,
-                                   discord_on_message_delete callback);
-/** @brief Triggers when a bulk of messages are deleted */
-void discord_set_on_message_delete_bulk(
-  struct discord *client, discord_on_message_delete_bulk callback);
-/** @brief Triggers when a message reaction is added */
-void discord_set_on_message_reaction_add(
-  struct discord *client, discord_on_message_reaction_add callback);
-/** @brief Triggers when a message reaction is removed */
-void discord_set_on_message_reaction_remove(
-  struct discord *client, discord_on_message_reaction_remove callback);
-/** @brief Triggers when all reaction from some message is removed
- */
-void discord_set_on_message_reaction_remove_all(
-  struct discord *client, discord_on_message_reaction_remove_all callback);
-/** @brief Triggers when all instances of a particular reaction from some
- *        message is removed */
-void discord_set_on_message_reaction_remove_emoji(
-  struct discord *client, discord_on_message_reaction_remove_emoji callback);
-/** @brief Triggers when a voice state is updated */
-void discord_set_on_voice_state_update(struct discord *client,
-                                       discord_on_voice_state_update callback);
-/** @brief Triggers when a voice server is updated */
-void discord_set_on_voice_server_update(
-  struct discord *client, discord_on_voice_server_update callback);
-
-/** @} */
-
-/**
- * @brief Helper to quickly set voice callbacks
- *
- * @param client the client created with discord_init()
- * @param callbacks the voice callbacks that will be executed
- */
-void discord_set_voice_cbs(struct discord *client,
-                           struct discord_voice_cbs *callbacks);
 
 /**
  * @brief Start a connection to the Discord Gateway
@@ -500,6 +267,27 @@ struct logconf *discord_get_logconf(struct discord *client);
 /******************************************************************************
  * Functions specific to Discord's REST API
  ******************************************************************************/
+
+/** @brief Triggers on a successful async request */
+typedef void (*discord_on_done)(struct discord *client, const void *obj);
+
+/** @brief The async attributes for next request */
+struct discord_async_attr {
+  /** callback to be executed on a succesful request */
+  discord_on_done done;
+  /** whether the next request is high priority */
+  bool high_p;
+};
+
+/**
+ * @brief Set next request to run asynchronously
+ *
+ * @param client the client created with discord_init()
+ * @param attr optional async attributes for next request, can be NULL if not
+ *        needed
+ */
+void discord_async_next(struct discord *client,
+                        struct discord_async_attr *attr);
 
 /**
  * Fetch all of the global commands for your application. Returns an array of
@@ -1820,8 +1608,8 @@ ORCAcode discord_get_webhook(struct discord *client,
                              struct discord_webhook *ret);
 
 /**
- * Same discord_get_webhook(), except this call does not require authentication
- *       and returns no user in the webhook object
+ * Same as discord_get_webhook(), except this call does not require
+ *        authentication and returns no user in the webhook object.
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
@@ -1954,6 +1742,282 @@ ORCAcode discord_get_gateway_bot(struct discord *client,
                                  struct sized_buffer *ret);
 
 /******************************************************************************
+ * Functions specific to Discord's Gateway
+ ******************************************************************************/
+
+/**
+ * @brief return value of discord_set_event_scheduler() callback
+ *
+ * @see discord_set_event_scheduler()
+ */
+typedef enum discord_event_scheduler {
+  /** this event has been handled */
+  DISCORD_EVENT_IGNORE,
+  /** handle this event in main thread */
+  DISCORD_EVENT_MAIN_THREAD,
+  /** handle this event in a worker thread */
+  DISCORD_EVENT_WORKER_THREAD
+} discord_event_scheduler_t;
+
+/**
+ * @brief Event Handling Mode callback
+ *
+ * A very important callback that enables the user with a fine-grained control
+ *        of how each event is handled: blocking, non-blocking or ignored
+ * @see discord_set_event_scheduler(), @ref discord_gateway_events
+ */
+typedef enum discord_event_scheduler (*discord_event_scheduler)(
+  struct discord *client,
+  struct sized_buffer *event_data,
+  enum discord_gateway_events event);
+
+/**
+ * @brief Provides the user with a fine-grained control of the Discord's
+ *       event-loop
+ *
+ * Allows the user to specify which events should be executed from the
+ *       main-thread, in parallel from a worker-thread, or completely ignored.
+ *
+ * @param client the client created_with discord_init()
+ * @param fn the function that will be executed
+ * @warning The user is responsible for providing his own locking mechanism to
+ *       avoid race-condition on sensitive data.
+ * @see @ref discord_event_scheduler, @ref discord_gateway_events
+ */
+void discord_set_event_scheduler(struct discord *client,
+                                 discord_event_scheduler callback);
+
+/** @defgroup DiscordCallbackTypes
+ *  @{ */
+
+typedef void (*discord_on_idle)(struct discord *client);
+typedef void (*discord_on_application_command)(
+  struct discord *client, const struct discord_application_command *app_cmd);
+typedef void (*discord_on_channel)(struct discord *client,
+                                   const struct discord_channel *channel);
+typedef void (*discord_on_channel_pins_update)(
+  struct discord *client,
+  u64_snowflake_t guild_id,
+  u64_snowflake_t channel_id,
+  u64_unix_ms_t last_pin_timestamp);
+typedef void (*discord_on_guild)(struct discord *client,
+                                 const struct discord_guild *guild);
+typedef void (*discord_on_guild_delete)(struct discord *client,
+                                        u64_snowflake_t guild_id);
+typedef void (*discord_on_guild_role)(struct discord *client,
+                                      u64_snowflake_t guild_id,
+                                      const struct discord_role *role);
+typedef void (*discord_on_guild_role_delete)(struct discord *client,
+                                             u64_snowflake_t guild_id,
+                                             u64_snowflake_t role_id);
+typedef void (*discord_on_guild_member)(
+  struct discord *client,
+  u64_snowflake_t guild_id,
+  const struct discord_guild_member *member);
+typedef void (*discord_on_guild_member_remove)(
+  struct discord *client,
+  u64_snowflake_t guild_id,
+  const struct discord_user *user);
+typedef void (*discord_on_guild_ban)(struct discord *client,
+                                     u64_snowflake_t guild_id,
+                                     const struct discord_user *user);
+typedef void (*discord_on_interaction)(
+  struct discord *client, const struct discord_interaction *interaction);
+typedef void (*discord_on_message)(struct discord *client,
+                                   const struct discord_message *message);
+typedef void (*discord_on_message_delete)(struct discord *client,
+                                          u64_snowflake_t id,
+                                          u64_snowflake_t channel_id,
+                                          u64_snowflake_t guild_id);
+typedef void (*discord_on_message_delete_bulk)(struct discord *client,
+                                               const u64_snowflake_t **ids,
+                                               u64_snowflake_t channel_id,
+                                               u64_snowflake_t guild_id);
+typedef void (*discord_on_message_reaction_add)(
+  struct discord *client,
+  u64_snowflake_t user_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id,
+  const struct discord_guild_member *member,
+  const struct discord_emoji *emoji);
+typedef void (*discord_on_message_reaction_remove)(
+  struct discord *client,
+  u64_snowflake_t user_id,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id,
+  const struct discord_emoji *emoji);
+typedef void (*discord_on_message_reaction_remove_all)(
+  struct discord *client,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id);
+typedef void (*discord_on_message_reaction_remove_emoji)(
+  struct discord *client,
+  u64_snowflake_t channel_id,
+  u64_snowflake_t message_id,
+  u64_snowflake_t guild_id,
+  const struct discord_emoji *emoji);
+typedef void (*discord_on_voice_state_update)(
+  struct discord *client, const struct discord_voice_state *voice_state);
+typedef void (*discord_on_voice_server_update)(struct discord *client,
+                                               const char *token,
+                                               u64_snowflake_t guild_id,
+                                               const char *endpoint);
+/** @} */
+
+/**
+ * @brief Set command/callback pair.
+ *
+ * The callback is triggered when a user types the assigned command in a
+ *        chat visible to the client.
+ * @param client the client created with discord_init()
+ * @param command the command to trigger the callback
+ * @param callback the callback to be triggered on event
+ * @note The command and any subjacent empty space is left out of
+ *       the message content
+ */
+void discord_set_on_command(struct discord *client,
+                            char *command,
+                            discord_on_message cb);
+
+/**
+ * @brief Set a variadic series of NULL terminated commands to a callback.
+ *
+ * The callback is triggered when a user types one of the assigned commands in
+ *        a chat visble to the client.
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ * @param ... commands and a NULL terminator
+ * @note The command and any subjacent empty space is left out of
+ *       the message content
+ */
+void discord_set_on_commands(struct discord *client,
+                             discord_on_message cb,
+                             ...);
+
+/**
+ * @brief Helper to quickly set voice callbacks
+ *
+ * @param client the client created with discord_init()
+ * @param callbacks the voice callbacks that will be executed
+ */
+void discord_set_voice_cbs(struct discord *client,
+                           struct discord_voice_cbs *callbacks);
+
+/** @defgroup DiscordCallbackSet
+ * @brief Set callbacks to be triggered on event detection
+ * @param client the client created with discord_init()
+ * @param callback the callback to be triggered on event
+ * @note the functions will automatically set the necessary intent(s) to make
+ *        the callback triggerable
+ *  @{ */
+
+/** @brief Triggers at every event-loop iteration.  */
+void discord_set_on_idle(struct discord *client, discord_on_idle cb);
+/** @brief Triggers when the client is ready */
+void discord_set_on_ready(struct discord *client, discord_on_idle cb);
+/** @brief Triggers when a application command is created */
+void discord_set_on_application_command_create(
+  struct discord *client, discord_on_application_command cb);
+/** @brief Triggers when a application command is updated */
+void discord_set_on_application_command_update(
+  struct discord *client, discord_on_application_command cb);
+/** @brief Triggers when a application command is deleted */
+void discord_set_on_application_command_delete(
+  struct discord *client, discord_on_application_command cb);
+/** @brief Triggers when a channel is created */
+void discord_set_on_channel_create(struct discord *client,
+                                   discord_on_channel cb);
+/** @brief Triggers when a channel is updated */
+void discord_set_on_channel_update(struct discord *client,
+                                   discord_on_channel cb);
+/** @brief Triggers when a channel is deleted */
+void discord_set_on_channel_delete(struct discord *client,
+                                   discord_on_channel cb);
+/** @brief Triggers when some channel pins are updated */
+void discord_set_on_channel_pins_update(struct discord *client,
+                                        discord_on_channel_pins_update cb);
+/** @brief Triggers when a thread is created */
+void discord_set_on_thread_create(struct discord *client,
+                                  discord_on_channel cb);
+/** @brief Triggers when a thread is updated */
+void discord_set_on_thread_update(struct discord *client,
+                                  discord_on_channel cb);
+/** @brief Triggers when a thread is deleted */
+void discord_set_on_thread_delete(struct discord *client,
+                                  discord_on_channel cb);
+/** @brief Triggers when guild information becomes available */
+void discord_set_on_guild_create(struct discord *client, discord_on_guild cb);
+/** @brief Triggers when a guild's information becomes updated */
+void discord_set_on_guild_update(struct discord *client, discord_on_guild cb);
+/** @brief Triggers when removed from a guild */
+void discord_set_on_guild_delete(struct discord *client,
+                                 discord_on_guild_delete cb);
+/** @brief Triggers when a guild role is created */
+void discord_set_on_guild_role_create(struct discord *client,
+                                      discord_on_guild_role cb);
+/** @brief Triggers when a guild role is updated */
+void discord_set_on_guild_role_update(struct discord *client,
+                                      discord_on_guild_role cb);
+/** @brief Triggers when a guild role is deleted */
+void discord_set_on_guild_role_delete(struct discord *client,
+                                      discord_on_guild_role_delete cb);
+/** @brief Triggers when a guild member is added */
+void discord_set_on_guild_member_add(struct discord *client,
+                                     discord_on_guild_member cb);
+/** @brief Triggers when a guild member is updated */
+void discord_set_on_guild_member_update(struct discord *client,
+                                        discord_on_guild_member cb);
+/** @brief Triggers when a guild member is removed */
+void discord_set_on_guild_member_remove(struct discord *client,
+                                        discord_on_guild_member_remove cb);
+/** @brief Triggers when a guild ban is added */
+void discord_set_on_guild_ban_add(struct discord *client,
+                                  discord_on_guild_ban cb);
+/** @brief Triggers when a guild ban is removed */
+void discord_set_on_guild_ban_remove(struct discord *client,
+                                     discord_on_guild_ban cb);
+/** @brief Triggers when a interaction is created */
+void discord_set_on_interaction_create(struct discord *client,
+                                       discord_on_interaction cb);
+/** @brief Triggers when a message is created */
+void discord_set_on_message_create(struct discord *client,
+                                   discord_on_message cb);
+/** @brief Triggers when a message is updated */
+void discord_set_on_message_update(struct discord *client,
+                                   discord_on_message cb);
+/** @brief Triggers when a message is deleted */
+void discord_set_on_message_delete(struct discord *client,
+                                   discord_on_message_delete cb);
+/** @brief Triggers when a bulk of messages are deleted */
+void discord_set_on_message_delete_bulk(struct discord *client,
+                                        discord_on_message_delete_bulk cb);
+/** @brief Triggers when a message reaction is added */
+void discord_set_on_message_reaction_add(struct discord *client,
+                                         discord_on_message_reaction_add cb);
+/** @brief Triggers when a message reaction is removed */
+void discord_set_on_message_reaction_remove(
+  struct discord *client, discord_on_message_reaction_remove cb);
+/** @brief Triggers when all reaction from some message is removed
+ */
+void discord_set_on_message_reaction_remove_all(
+  struct discord *client, discord_on_message_reaction_remove_all cb);
+/** @brief Triggers when all instances of a particular reaction from some
+ *        message is removed */
+void discord_set_on_message_reaction_remove_emoji(
+  struct discord *client, discord_on_message_reaction_remove_emoji cb);
+/** @brief Triggers when a voice state is updated */
+void discord_set_on_voice_state_update(struct discord *client,
+                                       discord_on_voice_state_update cb);
+/** @brief Triggers when a voice server is updated */
+void discord_set_on_voice_server_update(struct discord *client,
+                                        discord_on_voice_server_update cb);
+
+/** @} */
+
+/******************************************************************************
  * Miscellaneous
  ******************************************************************************/
 
@@ -2024,61 +2088,5 @@ ORCAcode discord_disconnect_guild_member(struct discord *client,
  */
 void discord_presence_add_activity(struct discord_presence_status *presence,
                                    struct discord_activity *activity);
-
-/**
- * @brief return value of discord_set_event_scheduler() callback
- *
- * @see discord_set_event_scheduler()
- */
-typedef enum discord_event_scheduler {
-  /** this event has been handled */
-  DISCORD_EVENT_IGNORE,
-  /** handle this event in main thread */
-  DISCORD_EVENT_MAIN_THREAD,
-  /** handle this event in a worker thread */
-  DISCORD_EVENT_WORKER_THREAD
-} discord_event_scheduler_t;
-
-/**
- * @brief Event Handling Mode callback
- *
- * A very important callback that enables the user with a fine-grained control
- *        of how each event is handled: blocking, non-blocking or ignored
- * @see discord_set_event_scheduler(), @ref discord_gateway_events
- */
-typedef enum discord_event_scheduler (*discord_event_scheduler)(
-  struct discord *client,
-  struct sized_buffer *event_data,
-  enum discord_gateway_events event);
-
-/**
- * @brief Provides the user with a fine-grained control of the Discord's
- *       event-loop
- *
- * Allows the user to specify which events should be executed from the
- *       main-thread, in parallel from a worker-thread, or completely ignored.
- *
- * @param client the client created_with discord_init()
- * @param fn the function that will be executed
- * @warning The user is responsible for providing his own locking mechanism to
- *       avoid race-condition on sensitive data.
- * @see @ref discord_event_scheduler, @ref discord_gateway_events
- */
-void discord_set_event_scheduler(struct discord *client,
-                                 discord_event_scheduler callback);
-
-/**
- * @brief Initialize resources of globals used by discord.h
- *
- * @deprecated use orca_global_init() instead
- */
-void discord_global_init();
-
-/**
- * @brief Free resources of globals used by discord.h
- *
- * @deprecated use orca_global_cleanup() instead
- */
-void discord_global_cleanup();
 
 #endif /* DISCORD_H */
