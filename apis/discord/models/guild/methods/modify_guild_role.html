@@ -1224,7 +1224,15 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_modify_guild_role">
 <span class="target" id="discord_8h_1a0a1c0422548e30fc239efd4bf4baf8ae"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild_role</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">role_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_role_params" title="discord_modify_guild_role_params"><span class="n"><span class="pre">discord_modify_guild_role_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../permissions/datatypes.html#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild_role" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Modify a guild role. Requires the MANAGE_ROLES permission. Returns the updated role on success. Fires a Guild Role Update Gateway event. </p>
+<dd><p>Modify a guild role. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Requires the MANAGE_ROLES permission </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fires a <code class="docutils literal notranslate"><span class="pre">Guild</span> <span class="pre">Role</span> <span class="pre">Update</span></code> event</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1232,7 +1240,7 @@
 <li><p><strong>guild_id</strong> – the unique id of the guild that the role belongs to </p></li>
 <li><p><strong>role_id</strong> – the unique id of the role to modify </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, the response’s role object </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../../permissions/datatypes.html#structdiscord__role"><span class="std std-ref">discord_role</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_role_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

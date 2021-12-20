@@ -1224,17 +1224,60 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_overwrite_append">
 <span class="target" id="discord_8h_1a5d7b631a43b72d557faf291a4715cd06"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_overwrite_append</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_overwrite" title="discord_overwrite"><span class="n"><span class="pre">discord_overwrite</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">permission_overwrites</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">id</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../../permissions/datatypes.html#c.discord_bitwise_permission_flags" title="discord_bitwise_permission_flags"><span class="n"><span class="pre">discord_bitwise_permission_flags</span></span></a><span class="w"> </span><span class="n"><span class="pre">allow</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../../permissions/datatypes.html#c.discord_bitwise_permission_flags" title="discord_bitwise_permission_flags"><span class="n"><span class="pre">discord_bitwise_permission_flags</span></span></a><span class="w"> </span><span class="n"><span class="pre">deny</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_overwrite_append" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Append to an overwrite list. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the list should be freed with <code class="docutils literal notranslate"><span class="pre">discord_overwrite_list_free()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>permission_overwrites</strong> – list to be appended to </p></li>
+<li><p><strong>id</strong> – role or user id </p></li>
+<li><p><strong>type</strong> – either 0 (role) or 1 (member) </p></li>
+<li><p><strong>allow</strong> – permission bit set </p></li>
+<li><p><strong>deny</strong> – permission bit set </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_get_channel_at_pos">
 <span class="target" id="discord_8h_1a309a098a68183a3bf720d00060c38de0"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_channel_at_pos</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_channel_types" title="discord_channel_types"><span class="n"><span class="pre">discord_channel_types</span></span></a><span class="w"> </span><span class="n"><span class="pre">type</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">position</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_channel_at_pos" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Get a guild’s channel from its given numerical position. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>guild_id</strong> – guild the channel belongs to </p></li>
+<li><p><strong>type</strong> – the channel type where to take position reference from </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../datatypes.html#structdiscord__channel"><span class="std std-ref">discord_channel</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_channel_cleanup()</span></code> </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"><span class="std std-ref">ORCAcode</span></a> for how the operation went, <a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"><span class="std std-ref">ORCA_OK</span></a> means nothing out of the ordinary </p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_delete_messages_by_author_id">
 <span class="target" id="discord_8h_1acc3e6bb474a17a2f2556caadc29c51a7"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_delete_messages_by_author_id</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">author_id</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_delete_messages_by_author_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Delete messages from a channel by a given author. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>channel_id</strong> – channel where the messages resides </p></li>
+<li><p><strong>author_id</strong> – the user who sent those messages </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1ga9cf2c634d026f2b4665d1859fe596b90"><span class="std std-ref">ORCAcode</span></a> for how the operation went, <a class="reference internal" href="../../../../../core/common/index.html#group__OrcaCodes_1gab234ec8eeddc7f0abf7324b995fcfcb4"><span class="std std-ref">ORCA_OK</span></a> means nothing out of the ordinary </p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

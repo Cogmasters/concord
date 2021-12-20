@@ -1224,7 +1224,7 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_add_intents">
 <span class="target" id="discord_8h_1ad49194134d7b9e656d3a96cb0b60cfec"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_add_intents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../models/gateway/datatypes.html#c.discord_gateway_intents" title="discord_gateway_intents"><span class="n"><span class="pre">discord_gateway_intents</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_add_intents" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Subscribe to Discord Gateway events. </p>
+<dd><p>Subscribe to Discord Events. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1238,7 +1238,7 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_remove_intents">
 <span class="target" id="discord_8h_1ac6a9d904378b46a72c64ade07ac02f43"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_remove_intents</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../models/gateway/datatypes.html#c.discord_gateway_intents" title="discord_gateway_intents"><span class="n"><span class="pre">discord_gateway_intents</span></span></a><span class="w"> </span><span class="n"><span class="pre">code</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_remove_intents" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Unsubscribe from Discord Gateway events. </p>
+<dd><p>Unsubscribe from Discord Events. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1253,8 +1253,9 @@
 <dt class="sig sig-object c" id="c.discord_set_prefix">
 <span class="target" id="discord_8h_1a13d9f16d62fea7cebdb6c24d57f685a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_set_prefix</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">prefix</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_set_prefix" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set a mandatory prefix before commands. </p>
-<p>Example: If <em>‘help’</em> is a command and <em>‘!’</em> prefix is set, the command will only be validated if <em>‘!help’</em> is sent <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="../events/callback_set.html#discord_8h_1a9f98f73563958950143a6aba85fbdc1b"><span class="std std-ref">discord_set_on_command()</span></a> </p>
+<p>
+Example: If <em>‘help’</em> is a command and <em>‘!’</em> prefix is set, the command will only be validated if <em>‘!help’</em> is sent <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="../events/callback_set.html#discord_8h_1a9f98f73563958950143a6aba85fbdc1b"><span class="std std-ref">discord_set_on_command()</span></a></p>
 </dd>
 </dl>
 </p>
@@ -1273,7 +1274,7 @@
 <span class="target" id="discord_8h_1a12fcb6ebfc884f9a68dc6f8ba22a8721"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../core/cee-utils/logconf/index.html#c.logconf" title="logconf"><span class="n"><span class="pre">logconf</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_logconf</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_logconf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Retrieve client’s logging module for configuration purposes. </p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p>logconf_setup(), logconf_set_quiet(), logconf_set_level() </p>
+<dt><strong>See</strong></dt><dd><p>logconf_setup(), logconf_set_quiet(), logconf_set_level()</p>
 </dd>
 </dl>
 </p>

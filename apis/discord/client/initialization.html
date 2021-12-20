@@ -1252,7 +1252,7 @@
 <span class="target" id="discord_8h_1a445cca7dc5a28113760c7e55759845c7"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_init</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">token</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_init" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a Discord Client handle by its token. </p>
 <p><dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="settings.html#discord_8h_1a12fcb6ebfc884f9a68dc6f8ba22a8721"><span class="std std-ref">discord_get_logconf()</span></a> to configure logging behavior </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="settings.html#discord_8h_1a12fcb6ebfc884f9a68dc6f8ba22a8721"><span class="std std-ref">discord_get_logconf()</span></a> to configure logging behavior</p>
 </dd>
 </dl>
 </p>
@@ -1288,7 +1288,7 @@
 <dt class="sig sig-object c" id="c.discord_clone">
 <span class="target" id="discord_8h_1aa350d6bc95fb4b4969a9a8025233d38f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_clone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">orig_client</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_clone" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Clone a discord client. </p>
-<p>Should be called before entering a thread, to ensure each thread has its own client instance with unique buffers, url and headers. </p>
+<p>Should be called before entering a thread, to ensure each thread has its own client instance with unique buffers, url and headers </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

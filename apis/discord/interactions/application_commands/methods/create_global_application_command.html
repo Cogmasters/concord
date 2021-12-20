@@ -1224,14 +1224,18 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_global_application_command">
 <span class="target" id="discord_8h_1a100e41fdd1c24210a57750033fc75da6"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_global_application_command</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">application_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_global_application_command_params" title="discord_create_global_application_command_params"><span class="n"><span class="pre">discord_create_global_application_command_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_application_command" title="discord_application_command"><span class="n"><span class="pre">discord_application_command</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_global_application_command" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create a new global command. New global commands will be available in all guilds after 1 hour. </p>
+<dd><p>Create a new global command. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New global commands will be available in all guilds after 1 hour</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>application_id</strong> – the unique id of the parent application </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, the response’s application command object </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../datatypes.html#structdiscord__application__command"><span class="std std-ref">discord_application_command</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_application_command_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

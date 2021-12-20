@@ -1224,10 +1224,14 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_batch_edit_application_command_permissions">
 <span class="target" id="discord_8h_1adbc3f9140bd850bdaae3dab981bbd3af"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_batch_edit_application_command_permissions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">application_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild_application_command_permissions" title="discord_guild_application_command_permissions"><span class="n"><span class="pre">discord_guild_application_command_permissions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild_application_command_permissions" title="discord_guild_application_command_permissions"><span class="n"><span class="pre">discord_guild_application_command_permissions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_batch_edit_application_command_permissions" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Batch edits permissions for all commands in a guild. Takes an array of partial guild application command permissions objects including id and permissions. You can only add up to 10 permission overwrites for a command. Returns an array of GuildApplicationCommandPermissions objects. </p>
+<dd><p>Batch edits permissions for all commands in a guild. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can only add up to 10 permission overwrites for a command </p>
+</div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>This will overwrite all types of application commands: slash commands, user commands, and message commands. </p>
+<p>This will overwrite all types of application commands: slash commands, user commands, and message commands</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1236,7 +1240,7 @@
 <li><p><strong>application_id</strong> – the unique id of the parent application </p></li>
 <li><p><strong>guild_id</strong> – the guild where the commands are located </p></li>
 <li><p><strong>params</strong> – the request parameters, a list of guild application commands permissions </p></li>
-<li><p><strong>ret</strong> – if successful, the response’s null-terminated list of guild application command permissions objects </p></li>
+<li><p><strong>ret</strong> – if successful, a null-terminated list of <a class="reference internal" href="../datatypes.html#structdiscord__guild__application__command__permissions"><span class="std std-ref">discord_guild_application_command_permissions</span></a>, that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_guild_application_command_permissions_list_free()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

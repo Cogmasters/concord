@@ -1224,14 +1224,14 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_channel_invite">
 <span class="target" id="discord_8h_1a2ea578c4eb1a16866f2b3e0f0998d8ef"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_channel_invite</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_channel_invite_params" title="discord_create_channel_invite_params"><span class="n"><span class="pre">discord_create_channel_invite_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../invite/datatypes.html#c.discord_invite" title="discord_invite"><span class="n"><span class="pre">discord_invite</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_channel_invite" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create a new invite object for the channel. </p>
+<dd><p>Create a new invite for the channel. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>channel_id</strong> – the channel that the message belongs to </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, the response’s invite object </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../../invite/datatypes.html#structdiscord__invite"><span class="std std-ref">discord_invite</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_invite_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

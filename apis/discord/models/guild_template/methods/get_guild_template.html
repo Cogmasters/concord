@@ -1224,12 +1224,13 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_get_guild_template">
 <span class="target" id="discord_8h_1ae39bfe794f920094043a0913a9478b92"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_get_guild_template</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">code</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild_template" title="discord_guild_template"><span class="n"><span class="pre">discord_guild_template</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_get_guild_template" title="Permalink to this definition">¶</a><br /></dt>
-<dd><dl class="field-list simple">
+<dd><p>Get a guild template for the given code. </p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
-<li><p><strong>code</strong> – the code of the guild template </p></li>
-<li><p><strong>ret</strong> – if successful, the response’s guild template object </p></li>
+<li><p><strong>code</strong> – the guild template code </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../datatypes.html#structdiscord__guild__template"><span class="std std-ref">discord_guild_template</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_guild_template_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>

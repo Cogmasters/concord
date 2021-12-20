@@ -1224,52 +1224,202 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_title">
 <span class="target" id="discord_8h_1aa225e06f7c3059b462bf3c5f5974a92f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_title</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_title" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add title to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>format</strong> – printf-like formatting string </p></li>
+<li><p><strong>...</strong> – variadic arguments to be matched to format </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_description">
 <span class="target" id="discord_8h_1a7eeccf76be405c92889dc66794d7a5cc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_description</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_description" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add description to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>format</strong> – printf-like formatting string </p></li>
+<li><p><strong>...</strong> – variadic arguments to be matched to format </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_url">
 <span class="target" id="discord_8h_1a276884ac67681d970c2112736859329a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_url</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">format</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_url" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add URL to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>format</strong> – printf-like formatting string </p></li>
+<li><p><strong>...</strong> – variadic arguments to be matched to format </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_thumbnail">
 <span class="target" id="discord_8h_1adfd0289ffc7f0fd0789d196c37691047"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_thumbnail</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">proxy_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">height</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">width</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_thumbnail" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add thumbnail to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>url</strong> – source url of thumbnail </p></li>
+<li><p><strong>proxy_url</strong> – a proxied url of the thumbnail </p></li>
+<li><p><strong>height</strong> – height of thumbnail </p></li>
+<li><p><strong>width</strong> – width of thumbnail </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_image">
 <span class="target" id="discord_8h_1abf8b562a89f81232fed3d0edcc81e994"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_image</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">proxy_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">height</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">width</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_image" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add image to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>url</strong> – source url of image </p></li>
+<li><p><strong>proxy_url</strong> – a proxied url of the image </p></li>
+<li><p><strong>height</strong> – height of image </p></li>
+<li><p><strong>width</strong> – width of image </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_video">
 <span class="target" id="discord_8h_1a2fc46ffee7990f81397c5d20a546cbae"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_video</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">proxy_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">height</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n"><span class="pre">width</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_video" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add video to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>url</strong> – source url of video </p></li>
+<li><p><strong>proxy_url</strong> – a proxied url of the video </p></li>
+<li><p><strong>height</strong> – height of video </p></li>
+<li><p><strong>width</strong> – width of video </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_footer">
 <span class="target" id="discord_8h_1a52f5dd61b9b425ff86c369e31517abfd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_footer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">icon_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">proxy_icon_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_footer" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add footer to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>text</strong> – footer text </p></li>
+<li><p><strong>icon_url</strong> – url of footer icon </p></li>
+<li><p><strong>proxy_icon_url</strong> – a proxied url of footer icon </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_provider">
 <span class="target" id="discord_8h_1affe4d5962731cfa56650237c18eebb03"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_provider</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_provider" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add provider to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>name</strong> – name of provider </p></li>
+<li><p><strong>url</strong> – url of provider </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_set_author">
 <span class="target" id="discord_8h_1aa2b36b3810b48f4d225d4277bb144670"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_set_author</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">icon_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">proxy_icon_url</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_set_author" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add author to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>name</strong> – name of author </p></li>
+<li><p><strong>url</strong> – url of author </p></li>
+<li><p><strong>icon_url</strong> – url of author icon </p></li>
+<li><p><strong>proxy_icon_url</strong> – a proxied url of author icon </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_embed_add_field">
 <span class="target" id="discord_8h_1ab038095175d60499df67139b6e7f8852"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_embed_add_field</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">embed</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n"><span class="pre">Inline</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_embed_add_field" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Add field to embed. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>the embed must be freed with <code class="docutils literal notranslate"><span class="pre">discord_embed_cleanup()</span></code> after its no longer being used</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embed</strong> – the embed being modified </p></li>
+<li><p><strong>name</strong> – name of the field </p></li>
+<li><p><strong>value</strong> – value of the field </p></li>
+<li><p><strong>Inline</strong> – whether or not this field should display inline </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

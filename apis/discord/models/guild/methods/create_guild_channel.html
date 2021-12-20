@@ -1224,14 +1224,26 @@
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_guild_channel">
 <span class="target" id="discord_8h_1ad73427f2c118371bb1cb18c65ce4fb36"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild_channel</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/structures.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_guild_channel_params" title="discord_create_guild_channel_params"><span class="n"><span class="pre">discord_create_guild_channel_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../channel/datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_guild_channel" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create a new channel object for the guild. Requires the MANAGE_CHANNELS permission. If setting permission overwrites, only permissions your bot has in the guild can be allowed/denied. Setting MANAGE_ROLES permission in channels is only possible for guild administrators. Returns the new channel object on success. Fires a Channel Create Gateway event. </p>
+<dd><p>Create a new guild channel. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Requires the MANAGE_CHANNELS permission </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If setting permission overwrites, only permissions your bot has in the guild can be allowed/denied. Setting MANAGE_ROLES permission in channels is only possible for guild administrators </p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Fires a <code class="docutils literal notranslate"><span class="pre">Channel</span> <span class="pre">Create</span></code> event</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>guild_id</strong> – id of the guild to create a channel at </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, the response’s channel object </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../../channel/datatypes.html#structdiscord__channel"><span class="std std-ref">discord_channel</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_channel_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
