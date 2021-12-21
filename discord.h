@@ -147,7 +147,7 @@ void discord_global_init();
 void discord_global_cleanup();
 
 /**
- * @brief Get the user structure corresponding to the client
+ * @brief Get the client's cached user
  *
  * @param client the client created with discord_init()
  * @warning the returned structure should NOT be modified
