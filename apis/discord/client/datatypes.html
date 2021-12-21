@@ -36,7 +36,7 @@
     <link rel="shortcut icon" href="../../../_static/icon.ico"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Initialization / Cleanup" href="initialization.html" />
+    <link rel="next" title="discord_add_intents - add events to listen to" href="methods/discord_add_intents.html" />
     <link rel="prev" title="Client" href="index.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -163,28 +163,110 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="initialization.html">
-       Initialization / Cleanup
+      <a class="reference internal" href="methods/discord_add_intents.html">
+       discord_add_intents - add events to listen to
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="settings.html">
-       Settings
+      <a class="reference internal" href="methods/discord_async_next.html">
+       discord_async_next - execute immediate request function asynchronously
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="error.html">
-       Error Handling
+      <a class="reference internal" href="methods/discord_cleanup.html">
+       discord_cleanup - cleanup a Discord client
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="connecting.html">
-       Connecting
+      <a class="reference internal" href="methods/discord_clone.html">
+       discord_clone - clone a Discord client handle
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="utils.html">
-       Utils
+      <a class="reference internal" href="methods/discord_config_init.html">
+       discord_config_init - create a Discord client handle from a config file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_get_data.html">
+       discord_get_data - get a pointer to user arbitrary data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_get_logconf.html">
+       discord_get_logconf - Get client’s logging internals
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_get_ping.html">
+       discord_get_ping - get latency between client and Discord
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_get_self.html">
+       discord_get_self - get the client’s cached user
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_init.html">
+       discord_init - create a Discord client handle
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_reconnect.html">
+       discord_reconnect - reconnect a on-going connection
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_remove_intents.html">
+       discord_remove_intents - remove events to listen to
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_run.html">
+       discord_run - start client connection to Discord
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_set_data.html">
+       discord_set_data - save a pointer to user arbitrary data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_set_prefix.html">
+       discord_set_prefix - set a default prefix for commands
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_set_presence.html">
+       discord_set_presence - set client status
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_shutdown.html">
+       discord_shutdown - shutdown a on-going connection
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_strerror.html">
+       discord_strerror() - return string describing
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         ORCAcode
+        </span>
+       </code>
+       value
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="methods/discord_timestamp.html">
+       discord_timestamp - get current timestamp (client’s concept of
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         now
+        </span>
+       </code>
+       )
       </a>
      </li>
     </ul>
@@ -1226,7 +1308,7 @@
 <span class="target" id="structdiscord"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord</span></span></span><a class="headerlink" href="#c.discord" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The Discord client handler. </p>
 <p>Used to access/perform public functions from discord.h <dl class="simple">
-<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a>, <a class="reference internal" href="initialization.html#discord_8h_1a23500a16c7afdb797c779b045ad20b10"><span class="std std-ref">discord_config_init()</span></a>, <a class="reference internal" href="initialization.html#discord_8h_1a009d0e352a30c00f8b4765712fcfa5a9"><span class="std std-ref">discord_cleanup()</span></a> </p>
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="methods/discord_init.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a>, <a class="reference internal" href="methods/discord_config_init.html#discord_8h_1a23500a16c7afdb797c779b045ad20b10"><span class="std std-ref">discord_config_init()</span></a>, <a class="reference internal" href="methods/discord_cleanup.html#discord_8h_1a009d0e352a30c00f8b4765712fcfa5a9"><span class="std std-ref">discord_cleanup()</span></a> </p>
 </dd>
 </dl>
 </p>
@@ -1247,10 +1329,10 @@
             <p class="prev-next-title">Client</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="initialization.html" title="next page">
+    <a class='right-next' id="next-link" href="methods/discord_add_intents.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Initialization / Cleanup</p>
+        <p class="prev-next-title">discord_add_intents - add events to listen to</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

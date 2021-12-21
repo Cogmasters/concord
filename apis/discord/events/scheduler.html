@@ -163,28 +163,110 @@
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../client/initialization.html">
-       Initialization / Cleanup
+      <a class="reference internal" href="../client/methods/discord_add_intents.html">
+       discord_add_intents - add events to listen to
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../client/settings.html">
-       Settings
+      <a class="reference internal" href="../client/methods/discord_async_next.html">
+       discord_async_next - execute immediate request function asynchronously
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../client/error.html">
-       Error Handling
+      <a class="reference internal" href="../client/methods/discord_cleanup.html">
+       discord_cleanup - cleanup a Discord client
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../client/connecting.html">
-       Connecting
+      <a class="reference internal" href="../client/methods/discord_clone.html">
+       discord_clone - clone a Discord client handle
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="../client/utils.html">
-       Utils
+      <a class="reference internal" href="../client/methods/discord_config_init.html">
+       discord_config_init - create a Discord client handle from a config file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_get_data.html">
+       discord_get_data - get a pointer to user arbitrary data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_get_logconf.html">
+       discord_get_logconf - Get client’s logging internals
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_get_ping.html">
+       discord_get_ping - get latency between client and Discord
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_get_self.html">
+       discord_get_self - get the client’s cached user
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_init.html">
+       discord_init - create a Discord client handle
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_reconnect.html">
+       discord_reconnect - reconnect a on-going connection
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_remove_intents.html">
+       discord_remove_intents - remove events to listen to
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_run.html">
+       discord_run - start client connection to Discord
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_set_data.html">
+       discord_set_data - save a pointer to user arbitrary data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_set_prefix.html">
+       discord_set_prefix - set a default prefix for commands
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_set_presence.html">
+       discord_set_presence - set client status
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_shutdown.html">
+       discord_shutdown - shutdown a on-going connection
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_strerror.html">
+       discord_strerror() - return string describing
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         ORCAcode
+        </span>
+       </code>
+       value
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../client/methods/discord_timestamp.html">
+       discord_timestamp - get current timestamp (client’s concept of
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         now
+        </span>
+       </code>
+       )
       </a>
      </li>
     </ul>
@@ -1250,7 +1332,7 @@
 <section id="thread-pool-work-scheduling">
 <h2>Thread Pool Work Scheduling<a class="headerlink" href="#thread-pool-work-scheduling" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Orca</span></code> provides a threadpool that can be used to run the event callbacks from.</p>
-<p>The default size for the threadpool and its queue are 2 and 8 respectively, and those can be changed by settings the value of their respective environment variables: <code class="docutils literal notranslate"><span class="pre">ORCA_THREADPOOL_SIZE</span></code> and <code class="docutils literal notranslate"><span class="pre">ORCA_THREADPOOL_QUEUE_SIZE</span></code>.</p>
+<p>The default amount of threads in the threadpool is 2, and its maximum pending tasks queue length is 8. Those values may be changed by modifying their respective environment variables: <code class="docutils literal notranslate"><span class="pre">ORCA_THREADPOOL_SIZE</span></code> and <code class="docutils literal notranslate"><span class="pre">ORCA_THREADPOOL_QUEUE_SIZE</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The threadpool is shared amongst ALL clients initialized from the same proccess.</p>
@@ -1312,7 +1394,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>client</strong> – the client created_with <a class="reference internal" href="../client/initialization.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
+<li><p><strong>client</strong> – the client created_with <a class="reference internal" href="../client/methods/discord_init.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>fn</strong> – the function that will be executed </p></li>
 </ul>
 </dd>
@@ -1322,37 +1404,47 @@
 </section>
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">discord_event_scheduler</span>
-<span class="nf">scheduler</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
-          <span class="k">struct</span> <span class="n">discord_user</span> <span class="o">*</span><span class="n">bot</span><span class="p">,</span>
-          <span class="k">struct</span> <span class="n">sized_buffer</span> <span class="o">*</span><span class="n">event_data</span><span class="p">,</span>
-          <span class="k">enum</span> <span class="n">discord_gateway_events</span> <span class="n">event</span><span class="p">)</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">discord_event_scheduler_t</span> <span class="nf">scheduler</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span>
+                                    <span class="k">struct</span> <span class="n">discord_user</span> <span class="o">*</span><span class="n">bot</span><span class="p">,</span>
+                                    <span class="k">struct</span> <span class="n">sized_buffer</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span>
+                                    <span class="k">enum</span> <span class="n">discord_gateway_events</span> <span class="n">event</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
   <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">DISCORD_EVENT_WORKER_THREAD</span><span class="p">;</span>
-  <span class="k">default</span><span class="o">:</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE</span><span class="p">:</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">discord_channel</span> <span class="n">channel</span><span class="p">;</span>
+    <span class="n">discord_channel_from_json</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">channel</span><span class="p">);</span>
+
+    <span class="n">log_info</span><span class="p">(</span><span class="s">&quot;Channel %s has been created!&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">.</span><span class="n">name</span><span class="p">);</span>
+
+    <span class="n">discord_channel_cleanup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">channel</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
+  <span class="c1">// increase threadpool to 4 threads</span>
   <span class="n">setenv</span><span class="p">(</span><span class="s">&quot;ORCA_THREADPOOL_SIZE&quot;</span><span class="p">,</span> <span class="s">&quot;4&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="c1">// increase threadpool queue length to 128 slots</span>
   <span class="n">setenv</span><span class="p">(</span><span class="s">&quot;ORCA_THREADPOOL_QUEUE_SIZE&quot;</span><span class="p">,</span> <span class="s">&quot;128&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
   <span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">discord_init</span><span class="p">(</span><span class="n">TOKEN</span><span class="p">);</span>
 
   <span class="n">discord_set_event_scheduler</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">scheduler</span><span class="p">);</span>
 
-  <span class="cm">/* Assigned to main-thread at scheduler() (single-threaded) */</span>
+  <span class="c1">// Assigned to main-thread at scheduler() (single-threaded execution)</span>
   <span class="n">discord_set_on_ready</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_ready</span><span class="p">);</span>
-  <span class="cm">/* Assigned to be executed in a worker thread at scheduler() */</span>
+  <span class="c1">// Assigned to a worker thread at scheduler() (parallel execution)</span>
   <span class="n">discord_set_on_message_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_create</span><span class="p">);</span>
-  <span class="cm">/* The following will be made to be ignored at scheduler(),</span>
-<span class="cm">     and won&#39;t trigger any callback */</span>
+  <span class="c1">// Will ignore the callback at scheduler()</span>
   <span class="n">discord_set_on_message_delete</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_message_delete</span><span class="p">);</span>
+  <span class="c1">// Will ignore the callback at scheduler(), and include user logic for</span>
+  <span class="c1">// printing the new channel</span>
   <span class="n">discord_set_on_channel_create</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">on_channel_create</span><span class="p">);</span>
 
   <span class="n">discord_run</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
