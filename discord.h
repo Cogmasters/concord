@@ -1203,7 +1203,7 @@ ORCAcode discord_list_thread_members(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be searched for threads
- * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_ret_obj{body, discord_thread_response_body}
  * @ORCA_return
  */
 ORCAcode discord_list_active_threads(
@@ -1218,7 +1218,7 @@ ORCAcode discord_list_active_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_ret_obj{body, discord_thread_response_body}
  * @ORCA_return
  */
 ORCAcode discord_list_public_archived_threads(
@@ -1235,7 +1235,7 @@ ORCAcode discord_list_public_archived_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_ret_obj{body, discord_thread_response_body}
  * @ORCA_return
  */
 ORCAcode discord_list_private_archived_threads(
@@ -1252,7 +1252,7 @@ ORCAcode discord_list_private_archived_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @ORCA_ret_obj{body, thread response body}
+ * @ORCA_ret_obj{body, discord_thread_response_body}
  * @ORCA_return
  */
 ORCAcode discord_list_joined_private_archived_threads(
@@ -2188,7 +2188,7 @@ ORCAcode discord_delete_webhook_message(struct discord *client,
  *        unable to properly establishing a connection with the cached version
  *
  * @param client the client created with discord_init()
- * @ORCA_ret_obj{ret, discord_JSON}
+ * @param ret if successful, a @ref sized_buffer containing the JSON response
  * @ORCA_return
  */
 ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *ret);
@@ -2201,7 +2201,7 @@ ORCAcode discord_get_gateway(struct discord *client, struct sized_buffer *ret);
  *        bot joins/leaves guilds
  *
  * @param client the client created with discord_init()
- * @ORCA_ret_obj{ret, discord_JSON}
+ * @param ret if successful, a @ref sized_buffer containing the JSON response
  * @ORCA_return
  */
 ORCAcode discord_get_gateway_bot(struct discord *client,
