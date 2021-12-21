@@ -37,7 +37,7 @@ typedef char json_char_t;
 /** @} OrcaTypes */
 
 /** @defgroup OrcaCodes
- *  @brief Error code returned by Orca REST functions
+ *  @brief Orca error values
  *  @{ */
 /** the error code datatype */
 typedef int ORCAcode;

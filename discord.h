@@ -72,6 +72,7 @@ struct discord_voice_cbs;
 /** @} */
 
 /** @defgroup OrcaDiscordCodes
+ * @see @ref OrcaCodes for non-Discord errors
  *  @{ */
 /** Received a JSON error message */
 #define ORCA_DISCORD_JSON_CODE 1
