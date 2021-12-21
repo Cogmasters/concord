@@ -1,0 +1,2340 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Datatypes &#8212; Orca  documentation</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Get Gateway" href="methods/get_gateway.html" />
+    <link rel="prev" title="Gateway" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../../../index.html">
+  <img src="../../../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../../index.html">
+  Supported APIs
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../core/index.html">
+  Orca's core API
+ </a>
+</li>
+
+    
+    <li class="nav-item">
+        <a class="nav-link nav-external" href="https://www.cee.studio/">Cee Studio<i class="fas fa-external-link-alt"></i></a>
+    </li>
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/cee-studio/orca" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/nBUqrWf" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Discord
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../client/index.html">
+     Client
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/datatypes.html">
+       Datatypes
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/initialization.html">
+       Initialization / Cleanup
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/settings.html">
+       Settings
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/error.html">
+       Error Handling
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/connecting.html">
+       Connecting
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../client/utils.html">
+       Utils
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../constants.html">
+     Constants
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../events/index.html">
+     Events
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../events/scheduler.html">
+       Scheduler
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="../../events/set_callbacks.html">
+       Set Callbacks
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="../../interactions/index.html">
+     Interactions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../interactions/application_commands/index.html">
+       Application Commands
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+      <label for="toctree-checkbox-5">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/batch_edit_application_command_permissions.html">
+         Batch Edit Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/bulk_overwrite_global_application_commands.html">
+         Bulk Overwrite Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/bulk_overwrite_guild_application_command.html">
+         Bulk Overwrite Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/create_global_application_command.html">
+         Create Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/create_guild_application_command.html">
+         Create Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/delete_global_application_command.html">
+         Delete Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/delete_guild_application_command.html">
+         Delete Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/edit_application_command_permissions.html">
+         Edit Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/edit_global_application_command.html">
+         Edit Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/edit_guild_application_command.html">
+         Edit Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/get_application_command_permissions.html">
+         Get Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/get_global_application_command.html">
+         Get Global Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/get_global_application_commands.html">
+         Get Global Application Commands
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/get_guild_application_command.html">
+         Get Guild Application Command
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/get_guild_application_command_permissions.html">
+         Get Guild Application Command Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/application_commands/methods/get_guild_application_commands.html">
+         Get Guild Application Commands
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../interactions/interaction/index.html">
+       Interaction
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+      <label for="toctree-checkbox-6">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/create_followup_message.html">
+         Create Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/create_interaction_response.html">
+         Create Interaction Response
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/delete_followup_message.html">
+         Delete Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/delete_original_interaction_response.html">
+         Delete Original Interaction Response
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/edit_followup_message.html">
+         Edit Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/edit_original_interaction_response.html">
+         Edit Original Interaction Response
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/get_followup_message.html">
+         Get Followup Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/interaction/methods/get_original_interaction_response.html">
+         Get Original Interaction Response
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../../interactions/message_components/index.html">
+       Message Components
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+      <label for="toctree-checkbox-7">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../../interactions/message_components/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     Resources
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../application/index.html">
+       Application
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+      <label for="toctree-checkbox-9">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../application/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../audit_log/index.html">
+       Audit Log
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+      <label for="toctree-checkbox-10">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../audit_log/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../audit_log/methods/get_guild_audit_log.html">
+         Get Guild Audit Log
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../channel/index.html">
+       Channel
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+      <label for="toctree-checkbox-11">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/utils/methods.html">
+         Utils
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/embed_builder/methods.html">
+         Embed Builder
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/add_thread_member.html">
+         Add Thread Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/bulk_delete_messages.html">
+         Bulk Delete Messages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/create_channel_invite.html">
+         Create Channel Invite
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/create_message.html">
+         Create Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/create_reaction.html">
+         Create Reaction
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/crosspost_message.html">
+         Crosspost Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_all_reactions.html">
+         Delete All Reactions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_all_reactions_for_emoji.html">
+         Delete All Reactions For Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_channel.html">
+         Delete Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_channel_permission.html">
+         Delete Channel Permission
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_message.html">
+         Delete Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_own_reaction.html">
+         Delete Own Reaction
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/delete_user_reaction.html">
+         Delete User Reaction
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/edit_channel_permissions.html">
+         Edit Channel Permissions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/edit_message.html">
+         Edit Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/follow_news_channel.html">
+         Follow News Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/get_channel.html">
+         Get Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/get_channel_invites.html">
+         Get Channel Invites
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/get_channel_message.html">
+         Get Channel Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/get_channel_messages.html">
+         Get Channel Messages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/get_pinned_messages.html">
+         Get Pinned Messages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/get_reactions.html">
+         Get Reactions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/group_dm_add_recipient.html">
+         Group DM Add Recipient
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/group_dm_remove_recipient.html">
+         Group DM Remove Recipient
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/join_thread.html">
+         Join Thread
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/leave_thread.html">
+         Leave Thread
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/list_active_threads.html">
+         List Active Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/list_joined_private_archived_threads.html">
+         List Joined Private Archived Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/list_private_archived_threads.html">
+         List Private Archived Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/list_public_archived_threads.html">
+         List Public Archived Threads
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/list_thread_members.html">
+         List Thread Members
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/modify_channel.html">
+         Modify Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/pin_message.html">
+         Pin Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/remove_thread_member.html">
+         Remove Thread Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/start_thread_with_message.html">
+         Start Thread With Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/start_thread_without_message.html">
+         Start Thread Without Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/trigger_typing_indicator.html">
+         Trigger Typing Indicator
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../channel/methods/unpin_message.html">
+         Unpin Message
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../emoji/index.html">
+       Emoji
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+      <label for="toctree-checkbox-12">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../emoji/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../emoji/methods/create_guild_emoji.html">
+         Create Guild Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../emoji/methods/delete_guild_emoji.html">
+         Delete Guild Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../emoji/methods/get_guild_emoji.html">
+         Get Guild Emoji
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../emoji/methods/list_guild_emoji.html">
+         List Guild Emojis
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../emoji/methods/modify_guild_emoji.html">
+         Modify Guild Emoji
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../guild/index.html">
+       Guild
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+      <label for="toctree-checkbox-13">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/utils/methods.html">
+         Utils
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/add_guild_member.html">
+         Add Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/add_guild_member_role.html">
+         Add Guild Member Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/begin_guild_prune.html">
+         Begin Guild Prune
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/create_guild.html">
+         Create Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/create_guild_ban.html">
+         Create Guild Ban
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/create_guild_channel.html">
+         Create Guild Channel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/create_guild_role.html">
+         Create Guild Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/delete_guild.html">
+         Delete Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/delete_guild_role.html">
+         Delete Guild Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild.html">
+         Get Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_ban.html">
+         Get Guild Ban
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_bans.html">
+         Get Guild Bans
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_channels.html">
+         Get Guild Channels
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_invites.html">
+         Get Guild Invites
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_member.html">
+         Get Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_preview.html">
+         Get Guild Preview
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/get_guild_roles.html">
+         Get Guild Roles
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/list_guild_members.html">
+         List Guild Members
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_current_member.html">
+         Modify Current Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_current_user_nick.html">
+         Modify Current User Nick
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_guild.html">
+         Modify Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_guild_channel_positions.html">
+         Modify Guild Channel Positions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_guild_member.html">
+         Modify Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_guild_role.html">
+         Modify Guild Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/modify_guild_role_positions.html">
+         Modify Guild Role Positions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/remove_guild_ban.html">
+         Remove Guild Ban
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/remove_guild_member.html">
+         Remove Guild Member
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/remove_guild_member_role.html">
+         Remove Guild Member Role
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild/methods/search_guild_members.html">
+         Search Guild Members
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../guild_template/index.html">
+       Guild Template
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+      <label for="toctree-checkbox-14">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild_template/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild_template/methods/create_guild_template.html">
+         Create Guild Template
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild_template/methods/get_guild_template.html">
+         Get Guild Template
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../guild_template/methods/sync_guild_template.html">
+         Sync Guild Template
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../invite/index.html">
+       Invite
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+      <label for="toctree-checkbox-15">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../invite/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../invite/methods/delete_invite.html">
+         Delete Invite
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../invite/methods/get_invite.html">
+         Get Invite
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../stage_instance/index.html">
+       Stage Instance
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+      <label for="toctree-checkbox-16">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../stage_instance/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../sticker/index.html">
+       Sticker
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+      <label for="toctree-checkbox-17">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../sticker/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../user/index.html">
+       User
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+      <label for="toctree-checkbox-18">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/create_dm.html">
+         Create DM
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/create_group_dm.html">
+         Create Group DM
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/get_current_user.html">
+         Get Current User
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/get_current_user_guilds.html">
+         Get Current User Guilds
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/get_user.html">
+         Get User
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/get_user_connections.html">
+         Get User Connections
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/leave_guild.html">
+         Leave Guild
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../user/methods/modify_current_user.html">
+         Modify Current User
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../voice/index.html">
+       Voice
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+      <label for="toctree-checkbox-19">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../voice/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../voice/methods/list_voice_regions.html">
+         List Voice Regions
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../webhook/index.html">
+       Webhook
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+      <label for="toctree-checkbox-20">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/create_webhook.html">
+         Create Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/delete_webhook.html">
+         Delete Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/delete_webhook_message.html">
+         Delete Webhook Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/delete_webhook_with_token.html">
+         Delete Webhook with Token
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/edit_webhook_message.html">
+         Edit Webhook Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/execute_webhook.html">
+         Execute Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/get_channel_webhooks.html">
+         Get Channel Webhooks
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/get_guild_webhooks.html">
+         Get Guild Webhooks
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/get_webhook.html">
+         Get Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/get_webhook_message.html">
+         Get Webhook Message
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/get_webhook_with_token.html">
+         Get Webhook with Token
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/modify_webhook.html">
+         Modify Webhook
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../webhook/methods/modify_webhook_with_token.html">
+         Modify Webhook with Token
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 current active has-children">
+      <a class="reference internal" href="index.html">
+       Gateway
+      </a>
+      <input checked="" class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+      <label for="toctree-checkbox-21">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul class="current">
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         Datatypes
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="methods/get_gateway.html">
+         Get Gateway
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="methods/get_gateway_bot.html">
+         Get Gateway Bot
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="../permissions/index.html">
+       Permissions
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+      <label for="toctree-checkbox-22">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="../permissions/datatypes.html">
+         Datatypes
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/cee-studio/orca-docs/edit/master/docs/source/apis/discord/resources/gateway/datatypes.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="datatypes">
+<h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway">https://discord.com/developers/docs/topics/gateway</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_identify">
+<span class="target" id="structdiscord__identify"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_identify</span></span></span><a class="headerlink" href="#c.discord_identify" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_init(struct</span> <span class="pre">discord_identify</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_cleanup(struct</span> <span class="pre">discord_identify</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_list_free(struct</span> <span class="pre">discord_identify</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#identify-identify-structure">https://discord.com/developers/docs/topics/gateway#identify-identify-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.token">
+<span class="target" id="structdiscord__identify_1a0ddbce1dc10eb9e5975c99f490c05662"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">token</span></span></span><a class="headerlink" href="#c.discord_identify.token" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.properties">
+<span class="target" id="structdiscord__identify_1a38e9c6c090021a3e23a3e9072fc40caf"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_identify_connection" title="discord_identify_connection"><span class="n"><span class="pre">discord_identify_connection</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">properties</span></span></span><a class="headerlink" href="#c.discord_identify.properties" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.compress">
+<span class="target" id="structdiscord__identify_1a6882ef0bbc7c6a2a8e4c74f0e4e92208"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compress</span></span></span><a class="headerlink" href="#c.discord_identify.compress" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.large_threshold">
+<span class="target" id="structdiscord__identify_1acb8b32bb5a6bffcce92129e0be6b9e43"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">large_threshold</span></span></span><a class="headerlink" href="#c.discord_identify.large_threshold" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.guild_subscriptions">
+<span class="target" id="structdiscord__identify_1a41d0bb52715a11881d586b3036bd0bcd"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_subscriptions</span></span></span><a class="headerlink" href="#c.discord_identify.guild_subscriptions" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.presence">
+<span class="target" id="structdiscord__identify_1aa071bf6a9f039916871222a2b515b222"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_presence_status" title="discord_presence_status"><span class="n"><span class="pre">discord_presence_status</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">presence</span></span></span><a class="headerlink" href="#c.discord_identify.presence" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify.intents">
+<span class="target" id="structdiscord__identify_1a69de6b912eac0e8286bace000d7d002e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">intents</span></span></span><a class="headerlink" href="#c.discord_identify.intents" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_voice_state_status">
+<span class="target" id="structdiscord__voice__state__status"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_voice_state_status</span></span></span><a class="headerlink" href="#c.discord_voice_state_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_init(struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_cleanup(struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_list_free(struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_voice_state_status_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_voice_state_status</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure">https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_voice_state_status.guild_id">
+<span class="target" id="structdiscord__voice__state__status_1a2a19af9fa2bc90e9df771a3c7c784a83"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the guild </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_voice_state_status.channel_id">
+<span class="target" id="structdiscord__voice__state__status_1a6c8cf606145bef4bc81bb481e563badc"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_id</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the voice channel client wants to join (null if disconnecting) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_voice_state_status.self_mute">
+<span class="target" id="structdiscord__voice__state__status_1acffac0020e7cf5a5236b30762fc5e4af"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">self_mute</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.self_mute" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>is the client muted </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_voice_state_status.self_deaf">
+<span class="target" id="structdiscord__voice__state__status_1abae385a955254c1194138bc1e3e03bb0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">self_deaf</span></span></span><a class="headerlink" href="#c.discord_voice_state_status.self_deaf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>is the client deafened </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_presence_status">
+<span class="target" id="structdiscord__presence__status"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_presence_status</span></span></span><a class="headerlink" href="#c.discord_presence_status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_init(struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_cleanup(struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_list_free(struct</span> <span class="pre">discord_presence_status</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_presence_status_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_presence_status</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure">https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.since">
+<span class="target" id="structdiscord__presence__status_1ae5af85cd50c1b02c68c33afa7eeb9082"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">since</span></span></span><a class="headerlink" href="#c.discord_presence_status.since" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unix time (in milliseconds) of when the client went idle, or null if the client is not idle </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.activities">
+<span class="target" id="structdiscord__presence__status_1aaee9ae76e624ee7a171b24d3e42edc4f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_activity" title="discord_activity"><span class="n"><span class="pre">discord_activity</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">activities</span></span></span><a class="headerlink" href="#c.discord_presence_status.activities" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user’s activities </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.status">
+<span class="target" id="structdiscord__presence__status_1accc4a1b7072b477654c7bbc8e2bc5d4b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">status</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_presence_status.status" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user’s new status </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_presence_status.afk">
+<span class="target" id="structdiscord__presence__status_1a76f53a68cafc75caad9fbbeeb7826e4c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk</span></span></span><a class="headerlink" href="#c.discord_presence_status.afk" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether or not the client is afk </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_identify_connection">
+<span class="target" id="structdiscord__identify__connection"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_identify_connection</span></span></span><a class="headerlink" href="#c.discord_identify_connection" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_init(struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_cleanup(struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_list_free(struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_identify_connection_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_identify_connection</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties">https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify_connection.os">
+<span class="target" id="structdiscord__identify__connection_1a96bf7d3ae400d16f5c4ee8638c224375"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">os</span></span></span><a class="headerlink" href="#c.discord_identify_connection.os" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>your operating system </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify_connection.browser">
+<span class="target" id="structdiscord__identify__connection_1a71d8334b8cbab862792aedfa6d5543d3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">browser</span></span></span><a class="headerlink" href="#c.discord_identify_connection.browser" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>your library name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_identify_connection.device">
+<span class="target" id="structdiscord__identify__connection_1aa5328c579b99763a7ff3b27bfafb9867"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">device</span></span></span><a class="headerlink" href="#c.discord_identify_connection.device" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>your library name </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_activity">
+<span class="target" id="structdiscord__activity"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_activity</span></span></span><a class="headerlink" href="#c.discord_activity" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_init(struct</span> <span class="pre">discord_activity</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_cleanup(struct</span> <span class="pre">discord_activity</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_list_free(struct</span> <span class="pre">discord_activity</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_activity</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_activity</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_activity</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_activity_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_activity</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure">https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.name">
+<span class="target" id="structdiscord__activity_1afa372d3f9759281255301153e7f9fd23"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">512</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_activity.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.type">
+<span class="target" id="structdiscord__activity_1a193002e156f0729bd9734e0943bbf4f4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_activity.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.url">
+<span class="target" id="structdiscord__activity_1af4132163c026bc8e6ed1adf0168be6a2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">url</span></span></span><a class="headerlink" href="#c.discord_activity.url" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.created_at">
+<span class="target" id="structdiscord__activity_1a5e9d5736afc5cce43f23041092708dbf"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">created_at</span></span></span><a class="headerlink" href="#c.discord_activity.created_at" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.application_id">
+<span class="target" id="structdiscord__activity_1afef6ab6e270eeedbf58c63ee20e93d96"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_activity.application_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.details">
+<span class="target" id="structdiscord__activity_1ac900dfea5a9920af1dad8400b5643e50"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">details</span></span></span><a class="headerlink" href="#c.discord_activity.details" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.state">
+<span class="target" id="structdiscord__activity_1a4dc23f425e65a236e49dd419ccf7d9db"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">state</span></span></span><a class="headerlink" href="#c.discord_activity.state" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_activity.instance">
+<span class="target" id="structdiscord__activity_1a699cd318858193870ca9efeccaedf8e7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">instance</span></span></span><a class="headerlink" href="#c.discord_activity.instance" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_session_start_limit">
+<span class="target" id="structdiscord__session__start__limit"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_session_start_limit</span></span></span><a class="headerlink" href="#c.discord_session_start_limit" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;gateway.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_init(struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_cleanup(struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_list_free(struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_session_start_limit_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_session_start_limit</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure">https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_session_start_limit.total">
+<span class="target" id="structdiscord__session__start__limit_1a5c3bf67f49b2dfff43ac29d7fbd4c1b4"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">total</span></span></span><a class="headerlink" href="#c.discord_session_start_limit.total" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the total number of session starts the current user is allowed </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_session_start_limit.remaining">
+<span class="target" id="structdiscord__session__start__limit_1a789e8ad174be018e83505772fc8b6c3b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remaining</span></span></span><a class="headerlink" href="#c.discord_session_start_limit.remaining" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the remaining number of session starts the current user is allowed </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_session_start_limit.reset_after">
+<span class="target" id="structdiscord__session__start__limit_1ae0e3ab516820de0f57383dee15c9072a"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset_after</span></span></span><a class="headerlink" href="#c.discord_session_start_limit.reset_after" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the number of milliseconds after which the limit resets </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_session_start_limit.max_concurrency">
+<span class="target" id="structdiscord__session__start__limit_1a28cb8be3e4cd48c4caccfe467b603631"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_concurrency</span></span></span><a class="headerlink" href="#c.discord_session_start_limit.max_concurrency" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the number of identify requests allowed per 5 seconds </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_gateway_close_opcodes</span></span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_gateway_close_opcodes_print(enum</span> <span class="pre">discord_gateway_close_opcodes</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_gateway_close_opcodes</span> <span class="pre">discord_gateway_close_opcodes_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes">https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2ae563bb322972c122f5e86b94762cfc70"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4000</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2ae874faa312cdae2635462f9ecd7bdb6f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4001</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a9e604e5ba83a5a681c40ea39b19f08da"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4002</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2ab7df179a6e28529c31e58ac147e6b4f1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4003</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a3370f572278ece115cba98abc07a27f2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4004</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a5f0df4464510b34c1b4d47056833359e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4005</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a4573424f7f456230f1daa98596fcfd15"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4007</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a739ea7ebb3b4aba8d895b006225a0697"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4008</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a7b21843bdefa634a8bae859fe5688001"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4009</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a07dd882e18d84075eb39782b4e8552d5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4010</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a80e82682edbc9b8bde9656150ed6e6aa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4011</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a03a52842807026813e701ddad92e4132"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4012</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2ab3ecc2a0c06004b0425fa87de0ee5dcc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4013</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a3f24beddd2fcd4f6d4e4e17c407c29bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4014</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_RECONNECT">
+<span class="target" id="gateway_8h_1aa4973a549061e20fb2db80abf0d43ca2a190ead4c4c63688af4d9a27316ed7dc4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_CLOSE_REASON_RECONNECT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4900</span></span><a class="headerlink" href="#c.discord_gateway_close_opcodes.DISCORD_GATEWAY_CLOSE_REASON_RECONNECT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_gateway_intents">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeb"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_gateway_intents</span></span></span><a class="headerlink" href="#c.discord_gateway_intents" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_gateway_intents_print(enum</span> <span class="pre">discord_gateway_intents</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_gateway_intents</span> <span class="pre">discord_gateway_intents_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#gateway-intents">https://discord.com/developers/docs/topics/gateway#gateway-intents</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILDS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba001dca1fe6c977a8c333625def4f85da"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILDS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 0 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MEMBERS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba6e8ab9568c44c6d638bd14f505bb3b98"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 1 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_BANS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba85354775ce6908858ca2b0e625c938a7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_BANS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_BANS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 2 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_EMOJIS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba00c9eb060e3e18ed44210122add78932"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_EMOJIS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_EMOJIS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 3 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_INTEGRATIONS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba76358a1a0e0c7a8144fd003e27c2df88"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_INTEGRATIONS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_INTEGRATIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 4 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_WEBHOOKS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba63be5efd319d2ec34cd006ab3fea7f7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_WEBHOOKS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_WEBHOOKS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 5 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_INVITES">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba336f107858ad2ffffc28649679428b79"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_INVITES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_INVITES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 6 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_VOICE_STATES">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba7f3e82c6c333882d69851bde44fa522c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_VOICE_STATES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">128</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_VOICE_STATES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 7 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_PRESENCES">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba72a4c6fd7f548c2aa7f8256d00d60d5a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_PRESENCES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">256</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_PRESENCES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 8 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MESSAGES">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aebad765ee92771a06717eea5044d41c6834"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">512</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 9 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aebaa62211f1c169595420a548e2ba7c16e7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1024</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MESSAGE_REACTIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 10 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MESSAGE_TYPING">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba89b00663ae1db573536486623b6d5746"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_GUILD_MESSAGE_TYPING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2048</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_GUILD_MESSAGE_TYPING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 11 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_DIRECT_MESSAGES">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aebad84e92cd7af72f2eff9442b2943d2b6f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_DIRECT_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4096</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_DIRECT_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 12 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aebafa4dc2f8d5d5b3da2989e94aa4395af2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8192</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 13 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_intents.DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING">
+<span class="target" id="gateway_8h_1a91803313c766c49777f50921b7027aeba0bcd0c6aada980ed1238fd108251e756"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16384</span></span><a class="headerlink" href="#c.discord_gateway_intents.DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 14 </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fe"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_gateway_opcodes</span></span></span><a class="headerlink" href="#c.discord_gateway_opcodes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_gateway_opcodes_print(enum</span> <span class="pre">discord_gateway_opcodes</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_gateway_opcodes</span> <span class="pre">discord_gateway_opcodes_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes">https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_DISPATCH">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fea2ea647e581029d920ade20e5bd115179"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_DISPATCH</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_DISPATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_HEARTBEAT">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085feabd6c38397819b24be58714229f87b1f2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_HEARTBEAT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_HEARTBEAT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_IDENTIFY">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fea8de5a8c551b6c896192c3aa78c7c35e2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_IDENTIFY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_IDENTIFY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_PRESENCE_UPDATE">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085feaa6c304e6184aaa8456df6b0c4b12d7e2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_PRESENCE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_PRESENCE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_VOICE_STATE_UPDATE">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085feae3f9418593b2f48278a57b9d5feeb7ca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_VOICE_STATE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_VOICE_STATE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_RESUME">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fea4387f55f7a60b155d1ae08a47f2ca55e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_RESUME</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_RESUME" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_RECONNECT">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fea53ab1a818b61a970069666b152552b59"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_RECONNECT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_RECONNECT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085feae89da12140ac73bb6ddc152f5025fe54"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_INVALID_SESSION">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085feac3483899dc45101254bb8aee03d9868c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_INVALID_SESSION</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_INVALID_SESSION" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_HELLO">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fea69df11032704ae7011e639a7a79bcf38"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_HELLO</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_HELLO" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_opcodes.DISCORD_GATEWAY_HEARTBEAT_ACK">
+<span class="target" id="gateway_8h_1a086cfb51d525fc1bf2ac93eb4ed085fea2be82332c877d543f10acbc1f8fde32d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_HEARTBEAT_ACK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">11</span></span><a class="headerlink" href="#c.discord_gateway_opcodes.DISCORD_GATEWAY_HEARTBEAT_ACK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_gateway_events">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_gateway_events</span></span></span><a class="headerlink" href="#c.discord_gateway_events" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_gateway_events_print(enum</span> <span class="pre">discord_gateway_events</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_gateway_events</span> <span class="pre">discord_gateway_events_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events">https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_NONE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145badf97d47a5e2f07f4be37d7b6074cbdb9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_NONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_NONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_READY">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba4428cca971ed3c1f9c3c9ee2f6d4d1d5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_READY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_READY" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_RESUMED">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba139cb0d62e78ffea440c84812976cf81"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_RESUMED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_RESUMED" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bab90a2af027039670fa1a20e394633f5a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145babd18dd9a32058fd689589d08a2e18d74"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba7d1c4a57a721c1a57c9cb071bb7a28f6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba40977b32bcfae861150e293e9d6d766a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba604cb93ad2359d70bddf20b7082d4472"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145baf4bdd73b5b14bf112aa67cbf18733a97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145baa54d52ad379a1a1e554f129d4b69b785"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bace32b8eb49e4017a940d4bef65c30f2c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_THREAD_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba17b43fc954f6795b68d79a0b69d21272"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_THREAD_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">11</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba1546b0c2c4b93bf9bfad63e4756a9a56"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_THREAD_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">12</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bae452b09aec801bb176d0652fc62288a1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">13</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_MEMBER_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba36576f8111ac32e7ac77e55bfa984081"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_THREAD_MEMBER_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">14</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_MEMBER_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_MEMBERS_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bae4dae77f4004c729e0b5671739c9327e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_THREAD_MEMBERS_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_THREAD_MEMBERS_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba7650481180b2c0a25cc533f4fb52fb9b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145babd96930baa5a990d5cf1cad871353aa3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">17</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba16db80d72fd1cab2aa5bc51c6d00292e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">18</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba1a968a025a78edfab4f24badbdda55c5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">19</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba663d8a4565641d3aa8ae6e069eda8cfc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba0598b2701767570bc410050026aa3d63"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">21</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_STICKERS_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba9ccf42a2813822392f6f564a7c12af35"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_STICKERS_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">22</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_STICKERS_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145babad1668823a92ca08846cab93b155ac4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">23</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_INTEGRATIONS_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145badab4f1e85497c458ad9575642aec6c90"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">24</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba788c30741d4080664b4a517439ec508a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">25</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba67591f7b7ed5aef019d58af894406931"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">26</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBERS_CHUNK">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba7c1620580e5e062757afc4b5c7dff1f0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_MEMBERS_CHUNK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">27</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_MEMBERS_CHUNK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145baa904c81732af01e8661f8218c91cfdb9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">28</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba58e93a48a1cde63df50feda9aa31849c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">29</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145baf886a997a4d4561960dd353a5da4e7f4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">30</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTEGRATION_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bae5aea7bd690fc115fe83ada049fa81c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_INTEGRATION_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">31</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTEGRATION_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTEGRATION_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba82a039ee2e99762ef3b9bab1a5d14160"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_INTEGRATION_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTEGRATION_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTEGRATION_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba7acf441e0dbd9a2c141d665ba2c245a4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_INTEGRATION_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">33</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTEGRATION_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba9a7b926e02feffff2adaee6f0efde2ae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">34</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INVITE_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba08c45ef49548827f12625c1c49810862"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_INVITE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">35</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INVITE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INVITE_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba9e062fdb517f515e896e71af2f7968c3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_INVITE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">36</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_INVITE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bae1f746afe30abe0c9740bc00e63fbf4e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">37</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145baad7a4b4a822760485e5e04071e824dba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">38</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145bac8779dd628ccc354141564104cac355d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">39</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba90323168b0780b1863e044152928e33d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">40</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba8ce7c561e80364e09640561a2a7359d7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">41</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba444a476ec04d272f207cd8bf47b95c9e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">42</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba1c66eb0e3433f16e5bf033205c3ff8d5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">43</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba660348078cd80889814e502b8f1c7839"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">44</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba183cdecd45c1e5b1f07d29fa6d4c18ea"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">45</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_CREATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145babc40230f199c147a7e03c1be322435cf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">46</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_DELETE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba120d7fcf0987a07a93be07f3268e3b72"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">47</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba46a60fd09c6904a14f044c780a9617e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">48</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_TYPING_START">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba0ca2d53dd69053ce00c35550d2a3d662"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_TYPING_START</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">49</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_TYPING_START" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_USER_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba79bae60fa864c406ba53a183e8a970b1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_USER_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">50</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_USER_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba8ace4b55eb8d8cd976ea68571a018458"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">51</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145baa5380033cc96286cd75a00fc40edc918"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">52</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE">
+<span class="target" id="gateway_8h_1a90ebb76de1682ce02a67a08b0510145ba545c5ff765a22323f1bc53e2486b2d54"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">53</span></span><a class="headerlink" href="#c.discord_gateway_events.DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_activity_types">
+<span class="target" id="gateway_8h_1aa062fba03e7be2d8c89fd228a9fc4245"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_activity_types</span></span></span><a class="headerlink" href="#c.discord_activity_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_activity_types_print(enum</span> <span class="pre">discord_activity_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_activity_types</span> <span class="pre">discord_activity_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/gateway#activity-object-activity-types">https://discord.com/developers/docs/topics/gateway#activity-object-activity-types</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_activity_types.DISCORD_ACTIVITY_GAME">
+<span class="target" id="gateway_8h_1aa062fba03e7be2d8c89fd228a9fc4245a6818cdfc935297aa0bc6243422dcf8ac"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_ACTIVITY_GAME</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.discord_activity_types.DISCORD_ACTIVITY_GAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_activity_types.DISCORD_ACTIVITY_STREAMING">
+<span class="target" id="gateway_8h_1aa062fba03e7be2d8c89fd228a9fc4245af3ccd093cafa0e614e5ebd4118e27d37"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_ACTIVITY_STREAMING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_activity_types.DISCORD_ACTIVITY_STREAMING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_activity_types.DISCORD_ACTIVITY_LISTENING">
+<span class="target" id="gateway_8h_1aa062fba03e7be2d8c89fd228a9fc4245ac70b9438a641dc6206c3ec217a6c9b01"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_ACTIVITY_LISTENING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_activity_types.DISCORD_ACTIVITY_LISTENING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_activity_types.DISCORD_ACTIVITY_CUSTOM">
+<span class="target" id="gateway_8h_1aa062fba03e7be2d8c89fd228a9fc4245a96a8d5e133e564529557d28681f08a3a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_ACTIVITY_CUSTOM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_activity_types.DISCORD_ACTIVITY_CUSTOM" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_activity_types.DISCORD_ACTIVITY_COMPETING">
+<span class="target" id="gateway_8h_1aa062fba03e7be2d8c89fd228a9fc4245a67682afa9e85b64f44f910dd220c3df0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_ACTIVITY_COMPETING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_activity_types.DISCORD_ACTIVITY_COMPETING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Gateway</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="methods/get_gateway.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Get Gateway</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2021, Cee-Studio.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

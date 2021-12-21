@@ -1,6 +1,6 @@
-===============
-Event Reference
-===============
+======
+Events
+======
 
 The following section outlines the Discord events
 
@@ -8,4 +8,5 @@ The following section outlines the Discord events
    :caption: Table of Contents
    :maxdepth: 2
 
-   callback_set
+   scheduler
+   set_callbacks

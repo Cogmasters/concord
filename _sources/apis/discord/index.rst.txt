@@ -16,4 +16,4 @@ The following section outlines the Discord API supported by Orca
 
    interactions/index
 
-   models/index
+   resources/index

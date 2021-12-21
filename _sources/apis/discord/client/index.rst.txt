@@ -8,10 +8,9 @@ The following section outlines the Discord API Client handle and utilities
    :caption: Table of Contents
    :maxdepth: 2
 
-   structures
+   datatypes
    initialization
    settings
-   scheduler
    error
    connecting
    utils
