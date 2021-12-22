@@ -18,7 +18,7 @@ void on_list(struct discord *client, const struct discord_message *msg)
   if (msg->author->bot) return;
 
   struct discord_emoji **emojis = NULL;
-  char text[DISCORD_MAX_MESSAGE_LEN];
+  char text[2000];
   ORCAcode code;
 
   code = discord_list_guild_emojis(client, msg->guild_id, &emojis);

@@ -92,7 +92,7 @@ void parse_session_config()
                "(listener.reaction_emoji):?s"
                "(new_channel.name):?s"
                "(new_channel.topic):?s"
-               "(questions_per_session):lld",
+               "(questions_per_session):d",
                &g_session.channel_id, &g_session.message_id,
                &g_session.reaction_emoji, &g_session.chat_name,
                &g_session.chat_topic, &g_session.questions_per_session);
