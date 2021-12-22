@@ -146,10 +146,21 @@ int cee_u64tostr(char *str, size_t len, uint64_t *p_value);
  * Analogous to `strndup()`
  * @param src the buffer to be copied
  * @param len the maximum amount of characters to be copied
- * @p_dest a pointer to the new `src` copy
+ * @param p_dest a pointer to the new `src` copy
  * @return length of copied string on success, 0 on failure
  */
 size_t cee_strndup(const char *src, size_t len, char **p_dest);
+
+/**
+ * @brief Copies at most `len` bytes of `src` to `*p_dest`.
+ *
+ * Analogous to `asprintf()`
+ * @param strp source to write resulting string to
+ * @param fmt printf format string
+ * @param ... variadic arguments to be matched to `fmt` specifiers
+ * @return length of copied string on success, -1 on failure
+ */
+size_t cee_asprintf(char **strp, const char fmt[], ...);
 
 /**
  * @brief Sleep for milliseconds amount

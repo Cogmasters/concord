@@ -159,6 +159,33 @@ cee_strndup(const char *src, size_t len, char **p_dest)
   return len;
 }
 
+size_t
+cee_asprintf(char **strp, const char fmt[], ...)
+{
+  va_list argp;
+  char one_char[1];
+  int len;
+
+  va_start(argp, fmt);
+
+  len = vsnprintf(one_char, 1, fmt, argp);
+  if (len < 1) {
+    *strp = NULL;
+    return len;
+  }
+
+  va_end(argp);
+
+  *strp = malloc(len + 1);
+  if (!strp) return -1;
+
+  va_start(argp, fmt);
+  vsnprintf(*strp, len + 1, fmt, argp);
+  va_end(argp);
+
+  return len;
+}
+
 int
 cee_sleep_ms(const long tms)
 {

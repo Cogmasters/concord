@@ -20,7 +20,6 @@
  * SOFTWARE.
  */
 
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -207,8 +206,7 @@ _json_decode_string(char **p_buffer, size_t *len)
 
     *len = end-start;
     char *str = NULL;
-    asprintf(&str, "%.*s", (int)*len, start);
-    ASSERT_S(NULL != str, "Out of memory");
+    cee_strndup(start, *len, &str);
     return str;
 }
 
@@ -920,7 +918,7 @@ json_strdup(const json_item_t *item)
     if (NULL == src.start) return NULL;
 
     char *dest;
-    asprintf(&dest, "%.*s", (int)src.size, src.start);
+    cee_strndup(src.start, src.size, &dest);
     return dest;
 }
 

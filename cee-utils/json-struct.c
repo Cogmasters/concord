@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include <stddef.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -603,15 +602,13 @@ field_from_json(char *json, size_t size, void *x)
     }
     else { /* we will convert this to actual type later */
       p->inject_condition.opcode = TYPE_RAW_JSON;
-      asprintf(&p->inject_condition.token, 
-          "%.*s", (int)t_inject_if_not.size, t_inject_if_not.start);
+      cee_strndup(t_inject_if_not.start, t_inject_if_not.size, &p->inject_condition.token);
     }
   }
 
   if (t_default_value.size != 0) {
     p->type.default_value.opcode = TYPE_RAW_JSON;
-    asprintf(&p->type.default_value.token,
-        "%.*s", (int)t_default_value.size, t_default_value.start);
+    cee_strndup(t_default_value.start, t_default_value.size, &p->type.default_value.token);
   }
 
   return s;
@@ -1213,7 +1210,7 @@ static void to_action(struct jc_field *f, struct action *act)
     if (tok != NULL) {
       tok += strlen("enum");
       while (*tok && isspace(*tok)) tok++;
-      asprintf(&act->fun_prefix, "%s", tok);
+      cee_strndup(tok, strlen(tok), &act->fun_prefix);
       act->fun_prefix = to_C_name(act->fun_prefix);
     }
     else {
@@ -1226,7 +1223,7 @@ static void to_action(struct jc_field *f, struct action *act)
     if (tok != NULL) {
       tok += strlen("struct");
       while (*tok && isspace(*tok)) tok++;
-      asprintf(&act->fun_prefix, "%s", tok);
+      cee_strndup(tok, strlen(tok), &act->fun_prefix);
       is_user_defined_type = true;
       act->fun_prefix = to_C_name(act->fun_prefix);
     }
@@ -1246,10 +1243,11 @@ static void to_action(struct jc_field *f, struct action *act)
           ERR("this should never happen\n");
         } else {
           if (is_user_defined_type) {
-            asprintf(&act->injector, "%s_to_json", act->fun_prefix);
-            asprintf(&act->extractor, "%s_from_json_p", act->fun_prefix);
-            asprintf(&act->alloc, "%s_init", act->fun_prefix);
-            asprintf(&act->free, "%s_cleanup", act->fun_prefix);
+            cee_asprintf(&act->injector, "%s_to_json", act->fun_prefix);
+            cee_asprintf(&act->extractor, "%s_from_json_p", act->fun_prefix);
+            cee_asprintf(&act->alloc, "%s_init", act->fun_prefix);
+            cee_asprintf(&act->free, "%s_cleanup", act->fun_prefix);
+
             act->extract_arg_decor = "&";
             act->inject_arg_decor = "";
             act->post_dec = "";
@@ -1276,12 +1274,12 @@ static void to_action(struct jc_field *f, struct action *act)
       act->extract_is_user_def = true;
       act->is_actor_alloc = true;
       if (to_builtin_action(f, act)) {
-        asprintf(&act->extractor, "%s_list_from_json", act->fun_prefix);
-        asprintf(&act->injector, "%s_list_to_json", act->fun_prefix);
+        cee_asprintf(&act->extractor, "%s_list_from_json", act->fun_prefix);
+        cee_asprintf(&act->injector, "%s_list_to_json", act->fun_prefix);
       } else {
-        asprintf(&act->extractor, "%s_list_from_json", act->fun_prefix);
-        asprintf(&act->injector, "%s_list_to_json", act->fun_prefix);
-        asprintf(&act->free, "%s_list_free", act->fun_prefix);
+        cee_asprintf(&act->extractor, "%s_list_from_json", act->fun_prefix);
+        cee_asprintf(&act->injector, "%s_list_to_json", act->fun_prefix);
+        cee_asprintf(&act->free, "%s_list_free", act->fun_prefix);
       }
       break;
     case DEC_ARRAY:
@@ -2128,11 +2126,17 @@ gen_definition_list(
   NTL_T(struct jc_definition) ntl)
 {
   char *fname=NULL;
+  char buf[2048];
+  size_t len;
   int i;
+
   for (i = 0; ntl && ntl[i]; i++) {
     struct jc_definition *d = ntl[i];
     char *f = namespace_to_str(d->namespace);
-    asprintf(&fname, "%s/%s%s", folder, f, get_file_suffix(global_option.type));
+
+    len = snprintf(buf, sizeof(buf), "%s/%s%s", folder, f, get_file_suffix(global_option.type));
+    cee_strndup(buf, len, &fname);
+
     gen_definition(fname, "w", opt, d);
   }
 }
