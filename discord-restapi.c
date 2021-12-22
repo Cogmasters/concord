@@ -908,7 +908,8 @@ discord_get_channel_invites(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_invite ***ret)
 {
-  struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_invite, ret);
+  struct discord_request_attr attr =
+    REQUEST_ATTR_LIST_INIT(discord_invite, ret);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
@@ -2170,10 +2171,9 @@ discord_edit_original_interaction_response(
 }
 
 ORCAcode
-discord_delete_original_interaction_response(
-  struct discord *client,
-  u64_snowflake_t interaction_id,
-  const char interaction_token[])
+discord_delete_original_interaction_response(struct discord *client,
+                                             u64_snowflake_t interaction_id,
+                                             const char interaction_token[])
 {
   ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
@@ -2605,8 +2605,7 @@ discord_modify_webhook_with_token(
 }
 
 ORCAcode
-discord_delete_webhook(struct discord *client,
-                       u64_snowflake_t webhook_id)
+discord_delete_webhook(struct discord *client, u64_snowflake_t webhook_id)
 {
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
 
