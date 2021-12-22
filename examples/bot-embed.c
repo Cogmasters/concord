@@ -40,7 +40,7 @@ char JSON_STRING[] =
   "    },\n"
   "    {\n"
   "      \"name\":\"Looking for support?\", \n"
-  "      \"value\":\"Join our server [here](https://discord.gg/x4hhGQYu)!\"\n"
+  "      \"value\":\"Join our server [here](https://discord.gg/nBUqrWf)!\"\n"
   "    }\n"
   "  ]\n"
   "}";
