@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -120,8 +119,7 @@ on_events(struct slack_sm *sm, struct sized_buffer *data, char str_type[])
     struct slack_event *cxt = malloc(sizeof *cxt);
     int ret;
 
-    cxt->data.size =
-      asprintf(&cxt->data.start, "%.*s", (int)data->size, data->start);
+    cxt->data.size = cee_strndup(data->start, data->size, &cxt->data.start);
     cxt->sm = sm;
     cxt->type = type;
     cxt->on_event = on_event;

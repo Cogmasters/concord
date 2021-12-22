@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -84,22 +83,28 @@ discord_embed_set_footer(struct discord_embed *embed,
     embed->footer = malloc(sizeof *embed->footer);
   discord_embed_footer_init(embed->footer);
 
-  if (text) asprintf(&embed->footer->text, "%s", text);
-  if (icon_url) asprintf(&embed->footer->icon_url, "%s", icon_url);
+  if (text) cee_strndup(text, strlen(text), &embed->footer->text);
+  if (icon_url)
+    cee_strndup(icon_url, strlen(icon_url), &embed->footer->icon_url);
   if (proxy_icon_url)
-    asprintf(&embed->footer->proxy_icon_url, "%s", proxy_icon_url);
+    cee_strndup(proxy_icon_url, strlen(proxy_icon_url),
+                &embed->footer->proxy_icon_url);
 }
 
 void
 discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 {
+  char buf[2048];
+  size_t len;
   va_list args;
 
   va_start(args, format);
 
-  if (embed->title) free(embed->title);
+  len = vsnprintf(buf, sizeof(buf), format, args);
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
-  vasprintf(&embed->title, format, args);
+  if (embed->title) free(embed->title);
+  cee_strndup(buf, len, &embed->title);
 
   va_end(args);
 }
@@ -107,13 +112,17 @@ discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 void
 discord_embed_set_description(struct discord_embed *embed, char format[], ...)
 {
+  char buf[2048];
+  size_t len;
   va_list args;
 
   va_start(args, format);
 
-  if (embed->description) free(embed->description);
+  len = vsnprintf(buf, sizeof(buf), format, args);
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
-  vasprintf(&embed->description, format, args);
+  if (embed->description) free(embed->description);
+  cee_strndup(buf, len, &embed->description);
 
   va_end(args);
 }
@@ -121,13 +130,17 @@ discord_embed_set_description(struct discord_embed *embed, char format[], ...)
 void
 discord_embed_set_url(struct discord_embed *embed, char format[], ...)
 {
+  char buf[2048];
+  size_t len;
   va_list args;
 
   va_start(args, format);
 
-  if (embed->url) free(embed->url);
+  len = vsnprintf(buf, sizeof(buf), format, args);
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
-  vasprintf(&embed->url, format, args);
+  if (embed->url) free(embed->url);
+  cee_strndup(buf, len, &embed->url);
 
   va_end(args);
 }
@@ -145,8 +158,9 @@ discord_embed_set_thumbnail(struct discord_embed *embed,
     embed->thumbnail = malloc(sizeof *embed->thumbnail);
   discord_embed_thumbnail_init(embed->thumbnail);
 
-  if (url) asprintf(&embed->thumbnail->url, "%s", url);
-  if (proxy_url) asprintf(&embed->thumbnail->proxy_url, "%s", proxy_url);
+  if (url) cee_strndup(url, strlen(url), &embed->thumbnail->url);
+  if (proxy_url)
+    cee_strndup(proxy_url, strlen(proxy_url), &embed->thumbnail->proxy_url);
   if (height) embed->thumbnail->height = height;
   if (width) embed->thumbnail->width = width;
 }
@@ -164,8 +178,9 @@ discord_embed_set_image(struct discord_embed *embed,
     embed->image = malloc(sizeof *embed->image);
   discord_embed_image_init(embed->image);
 
-  if (url) asprintf(&embed->image->url, "%s", url);
-  if (proxy_url) asprintf(&embed->image->proxy_url, "%s", proxy_url);
+  if (url) cee_strndup(url, strlen(url), &embed->image->url);
+  if (proxy_url)
+    cee_strndup(proxy_url, strlen(proxy_url), &embed->image->proxy_url);
   if (height) embed->image->height = height;
   if (width) embed->image->width = width;
 }
@@ -183,8 +198,9 @@ discord_embed_set_video(struct discord_embed *embed,
     embed->video = malloc(sizeof *embed->video);
   discord_embed_video_init(embed->video);
 
-  if (url) asprintf(&embed->video->url, "%s", url);
-  if (proxy_url) asprintf(&embed->video->proxy_url, "%s", proxy_url);
+  if (url) cee_strndup(url, strlen(url), &embed->video->url);
+  if (proxy_url)
+    cee_strndup(proxy_url, strlen(proxy_url), &embed->video->proxy_url);
   if (height) embed->video->height = height;
   if (width) embed->video->width = width;
 }
@@ -200,8 +216,8 @@ discord_embed_set_provider(struct discord_embed *embed,
     embed->provider = malloc(sizeof *embed->provider);
   discord_embed_provider_init(embed->provider);
 
-  if (name) asprintf(&embed->provider->name, "%s", name);
-  if (url) asprintf(&embed->provider->url, "%s", url);
+  if (name) cee_strndup(name, strlen(name), &embed->provider->name);
+  if (url) cee_strndup(url, strlen(url), &embed->provider->url);
 }
 
 void
@@ -217,11 +233,13 @@ discord_embed_set_author(struct discord_embed *embed,
     embed->author = malloc(sizeof *embed->author);
   discord_embed_author_init(embed->author);
 
-  if (name) asprintf(&embed->author->name, "%s", name);
-  if (url) asprintf(&embed->author->url, "%s", url);
-  if (icon_url) asprintf(&embed->author->icon_url, "%s", icon_url);
+  if (name) cee_strndup(name, strlen(name), &embed->author->name);
+  if (url) cee_strndup(url, strlen(url), &embed->author->url);
+  if (icon_url)
+    cee_strndup(icon_url, strlen(icon_url), &embed->author->icon_url);
   if (proxy_icon_url)
-    asprintf(&embed->author->proxy_icon_url, "%s", proxy_icon_url);
+    cee_strndup(proxy_icon_url, strlen(proxy_icon_url),
+                &embed->author->proxy_icon_url);
 }
 
 void
@@ -234,8 +252,8 @@ discord_embed_add_field(struct discord_embed *embed,
 
   field.Inline = Inline;
 
-  if (name) asprintf(&field.name, "%s", name);
-  if (value) asprintf(&field.value, "%s", value);
+  if (name) cee_strndup(name, strlen(name), &field.name);
+  if (value) cee_strndup(value, strlen(value), &field.value);
 
   ntl_append2((ntl_t *)&embed->fields, sizeof(struct discord_embed_field),
               &field);

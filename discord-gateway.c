@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -963,9 +962,8 @@ on_dispatch(struct discord_gateway *gw)
 
     cxt->name = strdup(gw->payload.name);
     cxt->gw = &(discord_clone(client)->gw);
-    cxt->data.size =
-      asprintf(&cxt->data.start, "%.*s", (int)gw->payload.data.size,
-               gw->payload.data.start);
+    cxt->data.size = cee_strndup(gw->payload.data.start, gw->payload.data.size,
+                                 &cxt->data.start);
     cxt->event = event;
     cxt->on_event = on_event;
 
@@ -1184,7 +1182,7 @@ discord_gateway_init(struct discord_gateway *gw,
   gw->session->retry.limit = 5; /**< hard limit for now */
 
   /* connection identify token */
-  asprintf(&gw->id.token, "%.*s", (int)token->size, token->start);
+  cee_strndup(token->start, token->size, &gw->id.token);
 
   /* connection identify properties */
   gw->id.properties = calloc(1, sizeof *gw->id.properties);

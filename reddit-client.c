@@ -24,13 +24,13 @@ reddit_init(const char username[],
 
   /* TODO: fix memory leak */
   new_client->username.size =
-    asprintf(&new_client->username.start, "%s", username);
+    cee_strndup(username, strlen(username), &new_client->username.start);
   new_client->password.size =
-    asprintf(&new_client->password.start, "%s", password);
+    cee_strndup(password, strlen(password), &new_client->password.start);
   new_client->client_id.size =
-    asprintf(&new_client->client_id.start, "%s", client_id);
-  new_client->client_secret.size =
-    asprintf(&new_client->client_secret.start, "%s", client_secret);
+    cee_strndup(client_id, strlen(client_id), &new_client->client_id.start);
+  new_client->client_secret.size = cee_strndup(
+    client_secret, strlen(client_secret), &new_client->client_secret.start);
 
   _reddit_init(new_client);
 

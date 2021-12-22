@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <string.h>
 #include <math.h>

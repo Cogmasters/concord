@@ -63,11 +63,7 @@ cee_dati_from_fjson(char filename[],
 void
 cee_sized_buffer_from_json(char *str, size_t len, struct sized_buffer *buf)
 {
-  char *dest = NULL;
-
-  cee_strndup(str, len, &dest);
-  buf->start = dest;
-  buf->size = len;
+  buf->size = cee_strndup(str, len, &buf->start);
 }
 
 static char *
@@ -152,15 +148,15 @@ cee_u64tostr(char *str, size_t len, uint64_t *p_value)
   return snprintf(str, len, "%" PRIu64, *p_value);
 }
 
-int
-cee_strndup(char *src, size_t len, char **p_dest)
+size_t
+cee_strndup(const char *src, size_t len, char **p_dest)
 {
   *p_dest = malloc(len + 1);
 
   memcpy(*p_dest, src, len);
   (*p_dest)[len] = '\0';
 
-  return 1;
+  return len;
 }
 
 int

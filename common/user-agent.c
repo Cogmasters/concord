@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -447,10 +446,8 @@ _ua_info_populate(struct ua_info *info, struct ua_conn *conn)
 
   memcpy(info, &conn->info, sizeof(struct ua_info));
 
-  info->body.len =
-    asprintf(&info->body.buf, "%.*s", (int)body.size, body.start);
-  info->header.len =
-    asprintf(&info->header.buf, "%.*s", (int)header.size, header.start);
+  info->body.len = cee_strndup(body.start, body.size, &info->body.buf);
+  info->header.len = cee_strndup(header.start, header.size, &info->header.buf);
 
   /* get response's code */
   curl_easy_getinfo(conn->ehandle, CURLINFO_RESPONSE_CODE, &info->httpcode);
@@ -552,7 +549,8 @@ void
 ua_set_url(struct user_agent *ua, const char base_url[])
 {
   if (ua->base_url.start) free(ua->base_url.start);
-  ua->base_url.size = asprintf(&ua->base_url.start, "%s", base_url);
+  ua->base_url.size =
+    cee_strndup(base_url, strlen(base_url), &ua->base_url.start);
 }
 
 /* set specific http method used for the request */

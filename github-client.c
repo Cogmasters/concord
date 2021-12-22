@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,8 +34,8 @@ _github_presets_init(struct github_presets *presets,
     free(json);
   }
 
-  asprintf(&presets->username, "%.*s", (int)username->size, username->start);
-  asprintf(&presets->token, "%.*s", (int)token->size, token->start);
+  cee_strndup(username->start, username->size, &presets->username);
+  cee_strndup(token->start, token->size, &presets->token);
 }
 
 void
@@ -44,7 +43,7 @@ github_write_json(char *json, size_t len, void *user_obj)
 {
   struct sized_buffer *new_user_obj = user_obj;
 
-  new_user_obj->size = asprintf(&new_user_obj->start, "%.*s", (int)len, json);
+  new_user_obj->size = cee_strndup(json, len, &new_user_obj->start);
 }
 
 ORCAcode

@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -114,9 +113,9 @@ new_UserAgent(js_State *J)
     char *url = NULL;
 
     if ('<' == *tmp) /* remove enclosing '< >' from string */
-      asprintf(&url, "%.*s", (int)(strlen(tmp + 1) - 1), tmp + 1);
+      cee_strndup(tmp + 1, strlen(tmp + 1) - 1, &url);
     else
-      asprintf(&url, "%s", tmp);
+      cee_strndup(tmp, strlen(tmp), &url);
 
     ua_set_url(ua, url);
     free(url);

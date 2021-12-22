@@ -147,9 +147,9 @@ int cee_u64tostr(char *str, size_t len, uint64_t *p_value);
  * @param src the buffer to be copied
  * @param len the maximum amount of characters to be copied
  * @p_dest a pointer to the new `src` copy
- * @return 1 on success, 0 on failure
+ * @return length of copied string on success, 0 on failure
  */
-int cee_strndup(char *src, size_t len, char **p_dest);
+size_t cee_strndup(const char *src, size_t len, char **p_dest);
 
 /**
  * @brief Sleep for milliseconds amount

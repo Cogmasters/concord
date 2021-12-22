@@ -53,10 +53,10 @@ github_adapter_cleanup(struct github_adapter *adapter)
 
 static ORCAcode
 _github_adapter_perform(struct github_adapter *adapter,
-                       struct github_request_attr *attr,
-                       struct sized_buffer *body,
-                       enum http_method method,
-                       char endpoint[])
+                        struct github_request_attr *attr,
+                        struct sized_buffer *body,
+                        enum http_method method,
+                        char endpoint[])
 {
   struct ua_conn_attr conn_attr = { method, body, endpoint };
   struct ua_conn *conn = ua_conn_start(adapter->ua);
