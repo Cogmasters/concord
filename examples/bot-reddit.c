@@ -1,4 +1,3 @@
-#define _GNU_SOURCE /* asprintf() */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* strchr() */
@@ -73,7 +72,7 @@ struct discord_embed *embed_reddit_search_result(
   if (!children) return NULL;
 
   json_item_t *data;
-  char title[DISCORD_EMBED_TITLE_LEN];
+  char title[256];
   char permalink[DISCORD_EMBED_FIELD_VALUE_LEN];
   size_t n_size = json_size(children);
   for (size_t i = 0; i < n_size; ++i) {
@@ -259,8 +258,9 @@ void on_search(struct discord *client, const struct discord_message *msg)
     } while (msg_content < query_end);
   }
 
-  params.embed = embed_reddit_search_result(subreddits, before, after,
-                                            "relevance", msg_content);
+  params.embed = embed_reddit_search_result(
+    subreddits, *before ? before : NULL, *after ? after : NULL, "relevance",
+    msg_content);
 
   if (!params.embed) {
     params.content = "Couldn't complete search";
@@ -271,16 +271,17 @@ void on_search(struct discord *client, const struct discord_message *msg)
   struct discord_message ret;
   discord_message_init(&ret);
 
-  discord_create_message(client, msg->channel_id, &params, &ret);
+  ORCAcode code =
+    discord_create_message(client, msg->channel_id, &params, &ret);
 
-  if (params.embed) { // succesfully sent a embed
+  if (code == ORCA_OK) { // succesfully sent a embed
     discord_create_reaction(client, msg->channel_id, ret.id, 0, "⬅️");
     discord_create_reaction(client, msg->channel_id, ret.id, 0, "➡️");
     discord_create_reaction(client, msg->channel_id, ret.id, 0, "❌");
-    discord_embed_cleanup(params.embed);
-    free(params.embed);
   }
 
+  discord_embed_cleanup(params.embed);
+  free(params.embed);
   discord_message_cleanup(&ret);
 }
 
@@ -294,6 +295,9 @@ void refresh_reddit_access_token_cb(void *data)
 void search_reddit_cb(void *data)
 {
   struct discord_embed *embed;
+  char buf[2048] = "";
+  size_t len;
+
   embed = embed_reddit_search_result(BOT.R.srs, BOT.R.params.before, NULL,
                                      BOT.R.params.sort, BOT.R.params.q);
 
@@ -315,7 +319,9 @@ void search_reddit_cb(void *data)
     }
     free(BOT.R.params.before);
   }
-  asprintf(&BOT.R.params.before, "t3_%s", before);
+
+  len = snprintf(buf, sizeof(buf), "t3_%s", before);
+  cee_strndup(buf, len, &BOT.R.params.before);
 
   struct discord_message ret;
   discord_message_init(&ret);
