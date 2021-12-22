@@ -55,6 +55,7 @@
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include <errno.h>
 #include <inttypes.h>
 
 #define JSMN_STATIC        /* dont expose jsmn symbols */
@@ -2053,7 +2054,7 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
       *(float *)a->operand = 0;
     else {
       *(float *)a->operand = strtof(json + tokens[i].start, &xend);
-      if (xend != json + tokens[i].end)
+      if (ERANGE == errno)
         ERR("failed to extract float from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
     }
@@ -2064,7 +2065,7 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
       *(double *)a->operand = 0;
     else {
       *(double *)a->operand = strtod(json + tokens[i].start, &xend);
-      if (xend != json + tokens[i].end)
+      if (ERANGE == errno)
         ERR("failed to extract double from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
     }
