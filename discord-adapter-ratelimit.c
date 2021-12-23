@@ -36,8 +36,8 @@ _discord_bucket_get_route(const char endpoint[], char route[DISCORD_ROUTE_LEN])
 
     /* ignore literal ids for non-major parameters */
     if ((digits >= 16 && digits <= 19)
-        && (strncmp(prev.ptr, "channels", 8)
-            && strncmp(prev.ptr, "guilds", 6)))
+        && (strncmp(prev.ptr, "channels", 8) != 0
+            && strncmp(prev.ptr, "guilds", 6) != 0))
     {
       len += snprintf(route + len, DISCORD_ROUTE_LEN - len, ":id");
     }
