@@ -59,7 +59,7 @@ discord_adapter_init(struct discord_adapter *adapter,
     ERR("Couldn't initialize pthread mutex");
 
   /* for routes that still haven't discovered a bucket match */
-  adapter->b_null = discord_bucket_init(adapter, "", &hash, 1L);
+  adapter->b_null = discord_bucket_init(adapter, &hash, 1L);
 
   /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
    * share the same queue with the original */
@@ -319,7 +319,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
                           char endpoint[])
 {
   /* bucket pertaining to the request */
-  struct discord_bucket *b = discord_bucket_get(adapter, endpoint);
+  struct discord_bucket *b = discord_bucket_get(adapter, method, endpoint);
   struct ua_conn_attr conn_attr = { method, body, endpoint };
   /* throw-away for ua_conn_set_mime() */
   struct discord_context cxt = { 0 };
@@ -377,7 +377,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
        * TODO: create discord_timestamp_update() */
       ws_timestamp_update(client->gw.ws);
 
-      discord_bucket_build(adapter, b, endpoint, &info);
+      discord_bucket_build(adapter, b, method, endpoint, &info);
       ua_info_cleanup(&info);
     } break;
     case ORCA_CURLE_INTERNAL:
@@ -500,7 +500,7 @@ _discord_context_populate(struct discord_context *cxt,
   memcpy(cxt->endpoint, endpoint, sizeof(cxt->endpoint));
 
   /* bucket pertaining to the request */
-  cxt->bucket = discord_bucket_get(adapter, cxt->endpoint);
+  cxt->bucket = discord_bucket_get(adapter, cxt->method, cxt->endpoint);
 }
 
 static void
@@ -742,7 +742,8 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
     code = info.code;
 
-    discord_bucket_build(adapter, cxt->bucket, cxt->endpoint, &info);
+    discord_bucket_build(adapter, cxt->bucket, cxt->method, cxt->endpoint,
+                         &info);
     ua_info_cleanup(&info);
   } break;
   case CURLE_READ_ERROR:

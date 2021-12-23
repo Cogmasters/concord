@@ -86,6 +86,8 @@ struct discord_adapter {
   bool async_enable;
   /** curl_multi handle for non-blocking requests */
   CURLM *mhandle;
+  /** routes discovered (declared at discord-adapter-ratelimit.c) */
+  struct _discord_route *routes;
   /** buckets discovered */
   struct discord_bucket *buckets;
   /** for undefined routes */
@@ -188,13 +190,9 @@ u64_unix_ms_t discord_adapter_get_global_wait(struct discord_adapter *adapter);
  */
 void discord_adapter_stop_all(struct discord_adapter *adapter);
 
-#define DISCORD_ROUTE_LEN 256
-
 /** @brief The bucket struct for handling ratelimiting */
 struct discord_bucket {
-  /** the route associated with this bucket */
-  char route[DISCORD_ROUTE_LEN];
-  /** the hash associated with this bucket (logging purposes) */
+  /** the hash associated with this bucket */
   char hash[64];
   /** maximum connections this bucket can handle before ratelimit */
   long limit;
@@ -218,12 +216,10 @@ struct discord_bucket {
  * @brief Initialize a individual bucket and assign it to `adapter`
  *
  * @param adapter the handle initialized with discord_adapter_init()
- * @param route the bucket's route
  * @param hash the bucket's hash (for identification purposes)
  * @param limit the bucket's request threshold
  */
 struct discord_bucket *discord_bucket_init(struct discord_adapter *adapter,
-                                           const char route[],
                                            const struct sized_buffer *hash,
                                            const long limit);
 
@@ -255,27 +251,31 @@ int64_t discord_bucket_get_wait(struct discord_adapter *adapter,
                                 struct discord_bucket *bucket);
 
 /**
- * @brief Get a `struct discord_bucket` assigned to `route`
+ * @brief Get a `struct discord_bucket` assigned to `endpoint`
  *
  * @param adapter the handle initialized with discord_adapter_init()
+ * @param method the route's http method
  * @param endpoint endpoint that will be checked for a bucket match
- * @return bucket assigned to `route` or `adapter->b_null` if no match found
+ * @return bucket assigned to `endpoint` or `adapter->b_null` if no match found
  */
 struct discord_bucket *discord_bucket_get(struct discord_adapter *adapter,
-                                          const char route[]);
+                                          enum http_method method,
+                                          const char endpoint[]);
 
 /**
  * @brief Update the bucket with response header data
  *
  * @param adapter the handle initialized with discord_adapter_init()
  * @param bucket NULL when bucket is first discovered
- * @param route the route associated with the bucket
+ * @param method the route's http method
+ * @param endpoint the endpoint associated with the bucket
  * @param info informational struct containing details on the current transfer
  * @note If the bucket was just discovered it will be created here.
  */
 void discord_bucket_build(struct discord_adapter *adapter,
                           struct discord_bucket *bucket,
-                          const char route[],
+                          enum http_method method,
+                          const char endpoint[],
                           struct ua_info *info);
 
 struct discord_gateway_cmd_cbs {
