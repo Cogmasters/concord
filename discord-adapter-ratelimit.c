@@ -15,41 +15,39 @@ static void
 _discord_bucket_get_route(const char endpoint[], char route[DISCORD_ROUTE_LEN])
 {
   /* split individual endpoint sections */
-  struct {
-    const char *ptr;
-    int len;
-  } curr = { endpoint, 0 }, prev = { "", 0 };
-
+  const char *curr = endpoint, *prev = "";
+  int currlen = 0;
   /* route len */
   size_t len = 0;
 
   do {
+    /* check if section is a snowflake */
     int digits = 0;
 
-    curr.ptr += 1 + curr.len;
-    curr.len = strcspn(curr.ptr, "/");
+    curr += 1 + currlen;
+    currlen = strcspn(curr, "/");
 
     /* reactions and sub-routes share the same bucket */
-    if (0 == strncmp(prev.ptr, "reactions", 9)) break;
+    if (0 == strncmp(prev, "reactions", 9)) break;
 
-    sscanf(curr.ptr, "%*d%n", &digits);
+    sscanf(curr, "%*d%n", &digits);
 
     /* ignore literal ids for non-major parameters */
     if ((digits >= 16 && digits <= 19)
-        && (strncmp(prev.ptr, "channels", 8) != 0
-            && strncmp(prev.ptr, "guilds", 6) != 0))
+        && (strncmp(prev, "channels", 8) != 0
+            && strncmp(prev, "guilds", 6) != 0))
     {
       len += snprintf(route + len, DISCORD_ROUTE_LEN - len, ":id");
     }
     else {
-      len += snprintf(route + len, DISCORD_ROUTE_LEN - len, ":%.*s", curr.len,
-                      curr.ptr);
+      len +=
+        snprintf(route + len, DISCORD_ROUTE_LEN - len, ":%.*s", currlen, curr);
     }
     ASSERT_S(len < DISCORD_ROUTE_LEN, "Out of bounds write attempt");
 
     prev = curr;
 
-  } while (curr.ptr[curr.len] != '\0');
+  } while (curr[currlen] != '\0');
 }
 
 struct discord_bucket *
