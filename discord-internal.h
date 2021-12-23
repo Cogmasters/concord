@@ -188,10 +188,12 @@ u64_unix_ms_t discord_adapter_get_global_wait(struct discord_adapter *adapter);
  */
 void discord_adapter_stop_all(struct discord_adapter *adapter);
 
+#define DISCORD_ROUTE_LEN 256
+
 /** @brief The bucket struct for handling ratelimiting */
 struct discord_bucket {
   /** the route associated with this bucket */
-  char route[128];
+  char route[DISCORD_ROUTE_LEN];
   /** the hash associated with this bucket (logging purposes) */
   char hash[64];
   /** maximum connections this bucket can handle before ratelimit */

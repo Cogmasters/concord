@@ -1,6 +1,3 @@
-/* See:
-https://discord.com/developers/docs/topics/rate-limits#rate-limits */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,33 +8,48 @@ https://discord.com/developers/docs/topics/rate-limits#rate-limits */
 #include "cee-utils.h"
 #include "clock.h"
 
-/* in case 'endpoint' has a major param, it will be written into 'buf' */
-static const char *
-_discord_bucket_get_route(const char endpoint[], char buf[32])
+/* determine which ratelimit group (aka bucket) a request belongs to
+ * by checking its route.
+ * see:  https://discord.com/developers/docs/topics/rate-limits */
+static void
+_discord_bucket_get_route(const char endpoint[], char route[DISCORD_ROUTE_LEN])
 {
-  /* determine which ratelimit group (aka bucket) a request belongs to
-   * by checking its route.
-   * see:  https://discord.com/developers/docs/topics/rate-limits */
-  if (STRNEQ(endpoint, "/channels/", sizeof("/channels/") - 1)
-      || STRNEQ(endpoint, "/guilds/", sizeof("/guilds/") - 1)
-      || STRNEQ(endpoint, "/webhooks/", sizeof("/webhooks/") - 1))
-  {
-    /* safe to assume strchr() won't return NULL */
-    char *start = 1 + strchr(1 + endpoint, '/');
-    size_t len;
+  /* split individual endpoint sections */
+  struct {
+    const char *ptr;
+    int len;
+  } curr = { endpoint, 0 }, prev = { "", 0 };
 
-    /* get length of major parameter */
-    for (len = 0; start[len] && start[len] != '/'; ++len)
-      continue;
+  /* route len */
+  size_t len = 0;
 
-    /* copy snowflake id over to buf */
-    memcpy(buf, start, len);
-    buf[len] = '\0';
+  do {
+    int digits = 0;
 
-    return buf;
-  }
+    curr.ptr += 1 + curr.len;
+    curr.len = strcspn(curr.ptr, "/");
 
-  return endpoint;
+    /* reactions and sub-routes share the same bucket */
+    if (0 == strncmp(prev.ptr, "reactions", 9)) break;
+
+    sscanf(curr.ptr, "%*d%n", &digits);
+
+    /* ignore literal ids for non-major parameters */
+    if ((digits >= 16 && digits <= 19)
+        && (strncmp(prev.ptr, "channels", 8)
+            && strncmp(prev.ptr, "guilds", 6)))
+    {
+      len += snprintf(route + len, DISCORD_ROUTE_LEN - len, ":id");
+    }
+    else {
+      len += snprintf(route + len, DISCORD_ROUTE_LEN - len, ":%.*s", curr.len,
+                      curr.ptr);
+    }
+    ASSERT_S(len < DISCORD_ROUTE_LEN, "Out of bounds write attempt");
+
+    prev = curr;
+
+  } while (curr.ptr[curr.len] != '\0');
 }
 
 struct discord_bucket *
@@ -106,12 +118,13 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
                           const char endpoint[],
                           struct ua_info *info)
 {
-  char buf[32]; /* for reentrancy, stores 'major' parameter */
-  const char *route = _discord_bucket_get_route(endpoint, buf);
-  struct discord_bucket *b = _discord_bucket_find(adapter, route);
+  char route[DISCORD_ROUTE_LEN];
+  struct discord_bucket *b;
+
+  _discord_bucket_get_route(endpoint, route);
 
   /* create bucket if it doesn't exist yet */
-  if (!b) {
+  if (NULL == (b = _discord_bucket_find(adapter, route))) {
     struct sized_buffer hash = ua_info_get_header(info, "x-ratelimit-bucket");
 
     if (!hash.size) {
@@ -168,11 +181,12 @@ discord_bucket_get_wait(struct discord_adapter *adapter,
 struct discord_bucket *
 discord_bucket_get(struct discord_adapter *adapter, const char endpoint[])
 {
-  char buf[32]; /* for reentrancy, stores 'major' parameter */
-  const char *route = _discord_bucket_get_route(endpoint, buf);
-  struct discord_bucket *b = _discord_bucket_find(adapter, route);
+  char route[DISCORD_ROUTE_LEN];
+  struct discord_bucket *b;
 
-  if (b) {
+  _discord_bucket_get_route(endpoint, route);
+
+  if ((b = _discord_bucket_find(adapter, route)) != NULL) {
     logconf_trace(&adapter->conf,
                   "[%.4s] Found a bucket match for route '%s'!", b->hash,
                   b->route);
