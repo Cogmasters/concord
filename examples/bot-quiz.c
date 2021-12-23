@@ -1,4 +1,3 @@
-#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
@@ -388,8 +387,6 @@ int main(int argc, char *argv[])
     config_file = argv[1];
   else
     config_file = "../config.json";
-
-  setlocale(LC_ALL, "");
 
   orca_global_init();
   struct discord *client = discord_config_init(config_file);
