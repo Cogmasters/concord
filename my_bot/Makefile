@@ -27,9 +27,8 @@ CFLAGS  := -O0 -g -Wall -pthread                       \
 # -ldiscord links against libdiscord.a
 # -lcurl links against libcurl, a orca dependency
 # -lcrypto links against OpenSSL, a libcurl dependency
-# -lpthread links against POSIX threads, a orca dependency
 # -lm links against math.h, a orca dependency
-LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl -lcrypto -lpthread -lm
+LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl -lcrypto -lm
 
 # This will match each .out to a .c and compile the executable
 #     ex: 'foo.out: foo.c'
