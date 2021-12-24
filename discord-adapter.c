@@ -318,15 +318,18 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
                           enum http_method method,
                           char endpoint[])
 {
-  /* bucket pertaining to the request */
-  struct discord_bucket *b = discord_bucket_get(adapter, method, endpoint);
   struct ua_conn_attr conn_attr = { method, body, endpoint };
   /* throw-away for ua_conn_set_mime() */
   struct discord_context cxt = { 0 };
+  char route[DISCORD_ROUTE_LEN];
+  struct discord_bucket *b;
   struct ua_conn *conn;
   ORCAcode code;
   bool retry;
 
+  discord_bucket_get_route(method, endpoint, route);
+
+  b = discord_bucket_get(adapter, route);
   conn = ua_conn_start(adapter->ua);
 
   if (HTTP_MIMEPOST == method) {
@@ -377,7 +380,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
        * TODO: create discord_timestamp_update() */
       ws_timestamp_update(client->gw.ws);
 
-      discord_bucket_build(adapter, b, method, endpoint, &info);
+      discord_bucket_build(adapter, b, route, &info);
       ua_info_cleanup(&info);
     } break;
     case ORCA_CURLE_INTERNAL:
@@ -449,6 +452,7 @@ _discord_context_stop(struct discord_context *cxt)
   cxt->bucket = NULL;
   cxt->done = NULL;
   *cxt->endpoint = '\0';
+  *cxt->route = '\0';
   cxt->conn = NULL;
 
   if (cxt->attr.attachments) {
@@ -499,8 +503,11 @@ _discord_context_populate(struct discord_context *cxt,
   /* copy endpoint over to cxt */
   memcpy(cxt->endpoint, endpoint, sizeof(cxt->endpoint));
 
+  /* generate bucket route */
+  discord_bucket_get_route(method, endpoint, cxt->route);
+
   /* bucket pertaining to the request */
-  cxt->bucket = discord_bucket_get(adapter, cxt->method, cxt->endpoint);
+  cxt->bucket = discord_bucket_get(adapter, cxt->route);
 }
 
 static void
@@ -742,8 +749,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
     code = info.code;
 
-    discord_bucket_build(adapter, cxt->bucket, cxt->method, cxt->endpoint,
-                         &info);
+    discord_bucket_build(adapter, cxt->bucket, cxt->route, &info);
     ua_info_cleanup(&info);
   } break;
   case CURLE_READ_ERROR:

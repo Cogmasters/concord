@@ -8,11 +8,9 @@
 #include "cee-utils.h"
 #include "clock.h"
 
-#define ROUTE_LEN 256
-
 struct _discord_route {
   /** route associated with bucket */
-  char route[ROUTE_LEN];
+  char route[DISCORD_ROUTE_LEN];
   /** this route's bucket */
   struct discord_bucket *bucket;
   /** makes this structure hashable */
@@ -21,7 +19,7 @@ struct _discord_route {
 
 static void
 _discord_route_init(struct discord_adapter *adapter,
-                    const char route[ROUTE_LEN],
+                    const char route[DISCORD_ROUTE_LEN],
                     struct discord_bucket *b)
 {
   struct _discord_route *r;
@@ -42,10 +40,10 @@ _discord_route_init(struct discord_adapter *adapter,
 /* determine which ratelimit group (aka bucket) a request belongs to
  * by checking its route.
  * see:  https://discord.com/developers/docs/topics/rate-limits */
-static void
-_discord_bucket_get_route(enum http_method method,
-                          const char endpoint[],
-                          char route[ROUTE_LEN])
+void
+discord_bucket_get_route(enum http_method method,
+                         const char endpoint[],
+                         char route[DISCORD_ROUTE_LEN])
 {
   /* split endpoint sections */
   const char *curr = endpoint, *prev = "";
@@ -75,8 +73,9 @@ _discord_bucket_get_route(enum http_method method,
       continue;
     }
 
-    len += snprintf(route + len, ROUTE_LEN - len, ":%.*s", currlen, curr);
-    ASSERT_S(len < ROUTE_LEN, "Out of bounds write attempt");
+    len +=
+      snprintf(route + len, DISCORD_ROUTE_LEN - len, ":%.*s", currlen, curr);
+    ASSERT_S(len < DISCORD_ROUTE_LEN, "Out of bounds write attempt");
 
     prev = curr;
 
@@ -149,14 +148,10 @@ _discord_bucket_find(struct discord_adapter *adapter, const char route[])
 
 static struct discord_bucket *
 _discord_bucket_get_match(struct discord_adapter *adapter,
-                          enum http_method method,
-                          const char endpoint[],
+                          const char route[],
                           struct ua_info *info)
 {
   struct discord_bucket *b;
-  char route[ROUTE_LEN];
-
-  _discord_bucket_get_route(method, endpoint, route);
 
   /* create bucket if it doesn't exist yet */
   if (NULL == (b = _discord_bucket_find(adapter, route))) {
@@ -177,8 +172,7 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
     _discord_route_init(adapter, route, b);
   }
 
-  logconf_debug(&adapter->conf, "[%.4s] Match '%s' to bucket", b->hash,
-                route);
+  logconf_debug(&adapter->conf, "[%.4s] Match '%s' to bucket", b->hash, route);
 
   return b;
 }
@@ -219,14 +213,9 @@ discord_bucket_get_wait(struct discord_adapter *adapter,
 
 /* attempt to find a bucket associated with this route */
 struct discord_bucket *
-discord_bucket_get(struct discord_adapter *adapter,
-                   enum http_method method,
-                   const char endpoint[])
+discord_bucket_get(struct discord_adapter *adapter, const char route[])
 {
   struct discord_bucket *b;
-  char route[ROUTE_LEN];
-
-  _discord_bucket_get_route(method, endpoint, route);
 
   if ((b = _discord_bucket_find(adapter, route)) != NULL) {
     logconf_trace(&adapter->conf, "[%.4s] Found a bucket match for '%s'!",
@@ -312,7 +301,7 @@ _discord_bucket_populate(struct discord_adapter *adapter,
 static void
 _discord_bucket_null_filter(struct discord_adapter *adapter,
                             struct discord_bucket *b,
-                            const char endpoint[])
+                            const char route[])
 {
   struct discord_context *cxt;
   QUEUE queue;
@@ -326,7 +315,7 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
     QUEUE_REMOVE(q);
 
     cxt = QUEUE_DATA(q, struct discord_context, entry);
-    if (0 == strcmp(cxt->endpoint, endpoint)) {
+    if (0 == strcmp(cxt->route, route)) {
       QUEUE_INSERT_TAIL(&b->waitq, q);
       cxt->bucket = b;
     }
@@ -340,17 +329,16 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
 void
 discord_bucket_build(struct discord_adapter *adapter,
                      struct discord_bucket *b,
-                     enum http_method method,
-                     const char endpoint[],
+                     const char route[],
                      struct ua_info *info)
 {
   /* if new route, find out its bucket */
   if (b == adapter->b_null) {
     /* match bucket with hash (from discovered or create a new one) */
-    b = _discord_bucket_get_match(adapter, method, endpoint, info);
+    b = _discord_bucket_get_match(adapter, route, info);
     if (b == adapter->b_null) return;
 
-    _discord_bucket_null_filter(adapter, b, endpoint);
+    _discord_bucket_null_filter(adapter, b, route);
   }
 
   /* update bucket's values */

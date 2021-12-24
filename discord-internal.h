@@ -44,6 +44,8 @@ struct discord_request_attr {
   struct discord_attachment **attachments;
 };
 
+#define DISCORD_ROUTE_LEN 256
+
 /**
  * @brief Context of individual requests that are scheduled to run
  *        asynchronously
@@ -66,6 +68,8 @@ struct discord_context {
   enum http_method method;
   /** the request's endpoint */
   char endpoint[2048];
+  /** the request's route */
+  char route[DISCORD_ROUTE_LEN];
   /** the connection handler assigned */
   struct ua_conn *conn;
   /** the request bucket's queue entry */
@@ -251,31 +255,38 @@ int64_t discord_bucket_get_wait(struct discord_adapter *adapter,
                                 struct discord_bucket *bucket);
 
 /**
- * @brief Get a `struct discord_bucket` assigned to `endpoint`
+ * @brief Get `route` from HTTP method and endpoint
+ *
+ * @param method the request method
+ * @param endpoint the request endpoint
+ * @param route buffer filled with generated route
+ */
+void discord_bucket_get_route(enum http_method method,
+                              const char endpoint[],
+                              char route[DISCORD_ROUTE_LEN]);
+
+/**
+ * @brief Get a `struct discord_bucket` assigned to `route`
  *
  * @param adapter the handle initialized with discord_adapter_init()
- * @param method the route's http method
- * @param endpoint endpoint that will be checked for a bucket match
- * @return bucket assigned to `endpoint` or `adapter->b_null` if no match found
+ * @param route route obtained from discord_bucket_get_route()
+ * @return bucket assigned to `route` or `adapter->b_null` if no match found
  */
 struct discord_bucket *discord_bucket_get(struct discord_adapter *adapter,
-                                          enum http_method method,
-                                          const char endpoint[]);
+                                          const char route[]);
 
 /**
  * @brief Update the bucket with response header data
  *
  * @param adapter the handle initialized with discord_adapter_init()
  * @param bucket NULL when bucket is first discovered
- * @param method the route's http method
- * @param endpoint the endpoint associated with the bucket
+ * @param route route obtained from discord_bucket_get_route()
  * @param info informational struct containing details on the current transfer
  * @note If the bucket was just discovered it will be created here.
  */
 void discord_bucket_build(struct discord_adapter *adapter,
                           struct discord_bucket *bucket,
-                          enum http_method method,
-                          const char endpoint[],
+                          const char route[],
                           struct ua_info *info);
 
 struct discord_gateway_cmd_cbs {
