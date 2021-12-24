@@ -32,7 +32,7 @@ discord_adapter_init(struct discord_adapter *adapter,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
-  const struct sized_buffer hash = { "null", 4 };
+  const struct sized_buffer key_null = { "null", 4 }, key_miss = { "miss", 4 };
   struct ua_attr attr = { 0 };
 
   attr.conf = conf;
@@ -58,8 +58,9 @@ discord_adapter_init(struct discord_adapter *adapter,
   if (pthread_mutex_init(&adapter->global->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
 
-  /* for routes that still haven't discovered a bucket match */
-  adapter->b_null = discord_bucket_init(adapter, &hash, 1L);
+  /* initialize 'singleton' buckets */
+  adapter->b_null = discord_bucket_init(adapter, &key_null, 1L);
+  adapter->b_miss = discord_bucket_init(adapter, &key_miss, LONG_MAX);
 
   /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
    * share the same queue with the original */

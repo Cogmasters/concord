@@ -94,8 +94,10 @@ struct discord_adapter {
   struct _discord_route *routes;
   /** buckets discovered */
   struct discord_bucket *buckets;
-  /** for undefined routes */
+  /** for routes that have not yet been assigned to a bucket */
   struct discord_bucket *b_null;
+  /** for routes didn't receive a bucket match from Discord */
+  struct discord_bucket *b_miss;
 
   /* client-wide ratelimiting timeout */
   struct {

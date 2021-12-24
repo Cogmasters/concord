@@ -158,8 +158,8 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
     struct sized_buffer hash = ua_info_get_header(info, "x-ratelimit-bucket");
 
     if (!hash.size) {
-      /* bucket not specified */
-      b = adapter->b_null;
+      /* no bucket given for route */
+      b = adapter->b_miss;
     }
     else {
       struct sized_buffer limit =
@@ -224,8 +224,8 @@ discord_bucket_get(struct discord_adapter *adapter, const char route[])
     return b;
   }
 
-  logconf_trace(&adapter->conf,
-                "[null] Couldn't match any discovered bucket to '%s'", route);
+  logconf_trace(&adapter->conf, "[null] Couldn't match known buckets to '%s'",
+                route);
 
   return adapter->b_null;
 }
@@ -246,9 +246,7 @@ _discord_bucket_populate(struct discord_adapter *adapter,
   _remaining = remaining.size ? strtol(remaining.start, NULL, 10) : 1L;
 
   /* skip out of order responses */
-  if (_remaining > b->remaining && now < b->reset_tstamp) {
-    return;
-  }
+  if (_remaining > b->remaining && now < b->reset_tstamp) return;
 
   b->remaining = _remaining;
 
@@ -332,15 +330,11 @@ discord_bucket_build(struct discord_adapter *adapter,
                      const char route[],
                      struct ua_info *info)
 {
-  /* if new route, find out its bucket */
+  /* match new route to existing or new bucket */
   if (b == adapter->b_null) {
-    /* match bucket with hash (from discovered or create a new one) */
     b = _discord_bucket_get_match(adapter, route, info);
-    if (b == adapter->b_null) return;
-
     _discord_bucket_null_filter(adapter, b, route);
   }
-
-  /* update bucket's values */
+  /* update bucket's values with header values */
   _discord_bucket_populate(adapter, b, info);
 }
