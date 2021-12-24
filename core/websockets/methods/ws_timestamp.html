@@ -506,7 +506,8 @@
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="k">struct</span> <span class="n">ws_callbacks</span> <span class="n">cbs</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">on_connect</span> <span class="p">};</span>
+  <span class="k">struct</span> <span class="n">ws_callbacks</span> <span class="n">cbs</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">on_connect</span><span class="p">,</span>
+                              <span class="p">.</span><span class="n">on_close</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">on_close</span> <span class="p">};</span>
   <span class="n">CURLM</span> <span class="o">*</span><span class="n">mhandle</span> <span class="o">=</span> <span class="n">curl_multi_init</span><span class="p">();</span>
   <span class="k">struct</span> <span class="n">websockets</span> <span class="o">*</span><span class="n">ws</span> <span class="o">=</span> <span class="n">ws_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cbs</span><span class="p">,</span> <span class="n">mhandle</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
   <span class="n">ws_set_url</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="s">&quot;wss://example.com&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>

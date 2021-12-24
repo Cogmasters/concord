@@ -1375,13 +1375,13 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_application_command.name">
-<span class="target" id="structdiscord__application__command_1ac96878eb6d9e762238fde6bc748f4ed7"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__application__command_1a9e3bd59f3d5125d4d515363b7a07e489"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>1-32 character name </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_application_command.description">
-<span class="target" id="structdiscord__application__command_1a9e21d1a22d4b555c6dc3ea010d32f093"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command.description" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__application__command_1a67570a00e66b50ce7fffeba12ab2ba02"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_application_command.description" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands </p>
 </dd></dl>
 
@@ -1449,13 +1449,13 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_application_command_option.name">
-<span class="target" id="structdiscord__application__command__option_1a09d4790980ee652cd3b01404e9bbaab2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">32</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command_option.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__application__command__option_1a2b9d7ce772d4428e299b35adb733f4c5"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command_option.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>1-32 lowercase character </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_application_command_option.description">
-<span class="target" id="structdiscord__application__command__option_1a1fd10f05dd700c58a31e967d2619b6e2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command_option.description" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__application__command__option_1a50ed124fe4fb2224d123d58a2af364b4"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_application_command_option.description" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>1-100 character description </p>
 </dd></dl>
 
@@ -1547,7 +1547,7 @@
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_application_command_option_choice.name">
-<span class="target" id="structdiscord__application__command__option__choice_1a9c424fdd79a87f429425f1378b856770"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">100</span></span><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#c.discord_application_command_option_choice.name" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__application__command__option__choice_1a16d11f5b3c62443b263bff86b08ccea3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command_option_choice.name" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>1-100 character choice name </p>
 </dd></dl>
 

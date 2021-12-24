@@ -40,7 +40,8 @@ Example
 
     int main(void)
     {
-      struct ws_callbacks cbs = { .on_connect = &on_connect };
+      struct ws_callbacks cbs = { .on_connect = &on_connect,
+                                  .on_close = &on_close };
       CURLM *mhandle = curl_multi_init(); 
       struct websockets *ws = ws_init(&cbs, mhandle, NULL);
       ws_set_url(ws, "wss://example.com", NULL);
