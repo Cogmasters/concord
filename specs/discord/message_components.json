@@ -10,14 +10,14 @@
       "fields":
       [
         {"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"},
-        {"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"a developer-defined identifier for the component, max 100 characters"},
+        {"name":"custom_id", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"a developer-defined identifier for the component, max 100 characters"},
         {"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"},
         {"name":"style", "type":{"base":"int", "int_alias":"enum discord_button_styles"}, "option":true, "inject_if_not":0, "comment":"one of button styles"},
-        {"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""},
+        {"name":"label", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":null},
         {"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null},
         {"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null},
         {"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "option":true, "comment":"the choices in the select, max 25", "inject_if_not":null},
-        {"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""},
+        {"name":"placeholder", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":null},
         {"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"},
         {"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"},
         {"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}
@@ -43,9 +43,9 @@
       [
         {"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"},
         {"name":"style", "type": {"base":"int", "int_alias":"enum discord_button_styles"}, "inject_if_not":0, "comment": "one of button styles"},
-        {"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""},
+        {"name":"label", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":null},
         {"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null},
-        {"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""},
+        {"name":"custom_id", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":null},
         {"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null},
         {"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}
       ]
@@ -71,9 +71,9 @@
       "fields":
       [
         {"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"},
-        {"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""},
+        {"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":null},
         {"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "comment":"the choices in the select, max 25"},
-        {"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""},
+        {"name":"placeholder", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":null},
         {"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"},
         {"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"},
         {"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}
@@ -85,9 +85,9 @@
       "struct":"select_option",
       "fields":
       [
-        {"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"},
-        {"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"the dev define value of the option, max 100 characters"},
-        {"name":"description", "type":{"base":"char", "dec":"[50+1]"}, "inject_if_not":"", "option":true, "comment":"a additional description of the option, max 50 characters"},
+        {"name":"label", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"the user-facing name of the option, max 25 characters"},
+        {"name":"value", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"the dev define value of the option, max 100 characters"},
+        {"name":"description", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"a additional description of the option, max 50 characters"},
         {"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"},
         {"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}
       ]

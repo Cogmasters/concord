@@ -172,7 +172,7 @@
       [
         { "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 },
         { "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null},
-        { "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" },
+        { "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null },
         { "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}
       ]
     },
@@ -194,7 +194,7 @@
       "struct":"activity",
       "fields":
       [
-        { "name":"name","type":{"base":"char", "dec":"[512]"}},
+        { "name":"name","type":{"base":"char", "dec":"*"}},
         { "name":"type","type":{"base":"int"}},
         { "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""},
         { "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 },

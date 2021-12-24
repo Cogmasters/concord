@@ -48,8 +48,8 @@
          "option":true, "inject_if_not":0},
         {"type":{"base":"struct discord_user", "dec":"ntl"}, "name":"recipients",
          "option":true, "inject_if_not":null},
-        {"type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, "name":"icon",
-         "option":true, "inject_if_not":""},
+        {"type":{"base":"char", "dec":"*"}, "name":"icon",
+         "option":true, "inject_if_not":null},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"owner_id",
          "option":true, "inject_if_not":0},
         {"type":{"base":"char", "dec":"*", "converter":"snowflake"}, "name":"application_id",
@@ -84,9 +84,8 @@
         {"name":"name", "type":{"base":"char", "dec":"*"}},
         {"name":"description", "type":{"base":"char", "dec":"*"}},
         {"name":"tags", "type":{"base":"char", "dec":"*"}, "option":true, "inject_of_not":null},
-        {"name":"asset","type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}},
-        {"name":"preview_asset", "type":{"base":"char", "dec":"[ORCA_LIMITS_SHA256]"}, 
-         "option":true, "inject_if_not":""},
+        {"name":"asset","type":{"base":"char", "dec":"*"}},
+        {"name":"preview_asset", "type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
         {"name":"type", "type":{"base":"int", "int_alias":"enum discord_message_sticker_format_types"}}
       ]
     },
@@ -326,7 +325,7 @@
       "fields":
       [
         { "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null},
-        { "name": "type", "type":{ "base":"char", "dec":"[32]" }, "option":true, "inject_if_not":""},
+        { "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null},
         { "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
         { "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null},
         { "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0},
