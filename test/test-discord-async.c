@@ -19,12 +19,12 @@ void on_ready(struct discord *client)
            bot->discriminator);
 }
 
-void disconnect(struct discord *client, const void *obj)
+void disconnect(struct discord *client, struct discord_async_ret *ret)
 {
   discord_shutdown(client);
 }
 
-void reconnect(struct discord *client, const void *obj)
+void reconnect(struct discord *client, struct discord_async_ret *ret)
 {
   discord_reconnect(client, true);
 }

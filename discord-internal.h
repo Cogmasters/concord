@@ -51,7 +51,7 @@ struct discord_request_attr {
  *        asynchronously
  */
 struct discord_context {
-  /** async attributes */
+  /** async return object attributes */
   struct discord_request_attr attr;
   /** the request's bucket */
   struct discord_bucket *bucket;
@@ -78,6 +78,12 @@ struct discord_context {
   struct heap_node node;
   /** the timeout timestamp */
   u64_unix_ms_t timeout_ms;
+
+  /** user arbitrary data */
+  struct {
+    void *data;
+    void (*cleanup)(void *data);
+  } udata;
 };
 
 /** @brief The handle used for performing HTTP Requests */

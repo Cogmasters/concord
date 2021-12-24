@@ -456,6 +456,8 @@ _discord_context_stop(struct discord_context *cxt)
   *cxt->route = '\0';
   cxt->conn = NULL;
 
+  memset(&cxt->udata, 0, sizeof cxt->udata);
+
   if (cxt->attr.attachments) {
     discord_attachment_list_free(cxt->attr.attachments);
   }
@@ -472,6 +474,9 @@ _discord_context_populate(struct discord_context *cxt,
 {
   cxt->method = method;
   cxt->done = adapter->async.attr.done;
+
+  cxt->udata.data = adapter->async.attr.data;
+  cxt->udata.cleanup = adapter->async.attr.cleanup;
 
   memcpy(&cxt->attr, attr, sizeof(struct discord_request_attr));
   if (attr->attachments) {
@@ -734,6 +739,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     }
     else if (cxt->done) {
       struct discord *client = CLIENT(adapter, adapter);
+      struct discord_async_ret ret = { cxt->attr.obj, cxt->udata.data };
 
       if (cxt->attr.init) cxt->attr.init(cxt->attr.obj);
 
@@ -742,7 +748,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         cxt->attr.from_json(body.start, body.size, cxt->attr.obj);
       }
 
-      cxt->done(client, cxt->attr.obj);
+      cxt->done(client, &ret);
 
       /* cleanup obj fields */
       if (cxt->attr.cleanup) cxt->attr.cleanup(cxt->attr.obj);
@@ -778,6 +784,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
   }
   else {
+    if (cxt->udata.cleanup) cxt->udata.cleanup(cxt->udata.data);
     _discord_context_stop(cxt);
     QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
   }

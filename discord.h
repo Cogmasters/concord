@@ -268,8 +268,18 @@ struct logconf *discord_get_logconf(struct discord *client);
  * Functions specific to Discord's REST API
  ******************************************************************************/
 
+/** @brief Async callback return context */
+struct discord_async_ret {
+  /** the response object from the request, can be safely cast to its
+   *        appropriate type */
+  const void *ret;
+  /** user arbitrary data */
+  void *data;
+};
+
 /** @brief Triggers on a successful async request */
-typedef void (*discord_on_done)(struct discord *client, const void *obj);
+typedef void (*discord_on_done)(struct discord *client,
+                                struct discord_async_ret *ret);
 
 /** @brief The async attributes for next request */
 struct discord_async_attr {
@@ -277,6 +287,10 @@ struct discord_async_attr {
   discord_on_done done;
   /** whether the next request is high priority */
   bool high_p;
+  /** optional user data to be sent over */
+  void *data;
+  /** data cleanup function */
+  void (*cleanup)(void *data);
 };
 
 /**
