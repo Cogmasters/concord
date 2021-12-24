@@ -41,7 +41,17 @@
         {"name": "MANAGE_NICKNAMES", "value":0x08000000, "comment":"Allows for modification of other users nicknames    "},
         {"name": "MANAGE_ROLES", "value":0x10000000, "comment":"Allows management and editing of roles  T, V"},
         {"name": "MANAGE_WEBHOOKS", "value":0x20000000, "comment":"Allows management and editing of webhooks   T, V"},
-        {"name": "MANAGE_EMOJIS", "value":0x40000000, "comment":"Allows management and editing of emojis"}
+        {"name": "MANAGE_EMOJIS_AND_STICKERS", "value":0x40000000, "comment":"Allows management and editing of emojis and stickers"},
+        {"name": "USE_APPLICATION_COMMANDS", "value":0x80000000, "comment":"Allows members to use application commands, including slash commands and context menu commands."},
+        {"name": "REQUEST_TO_SPEAK", "value":0x100000000, "comment":"Allows for requesting to speak in stage channels. (This permission is under active development and may be changed or removed.)"},
+        {"name": "MANAGE_EVENTS", "value":0x200000000, "comment":"Allows for creating, editing, and deleting scheduled events"},
+        {"name": "MANAGE_THREADS", "value":0x400000000, "comment":"Allows for deleting and archiving threads, and viewing all private threads"},
+        {"name": "CREATE_PUBLIC_THREADS", "value":0x800000000, "comment":"Allows for creating threads"},
+        {"name": "CREATE_PRIVATE_THREADS", "value":0x1000000000, "comment":"Allows for creating private threads"},
+        {"name": "USE_EXTERNAL_STICKERS", "value":0x2000000000, "comment":"Allows the usage of custom stickers from other servers"},
+        {"name": "SEND_MESSAGES_IN_THREADS", "value":0x4000000000, "comment":"Allows for sending messages in threads"},
+        {"name": "START_EMBEDDED_ACTIVITIES", "value":0x8000000000, "comment":"Allows for launching activities (applications with the EMBEDDED flag) in a voice channel"},
+        {"name": "MODERATE_MEMBERS", "value":0x10000000000, "comment":"Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels"}
       ]
     },
     {
