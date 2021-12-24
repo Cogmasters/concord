@@ -1945,14 +1945,10 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
     if (is_null)
       *(int *)a->operand = 0;
     else {
-      int ival = (int)strtol(json + tokens[i].start, &xend, 10);
-      if (xend != json + tokens[i].end) {
-        ival = (int)strtol(json + tokens[i].start, &xend, 16);
-        if (xend != json + tokens[i].end) {
-          ERR("failed to extract int from %.*s\n",
-              tokens[i].end - tokens[i].start, json + tokens[i].start);
-        }
-      }
+      int ival = (int)strtol(json + tokens[i].start, &xend, 0);
+      if (xend != json + tokens[i].end)
+        ERR("failed to extract int from %.*s\n",
+            tokens[i].end - tokens[i].start, json + tokens[i].start);
       *(int *)a->operand = ival;
     }
     add_defined(info->E, a->operand);
@@ -2020,7 +2016,7 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
     if (is_null)
       *(long *)a->operand = 0;
     else {
-      *(long *)a->operand = strtol(json + tokens[i].start, &xend, 10);
+      *(long *)a->operand = strtol(json + tokens[i].start, &xend, 0);
       if (xend != json + tokens[i].end)
         ERR("failed to extract long from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
@@ -2031,7 +2027,7 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
     if (is_null)
       *(uint64_t *)a->operand = 0;
     else {
-      *(uint64_t *)a->operand = strtoll(json + tokens[i].start, &xend, 10);
+      *(uint64_t *)a->operand = strtoull(json + tokens[i].start, &xend, 0);
       if (xend != json + tokens[i].end)
         ERR("failed to extract long long from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
@@ -2042,7 +2038,7 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
     if (is_null)
       *(long long *)a->operand = 0;
     else {
-      *(long long *)a->operand = strtoll(json + tokens[i].start, &xend, 10);
+      *(long long *)a->operand = strtoll(json + tokens[i].start, &xend, 0);
       if (xend != json + tokens[i].end)
         ERR("failed to extract long long from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);

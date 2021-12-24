@@ -388,7 +388,7 @@ print_struct(FILE *fp, struct jc_struct *p)
 
 struct jc_item {
   char *name;
-  int value;
+  long long value;
   char *comment;
   bool todo;
   bool has_value;
@@ -400,7 +400,7 @@ print_item(FILE *fp, struct jc_item *p, int i)
   fprintf(fp, "name %s: ", p->name);
 
   if (p->has_value)
-    fprintf(fp, "%d", p->value);
+    fprintf(fp, "%lld", p->value);
   else
     fprintf(fp, "%d", i);
 }
@@ -671,7 +671,7 @@ static size_t item_from_json(char *json, size_t size, void *x)
   size_t s = json_extract(json, size,
                           "(name):?s,"
                           "(todo):b,"
-                          "(value):d,"
+                          "(value):lld,"
                           "(comment):?s"
                           "@record_defined",
                           &p->name,
@@ -814,7 +814,7 @@ static void gen_enum(FILE *fp, struct jc_enum *e)
     else {
       fprintf(fp, "  %s", item_name);
       if (item->has_value) {
-        fprintf(fp, " = %d", item->value);
+        fprintf(fp, " = %lld", item->value);
         prev_value = item->value;
       }
       else {
