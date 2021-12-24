@@ -196,7 +196,7 @@ ws_close_opcode_print(enum ws_close_reason opcode)
     CASE_RETURN_STR(WS_CLOSE_REASON_PRIVATE_END);
   default:
     if (opcode > WS_CLOSE_REASON_PRIVATE_START
-        || opcode < WS_CLOSE_REASON_PRIVATE_END)
+        && opcode < WS_CLOSE_REASON_PRIVATE_END)
     {
       return "WS_CLOSE_REASON_PRIVATE";
     }
