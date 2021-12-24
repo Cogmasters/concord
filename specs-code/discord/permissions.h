@@ -52,7 +52,17 @@ enum discord_bitwise_permission_flags {
   DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, /**< Allows for modification of other users nicknames     */
   DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, /**< Allows management and editing of roles  T, V */
   DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, /**< Allows management and editing of webhooks   T, V */
-  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, /**< Allows management and editing of emojis */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS = 1073741824, /**< Allows management and editing of emojis and stickers */
+  DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS = 2147483648, /**< Allows members to use application commands, including slash commands and context menu commands. */
+  DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK = 4294967296, /**< Allows for requesting to speak in stage channels. (This permission is under active development and may be changed or removed.) */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS = 8589934592, /**< Allows for creating, editing, and deleting scheduled events */
+  DISCORD_BITWISE_PERMISSION_MANAGE_THREADS = 17179869184, /**< Allows for deleting and archiving threads, and viewing all private threads */
+  DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS = 34359738368, /**< Allows for creating threads */
+  DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS = 68719476736, /**< Allows for creating private threads */
+  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS = 137438953472, /**< Allows the usage of custom stickers from other servers */
+  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS = 274877906944, /**< Allows for sending messages in threads */
+  DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES = 549755813888, /**< Allows for launching activities (applications with the EMBEDDED flag) in a voice channel */
+  DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS = 1099511627776, /**< Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels */
 };
 extern char* discord_bitwise_permission_flags_print(enum discord_bitwise_permission_flags);
 extern enum discord_bitwise_permission_flags discord_bitwise_permission_flags_eval(char*);
@@ -64,7 +74,7 @@ extern size_t discord_bitwise_permission_flags_list_to_json_v(char *str, size_t 
 extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t len, enum discord_bitwise_permission_flags **p);
 
 /* Role Structure */
-/* defined at specs/discord/permissions.json:50:22 */
+/* defined at specs/discord/permissions.json:60:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  *
@@ -93,39 +103,39 @@ extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_role {
-  /* specs/discord/permissions.json:53:20
+  /* specs/discord/permissions.json:63:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/permissions.json:54:20
+  /* specs/discord/permissions.json:64:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/permissions.json:55:20
+  /* specs/discord/permissions.json:65:20
      '{ "name": "color", "type":{ "base":"int" }}' */
   int color;
 
-  /* specs/discord/permissions.json:56:20
+  /* specs/discord/permissions.json:66:20
      '{ "name": "hoist", "type":{ "base":"bool" }}' */
   bool hoist;
 
-  /* specs/discord/permissions.json:57:20
+  /* specs/discord/permissions.json:67:20
      '{ "name": "position", "type":{ "base":"int" }}' */
   int position;
 
-  /* specs/discord/permissions.json:58:20
+  /* specs/discord/permissions.json:68:20
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
   char *permissions;
 
-  /* specs/discord/permissions.json:59:20
+  /* specs/discord/permissions.json:69:20
      '{ "name": "managed", "type":{ "base":"bool" }}' */
   bool managed;
 
-  /* specs/discord/permissions.json:60:20
+  /* specs/discord/permissions.json:70:20
      '{ "name": "mentionable", "type":{ "base":"bool" }}' */
   bool mentionable;
 
-  /* specs/discord/permissions.json:61:20
+  /* specs/discord/permissions.json:71:20
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
   struct discord_role_tags *tags;
 
@@ -147,7 +157,7 @@ extern size_t discord_role_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_role_list_to_json(char *str, size_t len, struct discord_role **p);
 
 /* Role Tags Structure */
-/* defined at specs/discord/permissions.json:68:22 */
+/* defined at specs/discord/permissions.json:78:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  *
@@ -176,15 +186,15 @@ extern size_t discord_role_list_to_json(char *str, size_t len, struct discord_ro
  * @endverbatim
  */
 struct discord_role_tags {
-  /* specs/discord/permissions.json:71:20
+  /* specs/discord/permissions.json:81:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t bot_id;
 
-  /* specs/discord/permissions.json:72:20
+  /* specs/discord/permissions.json:82:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t integration_id;
 
-  /* specs/discord/permissions.json:73:20
+  /* specs/discord/permissions.json:83:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
   int premium_subscriber;
 

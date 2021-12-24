@@ -899,7 +899,7 @@ struct discord_select_option;
 
 
 
-/* defined at specs/discord/permissions.json:50:22 */
+/* defined at specs/discord/permissions.json:60:22 */
 /**
  * @brief Role Structure
  *
@@ -907,7 +907,7 @@ struct discord_select_option;
  */
 struct discord_role;
 
-/* defined at specs/discord/permissions.json:68:22 */
+/* defined at specs/discord/permissions.json:78:22 */
 /**
  * @brief Role Tags Structure
  *
@@ -2239,7 +2239,17 @@ enum discord_bitwise_permission_flags {
   DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES = 134217728, /**< Allows for modification of other users nicknames     */
   DISCORD_BITWISE_PERMISSION_MANAGE_ROLES = 268435456, /**< Allows management and editing of roles  T, V */
   DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS = 536870912, /**< Allows management and editing of webhooks   T, V */
-  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS = 1073741824, /**< Allows management and editing of emojis */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS = 1073741824, /**< Allows management and editing of emojis and stickers */
+  DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS = 2147483648, /**< Allows members to use application commands, including slash commands and context menu commands. */
+  DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK = 4294967296, /**< Allows for requesting to speak in stage channels. (This permission is under active development and may be changed or removed.) */
+  DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS = 8589934592, /**< Allows for creating, editing, and deleting scheduled events */
+  DISCORD_BITWISE_PERMISSION_MANAGE_THREADS = 17179869184, /**< Allows for deleting and archiving threads, and viewing all private threads */
+  DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS = 34359738368, /**< Allows for creating threads */
+  DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS = 68719476736, /**< Allows for creating private threads */
+  DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS = 137438953472, /**< Allows the usage of custom stickers from other servers */
+  DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS = 274877906944, /**< Allows for sending messages in threads */
+  DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES = 549755813888, /**< Allows for launching activities (applications with the EMBEDDED flag) in a voice channel */
+  DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS = 1099511627776, /**< Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels */
 };
 extern char* discord_bitwise_permission_flags_print(enum discord_bitwise_permission_flags);
 extern enum discord_bitwise_permission_flags discord_bitwise_permission_flags_eval(char*);
@@ -6796,11 +6806,11 @@ struct discord_modify_guild_params {
 
   /* specs/discord/guild.params.json:42:20
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"}' */
-  char *banner; /**< cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh */
+  char *banner; /**< cannot unescape an ill-formed string 	base64 16:9 png/jpeg image for the guild banner (wh */
 
   /* specs/discord/guild.params.json:43:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; /**< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome */
+  u64_snowflake_t system_channel_id; /**< cannot unescape an ill-formed string 	the id of the channel where guild notices such as welcome */
 
   /* specs/discord/guild.params.json:44:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
@@ -8068,7 +8078,7 @@ struct discord_edit_original_interaction_response_params {
 struct discord_create_followup_message_params {
   /* specs/discord/interaction.params.json:27:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)", "default_value":true }' */
-  bool wait; /**< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
+  bool wait; /**< cannot unescape an ill-formed string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/interaction.params.json:28:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
@@ -8589,7 +8599,7 @@ struct discord_select_option {
 
 
 /* Role Structure */
-/* defined at specs/discord/permissions.json:50:22 */
+/* defined at specs/discord/permissions.json:60:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  *
@@ -8618,46 +8628,46 @@ struct discord_select_option {
  * @endverbatim
  */
 struct discord_role {
-  /* specs/discord/permissions.json:53:20
+  /* specs/discord/permissions.json:63:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/permissions.json:54:20
+  /* specs/discord/permissions.json:64:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/permissions.json:55:20
+  /* specs/discord/permissions.json:65:20
      '{ "name": "color", "type":{ "base":"int" }}' */
   int color;
 
-  /* specs/discord/permissions.json:56:20
+  /* specs/discord/permissions.json:66:20
      '{ "name": "hoist", "type":{ "base":"bool" }}' */
   bool hoist;
 
-  /* specs/discord/permissions.json:57:20
+  /* specs/discord/permissions.json:67:20
      '{ "name": "position", "type":{ "base":"int" }}' */
   int position;
 
-  /* specs/discord/permissions.json:58:20
+  /* specs/discord/permissions.json:68:20
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
   char *permissions;
 
-  /* specs/discord/permissions.json:59:20
+  /* specs/discord/permissions.json:69:20
      '{ "name": "managed", "type":{ "base":"bool" }}' */
   bool managed;
 
-  /* specs/discord/permissions.json:60:20
+  /* specs/discord/permissions.json:70:20
      '{ "name": "mentionable", "type":{ "base":"bool" }}' */
   bool mentionable;
 
-  /* specs/discord/permissions.json:61:20
+  /* specs/discord/permissions.json:71:20
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
   struct discord_role_tags *tags;
 
 };
 
 /* Role Tags Structure */
-/* defined at specs/discord/permissions.json:68:22 */
+/* defined at specs/discord/permissions.json:78:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  *
@@ -8686,15 +8696,15 @@ struct discord_role {
  * @endverbatim
  */
 struct discord_role_tags {
-  /* specs/discord/permissions.json:71:20
+  /* specs/discord/permissions.json:81:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t bot_id;
 
-  /* specs/discord/permissions.json:72:20
+  /* specs/discord/permissions.json:82:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t integration_id;
 
-  /* specs/discord/permissions.json:73:20
+  /* specs/discord/permissions.json:83:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
   int premium_subscriber;
 
@@ -9794,7 +9804,7 @@ struct discord_modify_webhook_with_token_params {
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.params.json:44:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
-  bool wait; /**< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
+  bool wait; /**< cannot unescape an ill-formed string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/webhook.params.json:45:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */

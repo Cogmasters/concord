@@ -168,11 +168,11 @@ struct discord_modify_guild_params {
 
   /* specs/discord/guild.params.json:42:20
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"	base64 16:9 png/jpeg image for the guild banner (when the server has the BANNER feature)"}' */
-  char *banner; /**< cannot unescape an ill-formed-string 	base64 16:9 png/jpeg image for the guild banner (wh */
+  char *banner; /**< cannot unescape an ill-formed string 	base64 16:9 png/jpeg image for the guild banner (wh */
 
   /* specs/discord/guild.params.json:43:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  u64_snowflake_t system_channel_id; /**< cannot unescape an ill-formed-string 	the id of the channel where guild notices such as welcome */
+  u64_snowflake_t system_channel_id; /**< cannot unescape an ill-formed string 	the id of the channel where guild notices such as welcome */
 
   /* specs/discord/guild.params.json:44:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */

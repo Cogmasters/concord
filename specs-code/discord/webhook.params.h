@@ -198,7 +198,7 @@ extern size_t discord_modify_webhook_with_token_params_list_to_json(char *str, s
 struct discord_execute_webhook_params {
   /* specs/discord/webhook.params.json:44:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)" }' */
-  bool wait; /**< cannot unescape an ill-formed-string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
+  bool wait; /**< cannot unescape an ill-formed string 	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i */
 
   /* specs/discord/webhook.params.json:45:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
