@@ -985,7 +985,7 @@ on_invalid_session(struct discord_gateway *gw)
   if (0 != strncmp(gw->payload.data.start, "false", gw->payload.data.size)) {
     gw->session->status |= DISCORD_SESSION_RESUMABLE;
     reason = "Invalid session, will attempt to resume";
-    opcode = DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
+    opcode = (enum ws_close_reason)DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
   }
   else {
     reason = "Invalid session, can't resume";
@@ -1004,8 +1004,9 @@ on_reconnect(struct discord_gateway *gw)
   gw->session->status = DISCORD_SESSION_RESUMABLE | DISCORD_SESSION_SHUTDOWN;
   gw->session->retry.enable = true;
 
-  ws_close(gw->ws, DISCORD_GATEWAY_CLOSE_REASON_RECONNECT, reason,
-           sizeof(reason));
+  ws_close(gw->ws,
+           (enum ws_close_reason)DISCORD_GATEWAY_CLOSE_REASON_RECONNECT,
+           reason, sizeof(reason));
 }
 
 static void
@@ -1366,7 +1367,7 @@ discord_gateway_reconnect(struct discord_gateway *gw, bool resume)
   gw->session->status = DISCORD_SESSION_SHUTDOWN;
   if (resume) {
     gw->session->status |= DISCORD_SESSION_RESUMABLE;
-    opcode = DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
+    opcode = (enum ws_close_reason)DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
   }
   else {
     opcode = WS_CLOSE_REASON_NORMAL;
