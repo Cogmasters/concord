@@ -52,12 +52,12 @@ struct discord_application_command {
   u64_snowflake_t guild_id; /**< guild id of the command, if not global */
 
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-  char name[32+1]; /**< 1-32 character name */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
+  char *name; /**< 1-32 character name */
 
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-  char description[100+1]; /**< 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+  char *description; /**< 1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands */
 
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
@@ -150,12 +150,12 @@ struct discord_application_command_option {
   enum discord_application_command_option_types type; /**< value of application command option type */
 
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  char name[32+1]; /**< 1-32 lowercase character */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
+  char *name; /**< 1-32 lowercase character */
 
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  char description[100+1]; /**< 1-100 character description */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
+  char *description; /**< 1-100 character description */
 
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
@@ -271,8 +271,8 @@ extern size_t discord_application_command_option_types_list_to_json(char *str, s
  */
 struct discord_application_command_option_choice {
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-  char name[100+1]; /**< 1-100 character choice name */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
+  char *name; /**< 1-100 character choice name */
 
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */

@@ -853,8 +853,8 @@ void discord_presence_status_from_json(char *json, size_t len, struct discord_pr
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
                 "(activities):F,"
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-                "(status):s,"
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
+                "(status):?s,"
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
                 "(afk):b,",
@@ -865,8 +865,8 @@ void discord_presence_status_from_json(char *json, size_t len, struct discord_pr
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
                 discord_activity_list_from_json, &p->activities,
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-                p->status,
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
+                &p->status,
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
                 &p->afk);
@@ -888,8 +888,8 @@ size_t discord_presence_status_to_json(char *json, size_t len, struct discord_pr
     arg_switches[1] = p->activities;
 
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  if (*p->status)
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
+  if (p->status != NULL)
     arg_switches[2] = p->status;
 
   /* specs/discord/gateway.json:176:19
@@ -904,7 +904,7 @@ size_t discord_presence_status_to_json(char *json, size_t len, struct discord_pr
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
                 "(activities):F,"
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
                 "(status):s,"
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
@@ -917,7 +917,7 @@ size_t discord_presence_status_to_json(char *json, size_t len, struct discord_pr
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
                 discord_activity_list_to_json, p->activities,
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
                 p->status,
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
@@ -968,8 +968,9 @@ void discord_presence_status_cleanup(struct discord_presence_status *d) {
   if (d->activities)
     discord_activity_list_free(d->activities);
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  /* p->status is a scalar */
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
+  if (d->status)
+    free(d->status);
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
   /* p->afk is a scalar */
@@ -984,7 +985,7 @@ void discord_presence_status_init(struct discord_presence_status *p) {
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
 
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
 
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
@@ -1179,8 +1180,8 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
   discord_activity_init(p);
   r=json_extract(json, len, 
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
-                "(name):s,"
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
+                "(name):?s,"
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
                 "(type):d,"
@@ -1203,8 +1204,8 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 "(instance):b,",
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
-                p->name,
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
+                &p->name,
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
                 &p->type,
@@ -1234,7 +1235,7 @@ size_t discord_activity_to_json(char *json, size_t len, struct discord_activity 
   size_t r;
   void *arg_switches[8]={NULL};
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
   arg_switches[0] = p->name;
 
   /* specs/discord/gateway.json:198:19
@@ -1273,7 +1274,7 @@ size_t discord_activity_to_json(char *json, size_t len, struct discord_activity 
 
   r=json_inject(json, len, 
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
                 "(name):s,"
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
@@ -1298,7 +1299,7 @@ size_t discord_activity_to_json(char *json, size_t len, struct discord_activity 
                 "(instance):b,"
                 "@arg_switches:b",
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
                 p->name,
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
@@ -1360,8 +1361,9 @@ size_t discord_activity_list_to_json_v(char *str, size_t len, void *p){
 
 void discord_activity_cleanup(struct discord_activity *d) {
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
-  /* p->name is a scalar */
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
+  if (d->name)
+    free(d->name);
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
   /* p->type is a scalar */
@@ -1391,7 +1393,7 @@ void discord_activity_cleanup(struct discord_activity *d) {
 void discord_activity_init(struct discord_activity *p) {
   memset(p, 0, sizeof(struct discord_activity));
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
 
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */

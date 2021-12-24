@@ -40,8 +40,8 @@ struct discord_component {
   enum discord_component_types type; /**< component type */
 
   /* specs/discord/message_components.json:13:18
-     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"a developer-defined identifier for the component, max 100 characters"}' */
-  char custom_id[100+1]; /**< a developer-defined identifier for the component, max 100 characters */
+     '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"a developer-defined identifier for the component, max 100 characters"}' */
+  char *custom_id; /**< a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:14:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
@@ -52,8 +52,8 @@ struct discord_component {
   enum discord_button_styles style; /**< one of button styles */
 
   /* specs/discord/message_components.json:16:18
-     '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  char label[80+1]; /**< text that appears on the button, max 80 characters */
+     '{"name":"label", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":null}' */
+  char *label; /**< text that appears on the button, max 80 characters */
 
   /* specs/discord/message_components.json:17:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
@@ -68,8 +68,8 @@ struct discord_component {
   struct discord_select_option **options; /**< the choices in the select, max 25 */
 
   /* specs/discord/message_components.json:20:18
-     '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  char placeholder[100+1]; /**< custom placeholder text if nothing is selected, max 100 characters */
+     '{"name":"placeholder", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":null}' */
+  char *placeholder; /**< custom placeholder text if nothing is selected, max 100 characters */
 
   /* specs/discord/message_components.json:21:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
@@ -170,16 +170,16 @@ struct discord_button {
   enum discord_button_styles style; /**< one of button styles */
 
   /* specs/discord/message_components.json:46:18
-     '{"name":"label", "type":{"base":"char", "dec":"[80+1]"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":""}' */
-  char label[80+1]; /**< text that appears on the button, max 80 characters */
+     '{"name":"label", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":null}' */
+  char *label; /**< text that appears on the button, max 80 characters */
 
   /* specs/discord/message_components.json:47:18
      '{"name":"emoji", "type":{ "base":"struct discord_emoji", "dec":"*" }, "option":true, "comment":"name, id and animated", "inject_if_not":null}' */
   struct discord_emoji *emoji; /**< name, id and animated */
 
   /* specs/discord/message_components.json:48:18
-     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  char custom_id[100+1]; /**< a developer-defined identifier for the component, max 100 characters */
+     '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":null}' */
+  char *custom_id; /**< a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:49:18
      '{"name":"url", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"a url for link-style buttons", "inject_if_not":null}' */
@@ -274,16 +274,16 @@ struct discord_select_menu {
   enum discord_component_types type; /**< 3 for a select menu */
 
   /* specs/discord/message_components.json:74:18
-     '{"name":"custom_id", "type":{"base":"char", "dec":"[100+1]"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":""}' */
-  char custom_id[100+1]; /**< a developer-defined identifier for the component, max 100 characters */
+     '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":null}' */
+  char *custom_id; /**< a developer-defined identifier for the component, max 100 characters */
 
   /* specs/discord/message_components.json:75:18
      '{"name":"options", "type":{"base":"struct discord_select_option", "dec":"ntl"}, "comment":"the choices in the select, max 25"}' */
   struct discord_select_option **options; /**< the choices in the select, max 25 */
 
   /* specs/discord/message_components.json:76:18
-     '{"name":"placeholder", "type":{"base":"char", "dec":"[100+1]"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":""}' */
-  char placeholder[100+1]; /**< custom placeholder text if nothing is selected, max 100 characters */
+     '{"name":"placeholder", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"custom placeholder text if nothing is selected, max 100 characters", "inject_if_not":null}' */
+  char *placeholder; /**< custom placeholder text if nothing is selected, max 100 characters */
 
   /* specs/discord/message_components.json:77:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
@@ -345,16 +345,16 @@ extern size_t discord_select_menu_list_to_json(char *str, size_t len, struct dis
  */
 struct discord_select_option {
   /* specs/discord/message_components.json:88:18
-     '{"name":"label", "type":{"base":"char", "dec":"[25+1]"}, "inject_if_not":"", "comment":"the user-facing name of the option, max 25 characters"}' */
-  char label[25+1]; /**< the user-facing name of the option, max 25 characters */
+     '{"name":"label", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"the user-facing name of the option, max 25 characters"}' */
+  char *label; /**< the user-facing name of the option, max 25 characters */
 
   /* specs/discord/message_components.json:89:18
-     '{"name":"value", "type":{"base":"char", "dec":"[100+1]"}, "inject_if_not":"", "comment":"the dev define value of the option, max 100 characters"}' */
-  char value[100+1]; /**< the dev define value of the option, max 100 characters */
+     '{"name":"value", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"the dev define value of the option, max 100 characters"}' */
+  char *value; /**< the dev define value of the option, max 100 characters */
 
   /* specs/discord/message_components.json:90:18
-     '{"name":"description", "type":{"base":"char", "dec":"[50+1]"}, "inject_if_not":"", "option":true, "comment":"a additional description of the option, max 50 characters"}' */
-  char description[50+1]; /**< a additional description of the option, max 50 characters */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"a additional description of the option, max 50 characters"}' */
+  char *description; /**< a additional description of the option, max 50 characters */
 
   /* specs/discord/message_components.json:91:18
      '{"name":"emoji", "type":{"base":"struct discord_emoji", "dec":"*"}, "inject_if_not":null, "option":true, "comment":"name, id and animated"}' */

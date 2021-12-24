@@ -37,11 +37,11 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
                 "(guild_id):F,"
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-                "(name):s,"
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
+                "(name):?s,"
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-                "(description):s,"
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+                "(description):?s,"
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
                 "(options):F,"
@@ -61,11 +61,11 @@ void discord_application_command_from_json(char *json, size_t len, struct discor
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
                 cee_strtou64, &p->guild_id,
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-                p->name,
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
+                &p->name,
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-                p->description,
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+                &p->description,
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
                 discord_application_command_option_list_from_json, &p->options,
@@ -98,11 +98,11 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
     arg_switches[3] = &p->guild_id;
 
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
   arg_switches[4] = p->name;
 
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
   arg_switches[5] = p->description;
 
   /* specs/discord/application_commands.json:18:18
@@ -128,10 +128,10 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
                 "(guild_id):|F|,"
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
                 "(name):s,"
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
                 "(description):s,"
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
@@ -153,10 +153,10 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
                 cee_u64tostr, &p->guild_id,
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
                 p->name,
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
                 p->description,
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
@@ -215,11 +215,13 @@ void discord_application_command_cleanup(struct discord_application_command *d) 
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
   /* p->guild_id is a scalar */
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
-  /* p->name is a scalar */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
+  if (d->name)
+    free(d->name);
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
-  /* p->description is a scalar */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+  if (d->description)
+    free(d->description);
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   if (d->options)
@@ -244,10 +246,10 @@ void discord_application_command_init(struct discord_application_command *p) {
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
 
   /* specs/discord/application_commands.json:16:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 character name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
 
   /* specs/discord/application_commands.json:17:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands"}' */
 
   /* specs/discord/application_commands.json:18:18
      '{"name":"options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
@@ -347,11 +349,11 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 "(type):d,"
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-                "(name):s,"
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
+                "(name):?s,"
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-                "(description):s,"
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
+                "(description):?s,"
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
                 "(required):b,"
@@ -377,11 +379,11 @@ void discord_application_command_option_from_json(char *json, size_t len, struct
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 &p->type,
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-                p->name,
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
+                &p->name,
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-                p->description,
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
+                &p->description,
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
                 &p->required,
@@ -415,11 +417,11 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
   arg_switches[0] = &p->type;
 
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
   arg_switches[1] = p->name;
 
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
   arg_switches[2] = p->description;
 
   /* specs/discord/application_commands.json:44:18
@@ -461,10 +463,10 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 "(type):d,"
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
                 "(name):s,"
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
                 "(description):s,"
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
@@ -492,10 +494,10 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
                 &p->type,
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
                 p->name,
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
                 p->description,
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
@@ -560,11 +562,13 @@ void discord_application_command_option_cleanup(struct discord_application_comma
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
   /* p->type is a scalar */
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
-  /* p->name is a scalar */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
+  if (d->name)
+    free(d->name);
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
-  /* p->description is a scalar */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
+  if (d->description)
+    free(d->description);
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
   /* p->required is a scalar */
@@ -599,10 +603,10 @@ void discord_application_command_option_init(struct discord_application_command_
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
 
   /* specs/discord/application_commands.json:42:18
-     '{"name":"name", "type":{"base":"char", "dec":"[32+1]"}, "comment":"1-32 lowercase character"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
 
   /* specs/discord/application_commands.json:43:18
-     '{"name":"description", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character description"}' */
+     '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character description"}' */
 
   /* specs/discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
@@ -728,14 +732,14 @@ void discord_application_command_option_choice_from_json(char *json, size_t len,
   discord_application_command_option_choice_init(p);
   r=json_extract(json, len, 
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-                "(name):s,"
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
+                "(name):?s,"
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 "(value):F,",
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-                p->name,
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
+                &p->name,
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 cee_strndup, &p->value);
@@ -747,7 +751,7 @@ size_t discord_application_command_option_choice_to_json(char *json, size_t len,
   size_t r;
   void *arg_switches[2]={NULL};
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
   arg_switches[0] = p->name;
 
   /* specs/discord/application_commands.json:80:18
@@ -756,14 +760,14 @@ size_t discord_application_command_option_choice_to_json(char *json, size_t len,
 
   r=json_inject(json, len, 
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
                 "(name):s,"
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
                 "(value):s,"
                 "@arg_switches:b",
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
                 p->name,
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
@@ -807,8 +811,9 @@ size_t discord_application_command_option_choice_list_to_json_v(char *str, size_
 
 void discord_application_command_option_choice_cleanup(struct discord_application_command_option_choice *d) {
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
-  /* p->name is a scalar */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
+  if (d->name)
+    free(d->name);
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */
   if (d->value)
@@ -818,7 +823,7 @@ void discord_application_command_option_choice_cleanup(struct discord_applicatio
 void discord_application_command_option_choice_init(struct discord_application_command_option_choice *p) {
   memset(p, 0, sizeof(struct discord_application_command_option_choice));
   /* specs/discord/application_commands.json:79:18
-     '{"name":"name", "type":{"base":"char", "dec":"[100+1]"}, "comment":"1-100 character choice name"}' */
+     '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-100 character choice name"}' */
 
   /* specs/discord/application_commands.json:80:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"value of choice, up to 100 characters if string"}' */

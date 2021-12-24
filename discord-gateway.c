@@ -1193,7 +1193,7 @@ discord_gateway_init(struct discord_gateway *gw,
 
   /* the bot initial presence */
   gw->id.presence = calloc(1, sizeof *gw->id.presence);
-  strcpy(presence.status, "online");
+  presence.status = "online";
   presence.since = cee_timestamp_ms();
   discord_set_presence(client, &presence);
 

@@ -393,8 +393,8 @@ struct discord_presence_status {
   struct discord_activity **activities; /**< the user's activities */
 
   /* specs/discord/gateway.json:175:19
-     '{ "name":"status","type":{"base":"char", "dec":"[16]"}, "comment":"the user's new status", "inject_if_not":"" }' */
-  char status[16]; /**< the user's new status */
+     '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
+  char *status; /**< the user's new status */
 
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
@@ -507,8 +507,8 @@ extern size_t discord_identify_connection_list_to_json(char *str, size_t len, st
  */
 struct discord_activity {
   /* specs/discord/gateway.json:197:19
-     '{ "name":"name","type":{"base":"char", "dec":"[512]"}}' */
-  char name[512];
+     '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
+  char *name;
 
   /* specs/discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */

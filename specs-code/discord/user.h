@@ -117,8 +117,8 @@ struct discord_user {
   char *discriminator;
 
   /* specs/discord/user.json:47:24
-     '{ "name": "avatar", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
-  char avatar[ORCA_LIMITS_SHA256];
+     '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }}' */
+  char *avatar;
 
   /* specs/discord/user.json:48:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
@@ -133,24 +133,24 @@ struct discord_user {
   bool mfa_enabled;
 
   /* specs/discord/user.json:51:24
-     '{ "name": "locale", "type":{ "base":"char", "dec":"[ORCA_LIMITS_LOCALE]" }}' */
-  char locale[ORCA_LIMITS_LOCALE];
+     '{ "name": "locale", "type":{ "base":"char", "dec":"*" }}' */
+  char *locale;
 
   /* specs/discord/user.json:52:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   bool verified;
 
   /* specs/discord/user.json:53:24
-     '{ "name": "email", "type":{ "base":"char", "dec":"[ORCA_LIMITS_EMAIL]" }}' */
-  char email[ORCA_LIMITS_EMAIL];
+     '{ "name": "email", "type":{ "base":"char", "dec":"*" }}' */
+  char *email;
 
   /* specs/discord/user.json:54:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
   enum discord_user_flags flags;
 
   /* specs/discord/user.json:55:24
-     '{ "name": "banner", "type":{ "base":"char", "dec":"[ORCA_LIMITS_SHA256]" }}' */
-  char banner[ORCA_LIMITS_SHA256];
+     '{ "name": "banner", "type":{ "base":"char", "dec":"*" }}' */
+  char *banner;
 
   /* specs/discord/user.json:56:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
