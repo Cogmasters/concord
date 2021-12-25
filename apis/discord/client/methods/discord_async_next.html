@@ -1316,19 +1316,23 @@
 <dl class="c struct">
 <dt class="sig sig-object c" id="c.discord_async_ret">
 <span class="target" id="structdiscord__async__ret"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_async_ret</span></span></span><a class="headerlink" href="#c.discord_async_ret" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Async callback return context. </p>
+<dd><p>Async <code class="docutils literal notranslate"><span class="pre">done</span></code> callback return context. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_async_ret.ret">
 <span class="target" id="structdiscord__async__ret_1ac0b33b11e99e8944320adb3706d765b2"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ret</span></span></span><a class="headerlink" href="#c.discord_async_ret.ret" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>the response object from the request, can be safely cast to its appropriate type </p>
+<dd><p>the request’s response object (<code class="docutils literal notranslate"><span class="pre">NULL</span></code> if missing) </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>can be safely cast to the request’s return type </p>
+</div>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_async_ret.data">
 <span class="target" id="structdiscord__async__ret_1a4291f60c391022c90b52806a4a76aed0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.discord_async_ret.data" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>user arbitrary data </p>
+<dd><p>user arbitrary data (<code class="docutils literal notranslate"><span class="pre">NULL</span></code> if missing) </p>
 </dd></dl>
 
 </div>
@@ -1349,13 +1353,19 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_async_attr.done">
 <span class="target" id="structdiscord__async__attr_1a224d3de5c161071ae7afb651cc357a33"></span><a class="reference internal" href="#c.discord_on_done" title="discord_on_done"><span class="n"><span class="pre">discord_on_done</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">done</span></span></span><a class="headerlink" href="#c.discord_async_attr.done" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>callback to be executed on a succesful request </p>
+<dd><p>optional callback to be executed on a succesful request </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_async_attr.fail">
+<span class="target" id="structdiscord__async__attr_1a61e4eaf800b11a8b8788449bd2529199"></span><span class="n"><span class="pre">discord_on_fail</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fail</span></span></span><a class="headerlink" href="#c.discord_async_attr.fail" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>optional callback to be executed on a failed request </p>
 </dd></dl>
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_async_attr.high_p">
 <span class="target" id="structdiscord__async__attr_1adba948dc81f4e0c6ff3daeaf34f8d683"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">high_p</span></span></span><a class="headerlink" href="#c.discord_async_attr.high_p" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>whether the next request is high priority </p>
+<dd><p>whether the next request is high priority (enqueued first) </p>
 </dd></dl>
 
 <dl class="c var">
@@ -1367,7 +1377,7 @@
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_async_attr.cleanup">
 <span class="target" id="structdiscord__async__attr_1a9e9831f86190587377200e6c9ced2da7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">cleanup</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.discord_async_attr.cleanup" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>data cleanup function </p>
+<dd><p>optional user data cleanup function </p>
 </dd></dl>
 
 </div>
