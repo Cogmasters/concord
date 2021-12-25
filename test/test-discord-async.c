@@ -63,9 +63,11 @@ void on_single(struct discord *client, const struct discord_message *msg)
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void send_batch(struct discord *client, const struct discord_message *msg)
+void send_batch(struct discord *client, struct discord_async_ret *ret)
 {
-  struct discord_async_attr attr = { .done = (discord_on_done)&send_batch };
+  const struct discord_message *msg = ret->ret;
+
+  struct discord_async_attr attr = { .done = &send_batch };
   struct discord_create_message_params params = { 0 };
   char text[32];
 
@@ -85,17 +87,18 @@ void send_batch(struct discord *client, const struct discord_message *msg)
 
 void on_spam(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+  struct discord_async_ret ret = { .ret = msg };
 
-  send_batch(client, msg);
+  send_batch(client, &ret);
 }
 
-void send_msg(struct discord *client, const struct discord_message *msg)
+void send_msg(struct discord *client, struct discord_async_ret *ret)
 {
+  const struct discord_message *msg = ret->ret;
   char text[32];
 
-  struct discord_async_attr attr = { .done = (discord_on_done)&send_msg };
   struct discord_create_message_params params = { .content = text };
+  struct discord_async_attr attr = { .done = &send_msg };
   struct user_cxt *cxt = discord_get_data(client);
 
   snprintf(text, sizeof(text), "%llu", cxt->counter);
@@ -108,9 +111,33 @@ void send_msg(struct discord *client, const struct discord_message *msg)
 
 void on_spam_ordered(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+  struct discord_async_ret ret = { .ret = msg };
 
-  send_msg(client, msg);
+  send_msg(client, &ret);
+}
+
+void send_err(struct discord *client, struct discord_async_err *err)
+{
+  u64_snowflake_t channel_id = *(u64_snowflake_t *)err->data;
+
+  struct discord_create_message_params params = {
+    .content = (char *)discord_strerror(err->code, client)
+  };
+  discord_async_next(client, NULL);
+  discord_create_message(client, channel_id, &params, NULL);
+}
+
+void on_force_error(struct discord *client, const struct discord_message *msg)
+{
+  u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+  struct discord_async_attr attr = { .fail = &send_err,
+                                     .data = channel_id,
+                                     .cleanup = &free };
+
+  memcpy(channel_id, &msg->channel_id, sizeof(u64_snowflake_t));
+
+  discord_async_next(client, &attr);
+  discord_delete_channel(client, 123, NULL);
 }
 
 int main(int argc, char *argv[])
@@ -136,6 +163,7 @@ int main(int argc, char *argv[])
   discord_set_on_command(client, "single", &on_single);
   discord_set_on_command(client, "spam", &on_spam);
   discord_set_on_command(client, "spam-ordered", &on_spam_ordered);
+  discord_set_on_command(client, "force_error", &on_force_error);
 
   discord_run(client);
 
