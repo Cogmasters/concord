@@ -156,8 +156,7 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  * @param body the body sent for methods that require (ex: post), leave as
  *        null if unecessary
  * @param method the method in opcode format of the request being sent
- * @param endpoint_fmt the format endpoint that be appended to base_url when
- *        performing a request, same behavior as printf()
+ * @param endpoint_fmt the printf-like endpoint formatting string
  * @ORCA_return
  * @note if async is set then this function will enqueue the request instead of
  * performing it immediately
@@ -266,12 +265,14 @@ int64_t discord_bucket_get_wait(struct discord_adapter *adapter,
  * @brief Get `route` from HTTP method and endpoint
  *
  * @param method the request method
- * @param endpoint the request endpoint
  * @param route buffer filled with generated route
+ * @param endpoint_fmt the printf-like endpoint formatting string
+ * @param args variadic arguments matched to `endpoint_fmt`
  */
 void discord_bucket_get_route(enum http_method method,
-                              const char endpoint[],
-                              char route[DISCORD_ROUTE_LEN]);
+                              char route[DISCORD_ROUTE_LEN],
+                              const char endpoint_fmt[],
+                              va_list args);
 
 /**
  * @brief Get a `struct discord_bucket` assigned to `route`

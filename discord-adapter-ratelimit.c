@@ -37,50 +37,62 @@ _discord_route_init(struct discord_adapter *adapter,
   pthread_mutex_unlock(&adapter->global->lock);
 }
 
+#define ROUTE_ADD(route, routelen, ...)                                       \
+  do {                                                                        \
+    *routelen += snprintf(route + *routelen, DISCORD_ROUTE_LEN - *routelen,   \
+                          ":" __VA_ARGS__);                                   \
+    ASSERT_S(*routelen < DISCORD_ROUTE_LEN, "Out of bounds write attempt");   \
+  } while (0)
+
 /* determine which ratelimit group (aka bucket) a request belongs to
  * by checking its route.
  * see:  https://discord.com/developers/docs/topics/rate-limits */
 void
 discord_bucket_get_route(enum http_method method,
-                         const char endpoint[],
-                         char route[DISCORD_ROUTE_LEN])
+                         char route[DISCORD_ROUTE_LEN],
+                         const char endpoint_fmt[],
+                         va_list args)
 {
+  /* generated route length */
+  int routelen = 0;
   /* split endpoint sections */
-  const char *curr = endpoint, *prev = "";
+  const char *curr = endpoint_fmt, *prev = "";
   int currlen = 0;
-  /* route len */
-  size_t len;
 
-  len = sprintf(route, ":%d", method);
+  ROUTE_ADD(route, &routelen, "%d", method);
   do {
-    /* check if section is a snowflake */
-    int digits = 0;
+    void *arg = NULL;
+    int i;
 
     curr += 1 + currlen;
-    currlen = strcspn(curr, "/?");
+    currlen = strcspn(curr, "/");
 
     /* reactions and sub-routes share the same bucket */
     if (0 == strncmp(prev, "reactions", 9)) break;
 
-    sscanf(curr, "%*d%n", &digits);
-
-    /* ignore literal ids for non-major parameters */
-    if ((digits >= 16 && digits <= 19)
-        && (strncmp(prev, "channels", 8) != 0
-            && strncmp(prev, "guilds", 6) != 0))
-    {
-      prev = curr;
-      continue;
+    /* consume variadic arguments */
+    for (i = 0; i < currlen; ++i) {
+      if ('%' == curr[i]) arg = va_arg(args, void *);
     }
 
-    len +=
-      snprintf(route + len, DISCORD_ROUTE_LEN - len, ":%.*s", currlen, curr);
-    ASSERT_S(len < DISCORD_ROUTE_LEN, "Out of bounds write attempt");
+    /* push section to route's string, in case of a major parameter the literal
+     * ID will be pushed */
+    if (0 == strncmp(curr, "%" PRIu64, currlen)
+        && (0 == strncmp(prev, "channels", 8)
+            || 0 == strncmp(prev, "guilds", 6)))
+    {
+      ROUTE_ADD(route, &routelen, "%" PRIu64, (u64_snowflake_t)arg);
+    }
+    else {
+      ROUTE_ADD(route, &routelen, "%.*s", currlen, curr);
+    }
 
     prev = curr;
 
-  } while (curr[currlen] != '\0' && curr[currlen] != '?');
+  } while (curr[currlen] != '\0');
 }
+
+#undef ROUTE_ADD
 
 struct discord_bucket *
 discord_bucket_init(struct discord_adapter *adapter,

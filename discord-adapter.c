@@ -117,13 +117,15 @@ static ORCAcode _discord_adapter_run_sync(struct discord_adapter *adapter,
                                           struct discord_request_attr *attr,
                                           struct sized_buffer *body,
                                           enum http_method method,
-                                          char endpoint[]);
+                                          char endpoint[],
+                                          char route[]);
 
 static ORCAcode _discord_adapter_run_async(struct discord_adapter *adapter,
                                            struct discord_request_attr *attr,
                                            struct sized_buffer *body,
                                            enum http_method method,
-                                           char endpoint[]);
+                                           char endpoint[],
+                                           char route[]);
 
 /* template function for performing requests */
 ORCAcode
@@ -135,6 +137,7 @@ discord_adapter_run(struct discord_adapter *adapter,
                     ...)
 {
   static struct discord_request_attr blank_attr = { 0 };
+  char route[DISCORD_ROUTE_LEN];
   char endpoint[2048];
   va_list args;
   int ret;
@@ -144,20 +147,25 @@ discord_adapter_run(struct discord_adapter *adapter,
 
   /* build the endpoint string */
   va_start(args, endpoint_fmt);
-
   ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
   ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
+  va_end(args);
 
+  /* build the ratelimiting route */
+  va_start(args, endpoint_fmt);
+  discord_bucket_get_route(method, route, endpoint_fmt, args);
   va_end(args);
 
   /* enqueue asynchronous request */
   if (true == adapter->async_enable) {
     adapter->async_enable = false;
-    return _discord_adapter_run_async(adapter, attr, body, method, endpoint);
+    return _discord_adapter_run_async(adapter, attr, body, method, endpoint,
+                                      route);
   }
 
   /* perform blocking request */
-  return _discord_adapter_run_sync(adapter, attr, body, method, endpoint);
+  return _discord_adapter_run_sync(adapter, attr, body, method, endpoint,
+                                   route);
 }
 
 void
@@ -317,18 +325,16 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
                           struct discord_request_attr *attr,
                           struct sized_buffer *body,
                           enum http_method method,
-                          char endpoint[])
+                          char endpoint[],
+                          char route[])
 {
   struct ua_conn_attr conn_attr = { method, body, endpoint };
   /* throw-away for ua_conn_set_mime() */
   struct discord_context cxt = { 0 };
-  char route[DISCORD_ROUTE_LEN];
   struct discord_bucket *b;
   struct ua_conn *conn;
   ORCAcode code;
   bool retry;
-
-  discord_bucket_get_route(method, endpoint, route);
 
   b = discord_bucket_get(adapter, route);
   conn = ua_conn_start(adapter->ua);
@@ -470,7 +476,8 @@ _discord_context_populate(struct discord_context *cxt,
                           struct discord_request_attr *attr,
                           struct sized_buffer *body,
                           enum http_method method,
-                          char endpoint[])
+                          char endpoint[],
+                          char route[])
 {
   cxt->method = method;
   cxt->done = adapter->async.attr.done;
@@ -509,11 +516,11 @@ _discord_context_populate(struct discord_context *cxt,
   /* copy endpoint over to cxt */
   memcpy(cxt->endpoint, endpoint, sizeof(cxt->endpoint));
 
-  /* generate bucket route */
-  discord_bucket_get_route(method, endpoint, cxt->route);
+  /* copy bucket route */
+  memcpy(cxt->route, route, DISCORD_ROUTE_LEN);
 
   /* bucket pertaining to the request */
-  cxt->bucket = discord_bucket_get(adapter, cxt->route);
+  cxt->bucket = discord_bucket_get(adapter, route);
 }
 
 static void
@@ -551,7 +558,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
                            struct discord_request_attr *attr,
                            struct sized_buffer *body,
                            enum http_method method,
-                           char endpoint[])
+                           char endpoint[],
+                           char route[])
 {
   struct discord_context *cxt;
 
@@ -568,7 +576,7 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
   }
   QUEUE_INIT(&cxt->entry);
 
-  _discord_context_populate(cxt, adapter, attr, body, method, endpoint);
+  _discord_context_populate(cxt, adapter, attr, body, method, endpoint, route);
 
   if (adapter->async.attr.high_p)
     QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
