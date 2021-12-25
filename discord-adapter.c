@@ -181,6 +181,16 @@ discord_adapter_async_next(struct discord_adapter *adapter,
 }
 
 static void
+_discord_adapter_set_errbuf(struct discord_adapter *adapter, struct sized_buffer *body)
+{
+  size_t ret;
+
+  ret = snprintf(adapter->errbuf, sizeof(adapter->errbuf), "%.*s",
+                 (int)body->size, body->start);
+  ASSERT_S(ret < sizeof(adapter->errbuf), "Out of bounds write attempt");
+}
+
+static void
 _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
   struct discord_context *cxt = p_cxt;
@@ -375,11 +385,16 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       retry = _discord_adapter_get_info(adapter, NULL, &info);
 
       body = ua_info_get_body(&info);
-      if (ORCA_OK == info.code && attr->obj) {
+      if (info.code != ORCA_OK) {
+        _discord_adapter_set_errbuf(adapter, &body);
+      }
+      else if (attr->obj) {
         if (attr->init) attr->init(attr->obj);
 
         attr->from_json(body.start, body.size, attr->obj);
       }
+
+      code = info.code;
 
       /* in the off-chance of having consecutive blocking calls, update
        *        timestamp used for ratelimiting
@@ -458,6 +473,7 @@ _discord_context_stop(struct discord_context *cxt)
 
   cxt->bucket = NULL;
   cxt->done = NULL;
+  cxt->fail = NULL;
   *cxt->endpoint = '\0';
   *cxt->route = '\0';
   cxt->conn = NULL;
@@ -480,8 +496,10 @@ _discord_context_populate(struct discord_context *cxt,
                           char route[DISCORD_ROUTE_LEN])
 {
   cxt->method = method;
+  /* user callbacks */
   cxt->done = adapter->async.attr.done;
-
+  cxt->fail = adapter->async.attr.fail;
+  /* user data */
   cxt->udata.data = adapter->async.attr.data;
   cxt->udata.cleanup = adapter->async.attr.cleanup;
 
@@ -728,6 +746,7 @@ static ORCAcode
 _discord_adapter_check_action(struct discord_adapter *adapter,
                               struct CURLMsg *msg)
 {
+  struct discord *client = CLIENT(adapter, adapter);
   struct discord_context *cxt;
   ORCAcode code;
   bool retry;
@@ -743,10 +762,15 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
     body = ua_info_get_body(&info);
     if (info.code != ORCA_OK) {
-      /* TODO: failure callback */
+      _discord_adapter_set_errbuf(adapter, &body);
+
+      if (cxt->fail) {
+        struct discord_async_err err = { info.code, cxt->udata.data };
+
+        cxt->fail(client, &err);
+      }
     }
     else if (cxt->done) {
-      struct discord *client = CLIENT(adapter, adapter);
       struct discord_async_ret ret = { cxt->attr.obj, cxt->udata.data };
 
       if (cxt->attr.init) cxt->attr.init(cxt->attr.obj);
@@ -779,6 +803,12 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     retry = false;
 
     code = ORCA_CURLE_INTERNAL;
+
+    if (cxt->fail) {
+      struct discord_async_err err = { code, cxt->udata.data };
+
+      cxt->fail(client, &err);
+    }
 
     break;
   }

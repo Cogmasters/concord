@@ -268,12 +268,14 @@ struct logconf *discord_get_logconf(struct discord *client);
  * Functions specific to Discord's REST API
  ******************************************************************************/
 
-/** @brief Async callback return context */
+/** @brief Async `done` callback return context */
 struct discord_async_ret {
-  /** the response object from the request, can be safely cast to its
-   *        appropriate type */
+  /**
+   * the request's response object (`NULL` if missing)
+   * @note can be safely cast to the request's return type
+   */
   const void *ret;
-  /** user arbitrary data */
+  /** user arbitrary data (`NULL` if missing)*/
   void *data;
 };
 
@@ -281,15 +283,29 @@ struct discord_async_ret {
 typedef void (*discord_on_done)(struct discord *client,
                                 struct discord_async_ret *ret);
 
+/** @brief Async `fail` callback return context */
+struct discord_async_err {
+  /** request error code @see discord_strerror() */
+  ORCAcode code;
+  /** user arbitrary data (`NULL` if missing)*/
+  void *data;
+};
+
+/** @brief Triggers on a failed async request */
+typedef void (*discord_on_fail)(struct discord *client,
+                                struct discord_async_err *err);
+
 /** @brief The async attributes for next request */
 struct discord_async_attr {
-  /** callback to be executed on a succesful request */
+  /** optional callback to be executed on a succesful request */
   discord_on_done done;
-  /** whether the next request is high priority */
+  /** optional callback to be executed on a failed request */
+  discord_on_fail fail;
+  /** whether the next request is high priority (enqueued first) */
   bool high_p;
   /** optional user data to be sent over */
   void *data;
-  /** data cleanup function */
+  /** optional user data cleanup function */
   void (*cleanup)(void *data);
 };
 

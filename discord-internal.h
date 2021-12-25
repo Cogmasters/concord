@@ -58,6 +58,8 @@ struct discord_context {
   struct discord_bucket *bucket;
   /** callback to be executed on request completion */
   discord_on_done done;
+  /** callback to be executed on request failure */
+  discord_on_fail fail;
 
   /** the request's body @note buffer is kept and recycled */
   struct {
@@ -127,6 +129,9 @@ struct discord_adapter {
     /* request timeouts */
     struct heap timeouts;
   } async;
+
+  /** error storage */
+  char errbuf[2048];
 };
 
 /**
