@@ -1345,6 +1345,37 @@
 </dd></dl>
 
 <dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_async_err">
+<span class="target" id="structdiscord__async__err"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_async_err</span></span></span><a class="headerlink" href="#c.discord_async_err" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Async <code class="docutils literal notranslate"><span class="pre">fail</span></code> callback return context. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_async_err.code">
+<span class="target" id="structdiscord__async__err_1aa8ee32483573a1d3ceaa3c060d5c15cc"></span><a class="reference internal" href="../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.discord_async_err.code" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>request error code <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference internal" href="discord_strerror.html#discord_8h_1abc4c8859fe92c5284e36c84fe0f70bd5"><span class="std std-ref">discord_strerror()</span></a> </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_async_err.data">
+<span class="target" id="structdiscord__async__err_1ad71e0a0d62e8beccd55a7d01b9dcfd58"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.discord_async_err.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>user arbitrary data (<code class="docutils literal notranslate"><span class="pre">NULL</span></code> if missing) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c type">
+<dt class="sig sig-object c" id="c.discord_on_fail">
+<span class="target" id="discord_8h_1aeb2364dbf9aefe74fc264c5c24da2630"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">discord_on_fail</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_async_err" title="discord_async_err"><span class="n"><span class="pre">discord_async_err</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">err</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.discord_on_fail" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Triggers on a failed async request. </p>
+</dd></dl>
+
+<dl class="c struct">
 <dt class="sig sig-object c" id="c.discord_async_attr">
 <span class="target" id="structdiscord__async__attr"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_async_attr</span></span></span><a class="headerlink" href="#c.discord_async_attr" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The async attributes for next request. </p>
@@ -1358,7 +1389,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_async_attr.fail">
-<span class="target" id="structdiscord__async__attr_1a61e4eaf800b11a8b8788449bd2529199"></span><span class="n"><span class="pre">discord_on_fail</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fail</span></span></span><a class="headerlink" href="#c.discord_async_attr.fail" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__async__attr_1a61e4eaf800b11a8b8788449bd2529199"></span><a class="reference internal" href="#c.discord_on_fail" title="discord_on_fail"><span class="n"><span class="pre">discord_on_fail</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fail</span></span></span><a class="headerlink" href="#c.discord_async_attr.fail" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>optional callback to be executed on a failed request </p>
 </dd></dl>
 
@@ -1406,9 +1437,15 @@
   <span class="n">log_info</span><span class="p">(</span><span class="s">&quot;Message %&quot;</span> <span class="n">PRIu64</span> <span class="s">&quot; was created successfully!&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
 <span class="p">}</span>
 
+<span class="kt">void</span> <span class="nf">on_msg_fail</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">struct</span> <span class="n">discord_async_err</span> <span class="o">*</span><span class="n">err</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">log_error</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">discord_strerror</span><span class="p">(</span><span class="n">err</span><span class="o">-&gt;</span><span class="n">code</span><span class="p">,</span> <span class="n">client</span><span class="p">));</span>
+<span class="p">}</span>
+
 <span class="kt">void</span> <span class="nf">on_start</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">discord_message</span> <span class="o">*</span><span class="n">msg</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="k">struct</span> <span class="n">discord_async_attr</span> <span class="n">attr</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">done</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">on_msg_done</span> <span class="p">};</span>
+  <span class="k">struct</span> <span class="n">discord_async_attr</span> <span class="n">attr</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">done</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">on_msg_done</span><span class="p">,</span>
+                                     <span class="p">.</span><span class="n">fail</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">on_msg_fail</span> <span class="p">};</span>
   <span class="k">struct</span> <span class="n">discord_create_message_params</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
 
   <span class="c1">// next request is low priority (enqueued last)</span>

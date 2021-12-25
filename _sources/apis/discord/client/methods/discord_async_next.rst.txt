@@ -13,6 +13,8 @@ discord_async_next - execute immediate request function asynchronously
 
 .. doxygenstruct:: discord_async_ret
 .. doxygentypedef:: discord_on_done
+.. doxygenstruct:: discord_async_err
+.. doxygentypedef:: discord_on_fail
 .. doxygenstruct:: discord_async_attr
 .. doxygenfunction:: discord_async_next
 
@@ -28,9 +30,15 @@ Example
       log_info("Message %" PRIu64 " was created successfully!", msg->id);
     }
 
+    void on_msg_fail(struct discord *client, struct discord_async_err *err)
+    {
+      log_error("%s", discord_strerror(err->code, client));
+    }
+
     void on_start(struct discord *client, const struct discord_message *msg)
     {
-      struct discord_async_attr attr = { .done = &on_msg_done };
+      struct discord_async_attr attr = { .done = &on_msg_done,
+                                         .fail = &on_msg_fail };
       struct discord_create_message_params params = { 0 };
 
       // next request is low priority (enqueued last)

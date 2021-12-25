@@ -34,7 +34,9 @@ Example
         discord_create_message(client, msg.channel_id, &params, NULL);
 
         discord_message_cleanup(&msg);
-      } break;
+      } return DISCORD_EVENT_IGNORE;
+      default:
+        return DISCORD_EVENT_MAIN_THREAD;
       }
     }
 

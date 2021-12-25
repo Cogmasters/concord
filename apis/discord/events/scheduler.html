@@ -1410,8 +1410,6 @@
                                     <span class="k">enum</span> <span class="n">discord_gateway_events</span> <span class="n">event</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
   <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">DISCORD_EVENT_WORKER_THREAD</span><span class="p">;</span>
   <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE</span><span class="p">:</span>
@@ -1424,6 +1422,9 @@
 
     <span class="n">discord_channel_cleanup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">channel</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
+  <span class="k">case</span> <span class="nl">DISCORD_GATEWAY_EVENTS_READY</span><span class="p">:</span>
+  <span class="k">default</span><span class="o">:</span>
+    <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 

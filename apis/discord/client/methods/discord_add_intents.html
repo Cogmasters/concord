@@ -1345,7 +1345,9 @@
     <span class="n">discord_create_message</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">msg</span><span class="p">.</span><span class="n">channel_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
 
     <span class="n">discord_message_cleanup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">);</span>
-  <span class="p">}</span> <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">return</span> <span class="n">DISCORD_EVENT_IGNORE</span><span class="p">;</span>
+  <span class="k">default</span><span class="o">:</span>
+    <span class="k">return</span> <span class="n">DISCORD_EVENT_MAIN_THREAD</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 

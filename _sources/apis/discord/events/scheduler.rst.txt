@@ -49,8 +49,6 @@ Example
                                         enum discord_gateway_events event)
     {
       switch (event) {
-      case DISCORD_GATEWAY_EVENTS_READY:
-        return DISCORD_EVENT_MAIN_THREAD;
       case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
         return DISCORD_EVENT_WORKER_THREAD;
       case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
@@ -63,6 +61,9 @@ Example
 
         discord_channel_cleanup(&channel);
       } return DISCORD_EVENT_IGNORE;
+      case DISCORD_GATEWAY_EVENTS_READY:
+      default:
+        return DISCORD_EVENT_MAIN_THREAD;
       }
     }
 
