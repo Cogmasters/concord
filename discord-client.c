@@ -102,13 +102,12 @@ discord_async_next(struct discord *client, struct discord_async_attr *attr)
 const char *
 discord_strerror(ORCAcode code, struct discord *client)
 {
-  (void)client;
-
   switch (code) {
   default:
     return orca_strerror(code);
   case ORCA_DISCORD_JSON_CODE:
-    return "Discord JSON Error Code: Failed request";
+    return client ? client->adapter.errbuf
+                  : "Discord JSON Error Code: Failed request";
   case ORCA_DISCORD_BAD_AUTH:
     return "Discord Bad Authentication: Bad authentication token";
   case ORCA_DISCORD_RATELIMIT:
@@ -161,7 +160,8 @@ discord_set_prefix(struct discord *client, char *prefix)
 
   if (client->gw.cmds.prefix.start) free(client->gw.cmds.prefix.start);
 
-  client->gw.cmds.prefix.size = cee_strndup(prefix, strlen(prefix), &client->gw.cmds.prefix.start);
+  client->gw.cmds.prefix.size =
+    cee_strndup(prefix, strlen(prefix), &client->gw.cmds.prefix.start);
 }
 
 const struct discord_user *

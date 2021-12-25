@@ -90,8 +90,8 @@ struct discord_voice_cbs;
 
 /**
  * @brief Return the meaning of ORCAcode
- * @note if the client parameter is provided, the raw JSON error string will be
- *        given for ORCA_DISCORD_JSON_CODE code
+ * @note in case of a @ref ORCA_DISCORD_JSON_CODE and if `client` is provided,
+ *        a much more descriptive JSON message will be returned instead.
  *
  * @param code the ORCAcode to be explained
  * @param client the client created with discord_init(), NULL for generic error
