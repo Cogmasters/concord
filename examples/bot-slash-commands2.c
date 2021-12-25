@@ -10,7 +10,8 @@
 
 u64_snowflake_t g_app_id;
 
-void print_usage(void)
+void
+print_usage(void)
 {
   log_info(
     "\nUsage :\n"
@@ -21,7 +22,8 @@ void print_usage(void)
     "\tDelete Command : DELETE <cmd_id> <?guild_id>\n");
 }
 
-void on_ready(struct discord *client)
+void
+on_ready(struct discord *client)
 {
   const struct discord_user *bot = discord_get_self(client);
 
@@ -29,26 +31,30 @@ void on_ready(struct discord *client)
            bot->username, bot->discriminator);
 }
 
-void log_on_app_create(struct discord *client,
-                       const struct discord_application_command *cmd)
+void
+log_on_app_create(struct discord *client,
+                  const struct discord_application_command *cmd)
 {
   log_info("Application Command %s created", cmd->name);
 }
 
-void log_on_app_update(struct discord *client,
-                       const struct discord_application_command *cmd)
+void
+log_on_app_update(struct discord *client,
+                  const struct discord_application_command *cmd)
 {
   log_info("Application Command %s updated", cmd->name);
 }
 
-void log_on_app_delete(struct discord *client,
-                       const struct discord_application_command *cmd)
+void
+log_on_app_delete(struct discord *client,
+                  const struct discord_application_command *cmd)
 {
   log_info("Application Command %s deleted", cmd->name);
 }
 
-void on_interaction_create(struct discord *client,
-                           const struct discord_interaction *interaction)
+void
+on_interaction_create(struct discord *client,
+                      const struct discord_interaction *interaction)
 {
   log_info("Interaction %" PRIu64 " received", interaction->id);
 
@@ -70,7 +76,8 @@ void on_interaction_create(struct discord *client,
   }
 }
 
-void *read_input(void *p_client)
+void *
+read_input(void *p_client)
 {
   struct discord *client = p_client;
   char buf[DISCORD_MAX_MESSAGE_LEN];
@@ -202,6 +209,25 @@ void *read_input(void *p_client)
       }
     }
     else if (0 == strcasecmp(cmd_action, "DELETE")) {
+      u64_snowflake_t command_id = 0, guild_id = 0;
+
+      sscanf(buf + bufoffset, "%" SCNu64 "%" SCNu64, &command_id, &guild_id);
+
+      if (!command_id) goto _help;
+
+      if (guild_id) {
+        code = discord_delete_guild_application_command(client, g_app_id,
+                                                        guild_id, command_id);
+      }
+      else {
+        code = discord_delete_global_application_command(client, g_app_id,
+                                                         command_id);
+      }
+
+      if (ORCA_OK == code)
+        log_info("Deleted command");
+      else
+        log_error("Couldn't delete command");
     }
     else {
       goto _help;
@@ -215,7 +241,8 @@ void *read_input(void *p_client)
   pthread_exit(NULL);
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
   const char *config_file;
   if (argc > 1)
