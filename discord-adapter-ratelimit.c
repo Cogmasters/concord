@@ -146,7 +146,8 @@ discord_buckets_cleanup(struct discord_adapter *adapter)
 }
 
 static struct discord_bucket *
-_discord_bucket_find(struct discord_adapter *adapter, const char route[])
+_discord_bucket_find(struct discord_adapter *adapter,
+                     const char route[DISCORD_ROUTE_LEN])
 {
   struct _discord_route *r;
 
@@ -160,7 +161,7 @@ _discord_bucket_find(struct discord_adapter *adapter, const char route[])
 
 static struct discord_bucket *
 _discord_bucket_get_match(struct discord_adapter *adapter,
-                          const char route[],
+                          const char route[DISCORD_ROUTE_LEN],
                           struct ua_info *info)
 {
   struct discord_bucket *b;
@@ -225,7 +226,8 @@ discord_bucket_get_wait(struct discord_adapter *adapter,
 
 /* attempt to find a bucket associated with this route */
 struct discord_bucket *
-discord_bucket_get(struct discord_adapter *adapter, const char route[])
+discord_bucket_get(struct discord_adapter *adapter,
+                   const char route[DISCORD_ROUTE_LEN])
 {
   struct discord_bucket *b;
 
@@ -311,7 +313,7 @@ _discord_bucket_populate(struct discord_adapter *adapter,
 static void
 _discord_bucket_null_filter(struct discord_adapter *adapter,
                             struct discord_bucket *b,
-                            const char route[])
+                            const char route[DISCORD_ROUTE_LEN])
 {
   struct discord_context *cxt;
   QUEUE queue;
@@ -339,7 +341,7 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
 void
 discord_bucket_build(struct discord_adapter *adapter,
                      struct discord_bucket *b,
-                     const char route[],
+                     const char route[DISCORD_ROUTE_LEN],
                      struct ua_info *info)
 {
   /* match new route to existing or new bucket */

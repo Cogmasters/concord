@@ -117,15 +117,15 @@ static ORCAcode _discord_adapter_run_sync(struct discord_adapter *adapter,
                                           struct discord_request_attr *attr,
                                           struct sized_buffer *body,
                                           enum http_method method,
-                                          char endpoint[],
-                                          char route[]);
+                                          char endpoint[DISCORD_ENDPT_LEN],
+                                          char route[DISCORD_ROUTE_LEN]);
 
 static ORCAcode _discord_adapter_run_async(struct discord_adapter *adapter,
                                            struct discord_request_attr *attr,
                                            struct sized_buffer *body,
                                            enum http_method method,
-                                           char endpoint[],
-                                           char route[]);
+                                           char endpoint[DISCORD_ENDPT_LEN],
+                                           char route[DISCORD_ROUTE_LEN]);
 
 /* template function for performing requests */
 ORCAcode
@@ -137,8 +137,8 @@ discord_adapter_run(struct discord_adapter *adapter,
                     ...)
 {
   static struct discord_request_attr blank_attr = { 0 };
+  char endpoint[DISCORD_ENDPT_LEN];
   char route[DISCORD_ROUTE_LEN];
-  char endpoint[2048];
   va_list args;
   int ret;
 
@@ -325,8 +325,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
                           struct discord_request_attr *attr,
                           struct sized_buffer *body,
                           enum http_method method,
-                          char endpoint[],
-                          char route[])
+                          char endpoint[DISCORD_ENDPT_LEN],
+                          char route[DISCORD_ROUTE_LEN])
 {
   struct ua_conn_attr conn_attr = { method, body, endpoint };
   /* throw-away for ua_conn_set_mime() */
@@ -476,8 +476,8 @@ _discord_context_populate(struct discord_context *cxt,
                           struct discord_request_attr *attr,
                           struct sized_buffer *body,
                           enum http_method method,
-                          char endpoint[],
-                          char route[])
+                          char endpoint[DISCORD_ENDPT_LEN],
+                          char route[DISCORD_ROUTE_LEN])
 {
   cxt->method = method;
   cxt->done = adapter->async.attr.done;
@@ -558,8 +558,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
                            struct discord_request_attr *attr,
                            struct sized_buffer *body,
                            enum http_method method,
-                           char endpoint[],
-                           char route[])
+                           char endpoint[DISCORD_ENDPT_LEN],
+                           char route[DISCORD_ROUTE_LEN])
 {
   struct discord_context *cxt;
 

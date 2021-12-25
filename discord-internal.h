@@ -44,6 +44,7 @@ struct discord_request_attr {
   struct discord_attachment **attachments;
 };
 
+#define DISCORD_ENDPT_LEN 2048
 #define DISCORD_ROUTE_LEN 256
 
 /**
@@ -67,7 +68,7 @@ struct discord_context {
   /** the request's http method */
   enum http_method method;
   /** the request's endpoint */
-  char endpoint[2048];
+  char endpoint[DISCORD_ENDPT_LEN];
   /** the request's route */
   char route[DISCORD_ROUTE_LEN];
   /** the connection handler assigned */
@@ -282,7 +283,7 @@ void discord_bucket_get_route(enum http_method method,
  * @return bucket assigned to `route` or `adapter->b_null` if no match found
  */
 struct discord_bucket *discord_bucket_get(struct discord_adapter *adapter,
-                                          const char route[]);
+                                          const char route[DISCORD_ROUTE_LEN]);
 
 /**
  * @brief Update the bucket with response header data
@@ -295,7 +296,7 @@ struct discord_bucket *discord_bucket_get(struct discord_adapter *adapter,
  */
 void discord_bucket_build(struct discord_adapter *adapter,
                           struct discord_bucket *bucket,
-                          const char route[],
+                          const char route[DISCORD_ROUTE_LEN],
                           struct ua_info *info);
 
 struct discord_gateway_cmd_cbs {
