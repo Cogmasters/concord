@@ -160,7 +160,7 @@
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }},
-        { "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0},
+        { "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0},
         { "name": "color", "type":{ "base":"int" }, "inject_if_not":0},
         { "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false},
         { "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}
@@ -183,7 +183,7 @@
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"},
-        { "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"},
+        { "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"},
         { "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"},
         { "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"},
         { "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}

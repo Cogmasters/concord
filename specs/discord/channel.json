@@ -240,10 +240,8 @@
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "type", "type":{ "base":"int" }},
-        { "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"},
-        { "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}
+        { "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"},
+        { "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}
       ]
     },
     {
