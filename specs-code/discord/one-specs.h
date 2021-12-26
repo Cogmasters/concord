@@ -234,7 +234,7 @@ struct discord_reaction;
  */
 struct discord_overwrite;
 
-/* defined at specs/discord/channel.json:253:22 */
+/* defined at specs/discord/channel.json:251:22 */
 /**
  * @brief Thread Metadata Object
  *
@@ -242,7 +242,7 @@ struct discord_overwrite;
  */
 struct discord_thread_metadata;
 
-/* defined at specs/discord/channel.json:267:22 */
+/* defined at specs/discord/channel.json:265:22 */
 /**
  * @brief Thread Member Object
  *
@@ -250,7 +250,7 @@ struct discord_thread_metadata;
  */
 struct discord_thread_member;
 
-/* defined at specs/discord/channel.json:279:22 */
+/* defined at specs/discord/channel.json:277:22 */
 /**
  * @brief Attachment Structure
  *
@@ -258,7 +258,7 @@ struct discord_thread_member;
  */
 struct discord_attachment;
 
-/* defined at specs/discord/channel.json:300:22 */
+/* defined at specs/discord/channel.json:298:22 */
 /**
  * @brief Channel Mention Structure
  *
@@ -266,7 +266,7 @@ struct discord_attachment;
  */
 struct discord_channel_mention;
 
-/* defined at specs/discord/channel.json:312:22 */
+/* defined at specs/discord/channel.json:310:22 */
 /**
  * @brief Allowed Mentions Structure
  *
@@ -274,7 +274,7 @@ struct discord_channel_mention;
  */
 struct discord_allowed_mentions;
 
-/* defined at specs/discord/channel.json:324:22 */
+/* defined at specs/discord/channel.json:322:22 */
 /**
  * @brief Embed Structure
  *
@@ -282,7 +282,7 @@ struct discord_allowed_mentions;
  */
 struct discord_embed;
 
-/* defined at specs/discord/channel.json:346:22 */
+/* defined at specs/discord/channel.json:344:22 */
 /**
  * @brief Embed Thumbnail Structure
  *
@@ -290,7 +290,7 @@ struct discord_embed;
  */
 struct discord_embed_thumbnail;
 
-/* defined at specs/discord/channel.json:358:22 */
+/* defined at specs/discord/channel.json:356:22 */
 /**
  * @brief Embed Video Structure
  *
@@ -298,7 +298,7 @@ struct discord_embed_thumbnail;
  */
 struct discord_embed_video;
 
-/* defined at specs/discord/channel.json:370:22 */
+/* defined at specs/discord/channel.json:368:22 */
 /**
  * @brief Embed Image Structure
  *
@@ -306,7 +306,7 @@ struct discord_embed_video;
  */
 struct discord_embed_image;
 
-/* defined at specs/discord/channel.json:382:22 */
+/* defined at specs/discord/channel.json:380:22 */
 /**
  * @brief Embed Provider Structure
  *
@@ -314,7 +314,7 @@ struct discord_embed_image;
  */
 struct discord_embed_provider;
 
-/* defined at specs/discord/channel.json:392:22 */
+/* defined at specs/discord/channel.json:390:22 */
 /**
  * @brief Embed Author Structure
  *
@@ -322,7 +322,7 @@ struct discord_embed_provider;
  */
 struct discord_embed_author;
 
-/* defined at specs/discord/channel.json:404:22 */
+/* defined at specs/discord/channel.json:402:22 */
 /**
  * @brief Embed Footer Structure
  *
@@ -330,7 +330,7 @@ struct discord_embed_author;
  */
 struct discord_embed_footer;
 
-/* defined at specs/discord/channel.json:415:22 */
+/* defined at specs/discord/channel.json:413:22 */
 /**
  * @brief Embed Field Structure
  *
@@ -4126,19 +4126,17 @@ struct discord_overwrite {
   int type;
 
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags allow; /**< permission bit set */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+  uint64_t allow; /**< permission bit set */
 
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
-  enum discord_bitwise_permission_flags deny; /**< permission bit set */
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+  uint64_t deny; /**< permission bit set */
 
 };
 
 /* Thread Metadata Object */
-/* defined at specs/discord/channel.json:253:22 */
+/* defined at specs/discord/channel.json:251:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-metadata-object
  *
@@ -4167,30 +4165,30 @@ struct discord_overwrite {
  * @endverbatim
  */
 struct discord_thread_metadata {
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
   bool archived;
 
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t archiver_id;
 
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
   int auto_archive_duration;
 
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   u64_unix_ms_t archive_timestamp;
 
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
   bool locked;
 
 };
 
 /* Thread Member Object */
-/* defined at specs/discord/channel.json:267:22 */
+/* defined at specs/discord/channel.json:265:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#thread-member-object
  *
@@ -4219,26 +4217,26 @@ struct discord_thread_metadata {
  * @endverbatim
  */
 struct discord_thread_member {
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t user_id;
 
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   u64_unix_ms_t join_timestamp;
 
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
   int flags;
 
 };
 
 /* Attachment Structure */
-/* defined at specs/discord/channel.json:279:22 */
+/* defined at specs/discord/channel.json:277:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#attachment-object
  *
@@ -4267,54 +4265,54 @@ struct discord_thread_member {
  * @endverbatim
  */
 struct discord_attachment {
-  /* specs/discord/channel.json:282:20
+  /* specs/discord/channel.json:280:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null }' */
   char *content; /**< the file contents */
 
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
   int id; /**< attachment id */
 
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
   char *filename; /**< name of file attached */
 
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
   char *description; /**< description for the file */
 
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
   char *content_type; /**< the attachment's media type */
 
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
   int size; /**< size of file in bytes */
 
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
   char *url; /**< source url of file */
 
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
   char *proxy_url; /**< a proxied url of file */
 
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
   int height; /**< height of file (if image) */
 
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
   int width; /**< width of file (if image) */
 
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
   bool ephemeral; /**< whether this attachment is ephemeral */
 
 };
 
 /* Channel Mention Structure */
-/* defined at specs/discord/channel.json:300:22 */
+/* defined at specs/discord/channel.json:298:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#channel-mention-object-channel-mention-structure
  *
@@ -4343,26 +4341,26 @@ struct discord_attachment {
  * @endverbatim
  */
 struct discord_channel_mention {
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t guild_id;
 
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
   enum discord_channel_types type;
 
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
 };
 
 /* Allowed Mentions Structure */
-/* defined at specs/discord/channel.json:312:22 */
+/* defined at specs/discord/channel.json:310:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#allowed-mentions-object-allowed-mentions-structure
  *
@@ -4391,26 +4389,26 @@ struct discord_channel_mention {
  * @endverbatim
  */
 struct discord_allowed_mentions {
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
   ja_str **parse;
 
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   ja_u64 **roles; /**< list of snowflakes */
 
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   ja_u64 **users; /**< list of snowflakes */
 
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   bool replied_user;
 
 };
 
 /* Embed Structure */
-/* defined at specs/discord/channel.json:324:22 */
+/* defined at specs/discord/channel.json:322:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-structure
  *
@@ -4439,62 +4437,62 @@ struct discord_allowed_mentions {
  * @endverbatim
  */
 struct discord_embed {
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *title;
 
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *type;
 
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *description;
 
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
   u64_unix_ms_t timestamp;
 
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
   int color;
 
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_footer *footer;
 
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_image *image;
 
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_thumbnail *thumbnail;
 
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_video *video;
 
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_provider *provider;
 
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
   struct discord_embed_author *author;
 
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   struct discord_embed_field **fields;
 
 };
 
 /* Embed Thumbnail Structure */
-/* defined at specs/discord/channel.json:346:22 */
+/* defined at specs/discord/channel.json:344:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-thumbnail-structure
  *
@@ -4523,26 +4521,26 @@ struct discord_embed {
  * @endverbatim
  */
 struct discord_embed_thumbnail {
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
 };
 
 /* Embed Video Structure */
-/* defined at specs/discord/channel.json:358:22 */
+/* defined at specs/discord/channel.json:356:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-video-structure
  *
@@ -4571,26 +4569,26 @@ struct discord_embed_thumbnail {
  * @endverbatim
  */
 struct discord_embed_video {
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
 };
 
 /* Embed Image Structure */
-/* defined at specs/discord/channel.json:370:22 */
+/* defined at specs/discord/channel.json:368:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-image-structure
  *
@@ -4619,26 +4617,26 @@ struct discord_embed_video {
  * @endverbatim
  */
 struct discord_embed_image {
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_url;
 
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   int height;
 
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   int width;
 
 };
 
 /* Embed Provider Structure */
-/* defined at specs/discord/channel.json:382:22 */
+/* defined at specs/discord/channel.json:380:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-provider-structure
  *
@@ -4667,18 +4665,18 @@ struct discord_embed_image {
  * @endverbatim
  */
 struct discord_embed_provider {
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *url;
 
 };
 
 /* Embed Author Structure */
-/* defined at specs/discord/channel.json:392:22 */
+/* defined at specs/discord/channel.json:390:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-author-structure
  *
@@ -4707,26 +4705,26 @@ struct discord_embed_provider {
  * @endverbatim
  */
 struct discord_embed_author {
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *url;
 
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *icon_url;
 
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *proxy_icon_url;
 
 };
 
 /* Embed Footer Structure */
-/* defined at specs/discord/channel.json:404:22 */
+/* defined at specs/discord/channel.json:402:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-footer-structure
  *
@@ -4755,22 +4753,22 @@ struct discord_embed_author {
  * @endverbatim
  */
 struct discord_embed_footer {
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
   char *text;
 
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   char *icon_url;
 
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *proxy_icon_url;
 
 };
 
 /* Embed Field Structure */
-/* defined at specs/discord/channel.json:415:22 */
+/* defined at specs/discord/channel.json:413:22 */
 /**
  * @see https://discord.com/developers/docs/resources/channel#embed-object-embed-field-structure
  *
@@ -4799,15 +4797,15 @@ struct discord_embed_footer {
  * @endverbatim
  */
 struct discord_embed_field {
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *name;
 
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   char *value;
 
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   bool Inline;
 
@@ -4851,8 +4849,8 @@ struct discord_modify_channel_params {
   char *icon;
 
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
-  int type;
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
+  enum discord_channel_types type;
 
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -5087,16 +5085,16 @@ struct discord_get_reactions_params {
  */
 struct discord_edit_channel_permissions_params {
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags allow; /**< permission bit set */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+  uint64_t allow; /**< permission bit set */
 
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-  enum discord_bitwise_permission_flags deny; /**< permission bit set */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+  uint64_t deny; /**< permission bit set */
 
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
-  int type;
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
+  enum discord_channel_types type;
 
 };
 
@@ -7268,8 +7266,8 @@ struct discord_create_guild_role_params {
   char *name;
 
   /* specs/discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
-  enum discord_bitwise_permission_flags permissions;
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+  uint64_t permissions;
 
   /* specs/discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -7356,8 +7354,8 @@ struct discord_modify_guild_role_params {
   char *name; /**< name of the role */
 
   /* specs/discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  enum discord_bitwise_permission_flags permissions; /**< bitwise value of the enabled/disabled permissions */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+  uint64_t permissions; /**< bitwise value of the enabled/disabled permissions */
 
   /* specs/discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */

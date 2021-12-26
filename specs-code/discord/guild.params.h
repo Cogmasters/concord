@@ -781,8 +781,8 @@ struct discord_create_guild_role_params {
   char *name;
 
   /* specs/discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
-  enum discord_bitwise_permission_flags permissions;
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+  uint64_t permissions;
 
   /* specs/discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -899,8 +899,8 @@ struct discord_modify_guild_role_params {
   char *name; /**< name of the role */
 
   /* specs/discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  enum discord_bitwise_permission_flags permissions; /**< bitwise value of the enabled/disabled permissions */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+  uint64_t permissions; /**< bitwise value of the enabled/disabled permissions */
 
   /* specs/discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */

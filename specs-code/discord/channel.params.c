@@ -31,7 +31,7 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 "(icon):?s,"
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
                 "(type):d,"
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -79,7 +79,7 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 &p->icon,
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
                 &p->type,
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -138,7 +138,7 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
     arg_switches[1] = p->icon;
 
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   arg_switches[2] = &p->type;
 
   /* specs/discord/channel.params.json:15:20
@@ -214,7 +214,7 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 "(icon):s,"
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
                 "(type):d,"
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -263,7 +263,7 @@ size_t discord_modify_channel_params_to_json(char *json, size_t len, struct disc
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 p->icon,
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
                 &p->type,
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -351,7 +351,7 @@ void discord_modify_channel_params_cleanup(struct discord_modify_channel_params 
   if (d->icon)
     free(d->icon);
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
   /* p->type is a scalar */
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -406,7 +406,7 @@ void discord_modify_channel_params_init(struct discord_modify_channel_params *p)
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
 
   /* specs/discord/channel.params.json:14:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
 
   /* specs/discord/channel.params.json:15:20
      '{ "name": "position", "type":{ "base":"int" }, "inject_if_not":0 }' */
@@ -1030,22 +1030,22 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
   discord_edit_channel_permissions_params_init(p);
   r=json_extract(json, len, 
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-                "(allow):s_as_hex_uint,"
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+                "(allow):s_as_u64,"
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-                "(deny):s_as_hex_uint,"
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+                "(deny):s_as_u64,"
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
                 "(type):d,",
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->allow,
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->deny,
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
                 &p->type);
   ret = r;
 }
@@ -1055,36 +1055,36 @@ size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, s
   size_t r;
   void *arg_switches[3]={NULL};
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   arg_switches[0] = &p->allow;
 
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   arg_switches[1] = &p->deny;
 
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
   arg_switches[2] = &p->type;
 
   r=json_inject(json, len, 
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-                "(allow):s_as_hex_uint,"
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+                "(allow):s_as_u64,"
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
-                "(deny):s_as_hex_uint,"
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+                "(deny):s_as_u64,"
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
                 "(type):d,"
                 "@arg_switches:b",
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->allow,
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 &p->deny,
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
                 &p->type,
                 arg_switches, sizeof(arg_switches), true);
   return r;
@@ -1125,26 +1125,26 @@ size_t discord_edit_channel_permissions_params_list_to_json_v(char *str, size_t 
 
 void discord_edit_channel_permissions_params_cleanup(struct discord_edit_channel_permissions_params *d) {
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   /* p->allow is a scalar */
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
   /* p->deny is a scalar */
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
   /* p->type is a scalar */
 }
 
 void discord_edit_channel_permissions_params_init(struct discord_edit_channel_permissions_params *p) {
   memset(p, 0, sizeof(struct discord_edit_channel_permissions_params));
   /* specs/discord/channel.params.json:75:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
 
   /* specs/discord/channel.params.json:76:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
 
   /* specs/discord/channel.params.json:77:20
-     '{ "name": "type", "type":{ "base":"int" }}' */
+     '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
 
 }
 void discord_edit_channel_permissions_params_list_free(struct discord_edit_channel_permissions_params **p) {

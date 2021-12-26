@@ -2806,13 +2806,11 @@ void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
-                "(allow):s_as_hex_uint,"
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
-                "(deny):s_as_hex_uint,",
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+                "(allow):s_as_u64,"
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+                "(deny):s_as_u64,",
   /* specs/discord/channel.json:241:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtou64, &p->id,
@@ -2820,12 +2818,10 @@ void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
                 &p->allow,
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
                 &p->deny);
   ret = r;
 }
@@ -2843,13 +2839,11 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
   arg_switches[1] = &p->type;
 
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
   arg_switches[2] = &p->allow;
 
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
   arg_switches[3] = &p->deny;
 
   r=json_inject(json, len, 
@@ -2860,13 +2854,11 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
-                "(allow):s_as_hex_uint,"
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
-                "(deny):s_as_hex_uint,"
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+                "(allow):s_as_u64,"
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+                "(deny):s_as_u64,"
                 "@arg_switches:b",
   /* specs/discord/channel.json:241:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -2875,12 +2867,10 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
                 &p->allow,
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
                 &p->deny,
                 arg_switches, sizeof(arg_switches), true);
   return r;
@@ -2927,12 +2917,10 @@ void discord_overwrite_cleanup(struct discord_overwrite *d) {
      '{ "name": "type", "type":{ "base":"int" }}' */
   /* p->type is a scalar */
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
   /* p->allow is a scalar */
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
   /* p->deny is a scalar */
 }
 
@@ -2945,12 +2933,10 @@ void discord_overwrite_init(struct discord_overwrite *p) {
      '{ "name": "type", "type":{ "base":"int" }}' */
 
   /* specs/discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
 
-  /* specs/discord/channel.json:245:20
-     '{ "name": "deny", "type":{ "base":"s_as_hex_uint", "int_alias":"enum discord_bitwise_permission_flags"}, 
-          "comment":"permission bit set"}' */
+  /* specs/discord/channel.json:244:20
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
 
 }
 void discord_overwrite_list_free(struct discord_overwrite **p) {
@@ -2985,34 +2971,34 @@ void discord_thread_metadata_from_json(char *json, size_t len, struct discord_th
   size_t r=0;
   discord_thread_metadata_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
                 "(archived):b,"
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(archiver_id):F,"
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
                 "(auto_archive_duration):d,"
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 "(archive_timestamp):F,"
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
                 "(locked):b,",
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
                 &p->archived,
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtou64, &p->archiver_id,
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
                 &p->auto_archive_duration,
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_iso8601_to_unix_ms, &p->archive_timestamp,
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
                 &p->locked);
   ret = r;
@@ -3022,56 +3008,56 @@ size_t discord_thread_metadata_to_json(char *json, size_t len, struct discord_th
 {
   size_t r;
   void *arg_switches[5]={NULL};
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
   arg_switches[0] = &p->archived;
 
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   arg_switches[1] = &p->archiver_id;
 
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
   arg_switches[2] = &p->auto_archive_duration;
 
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   arg_switches[3] = &p->archive_timestamp;
 
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
   arg_switches[4] = &p->locked;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
                 "(archived):b,"
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(archiver_id):|F|,"
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
                 "(auto_archive_duration):d,"
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 "(archive_timestamp):|F|,"
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
                 "(locked):b,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
                 &p->archived,
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_u64tostr, &p->archiver_id,
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
                 &p->auto_archive_duration,
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_unix_ms_to_iso8601, &p->archive_timestamp,
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
                 &p->locked,
                 arg_switches, sizeof(arg_switches), true);
@@ -3112,38 +3098,38 @@ size_t discord_thread_metadata_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_thread_metadata_cleanup(struct discord_thread_metadata *d) {
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
   /* p->archived is a scalar */
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   /* p->archiver_id is a scalar */
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
   /* p->auto_archive_duration is a scalar */
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   /* p->archive_timestamp is a scalar */
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
   /* p->locked is a scalar */
 }
 
 void discord_thread_metadata_init(struct discord_thread_metadata *p) {
   memset(p, 0, sizeof(struct discord_thread_metadata));
-  /* specs/discord/channel.json:256:20
+  /* specs/discord/channel.json:254:20
      '{ "name": "archived", "type":{ "base":"bool" }}' */
 
-  /* specs/discord/channel.json:257:20
+  /* specs/discord/channel.json:255:20
      '{ "name": "archiver_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
-  /* specs/discord/channel.json:258:20
+  /* specs/discord/channel.json:256:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }}' */
 
-  /* specs/discord/channel.json:259:20
+  /* specs/discord/channel.json:257:20
      '{ "name": "archive_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
 
-  /* specs/discord/channel.json:260:20
+  /* specs/discord/channel.json:258:20
      '{ "name": "locked", "type":{ "base":"bool" }}' */
 
 }
@@ -3179,28 +3165,28 @@ void discord_thread_member_from_json(char *json, size_t len, struct discord_thre
   size_t r=0;
   discord_thread_member_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(user_id):F,"
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 "(join_timestamp):F,"
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
                 "(flags):d,",
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtou64, &p->id,
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtou64, &p->user_id,
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_iso8601_to_unix_ms, &p->join_timestamp,
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
                 &p->flags);
   ret = r;
@@ -3210,46 +3196,46 @@ size_t discord_thread_member_to_json(char *json, size_t len, struct discord_thre
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   arg_switches[0] = &p->id;
 
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   arg_switches[1] = &p->user_id;
 
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   arg_switches[2] = &p->join_timestamp;
 
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
   arg_switches[3] = &p->flags;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(user_id):|F|,"
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 "(join_timestamp):|F|,"
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
                 "(flags):d,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_u64tostr, &p->id,
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_u64tostr, &p->user_id,
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
                 cee_unix_ms_to_iso8601, &p->join_timestamp,
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
                 &p->flags,
                 arg_switches, sizeof(arg_switches), true);
@@ -3290,32 +3276,32 @@ size_t discord_thread_member_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_thread_member_cleanup(struct discord_thread_member *d) {
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   /* p->id is a scalar */
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   /* p->user_id is a scalar */
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
   /* p->join_timestamp is a scalar */
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
   /* p->flags is a scalar */
 }
 
 void discord_thread_member_init(struct discord_thread_member *p) {
   memset(p, 0, sizeof(struct discord_thread_member));
-  /* specs/discord/channel.json:270:20
+  /* specs/discord/channel.json:268:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
-  /* specs/discord/channel.json:271:20
+  /* specs/discord/channel.json:269:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
-  /* specs/discord/channel.json:272:20
+  /* specs/discord/channel.json:270:20
      '{ "name": "join_timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
 
-  /* specs/discord/channel.json:273:20
+  /* specs/discord/channel.json:271:20
      '{ "name": "flags", "type":{ "base":"int" }}' */
 
 }
@@ -3351,64 +3337,64 @@ void discord_attachment_from_json(char *json, size_t len, struct discord_attachm
   size_t r=0;
   discord_attachment_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
                 "(id):d,"
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
                 "(filename):?s,"
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
                 "(description):?s,"
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 "(content_type):?s,"
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
                 "(size):d,"
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
                 "(url):?s,"
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
                 "(proxy_url):?s,"
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
                 "(height):d,"
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
                 "(width):d,"
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
                 "(ephemeral):b,",
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
                 &p->id,
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
                 &p->filename,
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
                 &p->description,
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 &p->content_type,
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
                 &p->size,
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
                 &p->url,
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
                 &p->proxy_url,
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
                 &p->height,
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
                 &p->width,
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
                 &p->ephemeral);
   ret = r;
@@ -3418,120 +3404,120 @@ size_t discord_attachment_to_json(char *json, size_t len, struct discord_attachm
 {
   size_t r;
   void *arg_switches[11]={NULL};
-  /* specs/discord/channel.json:282:20
+  /* specs/discord/channel.json:280:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null }' */
   if (p->content != NULL)
     arg_switches[0] = p->content;
 
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
   arg_switches[1] = &p->id;
 
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
   if (p->filename != NULL)
     arg_switches[2] = p->filename;
 
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
   if (p->description != NULL)
     arg_switches[3] = p->description;
 
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
   if (p->content_type != NULL)
     arg_switches[4] = p->content_type;
 
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
   if (p->size != 0)
     arg_switches[5] = &p->size;
 
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
   if (p->url != NULL)
     arg_switches[6] = p->url;
 
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
   if (p->proxy_url != NULL)
     arg_switches[7] = p->proxy_url;
 
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
   if (p->height != 0)
     arg_switches[8] = &p->height;
 
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
   if (p->width != 0)
     arg_switches[9] = &p->width;
 
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
   if (p->ephemeral != false)
     arg_switches[10] = &p->ephemeral;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
                 "(id):d,"
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
                 "(filename):s,"
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
                 "(description):s,"
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 "(content_type):s,"
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
                 "(size):d,"
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
                 "(url):s,"
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
                 "(proxy_url):s,"
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
                 "(height):d,"
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
                 "(width):d,"
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
                 "(ephemeral):b,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
                 &p->id,
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
                 p->filename,
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
                 p->description,
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 p->content_type,
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
                 &p->size,
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
                 p->url,
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
                 p->proxy_url,
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
                 &p->height,
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
                 &p->width,
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
                 &p->ephemeral,
                 arg_switches, sizeof(arg_switches), true);
@@ -3572,80 +3558,80 @@ size_t discord_attachment_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_attachment_cleanup(struct discord_attachment *d) {
-  /* specs/discord/channel.json:282:20
+  /* specs/discord/channel.json:280:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null }' */
   if (d->content)
     free(d->content);
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
   /* p->id is a scalar */
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
   if (d->filename)
     free(d->filename);
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
   if (d->description)
     free(d->description);
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
   if (d->content_type)
     free(d->content_type);
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
   /* p->size is a scalar */
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
   if (d->url)
     free(d->url);
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
   if (d->proxy_url)
     free(d->proxy_url);
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
   /* p->height is a scalar */
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
   /* p->width is a scalar */
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
   /* p->ephemeral is a scalar */
 }
 
 void discord_attachment_init(struct discord_attachment *p) {
   memset(p, 0, sizeof(struct discord_attachment));
-  /* specs/discord/channel.json:282:20
+  /* specs/discord/channel.json:280:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "loc":"multipart", "comment":"the file contents", "inject_if_not":null }' */
 
-  /* specs/discord/channel.json:284:20
+  /* specs/discord/channel.json:282:20
      '{ "name": "id", "type":{ "base":"int" }, "comment":"attachment id"}' */
 
-  /* specs/discord/channel.json:285:20
+  /* specs/discord/channel.json:283:20
      '{ "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"}' */
 
-  /* specs/discord/channel.json:286:20
+  /* specs/discord/channel.json:284:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"}' */
 
-  /* specs/discord/channel.json:287:20
+  /* specs/discord/channel.json:285:20
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
 
-  /* specs/discord/channel.json:288:20
+  /* specs/discord/channel.json:286:20
      '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
 
-  /* specs/discord/channel.json:289:20
+  /* specs/discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
 
-  /* specs/discord/channel.json:290:20
+  /* specs/discord/channel.json:288:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"}' */
 
-  /* specs/discord/channel.json:291:20
+  /* specs/discord/channel.json:289:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" }' */
 
-  /* specs/discord/channel.json:292:20
+  /* specs/discord/channel.json:290:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0, "comment":"width of file (if image)"}' */
 
-  /* specs/discord/channel.json:293:20
+  /* specs/discord/channel.json:291:20
      '{ "name": "ephemeral", "type":{ "base":"bool" }, "inject_if_not":false, "comment":"whether this attachment is ephemeral"}' */
 
 }
@@ -3681,28 +3667,28 @@ void discord_channel_mention_from_json(char *json, size_t len, struct discord_ch
   size_t r=0;
   discord_channel_mention_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):F,"
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 "(type):d,"
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):?s,",
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtou64, &p->id,
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_strtou64, &p->guild_id,
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 &p->type,
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->name);
   ret = r;
@@ -3712,46 +3698,46 @@ size_t discord_channel_mention_to_json(char *json, size_t len, struct discord_ch
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   arg_switches[0] = &p->id;
 
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   arg_switches[1] = &p->guild_id;
 
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
   arg_switches[2] = &p->type;
 
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   arg_switches[3] = p->name;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):|F|,"
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):|F|,"
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 "(type):d,"
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):s,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_u64tostr, &p->id,
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 cee_u64tostr, &p->guild_id,
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
                 &p->type,
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
                 arg_switches, sizeof(arg_switches), true);
@@ -3792,16 +3778,16 @@ size_t discord_channel_mention_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_channel_mention_cleanup(struct discord_channel_mention *d) {
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   /* p->id is a scalar */
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   /* p->guild_id is a scalar */
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
   /* p->type is a scalar */
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   if (d->name)
     free(d->name);
@@ -3809,16 +3795,16 @@ void discord_channel_mention_cleanup(struct discord_channel_mention *d) {
 
 void discord_channel_mention_init(struct discord_channel_mention *p) {
   memset(p, 0, sizeof(struct discord_channel_mention));
-  /* specs/discord/channel.json:303:20
+  /* specs/discord/channel.json:301:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
-  /* specs/discord/channel.json:304:20
+  /* specs/discord/channel.json:302:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
 
-  /* specs/discord/channel.json:305:20
+  /* specs/discord/channel.json:303:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" }}' */
 
-  /* specs/discord/channel.json:306:20
+  /* specs/discord/channel.json:304:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
 
 }
@@ -3854,28 +3840,28 @@ void discord_allowed_mentions_from_json(char *json, size_t len, struct discord_a
   size_t r=0;
   discord_allowed_mentions_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
                 "(parse):F,"
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 "(roles):F,"
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 "(users):F,"
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
                 "(replied_user):b,",
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
                 ja_str_list_from_json, &p->parse,
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 ja_u64_list_from_json, &p->roles,
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 ja_u64_list_from_json, &p->users,
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
                 &p->replied_user);
   ret = r;
@@ -3885,46 +3871,46 @@ size_t discord_allowed_mentions_to_json(char *json, size_t len, struct discord_a
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
   arg_switches[0] = p->parse;
 
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   arg_switches[1] = p->roles;
 
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   arg_switches[2] = p->users;
 
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   arg_switches[3] = &p->replied_user;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
                 "(parse):F,"
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 "(roles):F,"
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 "(users):F,"
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
                 "(replied_user):b,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
                 ja_str_list_to_json, p->parse,
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 ja_u64_list_to_json, p->roles,
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
                 ja_u64_list_to_json, p->users,
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
                 &p->replied_user,
                 arg_switches, sizeof(arg_switches), true);
@@ -3965,35 +3951,35 @@ size_t discord_allowed_mentions_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_allowed_mentions_cleanup(struct discord_allowed_mentions *d) {
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
   if (d->parse)
     ja_str_list_free(d->parse);
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   if (d->roles)
     ja_u64_list_free(d->roles);
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
   if (d->users)
     ja_u64_list_free(d->users);
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
   /* p->replied_user is a scalar */
 }
 
 void discord_allowed_mentions_init(struct discord_allowed_mentions *p) {
   memset(p, 0, sizeof(struct discord_allowed_mentions));
-  /* specs/discord/channel.json:315:20
+  /* specs/discord/channel.json:313:20
      '{ "name": "parse", "type":{ "base":"ja_str", "dec":"ntl" }}' */
 
-  /* specs/discord/channel.json:316:20
+  /* specs/discord/channel.json:314:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
 
-  /* specs/discord/channel.json:317:20
+  /* specs/discord/channel.json:315:20
      '{ "name": "users", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"list of snowflakes"}' */
 
-  /* specs/discord/channel.json:318:20
+  /* specs/discord/channel.json:316:20
      '{ "name": "replied_user", "type":{ "base":"bool" }}' */
 
 }
@@ -4029,82 +4015,82 @@ void discord_embed_from_json(char *json, size_t len, struct discord_embed *p)
   size_t r=0;
   discord_embed_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(title):?s,"
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(type):?s,"
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(description):?s,"
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(url):?s,"
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
                 "(timestamp):F,"
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
                 "(color):d,"
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(footer):F,"
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
                 "(image):F,"
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
                 "(thumbnail):F,"
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
                 "(video):F,"
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
                 "(provider):F,"
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
                 "(author):F,"
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 "(fields):F,",
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 &p->title,
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 &p->type,
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 &p->description,
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 &p->url,
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
                 cee_iso8601_to_unix_ms, &p->timestamp,
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
                 &p->color,
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 discord_embed_footer_from_json_p, &p->footer,
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_image_from_json_p, &p->image,
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_thumbnail_from_json_p, &p->thumbnail,
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_video_from_json_p, &p->video,
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_provider_from_json_p, &p->provider,
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_author_from_json_p, &p->author,
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 discord_embed_field_list_from_json, &p->fields);
   ret = r;
@@ -4114,149 +4100,149 @@ size_t discord_embed_to_json(char *json, size_t len, struct discord_embed *p)
 {
   size_t r;
   void *arg_switches[13]={NULL};
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   if (p->title != NULL)
     arg_switches[0] = p->title;
 
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   if (p->type != NULL)
     arg_switches[1] = p->type;
 
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (p->description != NULL)
     arg_switches[2] = p->description;
 
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (p->url != NULL)
     arg_switches[3] = p->url;
 
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
   if (p->timestamp != 0)
     arg_switches[4] = &p->timestamp;
 
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
   if (p->color != 0)
     arg_switches[5] = &p->color;
 
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (p->footer != NULL)
     arg_switches[6] = p->footer;
 
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
   if (p->image != NULL)
     arg_switches[7] = p->image;
 
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
   if (p->thumbnail != NULL)
     arg_switches[8] = p->thumbnail;
 
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
   if (p->video != NULL)
     arg_switches[9] = p->video;
 
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
   if (p->provider != NULL)
     arg_switches[10] = p->provider;
 
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
   if (p->author != NULL)
     arg_switches[11] = p->author;
 
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   if (p->fields != NULL)
     arg_switches[12] = p->fields;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(title):s,"
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(type):s,"
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(description):s,"
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(url):s,"
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
                 "(timestamp):|F|,"
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
                 "(color):d,"
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(footer):F,"
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
                 "(image):F,"
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
                 "(thumbnail):F,"
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
                 "(video):F,"
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
                 "(provider):F,"
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
                 "(author):F,"
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 "(fields):F,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 p->title,
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 p->type,
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 p->description,
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 p->url,
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
                 cee_unix_ms_to_iso8601, &p->timestamp,
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
                 &p->color,
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 discord_embed_footer_to_json, p->footer,
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_image_to_json, p->image,
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_thumbnail_to_json, p->thumbnail,
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_video_to_json, p->video,
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_provider_to_json, p->provider,
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
                 discord_embed_author_to_json, p->author,
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
                 discord_embed_field_list_to_json, p->fields,
                 arg_switches, sizeof(arg_switches), true);
@@ -4297,65 +4283,65 @@ size_t discord_embed_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_cleanup(struct discord_embed *d) {
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   if (d->title)
     free(d->title);
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   if (d->type)
     free(d->type);
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (d->description)
     free(d->description);
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (d->url)
     free(d->url);
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
   /* p->timestamp is a scalar */
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
   /* p->color is a scalar */
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (d->footer) {
     discord_embed_footer_cleanup(d->footer);
     free(d->footer);
   }
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
   if (d->image) {
     discord_embed_image_cleanup(d->image);
     free(d->image);
   }
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
   if (d->thumbnail) {
     discord_embed_thumbnail_cleanup(d->thumbnail);
     free(d->thumbnail);
   }
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
   if (d->video) {
     discord_embed_video_cleanup(d->video);
     free(d->video);
   }
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
   if (d->provider) {
     discord_embed_provider_cleanup(d->provider);
     free(d->provider);
   }
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
   if (d->author) {
     discord_embed_author_cleanup(d->author);
     free(d->author);
   }
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
   if (d->fields)
     discord_embed_field_list_free(d->fields);
@@ -4363,43 +4349,43 @@ void discord_embed_cleanup(struct discord_embed *d) {
 
 void discord_embed_init(struct discord_embed *p) {
   memset(p, 0, sizeof(struct discord_embed));
-  /* specs/discord/channel.json:327:20
+  /* specs/discord/channel.json:325:20
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:328:20
+  /* specs/discord/channel.json:326:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:329:20
+  /* specs/discord/channel.json:327:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:330:20
+  /* specs/discord/channel.json:328:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:331:20
+  /* specs/discord/channel.json:329:20
      '{ "name": "timestamp", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }, "option":true, "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:332:20
+  /* specs/discord/channel.json:330:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:333:20
+  /* specs/discord/channel.json:331:20
      '{ "name": "footer", "type":{ "base":"struct discord_embed_footer", "dec":"*"}, "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:334:20
+  /* specs/discord/channel.json:332:20
      '{ "name": "image", "type":{ "base":"struct discord_embed_image", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:335:20
+  /* specs/discord/channel.json:333:20
      '{ "name": "thumbnail", "type":{ "base":"struct discord_embed_thumbnail", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:336:20
+  /* specs/discord/channel.json:334:20
      '{ "name": "video", "type":{ "base":"struct discord_embed_video", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:337:20
+  /* specs/discord/channel.json:335:20
      '{ "name": "provider", "type":{ "base":"struct discord_embed_provider", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:338:20
+  /* specs/discord/channel.json:336:20
      '{ "name": "author", "type":{ "base":"struct discord_embed_author", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:339:20
+  /* specs/discord/channel.json:337:20
      '{ "name": "fields", "type":{ "base":"struct discord_embed_field", "dec":"ntl"}, "option":true, "inject_if_not":null}' */
 
 }
@@ -4435,28 +4421,28 @@ void discord_embed_thumbnail_from_json(char *json, size_t len, struct discord_em
   size_t r=0;
   discord_embed_thumbnail_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):?s,"
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_url):?s,"
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,",
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->url,
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->proxy_url,
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->height,
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->width);
   ret = r;
@@ -4466,50 +4452,50 @@ size_t discord_embed_thumbnail_to_json(char *json, size_t len, struct discord_em
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->url != NULL)
     arg_switches[0] = p->url;
 
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->proxy_url != NULL)
     arg_switches[1] = p->proxy_url;
 
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   if (p->height != 0)
     arg_switches[2] = &p->height;
 
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   if (p->width != 0)
     arg_switches[3] = &p->width;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):s,"
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_url):s,"
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->url,
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->proxy_url,
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->height,
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->width,
                 arg_switches, sizeof(arg_switches), true);
@@ -4550,34 +4536,34 @@ size_t discord_embed_thumbnail_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_thumbnail_cleanup(struct discord_embed_thumbnail *d) {
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->url)
     free(d->url);
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->proxy_url)
     free(d->proxy_url);
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   /* p->height is a scalar */
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   /* p->width is a scalar */
 }
 
 void discord_embed_thumbnail_init(struct discord_embed_thumbnail *p) {
   memset(p, 0, sizeof(struct discord_embed_thumbnail));
-  /* specs/discord/channel.json:348:20
+  /* specs/discord/channel.json:346:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:349:20
+  /* specs/discord/channel.json:347:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:350:20
+  /* specs/discord/channel.json:348:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:351:20
+  /* specs/discord/channel.json:349:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
 
 }
@@ -4613,28 +4599,28 @@ void discord_embed_video_from_json(char *json, size_t len, struct discord_embed_
   size_t r=0;
   discord_embed_video_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):?s,"
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_url):?s,"
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,",
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->url,
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->proxy_url,
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->height,
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->width);
   ret = r;
@@ -4644,50 +4630,50 @@ size_t discord_embed_video_to_json(char *json, size_t len, struct discord_embed_
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->url != NULL)
     arg_switches[0] = p->url;
 
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->proxy_url != NULL)
     arg_switches[1] = p->proxy_url;
 
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   if (p->height != 0)
     arg_switches[2] = &p->height;
 
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   if (p->width != 0)
     arg_switches[3] = &p->width;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):s,"
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_url):s,"
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->url,
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->proxy_url,
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->height,
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->width,
                 arg_switches, sizeof(arg_switches), true);
@@ -4728,34 +4714,34 @@ size_t discord_embed_video_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_video_cleanup(struct discord_embed_video *d) {
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->url)
     free(d->url);
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->proxy_url)
     free(d->proxy_url);
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   /* p->height is a scalar */
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   /* p->width is a scalar */
 }
 
 void discord_embed_video_init(struct discord_embed_video *p) {
   memset(p, 0, sizeof(struct discord_embed_video));
-  /* specs/discord/channel.json:360:20
+  /* specs/discord/channel.json:358:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:361:20
+  /* specs/discord/channel.json:359:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:362:20
+  /* specs/discord/channel.json:360:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:363:20
+  /* specs/discord/channel.json:361:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
 
 }
@@ -4791,28 +4777,28 @@ void discord_embed_image_from_json(char *json, size_t len, struct discord_embed_
   size_t r=0;
   discord_embed_image_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):?s,"
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_url):?s,"
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,",
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->url,
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->proxy_url,
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->height,
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->width);
   ret = r;
@@ -4822,50 +4808,50 @@ size_t discord_embed_image_to_json(char *json, size_t len, struct discord_embed_
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->url != NULL)
     arg_switches[0] = p->url;
 
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->proxy_url != NULL)
     arg_switches[1] = p->proxy_url;
 
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   if (p->height != 0)
     arg_switches[2] = &p->height;
 
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   if (p->width != 0)
     arg_switches[3] = &p->width;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):s,"
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_url):s,"
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(height):d,"
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(width):d,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->url,
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->proxy_url,
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->height,
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
                 &p->width,
                 arg_switches, sizeof(arg_switches), true);
@@ -4906,34 +4892,34 @@ size_t discord_embed_image_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_image_cleanup(struct discord_embed_image *d) {
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->url)
     free(d->url);
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->proxy_url)
     free(d->proxy_url);
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
   /* p->height is a scalar */
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
   /* p->width is a scalar */
 }
 
 void discord_embed_image_init(struct discord_embed_image *p) {
   memset(p, 0, sizeof(struct discord_embed_image));
-  /* specs/discord/channel.json:372:20
+  /* specs/discord/channel.json:370:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:373:20
+  /* specs/discord/channel.json:371:20
      '{ "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:374:20
+  /* specs/discord/channel.json:372:20
      '{ "name": "height", "type":{ "base":"int" }, "inject_if_not":0}' */
 
-  /* specs/discord/channel.json:375:20
+  /* specs/discord/channel.json:373:20
      '{ "name": "width", "type":{ "base":"int" }, "inject_if_not":0}' */
 
 }
@@ -4969,16 +4955,16 @@ void discord_embed_provider_from_json(char *json, size_t len, struct discord_emb
   size_t r=0;
   discord_embed_provider_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(name):?s,"
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(url):?s,",
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 &p->name,
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 &p->url);
   ret = r;
@@ -4988,28 +4974,28 @@ size_t discord_embed_provider_to_json(char *json, size_t len, struct discord_emb
 {
   size_t r;
   void *arg_switches[2]={NULL};
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   if (p->name != NULL)
     arg_switches[0] = p->name;
 
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   if (p->url != NULL)
     arg_switches[1] = p->url;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(name):s,"
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(url):s,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 p->name,
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 p->url,
                 arg_switches, sizeof(arg_switches), true);
@@ -5050,11 +5036,11 @@ size_t discord_embed_provider_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_provider_cleanup(struct discord_embed_provider *d) {
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   if (d->name)
     free(d->name);
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
   if (d->url)
     free(d->url);
@@ -5062,10 +5048,10 @@ void discord_embed_provider_cleanup(struct discord_embed_provider *d) {
 
 void discord_embed_provider_init(struct discord_embed_provider *p) {
   memset(p, 0, sizeof(struct discord_embed_provider));
-  /* specs/discord/channel.json:384:20
+  /* specs/discord/channel.json:382:20
      '{ "name": "name", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:385:20
+  /* specs/discord/channel.json:383:20
      '{ "name": "url", "type":{"base":"char", "dec":"*"}, "inject_if_not":null}' */
 
 }
@@ -5101,28 +5087,28 @@ void discord_embed_author_from_json(char *json, size_t len, struct discord_embed
   size_t r=0;
   discord_embed_author_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(name):?s,"
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):?s,"
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(icon_url):?s,"
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_icon_url):?s,",
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->name,
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->url,
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->icon_url,
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->proxy_icon_url);
   ret = r;
@@ -5132,50 +5118,50 @@ size_t discord_embed_author_to_json(char *json, size_t len, struct discord_embed
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->name != NULL)
     arg_switches[0] = p->name;
 
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->url != NULL)
     arg_switches[1] = p->url;
 
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->icon_url != NULL)
     arg_switches[2] = p->icon_url;
 
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->proxy_icon_url != NULL)
     arg_switches[3] = p->proxy_icon_url;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(name):s,"
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(url):s,"
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(icon_url):s,"
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(proxy_icon_url):s,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->name,
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->url,
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->icon_url,
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->proxy_icon_url,
                 arg_switches, sizeof(arg_switches), true);
@@ -5216,19 +5202,19 @@ size_t discord_embed_author_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_author_cleanup(struct discord_embed_author *d) {
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->name)
     free(d->name);
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->url)
     free(d->url);
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->icon_url)
     free(d->icon_url);
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->proxy_icon_url)
     free(d->proxy_icon_url);
@@ -5236,16 +5222,16 @@ void discord_embed_author_cleanup(struct discord_embed_author *d) {
 
 void discord_embed_author_init(struct discord_embed_author *p) {
   memset(p, 0, sizeof(struct discord_embed_author));
-  /* specs/discord/channel.json:394:20
+  /* specs/discord/channel.json:392:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:395:20
+  /* specs/discord/channel.json:393:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:396:20
+  /* specs/discord/channel.json:394:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:397:20
+  /* specs/discord/channel.json:395:20
      '{ "name": "proxy_icon_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
 }
@@ -5281,22 +5267,22 @@ void discord_embed_footer_from_json(char *json, size_t len, struct discord_embed
   size_t r=0;
   discord_embed_footer_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(text):?s,"
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(icon_url):?s,"
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(proxy_icon_url):?s,",
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 &p->text,
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 &p->icon_url,
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 &p->proxy_icon_url);
   ret = r;
@@ -5306,39 +5292,39 @@ size_t discord_embed_footer_to_json(char *json, size_t len, struct discord_embed
 {
   size_t r;
   void *arg_switches[3]={NULL};
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
   if (p->text != NULL)
     arg_switches[0] = p->text;
 
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   if (p->icon_url != NULL)
     arg_switches[1] = p->icon_url;
 
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (p->proxy_icon_url != NULL)
     arg_switches[2] = p->proxy_icon_url;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 "(text):s,"
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 "(icon_url):s,"
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 "(proxy_icon_url):s,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
                 p->text,
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
                 p->icon_url,
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
                 p->proxy_icon_url,
                 arg_switches, sizeof(arg_switches), true);
@@ -5379,15 +5365,15 @@ size_t discord_embed_footer_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_footer_cleanup(struct discord_embed_footer *d) {
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
   if (d->text)
     free(d->text);
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
   if (d->icon_url)
     free(d->icon_url);
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (d->proxy_icon_url)
     free(d->proxy_icon_url);
@@ -5395,13 +5381,13 @@ void discord_embed_footer_cleanup(struct discord_embed_footer *d) {
 
 void discord_embed_footer_init(struct discord_embed_footer *p) {
   memset(p, 0, sizeof(struct discord_embed_footer));
-  /* specs/discord/channel.json:406:20
+  /* specs/discord/channel.json:404:20
      '{ "name": "text", "type": {"base":"char", "dec":"*"}, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:407:20
+  /* specs/discord/channel.json:405:20
      '{ "name": "icon_url", "type": {"base":"char", "dec":"*" }, "option":true, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:408:20
+  /* specs/discord/channel.json:406:20
      '{ "name": "proxy_icon_url", "type": {"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
 
 }
@@ -5437,22 +5423,22 @@ void discord_embed_field_from_json(char *json, size_t len, struct discord_embed_
   size_t r=0;
   discord_embed_field_init(p);
   r=json_extract(json, len, 
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(name):?s,"
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(value):?s,"
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
                 "(inline):b,",
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->name,
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->value,
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
                 &p->Inline);
   ret = r;
@@ -5462,38 +5448,38 @@ size_t discord_embed_field_to_json(char *json, size_t len, struct discord_embed_
 {
   size_t r;
   void *arg_switches[3]={NULL};
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->name != NULL)
     arg_switches[0] = p->name;
 
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (p->value != NULL)
     arg_switches[1] = p->value;
 
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   arg_switches[2] = &p->Inline;
 
   r=json_inject(json, len, 
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(name):s,"
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(value):s,"
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
                 "(inline):b,"
                 "@arg_switches:b",
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->name,
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 p->value,
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
                 &p->Inline,
                 arg_switches, sizeof(arg_switches), true);
@@ -5534,28 +5520,28 @@ size_t discord_embed_field_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_embed_field_cleanup(struct discord_embed_field *d) {
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->name)
     free(d->name);
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
   if (d->value)
     free(d->value);
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
   /* p->Inline is a scalar */
 }
 
 void discord_embed_field_init(struct discord_embed_field *p) {
   memset(p, 0, sizeof(struct discord_embed_field));
-  /* specs/discord/channel.json:417:20
+  /* specs/discord/channel.json:415:20
      '{ "name": "name", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:418:20
+  /* specs/discord/channel.json:416:20
      '{ "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null}' */
 
-  /* specs/discord/channel.json:419:20
+  /* specs/discord/channel.json:417:20
      '{ "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}' */
 
 }
