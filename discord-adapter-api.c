@@ -2122,7 +2122,7 @@ discord_edit_original_interaction_response(
     attr.attachments = params->attachments;
   }
   else {
-    method = HTTP_POST;
+    method = HTTP_PATCH;
   }
 
   return discord_adapter_run(&client->adapter, &attr, &body, method,
@@ -2232,7 +2232,7 @@ discord_edit_followup_message(
     attr.attachments = params->attachments;
   }
   else {
-    method = HTTP_POST;
+    method = HTTP_PATCH;
   }
 
   return discord_adapter_run(&client->adapter, &attr, &body, method,
@@ -2660,7 +2660,7 @@ discord_edit_webhook_message(
     attr.attachments = params->attachments;
   }
   else {
-    method = HTTP_POST;
+    method = HTTP_PATCH;
   }
 
   return discord_adapter_run(&client->adapter, &attr, &body, method,
