@@ -611,14 +611,14 @@ ORCAcode discord_create_interaction_response(
  * @brief Get the initial Interaction response
  *
  * @param client the client created with discord_init()
- * @param interaction_id the unique id of the interaction
+ * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @ORCA_ret_obj{ret, discord_interaction_response}
  * @ORCA_return
  */
 ORCAcode discord_get_original_interaction_response(
   struct discord *client,
-  u64_snowflake_t interaction_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
   struct discord_interaction_response *ret);
 
@@ -626,7 +626,7 @@ ORCAcode discord_get_original_interaction_response(
  * @brief Edit the initial Interaction response
  *
  * @param client the client created with discord_init()
- * @param interaction_id the unique id of the interaction
+ * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
  * @ORCA_ret_obj{ret, discord_interaction_response}
@@ -634,7 +634,7 @@ ORCAcode discord_get_original_interaction_response(
  */
 ORCAcode discord_edit_original_interaction_response(
   struct discord *client,
-  u64_snowflake_t interaction_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
   struct discord_edit_original_interaction_response_params *params,
   struct discord_interaction_response *ret);
@@ -643,13 +643,13 @@ ORCAcode discord_edit_original_interaction_response(
  * @brief Delete the initial Interaction response
  *
  * @param client the client created with discord_init()
- * @param interaction_id the unique id of the interaction
+ * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @ORCA_return
  */
 ORCAcode discord_delete_original_interaction_response(
   struct discord *client,
-  u64_snowflake_t interaction_id,
+  u64_snowflake_t application_id,
   const char interaction_token[]);
 
 /**

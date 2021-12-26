@@ -2080,25 +2080,25 @@ discord_create_interaction_response(
 ORCAcode
 discord_get_original_interaction_response(
   struct discord *client,
-  u64_snowflake_t interaction_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
   struct discord_interaction_response *ret)
 {
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_interaction_response, ret);
 
-  ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/messages/@original",
-                             interaction_id, interaction_token);
+                             application_id, interaction_token);
 }
 
 ORCAcode
 discord_edit_original_interaction_response(
   struct discord *client,
-  u64_snowflake_t interaction_id,
+  u64_snowflake_t application_id,
   const char interaction_token[],
   struct discord_edit_original_interaction_response_params *params,
   struct discord_interaction_response *ret)
@@ -2109,7 +2109,7 @@ discord_edit_original_interaction_response(
   enum http_method method;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
 
@@ -2127,20 +2127,20 @@ discord_edit_original_interaction_response(
 
   return discord_adapter_run(&client->adapter, &attr, &body, method,
                              "/webhooks/%" PRIu64 "/%s/messages/@original",
-                             interaction_id, interaction_token);
+                             application_id, interaction_token);
 }
 
 ORCAcode
 discord_delete_original_interaction_response(struct discord *client,
-                                             u64_snowflake_t interaction_id,
+                                             u64_snowflake_t application_id,
                                              const char interaction_token[])
 {
-  ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/webhooks/%" PRIu64 "/%s/messages/@original",
-                             interaction_id, interaction_token);
+                             application_id, interaction_token);
 }
 
 ORCAcode
