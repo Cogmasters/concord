@@ -66,12 +66,12 @@ typedef enum slack_event_scheduler {
   SLACK_EVENT_WORKER_THREAD
 } slack_event_scheduler_t;
 
-typedef slack_event_scheduler_t (*slack_event_scheduler)(
+typedef slack_event_scheduler_t (*slack_on_scheduler)(
   struct slack *client,
   struct sized_buffer *event_data,
   enum slack_sm_types type);
 
 void slack_set_event_scheduler(struct slack *client,
-                               slack_event_scheduler callback);
+                               slack_on_scheduler callback);
 
 #endif /* SLACK_H */

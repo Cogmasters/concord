@@ -50,7 +50,7 @@ slack_run(struct slack *client)
 }
 
 void
-slack_set_event_scheduler(struct slack *client, slack_event_scheduler callback)
+slack_set_event_scheduler(struct slack *client, slack_on_scheduler callback)
 {
   client->sm.cbs.scheduler = callback;
 }

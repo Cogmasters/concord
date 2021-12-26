@@ -216,8 +216,7 @@ discord_set_on_commands(struct discord *client,
 }
 
 void
-discord_set_event_scheduler(struct discord *client,
-                            discord_event_scheduler callback)
+discord_set_event_scheduler(struct discord *client, discord_on_scheduler callback)
 {
   client->gw.cmds.scheduler = callback;
 }

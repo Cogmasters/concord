@@ -2302,7 +2302,7 @@ typedef enum discord_event_scheduler {
  *        of how each event is handled: blocking, non-blocking or ignored
  * @see discord_set_event_scheduler(), @ref discord_gateway_events
  */
-typedef enum discord_event_scheduler (*discord_event_scheduler)(
+typedef enum discord_event_scheduler (*discord_on_scheduler)(
   struct discord *client,
   struct sized_buffer *event_data,
   enum discord_gateway_events event);
@@ -2321,7 +2321,7 @@ typedef enum discord_event_scheduler (*discord_event_scheduler)(
  * @see @ref discord_event_scheduler, @ref discord_gateway_events
  */
 void discord_set_event_scheduler(struct discord *client,
-                                 discord_event_scheduler callback);
+                                 discord_on_scheduler callback);
 
 /** @defgroup DiscordCallbackTypes
  *  @{ */

@@ -483,7 +483,7 @@ struct discord_gateway {
     /** user's callbacks */
     struct discord_gateway_cbs cbs;
     /** event execution flow callback */
-    discord_event_scheduler scheduler;
+    discord_on_scheduler scheduler;
   } cmds;
 };
 

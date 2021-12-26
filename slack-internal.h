@@ -91,7 +91,7 @@ struct slack_sm {
     /**
      * Handle context on how each event callback is executed
      * @see slack_set_scheduler() */
-    slack_event_scheduler scheduler;
+    slack_on_scheduler scheduler;
   } cbs;
 };
 
