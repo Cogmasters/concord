@@ -42,7 +42,6 @@ discord_get_global_application_commands(
     REQUEST_ATTR_LIST_INIT(discord_application_command, ret);
 
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/commands",
@@ -87,7 +86,6 @@ discord_get_global_application_command(struct discord *client,
 
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/commands/%" PRIu64,
@@ -168,7 +166,6 @@ discord_get_guild_application_commands(
 
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -219,7 +216,6 @@ discord_get_guild_application_command(struct discord *client,
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -310,7 +306,6 @@ discord_get_guild_application_command_permissions(
 
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -332,7 +327,6 @@ discord_get_application_command_permissions(
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -409,7 +403,6 @@ discord_get_guild_audit_log(struct discord *client,
   char query[1024] = "";
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   if (params) {
     size_t offset = 0;
@@ -455,7 +448,6 @@ discord_get_channel(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_channel, ret);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64, channel_id);
@@ -506,7 +498,6 @@ discord_get_channel_messages(
   char query[1024] = "";
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   if (params) {
     size_t offset = 0;
@@ -549,7 +540,6 @@ discord_get_channel_message(struct discord *client,
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/messages/%" PRIu64,
@@ -717,7 +707,6 @@ discord_get_reactions(struct discord *client,
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   if (params) {
     size_t len;
@@ -912,7 +901,6 @@ discord_get_channel_invites(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_invite, ret);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/invites", channel_id);
@@ -998,7 +986,6 @@ discord_get_pinned_messages(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_message, ret);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/pins", channel_id);
@@ -1169,7 +1156,6 @@ discord_list_thread_members(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_thread_member, ret);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/thread-members",
@@ -1185,7 +1171,6 @@ discord_list_active_threads(struct discord *client,
     REQUEST_ATTR_INIT(discord_thread_response_body, body);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, body != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/threads/active",
@@ -1205,7 +1190,6 @@ discord_list_public_archived_threads(struct discord *client,
   size_t offset = 0;
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, body != NULL, ORCA_BAD_PARAMETER);
 
   if (before) {
     offset += snprintf(query + offset, sizeof(query) - offset,
@@ -1238,7 +1222,6 @@ discord_list_private_archived_threads(
   size_t offset = 0;
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, body != NULL, ORCA_BAD_PARAMETER);
 
   if (before) {
     offset += snprintf(query + offset, sizeof(query) - offset,
@@ -1271,7 +1254,6 @@ discord_list_joined_private_archived_threads(
   size_t offset = 0;
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, body != NULL, ORCA_BAD_PARAMETER);
 
   if (before) {
     offset += snprintf(query + offset, sizeof(query) - offset,
@@ -1303,7 +1285,6 @@ discord_list_guild_emojis(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_emoji, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/emojis", guild_id);
@@ -1319,7 +1300,6 @@ discord_get_guild_emoji(struct discord *client,
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, emoji_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
@@ -1395,8 +1375,6 @@ discord_get_gateway(struct discord *client, struct sized_buffer *ret)
                                        (void (*)(char *, size_t, void *))
                                          & cee_sized_buffer_from_json };
 
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
-
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/gateway");
 }
@@ -1407,8 +1385,6 @@ discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
   struct discord_request_attr attr = { ret, sizeof(struct sized_buffer), NULL,
                                        (void (*)(char *, size_t, void *))
                                          & cee_sized_buffer_from_json };
-
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/gateway/bot");
@@ -1427,7 +1403,6 @@ discord_get_guild_template(struct discord *client,
     REQUEST_ATTR_INIT(discord_guild_template, ret);
 
   ORCA_EXPECT(client, !IS_EMPTY_STRING(code), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/templates/%s", code);
@@ -1446,7 +1421,6 @@ discord_create_guild_template(
   char buf[256];
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   body.size =
     discord_create_guild_template_params_to_json_v(buf, sizeof(buf), params);
@@ -1466,7 +1440,6 @@ discord_sync_guild_template(struct discord *client,
     REQUEST_ATTR_INIT(discord_guild_template, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_PUT,
                              "/guilds/%" PRIu64 "/templates/%s", guild_id,
@@ -1503,7 +1476,6 @@ discord_get_guild(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_guild, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64, guild_id);
@@ -1518,7 +1490,6 @@ discord_get_guild_preview(struct discord *client,
     REQUEST_ATTR_INIT(discord_guild_preview, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/preview", guild_id);
@@ -1562,7 +1533,6 @@ discord_get_guild_channels(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_channel, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/channels", guild_id);
@@ -1621,7 +1591,6 @@ discord_get_guild_member(struct discord *client,
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
@@ -1639,7 +1608,6 @@ discord_list_guild_members(struct discord *client,
   char query[1024] = "";
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   if (params) {
     size_t offset = 0;
@@ -1673,7 +1641,6 @@ discord_search_guild_members(
   char query[1024] = "";
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   if (params) {
     size_t offset = 0;
@@ -1852,7 +1819,6 @@ discord_get_guild_bans(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_ban, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/bans", guild_id);
@@ -1868,7 +1834,6 @@ discord_get_guild_ban(struct discord *client,
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
@@ -1921,7 +1886,6 @@ discord_get_guild_roles(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_role, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/roles", guild_id);
@@ -2039,7 +2003,6 @@ discord_get_guild_invites(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_invite, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/invites", guild_id);
@@ -2066,7 +2029,6 @@ discord_get_guild_vanity_url(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_invite, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/vanity-url", guild_id);
@@ -2081,7 +2043,6 @@ discord_get_guild_welcome_screen(struct discord *client,
     REQUEST_ATTR_INIT(discord_welcome_screen, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/welcome-screen", guild_id);
@@ -2128,7 +2089,6 @@ discord_get_original_interaction_response(
 
   ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/messages/@original",
@@ -2238,7 +2198,6 @@ discord_get_followup_message(struct discord *client,
   ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/%" PRIu64,
@@ -2312,7 +2271,6 @@ discord_get_invite(struct discord *client,
 
   ORCA_EXPECT(client, !IS_EMPTY_STRING(invite_code), ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   body.size = discord_get_invite_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2343,8 +2301,6 @@ discord_get_current_user(struct discord *client, struct discord_user *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_user, ret);
 
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
-
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/users/@me");
 }
@@ -2357,7 +2313,6 @@ discord_get_user(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_user, ret);
 
   ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/users/%" PRIu64, user_id);
@@ -2388,8 +2343,6 @@ discord_get_current_user_guilds(struct discord *client,
 {
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_guild, ret);
-
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/users/@me/guilds");
@@ -2451,8 +2404,6 @@ discord_get_user_connections(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_connection, ret);
 
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
-
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/users/@me/connections");
 }
@@ -2467,8 +2418,6 @@ discord_list_voice_regions(struct discord *client,
 {
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_voice_region, ret);
-
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/voice/regions");
@@ -2491,7 +2440,6 @@ discord_create_webhook(struct discord *client,
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(params->name), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   body.size = discord_create_webhook_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2509,7 +2457,6 @@ discord_get_channel_webhooks(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_webhook, ret);
 
   ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/webhooks", channel_id);
@@ -2524,7 +2471,6 @@ discord_get_guild_webhooks(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_webhook, ret);
 
   ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/webhooks", guild_id);
@@ -2538,7 +2484,6 @@ discord_get_webhook(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_webhook, ret);
 
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64, webhook_id);
@@ -2554,7 +2499,6 @@ discord_get_webhook_with_token(struct discord *client,
 
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s", webhook_id,
@@ -2682,7 +2626,6 @@ discord_get_webhook_message(struct discord *client,
   ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/%" PRIu64, webhook_id,
