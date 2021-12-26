@@ -27,14 +27,11 @@ The default amount of threads in the threadpool is 2, and its maximum pending ta
    For a quick example check `Example`_.
 
 
-Schedule Types
---------------
+discord_set_event_scheduler() - set Event scheduler
+---------------------------------------------------
 
+.. doxygentypedef:: discord_on_scheduler
 .. doxygenenum:: discord_event_scheduler
-
-Set Event Scheduler
--------------------
-
 .. doxygenfunction:: discord_set_event_scheduler
 
 
