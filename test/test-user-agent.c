@@ -2,11 +2,10 @@
 #include <string.h>
 
 #include "user-agent.h"
-#include "cee-utils.h"
 
 void load(char *str, size_t len, void *ptr)
 {
-  fprintf(stderr, "%.*s", (int)len, str);
+  fprintf(stderr, "%.*s\n", (int)len, str);
 }
 
 int commit(char *base_url, struct logconf *conf)
