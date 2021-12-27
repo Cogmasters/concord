@@ -547,7 +547,8 @@ _discord_context_set_timeout(struct discord_adapter *adapter,
                              u64_unix_ms_t timeout,
                              struct discord_context *cxt)
 {
-  cxt->bucket->freeze = true;
+  if (cxt->bucket) cxt->bucket->freeze = true;
+
   cxt->timeout_ms = timeout;
 
   heap_insert(&adapter->async.timeouts, &cxt->node, &timer_less_than);
@@ -663,9 +664,12 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
     }
 
     heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
-    cxt->bucket->freeze = false;
 
-    QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
+    /* it might just be timed out without being assigned to a bucket (429'd) */
+    if (cxt->bucket) {
+      cxt->bucket->freeze = false;
+      QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
+    }
   }
 
   return ORCA_OK;
@@ -882,7 +886,8 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
     cxt = CONTAINEROF(hmin, struct discord_context, node);
 
     heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
-    cxt->bucket->freeze = false;
+
+    if (cxt->bucket) cxt->bucket->freeze = false;
 
     QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
   }
