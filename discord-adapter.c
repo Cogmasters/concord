@@ -474,16 +474,17 @@ _discord_context_stop(struct discord_context *cxt)
   cxt->bucket = NULL;
   cxt->done = NULL;
   cxt->fail = NULL;
+  cxt->body.buf.size = 0;
+  cxt->method = 0;
   *cxt->endpoint = '\0';
   *cxt->route = '\0';
   cxt->conn = NULL;
+  cxt->timeout_ms = 0;
 
-  memset(&cxt->udata, 0, sizeof cxt->udata);
-
-  if (cxt->attr.attachments) {
+  if (cxt->attr.attachments)
     discord_attachment_list_free(cxt->attr.attachments);
-  }
   memset(&cxt->attr, 0, sizeof(struct discord_request_attr));
+  memset(&cxt->udata, 0, sizeof cxt->udata);
 }
 
 static void
