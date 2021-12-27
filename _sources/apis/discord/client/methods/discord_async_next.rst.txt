@@ -27,7 +27,7 @@ Example
     {
       const struct discord_message *msg = ret->ret;
 
-      log_info("Message %" PRIu64 " was created successfully!", msg->id);
+      log_info("Sent: %s", msg->content);
     }
 
     void on_msg_fail(struct discord *client, struct discord_async_err *err)

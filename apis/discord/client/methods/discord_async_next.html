@@ -1434,7 +1434,7 @@
 <span class="p">{</span>
   <span class="k">const</span> <span class="k">struct</span> <span class="n">discord_message</span> <span class="o">*</span><span class="n">msg</span> <span class="o">=</span> <span class="n">ret</span><span class="o">-&gt;</span><span class="n">ret</span><span class="p">;</span>
 
-  <span class="n">log_info</span><span class="p">(</span><span class="s">&quot;Message %&quot;</span> <span class="n">PRIu64</span> <span class="s">&quot; was created successfully!&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
+  <span class="n">log_info</span><span class="p">(</span><span class="s">&quot;Sent: %s&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="o">-&gt;</span><span class="n">content</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span> <span class="nf">on_msg_fail</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span><span class="p">,</span> <span class="k">struct</span> <span class="n">discord_async_err</span> <span class="o">*</span><span class="n">err</span><span class="p">)</span>
