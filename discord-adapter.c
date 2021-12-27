@@ -6,7 +6,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-/* MT-Unsafe alternative to discord_timestamp() */
+/* No-lock alternative to discord_timestamp() */
 #define NOW(p_adapter) (CLIENT(p_adapter, adapter)->gw.timer->now)
 
 static void
@@ -235,15 +235,12 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
   }
 }
 
-static void _discord_context_set_timeout(struct discord_adapter *adapter,
-                                         u64_unix_ms_t timeout,
-                                         struct discord_context *cxt);
-
 /* return true if there should be a retry attempt */
 static bool
 _discord_adapter_get_info(struct discord_adapter *adapter,
                           struct discord_context *cxt,
-                          struct ua_info *info)
+                          struct ua_info *info,
+                          int64_t *wait_ms)
 {
   if (info->code != ORCA_HTTP_CODE) {
     /** ORCA_OK or internal error */
@@ -271,7 +268,6 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
     double retry_after = 1.0;
     bool is_global = false;
     char message[256] = "";
-    int64_t wait_ms = 0LL;
 
     json_extract(body.start, body.size,
                  "(global):b (message):.*s (retry_after):lf", &is_global,
@@ -282,40 +278,19 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
       u64_unix_ms_t global;
 
       global = discord_adapter_get_global_wait(adapter);
-      wait_ms = (int64_t)(global - discord_timestamp(client));
+      *wait_ms = (int64_t)(global - discord_timestamp(client));
 
       logconf_warn(&adapter->conf,
                    "429 GLOBAL RATELIMITING (wait: %" PRId64 " ms) : %s",
-                   wait_ms, message);
-
-      /* TODO: this blocks the event loop, which means Gateway's heartbeating
-       * won't work */
-      cee_sleep_ms(wait_ms);
-
-      return true;
+                   *wait_ms, message);
     }
-
-    wait_ms = (int64_t)(1000 * retry_after);
-
-    if (cxt) {
-      /* non-blocking timeout */
-      u64_unix_ms_t timeout = NOW(adapter) + wait_ms;
+    else {
+      *wait_ms = (int64_t)(1000 * retry_after);
 
       logconf_warn(&adapter->conf,
-                   "429 RATELIMITING (timeout: %" PRId64 " ms) : %s", wait_ms,
+                   "429 RATELIMITING (wait: %" PRId64 " ms) : %s", *wait_ms,
                    message);
-
-      _discord_context_set_timeout(adapter, timeout, cxt);
-
-      /* timed-out requests will be retried anyway */
-      return false;
     }
-
-    logconf_warn(&adapter->conf,
-                 "429 RATELIMITING (wait: %" PRId64 " ms) : %s", wait_ms,
-                 message);
-
-    cee_sleep_ms(wait_ms);
 
     return true;
   }
@@ -371,6 +346,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       logconf_info(&adapter->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
                    b->hash, wait_ms);
 
+      /* TODO: this blocks the event loop, which means Gateway's heartbeating
+       * won't work */
       cee_sleep_ms(wait_ms);
     }
 
@@ -382,7 +359,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       struct sized_buffer body;
 
       ua_info_extract(conn, &info);
-      retry = _discord_adapter_get_info(adapter, NULL, &info);
+      retry = _discord_adapter_get_info(adapter, NULL, &info, &wait_ms);
 
       body = ua_info_get_body(&info);
       if (info.code != ORCA_OK) {
@@ -404,6 +381,12 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
       discord_bucket_build(adapter, b, route, &info);
       ua_info_cleanup(&info);
+
+      if (wait_ms) {
+        /* TODO: this blocks the event loop, which means Gateway's heartbeating
+         * won't work */
+        cee_sleep_ms(wait_ms);
+      }
     } break;
     case ORCA_CURLE_INTERNAL:
       logconf_error(&adapter->conf, "Curl internal error, will retry again");
@@ -547,7 +530,7 @@ _discord_context_set_timeout(struct discord_adapter *adapter,
                              u64_unix_ms_t timeout,
                              struct discord_context *cxt)
 {
-  if (cxt->bucket) cxt->bucket->freeze = true;
+  cxt->bucket->freeze = true;
 
   cxt->timeout_ms = timeout;
 
@@ -665,11 +648,8 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
 
     heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
 
-    /* it might just be timed out without being assigned to a bucket (429'd) */
-    if (cxt->bucket) {
-      cxt->bucket->freeze = false;
-      QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
-    }
+    cxt->bucket->freeze = false;
+    QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
   }
 
   return ORCA_OK;
@@ -753,17 +733,19 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 {
   struct discord *client = CLIENT(adapter, adapter);
   struct discord_context *cxt;
+  int64_t wait_ms = 0LL;
   ORCAcode code;
   bool retry;
 
   curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
+
   switch (msg->data.result) {
   case CURLE_OK: {
     struct ua_info info = { 0 };
     struct sized_buffer body;
 
     ua_info_extract(cxt->conn, &info);
-    retry = _discord_adapter_get_info(adapter, cxt, &info);
+    retry = _discord_adapter_get_info(adapter, cxt, &info, &wait_ms);
 
     body = ua_info_get_body(&info);
     if (info.code != ORCA_OK) {
@@ -818,13 +800,19 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     break;
   }
 
-  /* remove from busy queue */
-  QUEUE_REMOVE(&cxt->entry);
-
   /* enqueue request for retry or recycle */
+  QUEUE_REMOVE(&cxt->entry);
   if (retry) {
     ua_conn_reset(cxt->conn);
-    QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
+
+    if (wait_ms) {
+      u64_unix_ms_t timeout = NOW(adapter) + wait_ms;
+
+      _discord_context_set_timeout(adapter, timeout, cxt);
+    }
+    else {
+      QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
+    }
   }
   else {
     if (cxt->udata.cleanup) cxt->udata.cleanup(cxt->udata.data);
@@ -887,7 +875,7 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
 
     heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
 
-    if (cxt->bucket) cxt->bucket->freeze = false;
+    cxt->bucket->freeze = false;
 
     QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
   }
