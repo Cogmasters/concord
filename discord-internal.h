@@ -87,6 +87,9 @@ struct discord_context {
     void *data;
     void (*cleanup)(void *data);
   } udata;
+
+  /** current retry attempt (stop at adapter->retry_limit) */
+  int retry_attempt;
 };
 
 /** @brief The handle used for performing HTTP Requests */
@@ -97,7 +100,7 @@ struct discord_adapter {
   struct user_agent *ua;
   /** if true next request will be dealt with asynchronously */
   bool async_enable;
-  /** curl_multi handle for non-blocking requests */
+  /** curl_multi handle for performing non-blocking requests */
   CURLM *mhandle;
   /** routes discovered (declared at discord-adapter-ratelimit.c) */
   struct _discord_route *routes;
@@ -132,6 +135,8 @@ struct discord_adapter {
 
   /** error storage */
   char errbuf[2048];
+  /** max amount of retries before a failed request gives up */
+  int retry_limit;
 };
 
 /**

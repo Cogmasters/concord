@@ -68,6 +68,8 @@ discord_adapter_init(struct discord_adapter *adapter,
   QUEUE_INIT(adapter->async.idleq);
   /* initialize min-heap for handling request timeouts */
   heap_init(&adapter->async.timeouts);
+
+  adapter->retry_limit = 3; /**< hard limit for now */
 }
 
 static void
@@ -295,10 +297,10 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
     return true;
   }
   default:
-    if (info->httpcode >= 500) {
-      /* TODO: server error, implement retry up to X amount logic */
+    if (info->httpcode >= 500) { /* Server Error */
+      return true;
     }
-    return true;
+    return false;
   }
 }
 
@@ -318,8 +320,9 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
   struct discord_context cxt = { 0 };
   struct discord_bucket *b;
   struct ua_conn *conn;
-  ORCAcode code;
+  int retry_attempt = 0;
   bool retry;
+  ORCAcode code;
 
   b = discord_bucket_get(adapter, route);
   conn = ua_conn_start(adapter->ua);
@@ -399,7 +402,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     }
 
     ua_conn_reset(conn);
-  } while (retry);
+
+  } while (retry && retry_attempt++ < adapter->retry_limit);
   pthread_mutex_unlock(&b->lock);
 
   /* reset conn and mark it as free to use */
@@ -450,10 +454,8 @@ timer_less_than(const struct heap_node *ha, const struct heap_node *hb)
 }
 
 static void
-_discord_context_stop(struct discord_context *cxt)
+_discord_context_reset(struct discord_context *cxt)
 {
-  ua_conn_stop(cxt->conn);
-
   cxt->bucket = NULL;
   cxt->done = NULL;
   cxt->fail = NULL;
@@ -463,9 +465,11 @@ _discord_context_stop(struct discord_context *cxt)
   *cxt->route = '\0';
   cxt->conn = NULL;
   cxt->timeout_ms = 0;
+  cxt->retry_attempt = 0;
 
   if (cxt->attr.attachments)
     discord_attachment_list_free(cxt->attr.attachments);
+
   memset(&cxt->attr, 0, sizeof(struct discord_request_attr));
   memset(&cxt->udata, 0, sizeof cxt->udata);
 }
@@ -802,7 +806,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
   /* enqueue request for retry or recycle */
   QUEUE_REMOVE(&cxt->entry);
-  if (retry) {
+  if (retry && cxt->retry_attempt++ < adapter->retry_limit) {
     ua_conn_reset(cxt->conn);
 
     if (wait_ms) {
@@ -816,7 +820,10 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
   }
   else {
     if (cxt->udata.cleanup) cxt->udata.cleanup(cxt->udata.data);
-    _discord_context_stop(cxt);
+
+    ua_conn_stop(cxt->conn);
+    _discord_context_reset(cxt);
+
     QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
   }
 
