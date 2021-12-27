@@ -302,10 +302,8 @@ _discord_bucket_populate(struct discord_adapter *adapter,
     b->reset_tstamp = now + (1000 * strtod(reset.start, NULL) - offset);
   }
 
-  logconf_debug(
-    &adapter->conf,
-    "[%.4s] Remaining = %ld | Reset = %" PRIu64 " (%" PRId64 " ms)", b->hash,
-    b->remaining, b->reset_tstamp, (int64_t)(b->reset_tstamp - now));
+  logconf_debug(&adapter->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
+                b->hash, b->remaining, b->reset_tstamp);
 }
 
 /* in case of asynchronous requests, check if successive requests with
