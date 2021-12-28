@@ -102,7 +102,6 @@ else ifneq (,$(findstring $(CC),stensal-c sfc)) # ifeq stensal-c OR sfc
 	CFLAGS += -DBEARSSL
 else
 	LIBS_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl -lcrypto
-	CFLAGS += -Wno-unused-but-set-variable
 endif
 
 ifeq ($(static_debug),1)

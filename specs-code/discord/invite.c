@@ -71,10 +71,8 @@ void discord_invite_from_json_p(char *json, size_t len, struct discord_invite **
 }
 void discord_invite_from_json(char *json, size_t len, struct discord_invite *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_invite_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
                 "(code):?s,"
@@ -123,7 +121,6 @@ void discord_invite_from_json(char *json, size_t len, struct discord_invite *p)
   /* specs/discord/invite.json:29:20
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
                 &p->approximate_member_count);
-  ret = r;
 }
 
 size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p)
@@ -344,10 +341,8 @@ void discord_invite_metadata_from_json_p(char *json, size_t len, struct discord_
 }
 void discord_invite_metadata_from_json(char *json, size_t len, struct discord_invite_metadata *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_invite_metadata_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */
                 "(user):d,"
@@ -378,7 +373,6 @@ void discord_invite_metadata_from_json(char *json, size_t len, struct discord_in
   /* specs/discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
                 cee_iso8601_to_unix_ms, &p->created_at);
-  ret = r;
 }
 
 size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_invite_metadata *p)

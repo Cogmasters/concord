@@ -20,10 +20,8 @@ void github_user_from_json_p(char *json, size_t len, struct github_user **pp)
 }
 void github_user_from_json(char *json, size_t len, struct github_user *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   github_user_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/github/user.json:12:28
      '{ "name": "login", "type":{ "base":"char", "dec":"*"}}' */
                 "(login):?s,"
@@ -150,7 +148,6 @@ void github_user_from_json(char *json, size_t len, struct github_user *p)
   /* specs/github/user.json:32:28
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
                 &p->updated_at);
-  ret = r;
 }
 
 size_t github_user_to_json(char *json, size_t len, struct github_user *p)

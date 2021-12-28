@@ -20,10 +20,8 @@ void github_gist_create_params_from_json_p(char *json, size_t len, struct github
 }
 void github_gist_create_params_from_json(char *json, size_t len, struct github_gist_create_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   github_gist_create_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 "(description):?s,"
@@ -48,7 +46,6 @@ void github_gist_create_params_from_json(char *json, size_t len, struct github_g
   /* specs/github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 &p->public);
-  ret = r;
 }
 
 size_t github_gist_create_params_to_json(char *json, size_t len, struct github_gist_create_params *p)

@@ -20,10 +20,8 @@ void discord_modify_current_user_params_from_json_p(char *json, size_t len, stru
 }
 void discord_modify_current_user_params_from_json(char *json, size_t len, struct discord_modify_current_user_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_current_user_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/user.params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
                 "(username):?s,"
@@ -36,7 +34,6 @@ void discord_modify_current_user_params_from_json(char *json, size_t len, struct
   /* specs/discord/user.params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
                 &p->avatar);
-  ret = r;
 }
 
 size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct discord_modify_current_user_params *p)
@@ -150,17 +147,14 @@ void discord_create_dm_params_from_json_p(char *json, size_t len, struct discord
 }
 void discord_create_dm_params_from_json(char *json, size_t len, struct discord_create_dm_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_dm_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/user.params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
                 "(recipient_id):F,",
   /* specs/discord/user.params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
                 cee_strtou64, &p->recipient_id);
-  ret = r;
 }
 
 size_t discord_create_dm_params_to_json(char *json, size_t len, struct discord_create_dm_params *p)
@@ -257,10 +251,8 @@ void discord_create_group_dm_params_from_json_p(char *json, size_t len, struct d
 }
 void discord_create_group_dm_params_from_json(char *json, size_t len, struct discord_create_group_dm_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_group_dm_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/user.params.json:31:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
@@ -277,7 +269,6 @@ void discord_create_group_dm_params_from_json(char *json, size_t len, struct dis
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"a dictionary of user ids to their respective nicknames"}' */
                 ja_u64_list_from_json, &p->nicks);
-  ret = r;
 }
 
 size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct discord_create_group_dm_params *p)

@@ -20,10 +20,8 @@ void slack_users_info_params_from_json_p(char *json, size_t len, struct slack_us
 }
 void slack_users_info_params_from_json(char *json, size_t len, struct slack_users_info_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   slack_users_info_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/slack/users.params.json:12:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.", "inject_if_not":null }' */
                 "(token):?s,"
@@ -42,7 +40,6 @@ void slack_users_info_params_from_json(char *json, size_t len, struct slack_user
   /* specs/slack/users.params.json:14:20
      '{ "name": "include_locale", "type":{ "base":"bool" }, "comment":"Set this to true to receive the locale for this user. Defaults to false", "inject_if_not":false }' */
                 &p->include_locale);
-  ret = r;
 }
 
 size_t slack_users_info_params_to_json(char *json, size_t len, struct slack_users_info_params *p)

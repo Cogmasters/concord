@@ -1516,10 +1516,8 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
           t, t);
 
   fprintf(fp, "{\n");
-  fprintf(fp, "  static size_t ret=0; /**< used for debugging */\n");
-  fprintf(fp, "  size_t r=0;\n");
   fprintf(fp, "  %s_init(p);\n", t);
-  fprintf(fp, "  r=json_extract(json, len, \n");
+  fprintf(fp, "  json_extract(json, len, \n");
 
 #ifdef JSON_STRUCT_METADATA
   for (i = 0; i < fields_amt; i++) {
@@ -1560,7 +1558,6 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
   emit_field_spec(NULL, fp, s->fields[i]);
   emit_json_extractor_arg(NULL, fp, s->fields[i], true);
 #endif
-  fprintf(fp, "  ret = r;\n");
   fprintf(fp, "}\n");
 }
 

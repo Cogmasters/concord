@@ -405,7 +405,7 @@ github_update_a_commit(struct github *client, char *branch, char *commit_sha)
   body.start = buf;
 
   return github_adapter_run(
-    &client->adapter, NULL, NULL, HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
+    &client->adapter, NULL, &body, HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
     client->presets.username, client->presets.repo, branch);
 }
 

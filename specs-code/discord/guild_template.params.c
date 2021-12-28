@@ -20,10 +20,8 @@ void discord_create_guild_from_guild_template_params_from_json_p(char *json, siz
 }
 void discord_create_guild_from_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_from_guild_template_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild_template.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
@@ -36,7 +34,6 @@ void discord_create_guild_from_guild_template_params_from_json(char *json, size_
   /* specs/discord/guild_template.params.json:13:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "comment":"base64 128x128 image for the guild icon", "inject_if_not": null}' */
                 &p->icon);
-  ret = r;
 }
 
 size_t discord_create_guild_from_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_from_guild_template_params *p)
@@ -151,10 +148,8 @@ void discord_create_guild_template_params_from_json_p(char *json, size_t len, st
 }
 void discord_create_guild_template_params_from_json(char *json, size_t len, struct discord_create_guild_template_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_template_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild_template.params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"}' */
                 "(name):?s,"
@@ -167,7 +162,6 @@ void discord_create_guild_template_params_from_json(char *json, size_t len, stru
   /* specs/discord/guild_template.params.json:23:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars", "inject_if_not": null}' */
                 &p->description);
-  ret = r;
 }
 
 size_t discord_create_guild_template_params_to_json(char *json, size_t len, struct discord_create_guild_template_params *p)
@@ -282,10 +276,8 @@ void discord_modify_guild_template_params_from_json_p(char *json, size_t len, st
 }
 void discord_modify_guild_template_params_from_json(char *json, size_t len, struct discord_modify_guild_template_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_template_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild_template.params.json:32:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild", "inject_if_not": null}' */
                 "(name):?s,"
@@ -298,7 +290,6 @@ void discord_modify_guild_template_params_from_json(char *json, size_t len, stru
   /* specs/discord/guild_template.params.json:33:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"description for the template (0-120) chars", "inject_if_not": null}' */
                 &p->description);
-  ret = r;
 }
 
 size_t discord_modify_guild_template_params_to_json(char *json, size_t len, struct discord_modify_guild_template_params *p)

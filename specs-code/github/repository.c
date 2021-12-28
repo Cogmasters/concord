@@ -20,17 +20,14 @@ void github_topic_from_json_p(char *json, size_t len, struct github_topic **pp)
 }
 void github_topic_from_json(char *json, size_t len, struct github_topic *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   github_topic_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 "(names):F,",
   /* specs/github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 ja_str_list_from_json, &p->names);
-  ret = r;
 }
 
 size_t github_topic_to_json(char *json, size_t len, struct github_topic *p)

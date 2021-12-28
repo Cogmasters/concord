@@ -20,10 +20,8 @@ void discord_create_stage_instance_params_from_json_p(char *json, size_t len, st
 }
 void discord_create_stage_instance_params_from_json(char *json, size_t len, struct discord_create_stage_instance_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_stage_instance_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
                 "(channel_id):F,"
@@ -42,7 +40,6 @@ void discord_create_stage_instance_params_from_json(char *json, size_t len, stru
   /* specs/discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 &p->privacy_level);
-  ret = r;
 }
 
 size_t discord_create_stage_instance_params_to_json(char *json, size_t len, struct discord_create_stage_instance_params *p)
@@ -172,10 +169,8 @@ void discord_modify_stage_instance_params_from_json_p(char *json, size_t len, st
 }
 void discord_modify_stage_instance_params_from_json(char *json, size_t len, struct discord_modify_stage_instance_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_stage_instance_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):?s,"
@@ -188,7 +183,6 @@ void discord_modify_stage_instance_params_from_json(char *json, size_t len, stru
   /* specs/discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 &p->privacy_level);
-  ret = r;
 }
 
 size_t discord_modify_stage_instance_params_to_json(char *json, size_t len, struct discord_modify_stage_instance_params *p)

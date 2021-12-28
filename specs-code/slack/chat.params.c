@@ -20,10 +20,8 @@ void slack_chat_post_message_params_from_json_p(char *json, size_t len, struct s
 }
 void slack_chat_post_message_params_from_json(char *json, size_t len, struct slack_chat_post_message_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   slack_chat_post_message_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/slack/chat.params.json:12:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.", "inject_if_not":null }' */
                 "(token):?s,"
@@ -120,7 +118,6 @@ void slack_chat_post_message_params_from_json(char *json, size_t len, struct sla
   /* specs/slack/chat.params.json:27:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"Set your bot's user name. Must be used in conjunction with as_user set to false, otherwise ignored.", "inject_if_not":null }' */
                 &p->username);
-  ret = r;
 }
 
 size_t slack_chat_post_message_params_to_json(char *json, size_t len, struct slack_chat_post_message_params *p)

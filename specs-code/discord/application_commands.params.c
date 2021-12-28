@@ -20,10 +20,8 @@ void discord_create_global_application_command_params_from_json_p(char *json, si
 }
 void discord_create_global_application_command_params_from_json(char *json, size_t len, struct discord_create_global_application_command_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_global_application_command_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/application_commands.params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
                 "(name):?s,"
@@ -54,7 +52,6 @@ void discord_create_global_application_command_params_from_json(char *json, size
   /* specs/discord/application_commands.params.json:17:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
                 &p->type);
-  ret = r;
 }
 
 size_t discord_create_global_application_command_params_to_json(char *json, size_t len, struct discord_create_global_application_command_params *p)
@@ -219,10 +216,8 @@ void discord_edit_global_application_command_params_from_json_p(char *json, size
 }
 void discord_edit_global_application_command_params_from_json(char *json, size_t len, struct discord_edit_global_application_command_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_edit_global_application_command_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/application_commands.params.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
                 "(name):?s,"
@@ -247,7 +242,6 @@ void discord_edit_global_application_command_params_from_json(char *json, size_t
   /* specs/discord/application_commands.params.json:30:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 &p->default_permission);
-  ret = r;
 }
 
 size_t discord_edit_global_application_command_params_to_json(char *json, size_t len, struct discord_edit_global_application_command_params *p)
@@ -398,10 +392,8 @@ void discord_create_guild_application_command_params_from_json_p(char *json, siz
 }
 void discord_create_guild_application_command_params_from_json(char *json, size_t len, struct discord_create_guild_application_command_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_application_command_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/application_commands.params.json:40:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
                 "(name):?s,"
@@ -432,7 +424,6 @@ void discord_create_guild_application_command_params_from_json(char *json, size_
   /* specs/discord/application_commands.params.json:44:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
                 &p->type);
-  ret = r;
 }
 
 size_t discord_create_guild_application_command_params_to_json(char *json, size_t len, struct discord_create_guild_application_command_params *p)
@@ -597,10 +588,8 @@ void discord_edit_guild_application_command_params_from_json_p(char *json, size_
 }
 void discord_edit_guild_application_command_params_from_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_edit_guild_application_command_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/application_commands.params.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
                 "(name):?s,"
@@ -625,7 +614,6 @@ void discord_edit_guild_application_command_params_from_json(char *json, size_t 
   /* specs/discord/application_commands.params.json:57:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
                 &p->default_permission);
-  ret = r;
 }
 
 size_t discord_edit_guild_application_command_params_to_json(char *json, size_t len, struct discord_edit_guild_application_command_params *p)
@@ -776,17 +764,14 @@ void discord_edit_application_command_permissions_params_from_json_p(char *json,
 }
 void discord_edit_application_command_permissions_params_from_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_edit_application_command_permissions_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/application_commands.params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 "(permissions):F,",
   /* specs/discord/application_commands.params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
                 discord_application_command_permissions_list_from_json, &p->permissions);
-  ret = r;
 }
 
 size_t discord_edit_application_command_permissions_params_to_json(char *json, size_t len, struct discord_edit_application_command_permissions_params *p)

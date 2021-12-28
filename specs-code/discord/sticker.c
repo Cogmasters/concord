@@ -128,10 +128,8 @@ void discord_sticker_from_json_p(char *json, size_t len, struct discord_sticker 
 }
 void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_sticker_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/sticker.json:31:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
                 "(id):F,"
@@ -204,7 +202,6 @@ void discord_sticker_from_json(char *json, size_t len, struct discord_sticker *p
   /* specs/discord/sticker.json:42:18
      '{"name":"sort_value", "type":{"base":"int"}, "comment":"the standard sticker's sort order within its pack"}' */
                 &p->sort_value);
-  ret = r;
 }
 
 size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p)
@@ -487,10 +484,8 @@ void discord_sticker_item_from_json_p(char *json, size_t len, struct discord_sti
 }
 void discord_sticker_item_from_json(char *json, size_t len, struct discord_sticker_item *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_sticker_item_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/sticker.json:50:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
                 "(id):F,"
@@ -509,7 +504,6 @@ void discord_sticker_item_from_json(char *json, size_t len, struct discord_stick
   /* specs/discord/sticker.json:52:18
      '{"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"}' */
                 &p->format_type);
-  ret = r;
 }
 
 size_t discord_sticker_item_to_json(char *json, size_t len, struct discord_sticker_item *p)
@@ -638,10 +632,8 @@ void discord_sticker_pack_from_json_p(char *json, size_t len, struct discord_sti
 }
 void discord_sticker_pack_from_json(char *json, size_t len, struct discord_sticker_pack *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_sticker_pack_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/sticker.json:60:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack"}' */
                 "(id):F,"
@@ -684,7 +676,6 @@ void discord_sticker_pack_from_json(char *json, size_t len, struct discord_stick
   /* specs/discord/sticker.json:66:18
      '{"name":"banner_asset_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack's banner image"}' */
                 cee_strtou64, &p->banner_asset_id);
-  ret = r;
 }
 
 size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_sticker_pack *p)

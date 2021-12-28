@@ -20,10 +20,8 @@ void reddit_comment_params_from_json_p(char *json, size_t len, struct reddit_com
 }
 void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comment_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   reddit_comment_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/reddit/links_n_comments.json:13:20
      '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
                 "(api_type):?s,"
@@ -60,7 +58,6 @@ void reddit_comment_params_from_json(char *json, size_t len, struct reddit_comme
   /* specs/reddit/links_n_comments.json:18:20
      '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
                 &p->uh);
-  ret = r;
 }
 
 size_t reddit_comment_params_to_json(char *json, size_t len, struct reddit_comment_params *p)

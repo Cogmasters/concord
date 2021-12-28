@@ -20,10 +20,8 @@ void discord_component_from_json_p(char *json, size_t len, struct discord_compon
 }
 void discord_component_from_json(char *json, size_t len, struct discord_component *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_component_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/message_components.json:12:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
                 "(type):d,"
@@ -96,7 +94,6 @@ void discord_component_from_json(char *json, size_t len, struct discord_componen
   /* specs/discord/message_components.json:23:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
                 discord_component_list_from_json, &p->components);
-  ret = r;
 }
 
 size_t discord_component_to_json(char *json, size_t len, struct discord_component *p)
@@ -444,10 +441,8 @@ void discord_button_from_json_p(char *json, size_t len, struct discord_button **
 }
 void discord_button_from_json(char *json, size_t len, struct discord_button *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_button_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/message_components.json:44:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
                 "(type):d,"
@@ -490,7 +485,6 @@ void discord_button_from_json(char *json, size_t len, struct discord_button *p)
   /* specs/discord/message_components.json:50:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
                 &p->disabled);
-  ret = r;
 }
 
 size_t discord_button_to_json(char *json, size_t len, struct discord_button *p)
@@ -754,10 +748,8 @@ void discord_select_menu_from_json_p(char *json, size_t len, struct discord_sele
 }
 void discord_select_menu_from_json(char *json, size_t len, struct discord_select_menu *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_select_menu_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/message_components.json:73:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
                 "(type):d,"
@@ -800,7 +792,6 @@ void discord_select_menu_from_json(char *json, size_t len, struct discord_select
   /* specs/discord/message_components.json:79:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
                 &p->disabled);
-  ret = r;
 }
 
 size_t discord_select_menu_to_json(char *json, size_t len, struct discord_select_menu *p)
@@ -1001,10 +992,8 @@ void discord_select_option_from_json_p(char *json, size_t len, struct discord_se
 }
 void discord_select_option_from_json(char *json, size_t len, struct discord_select_option *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_select_option_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/message_components.json:88:18
      '{"name":"label", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"the user-facing name of the option, max 25 characters"}' */
                 "(label):?s,"
@@ -1035,7 +1024,6 @@ void discord_select_option_from_json(char *json, size_t len, struct discord_sele
   /* specs/discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
                 &p->Default);
-  ret = r;
 }
 
 size_t discord_select_option_to_json(char *json, size_t len, struct discord_select_option *p)

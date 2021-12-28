@@ -20,10 +20,8 @@ void discord_webhook_from_json_p(char *json, size_t len, struct discord_webhook 
 }
 void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_webhook_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" }' */
                 "(id):F,"
@@ -96,7 +94,6 @@ void discord_webhook_from_json(char *json, size_t len, struct discord_webhook *p
   /* specs/discord/webhook.json:23:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "comment":"the url used for executing the webhook (returned by the webhooks OAuth2 flow)", "inject_if_not":null }' */
                 &p->url);
-  ret = r;
 }
 
 size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p)

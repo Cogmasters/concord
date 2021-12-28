@@ -406,10 +406,8 @@ void discord_identify_from_json_p(char *json, size_t len, struct discord_identif
 }
 void discord_identify_from_json(char *json, size_t len, struct discord_identify *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_identify_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/gateway.json:143:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
                 "(token):?s,"
@@ -456,7 +454,6 @@ void discord_identify_from_json(char *json, size_t len, struct discord_identify 
   /* specs/discord/gateway.json:150:19
      '{ "name":"intents","type":{"base":"int"}}' */
                 &p->intents);
-  ret = r;
 }
 
 size_t discord_identify_to_json(char *json, size_t len, struct discord_identify *p)
@@ -668,10 +665,8 @@ void discord_voice_state_status_from_json_p(char *json, size_t len, struct disco
 }
 void discord_voice_state_status_from_json(char *json, size_t len, struct discord_voice_state_status *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_voice_state_status_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/gateway.json:160:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
                 "(guild_id):F,"
@@ -696,7 +691,6 @@ void discord_voice_state_status_from_json(char *json, size_t len, struct discord
   /* specs/discord/gateway.json:163:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
                 &p->self_deaf);
-  ret = r;
 }
 
 size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord_voice_state_status *p)
@@ -842,10 +836,8 @@ void discord_presence_status_from_json_p(char *json, size_t len, struct discord_
 }
 void discord_presence_status_from_json(char *json, size_t len, struct discord_presence_status *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_presence_status_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/gateway.json:173:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
                 "(since):F,"
@@ -870,7 +862,6 @@ void discord_presence_status_from_json(char *json, size_t len, struct discord_pr
   /* specs/discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
                 &p->afk);
-  ret = r;
 }
 
 size_t discord_presence_status_to_json(char *json, size_t len, struct discord_presence_status *p)
@@ -1019,10 +1010,8 @@ void discord_identify_connection_from_json_p(char *json, size_t len, struct disc
 }
 void discord_identify_connection_from_json(char *json, size_t len, struct discord_identify_connection *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_identify_connection_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/gateway.json:186:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
                 "($os):?s,"
@@ -1041,7 +1030,6 @@ void discord_identify_connection_from_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:188:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
                 &p->device);
-  ret = r;
 }
 
 size_t discord_identify_connection_to_json(char *json, size_t len, struct discord_identify_connection *p)
@@ -1175,10 +1163,8 @@ void discord_activity_from_json_p(char *json, size_t len, struct discord_activit
 }
 void discord_activity_from_json(char *json, size_t len, struct discord_activity *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_activity_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/gateway.json:197:19
      '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
                 "(name):?s,"
@@ -1227,7 +1213,6 @@ void discord_activity_from_json(char *json, size_t len, struct discord_activity 
   /* specs/discord/gateway.json:204:19
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
                 &p->instance);
-  ret = r;
 }
 
 size_t discord_activity_to_json(char *json, size_t len, struct discord_activity *p)
@@ -1504,10 +1489,8 @@ void discord_session_start_limit_from_json_p(char *json, size_t len, struct disc
 }
 void discord_session_start_limit_from_json(char *json, size_t len, struct discord_session_start_limit *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_session_start_limit_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/gateway.json:228:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
                 "(total):d,"
@@ -1532,7 +1515,6 @@ void discord_session_start_limit_from_json(char *json, size_t len, struct discor
   /* specs/discord/gateway.json:231:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
                 &p->max_concurrency);
-  ret = r;
 }
 
 size_t discord_session_start_limit_to_json(char *json, size_t len, struct discord_session_start_limit *p)

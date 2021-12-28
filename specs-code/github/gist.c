@@ -20,10 +20,8 @@ void github_gist_from_json_p(char *json, size_t len, struct github_gist **pp)
 }
 void github_gist_from_json(char *json, size_t len, struct github_gist *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   github_gist_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/github/gist.json:12:28
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */
                 "(url):?s,"
@@ -72,7 +70,6 @@ void github_gist_from_json(char *json, size_t len, struct github_gist *p)
   /* specs/github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
                 &p->comments);
-  ret = r;
 }
 
 size_t github_gist_to_json(char *json, size_t len, struct github_gist *p)

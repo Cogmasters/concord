@@ -20,10 +20,8 @@ void reddit_access_token_params_from_json_p(char *json, size_t len, struct reddi
 }
 void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_access_token_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   reddit_access_token_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/reddit/oauth2.json:12:20
      '{ "name": "grant_type", "type":{ "base":"char", "dec":"*" }, "comment":"'password' for script type apps, 'refresh_token' for renewing access token and 'authorization_code' for webapps"}' */
                 "(grant_type):?s,"
@@ -54,7 +52,6 @@ void reddit_access_token_params_from_json(char *json, size_t len, struct reddit_
   /* specs/reddit/oauth2.json:16:20
      '{ "name": "redirect_uri", "type":{ "base":"char", "dec":"*" }, "comment":"redirect uri for webapp"}' */
                 &p->redirect_uri);
-  ret = r;
 }
 
 size_t reddit_access_token_params_to_json(char *json, size_t len, struct reddit_access_token_params *p)

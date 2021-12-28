@@ -20,10 +20,8 @@ void discord_get_guild_audit_log_params_from_json_p(char *json, size_t len, stru
 }
 void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_get_guild_audit_log_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/audit_log.params.json:10:20
      '{ "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log for actions made by a user", "inject_if_not":0 }' */
                 "(user_id):F,"
@@ -48,7 +46,6 @@ void discord_get_guild_audit_log_params_from_json(char *json, size_t len, struct
   /* specs/discord/audit_log.params.json:13:20
      '{ "name": "limit", "type":{ "base":"int" }, "default_value":50, "comment":"how many entries are returned (default 50, minimum 1, maximum 100)", "inject_if_not":0 }' */
                 &p->limit);
-  ret = r;
 }
 
 size_t discord_get_guild_audit_log_params_to_json(char *json, size_t len, struct discord_get_guild_audit_log_params *p)

@@ -20,10 +20,8 @@ void discord_create_guild_params_from_json_p(char *json, size_t len, struct disc
 }
 void discord_create_guild_params_from_json(char *json, size_t len, struct discord_create_guild_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
                 "(name):?s,"
@@ -90,7 +88,6 @@ void discord_create_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
                 cee_strtou64, &p->system_channel_id);
-  ret = r;
 }
 
 size_t discord_create_guild_params_to_json(char *json, size_t len, struct discord_create_guild_params *p)
@@ -361,10 +358,8 @@ void discord_modify_guild_params_from_json_p(char *json, size_t len, struct disc
 }
 void discord_modify_guild_params_from_json(char *json, size_t len, struct discord_modify_guild_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:31:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"}' */
                 "(name):?s,"
@@ -479,7 +474,6 @@ void discord_modify_guild_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/guild.params.json:49:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"the description for the guild, if the guild is discoverable"}' */
                 &p->description);
-  ret = r;
 }
 
 size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discord_modify_guild_params *p)
@@ -887,10 +881,8 @@ void discord_create_guild_channel_params_from_json_p(char *json, size_t len, str
 }
 void discord_create_guild_channel_params_from_json(char *json, size_t len, struct discord_create_guild_channel_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_channel_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:58:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):?s,"
@@ -951,7 +943,6 @@ void discord_create_guild_channel_params_from_json(char *json, size_t len, struc
   /* specs/discord/guild.params.json:67:20
      '{ "name": "nsfw", "type":{ "base":"bool" }}' */
                 &p->nsfw);
-  ret = r;
 }
 
 size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struct discord_create_guild_channel_params *p)
@@ -1199,10 +1190,8 @@ void discord_modify_guild_channel_positions_params_from_json_p(char *json, size_
 }
 void discord_modify_guild_channel_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_channel_positions_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
                 "(id):F,"
@@ -1227,7 +1216,6 @@ void discord_modify_guild_channel_positions_params_from_json(char *json, size_t 
   /* specs/discord/guild.params.json:79:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
                 cee_strtou64, &p->parent_id);
-  ret = r;
 }
 
 size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_channel_positions_params *p)
@@ -1375,10 +1363,8 @@ void discord_list_guild_members_params_from_json_p(char *json, size_t len, struc
 }
 void discord_list_guild_members_params_from_json(char *json, size_t len, struct discord_list_guild_members_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_list_guild_members_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:88:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
                 "(limit):d,"
@@ -1391,7 +1377,6 @@ void discord_list_guild_members_params_from_json(char *json, size_t len, struct 
   /* specs/discord/guild.params.json:89:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
                 cee_strtou64, &p->after);
-  ret = r;
 }
 
 size_t discord_list_guild_members_params_to_json(char *json, size_t len, struct discord_list_guild_members_params *p)
@@ -1505,10 +1490,8 @@ void discord_search_guild_members_params_from_json_p(char *json, size_t len, str
 }
 void discord_search_guild_members_params_from_json(char *json, size_t len, struct discord_search_guild_members_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_search_guild_members_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:98:20
      '{ "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." }' */
                 "(query):?s,"
@@ -1521,7 +1504,6 @@ void discord_search_guild_members_params_from_json(char *json, size_t len, struc
   /* specs/discord/guild.params.json:99:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
                 &p->limit);
-  ret = r;
 }
 
 size_t discord_search_guild_members_params_to_json(char *json, size_t len, struct discord_search_guild_members_params *p)
@@ -1636,10 +1618,8 @@ void discord_add_guild_member_params_from_json_p(char *json, size_t len, struct 
 }
 void discord_add_guild_member_params_from_json(char *json, size_t len, struct discord_add_guild_member_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_add_guild_member_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:108:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 "(access_token):?s,"
@@ -1670,7 +1650,6 @@ void discord_add_guild_member_params_from_json(char *json, size_t len, struct di
   /* specs/discord/guild.params.json:112:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 &p->deaf);
-  ret = r;
 }
 
 size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct discord_add_guild_member_params *p)
@@ -1838,10 +1817,8 @@ void discord_modify_guild_member_params_from_json_p(char *json, size_t len, stru
 }
 void discord_modify_guild_member_params_from_json(char *json, size_t len, struct discord_modify_guild_member_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_member_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:121:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 "(nick):?s,"
@@ -1872,7 +1849,6 @@ void discord_modify_guild_member_params_from_json(char *json, size_t len, struct
   /* specs/discord/guild.params.json:125:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
                 cee_strtou64, &p->channel_id);
-  ret = r;
 }
 
 size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct discord_modify_guild_member_params *p)
@@ -2038,17 +2014,14 @@ void discord_modify_current_member_params_from_json_p(char *json, size_t len, st
 }
 void discord_modify_current_member_params_from_json(char *json, size_t len, struct discord_modify_current_member_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_current_member_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:134:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 "(nick):?s,",
   /* specs/discord/guild.params.json:134:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 &p->nick);
-  ret = r;
 }
 
 size_t discord_modify_current_member_params_to_json(char *json, size_t len, struct discord_modify_current_member_params *p)
@@ -2145,17 +2118,14 @@ void discord_modify_current_user_nick_params_from_json_p(char *json, size_t len,
 }
 void discord_modify_current_user_nick_params_from_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_current_user_nick_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:143:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 "(nick):?s,",
   /* specs/discord/guild.params.json:143:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 &p->nick);
-  ret = r;
 }
 
 size_t discord_modify_current_user_nick_params_to_json(char *json, size_t len, struct discord_modify_current_user_nick_params *p)
@@ -2252,10 +2222,8 @@ void discord_create_guild_ban_params_from_json_p(char *json, size_t len, struct 
 }
 void discord_create_guild_ban_params_from_json(char *json, size_t len, struct discord_create_guild_ban_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_ban_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:152:20
      '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
                 "(delete_message_days):d,"
@@ -2268,7 +2236,6 @@ void discord_create_guild_ban_params_from_json(char *json, size_t len, struct di
   /* specs/discord/guild.params.json:153:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }' */
                 &p->reason);
-  ret = r;
 }
 
 size_t discord_create_guild_ban_params_to_json(char *json, size_t len, struct discord_create_guild_ban_params *p)
@@ -2382,10 +2349,8 @@ void discord_create_guild_role_params_from_json_p(char *json, size_t len, struct
 }
 void discord_create_guild_role_params_from_json(char *json, size_t len, struct discord_create_guild_role_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_role_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:162:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):?s,"
@@ -2416,7 +2381,6 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
   /* specs/discord/guild.params.json:166:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
                 &p->mentionable);
-  ret = r;
 }
 
 size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct discord_create_guild_role_params *p)
@@ -2581,10 +2545,8 @@ void discord_modify_guild_role_positions_params_from_json_p(char *json, size_t l
 }
 void discord_modify_guild_role_positions_params_from_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_role_positions_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:175:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
                 "(id):F,"
@@ -2597,7 +2559,6 @@ void discord_modify_guild_role_positions_params_from_json(char *json, size_t len
   /* specs/discord/guild.params.json:176:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
                 &p->position);
-  ret = r;
 }
 
 size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len, struct discord_modify_guild_role_positions_params *p)
@@ -2711,10 +2672,8 @@ void discord_modify_guild_role_params_from_json_p(char *json, size_t len, struct
 }
 void discord_modify_guild_role_params_from_json(char *json, size_t len, struct discord_modify_guild_role_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_role_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:185:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
                 "(name):?s,"
@@ -2745,7 +2704,6 @@ void discord_modify_guild_role_params_from_json(char *json, size_t len, struct d
   /* specs/discord/guild.params.json:189:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
                 &p->mentionable);
-  ret = r;
 }
 
 size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct discord_modify_guild_role_params *p)
@@ -2911,10 +2869,8 @@ void discord_get_guild_prune_count_params_from_json_p(char *json, size_t len, st
 }
 void discord_get_guild_prune_count_params_from_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_get_guild_prune_count_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:198:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(days):d,"
@@ -2927,7 +2883,6 @@ void discord_get_guild_prune_count_params_from_json(char *json, size_t len, stru
   /* specs/discord/guild.params.json:199:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
                 ja_u64_list_from_json, &p->include_roles);
-  ret = r;
 }
 
 size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, struct discord_get_guild_prune_count_params *p)
@@ -3042,10 +2997,8 @@ void discord_begin_guild_prune_params_from_json_p(char *json, size_t len, struct
 }
 void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct discord_begin_guild_prune_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_begin_guild_prune_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild.params.json:208:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
                 "(days):d,"
@@ -3070,7 +3023,6 @@ void discord_begin_guild_prune_params_from_json(char *json, size_t len, struct d
   /* specs/discord/guild.params.json:211:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null}' */
                 &p->reason);
-  ret = r;
 }
 
 size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct discord_begin_guild_prune_params *p)

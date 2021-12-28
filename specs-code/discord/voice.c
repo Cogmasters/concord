@@ -20,10 +20,8 @@ void discord_voice_state_from_json_p(char *json, size_t len, struct discord_voic
 }
 void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_state *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_voice_state_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/voice.json:13:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(guild_id):F,"
@@ -96,7 +94,6 @@ void discord_voice_state_from_json(char *json, size_t len, struct discord_voice_
   /* specs/discord/voice.json:24:20
      '{ "name": "supress", "type":{ "base":"bool" }}' */
                 &p->supress);
-  ret = r;
 }
 
 size_t discord_voice_state_to_json(char *json, size_t len, struct discord_voice_state *p)
@@ -372,10 +369,8 @@ void discord_voice_region_from_json_p(char *json, size_t len, struct discord_voi
 }
 void discord_voice_region_from_json(char *json, size_t len, struct discord_voice_region *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_voice_region_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/voice.json:34:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 "(id):?s,"
@@ -412,7 +407,6 @@ void discord_voice_region_from_json(char *json, size_t len, struct discord_voice
   /* specs/discord/voice.json:39:20
      '{ "name": "custom", "type":{ "base":"bool" }}' */
                 &p->custom);
-  ret = r;
 }
 
 size_t discord_voice_region_to_json(char *json, size_t len, struct discord_voice_region *p)

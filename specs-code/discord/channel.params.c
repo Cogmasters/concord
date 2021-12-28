@@ -20,10 +20,8 @@ void discord_modify_channel_params_from_json_p(char *json, size_t len, struct di
 }
 void discord_modify_channel_params_from_json(char *json, size_t len, struct discord_modify_channel_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_channel_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 "(name):?s,"
@@ -120,7 +118,6 @@ void discord_modify_channel_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/channel.params.json:27:20
      '{ "name": "locked", "type":{ "base":"bool" }, "inject_if_not":false }' */
                 &p->locked);
-  ret = r;
 }
 
 size_t discord_modify_channel_params_to_json(char *json, size_t len, struct discord_modify_channel_params *p)
@@ -476,10 +473,8 @@ void discord_create_message_params_from_json_p(char *json, size_t len, struct di
 }
 void discord_create_message_params_from_json(char *json, size_t len, struct discord_create_message_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_message_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:36:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
                 "(content):?s,"
@@ -534,7 +529,6 @@ void discord_create_message_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/channel.params.json:44:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null }' */
                 discord_attachment_list_from_json, &p->attachments);
-  ret = r;
 }
 
 size_t discord_create_message_params_to_json(char *json, size_t len, struct discord_create_message_params *p)
@@ -781,17 +775,14 @@ void discord_get_channel_messages_params_from_json_p(char *json, size_t len, str
 }
 void discord_get_channel_messages_params_from_json(char *json, size_t len, struct discord_get_channel_messages_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_get_channel_messages_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:56:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
                 "(limit):d,",
   /* specs/discord/channel.params.json:56:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query", "default_value":50, "comment":"max number of messages to return (1-100)", "inject_if_not":0 }' */
                 &p->limit);
-  ret = r;
 }
 
 size_t discord_get_channel_messages_params_to_json(char *json, size_t len, struct discord_get_channel_messages_params *p)
@@ -915,17 +906,14 @@ void discord_get_reactions_params_from_json_p(char *json, size_t len, struct dis
 }
 void discord_get_reactions_params_from_json(char *json, size_t len, struct discord_get_reactions_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_get_reactions_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:66:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
                 "(limit):d,",
   /* specs/discord/channel.params.json:66:20
      '{ "name": "limit", "type":{ "base":"int" }, "loc":"query"}' */
                 &p->limit);
-  ret = r;
 }
 
 size_t discord_get_reactions_params_to_json(char *json, size_t len, struct discord_get_reactions_params *p)
@@ -1025,10 +1013,8 @@ void discord_edit_channel_permissions_params_from_json_p(char *json, size_t len,
 }
 void discord_edit_channel_permissions_params_from_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_edit_channel_permissions_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:75:20
      '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set" }' */
                 "(allow):s_as_u64,"
@@ -1047,7 +1033,6 @@ void discord_edit_channel_permissions_params_from_json(char *json, size_t len, s
   /* specs/discord/channel.params.json:77:20
      '{ "name": "type", "type":{ "base":"int", "int_alias": "enum discord_channel_types" }}' */
                 &p->type);
-  ret = r;
 }
 
 size_t discord_edit_channel_permissions_params_to_json(char *json, size_t len, struct discord_edit_channel_permissions_params *p)
@@ -1175,10 +1160,8 @@ void discord_edit_message_params_from_json_p(char *json, size_t len, struct disc
 }
 void discord_edit_message_params_from_json(char *json, size_t len, struct discord_edit_message_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_edit_message_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:86:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null }' */
                 "(content):?s,"
@@ -1221,7 +1204,6 @@ void discord_edit_message_params_from_json(char *json, size_t len, struct discor
   /* specs/discord/channel.params.json:92:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_from_json, &p->components);
-  ret = r;
 }
 
 size_t discord_edit_message_params_to_json(char *json, size_t len, struct discord_edit_message_params *p)
@@ -1430,17 +1412,14 @@ void discord_follow_news_channel_params_from_json_p(char *json, size_t len, stru
 }
 void discord_follow_news_channel_params_from_json(char *json, size_t len, struct discord_follow_news_channel_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_follow_news_channel_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:101:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 "(webhook_channel_id):F,",
   /* specs/discord/channel.params.json:101:20
      '{ "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 cee_strtou64, &p->webhook_channel_id);
-  ret = r;
 }
 
 size_t discord_follow_news_channel_params_to_json(char *json, size_t len, struct discord_follow_news_channel_params *p)
@@ -1536,10 +1515,8 @@ void discord_create_channel_invite_params_from_json_p(char *json, size_t len, st
 }
 void discord_create_channel_invite_params_from_json(char *json, size_t len, struct discord_create_channel_invite_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_channel_invite_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:110:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
                 "(max_age):d,"
@@ -1582,7 +1559,6 @@ void discord_create_channel_invite_params_from_json(char *json, size_t len, stru
   /* specs/discord/channel.params.json:116:20
      '{ "name": "target_application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "inject_if_not":0 }' */
                 cee_strtou64, &p->target_application_id);
-  ret = r;
 }
 
 size_t discord_create_channel_invite_params_to_json(char *json, size_t len, struct discord_create_channel_invite_params *p)
@@ -1777,10 +1753,8 @@ void discord_group_dm_add_recipient_params_from_json_p(char *json, size_t len, s
 }
 void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_group_dm_add_recipient_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:125:20
      '{ "name": "access_token", "type":{ "base":"char", "dec":"*" }}' */
                 "(access_token):?s,"
@@ -1793,7 +1767,6 @@ void discord_group_dm_add_recipient_params_from_json(char *json, size_t len, str
   /* specs/discord/channel.params.json:126:20
      '{ "name": "nick", "type":{ "base":"char", "dec":"*" }}' */
                 &p->nick);
-  ret = r;
 }
 
 size_t discord_group_dm_add_recipient_params_to_json(char *json, size_t len, struct discord_group_dm_add_recipient_params *p)
@@ -1907,10 +1880,8 @@ void discord_start_thread_with_message_params_from_json_p(char *json, size_t len
 }
 void discord_start_thread_with_message_params_from_json(char *json, size_t len, struct discord_start_thread_with_message_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_start_thread_with_message_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:135:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null }' */
                 "(name):?s,"
@@ -1923,7 +1894,6 @@ void discord_start_thread_with_message_params_from_json(char *json, size_t len, 
   /* specs/discord/channel.params.json:136:20
      '{ "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 }' */
                 &p->auto_archive_duration);
-  ret = r;
 }
 
 size_t discord_start_thread_with_message_params_to_json(char *json, size_t len, struct discord_start_thread_with_message_params *p)
@@ -2038,10 +2008,8 @@ void discord_start_thread_without_message_params_from_json_p(char *json, size_t 
 }
 void discord_start_thread_without_message_params_from_json(char *json, size_t len, struct discord_start_thread_without_message_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_start_thread_without_message_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:145:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" } }' */
                 "(name):?s,"
@@ -2060,7 +2028,6 @@ void discord_start_thread_without_message_params_from_json(char *json, size_t le
   /* specs/discord/channel.params.json:147:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }' */
                 &p->type);
-  ret = r;
 }
 
 size_t discord_start_thread_without_message_params_to_json(char *json, size_t len, struct discord_start_thread_without_message_params *p)
@@ -2190,10 +2157,8 @@ void discord_thread_response_body_from_json_p(char *json, size_t len, struct dis
 }
 void discord_thread_response_body_from_json(char *json, size_t len, struct discord_thread_response_body *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_thread_response_body_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/channel.params.json:156:20
      '{ "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } }' */
                 "(threads):F,"
@@ -2212,7 +2177,6 @@ void discord_thread_response_body_from_json(char *json, size_t len, struct disco
   /* specs/discord/channel.params.json:158:20
      '{ "name": "has_more", "type":{ "base":"bool" } }' */
                 &p->has_more);
-  ret = r;
 }
 
 size_t discord_thread_response_body_to_json(char *json, size_t len, struct discord_thread_response_body *p)

@@ -20,10 +20,8 @@ void discord_audit_log_from_json_p(char *json, size_t len, struct discord_audit_
 }
 void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_log *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_audit_log_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" }, "comment":"list of webhooks found in the audit log", "inject_if_not":null }' */
                 "(webhooks):F,"
@@ -54,7 +52,6 @@ void discord_audit_log_from_json(char *json, size_t len, struct discord_audit_lo
   /* specs/discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
                 discord_channel_list_from_json, &p->threads);
-  ret = r;
 }
 
 size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_log *p)
@@ -224,10 +221,8 @@ void discord_audit_log_entry_from_json_p(char *json, size_t len, struct discord_
 }
 void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_audit_log_entry *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_audit_log_entry_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/audit_log.json:26:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}, "comment":"id of the affected entity (webhook,user,role,etc.)", "inject_if_not":null }' */
                 "(target_id):?s,"
@@ -270,7 +265,6 @@ void discord_audit_log_entry_from_json(char *json, size_t len, struct discord_au
   /* specs/discord/audit_log.json:32:18
      '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
                 &p->reason);
-  ret = r;
 }
 
 size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_audit_log_entry *p)
@@ -608,10 +602,8 @@ void discord_optional_audit_entry_info_from_json_p(char *json, size_t len, struc
 }
 void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct discord_optional_audit_entry_info *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_optional_audit_entry_info_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/audit_log.json:94:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"number of days after which inactive members were kicked", "inject_if_not":null }' */
                 "(delete_member_days):?s,"
@@ -660,7 +652,6 @@ void discord_optional_audit_entry_info_from_json(char *json, size_t len, struct 
   /* specs/discord/audit_log.json:101:20
      '{ "name": "role_name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the role if type is '0' (not present if type is '1')", "inject_if_not":null }' */
                 &p->role_name);
-  ret = r;
 }
 
 size_t discord_optional_audit_entry_info_to_json(char *json, size_t len, struct discord_optional_audit_entry_info *p)
@@ -881,10 +872,8 @@ void discord_audit_log_change_from_json_p(char *json, size_t len, struct discord
 }
 void discord_audit_log_change_from_json(char *json, size_t len, struct discord_audit_log_change *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_audit_log_change_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/audit_log.json:111:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"new value of the key", "inject_if_not":null }' */
                 "(new_value):F,"
@@ -903,7 +892,6 @@ void discord_audit_log_change_from_json(char *json, size_t len, struct discord_a
   /* specs/discord/audit_log.json:113:18
      '{"name":"key", "type":{"base":"char", "dec":"*"}, "comment":"name of audit log change key", "inject_if_not":null }' */
                 &p->key);
-  ret = r;
 }
 
 size_t discord_audit_log_change_to_json(char *json, size_t len, struct discord_audit_log_change *p)

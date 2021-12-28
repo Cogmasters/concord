@@ -20,10 +20,8 @@ void reddit_search_params_from_json_p(char *json, size_t len, struct reddit_sear
 }
 void reddit_search_params_from_json(char *json, size_t len, struct reddit_search_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   reddit_search_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/reddit/search.json:13:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of a thing"}' */
                 "(after):?s,"
@@ -102,7 +100,6 @@ void reddit_search_params_from_json(char *json, size_t len, struct reddit_search
   /* specs/reddit/search.json:25:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"(optional) comma-delimited list of result types (sr, link, user)"}' */
                 &p->type);
-  ret = r;
 }
 
 size_t reddit_search_params_to_json(char *json, size_t len, struct reddit_search_params *p)

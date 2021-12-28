@@ -153,10 +153,8 @@ void discord_role_from_json_p(char *json, size_t len, struct discord_role **pp)
 }
 void discord_role_from_json(char *json, size_t len, struct discord_role *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_role_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/permissions.json:63:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(id):F,"
@@ -211,7 +209,6 @@ void discord_role_from_json(char *json, size_t len, struct discord_role *p)
   /* specs/discord/permissions.json:71:20
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
                 discord_role_tags_from_json_p, &p->tags);
-  ret = r;
 }
 
 size_t discord_role_to_json(char *json, size_t len, struct discord_role *p)
@@ -440,10 +437,8 @@ void discord_role_tags_from_json_p(char *json, size_t len, struct discord_role_t
 }
 void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tags *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_role_tags_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/permissions.json:81:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
                 "(bot_id):F,"
@@ -462,7 +457,6 @@ void discord_role_tags_from_json(char *json, size_t len, struct discord_role_tag
   /* specs/discord/permissions.json:83:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
                 &p->premium_subscriber);
-  ret = r;
 }
 
 size_t discord_role_tags_to_json(char *json, size_t len, struct discord_role_tags *p)

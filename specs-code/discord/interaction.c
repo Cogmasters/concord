@@ -20,10 +20,8 @@ void discord_interaction_from_json_p(char *json, size_t len, struct discord_inte
 }
 void discord_interaction_from_json(char *json, size_t len, struct discord_interaction *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_interaction_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
                 "(id):F,"
@@ -84,7 +82,6 @@ void discord_interaction_from_json(char *json, size_t len, struct discord_intera
   /* specs/discord/interaction.json:21:18
      '{"name":"message", "type":{"base":"struct discord_message", "dec":"*"}, "option":true, "comment":"for components, the message they were attached to", "inject_if_not":null}' */
                 discord_message_from_json_p, &p->message);
-  ret = r;
 }
 
 size_t discord_interaction_to_json(char *json, size_t len, struct discord_interaction *p)
@@ -399,10 +396,8 @@ void discord_interaction_data_from_json_p(char *json, size_t len, struct discord
 }
 void discord_interaction_data_from_json(char *json, size_t len, struct discord_interaction_data *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_interaction_data_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
                 "(id):F,"
@@ -451,7 +446,6 @@ void discord_interaction_data_from_json(char *json, size_t len, struct discord_i
   /* specs/discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
                 cee_strtou64, &p->target_id);
-  ret = r;
 }
 
 size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_interaction_data *p)
@@ -671,10 +665,8 @@ void discord_resolved_data_from_json_p(char *json, size_t len, struct discord_re
 }
 void discord_resolved_data_from_json(char *json, size_t len, struct discord_resolved_data *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_resolved_data_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/interaction.json:60:18
      '{"name":"users", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and User objects", "inject_if_not":null}' */
                 "(users):F,"
@@ -705,7 +697,6 @@ void discord_resolved_data_from_json(char *json, size_t len, struct discord_reso
   /* specs/discord/interaction.json:64:18
      '{"name":"messages", "type":{"base":"ja_str", "dec":"ntl"}, "option":true, "comment":"the ids and partial Message objects", "inject_if_not":null}' */
                 ja_str_list_from_json, &p->messages);
-  ret = r;
 }
 
 size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_resolved_data *p)
@@ -875,10 +866,8 @@ void discord_message_interaction_from_json_p(char *json, size_t len, struct disc
 }
 void discord_message_interaction_from_json(char *json, size_t len, struct discord_message_interaction *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_message_interaction_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
                 "(id):F,"
@@ -903,7 +892,6 @@ void discord_message_interaction_from_json(char *json, size_t len, struct discor
   /* specs/discord/interaction.json:77:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "comment":"the user who invoked the interaction"}' */
                 discord_user_from_json_p, &p->user);
-  ret = r;
 }
 
 size_t discord_message_interaction_to_json(char *json, size_t len, struct discord_message_interaction *p)
@@ -1051,10 +1039,8 @@ void discord_interaction_response_from_json_p(char *json, size_t len, struct dis
 }
 void discord_interaction_response_from_json(char *json, size_t len, struct discord_interaction_response *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_interaction_response_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
                 "(type):d,"
@@ -1067,7 +1053,6 @@ void discord_interaction_response_from_json(char *json, size_t len, struct disco
   /* specs/discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
                 discord_interaction_callback_data_from_json_p, &p->data);
-  ret = r;
 }
 
 size_t discord_interaction_response_to_json(char *json, size_t len, struct discord_interaction_response *p)
@@ -1242,10 +1227,8 @@ void discord_interaction_callback_data_from_json_p(char *json, size_t len, struc
 }
 void discord_interaction_callback_data_from_json(char *json, size_t len, struct discord_interaction_callback_data *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_interaction_callback_data_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
                 "(tts):b,"
@@ -1288,7 +1271,6 @@ void discord_interaction_callback_data_from_json(char *json, size_t len, struct 
   /* specs/discord/interaction.json:118:19
      '{"name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attachment objects with filename and description", "inject_if_not":null}' */
                 discord_attachment_list_from_json, &p->attachments);
-  ret = r;
 }
 
 size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct discord_interaction_callback_data *p)

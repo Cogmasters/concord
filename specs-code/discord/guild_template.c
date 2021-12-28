@@ -20,10 +20,8 @@ void discord_guild_template_from_json_p(char *json, size_t len, struct discord_g
 }
 void discord_guild_template_from_json(char *json, size_t len, struct discord_guild_template *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_guild_template_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/guild_template.json:12:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*"}}' */
                 "(code):?s,"
@@ -90,7 +88,6 @@ void discord_guild_template_from_json(char *json, size_t len, struct discord_gui
   /* specs/discord/guild_template.json:22:20
      '{ "name": "is_dirty", "type":{ "base":"char", "dec":"*", "converter":"mixed"}}' */
                 cee_strndup, &p->is_dirty);
-  ret = r;
 }
 
 size_t discord_guild_template_to_json(char *json, size_t len, struct discord_guild_template *p)

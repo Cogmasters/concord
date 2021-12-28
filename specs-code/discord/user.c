@@ -148,10 +148,8 @@ void discord_user_from_json_p(char *json, size_t len, struct discord_user **pp)
 }
 void discord_user_from_json(char *json, size_t len, struct discord_user *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_user_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
                 "(id):F,"
@@ -236,7 +234,6 @@ void discord_user_from_json(char *json, size_t len, struct discord_user *p)
   /* specs/discord/user.json:57:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
                 &p->public_flags);
-  ret = r;
 }
 
 size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
@@ -599,10 +596,8 @@ void discord_connection_from_json_p(char *json, size_t len, struct discord_conne
 }
 void discord_connection_from_json(char *json, size_t len, struct discord_connection *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_connection_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/user.json:77:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
                 "(id):?s,"
@@ -657,7 +652,6 @@ void discord_connection_from_json(char *json, size_t len, struct discord_connect
   /* specs/discord/user.json:85:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
                 &p->visibility);
-  ret = r;
 }
 
 size_t discord_connection_to_json(char *json, size_t len, struct discord_connection *p)

@@ -20,10 +20,8 @@ void discord_create_webhook_params_from_json_p(char *json, size_t len, struct di
 }
 void discord_create_webhook_params_from_json(char *json, size_t len, struct discord_create_webhook_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_webhook_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/webhook.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" }' */
                 "(name):?s,"
@@ -36,7 +34,6 @@ void discord_create_webhook_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
                 &p->avatar);
-  ret = r;
 }
 
 size_t discord_create_webhook_params_to_json(char *json, size_t len, struct discord_create_webhook_params *p)
@@ -151,10 +148,8 @@ void discord_modify_webhook_params_from_json_p(char *json, size_t len, struct di
 }
 void discord_modify_webhook_params_from_json(char *json, size_t len, struct discord_modify_webhook_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_webhook_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/webhook.params.json:22:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
                 "(name):?s,"
@@ -173,7 +168,6 @@ void discord_modify_webhook_params_from_json(char *json, size_t len, struct disc
   /* specs/discord/webhook.params.json:24:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment":"the new channel id this webhook should be moved to" }' */
                 cee_strtou64, &p->channel_id);
-  ret = r;
 }
 
 size_t discord_modify_webhook_params_to_json(char *json, size_t len, struct discord_modify_webhook_params *p)
@@ -306,10 +300,8 @@ void discord_modify_webhook_with_token_params_from_json_p(char *json, size_t len
 }
 void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_webhook_with_token_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/webhook.params.json:33:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" }' */
                 "(name):?s,"
@@ -322,7 +314,6 @@ void discord_modify_webhook_with_token_params_from_json(char *json, size_t len, 
   /* specs/discord/webhook.params.json:34:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"base64 image for the default webhook avatar" }' */
                 &p->avatar);
-  ret = r;
 }
 
 size_t discord_modify_webhook_with_token_params_to_json(char *json, size_t len, struct discord_modify_webhook_with_token_params *p)
@@ -438,10 +429,8 @@ void discord_execute_webhook_params_from_json_p(char *json, size_t len, struct d
 }
 void discord_execute_webhook_params_from_json(char *json, size_t len, struct discord_execute_webhook_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_execute_webhook_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/webhook.params.json:46:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
                 "(content):?s,"
@@ -490,7 +479,6 @@ void discord_execute_webhook_params_from_json(char *json, size_t len, struct dis
   /* specs/discord/webhook.params.json:53:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
                 discord_attachment_list_from_json, &p->attachments);
-  ret = r;
 }
 
 size_t discord_execute_webhook_params_to_json(char *json, size_t len, struct discord_execute_webhook_params *p)
@@ -738,10 +726,8 @@ void discord_edit_webhook_message_params_from_json_p(char *json, size_t len, str
 }
 void discord_edit_webhook_message_params_from_json(char *json, size_t len, struct discord_edit_webhook_message_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_edit_webhook_message_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/webhook.params.json:62:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null }' */
                 "(content):?s,"
@@ -772,7 +758,6 @@ void discord_edit_webhook_message_params_from_json(char *json, size_t len, struc
   /* specs/discord/webhook.params.json:66:20
      '{ "name": "components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "comment":"the components to include with the message", "inject_if_not":null }' */
                 discord_component_list_from_json, &p->components);
-  ret = r;
 }
 
 size_t discord_edit_webhook_message_params_to_json(char *json, size_t len, struct discord_edit_webhook_message_params *p)

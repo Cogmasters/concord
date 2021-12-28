@@ -20,10 +20,8 @@ void discord_application_from_json_p(char *json, size_t len, struct discord_appl
 }
 void discord_application_from_json(char *json, size_t len, struct discord_application *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_application_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
                 "(id):F,"
@@ -106,7 +104,6 @@ void discord_application_from_json(char *json, size_t len, struct discord_applic
   /* specs/discord/application.json:25:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_application_flags" }, "comment":"the application's public flags", "inject_if_not":0 }' */
                 &p->flags);
-  ret = r;
 }
 
 size_t discord_application_to_json(char *json, size_t len, struct discord_application *p)

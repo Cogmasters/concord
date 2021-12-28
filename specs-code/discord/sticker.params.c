@@ -20,17 +20,14 @@ void discord_list_nitro_sticker_packs_response_from_json_p(char *json, size_t le
 }
 void discord_list_nitro_sticker_packs_response_from_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_list_nitro_sticker_packs_response_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/sticker.params.json:11:18
      '{"name":"sticker_packs", "type":{"base":"struct discord_sticker_pack", "dec":"ntl"}, "comment":"array of sticker pack objects"}' */
                 "(sticker_packs):F,",
   /* specs/discord/sticker.params.json:11:18
      '{"name":"sticker_packs", "type":{"base":"struct discord_sticker_pack", "dec":"ntl"}, "comment":"array of sticker pack objects"}' */
                 discord_sticker_pack_list_from_json, &p->sticker_packs);
-  ret = r;
 }
 
 size_t discord_list_nitro_sticker_packs_response_to_json(char *json, size_t len, struct discord_list_nitro_sticker_packs_response *p)
@@ -127,10 +124,8 @@ void discord_create_guild_sticker_params_from_json_p(char *json, size_t len, str
 }
 void discord_create_guild_sticker_params_from_json(char *json, size_t len, struct discord_create_guild_sticker_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_create_guild_sticker_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/sticker.params.json:20:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"}' */
                 "(name):?s,"
@@ -149,7 +144,6 @@ void discord_create_guild_sticker_params_from_json(char *json, size_t len, struc
   /* specs/discord/sticker.params.json:23:18
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
                 &p->tags);
-  ret = r;
 }
 
 size_t discord_create_guild_sticker_params_to_json(char *json, size_t len, struct discord_create_guild_sticker_params *p)
@@ -293,10 +287,8 @@ void discord_modify_guild_sticker_params_from_json_p(char *json, size_t len, str
 }
 void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struct discord_modify_guild_sticker_params *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_modify_guild_sticker_params_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/sticker.params.json:32:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"}' */
                 "(name):?s,"
@@ -315,7 +307,6 @@ void discord_modify_guild_sticker_params_from_json(char *json, size_t len, struc
   /* specs/discord/sticker.params.json:34:18
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
                 &p->tags);
-  ret = r;
 }
 
 size_t discord_modify_guild_sticker_params_to_json(char *json, size_t len, struct discord_modify_guild_sticker_params *p)

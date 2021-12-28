@@ -73,10 +73,8 @@ void discord_stage_instance_from_json_p(char *json, size_t len, struct discord_s
 }
 void discord_stage_instance_from_json(char *json, size_t len, struct discord_stage_instance *p)
 {
-  static size_t ret=0; /**< used for debugging */
-  size_t r=0;
   discord_stage_instance_init(p);
-  r=json_extract(json, len, 
+  json_extract(json, len, 
   /* specs/discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
                 "(id):F,"
@@ -113,7 +111,6 @@ void discord_stage_instance_from_json(char *json, size_t len, struct discord_sta
   /* specs/discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
                 &p->discoverable_disabled);
-  ret = r;
 }
 
 size_t discord_stage_instance_to_json(char *json, size_t len, struct discord_stage_instance *p)
