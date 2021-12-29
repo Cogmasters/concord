@@ -6,14 +6,14 @@
 #include "discord-internal.h"
 
 /**
- * @brief Shortcut for setting attributes for a specs-generated struct
+ * @brief Shortcut for setting attributes for a specs-generated return struct
  *
  * @param type datatype of the struct
- * @param obj pointer to specs-generated struct
+ * @param ret pointer to specs-generated return struct
  */
-#define REQUEST_ATTR_INIT(type, obj)                                          \
+#define REQUEST_ATTR_INIT(type, ret)                                          \
   {                                                                           \
-    obj, sizeof *obj, type##_init_v, type##_from_json_v, type##_cleanup_v     \
+    ret, sizeof *ret, type##_init_v, type##_from_json_v, type##_cleanup_v     \
   }
 
 /**

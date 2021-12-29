@@ -14,11 +14,11 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 {
   struct sized_buffer *token = p_token;
   char auth[128];
-  int ret;
+  int len;
 
-  ret =
+  len =
     snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
-  ASSERT_S(ret < sizeof(auth), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(auth), "Out of bounds write attempt");
 
   ua_conn_add_header(conn, "Authorization", auth);
 
@@ -110,7 +110,7 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
     _discord_context_cleanup(cxt);
   }
 
-  if (adapter->async.obj.size) free(adapter->async.obj.start);
+  if (adapter->async.ret.size) free(adapter->async.ret.start);
 
   free(adapter->async.idleq);
 }
@@ -142,15 +142,15 @@ discord_adapter_run(struct discord_adapter *adapter,
   char endpoint[DISCORD_ENDPT_LEN];
   char route[DISCORD_ROUTE_LEN];
   va_list args;
-  int ret;
+  int len;
 
   /* have it point somewhere */
   if (!attr) attr = &blank_attr;
 
   /* build the endpoint string */
   va_start(args, endpoint_fmt);
-  ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
+  len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(len < sizeof(endpoint), "Out of bounds write attempt");
   va_end(args);
 
   /* build the ratelimiting route */
@@ -186,11 +186,11 @@ static void
 _discord_adapter_set_errbuf(struct discord_adapter *adapter,
                             struct sized_buffer *body)
 {
-  size_t ret;
+  size_t len;
 
-  ret = snprintf(adapter->errbuf, sizeof(adapter->errbuf), "%.*s",
+  len = snprintf(adapter->errbuf, sizeof(adapter->errbuf), "%.*s",
                  (int)body->size, body->start);
-  ASSERT_S(ret < sizeof(adapter->errbuf), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(adapter->errbuf), "Out of bounds write attempt");
 }
 
 static void
@@ -367,10 +367,12 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       if (info.code != ORCA_OK) {
         _discord_adapter_set_errbuf(adapter, &body);
       }
-      else if (attr->obj) {
-        if (attr->init) attr->init(attr->obj);
+      else if (attr->ret) {
+        /* initialize ret */
+        if (attr->init) attr->init(attr->ret);
 
-        attr->from_json(body.start, body.size, attr->obj);
+        /* populate ret */
+        if (attr->from_json) attr->from_json(body.start, body.size, attr->ret);
       }
 
       code = info.code;
@@ -491,15 +493,19 @@ _discord_context_populate(struct discord_context *cxt,
   if (attr->attachments) {
     cxt->attr.attachments = _discord_attachment_list_dup(attr->attachments);
   }
-  if (cxt->attr.size > adapter->async.obj.size) {
-    void *tmp = realloc(adapter->async.obj.start, cxt->attr.size);
-    VASSERT_S(tmp != NULL, "Couldn't increase buffer %zu -> %zu (bytes)",
-              adapter->async.obj.size, cxt->attr.size);
 
-    adapter->async.obj.start = tmp;
-    adapter->async.obj.size = cxt->attr.size;
+  if (cxt->attr.size) {
+    if (cxt->attr.size > adapter->async.ret.size) {
+      void *tmp = realloc(adapter->async.ret.start, cxt->attr.size);
+      VASSERT_S(tmp != NULL, "Couldn't increase buffer %zu -> %zu (bytes)",
+                adapter->async.ret.size, cxt->attr.size);
+
+      adapter->async.ret.start = tmp;
+      adapter->async.ret.size = cxt->attr.size;
+    }
+
+    cxt->attr.ret = &adapter->async.ret.start;
   }
-  cxt->attr.obj = adapter->async.obj.start;
 
   if (body) {
     /* copy request body */
@@ -758,19 +764,21 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
       }
     }
     else if (cxt->done) {
-      struct discord_async_ret ret = { cxt->attr.obj, cxt->udata.data };
+      void **p_ret = cxt->attr.ret;
+      struct discord_async_ret ret = { p_ret ? *p_ret : NULL,
+                                       cxt->udata.data };
 
-      if (cxt->attr.init) cxt->attr.init(cxt->attr.obj);
+      /* initialize ret */
+      if (cxt->attr.init) cxt->attr.init(*p_ret);
 
-      /* fill obj fields with JSON values */
-      if (cxt->attr.from_json) {
-        cxt->attr.from_json(body.start, body.size, cxt->attr.obj);
-      }
+      /* populate ret */
+      if (cxt->attr.from_json)
+        cxt->attr.from_json(body.start, body.size, *p_ret);
 
       cxt->done(client, &ret);
 
-      /* cleanup obj fields */
-      if (cxt->attr.cleanup) cxt->attr.cleanup(cxt->attr.obj);
+      /* cleanup ret */
+      if (cxt->attr.cleanup) cxt->attr.cleanup(*p_ret);
     }
 
     code = info.code;

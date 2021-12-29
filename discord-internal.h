@@ -27,18 +27,18 @@
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
-/** @brief Behavior of request return object */
+/** @brief Behavior of request return struct */
 struct discord_request_attr {
-  /** the object itself */
-  void *obj;
-  /** size of `obj` in bytes */
+  /** pointer to the request's return struct */
+  void *ret;
+  /** size of return struct type in bytes */
   size_t size;
-  /** initialize `obj` fields */
-  void (*init)(void *obj);
-  /** callback for filling `obj` with JSON values */
-  void (*from_json)(char *json, size_t len, void *obj);
-  /** perform a cleanup on `obj` */
-  void (*cleanup)(void *obj);
+  /** initialize return struct fields */
+  void (*init)(void *ret);
+  /** populate return struct with JSON values */
+  void (*from_json)(char *json, size_t len, void *ret);
+  /** cleanup return struct */
+  void (*cleanup)(void *ret);
 
   /** in case of HTTP_MIMEPOST, provide attachments */
   struct discord_attachment **attachments;
@@ -52,7 +52,7 @@ struct discord_request_attr {
  *        asynchronously
  */
 struct discord_context {
-  /** async return object attributes */
+  /** async return struct attributes */
   struct discord_request_attr attr;
   /** the request's bucket */
   struct discord_bucket *bucket;
@@ -125,8 +125,8 @@ struct discord_adapter {
   struct {
     /** attributes for next async request */
     struct discord_async_attr attr;
-    /** reusable buffer for async return objects */
-    struct sized_buffer obj;
+    /** reusable buffer for request return structs */
+    struct sized_buffer ret;
     /** idle request handles of type 'struct discord_context' */
     QUEUE *idleq;
     /* request timeouts */
