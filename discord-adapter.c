@@ -183,7 +183,8 @@ discord_adapter_async_next(struct discord_adapter *adapter,
 }
 
 static void
-_discord_adapter_set_errbuf(struct discord_adapter *adapter, struct sized_buffer *body)
+_discord_adapter_set_errbuf(struct discord_adapter *adapter,
+                            struct sized_buffer *body)
 {
   size_t ret;
 
@@ -240,7 +241,6 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 /* return true if there should be a retry attempt */
 static bool
 _discord_adapter_get_info(struct discord_adapter *adapter,
-                          struct discord_context *cxt,
                           struct ua_info *info,
                           int64_t *wait_ms)
 {
@@ -348,10 +348,9 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       /* block thread's runtime for delay amount */
       logconf_info(&adapter->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
                    b->hash, wait_ms);
-
-      /* TODO: this blocks the event loop, which means Gateway's heartbeating
-       * won't work */
       cee_sleep_ms(wait_ms);
+
+      wait_ms = 0LL; /* reset */
     }
 
     /* perform blocking request, and check results */
@@ -362,7 +361,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       struct sized_buffer body;
 
       ua_info_extract(conn, &info);
-      retry = _discord_adapter_get_info(adapter, NULL, &info, &wait_ms);
+      retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
 
       body = ua_info_get_body(&info);
       if (info.code != ORCA_OK) {
@@ -383,13 +382,10 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       ws_timestamp_update(client->gw.ws);
 
       discord_bucket_build(adapter, b, route, &info);
-      ua_info_cleanup(&info);
 
-      if (wait_ms) {
-        /* TODO: this blocks the event loop, which means Gateway's heartbeating
-         * won't work */
-        cee_sleep_ms(wait_ms);
-      }
+      if (wait_ms) cee_sleep_ms(wait_ms);
+
+      ua_info_cleanup(&info);
     } break;
     case ORCA_CURLE_INTERNAL:
       logconf_error(&adapter->conf, "Curl internal error, will retry again");
@@ -749,7 +745,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     struct sized_buffer body;
 
     ua_info_extract(cxt->conn, &info);
-    retry = _discord_adapter_get_info(adapter, cxt, &info, &wait_ms);
+    retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
 
     body = ua_info_get_body(&info);
     if (info.code != ORCA_OK) {
