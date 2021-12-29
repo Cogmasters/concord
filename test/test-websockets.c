@@ -100,15 +100,12 @@ int main(int argc, char *argv[])
   uint64_t tstamp;
 
   char *url = NULL;
-  int start = 0, end = 10;
   int opt;
   FILE *fp;
 
-  while (-1 != (opt = getopt(argc, argv, "hu:s:e:c:"))) {
+  while (-1 != (opt = getopt(argc, argv, "hu:c:"))) {
     switch (opt) {
     case 'u': url = strdup(optarg); break;
-    case 's': start = strtol(optarg, NULL, 10); break;
-    case 'e': end = strtol(optarg, NULL, 10); break;
     case 'c': config_file = strdup(optarg); break;
     case 'h':
     default: print_usage(argv[0]); break;
