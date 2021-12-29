@@ -54,18 +54,14 @@ LIBREDDIT_LDFLAGS  := -lreddit
 LIBSLACK_LDFLAGS   := -lslack
 
 # API libs
-LIBDISCORD := $(LIBADDONS) $(LIBDIR)/libdiscord.a
-LIBGITHUB  := $(LIBADDONS) $(LIBDIR)/libgithub.a
-LIBREDDIT  := $(LIBADDONS) $(LIBDIR)/libreddit.a
-LIBSLACK   := $(LIBADDONS) $(LIBDIR)/libslack.a
+LIBDISCORD := $(LIBDIR)/libdiscord.a
+LIBGITHUB  := $(LIBDIR)/libgithub.a
+LIBREDDIT  := $(LIBDIR)/libreddit.a
+LIBSLACK   := $(LIBDIR)/libslack.a
 
 EXAMPLES_DIR   := examples
 EXAMPLES_SRC   := $(wildcard $(EXAMPLES_DIR)/bot-*.c)
 EXAMPLES_EXES  := $(patsubst %.c, %.out, $(EXAMPLES_SRC))
-
-BOTX_DIR  := botx
-BOTX_SRC  := $(wildcard $(BOTX_DIR)/bot-*.c)
-BOTX_EXES := $(patsubst %.c, %.bx, $(BOTX_SRC))
 
 TEST_DIR  := test
 TEST_SRC  := $(wildcard $(TEST_DIR)/test-*.c)
@@ -80,19 +76,6 @@ CFLAGS += -O0 -g -pthread                                	\
           -I. -I./$(CEE_UTILS_DIR)                        \
           -I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \
           -DLOG_USE_COLOR
-
-ifeq ($(addons),1)
-	# prepare addon flags
-	ADDONS_SRC      := $(wildcard add-ons/*.c)
-	ADDONS_OBJS     := $(ADDONS_SRC:%.c=$(OBJDIR)/%.o)
-	ADDONS_BOTS_SRC := $(wildcard add-ons/*_bots/*.c)
-	LIBADDONS       := $(LIBDIR)/libaddons.a
-
-	# include addon flags
-	EXAMPLES_EXES += $(ADDONS_BOTS_SRC:%.c=%.out)
-	LIBS_LDFLAGS  += -laddons
-	CFLAGS        += -I./add-ons
-endif
 
 ifeq ($(BEARSSL),1)
 	LIBS_LDFLAGS += -lbearssl -static
@@ -146,18 +129,11 @@ $(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 %.out: %.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
-%.bx: %.c all_api_libs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 %.bz:%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
-
 all: discord github reddit slack
 test: discord github reddit slack $(TEST_EXES)
-
-botx:
-	@ $(MAKE) all all_api_libs
-	@ $(MAKE) $(BOTX_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
 github: common $(GITHUB_OBJS) $(LIBGITHUB)
@@ -260,7 +236,7 @@ $(SPECSDEPS_OBJDIR) :
 $(LIBDIR) :
 	mkdir -p $(LIBDIR)
 
-all_api_libs : $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT) $(LIBSLACK) $(LIBADDONS)
+all_api_libs : $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT) $(LIBSLACK)
 
 # API libraries compilation
 $(LIBDISCORD) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(DISCORD_OBJS) | $(LIBDIR)
@@ -270,8 +246,6 @@ $(LIBGITHUB) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(GITHUB_OBJS) | $(LIBDIR)
 $(LIBREDDIT) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(REDDIT_OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 $(LIBSLACK) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(SLACK_OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $?
-$(LIBADDONS) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(ADDONS_OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
 install :
@@ -293,12 +267,11 @@ specsdeps_clean :
 	rm -rf $(SPECSDEPS_OBJDIR) bin/*
 clean : 
 	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(EXAMPLES_DIR)/*.out
-	rm -rf $(BOTX_DIR)/*.bx
 	rm -rf $(LIBDIR)
 purge : clean
 	rm -rf $(LIBDIR)
 	rm -rf $(SPECSDEPS_OBJDIR)
 	rm -rf $(CEE_UTILS_DIR)
 
-.PHONY : all install clean purge examples botx
+.PHONY : all install clean purge examples
 .ONESHELL :
