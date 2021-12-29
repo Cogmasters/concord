@@ -72,7 +72,7 @@ TEST_SRC  := $(wildcard $(TEST_DIR)/test-*.c)
 TEST_EXES := $(filter %.out, $(TEST_SRC:.c=.out))
 
 
-LIBS_CFLAGS  += -I./mujs
+LIBS_CFLAGS  +=
 LIBS_LDFLAGS += -L./$(LIBDIR) -lm
 
 CFLAGS += -O0 -g -pthread                                	\
@@ -144,19 +144,19 @@ $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
-%.out: %.c mujs all_api_libs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
-%.bx: %.c mujs all_api_libs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBSLACK_LDFLAGS) -lmujs -lsqlite3 $(LIBS_LDFLAGS)
+%.out: %.c all_api_libs
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
+%.bx: %.c all_api_libs
+	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 %.bz:%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
 
 all: discord github reddit slack
-test: discord github reddit slack mujs $(TEST_EXES)
+test: discord github reddit slack $(TEST_EXES)
 
 botx:
-	@ $(MAKE) all mujs all_api_libs
+	@ $(MAKE) all all_api_libs
 	@ $(MAKE) $(BOTX_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
@@ -274,11 +274,6 @@ $(LIBSLACK) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(SLACK_OBJS) | $(LIBDIR)
 $(LIBADDONS) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(ADDONS_OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
-mujs:
-	$(MAKE) -C mujs
-	mkdir -p $(LIBDIR)
-	cp mujs/build/release/libmujs.a $(LIBDIR)
-
 install :
 	mkdir -p $(PREFIX)/lib/
 	mkdir -p $(PREFIX)/include/orca
@@ -299,12 +294,11 @@ specsdeps_clean :
 clean : 
 	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(EXAMPLES_DIR)/*.out
 	rm -rf $(BOTX_DIR)/*.bx
-	$(MAKE) -C mujs clean
 	rm -rf $(LIBDIR)
 purge : clean
 	rm -rf $(LIBDIR)
 	rm -rf $(SPECSDEPS_OBJDIR)
 	rm -rf $(CEE_UTILS_DIR)
 
-.PHONY : all install clean purge mujs examples botx
+.PHONY : all install clean purge examples botx
 .ONESHELL :
