@@ -1,0 +1,100 @@
+CC ?= gcc
+
+MAIN := specs-gen
+
+# https://github.com/cee-studio/cee-utils
+CEE_UTILS_DIR ?= ../cee-utils
+
+OBJDIR := obj
+WDIR   := specs-code
+
+JSON := $(sort $(wildcard */*.json))
+APIS := $(sort $(patsubst %/, %, $(dir $(JSON))))
+
+# specs code-generator dependencies
+DEPS := $(CEE_UTILS_DIR)/cee-utils.c   \
+        $(CEE_UTILS_DIR)/json-actor.c  \
+        $(CEE_UTILS_DIR)/ntl.c         \
+        $(CEE_UTILS_DIR)/json-string.c \
+        $(CEE_UTILS_DIR)/log.c
+OBJS := $(JSON:%.json=$(OBJDIR)/%.o)
+
+# needed for 'make build'
+# https://github.com/cee-studio/orca/common (common.h and common.c)
+COMMON_DIR ?= ../common
+CFLAGS  ?= -I. -I..
+LDFLAGS ?= -L../lib
+
+# default CFLAGS
+CFLAGS  += -O0 -g -Wall -Wno-unused-function -I$(CEE_UTILS_DIR)
+
+# for inserting newlines at the end of each foreach
+# see https://stackoverflow.com/questions/29651388/insert-a-new-line-in-a-makefile-foreach-loop
+blank :=
+define \n
+
+$(blank)
+endef
+
+$(OBJDIR)/%.o : $(WDIR)/%.c
+	$(CC) -I$(COMMON_DIR) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+
+all: gen
+
+build: all
+	$(MAKE) $(OBJS)
+
+gen: $(CEE_UTILS_DIR) | $(MAIN)
+	@ rm -rf $(WDIR)/*/one-specs.h
+
+	# Generate source files (specs-code/%/*.c)
+	$(foreach VAR, $(JSON), ./$(MAIN) \
+	  -c \
+	  -o $(patsubst %, $(WDIR)/%, $(VAR:%.json=%.c)) \
+	  -i $(filter $(APIS), $(subst /, ,$(dir $(VAR)))).h \
+	  $(VAR)$(\n))
+
+	# Generate single header (specs-code/%/one-specs.h)
+	$(foreach VAR, $(JSON), ./$(MAIN) \
+	  -O \
+	  -a \
+	  -o $(patsubst %, $(WDIR)/%, $(dir $(VAR))one-specs.h) \
+	  $(VAR)$(\n))
+	$(foreach VAR, $(JSON), ./$(MAIN) \
+	  -E \
+	  -a \
+	  -o $(patsubst %, $(WDIR)/%, $(dir $(VAR))one-specs.h) \
+	  $(VAR)$(\n))
+	$(foreach VAR, $(JSON), ./$(MAIN) \
+	  -S \
+	  -a \
+	  -o $(patsubst %, $(WDIR)/%, $(dir $(VAR))one-specs.h) \
+	  $(VAR)$(\n))
+	$(foreach VAR, $(JSON), ./$(MAIN) \
+	  -F \
+	  -a \
+	  -o $(patsubst %, $(WDIR)/%, $(dir $(VAR))one-specs.h) \
+	  $(VAR)$(\n))
+
+$(MAIN): $(MAIN).c $(DEPS) | $(WDIR)
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+$(OBJS): gen | $(OBJDIR)
+
+$(WDIR):
+	mkdir -p $(addprefix $(WDIR)/, $(APIS))
+$(OBJDIR):
+	mkdir -p $(addprefix $(OBJDIR)/, $(APIS))
+
+echo:
+	@ echo -e 'JSON: $(JSON)\n'
+	@ echo -e 'APIS: $(APIS)\n'
+	@ echo -e 'MAIN: $(MAIN)\n'
+	@ echo -e 'OBJS: $(OBJS)\n'
+	@ echo -e 'CFLAGS: $(CFLAGS)\n'
+	@ echo -e 'LDFLAGS: $(LDFLAGS)\n'
+
+clean:
+	rm -rf $(WDIR) $(OBJDIR) $(MAIN)
+
+.PHONY : all echo clean gen
