@@ -13,8 +13,10 @@ CEE_UTILS_DIR  := cee-utils
 CEE_UTILS_SRC  := $(wildcard $(CEE_UTILS_DIR)/*.c) 
 CEE_UTILS_OBJS := $(CEE_UTILS_SRC:%.c=$(OBJDIR)/%.o)
 
-COMMON_DIR  := common
-COMMON_SRC  := $(wildcard $(COMMON_DIR)/*.c $(COMMON_DIR)/**/*.c)
+COMMON_DIR := common
+COMMON_SRC := $(wildcard $(COMMON_DIR)/*.c)              \
+              $(COMMON_DIR)/third-party/curl-websocket.c \
+              $(COMMON_DIR)/third-party/threadpool.c
 COMMON_OBJS := $(COMMON_SRC:%.c=$(OBJDIR)/%.o)
 
 # APIs src
@@ -106,7 +108,7 @@ $(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
 %.out: %.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 
-all: $(SPECSCODE_DIR)
+all: | $(SPECSCODE_DIR)
 	$(MAKE) discord github reddit slack
 
 test: all $(TEST_EXES)
@@ -126,17 +128,15 @@ $(GITHUB_OBJS):    | $(OBJDIR)
 $(REDDIT_OBJS):    | $(OBJDIR)
 $(SLACK_OBJS):     | $(OBJDIR)
 
-specs_gen:
-	@ $(MAKE) clean
-	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE) clean
-	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE)
-	mv $(SPECS_DIR)/$(SPECSCODE_DIR) .
-
 examples:
 	@ $(MAKE) all
 	@ $(MAKE) $(EXAMPLES_EXES)
 
-$(SPECSCODE_DIR): specs_gen
+$(SPECSCODE_DIR):
+	@ $(MAKE) clean
+	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE) clean
+	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE)
+	mv $(SPECS_DIR)/$(SPECSCODE_DIR) .
 
 $(CEE_UTILS_DIR):
 	if [[ ! -d $@ ]]; then        \
@@ -147,7 +147,7 @@ $(OBJDIR) :
 	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                             \
 	         $(OBJDIR)/$(COMMON_DIR)/third-party                    \
 	         $(OBJDIR)/$(TEST_DIR)                                  \
-           $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
+	         $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
 
 $(LIBDIR) :
 	mkdir -p $(LIBDIR)
