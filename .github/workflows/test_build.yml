@@ -22,8 +22,6 @@ jobs:
         run: |
           echo "Cleanup"
           make purge
-          echo "Generating specs code"
-          make specs_gen
           echo "Building"
           make all
           echo "Building example bots"
