@@ -143,7 +143,7 @@ $(CEE_UTILS_DIR):
 $(OBJDIR): | $(SPECSCODE_DIR)
 	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)           \
 	         $(OBJDIR)/$(COMMON_DIR)/third-party  \
-					 $(OBJDIR)/$(SPECSCODE_DIR)
+	         $(OBJDIR)/$(SPECSCODE_DIR)
 	mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 	mv $(SPECS_DIR)/obj/* $(OBJDIR)/$(SPECSCODE_DIR)
 
