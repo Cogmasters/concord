@@ -1,4 +1,4 @@
-/* This file is generated from specs/github/gist.json, Please don't edit it. */
+/* This file is generated from github/gist.json, Please don't edit it. */
 /**
  * @file specs-code/github/gist.h
  * @see https://docs.github.com/en/rest/reference/gists#create-a-gist
@@ -6,7 +6,7 @@
 
 
 /* Gist Structure */
-/* defined at specs/github/gist.json:9:33 */
+/* defined at github/gist.json:9:33 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,35 +33,35 @@
  * @endverbatim
  */
 struct github_gist {
-  /* specs/github/gist.json:12:28
+  /* github/gist.json:12:28
      '{ "name": "url", "type":{ "base":"char", "dec":"*"}}' */
   char *url;
 
-  /* specs/github/gist.json:13:28
+  /* github/gist.json:13:28
      '{ "name": "id", "type":{ "base":"char", "dec":"*"}}' */
   char *id;
 
-  /* specs/github/gist.json:14:28
+  /* github/gist.json:14:28
      '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
   char *node_id;
 
-  /* specs/github/gist.json:15:28
+  /* github/gist.json:15:28
      '{ "name": "html_url", "type":{ "base":"char", "dec":"*"}}' */
   char *html_url;
 
-  /* specs/github/gist.json:16:28
+  /* github/gist.json:16:28
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
   char *created_at;
 
-  /* specs/github/gist.json:17:28
+  /* github/gist.json:17:28
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*"}}' */
   char *updated_at;
 
-  /* specs/github/gist.json:18:28
+  /* github/gist.json:18:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*"}}' */
   char *description;
 
-  /* specs/github/gist.json:19:28
+  /* github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
   int comments;
 

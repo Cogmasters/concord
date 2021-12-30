@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/application_commands.params.json, Please don't edit it. */
+/* This file is generated from discord/application_commands.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/application_commands.params.h
  * @see https://discord.com/developers/docs/interactions/application-commands
@@ -6,7 +6,7 @@
 
 
 /* Create Global Application Command */
-/* defined at specs/discord/application_commands.params.json:10:22 */
+/* defined at discord/application_commands.params.json:10:22 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
  *
@@ -35,23 +35,23 @@
  * @endverbatim
  */
 struct discord_create_global_application_command_params {
-  /* specs/discord/application_commands.params.json:13:20
+  /* discord/application_commands.params.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
   char *name; /**< 1-32 lowercase character name */
 
-  /* specs/discord/application_commands.params.json:14:20
+  /* discord/application_commands.params.json:14:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
   char *description; /**< 1-100 character description */
 
-  /* specs/discord/application_commands.params.json:15:20
+  /* discord/application_commands.params.json:15:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   struct discord_application_command_option **options; /**< the parameters for the command */
 
-  /* specs/discord/application_commands.params.json:16:20
+  /* discord/application_commands.params.json:16:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
-  /* specs/discord/application_commands.params.json:17:20
+  /* discord/application_commands.params.json:17:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
   enum discord_application_command_types type;
 
@@ -73,7 +73,7 @@ extern size_t discord_create_global_application_command_params_list_to_json_v(ch
 extern size_t discord_create_global_application_command_params_list_to_json(char *str, size_t len, struct discord_create_global_application_command_params **p);
 
 /* Edit Global Application Command */
-/* defined at specs/discord/application_commands.params.json:24:23 */
+/* defined at discord/application_commands.params.json:24:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
  *
@@ -102,19 +102,19 @@ extern size_t discord_create_global_application_command_params_list_to_json(char
  * @endverbatim
  */
 struct discord_edit_global_application_command_params {
-  /* specs/discord/application_commands.params.json:27:20
+  /* discord/application_commands.params.json:27:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
   char *name; /**< 1-32 lowercase character name */
 
-  /* specs/discord/application_commands.params.json:28:20
+  /* discord/application_commands.params.json:28:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
   char *description; /**< 1-100 character description */
 
-  /* specs/discord/application_commands.params.json:29:20
+  /* discord/application_commands.params.json:29:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   struct discord_application_command_option **options; /**< the parameters for the command */
 
-  /* specs/discord/application_commands.params.json:30:20
+  /* discord/application_commands.params.json:30:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
@@ -136,7 +136,7 @@ extern size_t discord_edit_global_application_command_params_list_to_json_v(char
 extern size_t discord_edit_global_application_command_params_list_to_json(char *str, size_t len, struct discord_edit_global_application_command_params **p);
 
 /* Create Guild Application Command */
-/* defined at specs/discord/application_commands.params.json:37:23 */
+/* defined at discord/application_commands.params.json:37:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
  *
@@ -165,23 +165,23 @@ extern size_t discord_edit_global_application_command_params_list_to_json(char *
  * @endverbatim
  */
 struct discord_create_guild_application_command_params {
-  /* specs/discord/application_commands.params.json:40:20
+  /* discord/application_commands.params.json:40:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"}' */
   char *name; /**< 1-32 lowercase character name */
 
-  /* specs/discord/application_commands.params.json:41:20
+  /* discord/application_commands.params.json:41:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description"}' */
   char *description; /**< 1-100 character description */
 
-  /* specs/discord/application_commands.params.json:42:20
+  /* discord/application_commands.params.json:42:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   struct discord_application_command_option **options; /**< the parameters for the command */
 
-  /* specs/discord/application_commands.params.json:43:20
+  /* discord/application_commands.params.json:43:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
-  /* specs/discord/application_commands.params.json:44:20
+  /* discord/application_commands.params.json:44:20
      '{ "name": "type", "type":{"base":"int", "int_alias":"enum discord_application_command_types", "inject_if_not":0}}' */
   enum discord_application_command_types type;
 
@@ -203,7 +203,7 @@ extern size_t discord_create_guild_application_command_params_list_to_json_v(cha
 extern size_t discord_create_guild_application_command_params_list_to_json(char *str, size_t len, struct discord_create_guild_application_command_params **p);
 
 /* Edit Guild Application Command */
-/* defined at specs/discord/application_commands.params.json:51:23 */
+/* defined at discord/application_commands.params.json:51:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
  *
@@ -232,19 +232,19 @@ extern size_t discord_create_guild_application_command_params_list_to_json(char 
  * @endverbatim
  */
 struct discord_edit_guild_application_command_params {
-  /* specs/discord/application_commands.params.json:54:20
+  /* discord/application_commands.params.json:54:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null}' */
   char *name; /**< 1-32 lowercase character name */
 
-  /* specs/discord/application_commands.params.json:55:20
+  /* discord/application_commands.params.json:55:20
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }, "comment":"1-100 character description", "inject_if_not":null}' */
   char *description; /**< 1-100 character description */
 
-  /* specs/discord/application_commands.params.json:56:20
+  /* discord/application_commands.params.json:56:20
      '{ "name": "options", "type":{"base":"struct discord_application_command_option", "dec":"ntl"}, "comment":"the parameters for the command", "inject_if_not":null}' */
   struct discord_application_command_option **options; /**< the parameters for the command */
 
-  /* specs/discord/application_commands.params.json:57:20
+  /* discord/application_commands.params.json:57:20
      '{ "name": "default_permission", "type":{"base":"bool", "default_value":true}, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
   bool default_permission; /**< whether the command is enabled by default when the app is added to a guild */
 
@@ -266,7 +266,7 @@ extern size_t discord_edit_guild_application_command_params_list_to_json_v(char 
 extern size_t discord_edit_guild_application_command_params_list_to_json(char *str, size_t len, struct discord_edit_guild_application_command_params **p);
 
 /* Edit Application Command Permissions */
-/* defined at specs/discord/application_commands.params.json:64:23 */
+/* defined at discord/application_commands.params.json:64:23 */
 /**
  * @see https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions
  *
@@ -295,7 +295,7 @@ extern size_t discord_edit_guild_application_command_params_list_to_json(char *s
  * @endverbatim
  */
 struct discord_edit_application_command_permissions_params {
-  /* specs/discord/application_commands.params.json:67:20
+  /* discord/application_commands.params.json:67:20
      '{ "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
   struct discord_application_command_permissions **permissions; /**< the permissions for the command in the guild */
 

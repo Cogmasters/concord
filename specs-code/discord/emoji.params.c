@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/emoji.params.json, Please don't edit it. */
+/* This file is generated from discord/emoji.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/emoji.params.c
  * @see 
@@ -22,22 +22,22 @@ void discord_create_guild_emoji_params_from_json(char *json, size_t len, struct 
 {
   discord_create_guild_emoji_params_init(p);
   json_extract(json, len, 
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 "(name):?s,"
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
                 "(image):?s,"
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 "(roles):F,",
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 &p->name,
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
                 &p->image,
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 ja_u64_list_from_json, &p->roles);
 }
@@ -46,36 +46,36 @@ size_t discord_create_guild_emoji_params_to_json(char *json, size_t len, struct 
 {
   size_t r;
   void *arg_switches[3]={NULL};
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   arg_switches[0] = p->name;
 
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
   arg_switches[1] = p->image;
 
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   arg_switches[2] = p->roles;
 
   r=json_inject(json, len, 
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 "(name):s,"
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
                 "(image):s,"
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 "(roles):F,"
                 "@arg_switches:b",
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 p->name,
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
                 p->image,
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 ja_u64_list_to_json, p->roles,
                 arg_switches, sizeof(arg_switches), true);
@@ -116,15 +116,15 @@ size_t discord_create_guild_emoji_params_list_to_json_v(char *str, size_t len, v
 
 
 void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji_params *d) {
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   if (d->name)
     free(d->name);
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
   if (d->image)
     free(d->image);
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   if (d->roles)
     ja_u64_list_free(d->roles);
@@ -132,13 +132,13 @@ void discord_create_guild_emoji_params_cleanup(struct discord_create_guild_emoji
 
 void discord_create_guild_emoji_params_init(struct discord_create_guild_emoji_params *p) {
   memset(p, 0, sizeof(struct discord_create_guild_emoji_params));
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
 
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
 
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
 
 }
@@ -172,16 +172,16 @@ void discord_modify_guild_emoji_params_from_json(char *json, size_t len, struct 
 {
   discord_modify_guild_emoji_params_init(p);
   json_extract(json, len, 
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 "(name):?s,"
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 "(roles):F,",
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 &p->name,
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 ja_u64_list_from_json, &p->roles);
 }
@@ -190,26 +190,26 @@ size_t discord_modify_guild_emoji_params_to_json(char *json, size_t len, struct 
 {
   size_t r;
   void *arg_switches[2]={NULL};
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   arg_switches[0] = p->name;
 
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   arg_switches[1] = p->roles;
 
   r=json_inject(json, len, 
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 "(name):s,"
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 "(roles):F,"
                 "@arg_switches:b",
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
                 p->name,
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
                 ja_u64_list_to_json, p->roles,
                 arg_switches, sizeof(arg_switches), true);
@@ -250,11 +250,11 @@ size_t discord_modify_guild_emoji_params_list_to_json_v(char *str, size_t len, v
 
 
 void discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji_params *d) {
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   if (d->name)
     free(d->name);
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   if (d->roles)
     ja_u64_list_free(d->roles);
@@ -262,10 +262,10 @@ void discord_modify_guild_emoji_params_cleanup(struct discord_modify_guild_emoji
 
 void discord_modify_guild_emoji_params_init(struct discord_modify_guild_emoji_params *p) {
   memset(p, 0, sizeof(struct discord_modify_guild_emoji_params));
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
 
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
 
 }

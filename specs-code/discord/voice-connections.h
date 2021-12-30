@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
+/* This file is generated from discord/voice-connections.json, Please don't edit it. */
 /**
  * @file specs-code/discord/voice-connections.h
  * @see https://discord.com/developers/docs/topics/voice-connections
@@ -7,7 +7,7 @@
 
 
 /* Voice Close Event Codes */
-/* defined at specs/discord/voice-connections.json:6:5 */
+/* defined at discord/voice-connections.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes
  *
@@ -47,7 +47,7 @@ extern size_t discord_voice_close_event_codes_list_to_json(char *str, size_t len
 
 
 /* Voice Opcodes */
-/* defined at specs/discord/voice-connections.json:27:5 */
+/* defined at discord/voice-connections.json:27:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes
  *
@@ -87,7 +87,7 @@ extern size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum dis
 
 
 /* Voice Speaking Flags */
-/* defined at specs/discord/voice-connections.json:48:5 */
+/* defined at discord/voice-connections.json:48:5 */
 /**
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  *

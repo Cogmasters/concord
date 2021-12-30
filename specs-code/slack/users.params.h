@@ -1,4 +1,4 @@
-/* This file is generated from specs/slack/users.params.json, Please don't edit it. */
+/* This file is generated from slack/users.params.json, Please don't edit it. */
 /**
  * @file specs-code/slack/users.params.h
  * @see https://api.slack.com/methods?filter=users
@@ -6,7 +6,7 @@
 
 
 /* Users Info */
-/* defined at specs/slack/users.params.json:9:22 */
+/* defined at slack/users.params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,15 +33,15 @@
  * @endverbatim
  */
 struct slack_users_info_params {
-  /* specs/slack/users.params.json:12:20
+  /* slack/users.params.json:12:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.", "inject_if_not":null }' */
   char *token; /**< Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter. */
 
-  /* specs/slack/users.params.json:13:20
+  /* slack/users.params.json:13:20
      '{ "name": "user", "type":{ "base":"char", "dec":"*" }, "comment":"User to get info onUser to get info on", "inject_if_not":null }' */
   char *user; /**< User to get info onUser to get info on */
 
-  /* specs/slack/users.params.json:14:20
+  /* slack/users.params.json:14:20
      '{ "name": "include_locale", "type":{ "base":"bool" }, "comment":"Set this to true to receive the locale for this user. Defaults to false", "inject_if_not":false }' */
   bool include_locale; /**< Set this to true to receive the locale for this user. Defaults to false */
 

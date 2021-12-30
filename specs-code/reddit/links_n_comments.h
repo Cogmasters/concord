@@ -1,4 +1,4 @@
-/* This file is generated from specs/reddit/links_n_comments.json, Please don't edit it. */
+/* This file is generated from reddit/links_n_comments.json, Please don't edit it. */
 /**
  * @file specs-code/reddit/links_n_comments.h
  * @see 
@@ -6,7 +6,7 @@
 
 
 /* Comment */
-/* defined at specs/reddit/links_n_comments.json:10:22 */
+/* defined at reddit/links_n_comments.json:10:22 */
 /**
  * @see https://www.reddit.com/dev/api/#POST_api_comment
  *
@@ -35,27 +35,27 @@
  * @endverbatim
  */
 struct reddit_comment_params {
-  /* specs/reddit/links_n_comments.json:13:20
+  /* reddit/links_n_comments.json:13:20
      '{ "name": "api_type", "type":{ "base":"char", "dec":"*" }, "comment":"the string json" }' */
   char *api_type; /**< the string json */
 
-  /* specs/reddit/links_n_comments.json:14:20
+  /* reddit/links_n_comments.json:14:20
      '{ "name": "return_rtjson", "type":{ "base":"bool" }, "comment":"boolean value" }' */
   bool return_rtjson; /**< boolean value */
 
-  /* specs/reddit/links_n_comments.json:15:20
+  /* reddit/links_n_comments.json:15:20
      '{ "name": "richtext_json", "type":{ "base":"char", "dec":"*" }, "comment":"JSON data" }' */
   char *richtext_json; /**< JSON data */
 
-  /* specs/reddit/links_n_comments.json:16:20
+  /* reddit/links_n_comments.json:16:20
      '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"raw markdown text" }' */
   char *text; /**< raw markdown text */
 
-  /* specs/reddit/links_n_comments.json:17:20
+  /* reddit/links_n_comments.json:17:20
      '{ "name": "thing_id", "type":{ "base":"char", "dec":"*" }, "comment":"fullname of parent thing" }' */
   char *thing_id; /**< fullname of parent thing */
 
-  /* specs/reddit/links_n_comments.json:18:20
+  /* reddit/links_n_comments.json:18:20
      '{ "name": "uh", "type":{ "base":"char", "dec":"*" }, "comment":"a modhash" }' */
   char *uh; /**< a modhash */
 

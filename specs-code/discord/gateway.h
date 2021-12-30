@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/gateway.json, Please don't edit it. */
+/* This file is generated from discord/gateway.json, Please don't edit it. */
 /**
  * @file specs-code/discord/gateway.h
  * @see https://discord.com/developers/docs/topics/gateway
@@ -7,7 +7,7 @@
 
 
 /* Gateway Close Event Codes */
-/* defined at specs/discord/gateway.json:6:5 */
+/* defined at discord/gateway.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes
  *
@@ -50,7 +50,7 @@ extern size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, 
 
 
 /* Gateway Intents */
-/* defined at specs/discord/gateway.json:30:5 */
+/* defined at discord/gateway.json:30:5 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#gateway-intents
  *
@@ -93,7 +93,7 @@ extern size_t discord_gateway_intents_list_to_json(char *str, size_t len, enum d
 
 
 /* Gateway Opcodes */
-/* defined at specs/discord/gateway.json:54:5 */
+/* defined at discord/gateway.json:54:5 */
 /**
  * @see https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes
  *
@@ -132,7 +132,7 @@ extern size_t discord_gateway_opcodes_list_to_json(char *str, size_t len, enum d
 
 
 /* Gateway Events */
-/* defined at specs/discord/gateway.json:74:5 */
+/* defined at discord/gateway.json:74:5 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#commands-and-events-gateway-events
  *
@@ -213,7 +213,7 @@ extern size_t discord_gateway_events_list_to_json_v(char *str, size_t len, void 
 extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum discord_gateway_events **p);
 
 /* Identify Structure */
-/* defined at specs/discord/gateway.json:140:22 */
+/* defined at discord/gateway.json:140:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-structure
  *
@@ -242,35 +242,35 @@ extern size_t discord_gateway_events_list_to_json(char *str, size_t len, enum di
  * @endverbatim
  */
 struct discord_identify {
-  /* specs/discord/gateway.json:143:19
+  /* discord/gateway.json:143:19
      '{ "name":"token","type":{"base":"char", "dec":"*"}}' */
   char *token;
 
-  /* specs/discord/gateway.json:144:19
+  /* discord/gateway.json:144:19
      '{ "name":"properties","type":{"base":"struct discord_identify_connection", "dec":"*"}}' */
   struct discord_identify_connection *properties;
 
-  /* specs/discord/gateway.json:145:19
+  /* discord/gateway.json:145:19
      '{ "name":"compress","type":{"base":"bool"}}' */
   bool compress;
 
-  /* specs/discord/gateway.json:146:19
+  /* discord/gateway.json:146:19
      '{ "name":"large_threshold","type":{"base":"int"}}' */
   int large_threshold;
 
-  /* specs/discord/gateway.json:147:19
+  /* discord/gateway.json:147:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
   bool guild_subscriptions;
 
-  /* specs/discord/gateway.json:148:19
+  /* discord/gateway.json:148:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
   /* @todo shard (null); */
 
-  /* specs/discord/gateway.json:149:19
+  /* discord/gateway.json:149:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
   struct discord_presence_status *presence;
 
-  /* specs/discord/gateway.json:150:19
+  /* discord/gateway.json:150:19
      '{ "name":"intents","type":{"base":"int"}}' */
   int intents;
 
@@ -292,7 +292,7 @@ extern size_t discord_identify_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_identify_list_to_json(char *str, size_t len, struct discord_identify **p);
 
 /* Gateway Voice State Update Structure */
-/* defined at specs/discord/gateway.json:157:22 */
+/* defined at discord/gateway.json:157:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-voice-state-gateway-voice-state-update-structure
  *
@@ -321,19 +321,19 @@ extern size_t discord_identify_list_to_json(char *str, size_t len, struct discor
  * @endverbatim
  */
 struct discord_voice_state_status {
-  /* specs/discord/gateway.json:160:19
+  /* discord/gateway.json:160:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
   u64_snowflake_t guild_id; /**< id of the guild */
 
-  /* specs/discord/gateway.json:161:19
+  /* discord/gateway.json:161:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
   u64_snowflake_t channel_id; /**< id of the voice channel client wants to join (null if disconnecting) */
 
-  /* specs/discord/gateway.json:162:19
+  /* discord/gateway.json:162:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
   bool self_mute; /**< is the client muted */
 
-  /* specs/discord/gateway.json:163:19
+  /* discord/gateway.json:163:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
   bool self_deaf; /**< is the client deafened */
 
@@ -355,7 +355,7 @@ extern size_t discord_voice_state_status_list_to_json_v(char *str, size_t len, v
 extern size_t discord_voice_state_status_list_to_json(char *str, size_t len, struct discord_voice_state_status **p);
 
 /* Gateway Presence Update Structure */
-/* defined at specs/discord/gateway.json:170:22 */
+/* defined at discord/gateway.json:170:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure
  *
@@ -384,19 +384,19 @@ extern size_t discord_voice_state_status_list_to_json(char *str, size_t len, str
  * @endverbatim
  */
 struct discord_presence_status {
-  /* specs/discord/gateway.json:173:19
+  /* discord/gateway.json:173:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
   u64_unix_ms_t since; /**< unix time (in milliseconds) of when the client went idle, or null if the client is not idle */
 
-  /* specs/discord/gateway.json:174:19
+  /* discord/gateway.json:174:19
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
   struct discord_activity **activities; /**< the user's activities */
 
-  /* specs/discord/gateway.json:175:19
+  /* discord/gateway.json:175:19
      '{ "name":"status","type":{"base":"char", "dec":"*"}, "comment":"the user's new status", "inject_if_not":null }' */
   char *status; /**< the user's new status */
 
-  /* specs/discord/gateway.json:176:19
+  /* discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
   bool afk; /**< whether or not the client is afk */
 
@@ -418,7 +418,7 @@ extern size_t discord_presence_status_list_to_json_v(char *str, size_t len, void
 extern size_t discord_presence_status_list_to_json(char *str, size_t len, struct discord_presence_status **p);
 
 /* Identify Connection Properties */
-/* defined at specs/discord/gateway.json:183:22 */
+/* defined at discord/gateway.json:183:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
  *
@@ -447,15 +447,15 @@ extern size_t discord_presence_status_list_to_json(char *str, size_t len, struct
  * @endverbatim
  */
 struct discord_identify_connection {
-  /* specs/discord/gateway.json:186:19
+  /* discord/gateway.json:186:19
      '{ "name":"os", "json_key":"$os", "type":{"base":"char", "dec":"*"}, "comment":"your operating system", "inject_if_not":null }' */
   char *os; /**< your operating system */
 
-  /* specs/discord/gateway.json:187:19
+  /* discord/gateway.json:187:19
      '{ "name":"browser", "json_key":"$browser", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
   char *browser; /**< your library name */
 
-  /* specs/discord/gateway.json:188:19
+  /* discord/gateway.json:188:19
      '{ "name":"device", "json_key":"$device", "type":{"base":"char", "dec":"*"}, "comment":"your library name", "inject_if_not":null }' */
   char *device; /**< your library name */
 
@@ -477,7 +477,7 @@ extern size_t discord_identify_connection_list_to_json_v(char *str, size_t len, 
 extern size_t discord_identify_connection_list_to_json(char *str, size_t len, struct discord_identify_connection **p);
 
 /* Activity Structure */
-/* defined at specs/discord/gateway.json:194:22 */
+/* defined at discord/gateway.json:194:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
  *
@@ -506,35 +506,35 @@ extern size_t discord_identify_connection_list_to_json(char *str, size_t len, st
  * @endverbatim
  */
 struct discord_activity {
-  /* specs/discord/gateway.json:197:19
+  /* discord/gateway.json:197:19
      '{ "name":"name","type":{"base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/gateway.json:198:19
+  /* discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
   int type;
 
-  /* specs/discord/gateway.json:199:19
+  /* discord/gateway.json:199:19
      '{ "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""}' */
   char *url;
 
-  /* specs/discord/gateway.json:200:19
+  /* discord/gateway.json:200:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 }' */
   u64_unix_ms_t created_at;
 
-  /* specs/discord/gateway.json:201:19
+  /* discord/gateway.json:201:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
   u64_snowflake_t application_id;
 
-  /* specs/discord/gateway.json:202:19
+  /* discord/gateway.json:202:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *details;
 
-  /* specs/discord/gateway.json:203:19
+  /* discord/gateway.json:203:19
      '{ "name":"state","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   char *state;
 
-  /* specs/discord/gateway.json:204:19
+  /* discord/gateway.json:204:19
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
   bool instance;
 
@@ -557,7 +557,7 @@ extern size_t discord_activity_list_to_json(char *str, size_t len, struct discor
 
 
 /* Activity Types */
-/* defined at specs/discord/gateway.json:207:5 */
+/* defined at discord/gateway.json:207:5 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#activity-object-activity-types
  *
@@ -589,7 +589,7 @@ extern size_t discord_activity_types_list_to_json_v(char *str, size_t len, void 
 extern size_t discord_activity_types_list_to_json(char *str, size_t len, enum discord_activity_types **p);
 
 /* Session Start Limit Structure */
-/* defined at specs/discord/gateway.json:225:22 */
+/* defined at discord/gateway.json:225:22 */
 /**
  * @see https://discord.com/developers/docs/topics/gateway#session-start-limit-object-session-start-limit-structure
  *
@@ -618,19 +618,19 @@ extern size_t discord_activity_types_list_to_json(char *str, size_t len, enum di
  * @endverbatim
  */
 struct discord_session_start_limit {
-  /* specs/discord/gateway.json:228:19
+  /* discord/gateway.json:228:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
   int total; /**< the total number of session starts the current user is allowed */
 
-  /* specs/discord/gateway.json:229:19
+  /* discord/gateway.json:229:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
   int remaining; /**< the remaining number of session starts the current user is allowed */
 
-  /* specs/discord/gateway.json:230:19
+  /* discord/gateway.json:230:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
   int reset_after; /**< the number of milliseconds after which the limit resets */
 
-  /* specs/discord/gateway.json:231:19
+  /* discord/gateway.json:231:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
   int max_concurrency; /**< the number of identify requests allowed per 5 seconds */
 

@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/permissions.json, Please don't edit it. */
+/* This file is generated from discord/permissions.json, Please don't edit it. */
 /**
  * @file specs-code/discord/permissions.h
  * @see https://discord.com/developers/docs/topics/permissions
@@ -7,7 +7,7 @@
 
 
 /* Bitwise Permission Flags */
-/* defined at specs/discord/permissions.json:6:5 */
+/* defined at discord/permissions.json:6:5 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -74,7 +74,7 @@ extern size_t discord_bitwise_permission_flags_list_to_json_v(char *str, size_t 
 extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t len, enum discord_bitwise_permission_flags **p);
 
 /* Role Structure */
-/* defined at specs/discord/permissions.json:60:22 */
+/* defined at discord/permissions.json:60:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-structure
  *
@@ -103,39 +103,39 @@ extern size_t discord_bitwise_permission_flags_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_role {
-  /* specs/discord/permissions.json:63:20
+  /* discord/permissions.json:63:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t id;
 
-  /* specs/discord/permissions.json:64:20
+  /* discord/permissions.json:64:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   char *name;
 
-  /* specs/discord/permissions.json:65:20
+  /* discord/permissions.json:65:20
      '{ "name": "color", "type":{ "base":"int" }}' */
   int color;
 
-  /* specs/discord/permissions.json:66:20
+  /* discord/permissions.json:66:20
      '{ "name": "hoist", "type":{ "base":"bool" }}' */
   bool hoist;
 
-  /* specs/discord/permissions.json:67:20
+  /* discord/permissions.json:67:20
      '{ "name": "position", "type":{ "base":"int" }}' */
   int position;
 
-  /* specs/discord/permissions.json:68:20
+  /* discord/permissions.json:68:20
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
   char *permissions;
 
-  /* specs/discord/permissions.json:69:20
+  /* discord/permissions.json:69:20
      '{ "name": "managed", "type":{ "base":"bool" }}' */
   bool managed;
 
-  /* specs/discord/permissions.json:70:20
+  /* discord/permissions.json:70:20
      '{ "name": "mentionable", "type":{ "base":"bool" }}' */
   bool mentionable;
 
-  /* specs/discord/permissions.json:71:20
+  /* discord/permissions.json:71:20
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
   struct discord_role_tags *tags;
 
@@ -157,7 +157,7 @@ extern size_t discord_role_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_role_list_to_json(char *str, size_t len, struct discord_role **p);
 
 /* Role Tags Structure */
-/* defined at specs/discord/permissions.json:78:22 */
+/* defined at discord/permissions.json:78:22 */
 /**
  * @see https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure
  *
@@ -186,15 +186,15 @@ extern size_t discord_role_list_to_json(char *str, size_t len, struct discord_ro
  * @endverbatim
  */
 struct discord_role_tags {
-  /* specs/discord/permissions.json:81:20
+  /* discord/permissions.json:81:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t bot_id;
 
-  /* specs/discord/permissions.json:82:20
+  /* discord/permissions.json:82:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
   u64_snowflake_t integration_id;
 
-  /* specs/discord/permissions.json:83:20
+  /* discord/permissions.json:83:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
   int premium_subscriber;
 

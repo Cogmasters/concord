@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/invite.params.json, Please don't edit it. */
+/* This file is generated from discord/invite.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/invite.params.h
  * @see https://discord.com/developers/docs/resources/invite
@@ -6,7 +6,7 @@
 
 
 /* Get Invite */
-/* defined at specs/discord/invite.params.json:9:22 */
+/* defined at discord/invite.params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,11 +33,11 @@
  * @endverbatim
  */
 struct discord_get_invite_params {
-  /* specs/discord/invite.params.json:12:20
+  /* discord/invite.params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
   bool with_counts; /**< whether the invite should contain approximate member counts */
 
-  /* specs/discord/invite.params.json:13:20
+  /* discord/invite.params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
   bool with_expiration; /**< whether the invite should contain the expiration date */
 

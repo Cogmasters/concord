@@ -1,4 +1,4 @@
-/* This file is generated from specs/github/repository.json, Please don't edit it. */
+/* This file is generated from github/repository.json, Please don't edit it. */
 /**
  * @file specs-code/github/repository.c
  * @see https://docs.github.com/en/rest/reference/repos#get-all-repository-topics
@@ -22,10 +22,10 @@ void github_topic_from_json(char *json, size_t len, struct github_topic *p)
 {
   github_topic_init(p);
   json_extract(json, len, 
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 "(names):F,",
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 ja_str_list_from_json, &p->names);
 }
@@ -34,16 +34,16 @@ size_t github_topic_to_json(char *json, size_t len, struct github_topic *p)
 {
   size_t r;
   void *arg_switches[1]={NULL};
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
   arg_switches[0] = p->names;
 
   r=json_inject(json, len, 
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 "(names):F,"
                 "@arg_switches:b",
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
                 ja_str_list_to_json, p->names,
                 arg_switches, sizeof(arg_switches), true);
@@ -84,7 +84,7 @@ size_t github_topic_list_to_json_v(char *str, size_t len, void *p){
 
 
 void github_topic_cleanup(struct github_topic *d) {
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
   if (d->names)
     ja_str_list_free(d->names);
@@ -92,7 +92,7 @@ void github_topic_cleanup(struct github_topic *d) {
 
 void github_topic_init(struct github_topic *p) {
   memset(p, 0, sizeof(struct github_topic));
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
 
 }

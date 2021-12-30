@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/user.json, Please don't edit it. */
+/* This file is generated from discord/user.json, Please don't edit it. */
 /**
  * @file specs-code/discord/user.h
  * @see https://discord.com/developers/docs/resources/user
@@ -7,7 +7,7 @@
 
 
 /* User Flags */
-/* defined at specs/discord/user.json:6:7 */
+/* defined at discord/user.json:6:7 */
 /**
  * @see https://discord.com/developers/docs/resources/user#user-object-user-flags
  *
@@ -48,7 +48,7 @@ extern size_t discord_user_flags_list_to_json(char *str, size_t len, enum discor
 
 
 /* Premium Types */
-/* defined at specs/discord/user.json:28:7 */
+/* defined at discord/user.json:28:7 */
 /**
  * @see https://discord.com/developers/docs/resources/user#user-object-premium-types
  *
@@ -77,7 +77,7 @@ extern size_t discord_user_premium_types_list_to_json_v(char *str, size_t len, v
 extern size_t discord_user_premium_types_list_to_json(char *str, size_t len, enum discord_user_premium_types **p);
 
 /* User Structure */
-/* defined at specs/discord/user.json:41:28 */
+/* defined at discord/user.json:41:28 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -104,59 +104,59 @@ extern size_t discord_user_premium_types_list_to_json(char *str, size_t len, enu
  * @endverbatim
  */
 struct discord_user {
-  /* specs/discord/user.json:44:24
+  /* discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
   u64_snowflake_t id;
 
-  /* specs/discord/user.json:45:24
+  /* discord/user.json:45:24
      '{ "name": "username", "type":{ "base":"char", "dec":"*"}}' */
   char *username;
 
-  /* specs/discord/user.json:46:24
+  /* discord/user.json:46:24
      '{ "name": "discriminator", "type":{ "base":"char", "dec":"*" }}' */
   char *discriminator;
 
-  /* specs/discord/user.json:47:24
+  /* discord/user.json:47:24
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*" }}' */
   char *avatar;
 
-  /* specs/discord/user.json:48:24
+  /* discord/user.json:48:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
   bool bot;
 
-  /* specs/discord/user.json:49:24
+  /* discord/user.json:49:24
      '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}' */
   bool System;
 
-  /* specs/discord/user.json:50:24
+  /* discord/user.json:50:24
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
   bool mfa_enabled;
 
-  /* specs/discord/user.json:51:24
+  /* discord/user.json:51:24
      '{ "name": "locale", "type":{ "base":"char", "dec":"*" }}' */
   char *locale;
 
-  /* specs/discord/user.json:52:24
+  /* discord/user.json:52:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   bool verified;
 
-  /* specs/discord/user.json:53:24
+  /* discord/user.json:53:24
      '{ "name": "email", "type":{ "base":"char", "dec":"*" }}' */
   char *email;
 
-  /* specs/discord/user.json:54:24
+  /* discord/user.json:54:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
   enum discord_user_flags flags;
 
-  /* specs/discord/user.json:55:24
+  /* discord/user.json:55:24
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }}' */
   char *banner;
 
-  /* specs/discord/user.json:56:24
+  /* discord/user.json:56:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
   enum discord_user_premium_types premium_type;
 
-  /* specs/discord/user.json:57:24
+  /* discord/user.json:57:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
   enum discord_user_flags public_flags;
 
@@ -179,7 +179,7 @@ extern size_t discord_user_list_to_json(char *str, size_t len, struct discord_us
 
 
 /* Visbility Types */
-/* defined at specs/discord/user.json:60:7 */
+/* defined at discord/user.json:60:7 */
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-visibility-types
  *
@@ -208,7 +208,7 @@ extern size_t discord_visibility_types_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_visibility_types_list_to_json(char *str, size_t len, enum discord_visibility_types **p);
 
 /* Connection Structure */
-/* defined at specs/discord/user.json:74:28 */
+/* defined at discord/user.json:74:28 */
 /**
  * @see https://discord.com/developers/docs/resources/user#connection-object-connection-structure
  *
@@ -237,39 +237,39 @@ extern size_t discord_visibility_types_list_to_json(char *str, size_t len, enum 
  * @endverbatim
  */
 struct discord_connection {
-  /* specs/discord/user.json:77:24
+  /* discord/user.json:77:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*" }}' */
   char *id;
 
-  /* specs/discord/user.json:78:24
+  /* discord/user.json:78:24
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/user.json:79:24
+  /* discord/user.json:79:24
      '{ "name": "type", "type":{ "base":"char", "dec":"*"}}' */
   char *type;
 
-  /* specs/discord/user.json:80:24
+  /* discord/user.json:80:24
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
   bool revoked;
 
-  /* specs/discord/user.json:81:24
+  /* discord/user.json:81:24
      '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
   struct discord_integration **integrations;
 
-  /* specs/discord/user.json:82:24
+  /* discord/user.json:82:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
   bool verified;
 
-  /* specs/discord/user.json:83:24
+  /* discord/user.json:83:24
      '{ "name": "friend_sync", "type":{ "base":"bool" }}' */
   bool friend_sync;
 
-  /* specs/discord/user.json:84:24
+  /* discord/user.json:84:24
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
   bool show_activity;
 
-  /* specs/discord/user.json:85:24
+  /* discord/user.json:85:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
   enum discord_visibility_types visibility;
 

@@ -1,4 +1,4 @@
-/* This file is generated from specs/github/gist.params.json, Please don't edit it. */
+/* This file is generated from github/gist.params.json, Please don't edit it. */
 /**
  * @file specs-code/github/gist.params.c
  * @see https://docs.github.com/en/rest/reference/gists
@@ -22,28 +22,28 @@ void github_gist_create_params_from_json(char *json, size_t len, struct github_g
 {
   github_gist_create_params_init(p);
   json_extract(json, len, 
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 "(description):?s,"
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
                 "(title):?s,"
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
                 "(contents):?s,"
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 "(public):?s,",
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 &p->description,
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
                 &p->title,
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
                 &p->contents,
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 &p->public);
 }
@@ -52,46 +52,46 @@ size_t github_gist_create_params_to_json(char *json, size_t len, struct github_g
 {
   size_t r;
   void *arg_switches[4]={NULL};
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
   arg_switches[0] = p->description;
 
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
   arg_switches[1] = p->title;
 
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
   arg_switches[2] = p->contents;
 
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
   arg_switches[3] = p->public;
 
   r=json_inject(json, len, 
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 "(description):s,"
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
                 "(title):s,"
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
                 "(contents):s,"
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 "(public):s,"
                 "@arg_switches:b",
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
                 p->description,
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
                 p->title,
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
                 p->contents,
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
                 p->public,
                 arg_switches, sizeof(arg_switches), true);
@@ -132,19 +132,19 @@ size_t github_gist_create_params_list_to_json_v(char *str, size_t len, void *p){
 
 
 void github_gist_create_params_cleanup(struct github_gist_create_params *d) {
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
   if (d->description)
     free(d->description);
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
   if (d->title)
     free(d->title);
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
   if (d->contents)
     free(d->contents);
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
   if (d->public)
     free(d->public);
@@ -152,16 +152,16 @@ void github_gist_create_params_cleanup(struct github_gist_create_params *d) {
 
 void github_gist_create_params_init(struct github_gist_create_params *p) {
   memset(p, 0, sizeof(struct github_gist_create_params));
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
 
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
 
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
 
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
 
 }

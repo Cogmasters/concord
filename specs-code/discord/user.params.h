@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/user.params.json, Please don't edit it. */
+/* This file is generated from discord/user.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/user.params.h
  * @see https://discord.com/developers/docs/resources/user
@@ -6,7 +6,7 @@
 
 
 /* Modify Current User */
-/* defined at specs/discord/user.params.json:9:22 */
+/* defined at discord/user.params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,11 +33,11 @@
  * @endverbatim
  */
 struct discord_modify_current_user_params {
-  /* specs/discord/user.params.json:12:20
+  /* discord/user.params.json:12:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }}' */
   char *username;
 
-  /* specs/discord/user.params.json:13:20
+  /* discord/user.params.json:13:20
      '{ "name": "avatar", "type":{ "base":"char", "dec":"*"}, "comment":"base64 encoded image data"}' */
   char *avatar; /**< base64 encoded image data */
 
@@ -59,7 +59,7 @@ extern size_t discord_modify_current_user_params_list_to_json_v(char *str, size_
 extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p);
 
 /* Create DM */
-/* defined at specs/discord/user.params.json:19:22 */
+/* defined at discord/user.params.json:19:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -86,7 +86,7 @@ extern size_t discord_modify_current_user_params_list_to_json(char *str, size_t 
  * @endverbatim
  */
 struct discord_create_dm_params {
-  /* specs/discord/user.params.json:22:20
+  /* discord/user.params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
   u64_snowflake_t recipient_id; /**< the recipient to open a DM channel with */
 
@@ -108,7 +108,7 @@ extern size_t discord_create_dm_params_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_create_dm_params_list_to_json(char *str, size_t len, struct discord_create_dm_params **p);
 
 /* Create Group DM */
-/* defined at specs/discord/user.params.json:28:22 */
+/* defined at discord/user.params.json:28:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -135,12 +135,12 @@ extern size_t discord_create_dm_params_list_to_json(char *str, size_t len, struc
  * @endverbatim
  */
 struct discord_create_group_dm_params {
-  /* specs/discord/user.params.json:31:20
+  /* discord/user.params.json:31:20
      '{ "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 
           "comment":"access tokens of users that have granted your app the gdm.join scope"}' */
   ja_str **access_tokens; /**< access tokens of users that have granted your app the gdm.join scope */
 
-  /* specs/discord/user.params.json:33:19
+  /* discord/user.params.json:33:19
      '{ "name":"nicks", "type":{ "base":"ja_u64", "dec":"ntl"}, 
           "comment":"a dictionary of user ids to their respective nicknames"}' */
   ja_u64 **nicks; /**< a dictionary of user ids to their respective nicknames */

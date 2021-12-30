@@ -1,4 +1,4 @@
-/* This file is generated from specs/github/repository.json, Please don't edit it. */
+/* This file is generated from github/repository.json, Please don't edit it. */
 /**
  * @file specs-code/github/repository.h
  * @see https://docs.github.com/en/rest/reference/repos#get-all-repository-topics
@@ -6,7 +6,7 @@
 
 
 /* Topic Structure */
-/* defined at specs/github/repository.json:9:33 */
+/* defined at github/repository.json:9:33 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,7 +33,7 @@
  * @endverbatim
  */
 struct github_topic {
-  /* specs/github/repository.json:12:28
+  /* github/repository.json:12:28
      '{ "name": "names", "type":{ "base":"ja_str", "dec":"ntl"}}' */
   ja_str **names;
 

@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/emoji.params.json, Please don't edit it. */
+/* This file is generated from discord/emoji.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/emoji.params.h
  * @see 
@@ -6,7 +6,7 @@
 
 
 /* Create Guild Emoji */
-/* defined at specs/discord/emoji.params.json:9:22 */
+/* defined at discord/emoji.params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,15 +33,15 @@
  * @endverbatim
  */
 struct discord_create_guild_emoji_params {
-  /* specs/discord/emoji.params.json:12:20
+  /* discord/emoji.params.json:12:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/emoji.params.json:13:20
+  /* discord/emoji.params.json:13:20
      '{ "name": "image", "type":{ "base":"char", "dec":"*"}, "comment":"Base64 Encoded Image Data"}' */
   char *image; /**< Base64 Encoded Image Data */
 
-  /* specs/discord/emoji.params.json:14:20
+  /* discord/emoji.params.json:14:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   ja_u64 **roles; /**< roles for which this emoji will be whitelisted */
 
@@ -63,7 +63,7 @@ extern size_t discord_create_guild_emoji_params_list_to_json_v(char *str, size_t
 extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t len, struct discord_create_guild_emoji_params **p);
 
 /* Modify Guild Emoji */
-/* defined at specs/discord/emoji.params.json:20:22 */
+/* defined at discord/emoji.params.json:20:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -90,11 +90,11 @@ extern size_t discord_create_guild_emoji_params_list_to_json(char *str, size_t l
  * @endverbatim
  */
 struct discord_modify_guild_emoji_params {
-  /* specs/discord/emoji.params.json:23:20
+  /* discord/emoji.params.json:23:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   char *name;
 
-  /* specs/discord/emoji.params.json:24:20
+  /* discord/emoji.params.json:24:20
      '{ "name": "roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "comment":"roles for which this emoji will be whitelisted"}' */
   ja_u64 **roles; /**< roles for which this emoji will be whitelisted */
 

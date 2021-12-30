@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/stage_instance.json, Please don't edit it. */
+/* This file is generated from discord/stage_instance.json, Please don't edit it. */
 /**
  * @file specs-code/discord/stage_instance.c
  * @see (null)
@@ -75,40 +75,40 @@ void discord_stage_instance_from_json(char *json, size_t len, struct discord_sta
 {
   discord_stage_instance_init(p);
   json_extract(json, len, 
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
                 "(id):F,"
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
                 "(guild_id):F,"
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
                 "(channel_id):F,"
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):?s,"
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
                 "(privacy_level):d,"
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
                 "(discoverable_disabled):b,",
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
                 cee_strtou64, &p->id,
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
                 cee_strtou64, &p->guild_id,
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
                 cee_strtou64, &p->channel_id,
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 &p->topic,
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
                 &p->privacy_level,
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
                 &p->discoverable_disabled);
 }
@@ -117,66 +117,66 @@ size_t discord_stage_instance_to_json(char *json, size_t len, struct discord_sta
 {
   size_t r;
   void *arg_switches[6]={NULL};
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
   arg_switches[0] = &p->id;
 
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
   arg_switches[1] = &p->guild_id;
 
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
   arg_switches[2] = &p->channel_id;
 
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   arg_switches[3] = p->topic;
 
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
   arg_switches[4] = &p->privacy_level;
 
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
   arg_switches[5] = &p->discoverable_disabled;
 
   r=json_inject(json, len, 
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
                 "(id):|F|,"
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
                 "(guild_id):|F|,"
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
                 "(channel_id):|F|,"
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):s,"
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
                 "(privacy_level):d,"
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
                 "(discoverable_disabled):b,"
                 "@arg_switches:b",
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
                 cee_u64tostr, &p->id,
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
                 cee_u64tostr, &p->guild_id,
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
                 cee_u64tostr, &p->channel_id,
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 p->topic,
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
                 &p->privacy_level,
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
                 &p->discoverable_disabled,
                 arg_switches, sizeof(arg_switches), true);
@@ -217,45 +217,45 @@ size_t discord_stage_instance_list_to_json_v(char *str, size_t len, void *p){
 
 
 void discord_stage_instance_cleanup(struct discord_stage_instance *d) {
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
   /* p->id is a scalar */
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
   /* p->guild_id is a scalar */
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
   /* p->channel_id is a scalar */
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   if (d->topic)
     free(d->topic);
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
   /* p->privacy_level is a scalar */
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
   /* p->discoverable_disabled is a scalar */
 }
 
 void discord_stage_instance_init(struct discord_stage_instance *p) {
   memset(p, 0, sizeof(struct discord_stage_instance));
-  /* specs/discord/stage_instance.json:20:18
+  /* discord/stage_instance.json:20:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of this Stage instance"}' */
 
-  /* specs/discord/stage_instance.json:21:18
+  /* discord/stage_instance.json:21:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The guild id of the associated Stage channel"}' */
 
-  /* specs/discord/stage_instance.json:22:18
+  /* discord/stage_instance.json:22:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the associated Stage channel"}' */
 
-  /* specs/discord/stage_instance.json:23:18
+  /* discord/stage_instance.json:23:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
 
-  /* specs/discord/stage_instance.json:24:18
+  /* discord/stage_instance.json:24:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level"}, "comment":"The privacy level of the Stage instance"}' */
 
-  /* specs/discord/stage_instance.json:25:18
+  /* discord/stage_instance.json:25:18
      '{"name":"discoverable_disabled", "type":{"base":"bool", "comment":"Whether or not Stage Discovery is disabled"}}' */
 
 }

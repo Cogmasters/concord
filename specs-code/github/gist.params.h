@@ -1,4 +1,4 @@
-/* This file is generated from specs/github/gist.params.json, Please don't edit it. */
+/* This file is generated from github/gist.params.json, Please don't edit it. */
 /**
  * @file specs-code/github/gist.params.h
  * @see https://docs.github.com/en/rest/reference/gists
@@ -6,7 +6,7 @@
 
 
 /* Gist Create */
-/* defined at specs/github/gist.params.json:10:32 */
+/* defined at github/gist.params.json:10:32 */
 /**
  * @see https://docs.github.com/en/rest/reference/gists#create-a-gist--parameters
  *
@@ -35,19 +35,19 @@
  * @endverbatim
  */
 struct github_gist_create_params {
-  /* specs/github/gist.params.json:13:28
+  /* github/gist.params.json:13:28
      '{ "name": "description", "type":{ "base":"char", "dec":"*" }}' */
   char *description;
 
-  /* specs/github/gist.params.json:14:28
+  /* github/gist.params.json:14:28
      '{ "name": "title", "type":{ "base":"char", "dec":"*" }}' */
   char *title;
 
-  /* specs/github/gist.params.json:15:28
+  /* github/gist.params.json:15:28
      '{ "name": "contents", "type":{ "base":"char", "dec":"*" }}' */
   char *contents;
 
-  /* specs/github/gist.params.json:16:28
+  /* github/gist.params.json:16:28
      '{ "name": "public", "type":{ "base":"char", "dec":"*" }}' */
   char *public;
 

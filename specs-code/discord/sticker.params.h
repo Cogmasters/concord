@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/sticker.params.json, Please don't edit it. */
+/* This file is generated from discord/sticker.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/sticker.params.h
  * @see (null)
@@ -6,7 +6,7 @@
 
 
 /* List Nitro Sticker Packs */
-/* defined at specs/discord/sticker.params.json:8:22 */
+/* defined at discord/sticker.params.json:8:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,7 +33,7 @@
  * @endverbatim
  */
 struct discord_list_nitro_sticker_packs_response {
-  /* specs/discord/sticker.params.json:11:18
+  /* discord/sticker.params.json:11:18
      '{"name":"sticker_packs", "type":{"base":"struct discord_sticker_pack", "dec":"ntl"}, "comment":"array of sticker pack objects"}' */
   struct discord_sticker_pack **sticker_packs; /**< array of sticker pack objects */
 
@@ -55,7 +55,7 @@ extern size_t discord_list_nitro_sticker_packs_response_list_to_json_v(char *str
 extern size_t discord_list_nitro_sticker_packs_response_list_to_json(char *str, size_t len, struct discord_list_nitro_sticker_packs_response **p);
 
 /* Create Guild Sticker */
-/* defined at specs/discord/sticker.params.json:17:22 */
+/* defined at discord/sticker.params.json:17:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -82,19 +82,19 @@ extern size_t discord_list_nitro_sticker_packs_response_list_to_json(char *str, 
  * @endverbatim
  */
 struct discord_create_guild_sticker_params {
-  /* specs/discord/sticker.params.json:20:18
+  /* discord/sticker.params.json:20:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"}' */
   char *name; /**< name of the sticker (2-30 characters) */
 
-  /* specs/discord/sticker.params.json:21:18
+  /* discord/sticker.params.json:21:18
      '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker (empty or 2-100 characters)"}' */
   char *description; /**< description of the sticker (empty or 2-100 characters) */
 
-  /* specs/discord/sticker.params.json:22:18
+  /* discord/sticker.params.json:22:18
      '{"name":"file", "type":{ "base":"struct discord_attachment", "dec":"*" }, "loc":"multipart", "comment":"the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB"}' */
   struct discord_attachment *file; /**< the sticker file to upload, must be a PNG, APNG, or Lottie JSON file, max 500 KB */
 
-  /* specs/discord/sticker.params.json:23:18
+  /* discord/sticker.params.json:23:18
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
   char *tags; /**< autocomplete/suggestion tags for the sticker (max 200 characters) */
 
@@ -116,7 +116,7 @@ extern size_t discord_create_guild_sticker_params_list_to_json_v(char *str, size
 extern size_t discord_create_guild_sticker_params_list_to_json(char *str, size_t len, struct discord_create_guild_sticker_params **p);
 
 /* Modify Guild Sticker */
-/* defined at specs/discord/sticker.params.json:29:22 */
+/* defined at discord/sticker.params.json:29:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -143,15 +143,15 @@ extern size_t discord_create_guild_sticker_params_list_to_json(char *str, size_t
  * @endverbatim
  */
 struct discord_modify_guild_sticker_params {
-  /* specs/discord/sticker.params.json:32:18
+  /* discord/sticker.params.json:32:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"}' */
   char *name; /**< name of the sticker (2-30 characters) */
 
-  /* specs/discord/sticker.params.json:33:18
+  /* discord/sticker.params.json:33:18
      '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker (empty or 2-100 characters)"}' */
   char *description; /**< description of the sticker (empty or 2-100 characters) */
 
-  /* specs/discord/sticker.params.json:34:18
+  /* discord/sticker.params.json:34:18
      '{"name":"tags", "type":{"base":"char", "dec":"*"}, "comment":"autocomplete/suggestion tags for the sticker (max 200 characters)"}' */
   char *tags; /**< autocomplete/suggestion tags for the sticker (max 200 characters) */
 

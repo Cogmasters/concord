@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/stage_instance.params.json, Please don't edit it. */
+/* This file is generated from discord/stage_instance.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/stage_instance.params.h
  * @see (null)
@@ -6,7 +6,7 @@
 
 
 /* Create Stage Instance */
-/* defined at specs/discord/stage_instance.params.json:8:22 */
+/* defined at discord/stage_instance.params.json:8:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,15 +33,15 @@
  * @endverbatim
  */
 struct discord_create_stage_instance_params {
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
   u64_snowflake_t channel_id; /**< The id of the Stage channel */
 
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   char *topic; /**< The topic of the Stage instance (1-120 characters) */
 
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
   enum discord_stage_instance_privacy_level privacy_level;
 
@@ -63,7 +63,7 @@ extern size_t discord_create_stage_instance_params_list_to_json_v(char *str, siz
 extern size_t discord_create_stage_instance_params_list_to_json(char *str, size_t len, struct discord_create_stage_instance_params **p);
 
 /* Modify Stage Instance */
-/* defined at specs/discord/stage_instance.params.json:19:22 */
+/* defined at discord/stage_instance.params.json:19:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -90,11 +90,11 @@ extern size_t discord_create_stage_instance_params_list_to_json(char *str, size_
  * @endverbatim
  */
 struct discord_modify_stage_instance_params {
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   char *topic; /**< The topic of the Stage instance (1-120 characters) */
 
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
   enum discord_stage_instance_privacy_level privacy_level;
 

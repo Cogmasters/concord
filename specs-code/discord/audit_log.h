@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/audit_log.json, Please don't edit it. */
+/* This file is generated from discord/audit_log.json, Please don't edit it. */
 /**
  * @file specs-code/discord/audit_log.h
  * @see https://discord.com/developers/docs/resources/audit-log
@@ -6,7 +6,7 @@
 
 
 /* Audit Log Structure */
-/* defined at specs/discord/audit_log.json:9:22 */
+/* defined at discord/audit_log.json:9:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure
  *
@@ -35,23 +35,23 @@
  * @endverbatim
  */
 struct discord_audit_log {
-  /* specs/discord/audit_log.json:12:18
+  /* discord/audit_log.json:12:18
      '{"name":"webhooks", "type": { "base":"struct discord_webhook", "dec":"ntl" }, "comment":"list of webhooks found in the audit log", "inject_if_not":null }' */
   struct discord_webhook **webhooks; /**< list of webhooks found in the audit log */
 
-  /* specs/discord/audit_log.json:13:18
+  /* discord/audit_log.json:13:18
      '{"name":"users", "type": { "base":"struct discord_user", "dec":"ntl"}, "comment":"list of users found in the audit log", "inject_if_not":null}' */
   struct discord_user **users; /**< list of users found in the audit log */
 
-  /* specs/discord/audit_log.json:14:18
+  /* discord/audit_log.json:14:18
      '{"name":"audit_log_entries", "type": { "base":"struct discord_audit_log_entry", "dec":"ntl"}, "comment":"list of audit log entries", "inject_if_not":null}' */
   struct discord_audit_log_entry **audit_log_entries; /**< list of audit log entries */
 
-  /* specs/discord/audit_log.json:15:18
+  /* discord/audit_log.json:15:18
      '{"name":"integrations", "type": { "base":"struct discord_integration", "dec":"ntl"}, "comment":"list of partial integration objects", "inject_if_not":null}' */
   struct discord_integration **integrations; /**< list of partial integration objects */
 
-  /* specs/discord/audit_log.json:16:18
+  /* discord/audit_log.json:16:18
      '{"name":"threads", "type": { "base":"struct discord_channel", "dec":"ntl"}, "comment":"list of threads found in the audit log", "inject_if_not":null}' */
   struct discord_channel **threads; /**< list of threads found in the audit log */
 
@@ -73,7 +73,7 @@ extern size_t discord_audit_log_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audit_log **p);
 
 /* Audit Log Entry Structure */
-/* defined at specs/discord/audit_log.json:23:22 */
+/* defined at discord/audit_log.json:23:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure
  *
@@ -102,31 +102,31 @@ extern size_t discord_audit_log_list_to_json(char *str, size_t len, struct disco
  * @endverbatim
  */
 struct discord_audit_log_entry {
-  /* specs/discord/audit_log.json:26:18
+  /* discord/audit_log.json:26:18
      '{"name":"target_id", "type": {"base":"char", "dec":"*"}, "comment":"id of the affected entity (webhook,user,role,etc.)", "inject_if_not":null }' */
   char *target_id; /**< id of the affected entity (webhook,user,role,etc.) */
 
-  /* specs/discord/audit_log.json:27:18
+  /* discord/audit_log.json:27:18
      '{"name":"changes", "type": {"base":"struct discord_audit_log_change", "dec":"ntl"}, "comment":"changes made to the target_id", "inject_if_not":null }' */
   struct discord_audit_log_change **changes; /**< changes made to the target_id */
 
-  /* specs/discord/audit_log.json:28:18
+  /* discord/audit_log.json:28:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the user who made the changes", "inject_if_not":0 }' */
   u64_snowflake_t user_id; /**< the user who made the changes */
 
-  /* specs/discord/audit_log.json:29:18
+  /* discord/audit_log.json:29:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 }' */
   u64_snowflake_t id; /**< id of the entry */
 
-  /* specs/discord/audit_log.json:30:18
+  /* discord/audit_log.json:30:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 }' */
   int action_type; /**< type of action that occured */
 
-  /* specs/discord/audit_log.json:31:18
+  /* discord/audit_log.json:31:18
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
   struct discord_optional_audit_entry_info **options; /**< additional info for certain action types */
 
-  /* specs/discord/audit_log.json:32:18
+  /* discord/audit_log.json:32:18
      '{"name":"reason", "type": {"base":"char", "dec":"*"}, "comment":"the reason for the change", "inject_if_not":null }' */
   char *reason; /**< the reason for the change */
 
@@ -149,7 +149,7 @@ extern size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct
 
 
 /* Audit Log Events */
-/* defined at specs/discord/audit_log.json:35:5 */
+/* defined at discord/audit_log.json:35:5 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events
  *
@@ -219,7 +219,7 @@ extern size_t discord_audit_log_events_list_to_json_v(char *str, size_t len, voi
 extern size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum discord_audit_log_events **p);
 
 /* Optional Audit Entry Info Structure */
-/* defined at specs/discord/audit_log.json:91:22 */
+/* defined at discord/audit_log.json:91:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info
  *
@@ -248,35 +248,35 @@ extern size_t discord_audit_log_events_list_to_json(char *str, size_t len, enum 
  * @endverbatim
  */
 struct discord_optional_audit_entry_info {
-  /* specs/discord/audit_log.json:94:20
+  /* discord/audit_log.json:94:20
      '{ "name": "delete_member_days", "type":{ "base":"char", "dec":"*"}, "comment":"number of days after which inactive members were kicked", "inject_if_not":null }' */
   char *delete_member_days; /**< number of days after which inactive members were kicked */
 
-  /* specs/discord/audit_log.json:95:20
+  /* discord/audit_log.json:95:20
      '{ "name": "members_removed", "type":{ "base":"char", "dec":"*"}, "comment":"number of members removed by the prune", "inject_if_not":null }' */
   char *members_removed; /**< number of members removed by the prune */
 
-  /* specs/discord/audit_log.json:96:20
+  /* discord/audit_log.json:96:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"channel in which the entities were targeted", "inject_if_not":0 }' */
   u64_snowflake_t channel_id; /**< channel in which the entities were targeted */
 
-  /* specs/discord/audit_log.json:97:20
+  /* discord/audit_log.json:97:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the message that was targeted", "inject_if_not":0 }' */
   u64_snowflake_t message_id; /**< id of the message that was targeted */
 
-  /* specs/discord/audit_log.json:98:20
+  /* discord/audit_log.json:98:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"number of entities that were targeted", "inject_if_not":null }' */
   char *count; /**< number of entities that were targeted */
 
-  /* specs/discord/audit_log.json:99:20
+  /* discord/audit_log.json:99:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the ovewritten entity", "inject_if_not":0 }' */
   u64_snowflake_t id; /**< id of the ovewritten entity */
 
-  /* specs/discord/audit_log.json:100:20
+  /* discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
   char *type; /**< type of overwritten entity - '0' for role or '1' for member */
 
-  /* specs/discord/audit_log.json:101:20
+  /* discord/audit_log.json:101:20
      '{ "name": "role_name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the role if type is '0' (not present if type is '1')", "inject_if_not":null }' */
   char *role_name; /**< name of the role if type is '0' (not present if type is '1') */
 
@@ -298,7 +298,7 @@ extern size_t discord_optional_audit_entry_info_list_to_json_v(char *str, size_t
 extern size_t discord_optional_audit_entry_info_list_to_json(char *str, size_t len, struct discord_optional_audit_entry_info **p);
 
 /* Audit Log Change Structure */
-/* defined at specs/discord/audit_log.json:108:22 */
+/* defined at discord/audit_log.json:108:22 */
 /**
  * @see https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure
  *
@@ -327,15 +327,15 @@ extern size_t discord_optional_audit_entry_info_list_to_json(char *str, size_t l
  * @endverbatim
  */
 struct discord_audit_log_change {
-  /* specs/discord/audit_log.json:111:18
+  /* discord/audit_log.json:111:18
      '{"name":"new_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"new value of the key", "inject_if_not":null }' */
   json_char_t* new_value; /**< new value of the key */
 
-  /* specs/discord/audit_log.json:112:18
+  /* discord/audit_log.json:112:18
      '{"name":"old_value", "type": {"base":"char", "dec":"*", "converter":"mixed"}, "comment":"old value of the key", "inject_if_not":null }' */
   json_char_t* old_value; /**< old value of the key */
 
-  /* specs/discord/audit_log.json:113:18
+  /* discord/audit_log.json:113:18
      '{"name":"key", "type":{"base":"char", "dec":"*"}, "comment":"name of audit log change key", "inject_if_not":null }' */
   char *key; /**< name of audit log change key */
 

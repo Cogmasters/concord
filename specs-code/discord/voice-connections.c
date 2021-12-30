@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/voice-connections.json, Please don't edit it. */
+/* This file is generated from discord/voice-connections.json, Please don't edit it. */
 /**
  * @file specs-code/discord/voice-connections.c
  * @see https://discord.com/developers/docs/topics/voice-connections

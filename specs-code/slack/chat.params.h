@@ -1,4 +1,4 @@
-/* This file is generated from specs/slack/chat.params.json, Please don't edit it. */
+/* This file is generated from slack/chat.params.json, Please don't edit it. */
 /**
  * @file specs-code/slack/chat.params.h
  * @see https://api.slack.com/methods?filter=chat
@@ -6,7 +6,7 @@
 
 
 /* Post Message */
-/* defined at specs/slack/chat.params.json:9:22 */
+/* defined at slack/chat.params.json:9:22 */
 /**
  * @verbatim embed:rst:leading-asterisk
  * .. container:: toggle
@@ -33,67 +33,67 @@
  * @endverbatim
  */
 struct slack_chat_post_message_params {
-  /* specs/slack/chat.params.json:12:20
+  /* slack/chat.params.json:12:20
      '{ "name": "token", "type":{ "base":"char", "dec":"*" }, "comment":"Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter.", "inject_if_not":null }' */
   char *token; /**< Authentication token bearing required scopes. Tokens should be passed as an HTTP Authorization header or alternatively, as a POST parameter. */
 
-  /* specs/slack/chat.params.json:13:20
+  /* slack/chat.params.json:13:20
      '{ "name": "channel", "type":{ "base":"char", "dec":"*" }, "comment":"Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See below for more details.", "inject_if_not":null }' */
   char *channel; /**< Channel, private group, or IM channel to send message to. Can be an encoded ID, or a name. See below for more details. */
 
-  /* specs/slack/chat.params.json:14:20
+  /* slack/chat.params.json:14:20
      '{ "name": "attachments", "type":{ "base":"char", "dec":"*" }, "comment":"A JSON-based array of structured attachments, presented as a URL-encoded string.", "inject_if_not":null }' */
   char *attachments; /**< A JSON-based array of structured attachments, presented as a URL-encoded string. */
 
-  /* specs/slack/chat.params.json:15:20
+  /* slack/chat.params.json:15:20
      '{ "name": "blocks", "type":{ "base":"char", "dec":"*" }, "comment":"A JSON-based array of structured blocks, presented as a URL-encoded string.", "inject_if_not":null }' */
   char *blocks; /**< A JSON-based array of structured blocks, presented as a URL-encoded string. */
 
-  /* specs/slack/chat.params.json:16:20
+  /* slack/chat.params.json:16:20
      '{ "name": "text", "type":{ "base":"char", "dec":"*" }, "comment":"The formatted text of the message to be published. If blocks are included, this will become the fallback text used in notifications.", "inject_if_not":null }' */
   char *text; /**< The formatted text of the message to be published. If blocks are included, this will become the fallback text used in notifications. */
 
-  /* specs/slack/chat.params.json:17:20
+  /* slack/chat.params.json:17:20
      '{ "name": "as_user", "type":{ "base":"bool" }, "comment":"Pass true to post the message as the authed user, instead of as a bot. Defaults to false.", "inject_if_not":false }' */
   bool as_user; /**< Pass true to post the message as the authed user, instead of as a bot. Defaults to false. */
 
-  /* specs/slack/chat.params.json:18:20
+  /* slack/chat.params.json:18:20
      '{ "name": "icon_emoji", "type":{ "base":"char", "dec":"*" }, "comment":"Emoji to use as the icon for this message. Overrides icon_url. Must be used in conjunction with as_user set to false, otherwise ignored.", "inject_if_not":null }' */
   char *icon_emoji; /**< Emoji to use as the icon for this message. Overrides icon_url. Must be used in conjunction with as_user set to false, otherwise ignored. */
 
-  /* specs/slack/chat.params.json:19:20
+  /* slack/chat.params.json:19:20
      '{ "name": "icon_url", "type":{ "base":"char", "dec":"*" }, "comment":"URL to an image to use as the icon for this message. Must be used in conjunction with as_user set to false, otherwise ignored.", "inject_if_not":null }' */
   char *icon_url; /**< URL to an image to use as the icon for this message. Must be used in conjunction with as_user set to false, otherwise ignored. */
 
-  /* specs/slack/chat.params.json:20:20
+  /* slack/chat.params.json:20:20
      '{ "name": "link_names", "type":{ "base":"bool" }, "comment":"Find and link channel names and usernames.", "inject_if_not":false }' */
   bool link_names; /**< Find and link channel names and usernames. */
 
-  /* specs/slack/chat.params.json:21:20
+  /* slack/chat.params.json:21:20
      '{ "name": "mrkdwn", "type":{ "base":"bool" }, "default_value":true, "comment":"Disable Slack markup parsing by setting to false. Enabled by default.", "inject_if_not":true }' */
   bool mrkdwn; /**< Disable Slack markup parsing by setting to false. Enabled by default. */
 
-  /* specs/slack/chat.params.json:22:20
+  /* slack/chat.params.json:22:20
      '{ "name": "parse", "type":{ "base":"char", "dec":"*" }, "comment":"Change how messages are treated. Defaults to none", "inject_if_not":null }' */
   char *parse; /**< Change how messages are treated. Defaults to none */
 
-  /* specs/slack/chat.params.json:23:20
+  /* slack/chat.params.json:23:20
      '{ "name": "reply_broadcast", "type":{ "base":"bool" }, "comment":"Used in conjunction with thread_ts and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to false.", "inject_if_not":false }' */
   bool reply_broadcast; /**< Used in conjunction with thread_ts and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to false. */
 
-  /* specs/slack/chat.params.json:24:20
+  /* slack/chat.params.json:24:20
      '{ "name": "thread_ts", "type":{ "base":"char", "dec":"*" }, "comment":"Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead.", "inject_if_not":null }' */
   char *thread_ts; /**< Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead. */
 
-  /* specs/slack/chat.params.json:25:20
+  /* slack/chat.params.json:25:20
      '{ "name": "unfurl_links", "type":{ "base":"bool" }, "comment":"Pass true to enable unfurling of primarily text-based content.", "inject_if_not":false }' */
   bool unfurl_links; /**< Pass true to enable unfurling of primarily text-based content. */
 
-  /* specs/slack/chat.params.json:26:20
+  /* slack/chat.params.json:26:20
      '{ "name": "unfurl_media", "type":{ "base":"bool" }, "default_value":true, "comment":"Pass false to disable unfurling of media content.", "inject_if_not":true }' */
   bool unfurl_media; /**< Pass false to disable unfurling of media content. */
 
-  /* specs/slack/chat.params.json:27:20
+  /* slack/chat.params.json:27:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"Set your bot's user name. Must be used in conjunction with as_user set to false, otherwise ignored.", "inject_if_not":null }' */
   char *username; /**< Set your bot's user name. Must be used in conjunction with as_user set to false, otherwise ignored. */
 

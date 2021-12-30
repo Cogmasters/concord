@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/invite.json, Please don't edit it. */
+/* This file is generated from discord/invite.json, Please don't edit it. */
 /**
  * @file specs-code/discord/invite.h
  * @see https://discord.com/developers/docs/resources/invite
@@ -7,7 +7,7 @@
 
 
 /* Target User Types */
-/* defined at specs/discord/invite.json:6:5 */
+/* defined at discord/invite.json:6:5 */
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-target-user-types
  *
@@ -35,7 +35,7 @@ extern size_t discord_invite_target_user_types_list_to_json_v(char *str, size_t 
 extern size_t discord_invite_target_user_types_list_to_json(char *str, size_t len, enum discord_invite_target_user_types **p);
 
 /* Invite Structure */
-/* defined at specs/discord/invite.json:19:22 */
+/* defined at discord/invite.json:19:22 */
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-object-invite-structure
  *
@@ -64,35 +64,35 @@ extern size_t discord_invite_target_user_types_list_to_json(char *str, size_t le
  * @endverbatim
  */
 struct discord_invite {
-  /* specs/discord/invite.json:22:20
+  /* discord/invite.json:22:20
      '{ "name": "code", "type":{ "base":"char", "dec":"*" }}' */
   char *code;
 
-  /* specs/discord/invite.json:23:20
+  /* discord/invite.json:23:20
      '{ "name": "guild", "type":{ "base":"struct discord_guild", "dec":"*"}, "comment":"partial guild object"}' */
   struct discord_guild *guild; /**< partial guild object */
 
-  /* specs/discord/invite.json:24:20
+  /* discord/invite.json:24:20
      '{ "name": "channel", "type":{ "base":"struct discord_channel", "dec":"*"}, "comment":"partial channel object"}' */
   struct discord_channel *channel; /**< partial channel object */
 
-  /* specs/discord/invite.json:25:20
+  /* discord/invite.json:25:20
      '{ "name": "inviter", "type":{ "base":"struct discord_user", "dec":"*"}}' */
   struct discord_user *inviter;
 
-  /* specs/discord/invite.json:26:20
+  /* discord/invite.json:26:20
      '{ "name": "target_user", "type":{ "base":"struct discord_user", "dec":"*"}, "comment":"partial user object"}' */
   struct discord_user *target_user; /**< partial user object */
 
-  /* specs/discord/invite.json:27:20
+  /* discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
   enum discord_invite_target_user_types target_user_type;
 
-  /* specs/discord/invite.json:28:20
+  /* discord/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
   int approximate_presence_count;
 
-  /* specs/discord/invite.json:29:20
+  /* discord/invite.json:29:20
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
   int approximate_member_count;
 
@@ -114,7 +114,7 @@ extern size_t discord_invite_list_to_json_v(char *str, size_t len, void *p);
 extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_invite **p);
 
 /* Invite Metadata Structure */
-/* defined at specs/discord/invite.json:36:22 */
+/* defined at discord/invite.json:36:22 */
 /**
  * @see https://discord.com/developers/docs/resources/invite#invite-metadata-object
  *
@@ -143,23 +143,23 @@ extern size_t discord_invite_list_to_json(char *str, size_t len, struct discord_
  * @endverbatim
  */
 struct discord_invite_metadata {
-  /* specs/discord/invite.json:39:20
+  /* discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */
   int user;
 
-  /* specs/discord/invite.json:40:20
+  /* discord/invite.json:40:20
      '{ "name": "max_uses", "type":{ "base":"int" }}' */
   int max_uses;
 
-  /* specs/discord/invite.json:41:20
+  /* discord/invite.json:41:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
   int max_age;
 
-  /* specs/discord/invite.json:42:20
+  /* discord/invite.json:42:20
      '{ "name": "temporary", "type":{ "base":"int" }}' */
   int temporary;
 
-  /* specs/discord/invite.json:43:20
+  /* discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
   u64_unix_ms_t created_at;
 

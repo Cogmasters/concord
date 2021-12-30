@@ -1,4 +1,4 @@
-/* This file is generated from specs/discord/stage_instance.params.json, Please don't edit it. */
+/* This file is generated from discord/stage_instance.params.json, Please don't edit it. */
 /**
  * @file specs-code/discord/stage_instance.params.c
  * @see (null)
@@ -22,22 +22,22 @@ void discord_create_stage_instance_params_from_json(char *json, size_t len, stru
 {
   discord_create_stage_instance_params_init(p);
   json_extract(json, len, 
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
                 "(channel_id):F,"
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):?s,"
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 "(privacy_level):d,",
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
                 cee_strtou64, &p->channel_id,
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 &p->topic,
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 &p->privacy_level);
 }
@@ -46,37 +46,37 @@ size_t discord_create_stage_instance_params_to_json(char *json, size_t len, stru
 {
   size_t r;
   void *arg_switches[3]={NULL};
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
   arg_switches[0] = &p->channel_id;
 
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   arg_switches[1] = p->topic;
 
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
   if (p->privacy_level != 0)
     arg_switches[2] = &p->privacy_level;
 
   r=json_inject(json, len, 
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
                 "(channel_id):|F|,"
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):s,"
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 "(privacy_level):d,"
                 "@arg_switches:b",
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
                 cee_u64tostr, &p->channel_id,
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 p->topic,
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 &p->privacy_level,
                 arg_switches, sizeof(arg_switches), true);
@@ -117,27 +117,27 @@ size_t discord_create_stage_instance_params_list_to_json_v(char *str, size_t len
 
 
 void discord_create_stage_instance_params_cleanup(struct discord_create_stage_instance_params *d) {
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
   /* p->channel_id is a scalar */
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   if (d->topic)
     free(d->topic);
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
   /* p->privacy_level is a scalar */
 }
 
 void discord_create_stage_instance_params_init(struct discord_create_stage_instance_params *p) {
   memset(p, 0, sizeof(struct discord_create_stage_instance_params));
-  /* specs/discord/stage_instance.params.json:11:18
+  /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
 
-  /* specs/discord/stage_instance.params.json:12:18
+  /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
 
-  /* specs/discord/stage_instance.params.json:13:18
+  /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
 
 }
@@ -171,16 +171,16 @@ void discord_modify_stage_instance_params_from_json(char *json, size_t len, stru
 {
   discord_modify_stage_instance_params_init(p);
   json_extract(json, len, 
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):?s,"
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 "(privacy_level):d,",
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 &p->topic,
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 &p->privacy_level);
 }
@@ -189,27 +189,27 @@ size_t discord_modify_stage_instance_params_to_json(char *json, size_t len, stru
 {
   size_t r;
   void *arg_switches[2]={NULL};
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   arg_switches[0] = p->topic;
 
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
   if (p->privacy_level != 0)
     arg_switches[1] = &p->privacy_level;
 
   r=json_inject(json, len, 
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 "(topic):s,"
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 "(privacy_level):d,"
                 "@arg_switches:b",
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
                 p->topic,
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
                 &p->privacy_level,
                 arg_switches, sizeof(arg_switches), true);
@@ -250,21 +250,21 @@ size_t discord_modify_stage_instance_params_list_to_json_v(char *str, size_t len
 
 
 void discord_modify_stage_instance_params_cleanup(struct discord_modify_stage_instance_params *d) {
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   if (d->topic)
     free(d->topic);
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
   /* p->privacy_level is a scalar */
 }
 
 void discord_modify_stage_instance_params_init(struct discord_modify_stage_instance_params *p) {
   memset(p, 0, sizeof(struct discord_modify_stage_instance_params));
-  /* specs/discord/stage_instance.params.json:22:18
+  /* discord/stage_instance.params.json:22:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
 
-  /* specs/discord/stage_instance.params.json:23:18
+  /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
 
 }
