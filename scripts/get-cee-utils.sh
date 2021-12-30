@@ -12,7 +12,6 @@ json-actor-boxed.c
 json-actor-boxed.h
 json-actor.c
 json-actor.h
-json-parser.c
 json-string.c
 json-struct.c
 log.c
