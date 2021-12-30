@@ -71,6 +71,7 @@ struct websockets {
   } pending_close;
 };
 
+#ifdef _ORCA_DEBUG_WEBSOCKETS
 static void
 _ws_curl_debug_dump(const char *text,
                     FILE *stream,
@@ -152,6 +153,7 @@ _ws_curl_debug_trace(
   _ws_curl_debug_dump(text, stderr, (unsigned char *)data, size);
   return 0;
 }
+#endif
 
 static int
 _ws_curl_tls_check(
