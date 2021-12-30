@@ -6,7 +6,7 @@ LIBDIR := lib
 
 SPECS_DIR     := specs
 SPECSCODE_DIR := specs-code
-SPECS_MAKE    := $(SPECS_DIR)/specs.mk
+SPECS_MAKE    := specs.mk
 
 # common/utils
 CEE_UTILS_DIR  := cee-utils
@@ -147,7 +147,7 @@ $(OBJDIR) :
 	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                             \
 	         $(OBJDIR)/$(COMMON_DIR)/third-party                    \
 	         $(OBJDIR)/$(TEST_DIR)                                  \
-					 $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
+           $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
 
 $(LIBDIR) :
 	mkdir -p $(LIBDIR)
@@ -187,7 +187,7 @@ clean :
 	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(EXAMPLES_DIR)/*.out
 	rm -rf $(LIBDIR)
 	rm -rf $(SPECSCODE_DIR)
-	make -C $(SPECS_DIR) -f specs.mk clean
+	make -C $(SPECS_DIR) -f $(SPECS_MAKE) clean
 
 purge : clean
 	rm -rf $(LIBDIR)
