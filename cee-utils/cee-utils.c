@@ -5,10 +5,7 @@
 #include <string.h>
 #include <math.h> /*for round() */
 #include <limits.h>
-#define _POSIX_THREAD_SAFE_FUNCTIONS
 #include <time.h>
-#include <sys/stat.h>
-#include <dirent.h>
 #include <errno.h>
 #include <unistd.h>
 
@@ -64,19 +61,6 @@ void
 cee_sized_buffer_from_json(char *str, size_t len, struct sized_buffer *buf)
 {
   buf->size = cee_strndup(str, len, &buf->start);
-}
-
-static char *
-stat_to_type(const struct stat *st)
-{
-  switch (st->st_mode & S_IFMT) {
-  case S_IFREG:
-    return "file";
-  case S_IFDIR:
-    return "folder";
-  default:
-    return NULL;
-  }
 }
 
 int

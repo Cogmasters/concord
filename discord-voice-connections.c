@@ -324,6 +324,8 @@ send_heartbeat(struct discord_voice *vc)
   ws_send_text(vc->ws, NULL, buf, ret);
 }
 
+/* TODO: cleanup afterwards */
+#if 0 
 static void
 _discord_voice_cleanup(struct discord_voice *vc)
 {
@@ -333,6 +335,7 @@ _discord_voice_cleanup(struct discord_voice *vc)
   if (vc->ws) ws_cleanup(vc->ws);
   free(vc);
 }
+#endif
 
 static void
 reset_vc(struct discord_voice *vc)

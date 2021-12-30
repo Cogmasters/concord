@@ -10,7 +10,13 @@ SPECS_MAKE    := specs.mk
 
 # common/utils
 CEE_UTILS_DIR  := cee-utils
-CEE_UTILS_SRC  := $(wildcard $(CEE_UTILS_DIR)/*.c) 
+CEE_UTILS_SRC  := $(CEE_UTILS_DIR)/cee-utils.c         \
+                  $(CEE_UTILS_DIR)/json-actor.c        \
+                  $(CEE_UTILS_DIR)/json-actor-boxed.c  \
+                  $(CEE_UTILS_DIR)/json-string.c       \
+                  $(CEE_UTILS_DIR)/log.c               \
+                  $(CEE_UTILS_DIR)/logconf.c           \
+                  $(CEE_UTILS_DIR)/ntl.c
 CEE_UTILS_OBJS := $(CEE_UTILS_SRC:%.c=$(OBJDIR)/%.o)
 
 COMMON_DIR := common

@@ -303,23 +303,6 @@ struct ptr_map {
 };
 
 static void
-print_ptr_map(FILE *fp, struct ptr_map *m)
-{
-  if (!m->has_this) return;
-  switch (m->tag) {
-  case PTR_MAP_ARG_SWITCHES:
-    fprintf(fp, "@arg_switches %p %d\n", m->arg, m->sizeof_arg);
-    break;
-  case PTR_MAP_RECORD_DEFINED:
-    fprintf(fp, "@record_defined %p %d\n", m->arg, m->sizeof_arg);
-    break;
-  case PTR_MAP_RECORD_NULL:
-    fprintf(fp, "@record_null %p %d\n", m->arg, m->sizeof_arg);
-    break;
-  }
-}
-
-static void
 check_ptr_maps(struct ptr_map **m)
 {
   int i;
