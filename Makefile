@@ -65,10 +65,6 @@ LIBGITHUB  := $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBDIR)/libslack.a
 
-EXAMPLES_SRC  := $(wildcard $(EXAMPLES_DIR)/bot-*.c)
-EXAMPLES_EXES := $(patsubst %.c, %.out, $(EXAMPLES_SRC))
-
-
 LIBS_CFLAGS  +=
 LIBS_LDFLAGS += -L./$(LIBDIR) -lm
 
@@ -115,9 +111,6 @@ $(OBJDIR)/slack-%.o : slack-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBSLACK_CFLAGS)
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-
-$(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 
 all: discord github reddit slack
 
@@ -183,21 +176,21 @@ install:
 echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'PREFIX: $(PREFIX)\n'
-	@ echo -e 'EXAMPLES_EXES: $(EXAMPLES_EXES)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
 	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
 	@ echo -e 'DISCORD_SPECS: $(DISCORD_SPECS)\n'
 
 clean: 
-	rm -rf $(OBJDIR) $(EXAMPLES_DIR)/*.out
+	rm -rf $(OBJDIR)
 	rm -rf $(LIBDIR)
 	rm -rf $(SPECSCODE_DIR)
 	$(MAKE) -C $(SPECS_DIR) clean
 	$(MAKE) -C $(TEST_DIR) clean
+	$(MAKE) -C $(EXAMPLES_DIR) clean
 
 purge: clean
 	rm -rf $(LIBDIR)
 	rm -rf $(CEE_UTILS_DIR)
 
-.PHONY: all install echo clean purge examples
+.PHONY: all test examples install echo clean purge
