@@ -1,9 +1,12 @@
 PREFIX ?= /usr/local
-SHELL  := /bin/bash
 
 CC     ?= gcc
 OBJDIR := obj
 LIBDIR := lib
+
+SPECS_DIR     := specs
+SPECSCODE_DIR := specs-code
+SPECS_MAKE    := $(SPECS_DIR)/specs.mk
 
 # common/utils
 CEE_UTILS_DIR  := cee-utils
@@ -11,35 +14,20 @@ CEE_UTILS_SRC  := $(wildcard $(CEE_UTILS_DIR)/*.c)
 CEE_UTILS_OBJS := $(CEE_UTILS_SRC:%.c=$(OBJDIR)/%.o)
 
 COMMON_DIR  := common
-COMMON_SRC  := $(wildcard $(COMMON_DIR)/*.c) $(wildcard $(COMMON_DIR)/**/*.c)
+COMMON_SRC  := $(wildcard $(COMMON_DIR)/*.c $(COMMON_DIR)/**/*.c)
 COMMON_OBJS := $(COMMON_SRC:%.c=$(OBJDIR)/%.o)
 
-# Specs
-SPECS_RDIR := specs
-SPECS_WDIR := specs-code
-SPECS_JSON := $(sort $(wildcard $(SPECS_RDIR)/*/*.json))
-SPECS_APIS := $(sort $(patsubst $(SPECS_RDIR)/%/, %, $(dir $(SPECS_JSON))))
-
-# Specs code-generator dependencies
-SPECSDEPS_OBJDIR  := specs_obj
-SPECSDEPS_SRC     := $(CEE_UTILS_DIR)/cee-utils.c   \
-                     $(CEE_UTILS_DIR)/json-actor.c  \
-                     $(CEE_UTILS_DIR)/ntl.c         \
-                     $(CEE_UTILS_DIR)/json-string.c \
-                     $(CEE_UTILS_DIR)/log.c         \
-                     $(SPECS_RDIR)/specs-gen.c
-SPECSDEPS_OBJS    := $(SPECSDEPS_SRC:%.c=$(SPECSDEPS_OBJDIR)/%.o)
-
+# APIs src
+DISCORD_SRC = $(wildcard discord-*.c $(SPECSCODE_DIR)/discord/*.c)
+GITHUB_SRC  = $(wildcard github-*.c $(SPECSCODE_DIR)/github/*.c)
+REDDIT_SRC  = $(wildcard reddit-*.c $(SPECSCODE_DIR)/reddit/*.c)
+SLACK_SRC   = $(wildcard slack-*.c $(SPECSCODE_DIR)/slack/*.c)
 
 # APIs objs
-DISCORD_SRC  := $(wildcard discord-*.c $(SPECS_WDIR)/discord/*.c)
-DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
-GITHUB_SRC   := $(wildcard github-*.c $(SPECS_WDIR)/github/*.c)
-GITHUB_OBJS  := $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
-REDDIT_SRC   := $(wildcard reddit-*.c $(SPECS_WDIR)/reddit/*.c)
-REDDIT_OBJS  := $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
-SLACK_SRC    := $(wildcard slack-*.c $(SPECS_WDIR)/slack/*.c)
-SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
+DISCORD_OBJS = $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
+GITHUB_OBJS  = $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
+REDDIT_OBJS  = $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
+SLACK_OBJS   = $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs cflags
 LIBDISCORD_CFLAGS := 
@@ -67,12 +55,10 @@ TEST_DIR  := test
 TEST_SRC  := $(wildcard $(TEST_DIR)/test-*.c)
 TEST_EXES := $(filter %.out, $(TEST_SRC:.c=.out))
 
-
 LIBS_CFLAGS  +=
 LIBS_LDFLAGS += -L./$(LIBDIR) -lm
 
-CFLAGS += -O0 -g -pthread                                	\
-          -Wall -Wno-unused-function                      \
+CFLAGS += -O0 -g -pthread -Wall                           \
           -I. -I./$(CEE_UTILS_DIR)                        \
           -I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \
           -DLOG_USE_COLOR
@@ -104,17 +90,7 @@ else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
-# for inserting newlines at the end of each foreach
-# see https://stackoverflow.com/questions/29651388/insert-a-new-line-in-a-makefile-foreach-loop
-blank :=
-define \n
-
-$(blank)
-endef
-
 # generic compilation
-$(SPECSDEPS_OBJDIR)/%.o : %.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
 $(OBJDIR)/discord-%.o : discord-%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBDISCORD_CFLAGS)
 $(OBJDIR)/github-%.o : github-%.c
@@ -129,11 +105,11 @@ $(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 %.out: %.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
-%.bz:%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBS_LDFLAGS) 
 
-all: discord github reddit slack
-test: discord github reddit slack $(TEST_EXES)
+all: $(SPECSCODE_DIR)
+	$(MAKE) discord github reddit slack
+
+test: all $(TEST_EXES)
 
 discord: common $(DISCORD_OBJS) $(LIBDISCORD)
 github: common $(GITHUB_OBJS) $(LIBGITHUB)
@@ -149,89 +125,29 @@ $(DISCORD_OBJS):   | $(OBJDIR)
 $(GITHUB_OBJS):    | $(OBJDIR)
 $(REDDIT_OBJS):    | $(OBJDIR)
 $(SLACK_OBJS):     | $(OBJDIR)
-$(SPECSDEPS_OBJS): | $(SPECSDEPS_OBJDIR)
 
-echo:
-	@ echo CC: $(CC)
-	@ echo PREFIX: $(PREFIX)
-	@ echo EXAMPLES_EXES: $(EXAMPLES_EXES)
-	@ echo SPECS_JSON: $(SPECS_JSON)
-	@ echo SPECSDEPS_OBJS: $(SPECSDEPS_OBJS)
-	@ echo SPECSDEPS_OBJDIR: $(SPECSDEPS_OBJDIR)
-	@ echo SPECS_APIS: $(SPECS_APIS)
-	@ echo DISCORD_OBJS: $(DISCORD_OBJS)
-
-specs_gen: $(CEE_UTILS_DIR) | $(SPECSDEPS_OBJS)
-	@ $(MAKE) clean specsdeps_clean specs_clean
-	@ $(MAKE) specs_code
-
-specs_code: | specs-gen.out
-	@ rm -rf $(SPECS_WDIR)/*/one-specs.h
-	# Generate header files (specs-code/%/*.h)
-	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.out \
-			    -h \
-			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.h)) \
-			    $(var) || exit;$(\n))
-	# Generate source files (specs-code/%/*.c)
-	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.out \
-			    -c \
-			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(var:%.json=%.c)) \
-			    -i $(filter $(SPECS_APIS), $(subst /, ,$(dir $(var)))).h \
-			    $(var) || exit;$(\n))
-	# Generate single header (specs-code/%/one-specs.h)
-	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.out \
-			    -O \
-			    -a \
-			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
-			    $(var) || exit;$(\n))
-	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.out \
-			    -E \
-			    -a \
-			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
-			    $(var) || exit;$(\n))
-	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.out \
-			    -S \
-			    -a \
-			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
-			    $(var) || exit;$(\n))
-	$(foreach var, $(SPECS_JSON), \
-	    ./bin/specs-gen.out \
-			    -F \
-			    -a \
-			    -o $(patsubst $(SPECS_RDIR)/%, $(SPECS_WDIR)/%, $(dir $(var))one-specs.h) \
-			    $(var) || exit;$(\n))
-
-specs-gen.out: cee_utils $(SPECSDEPS_OBJS) | $(SPECSDEPS_OBJDIR)
-	$(CC) -o $@ $(SPECSDEPS_OBJS) -lm
-	mkdir -p bin
-	mv $@ ./bin
+specs_gen:
+	@ $(MAKE) clean
+	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE) clean
+	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE)
+	mv $(SPECS_DIR)/$(SPECSCODE_DIR) .
 
 examples:
 	@ $(MAKE) all
 	@ $(MAKE) $(EXAMPLES_EXES)
 
+$(SPECSCODE_DIR): specs_gen
+
 $(CEE_UTILS_DIR):
-	if [[ ! -d $@ ]]; then                \
-	  ./scripts/get-cee-utils.sh || exit; \
+	if [[ ! -d $@ ]]; then        \
+	  ./scripts/get-cee-utils.sh; \
 	fi
 
 $(OBJDIR) :
-	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                           \
-	         $(OBJDIR)/$(COMMON_DIR)/third-party                  \
-	         $(addprefix $(SPECS_WDIR)/, $(SPECS_APIS))           \
-	         $(addprefix $(OBJDIR)/$(SPECS_WDIR)/, $(SPECS_APIS)) \
-	         $(OBJDIR)/$(TEST_DIR)                                \
-	         $(OBJDIR)/add-ons
-
-$(SPECSDEPS_OBJDIR) :
-	mkdir -p $(SPECSDEPS_OBJDIR)/$(CEE_UTILS_DIR)          \
-	         $(SPECSDEPS_OBJDIR)/$(COMMON_DIR)/third-party \
-	         $(SPECSDEPS_OBJDIR)/$(SPECS_RDIR)
+	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                             \
+	         $(OBJDIR)/$(COMMON_DIR)/third-party                    \
+	         $(OBJDIR)/$(TEST_DIR)                                  \
+					 $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
 
 $(LIBDIR) :
 	mkdir -p $(LIBDIR)
@@ -256,22 +172,25 @@ install :
 	install -m 644 $(LIBGITHUB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h $(CEE_UTILS_DIR)/*.h $(COMMON_DIR)/*.h $(COMMON_DIR)/**/*.h $(PREFIX)/include/orca/
-	install -d $(PREFIX)/include/orca/$(SPECS_WDIR)/discord/
-	install -m 644 $(SPECS_WDIR)/discord/*.h $(PREFIX)/include/orca/$(SPECS_WDIR)/discord/
-	install -d $(PREFIX)/include/orca/$(SPECS_WDIR)/github/
-	install -m 644 $(SPECS_WDIR)/github/*.h $(PREFIX)/include/orca/$(SPECS_WDIR)/github/
+	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
+	install -m 644 $(SPECSCODE_DIR)/discord/*.h $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
+	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
+	install -m 644 $(SPECSCODE_DIR)/github/*.h $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
 
-specs_clean :
-	rm -rf $(SPECS_WDIR)
-specsdeps_clean :
-	rm -rf $(SPECSDEPS_OBJDIR) bin/*
+echo:
+	@ echo CC: $(CC)
+	@ echo PREFIX: $(PREFIX)
+	@ echo EXAMPLES_EXES: $(EXAMPLES_EXES)
+	@ echo DISCORD_OBJS: $(DISCORD_OBJS)
+
 clean : 
 	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(EXAMPLES_DIR)/*.out
 	rm -rf $(LIBDIR)
+	rm -rf $(SPECSCODE_DIR)
+	make -C $(SPECS_DIR) -f specs.mk clean
+
 purge : clean
 	rm -rf $(LIBDIR)
-	rm -rf $(SPECSDEPS_OBJDIR)
 	rm -rf $(CEE_UTILS_DIR)
 
 .PHONY : all install clean purge examples
-.ONESHELL :
