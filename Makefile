@@ -1,4 +1,5 @@
 PREFIX ?= /usr/local
+SHELL := /bin/bash
 
 CC     ?= gcc
 OBJDIR := obj
@@ -114,7 +115,8 @@ $(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
 %.out: %.c all_api_libs
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 
-all: | $(SPECSCODE_DIR)
+all: $(CEE_UTILS_DIR)
+	$(MAKE) $(SPECSCODE_DIR)
 	$(MAKE) discord github reddit slack
 
 test: all $(TEST_EXES)
