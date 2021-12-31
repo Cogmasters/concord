@@ -36,24 +36,17 @@ define \n
 $(blank)
 endef
 
-$(OBJDIR)/%.o : $(WDIR)/%.c
-	$(CC) -I$(COMMON_DIR) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
-
-all: gen
-
-build: all
-	$(MAKE) $(OBJS)
-
-gen: $(CEE_UTILS_DIR) | $(MAIN)
-	@ rm -rf $(WDIR)/*/one-specs.h
-
+define generate_source
 	# Generate source files (specs-code/%/*.c)
 	$(foreach VAR, $(JSON), ./$(MAIN) \
 	  -c \
 	  -o $(patsubst %, $(WDIR)/%, $(VAR:%.json=%.c)) \
 	  -i $(filter $(APIS), $(subst /, ,$(dir $(VAR)))).h \
 	  $(VAR)$(\n))
+endef
 
+define generate_header
+	@ rm -rf $(WDIR)/*/one-specs.h
 	# Generate single header (specs-code/%/one-specs.h)
 	$(foreach VAR, $(JSON), ./$(MAIN) \
 	  -O \
@@ -75,14 +68,26 @@ gen: $(CEE_UTILS_DIR) | $(MAIN)
 	  -a \
 	  -o $(patsubst %, $(WDIR)/%, $(dir $(VAR))one-specs.h) \
 	  $(VAR)$(\n))
+endef
 
-$(MAIN): $(MAIN).c $(DEPS) | $(WDIR)
+$(OBJDIR)/%.o : $(WDIR)/%.c
+	$(CC) -I$(COMMON_DIR) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+
+all: $(CEE_UTILS_DIR) $(WDIR)
+
+build: all
+	$(MAKE) $(OBJS)
+
+$(WDIR): | $(MAIN)
+	mkdir -p $(addprefix $(WDIR)/, $(APIS))
+	$(generate_source)
+	$(generate_header)
+
+$(MAIN): $(MAIN).c $(DEPS)
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
-$(OBJS): gen | $(OBJDIR)
+$(OBJS): | $(OBJDIR)
 
-$(WDIR):
-	mkdir -p $(addprefix $(WDIR)/, $(APIS))
 $(OBJDIR):
 	mkdir -p $(addprefix $(OBJDIR)/, $(APIS))
 
@@ -97,4 +102,4 @@ echo:
 clean:
 	rm -rf $(WDIR) $(OBJDIR) $(MAIN)
 
-.PHONY : all echo clean gen
+.PHONY : all build echo clean
