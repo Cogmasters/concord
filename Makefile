@@ -108,14 +108,16 @@ reddit: $(LIBREDDIT)
 slack: $(LIBSLACK)
 
 # API libraries compilation
-$(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $? $(CEEUTILS_OBJS) $(DISCORD_SPECS)
-$(LIBGITHUB): $(GITHUB_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $? $(CEEUTILS_OBJS) $(GITHUB_SPECS)
-$(LIBREDDIT): $(REDDIT_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $? $(CEEUTILS_OBJS) $(REDDIT_SPECS)
-$(LIBSLACK): $(SLACK_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $? $(CEEUTILS_OBJS) $(SLACK_SPECS)
+$(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) $(CEEUTILS_OBJS) $(DISCORD_SPECS) | $(LIBDIR)
+	$(AR) -cqsv $@ $?
+$(LIBGITHUB): $(GITHUB_OBJS) $(OBJS) $(CEEUTILS_OBJS) $(GITHUB_SPECS) | $(LIBDIR)
+	$(AR) -cqsv $@ $?
+$(LIBREDDIT): $(REDDIT_OBJS) $(OBJS) $(CEEUTILS_OBJS) $(REDDIT_SPECS) | $(LIBDIR)
+	$(AR) -cqsv $@ $?
+$(LIBSLACK): $(SLACK_OBJS) $(OBJS) $(CEEUTILS_OBJS) $(SLACK_SPECS) | $(LIBDIR)
+	$(AR) -cqsv $@ $?
+
+$(CEEUTILS_OBJS): ;
 
 $(LIBDIR):
 	@ mkdir -p $(LIBDIR)
