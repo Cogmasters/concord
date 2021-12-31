@@ -6,6 +6,7 @@ mypath=$(dirname $(readlink -f $0))
 url="https://raw.githubusercontent.com/cee-studio/cee-utils/master"
 
 list="README.md
+Makefile
 debug.h
 jsmn.h
 json-actor-boxed.c
