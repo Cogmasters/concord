@@ -3,7 +3,7 @@ CC ?= gcc
 MAIN := specs-gen
 
 # https://github.com/cee-studio/cee-utils
-CEE_UTILS_DIR ?= ../cee-utils
+CEEUTILS_DIR ?= ../cee-utils
 
 OBJDIR := obj
 WDIR   := specs-code
@@ -12,11 +12,11 @@ JSON := $(sort $(wildcard */*.json))
 APIS := $(sort $(patsubst %/, %, $(dir $(JSON))))
 
 # specs code-generator dependencies
-DEPS := $(CEE_UTILS_DIR)/cee-utils.c   \
-        $(CEE_UTILS_DIR)/json-actor.c  \
-        $(CEE_UTILS_DIR)/ntl.c         \
-        $(CEE_UTILS_DIR)/json-string.c \
-        $(CEE_UTILS_DIR)/log.c
+DEPS := $(CEEUTILS_DIR)/cee-utils.c   \
+        $(CEEUTILS_DIR)/json-actor.c  \
+        $(CEEUTILS_DIR)/ntl.c         \
+        $(CEEUTILS_DIR)/json-string.c \
+        $(CEEUTILS_DIR)/log.c
 OBJS := $(JSON:%.json=$(OBJDIR)/%.o)
 
 # needed for 'make build'
@@ -26,7 +26,7 @@ CFLAGS  ?= -I. -I..
 LDFLAGS ?= -L../lib
 
 # default CFLAGS
-CFLAGS  += -O0 -g -Wall -Wno-unused-function -I$(CEE_UTILS_DIR)
+CFLAGS  += -O0 -g -Wall -Wno-unused-function -I$(CEEUTILS_DIR)
 
 # for inserting newlines at the end of each foreach
 # see https://stackoverflow.com/questions/29651388/insert-a-new-line-in-a-makefile-foreach-loop
@@ -73,7 +73,7 @@ endef
 $(OBJDIR)/%.o : $(WDIR)/%.c
 	$(CC) -I$(COMMON_DIR) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
 
-all: $(CEE_UTILS_DIR) $(WDIR)
+all: $(CEEUTILS_DIR) $(WDIR)
 
 build: all
 	$(MAKE) $(OBJS)

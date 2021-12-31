@@ -3,7 +3,7 @@
 TOP = ..
 CC ?= gcc
 
-CEE_UTILS_DIR := $(TOP)/cee-utils
+CEEUTILS_DIR := $(TOP)/cee-utils
 COMMON_DIR    := $(TOP)/common
 
 TEST_DISCORD := test-discord-api test-discord-async test-discord-ws
@@ -12,8 +12,8 @@ TEST_COMMON  := test-user-agent test-websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)
 
-CFLAGS  += -I$(TOP) -I$(CEE_UTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                 \
+CFLAGS  += -I$(TOP) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
+           -I$(COMMON_DIR)/third-party                \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib -lcurl -lcrypto -lm
 

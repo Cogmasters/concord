@@ -3,8 +3,8 @@
 TOP = ..
 CC ?= gcc
 
-CEE_UTILS_DIR := $(TOP)/cee-utils
-COMMON_DIR    := $(TOP)/common
+CEEUTILS_DIR := $(TOP)/cee-utils
+COMMON_DIR   := $(TOP)/common
 
 BOT_DISCORD := bot-audit-log \
                bot-ban \
@@ -36,8 +36,8 @@ BOT_GITHUB  := bot-github-create-fork \
 
 BOTS := $(BOT_DISCORD) $(BOT_GITHUB)
 
-CFLAGS  += -I$(TOP) -I$(CEE_UTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                 \
+CFLAGS  += -I$(TOP) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
+           -I$(COMMON_DIR)/third-party                \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib -lcurl -lcrypto -lm
 
