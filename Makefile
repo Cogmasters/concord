@@ -46,7 +46,7 @@ LIBGITHUB  := $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBDIR)/libslack.a
 
-CFLAGS += -O0 -g -pthread -Wall                                             \
+CFLAGS += -O0 -g -pthread -Wall -pedantic                                   \
           -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(COMMON_DIR)/third-party \
           -DLOG_USE_COLOR
 
@@ -71,6 +71,7 @@ all: | $(SPECSCODE_DIR)
 specs_gen: | $(CEEUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR)
+	@ rm -rf $(SPECSCODE_DIR)
 	mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 
 cee_utils:
