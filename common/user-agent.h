@@ -339,8 +339,7 @@ void ua_info_cleanup(struct ua_info *info);
  * @param field the header field to fetch the value
  * @return a sized_buffer containing the field's value
  */
-const struct sized_buffer ua_info_get_header(struct ua_info *info,
-                                             char field[]);
+struct sized_buffer ua_info_get_header(struct ua_info *info, char field[]);
 
 /**
  * @brief Get the response body
@@ -348,7 +347,7 @@ const struct sized_buffer ua_info_get_header(struct ua_info *info,
  * @param info handle containing information on previous request
  * @return a sized_buffer containing the response body
  */
-const struct sized_buffer ua_info_get_body(struct ua_info *info);
+struct sized_buffer ua_info_get_body(struct ua_info *info);
 
 #ifdef __cplusplus
 }

@@ -800,15 +800,15 @@ ua_info_cleanup(struct ua_info *info)
 }
 
 /** attempt to get value from matching response header field */
-const struct sized_buffer
+struct sized_buffer
 ua_info_get_header(struct ua_info *info, char field[])
 {
-  const size_t len = strlen(field);
+  size_t len = strlen(field);
   struct sized_buffer value;
   int i;
 
   for (i = 0; i < info->header.n_pairs; ++i) {
-    const struct sized_buffer header = {
+    struct sized_buffer header = {
       info->header.buf + info->header.pairs[i].field.idx,
       info->header.pairs[i].field.size,
     };
@@ -829,7 +829,7 @@ ua_info_get_header(struct ua_info *info, char field[])
   return value;
 }
 
-const struct sized_buffer
+struct sized_buffer
 ua_info_get_body(struct ua_info *info)
 {
   struct sized_buffer body = { info->body.buf, info->body.len };
