@@ -1551,7 +1551,8 @@ has_value(struct injection_info *info, struct value *v)
   void **assigned_addrs = arg_switches->arg;
   switch (v->tag) {
   case V_ACTION: {
-    size_t i;
+    int i;
+
     for (i = 0; i < arg_switches->xend_idx; i++) {
       assert_is_pointer(v->_.action.operand);
       if (NULL != v->_.action.operand
@@ -1563,8 +1564,9 @@ has_value(struct injection_info *info, struct value *v)
   case V_COMPOSITE_VALUE: {
     struct composite_value *cv = v->_.cv;
     int has_one = 0;
+    size_t i;
+
     if (cv->is_object) {
-      size_t i;
       for (i = 0; i < cv->_.pairs.size; i++) {
         struct access_path_value *p = cv->_.pairs.pos + i;
         if (has_value(info, &p->value)) {
@@ -1574,7 +1576,6 @@ has_value(struct injection_info *info, struct value *v)
       }
     }
     else {
-      size_t i;
       for (i = 0; i < cv->_.elements.size; i++) {
         struct value *p = cv->_.elements.pos + i;
         if (has_value(info, p)) {

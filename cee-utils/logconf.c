@@ -277,7 +277,7 @@ logconf_get_field(struct logconf *conf, char *json_field)
   if (!conf->file.size) return field; /* empty field */
 
   char fmt[512];
-  int ret = snprintf(fmt, sizeof(fmt), "(%s):T", json_field);
+  size_t ret = snprintf(fmt, sizeof(fmt), "(%s):T", json_field);
   ASSERT_S(ret < sizeof(fmt), "Out of bounds write attempt");
 
   json_extract(conf->file.start, conf->file.size, fmt, &field);
