@@ -704,6 +704,7 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
+  (void)data;
   ON(ready);
 }
 
@@ -1027,6 +1028,9 @@ on_connect_cb(void *p_gw,
               const char *ws_protocols)
 {
   struct discord_gateway *gw = p_gw;
+  (void)ws;
+  (void)info;
+
   logconf_info(&gw->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
@@ -1041,6 +1045,8 @@ on_close_cb(void *p_gw,
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode =
     (enum discord_gateway_close_opcodes)wscode;
+  (void)ws;
+  (void)info;
 
   logconf_warn(
     &gw->conf,
@@ -1103,6 +1109,7 @@ on_text_cb(void *p_gw,
   struct discord_gateway *gw = p_gw;
   /* check sequence value first, then assign */
   int seq = 0;
+  (void)ws;
 
   json_extract((char *)text, len, "(t):s (s):d (op):d (d):T", gw->payload.name,
                &seq, &gw->payload.opcode, &gw->payload.data);
@@ -1141,9 +1148,12 @@ on_text_cb(void *p_gw,
 
 static discord_event_scheduler_t
 default_scheduler_cb(struct discord *a,
-                     struct sized_buffer *c,
-                     enum discord_gateway_events d)
+                     struct sized_buffer *b,
+                     enum discord_gateway_events c)
 {
+  (void)a;
+  (void)b;
+  (void)c;
   return DISCORD_EVENT_MAIN_THREAD;
 }
 

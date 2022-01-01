@@ -270,6 +270,7 @@ static void
 cws_on_connect_cb(void *p_ws, CURL *ehandle, const char *ws_protocols)
 {
   struct websockets *ws = p_ws;
+  (void)ehandle;
 
   _ws_set_status(ws, WS_CONNECTED);
 
@@ -298,6 +299,7 @@ cws_on_close_cb(void *p_ws,
   struct websockets *ws = p_ws;
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody = { (char *)reason, len };
+  (void)ehandle;
 
   _ws_set_status(ws, WS_DISCONNECTING);
 
@@ -324,6 +326,7 @@ cws_on_text_cb(void *p_ws, CURL *ehandle, const char *text, size_t len)
   struct websockets *ws = p_ws;
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody = { (char *)text, len };
+  (void)ehandle;
 
   logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
                "WS_RCV_TEXT");
@@ -342,6 +345,7 @@ cws_on_binary_cb(void *p_ws, CURL *ehandle, const void *mem, size_t len)
   struct websockets *ws = p_ws;
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody = { (char *)mem, len };
+  (void)ehandle;
 
   logconf_http(&ws->conf, &ws->info.loginfo, ws->base_url, logheader, logbody,
                "WS_RCV_BINARY");
@@ -359,6 +363,7 @@ static void
 cws_on_ping_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+  (void)ehandle;
 #if 0
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody   = { (char *)reason, len };
@@ -380,6 +385,7 @@ static void
 cws_on_pong_cb(void *p_ws, CURL *ehandle, const char *reason, size_t len)
 {
   struct websockets *ws = p_ws;
+  (void)ehandle;
 #if 0
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody   = { (char *)reason, len };
@@ -410,6 +416,10 @@ _ws_check_action_cb(void *p_userdata,
 {
   struct websockets *ws = p_userdata;
   int ret;
+  (void)dltotal;
+  (void)dlnow;
+  (void)ultotal;
+  (void)ulnow;
 
   pthread_mutex_lock(&ws->lock);
   switch (ws->action) {
@@ -538,6 +548,8 @@ default_on_ping(void *a,
                 const char *reason,
                 size_t len)
 {
+  (void)a;
+  (void)info;
   ws_pong(ws, &ws->info, reason, len);
 }
 
@@ -692,6 +704,7 @@ ws_ping(struct websockets *ws,
         const char *reason,
         size_t len)
 {
+  (void)info;
 #if 0
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody   = { (char *)reason, len };
@@ -729,6 +742,7 @@ ws_pong(struct websockets *ws,
         const char *reason,
         size_t len)
 {
+  (void)info;
 #if 0
   struct sized_buffer logheader = { "", 0 };
   struct sized_buffer logbody   = { (char *)reason, len };

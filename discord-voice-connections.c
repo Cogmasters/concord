@@ -196,6 +196,8 @@ on_connect_cb(void *p_vc,
               const char *ws_protocols)
 {
   struct discord_voice *vc = p_vc;
+  (void)ws;
+  (void)info;
 
   logconf_info(&vc->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
 }
@@ -211,6 +213,8 @@ on_close_cb(void *p_vc,
   struct discord_voice *vc = p_vc;
   enum discord_voice_close_event_codes opcode =
     (enum discord_voice_close_event_codes)wscode;
+  (void)ws;
+  (void)info;
 
   logconf_warn(
     &vc->conf,
@@ -266,6 +270,8 @@ on_text_cb(void *p_vc,
            size_t len)
 {
   struct discord_voice *vc = p_vc;
+  (void)ws;
+  (void)info;
 
   json_extract((char *)text, len, "(op):d (d):T", &vc->payload.opcode,
                &vc->payload.event_data);
