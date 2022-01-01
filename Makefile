@@ -112,13 +112,13 @@ reddit: $(LIBREDDIT)
 slack: $(LIBSLACK)
 
 # API libraries compilation
-$(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) $(DISCORD_SPECS) | $(LIBDIR)
+$(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
-$(LIBGITHUB): $(GITHUB_OBJS) $(OBJS) $(GITHUB_SPECS) | $(LIBDIR)
+$(LIBGITHUB): $(GITHUB_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
-$(LIBREDDIT): $(REDDIT_OBJS) $(OBJS) $(REDDIT_SPECS) | $(LIBDIR)
+$(LIBREDDIT): $(REDDIT_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
-$(LIBSLACK): $(SLACK_OBJS) $(OBJS) $(SLACK_SPECS) | $(LIBDIR)
+$(LIBSLACK): $(SLACK_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
 $(LIBDIR):
@@ -160,7 +160,6 @@ echo:
 	@ echo -e 'SPECS DIRS: $(wildcard $(SPECSCODE_DIR)/*)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
 	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
-	@ echo -e 'DISCORD_SPECS: $(DISCORD_SPECS)\n'
 
 clean: 
 	rm -rf $(OBJDIR)
