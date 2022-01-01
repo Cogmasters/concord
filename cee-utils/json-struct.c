@@ -858,6 +858,7 @@ static void gen_enum_eval(FILE *fp, struct jc_enum *e)
               item->name, item_name);
   }
   fprintf(fp, "  ERR(\"'%%s' doesn't match any known enumerator.\", s);\n");
+  fprintf(fp, "  return -1;\n");
   fprintf(fp, "}\n");
 }
 
@@ -891,7 +892,6 @@ static void gen_enum_print(FILE *fp, struct jc_enum *e)
 }
 
 static void gen_forward_fun_declare(FILE *fp, struct jc_def *d);
-static void gen_typedef (FILE *fp);
 static void gen_default(FILE *fp, struct jc_def *d);
 static void gen_wrapper(FILE *fp, struct jc_def *d);
 
@@ -910,7 +910,6 @@ static void gen_enum_all(FILE *fp, struct jc_def *d, name_t **ns)
       gen_forward_fun_declare(fp, d);
       break;
   case FILE_CODE:
-      gen_typedef(fp);
       gen_wrapper(fp, d);
 
       gen_enum_eval(fp, e);
@@ -1364,9 +1363,9 @@ static void gen_default(FILE *fp, struct jc_def *d)
   char * prefix;
   if (d->is_struct) {
     gen_init(fp, (struct jc_struct*)d);
-    snprintf(extractor, sizeof(extractor), "(vfcpsvp)%s_from_json_p", type);
-    snprintf(injector, sizeof(injector), "(sfcpsvp)%s_to_json", type);
-    snprintf(cleanup, sizeof(cleanup), "(vfvp)%s_cleanup", type);
+    snprintf(extractor, sizeof(extractor), "(void(*)(char*,size_t,void*))%s_from_json_p", type);
+    snprintf(injector, sizeof(injector), "(size_t(*)(char*,size_t,void*))%s_to_json", type);
+    snprintf(cleanup, sizeof(cleanup), "(void(*)(void*))%s_cleanup", type);
     prefix = "struct";
   }
   else {
@@ -1945,13 +1944,6 @@ static void gen_forward_fun_declare(FILE *fp, struct jc_def *d)
   }
 }
 
-static void gen_typedef (FILE *fp)
-{
-  fprintf(fp, "typedef void (*vfvp)(void *);\n");
-  fprintf(fp, "typedef void (*vfcpsvp)(char *, size_t, void *);\n");
-  fprintf(fp, "typedef size_t (*sfcpsvp)(char *, size_t, void *);\n");
-}
-
 static void gen_opaque_struct(FILE *fp, struct jc_def *d, name_t **ns)
 {
   struct jc_struct *s = (struct jc_struct*)d;
@@ -2008,7 +2000,6 @@ static void gen_struct_all(FILE *fp, struct jc_def *d, name_t **ns)
       fprintf(fp, "\n");
 
       /* boilerplate */
-      gen_typedef(fp);
       gen_wrapper(fp, d);
       gen_cleanup(fp, s);
       fprintf(fp, "\n");
@@ -2026,7 +2017,6 @@ static void gen_struct_all(FILE *fp, struct jc_def *d, name_t **ns)
       fprintf(fp, "\n");
 
       /* boilerplate */
-      gen_typedef(fp);
       gen_wrapper(fp, d);
       fprintf(fp, "\n");
       gen_cleanup(fp, s);

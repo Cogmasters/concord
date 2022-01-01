@@ -372,7 +372,7 @@ print_action(FILE *fp, struct action *v)
   if (ACT_BUILT_IN == v->tag)
     fprintf(fp, "builtin(%d)\n", v->_.builtin);
   else
-    fprintf(fp, "funptr(%p)\n", (void *)v->_.user_def);
+    fprintf(fp, "funptr = %s\n", v->_.user_def ? "assigned" : "null");
 }
 
 enum value_type {
