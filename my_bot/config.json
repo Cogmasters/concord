@@ -1,0 +1,21 @@
+{
+  "logging": {
+    "level": "trace",
+    "filename": "bot.log",
+    "quiet": false,
+    "overwrite": true,
+    "use_color": true,
+    "http": {
+      "enable": true,
+      "filename": "http.log"
+    },
+    "disable_modules": ["WEBSOCKETS", "USER_AGENT", "DISCORD_GATEWAY"]
+  },
+  "discord": {
+    "token": "NzMzNzcxMjgwMzA5OTQ0MzYw.XxH_wg.nIKzBAUosQV16hgJWw4xx9sX7cs",
+    "default_prefix": {
+      "enable": false,
+      "prefix": "!"
+    }
+  }
+}
