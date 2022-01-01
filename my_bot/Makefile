@@ -1,50 +1,86 @@
 # This Makefile assumes the top folder has been built
+
+# Default build:
+# 	$ make 
+# Cleanup build:
+# 	$ make clean
+# Print this Makefile variables
+# 	$ make echo
+
+# If you are a Makefile newbie we recommend that you reading the following to
+# 				better understand this file:
+#
+# Automatic Variables:
+# 	gnu.org/software/make/manual/html_node/Automatic-Variables.html
+# Prerequisite Types:
+# 	gnu.org/software/make/manual/html_node/Prerequisite-Types.html
+
 .SILENT: config
 
-TOP = ..
+# Orca's relative location to this Makefile
+ORCA = ..
 
-# CC default compiler is gcc, can be changed
-#    ex: 'CC=clang make'
-CC     ?= gcc
-LIBDIR := $(TOP)/lib
+# default compiler is gcc, but can be changed at the CLI
+#    ex: '$ CC=clang make'
+CC ?= gcc
 
-# SRC contains all .c files from this folder
-SRC  := $(wildcard ./*.c)
-# EXES replaces all .c extensions from SRC with .out
-EXES := $(patsubst %.c, %.out, $(SRC))
+LIBDIR := $(ORCA)/lib
+OBJDIR := obj
+
+# add your source files here
+SRC  := myBot.c
+# this will match each individual .c file to a .o
+OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
+# your bot executable's name
+MAIN := myBot
+# your bot config file
+CONF := config.json
 
 # -O0 no optimization
-# -Wall emit warnings
-# -g keep this for debugging with gdb
+# -Wall emit 'all' warnings
+# -g keep this for human-readable debugging
 # -pthread tell the compiler to link the pthread library
 #  			aswell configure compilation for threads
-# -I links to a folder where a header dependency resides
-CFLAGS  := -O0 -g -Wall -pthread                       \
-           -I. -I$(TOP) -I$(TOP)/cee-utils             \
-           -I$(TOP)/common -I$(TOP)/common/third-party \
+# -I add header folder to compiler search path
+CFLAGS  := -O0 -g -Wall -pthread                         \
+           -I. -I$(ORCA) -I$(ORCA)/cee-utils             \
+           -I$(ORCA)/common -I$(ORCA)/common/third-party
 
-# -L links to a folder where a lib dependency resides
+# -L add library folder to compiler search path
 # -ldiscord links against libdiscord.a
 # -lcurl links against libcurl, a orca dependency
-# -lcrypto links against OpenSSL, a libcurl dependency
-# -lm links against math.h, a orca dependency
-LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl -lcrypto -lm
+LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl
 
-# This will match each .out to a .c and compile the executable
-#     ex: 'foo.out: foo.c'
-# For $@ and $^ explanation, see:
-#     gnu.org/software/make/manual/html_node/Automatic-Variables.html
-%.out: %.c
+all: $(MAIN) $(CONF)
+
+# Compile the bot executable with the given the object files
+$(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-all: $(EXES)
+# Make sure the obj directory exists before building the object files
+$(OBJS): | $(OBJDIR)
+
+$(OBJDIR):
+	@ mkdir -p $(OBJDIR)
+
+# Match each .o file to its .c counterpart (foo.o: foo.c)
+$(OBJDIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+
+$(CONF):
+	cp -n $(ORCA)/config.json $(CONF)
+	echo "A template config file was copied into this folder."
+	echo "Replace 'YOUR-BOT-TOKEN' with an actual token at $(CONF)"
 
 clean:
-	rm -rf $(EXES)
+	rm -rf $(MAIN)
+	rm -rf $(OBJDIR)
 
-config:
-	cp -n $(TOP)/config.json ./mybot_config.json
-	echo "A template config file was copied into this folder."
-	echo "Replace 'YOUR-BOT-TOKEN' with an actual token in mybot_config.json ."
+echo:
+	@ echo -e 'CC: $(CC)\n'
+	@ echo -e 'ORCA: $(ORCA)\n'
+	@ echo -e 'SRC: $(SRC)\n'
+	@ echo -e 'OBJS: $(OBJS)\n'
+	@ echo -e 'MAIN: $(MAIN)\n'
 
-.PHONY: all clean
+.PHONY: all clean config

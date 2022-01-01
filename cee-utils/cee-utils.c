@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <string.h>
-#include <math.h> /*for round() */
 #include <limits.h>
 #include <time.h>
 #include <errno.h>
@@ -67,13 +66,14 @@ int
 cee_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
 {
   (void)len;
+  double seconds = 0.0;
+  char tz_operator = 'Z';
+  int tz_hour = 0, tz_min = 0;
   struct tm tm;
-  double seconds = 0;
+  uint64_t res;
 
   memset(&tm, 0, sizeof(tm));
 
-  char tz_operator = 'Z';
-  int tz_hour = 0, tz_min = 0;
   sscanf(str, "%d-%d-%dT%d:%d:%lf%c%d:%d", /* ISO-8601 complete format */
          &tm.tm_year, &tm.tm_mon, &tm.tm_mday, /* Date */
          &tm.tm_hour, &tm.tm_min, &seconds, /* Time */
@@ -82,8 +82,8 @@ cee_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
   tm.tm_mon--; /* struct tm takes month from 0 to 11 */
   tm.tm_year -= 1900; /* struct tm takes years from 1900 */
 
-  uint64_t res = (((uint64_t)mktime(&tm) - timezone) * 1000)
-                 + (uint64_t)round(seconds * 1000.0);
+  res =
+    (((uint64_t)mktime(&tm) - timezone) * 1000) + (uint64_t)seconds * 1000.0;
   switch (tz_operator) {
   case '+': /* Add hours and minutes */
     res += (tz_hour * 60 + tz_min) * 60 * 1000;

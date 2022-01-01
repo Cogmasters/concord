@@ -88,15 +88,16 @@ send_identify(struct discord_voice *vc)
 static void
 on_hello(struct discord_voice *vc)
 {
-  float hbeat_interval = 0.0;
+  float hbeat_interval = 0.0f;
 
   vc->hbeat.tstamp = cee_timestamp_ms();
 
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
                "(heartbeat_interval):f", &hbeat_interval);
-  ASSERT_S(hbeat_interval > 0.0, "Invalid heartbeat_ms");
+  ASSERT_S(hbeat_interval > 0.0f, "Invalid heartbeat_ms");
 
-  vc->hbeat.interval_ms = (u64_unix_ms_t)fmin(hbeat_interval, 5000);
+  vc->hbeat.interval_ms =
+    (hbeat_interval < 5000.0f) ? hbeat_interval : 5000.0f;
 
   if (vc->is_resumable)
     send_resume(vc);

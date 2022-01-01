@@ -1,48 +1,44 @@
 PREFIX ?= /usr/local
-SHELL := /bin/bash
-
 CC     ?= gcc
-OBJDIR := obj
-LIBDIR := lib
 
+OBJDIR        := obj
+LIBDIR        := lib
 SPECS_DIR     := specs
 SPECSCODE_DIR := specs-code
-SPECS_MAKE    := specs.mk
+CEEUTILS_DIR  := cee-utils
+COMMON_DIR    := common
+EXAMPLES_DIR  := examples
+TEST_DIR      := test
 
-# common/utils
-CEE_UTILS_DIR  := cee-utils
-CEE_UTILS_SRC  := $(CEE_UTILS_DIR)/cee-utils.c         \
-                  $(CEE_UTILS_DIR)/json-actor.c        \
-                  $(CEE_UTILS_DIR)/json-actor-boxed.c  \
-                  $(CEE_UTILS_DIR)/json-string.c       \
-                  $(CEE_UTILS_DIR)/log.c               \
-                  $(CEE_UTILS_DIR)/logconf.c           \
-                  $(CEE_UTILS_DIR)/ntl.c
-CEE_UTILS_OBJS := $(CEE_UTILS_SRC:%.c=$(OBJDIR)/%.o)
+CEEUTILS_SRC := $(CEEUTILS_DIR)/cee-utils.c        \
+                $(CEEUTILS_DIR)/json-actor.c       \
+                $(CEEUTILS_DIR)/json-actor-boxed.c \
+                $(CEEUTILS_DIR)/json-string.c      \
+                $(CEEUTILS_DIR)/log.c              \
+                $(CEEUTILS_DIR)/logconf.c          \
+                $(CEEUTILS_DIR)/ntl.c
 
-COMMON_DIR := common
-COMMON_SRC := $(wildcard $(COMMON_DIR)/*.c)              \
-              $(COMMON_DIR)/third-party/curl-websocket.c \
-              $(COMMON_DIR)/third-party/threadpool.c
-COMMON_OBJS := $(COMMON_SRC:%.c=$(OBJDIR)/%.o)
+SRC          := $(COMMON_DIR)/common.c                     \
+                $(COMMON_DIR)/work.c                       \
+                $(COMMON_DIR)/user-agent.c                 \
+                $(COMMON_DIR)/websockets.c                 \
+                $(COMMON_DIR)/third-party/sha1.c           \
+                $(COMMON_DIR)/third-party/curl-websocket.c \
+                $(COMMON_DIR)/third-party/threadpool.c
+
+OBJS := $(CEEUTILS_SRC:%.c=$(OBJDIR)/%.o) $(SRC:%.c=$(OBJDIR)/%.o)
 
 # APIs src
-DISCORD_SRC = $(wildcard discord-*.c $(SPECSCODE_DIR)/discord/*.c)
-GITHUB_SRC  = $(wildcard github-*.c $(SPECSCODE_DIR)/github/*.c)
-REDDIT_SRC  = $(wildcard reddit-*.c $(SPECSCODE_DIR)/reddit/*.c)
-SLACK_SRC   = $(wildcard slack-*.c $(SPECSCODE_DIR)/slack/*.c)
+DISCORD_SRC := $(wildcard discord-*.c $(SPECSCODE_DIR)/discord/*.c)
+GITHUB_SRC  := $(wildcard github-*.c $(SPECSCODE_DIR)/github/*.c)
+REDDIT_SRC  := $(wildcard reddit-*.c $(SPECSCODE_DIR)/reddit/*.c)
+SLACK_SRC   := $(wildcard slack-*.c $(SPECSCODE_DIR)/slack/*.c)
 
 # APIs objs
-DISCORD_OBJS = $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
-GITHUB_OBJS  = $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
-REDDIT_OBJS  = $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
-SLACK_OBJS   = $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
-
-# API libs cflags
-LIBDISCORD_CFLAGS := 
-LIBGITHUB_CFLAGS  :=
-LIBREDDIT_CFLAGS  :=
-LIBSLACK_CFLAGS   :=
+DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
+GITHUB_OBJS  := $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
+REDDIT_OBJS  := $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
+SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs ldflags
 LIBDISCORD_LDFLAGS := -ldiscord
@@ -56,20 +52,11 @@ LIBGITHUB  := $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBDIR)/libslack.a
 
-EXAMPLES_DIR   := examples
-EXAMPLES_SRC   := $(wildcard $(EXAMPLES_DIR)/bot-*.c)
-EXAMPLES_EXES  := $(patsubst %.c, %.out, $(EXAMPLES_SRC))
-
-TEST_DIR  := test
-TEST_SRC  := $(wildcard $(TEST_DIR)/test-*.c)
-TEST_EXES := $(filter %.out, $(TEST_SRC:.c=.out))
-
 LIBS_CFLAGS  +=
-LIBS_LDFLAGS += -L./$(LIBDIR) -lm
+LIBS_LDFLAGS += -L./$(LIBDIR)
 
-CFLAGS += -O0 -g -pthread -Wall                           \
-          -I. -I./$(CEE_UTILS_DIR)                        \
-          -I./$(COMMON_DIR) -I./$(COMMON_DIR)/third-party \
+CFLAGS += -O0 -g -pthread -Wall                                              \
+          -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(COMMON_DIR)/third-party \
           -DLOG_USE_COLOR
 
 ifeq ($(BEARSSL),1)
@@ -79,7 +66,7 @@ else ifneq (,$(findstring $(CC),stensal-c sfc)) # ifeq stensal-c OR sfc
 	LIBS_LDFLAGS += -lcurl-bearssl -lbearssl -static
 	CFLAGS += -DBEARSSL
 else
-	LIBS_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl -lcrypto
+	LIBS_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl
 endif
 
 ifeq ($(static_debug),1)
@@ -99,106 +86,90 @@ else
 	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
 endif
 
-# generic compilation
-$(OBJDIR)/discord-%.o : discord-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBDISCORD_CFLAGS)
-$(OBJDIR)/github-%.o : github-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBGITHUB_CFLAGS)
-$(OBJDIR)/reddit-%.o : reddit-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBREDDIT_CFLAGS)
-$(OBJDIR)/slack-%.o : slack-%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $< $(LIBSLACK_CFLAGS)
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
-$(EXAMPLES_DIR)/%.out: $(EXAMPLES_DIR)/%.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
-%.out: %.c all_api_libs
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -o $@ $< $(LIBDISCORD_LDFLAGS) $(LIBGITHUB_LDFLAGS) $(LIBREDDIT_LDFLAGS) $(LIBSLACK_LDFLAGS) $(LIBS_LDFLAGS)
 
-all: $(CEE_UTILS_DIR)
-	$(MAKE) $(SPECSCODE_DIR)
+all: | $(SPECSCODE_DIR)
 	$(MAKE) discord github reddit slack
 
-test: all $(TEST_EXES)
+specs_gen: | $(CEEUTILS_DIR)
+	@ $(MAKE) -C $(SPECS_DIR) clean
+	@ $(MAKE) -C $(SPECS_DIR)
+	mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 
-discord: common $(DISCORD_OBJS) $(LIBDISCORD)
-github: common $(GITHUB_OBJS) $(LIBGITHUB)
-reddit: common $(REDDIT_OBJS) $(LIBREDDIT)
-slack: common $(SLACK_OBJS) $(LIBSLACK)
+cee_utils:
+	./scripts/get-cee-utils.sh
 
-common: cee_utils $(COMMON_OBJS)
-cee_utils: $(CEE_UTILS_OBJS) | $(CEE_UTILS_DIR)
+test: all
+	@ $(MAKE) -C $(TEST_DIR)
 
-$(CEE_UTILS_OBJS): | $(OBJDIR)
-$(COMMON_OBJS):    | $(OBJDIR)
-$(DISCORD_OBJS):   | $(OBJDIR)
-$(GITHUB_OBJS):    | $(OBJDIR)
-$(REDDIT_OBJS):    | $(OBJDIR)
-$(SLACK_OBJS):     | $(OBJDIR)
+examples: all
+	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-examples:
-	@ $(MAKE) all
-	@ $(MAKE) $(EXAMPLES_EXES)
-
-$(SPECSCODE_DIR):
-	@ $(MAKE) clean
-	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE) clean
-	@ $(MAKE) -C $(SPECS_DIR) -f $(SPECS_MAKE)
-	mv $(SPECS_DIR)/$(SPECSCODE_DIR) .
-
-$(CEE_UTILS_DIR):
-	if [[ ! -d $@ ]]; then        \
-	  ./scripts/get-cee-utils.sh; \
-	fi
-
-$(OBJDIR) :
-	mkdir -p $(OBJDIR)/$(CEE_UTILS_DIR)                             \
-	         $(OBJDIR)/$(COMMON_DIR)/third-party                    \
-	         $(OBJDIR)/$(TEST_DIR)                                  \
-	         $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
-
-$(LIBDIR) :
-	mkdir -p $(LIBDIR)
-
-all_api_libs : $(LIBDISCORD) $(LIBGITHUB) $(LIBREDDIT) $(LIBSLACK)
+discord: $(LIBDISCORD)
+github: $(LIBGITHUB)
+reddit: $(LIBREDDIT)
+slack: $(LIBSLACK)
 
 # API libraries compilation
-$(LIBDISCORD) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(DISCORD_OBJS) | $(LIBDIR)
+$(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
-$(LIBGITHUB) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(GITHUB_OBJS) | $(LIBDIR)
+$(LIBGITHUB): $(GITHUB_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
-$(LIBREDDIT) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(REDDIT_OBJS) | $(LIBDIR)
+$(LIBREDDIT): $(REDDIT_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
-$(LIBSLACK) : $(CEE_UTILS_OBJS) $(COMMON_OBJS) $(SLACK_OBJS) | $(LIBDIR)
+$(LIBSLACK): $(SLACK_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
-install :
+$(LIBDIR):
+	@ mkdir -p $(LIBDIR)
+$(SPECSCODE_DIR):
+	@ $(MAKE) specs_gen
+$(CEEUTILS_DIR):
+	@ $(MAKE) cee_utils
+
+$(DISCORD_OBJS): $(OBJS)
+$(GITHUB_OBJS): $(OBJS)
+$(REDDIT_OBJS): $(OBJS)
+$(SLACK_OBJS): $(OBJS)
+
+$(OBJS): | $(OBJDIR)
+
+$(OBJDIR):
+	@ mkdir -p $(OBJDIR)/$(COMMON_DIR)/third-party \
+	           $(OBJDIR)/$(CEEUTILS_DIR)           \
+             $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
+
+install:
 	mkdir -p $(PREFIX)/lib/
 	mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -m 644 $(LIBGITHUB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
-	install -m 644 *.h $(CEE_UTILS_DIR)/*.h $(COMMON_DIR)/*.h $(COMMON_DIR)/**/*.h $(PREFIX)/include/orca/
+	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h $(COMMON_DIR)/**/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
 	install -m 644 $(SPECSCODE_DIR)/discord/*.h $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
 	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
 	install -m 644 $(SPECSCODE_DIR)/github/*.h $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
 
 echo:
-	@ echo CC: $(CC)
-	@ echo PREFIX: $(PREFIX)
-	@ echo EXAMPLES_EXES: $(EXAMPLES_EXES)
-	@ echo DISCORD_OBJS: $(DISCORD_OBJS)
+	@ echo -e 'CC: $(CC)\n'
+	@ echo -e 'PREFIX: $(PREFIX)\n'
+	@ echo -e 'OBJS: $(OBJS)\n'
+	@ echo -e 'SPECS DIRS: $(wildcard $(SPECSCODE_DIR)/*)\n'
+	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
+	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
 
-clean : 
-	rm -rf $(OBJDIR) *.out $(TEST_DIR)/*.out $(EXAMPLES_DIR)/*.out
+clean: 
+	rm -rf $(OBJDIR)
 	rm -rf $(LIBDIR)
+	@ $(MAKE) -C $(TEST_DIR) clean
+	@ $(MAKE) -C $(EXAMPLES_DIR) clean
+
+purge: clean
+	rm -rf $(LIBDIR)
+	rm -rf $(CEEUTILS_DIR)
 	rm -rf $(SPECSCODE_DIR)
-	make -C $(SPECS_DIR) -f $(SPECS_MAKE) clean
 
-purge : clean
-	rm -rf $(LIBDIR)
-	rm -rf $(CEE_UTILS_DIR)
-
-.PHONY : all install clean purge examples
+.PHONY: all test examples install echo clean purge

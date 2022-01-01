@@ -138,7 +138,7 @@ The following outlines the default fields of `config.json`
    ```
 3. Run Echo-Bot:
    ```bash
-   $ cd examples && ./bot-echo.out
+   $ cd examples && ./bot-echo
    ```
 
 #### Get Echo-Bot Response
@@ -171,13 +171,13 @@ Included headers must be `orca/` prefixed:
 #### GCC (Recommended)
 
 ```bash
-$ gcc myBot.c -o myBot.out -pthread -ldiscord -lcurl -lcrypto -lm
+$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 #### Clang
 
 ```bash
-$ clang myBot.c -o myBot.out -pthread -ldiscord -lcurl -lcrypto -lm
+$ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 ## Recommended debuggers
@@ -189,7 +189,7 @@ First, make sure your executable is compiled with the `-g` flag to ensure human-
 Using valgrind to check for memory leaks:
 
 ```bash
-$ valgrind --leak-check=full ./myBot.out
+$ valgrind --leak-check=full ./myBot
 ```
 For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
 
@@ -198,7 +198,7 @@ For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.o
 Using GDB to check for runtime errors, such as segmentation faults:
 
 ```bash
-$ gdb ./myBot.out
+$ gdb ./myBot
 ```
 And then execute your bot from the gdb environment:
 ```bash
@@ -219,8 +219,8 @@ Problems? Check out our [Discord Server](https://discord.gg/nBUqrWf).
 
 - [Documentation](https://cee-studio.github.io/orca/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
-- [Internals](docs/INTERNALS.md)
 - [Contributing](docs/CONTRIBUTING.md)
+<!-- - [Internals](docs/INTERNALS.md) -->
 
 ## Contributing
 Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).

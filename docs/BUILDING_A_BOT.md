@@ -160,7 +160,7 @@ make
 Simply run the generated executable like so:
 
 ```bash
-./myBot.out
+./myBot
 ```
 
 ### Test the bot

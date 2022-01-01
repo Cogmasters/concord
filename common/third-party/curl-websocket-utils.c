@@ -30,63 +30,17 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-#ifdef BEARSSL
-#include <bearssl_hash.h>
+#include "sha1.h"
 
 static void
 _cws_sha1(const void *input, const size_t input_len, void *output)
 {
-    br_sha1_context cxt;
-    br_sha1_init(&cxt);
-    br_sha1_update(&cxt, input, input_len);
-    br_sha1_out(&cxt, output);
+  SHA1_CTX ctx;
+
+  SHA1Init(&ctx);
+  SHA1Update(&ctx, input, input_len);
+  SHA1Final(output, &ctx);
 }
-#elif defined(MBEDTLS)
-#include "mbedtls/sha1.h"
-static void
-_cws_sha1(const void *input, const size_t input_len, void *output)
-{
-    mbedtls_sha1(input, input_len, output);
-}
-#elif defined(WOLFSSL)
-#include <stdint.h>
-#include "wolfssl/wolfcrypt/sha.h"
-static void
-_cws_sha1(const void *input, const size_t input_len, void *output)
-{
-    Sha sha;
-    wc_InitSha(&sha);
-    wc_ShaUpdate(&sha, input, input_len);
-    wc_ShaFinal(&sha, output);
-}
-#else
-
-#include <openssl/evp.h>
-
-static void
-_cws_sha1(const void *input, const size_t input_len, void *output)
-{
-    static const EVP_MD *md = NULL;
-    EVP_MD_CTX *ctx;
-
-    ctx = EVP_MD_CTX_new();
-
-    if (!md) {
-        OpenSSL_add_all_digests();
-        md = EVP_get_digestbyname("sha1");
-    }
-
-    EVP_MD_CTX_init(ctx);
-    EVP_DigestInit_ex(ctx, md, NULL);
-
-    EVP_DigestUpdate(ctx, input, input_len);
-    EVP_DigestFinal_ex(ctx, output, NULL);
-
-    EVP_MD_CTX_free(ctx);
-}
-
-#endif
 
 static inline void
 _cws_debug(const char *prefix, const void *buffer, size_t len)

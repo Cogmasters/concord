@@ -1,0 +1,6 @@
+# Ignore all
+*
+# But these
+!.gitignore
+!*.c
+!Makefile
