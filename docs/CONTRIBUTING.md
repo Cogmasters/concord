@@ -108,7 +108,7 @@ this fork from your git command line
 ```
 git clone https://github.com/cee-studio/orca.git
 cd orca
-cp examples/bot.config .cee-contributor
+cp config.json .cee-contributor
 ```
 It is important that you clone from this repo, NOT from your fork.
 
@@ -122,9 +122,9 @@ It is important that you clone from this repo, NOT from your fork.
 1. run
 ```
 cd orca
-make all test
+make test
 ```
-Copy test-git2.exe to your bin folder and make that folder searchable in PATH
+Copy test-git2 to your bin folder and make that folder searchable in PATH
 
 
 #### Usage
@@ -136,5 +136,5 @@ Run the following command that will automatically do the following
 
 Assume your changes are in the orca folder, you can run the following commands:
 ```
-./test/test-git2.exe -m "you commit comments"  files
+./test/test-git2 -m "you commit comments"  files
 ```

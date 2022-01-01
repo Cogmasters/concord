@@ -10,9 +10,6 @@ An explanation of important folders for developers who would like to contribute 
 | mujs/                | An embedded JavaScript engine. Unused at the moment.                 |
 | scripts/             | Cee-Studio specific scripts                                          |
 | specs/               | Data used to generate types and structures used by Orca              |
-| specs/discord/       | Information to generate Discord-specific types and structures        |
-| specs/reddit/        | Information to generate Reddit-specific types and structures         |
-| specs/github/        | Information to generate github-specific types and structures         |
 | specs-code/          | Where files generated from ``specs/`` are dumped to                  |
 | test/                | Tests to make sure Orca is running smoothly are put here             |
 

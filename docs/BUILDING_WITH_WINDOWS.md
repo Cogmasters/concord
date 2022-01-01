@@ -1,3 +1,5 @@
+# THIS GUIDE IS DEPRECATED
+
 # Building orca with Windows
 
 ### Install dependencies:

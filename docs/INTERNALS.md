@@ -79,18 +79,13 @@ Once this is added into ``github.h``, we can begin writing the function code tha
 make it work underneath. Here is a skeleton of the function:
 
 ```c
-ORCAcode github_get_repository_topics(struct github *client, char* owner, char* repository) {
-    log_info("===github-get-repository-topics===");
-
-    if (!owner) {
-        log_error("missing 'owner'");
-        return ORCA_MISSING_PARAMETER;
-    }
-    
-    if (!repository) {
-        log_error("missing 'repository'");
-        return ORCA_MISSING_PARAMETER;
-    }
+ORCAcode
+github_get_repository_topics(struct github *client,
+                             char *owner,
+                             char *repository)
+{
+    ORCA_EXPECT(client, owner != NULL, ORCA_BAD_PARAMETER);
+    ORCA_EXPECT(client, repository != NULL, ORCA_BAD_PARAMETER);
 
     return ORCA_OK;
 }
@@ -207,13 +202,8 @@ are after are what will be filled in this URL.
 So if we wanted to format our URL, it would look like:
 
 ```c
-github_adapter_run(client,
-                   handler,
-                   buffer,
-                   HTTP_GET,
-                   "api.github.com/repos/%s/%s/topics",
-                   owner,
-                   repository):
+github_adapter_run(&client->adapter, handler, buffer, HTTP_GET,
+                   "api.github.com/repos/%s/%s/topics", owner, repository);
 ```
 
 As you can see, we provide the values for each specifier in the URL using our function's parameters. You may also
