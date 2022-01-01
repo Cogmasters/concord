@@ -82,13 +82,13 @@ be used by the Makefile for fetching [cee-utils](https://github.com/cee-studio/c
 #### Ubuntu and Debian
 
 ```bash
-$ sudo apt-get install -y build-essential wget libcurl4-openssl-dev libssl-dev
+$ sudo apt install -y build-essential libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```bash
-$ sudo xbps-install -S wget libcurl-devel
+$ sudo xbps-install -S libcurl-devel
 ```
 ### Setting up your environment
 
