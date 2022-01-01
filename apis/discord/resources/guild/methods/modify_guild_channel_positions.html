@@ -1305,7 +1305,7 @@
 <h1>Modify Guild Channel Positions<a class="headerlink" href="#modify-guild-channel-positions" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions">
-<span class="target" id="discord_8h_1ac3bb1135c27c71608b795cc8692c0b38"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild_channel_positions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_modify_guild_channel_positions_params" title="discord_modify_guild_channel_positions_params"><span class="n"><span class="pre">discord_modify_guild_channel_positions_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild_channel_positions" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1ac3bb1135c27c71608b795cc8692c0b38"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild_channel_positions</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_modify_guild_channel_positions_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_modify_guild_channel_positions" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Modify guild channel positions. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1325,70 +1325,10 @@
 </dl>
 </dd></dl>
 
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions_params">
-<span class="target" id="structdiscord__modify__guild__channel__positions__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_modify_guild_channel_positions_params</span></span></span><a class="headerlink" href="#c.discord_modify_guild_channel_positions_params" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenstruct: Cannot find class “discord_modify_guild_channel_positions_params” in doxygen xml output for project “Orca” from directory: ../xml</p>
 </div>
-<ul class="simple">
-<li><p>Initializer:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_init(struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">*)</span></code></p></li>
-</ul>
-</li>
-<li><p>Cleanup:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_cleanup(struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_list_free(struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Decoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">***)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Encoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_modify_guild_channel_positions_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_modify_guild_channel_positions_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-</ul>
-</div>
-</p>
- </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions_params.id">
-<span class="target" id="structdiscord__modify__guild__channel__positions__params_1ac279ad1142e251a19bd067f1d3edb2f4"></span><a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_channel_positions_params.id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>channel id </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions_params.position">
-<span class="target" id="structdiscord__modify__guild__channel__positions__params_1ae25a51420d5602952e8b08f5207f1471"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><a class="headerlink" href="#c.discord_modify_guild_channel_positions_params.position" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>sorting position of the channel </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions_params.lock_permissions">
-<span class="target" id="structdiscord__modify__guild__channel__positions__params_1ac78dd9481cc3c4bc13ec7f0f27f0c81e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lock_permissions</span></span></span><a class="headerlink" href="#c.discord_modify_guild_channel_positions_params.lock_permissions" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>syncs the permission overwrites with the new parent, if moving to a new category </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_modify_guild_channel_positions_params.parent_id">
-<span class="target" id="structdiscord__modify__guild__channel__positions__params_1adc3be7e5890b2939ecbc0811c387a143"></span><a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parent_id</span></span></span><a class="headerlink" href="#c.discord_modify_guild_channel_positions_params.parent_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>the new parent ID for the channel that is moved </p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
 </section>
 
 

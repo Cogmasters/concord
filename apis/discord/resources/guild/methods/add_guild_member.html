@@ -1305,7 +1305,7 @@
 <h1>Add Guild Member<a class="headerlink" href="#add-guild-member" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_add_guild_member">
-<span class="target" id="discord_8h_1a086be9d3c15c07369af09ad723d4ff38"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_add_guild_member</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_add_guild_member_params" title="discord_add_guild_member_params"><span class="n"><span class="pre">discord_add_guild_member_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_add_guild_member" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a086be9d3c15c07369af09ad723d4ff38"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_add_guild_member</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_add_guild_member_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_guild_member</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_add_guild_member" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Adds a user to the guild. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1326,7 +1326,7 @@
 <li><p><strong>guild_id</strong> – guild to add the member to </p></li>
 <li><p><strong>user_id</strong> – the user to be added </p></li>
 <li><p><strong>request</strong> – parameters </p></li>
-<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../datatypes.html#structdiscord__guild__member"><span class="std std-ref">discord_guild_member</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_guild_member_cleanup()</span></code> </p></li>
+<li><p><strong>ret</strong> – if successful, a discord_guild_member that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_guild_member_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1335,71 +1335,10 @@
 </dl>
 </dd></dl>
 
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_add_guild_member_params">
-<span class="target" id="structdiscord__add__guild__member__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_add_guild_member_params</span></span></span><a class="headerlink" href="#c.discord_add_guild_member_params" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenstruct: Cannot find class “discord_add_guild_member_params” in doxygen xml output for project “Orca” from directory: ../xml</p>
 </div>
-<ul class="simple">
-<li><p>Initializer:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_init(struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">*)</span></code></p></li>
-</ul>
-</li>
-<li><p>Cleanup:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_cleanup(struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_list_free(struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Decoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">***)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Encoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_add_guild_member_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_add_guild_member_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-</ul>
-</div>
-</p>
- </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_add_guild_member_params.access_token">
-<span class="target" id="structdiscord__add__guild__member__params_1ac330b8b8c252ff0c12120e1e2abc0233"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">access_token</span></span></span><a class="headerlink" href="#c.discord_add_guild_member_params.access_token" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_add_guild_member_params.nick">
-<span class="target" id="structdiscord__add__guild__member__params_1abd0aa3293dba616a473ec6e0af700460"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">nick</span></span></span><a class="headerlink" href="#c.discord_add_guild_member_params.nick" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_add_guild_member_params.roles">
-<span class="target" id="structdiscord__add__guild__member__params_1a70e6c84847ea62e3df8cc2c6d794a33a"></span><span class="n"><span class="pre">ja_u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_add_guild_member_params.roles" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_add_guild_member_params.mute">
-<span class="target" id="structdiscord__add__guild__member__params_1a417d439c1920a58b6b9b349fc91eacc7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mute</span></span></span><a class="headerlink" href="#c.discord_add_guild_member_params.mute" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_add_guild_member_params.deaf">
-<span class="target" id="structdiscord__add__guild__member__params_1a5b48d0eb4aacc1143b93dda336ce3ff6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deaf</span></span></span><a class="headerlink" href="#c.discord_add_guild_member_params.deaf" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-</div>
-</dd></dl>
-
 </section>
 
 

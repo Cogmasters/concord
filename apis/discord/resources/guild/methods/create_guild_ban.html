@@ -1305,7 +1305,7 @@
 <h1>Create Guild Ban<a class="headerlink" href="#create-guild-ban" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_guild_ban">
-<span class="target" id="discord_8h_1a81894ed74caec00466ac5b23d6835aef"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild_ban</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_guild_ban_params" title="discord_create_guild_ban_params"><span class="n"><span class="pre">discord_create_guild_ban_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_guild_ban" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a81894ed74caec00466ac5b23d6835aef"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild_ban</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">guild_id</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">user_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_create_guild_ban_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_guild_ban" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Bans user from a given guild. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1330,58 +1330,10 @@
 </dl>
 </dd></dl>
 
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_create_guild_ban_params">
-<span class="target" id="structdiscord__create__guild__ban__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild_ban_params</span></span></span><a class="headerlink" href="#c.discord_create_guild_ban_params" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenstruct: Cannot find class “discord_create_guild_ban_params” in doxygen xml output for project “Orca” from directory: ../xml</p>
 </div>
-<ul class="simple">
-<li><p>Initializer:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_init(struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">*)</span></code></p></li>
-</ul>
-</li>
-<li><p>Cleanup:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_cleanup(struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_list_free(struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Decoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">***)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Encoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_ban_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_ban_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-</ul>
-</div>
-</p>
- </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_ban_params.delete_message_days">
-<span class="target" id="structdiscord__create__guild__ban__params_1ae92f47cb482b53aa7e7dc20a040c79f9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">delete_message_days</span></span></span><a class="headerlink" href="#c.discord_create_guild_ban_params.delete_message_days" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>number of days to delete messages for(0-7) </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_ban_params.reason">
-<span class="target" id="structdiscord__create__guild__ban__params_1a5f9b5562488f2748842b3ed9113d065f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><a class="headerlink" href="#c.discord_create_guild_ban_params.reason" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>reason for the ban (deprecated) </p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
 </section>
 
 

@@ -1305,7 +1305,7 @@
 <h1>Create Channel Invite<a class="headerlink" href="#create-channel-invite" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_channel_invite">
-<span class="target" id="discord_8h_1a2ea578c4eb1a16866f2b3e0f0998d8ef"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_channel_invite</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_channel_invite_params" title="discord_create_channel_invite_params"><span class="n"><span class="pre">discord_create_channel_invite_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../invite/datatypes.html#c.discord_invite" title="discord_invite"><span class="n"><span class="pre">discord_invite</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_channel_invite" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a2ea578c4eb1a16866f2b3e0f0998d8ef"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_channel_invite</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">channel_id</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_create_channel_invite_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_invite</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_channel_invite" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a new invite for the channel. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1313,7 +1313,7 @@
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/methods/discord_init.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>channel_id</strong> – the channel that the message belongs to </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../../invite/datatypes.html#structdiscord__invite"><span class="std std-ref">discord_invite</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_invite_cleanup()</span></code> </p></li>
+<li><p><strong>ret</strong> – if successful, a discord_invite that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_invite_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1322,81 +1322,10 @@
 </dl>
 </dd></dl>
 
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params">
-<span class="target" id="structdiscord__create__channel__invite__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_channel_invite_params</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenstruct: Cannot find class “discord_create_channel_invite_params” in doxygen xml output for project “Orca” from directory: ../xml</p>
 </div>
-<ul class="simple">
-<li><p>Initializer:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_init(struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">*)</span></code></p></li>
-</ul>
-</li>
-<li><p>Cleanup:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_cleanup(struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_list_free(struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Decoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">***)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Encoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_channel_invite_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_channel_invite_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-</ul>
-</div>
-</p>
- </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.max_age">
-<span class="target" id="structdiscord__create__channel__invite__params_1a0dd219177f897aa5981ba5d025126f03"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_age</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.max_age" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.max_uses">
-<span class="target" id="structdiscord__create__channel__invite__params_1a2b5f7aa5df0829261c91f50a7e5a5b3b"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_uses</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.max_uses" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.temporary">
-<span class="target" id="structdiscord__create__channel__invite__params_1aab5af201f65263c3018e0d9356cb7245"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">temporary</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.temporary" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.unique">
-<span class="target" id="structdiscord__create__channel__invite__params_1adedd2d72f5f356d9a5b5db0e97700cc7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unique</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.unique" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.target_type">
-<span class="target" id="structdiscord__create__channel__invite__params_1a7fb356491403fbc54f28692aab5eb247"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target_type</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.target_type" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.target_user_id">
-<span class="target" id="structdiscord__create__channel__invite__params_1a744af69c21a09da0b672a6dcbbdbfdfe"></span><a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target_user_id</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.target_user_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_channel_invite_params.target_application_id">
-<span class="target" id="structdiscord__create__channel__invite__params_1a5cb1e22f0a289b0885d2377657da7f30"></span><a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target_application_id</span></span></span><a class="headerlink" href="#c.discord_create_channel_invite_params.target_application_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-</div>
-</dd></dl>
-
 </section>
 
 

@@ -1305,7 +1305,7 @@
 <h1>Create Guild<a class="headerlink" href="#create-guild" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_guild">
-<span class="target" id="discord_8h_1a71bf85af3f71fd657af704d45067c15f"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_guild_params" title="discord_create_guild_params"><span class="n"><span class="pre">discord_create_guild_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../datatypes.html#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_guild" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a71bf85af3f71fd657af704d45067c15f"></span><a class="reference internal" href="../../../../../core/common/index.html#c.ORCAcode" title="ORCAcode"><span class="n"><span class="pre">ORCAcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_create_guild_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_guild</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_guild" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a new guild. </p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1316,7 +1316,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>client</strong> – the client created with <a class="reference internal" href="../../../client/methods/discord_init.html#discord_8h_1a445cca7dc5a28113760c7e55759845c7"><span class="std std-ref">discord_init()</span></a> </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../datatypes.html#structdiscord__guild"><span class="std std-ref">discord_guild</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_guild_cleanup()</span></code> </p></li>
+<li><p><strong>ret</strong> – if successful, a discord_guild that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_guild_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1325,112 +1325,10 @@
 </dl>
 </dd></dl>
 
-<dl class="c struct">
-<dt class="sig sig-object c" id="c.discord_create_guild_params">
-<span class="target" id="structdiscord__create__guild__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_guild_params</span></span></span><a class="headerlink" href="#c.discord_create_guild_params" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenstruct: Cannot find class “discord_create_guild_params” in doxygen xml output for project “Orca” from directory: ../xml</p>
 </div>
-<ul class="simple">
-<li><p>Initializer:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_init(struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">*)</span></code></p></li>
-</ul>
-</li>
-<li><p>Cleanup:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_cleanup(struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_list_free(struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Decoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">***)</span></code></p></li>
-</ul>
-</li>
-<li><p>JSON Encoder:</p>
-<ul>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">*)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_guild_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_guild_params</span> <span class="pre">**)</span></code></p></li>
-</ul>
-</li>
-</ul>
-</div>
-</p>
- </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.name">
-<span class="target" id="structdiscord__create__guild__params_1a88a2cb5a7d06d0900376f9cbfde812a5"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.name" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>name of the guild (2-100) characters </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.region">
-<span class="target" id="structdiscord__create__guild__params_1a60a9478f7768229479354fd3556285d5"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">region</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.region" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>voice region id </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.icon">
-<span class="target" id="structdiscord__create__guild__params_1a26bf518dbbc6a2bbd45528c3c15dd63e"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">icon</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.icon" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>base64 128x1128 image for the guild icon </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.verification_level">
-<span class="target" id="structdiscord__create__guild__params_1acd1defa525096b8972c0cbcba3ddf77d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">verification_level</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.verification_level" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>verification level </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.default_message_notifications">
-<span class="target" id="structdiscord__create__guild__params_1aba0ebffdb38c07927029edd077d4b493"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_message_notifications</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.default_message_notifications" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>default message notification level </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.explicit_content_filter">
-<span class="target" id="structdiscord__create__guild__params_1a3a198507528d015e98912b38b7363743"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">explicit_content_filter</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.explicit_content_filter" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>explicit content filter level </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.roles">
-<span class="target" id="structdiscord__create__guild__params_1ae41ff67a231227644e4f81da1b8cac2f"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../permissions/datatypes.html#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.roles" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>new guild roles </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.channels">
-<span class="target" id="structdiscord__create__guild__params_1a9961a2dd1b3a565f7a6d3da49d58c154"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../channel/datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channels</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.channels" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>array of partial channel objects </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.afk_channel_id">
-<span class="target" id="structdiscord__create__guild__params_1acd01af6c9bc80fc5e8d03f7afc42d141"></span><a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk_channel_id</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.afk_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>id for afk channel </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.afk_timeout">
-<span class="target" id="structdiscord__create__guild__params_1a089b2811f71547cc2610f2d08f0c86fb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">afk_timeout</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.afk_timeout" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>afk timeout in seconds </p>
-</dd></dl>
-
-<dl class="c var">
-<dt class="sig sig-object c" id="c.discord_create_guild_params.system_channel_id">
-<span class="target" id="structdiscord__create__guild__params_1ae2f899d36016b27d5727c01d7dc6e6e8"></span><a class="reference internal" href="../../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">system_channel_id</span></span></span><a class="headerlink" href="#c.discord_create_guild_params.system_channel_id" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>the id of the channel where guild notices such as welcome messages and boost events are posted </p>
-</dd></dl>
-
-</div>
-</dd></dl>
-
 </section>
 
 
