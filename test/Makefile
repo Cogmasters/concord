@@ -15,7 +15,15 @@ EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)
 CFLAGS  += -I$(TOP) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
            -I$(COMMON_DIR)/third-party                \
            -O0 -g -pthread -Wall
-LDFLAGS += -L$(TOP)/lib -lcurl
+LDFLAGS += -L$(TOP)/lib
+
+ifneq (,$(findstring $(CC),stensal-c sfc)) # ifeq stensal-c OR sfc
+	__DEST  := $(dir $(shell which $(CC)))
+	PREFIX  := $(__DEST:%/stensal/bin/=%/usr)
+	LDFLAGS += -lcurl-bearssl -lbearssl -static
+else
+	LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl
+endif
 
 all: $(EXES)
 
