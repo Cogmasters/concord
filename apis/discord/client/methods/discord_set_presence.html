@@ -1334,7 +1334,9 @@
 
 <section id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">discord_presence_status</span> <span class="n">status</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">discord_init</span><span class="p">(</span><span class="n">BOT_TOKEN</span><span class="p">);</span>
+
+<span class="k">struct</span> <span class="n">discord_presence_status</span> <span class="n">status</span> <span class="o">=</span> <span class="p">{</span>
   <span class="p">.</span><span class="n">activities</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">discord_activity</span> <span class="o">*</span><span class="p">[]){</span>
     <span class="o">&amp;</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord_activity</span><span class="p">){</span>
       <span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Reading the docs...&quot;</span><span class="p">,</span>
@@ -1346,7 +1348,6 @@
   <span class="p">.</span><span class="n">since</span> <span class="o">=</span> <span class="n">discord_timestamp</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
 <span class="p">};</span>
 
-<span class="k">struct</span> <span class="n">discord</span> <span class="o">*</span><span class="n">client</span> <span class="o">=</span> <span class="n">discord_init</span><span class="p">(</span><span class="n">BOT_TOKEN</span><span class="p">);</span>
 <span class="n">discord_set_presence</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">);</span>
 <span class="n">discord_run</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
 <span class="n">discord_cleanup</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>

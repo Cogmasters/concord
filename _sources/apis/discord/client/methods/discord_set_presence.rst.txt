@@ -18,6 +18,8 @@ Example
 
 .. code:: c
 
+    struct discord *client = discord_init(BOT_TOKEN);
+    
     struct discord_presence_status status = {
       .activities = (struct discord_activity *[]){
         &(struct discord_activity){
@@ -29,8 +31,7 @@ Example
       .status = "idle",
       .since = discord_timestamp(client)
     };
-
-    struct discord *client = discord_init(BOT_TOKEN);
+    
     discord_set_presence(client, &status);
     discord_run(client);
     discord_cleanup(client);
