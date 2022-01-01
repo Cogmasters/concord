@@ -5,7 +5,6 @@ MAIN := specs-gen
 # https://github.com/cee-studio/cee-utils
 CEEUTILS_DIR ?= ../cee-utils
 
-OBJDIR := obj
 WDIR   := specs-code
 
 JSON := $(sort $(wildcard */*.json))
@@ -17,13 +16,6 @@ DEPS := $(CEEUTILS_DIR)/cee-utils.c   \
         $(CEEUTILS_DIR)/ntl.c         \
         $(CEEUTILS_DIR)/json-string.c \
         $(CEEUTILS_DIR)/log.c
-OBJS := $(JSON:%.json=$(OBJDIR)/%.o)
-
-# needed for 'make build'
-# https://github.com/cee-studio/orca/common (common.h and common.c)
-COMMON_DIR ?= ../common
-CFLAGS  ?= -I. -I..
-LDFLAGS ?= -L../lib
 
 # default CFLAGS
 CFLAGS  += -O0 -g -Wall -Wno-unused-function -I$(CEEUTILS_DIR)
@@ -70,36 +62,27 @@ define generate_header
 	  $(VAR)$(\n))
 endef
 
-$(OBJDIR)/%.o : $(WDIR)/%.c
-	$(CC) -I$(COMMON_DIR) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
-
 all: $(CEEUTILS_DIR) $(WDIR)
 
-build: all
-	$(MAKE) $(OBJS)
-
-$(WDIR): | $(MAIN)
+$(WDIR): $(APIS) | $(MAIN)
 	mkdir -p $(addprefix $(WDIR)/, $(APIS))
 	$(generate_source)
 	$(generate_header)
+	@ touch $(WDIR) # Make sure WDIR has a more recent timestamp
+
+$(APIS): ;
 
 $(MAIN): $(MAIN).c $(DEPS)
 	$(CC) $(CFLAGS) -o $@ $^ -lm
-
-$(OBJS): | $(OBJDIR)
-
-$(OBJDIR):
-	mkdir -p $(addprefix $(OBJDIR)/, $(APIS))
 
 echo:
 	@ echo -e 'JSON: $(JSON)\n'
 	@ echo -e 'APIS: $(APIS)\n'
 	@ echo -e 'MAIN: $(MAIN)\n'
-	@ echo -e 'OBJS: $(OBJS)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'LDFLAGS: $(LDFLAGS)\n'
 
 clean:
-	rm -rf $(WDIR) $(OBJDIR) $(MAIN)
+	rm -rf $(WDIR) $(MAIN)
 
-.PHONY : all build echo clean
+.PHONY : all echo clean
