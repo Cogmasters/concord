@@ -262,13 +262,13 @@ discord_run(struct discord *client)
 void
 discord_shutdown(struct discord *client)
 {
-  return discord_gateway_shutdown(&client->gw);
+  discord_gateway_shutdown(&client->gw);
 }
 
 void
 discord_reconnect(struct discord *client, bool resume)
 {
-  return discord_gateway_reconnect(&client->gw, resume);
+  discord_gateway_reconnect(&client->gw, resume);
 }
 
 void
