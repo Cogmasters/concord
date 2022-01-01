@@ -51,9 +51,6 @@ size_t github_topic_to_json(char *json, size_t len, struct github_topic *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void github_topic_cleanup_v(void *p) {
   github_topic_cleanup((struct github_topic *)p);
 }
@@ -97,7 +94,7 @@ void github_topic_init(struct github_topic *p) {
 
 }
 void github_topic_list_free(struct github_topic **p) {
-  ntl_free((void**)p, (vfvp)github_topic_cleanup);
+  ntl_free((void**)p, (void(*)(void*))github_topic_cleanup);
 }
 
 void github_topic_list_from_json(char *str, size_t len, struct github_topic ***p)
@@ -106,13 +103,13 @@ void github_topic_list_from_json(char *str, size_t len, struct github_topic ***p
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct github_topic);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)github_topic_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))github_topic_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t github_topic_list_to_json(char *str, size_t len, struct github_topic **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)github_topic_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))github_topic_to_json);
 }
 

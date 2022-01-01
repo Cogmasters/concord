@@ -221,9 +221,6 @@ size_t discord_create_guild_params_to_json(char *json, size_t len, struct discor
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_params_cleanup_v(void *p) {
   discord_create_guild_params_cleanup((struct discord_create_guild_params *)p);
 }
@@ -268,13 +265,13 @@ void discord_create_guild_params_cleanup(struct discord_create_guild_params *d) 
     free(d->icon);
   /* discord/guild.params.json:15:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  /* p->verification_level is a scalar */
+  (void)d->verification_level;
   /* discord/guild.params.json:16:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  /* p->default_message_notifications is a scalar */
+  (void)d->default_message_notifications;
   /* discord/guild.params.json:17:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  /* p->explicit_content_filter is a scalar */
+  (void)d->explicit_content_filter;
   /* discord/guild.params.json:18:20
      '{ "name": "roles", "type":{ "base":"struct discord_role", "dec":"ntl" }, "option":true, "inject_if_not":null, "comment":"new guild roles" }' */
   if (d->roles)
@@ -285,13 +282,13 @@ void discord_create_guild_params_cleanup(struct discord_create_guild_params *d) 
     discord_channel_list_free(d->channels);
   /* discord/guild.params.json:20:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  /* p->afk_channel_id is a scalar */
+  (void)d->afk_channel_id;
   /* discord/guild.params.json:21:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  /* p->afk_timeout is a scalar */
+  (void)d->afk_timeout;
   /* discord/guild.params.json:22:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  /* p->system_channel_id is a scalar */
+  (void)d->system_channel_id;
 }
 
 void discord_create_guild_params_init(struct discord_create_guild_params *p) {
@@ -331,7 +328,7 @@ void discord_create_guild_params_init(struct discord_create_guild_params *p) {
 
 }
 void discord_create_guild_params_list_free(struct discord_create_guild_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_params_cleanup);
 }
 
 void discord_create_guild_params_list_from_json(char *str, size_t len, struct discord_create_guild_params ***p)
@@ -340,14 +337,14 @@ void discord_create_guild_params_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_params_list_to_json(char *str, size_t len, struct discord_create_guild_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_params_to_json);
 }
 
 
@@ -692,9 +689,6 @@ size_t discord_modify_guild_params_to_json(char *json, size_t len, struct discor
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_params_cleanup_v(void *p) {
   discord_modify_guild_params_cleanup((struct discord_modify_guild_params *)p);
 }
@@ -735,26 +729,26 @@ void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *d) 
     free(d->region);
   /* discord/guild.params.json:33:20
      '{ "name": "verification_level", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"verification level"}' */
-  /* p->verification_level is a scalar */
+  (void)d->verification_level;
   /* discord/guild.params.json:34:20
      '{ "name": "default_message_notifications", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"default message notification level"}' */
-  /* p->default_message_notifications is a scalar */
+  (void)d->default_message_notifications;
   /* discord/guild.params.json:35:20
      '{ "name": "explicit_content_filter", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"explicit content filter level"}' */
-  /* p->explicit_content_filter is a scalar */
+  (void)d->explicit_content_filter;
   /* discord/guild.params.json:36:20
      '{ "name": "afk_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"id for afk channel"}' */
-  /* p->afk_channel_id is a scalar */
+  (void)d->afk_channel_id;
   /* discord/guild.params.json:37:20
      '{ "name": "afk_timeout", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"afk timeout in seconds"}' */
-  /* p->afk_timeout is a scalar */
+  (void)d->afk_timeout;
   /* discord/guild.params.json:38:20
      '{ "name": "icon", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 128x1128 image for the guild icon"}' */
   if (d->icon)
     free(d->icon);
   /* discord/guild.params.json:39:20
      '{ "name": "owner_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"user id to transfer guild ownership to (must be owner)"}' */
-  /* p->owner_id is a scalar */
+  (void)d->owner_id;
   /* discord/guild.params.json:40:20
      '{ "name": "splash", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"base64 16:9 png/jpeg image for the guild splash (when the server has the INVITE_SPLASH feature"}' */
   if (d->splash)
@@ -769,16 +763,16 @@ void discord_modify_guild_params_cleanup(struct discord_modify_guild_params *d) 
     free(d->banner);
   /* discord/guild.params.json:43:20
      '{ "name": "system_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"	the id of the channel where guild notices such as welcome messages and boost events are posted"}' */
-  /* p->system_channel_id is a scalar */
+  (void)d->system_channel_id;
   /* discord/guild.params.json:44:20
      '{ "name": "system_channel_flags", "type":{ "base":"int", "int_alias":"enum discord_system_channel_flags" }, "option":true, "inject_if_not":0, "comment":"system channel flags"}' */
-  /* p->system_channel_flags is a scalar */
+  (void)d->system_channel_flags;
   /* discord/guild.params.json:45:20
      '{ "name": "rules_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where Community guilds display rules and/or guidelines"}' */
-  /* p->rules_channel_id is a scalar */
+  (void)d->rules_channel_id;
   /* discord/guild.params.json:46:20
      '{ "name": "public_updates_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the id of the channel where admins and moderators of Community guilds receive notices from Discord"}' */
-  /* p->public_updates_channel_id is a scalar */
+  (void)d->public_updates_channel_id;
   /* discord/guild.params.json:47:20
      '{ "name": "preferred_locale", "type":{ "base":"char", "dec":"*" }, "comment":"the preferred locale of a Community guild used in server discovery and notices from Discord; defaults to \"en-US\""}' */
   if (d->preferred_locale)
@@ -854,7 +848,7 @@ void discord_modify_guild_params_init(struct discord_modify_guild_params *p) {
 
 }
 void discord_modify_guild_params_list_free(struct discord_modify_guild_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_params_cleanup);
 }
 
 void discord_modify_guild_params_list_from_json(char *str, size_t len, struct discord_modify_guild_params ***p)
@@ -863,14 +857,14 @@ void discord_modify_guild_params_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_params_list_to_json(char *str, size_t len, struct discord_modify_guild_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_params_to_json);
 }
 
 
@@ -1061,9 +1055,6 @@ size_t discord_create_guild_channel_params_to_json(char *json, size_t len, struc
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_channel_params_cleanup_v(void *p) {
   discord_create_guild_channel_params_cleanup((struct discord_create_guild_channel_params *)p);
 }
@@ -1100,33 +1091,33 @@ void discord_create_guild_channel_params_cleanup(struct discord_create_guild_cha
     free(d->name);
   /* discord/guild.params.json:59:20
      '{ "name": "type", "type":{ "base":"int" }}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/guild.params.json:60:20
      '{ "name": "topic", "type":{ "base":"char", "dec":"*" }}' */
   if (d->topic)
     free(d->topic);
   /* discord/guild.params.json:61:20
      '{ "name": "bitrate", "type":{ "base":"int" }, "inject_if_not":0}' */
-  /* p->bitrate is a scalar */
+  (void)d->bitrate;
   /* discord/guild.params.json:62:20
      '{ "name": "user_limit", "type":{ "base":"int" }, "inject_if_not":0}' */
-  /* p->user_limit is a scalar */
+  (void)d->user_limit;
   /* discord/guild.params.json:63:20
      '{ "name": "rate_limit_per_user", "type":{ "base":"int" }, "inject_if_not":0}' */
-  /* p->rate_limit_per_user is a scalar */
+  (void)d->rate_limit_per_user;
   /* discord/guild.params.json:64:20
      '{ "name": "position", "type":{ "base":"int" } }' */
-  /* p->position is a scalar */
+  (void)d->position;
   /* discord/guild.params.json:65:20
      '{ "name": "permission_overwrites", "type":{ "base":"struct discord_overwrite", "dec":"ntl" }, "inject_if_not":null}' */
   if (d->permission_overwrites)
     discord_overwrite_list_free(d->permission_overwrites);
   /* discord/guild.params.json:66:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
-  /* p->parent_id is a scalar */
+  (void)d->parent_id;
   /* discord/guild.params.json:67:20
      '{ "name": "nsfw", "type":{ "base":"bool" }}' */
-  /* p->nsfw is a scalar */
+  (void)d->nsfw;
 }
 
 void discord_create_guild_channel_params_init(struct discord_create_guild_channel_params *p) {
@@ -1163,7 +1154,7 @@ void discord_create_guild_channel_params_init(struct discord_create_guild_channe
 
 }
 void discord_create_guild_channel_params_list_free(struct discord_create_guild_channel_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_channel_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_channel_params_cleanup);
 }
 
 void discord_create_guild_channel_params_list_from_json(char *str, size_t len, struct discord_create_guild_channel_params ***p)
@@ -1172,14 +1163,14 @@ void discord_create_guild_channel_params_list_from_json(char *str, size_t len, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_channel_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_channel_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_channel_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_channel_params_list_to_json(char *str, size_t len, struct discord_create_guild_channel_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_channel_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_channel_params_to_json);
 }
 
 
@@ -1273,9 +1264,6 @@ size_t discord_modify_guild_channel_positions_params_to_json(char *json, size_t 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_channel_positions_params_cleanup_v(void *p) {
   discord_modify_guild_channel_positions_params_cleanup((struct discord_modify_guild_channel_positions_params *)p);
 }
@@ -1308,16 +1296,16 @@ size_t discord_modify_guild_channel_positions_params_list_to_json_v(char *str, s
 void discord_modify_guild_channel_positions_params_cleanup(struct discord_modify_guild_channel_positions_params *d) {
   /* discord/guild.params.json:76:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/guild.params.json:77:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the channel"}' */
-  /* p->position is a scalar */
+  (void)d->position;
   /* discord/guild.params.json:78:20
      '{ "name": "lock_permissions", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"syncs the permission overwrites with the new parent, if moving to a new category"}' */
-  /* p->lock_permissions is a scalar */
+  (void)d->lock_permissions;
   /* discord/guild.params.json:79:20
      '{ "name": "parent_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"the new parent ID for the channel that is moved"}' */
-  /* p->parent_id is a scalar */
+  (void)d->parent_id;
 }
 
 void discord_modify_guild_channel_positions_params_init(struct discord_modify_guild_channel_positions_params *p) {
@@ -1336,7 +1324,7 @@ void discord_modify_guild_channel_positions_params_init(struct discord_modify_gu
 
 }
 void discord_modify_guild_channel_positions_params_list_free(struct discord_modify_guild_channel_positions_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_channel_positions_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_channel_positions_params_cleanup);
 }
 
 void discord_modify_guild_channel_positions_params_list_from_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params ***p)
@@ -1345,14 +1333,14 @@ void discord_modify_guild_channel_positions_params_list_from_json(char *str, siz
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_channel_positions_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_channel_positions_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_channel_positions_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_channel_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_channel_positions_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_channel_positions_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_channel_positions_params_to_json);
 }
 
 
@@ -1412,9 +1400,6 @@ size_t discord_list_guild_members_params_to_json(char *json, size_t len, struct 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_list_guild_members_params_cleanup_v(void *p) {
   discord_list_guild_members_params_cleanup((struct discord_list_guild_members_params *)p);
 }
@@ -1447,10 +1432,10 @@ size_t discord_list_guild_members_params_list_to_json_v(char *str, size_t len, v
 void discord_list_guild_members_params_cleanup(struct discord_list_guild_members_params *d) {
   /* discord/guild.params.json:88:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 }' */
-  /* p->limit is a scalar */
+  (void)d->limit;
   /* discord/guild.params.json:89:20
      '{ "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0, "comment": "the highest user id in the previous page"}' */
-  /* p->after is a scalar */
+  (void)d->after;
 }
 
 void discord_list_guild_members_params_init(struct discord_list_guild_members_params *p) {
@@ -1463,7 +1448,7 @@ void discord_list_guild_members_params_init(struct discord_list_guild_members_pa
 
 }
 void discord_list_guild_members_params_list_free(struct discord_list_guild_members_params **p) {
-  ntl_free((void**)p, (vfvp)discord_list_guild_members_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_list_guild_members_params_cleanup);
 }
 
 void discord_list_guild_members_params_list_from_json(char *str, size_t len, struct discord_list_guild_members_params ***p)
@@ -1472,14 +1457,14 @@ void discord_list_guild_members_params_list_from_json(char *str, size_t len, str
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_list_guild_members_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_list_guild_members_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_list_guild_members_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_list_guild_members_params_list_to_json(char *str, size_t len, struct discord_list_guild_members_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_list_guild_members_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_list_guild_members_params_to_json);
 }
 
 
@@ -1539,9 +1524,6 @@ size_t discord_search_guild_members_params_to_json(char *json, size_t len, struc
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_search_guild_members_params_cleanup_v(void *p) {
   discord_search_guild_members_params_cleanup((struct discord_search_guild_members_params *)p);
 }
@@ -1578,7 +1560,7 @@ void discord_search_guild_members_params_cleanup(struct discord_search_guild_mem
     free(d->query);
   /* discord/guild.params.json:99:20
      '{ "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max number of members to return (1-1000)"}' */
-  /* p->limit is a scalar */
+  (void)d->limit;
 }
 
 void discord_search_guild_members_params_init(struct discord_search_guild_members_params *p) {
@@ -1591,7 +1573,7 @@ void discord_search_guild_members_params_init(struct discord_search_guild_member
 
 }
 void discord_search_guild_members_params_list_free(struct discord_search_guild_members_params **p) {
-  ntl_free((void**)p, (vfvp)discord_search_guild_members_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_search_guild_members_params_cleanup);
 }
 
 void discord_search_guild_members_params_list_from_json(char *str, size_t len, struct discord_search_guild_members_params ***p)
@@ -1600,14 +1582,14 @@ void discord_search_guild_members_params_list_from_json(char *str, size_t len, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_search_guild_members_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_search_guild_members_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_search_guild_members_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_search_guild_members_params_list_to_json(char *str, size_t len, struct discord_search_guild_members_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_search_guild_members_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_search_guild_members_params_to_json);
 }
 
 
@@ -1718,9 +1700,6 @@ size_t discord_add_guild_member_params_to_json(char *json, size_t len, struct di
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_add_guild_member_params_cleanup_v(void *p) {
   discord_add_guild_member_params_cleanup((struct discord_add_guild_member_params *)p);
 }
@@ -1765,10 +1744,10 @@ void discord_add_guild_member_params_cleanup(struct discord_add_guild_member_par
     ja_u64_list_free(d->roles);
   /* discord/guild.params.json:111:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->mute is a scalar */
+  (void)d->mute;
   /* discord/guild.params.json:112:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->deaf is a scalar */
+  (void)d->deaf;
 }
 
 void discord_add_guild_member_params_init(struct discord_add_guild_member_params *p) {
@@ -1790,7 +1769,7 @@ void discord_add_guild_member_params_init(struct discord_add_guild_member_params
 
 }
 void discord_add_guild_member_params_list_free(struct discord_add_guild_member_params **p) {
-  ntl_free((void**)p, (vfvp)discord_add_guild_member_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_add_guild_member_params_cleanup);
 }
 
 void discord_add_guild_member_params_list_from_json(char *str, size_t len, struct discord_add_guild_member_params ***p)
@@ -1799,14 +1778,14 @@ void discord_add_guild_member_params_list_from_json(char *str, size_t len, struc
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_add_guild_member_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_add_guild_member_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_add_guild_member_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_add_guild_member_params_list_to_json(char *str, size_t len, struct discord_add_guild_member_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_add_guild_member_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_add_guild_member_params_to_json);
 }
 
 
@@ -1916,9 +1895,6 @@ size_t discord_modify_guild_member_params_to_json(char *json, size_t len, struct
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_member_params_cleanup_v(void *p) {
   discord_modify_guild_member_params_cleanup((struct discord_modify_guild_member_params *)p);
 }
@@ -1959,13 +1935,13 @@ void discord_modify_guild_member_params_cleanup(struct discord_modify_guild_memb
     ja_u64_list_free(d->roles);
   /* discord/guild.params.json:123:20
      '{ "name": "mute", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->mute is a scalar */
+  (void)d->mute;
   /* discord/guild.params.json:124:20
      '{ "name": "deaf", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->deaf is a scalar */
+  (void)d->deaf;
   /* discord/guild.params.json:125:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "inject_if_not":0}' */
-  /* p->channel_id is a scalar */
+  (void)d->channel_id;
 }
 
 void discord_modify_guild_member_params_init(struct discord_modify_guild_member_params *p) {
@@ -1987,7 +1963,7 @@ void discord_modify_guild_member_params_init(struct discord_modify_guild_member_
 
 }
 void discord_modify_guild_member_params_list_free(struct discord_modify_guild_member_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_member_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_member_params_cleanup);
 }
 
 void discord_modify_guild_member_params_list_from_json(char *str, size_t len, struct discord_modify_guild_member_params ***p)
@@ -1996,14 +1972,14 @@ void discord_modify_guild_member_params_list_from_json(char *str, size_t len, st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_member_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_member_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_member_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_member_params_list_to_json(char *str, size_t len, struct discord_modify_guild_member_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_member_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_member_params_to_json);
 }
 
 
@@ -2045,9 +2021,6 @@ size_t discord_modify_current_member_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_current_member_params_cleanup_v(void *p) {
   discord_modify_current_member_params_cleanup((struct discord_modify_current_member_params *)p);
 }
@@ -2091,7 +2064,7 @@ void discord_modify_current_member_params_init(struct discord_modify_current_mem
 
 }
 void discord_modify_current_member_params_list_free(struct discord_modify_current_member_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_current_member_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_current_member_params_cleanup);
 }
 
 void discord_modify_current_member_params_list_from_json(char *str, size_t len, struct discord_modify_current_member_params ***p)
@@ -2100,14 +2073,14 @@ void discord_modify_current_member_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_current_member_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_current_member_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_current_member_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_current_member_params_list_to_json(char *str, size_t len, struct discord_modify_current_member_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_current_member_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_current_member_params_to_json);
 }
 
 
@@ -2149,9 +2122,6 @@ size_t discord_modify_current_user_nick_params_to_json(char *json, size_t len, s
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_current_user_nick_params_cleanup_v(void *p) {
   discord_modify_current_user_nick_params_cleanup((struct discord_modify_current_user_nick_params *)p);
 }
@@ -2195,7 +2165,7 @@ void discord_modify_current_user_nick_params_init(struct discord_modify_current_
 
 }
 void discord_modify_current_user_nick_params_list_free(struct discord_modify_current_user_nick_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_current_user_nick_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_current_user_nick_params_cleanup);
 }
 
 void discord_modify_current_user_nick_params_list_from_json(char *str, size_t len, struct discord_modify_current_user_nick_params ***p)
@@ -2204,14 +2174,14 @@ void discord_modify_current_user_nick_params_list_from_json(char *str, size_t le
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_current_user_nick_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_current_user_nick_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_current_user_nick_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_current_user_nick_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_nick_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_current_user_nick_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_current_user_nick_params_to_json);
 }
 
 
@@ -2270,9 +2240,6 @@ size_t discord_create_guild_ban_params_to_json(char *json, size_t len, struct di
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_ban_params_cleanup_v(void *p) {
   discord_create_guild_ban_params_cleanup((struct discord_create_guild_ban_params *)p);
 }
@@ -2305,7 +2272,7 @@ size_t discord_create_guild_ban_params_list_to_json_v(char *str, size_t len, voi
 void discord_create_guild_ban_params_cleanup(struct discord_create_guild_ban_params *d) {
   /* discord/guild.params.json:152:20
      '{ "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"}' */
-  /* p->delete_message_days is a scalar */
+  (void)d->delete_message_days;
   /* discord/guild.params.json:153:20
      '{ "name": "reason", "type":{ "base":"char", "dec":"*" }, "comment":"reason for the ban (deprecated)", "inject_if_not":null }' */
   if (d->reason)
@@ -2322,7 +2289,7 @@ void discord_create_guild_ban_params_init(struct discord_create_guild_ban_params
 
 }
 void discord_create_guild_ban_params_list_free(struct discord_create_guild_ban_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_ban_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_ban_params_cleanup);
 }
 
 void discord_create_guild_ban_params_list_from_json(char *str, size_t len, struct discord_create_guild_ban_params ***p)
@@ -2331,14 +2298,14 @@ void discord_create_guild_ban_params_list_from_json(char *str, size_t len, struc
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_ban_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_ban_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_ban_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_ban_params_list_to_json(char *str, size_t len, struct discord_create_guild_ban_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_ban_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_ban_params_to_json);
 }
 
 
@@ -2448,9 +2415,6 @@ size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct d
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_role_params_cleanup_v(void *p) {
   discord_create_guild_role_params_cleanup((struct discord_create_guild_role_params *)p);
 }
@@ -2487,16 +2451,16 @@ void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_p
     free(d->name);
   /* discord/guild.params.json:163:20
      '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
-  /* p->permissions is a scalar */
+  (void)d->permissions;
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
-  /* p->color is a scalar */
+  (void)d->color;
   /* discord/guild.params.json:165:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->hoist is a scalar */
+  (void)d->hoist;
   /* discord/guild.params.json:166:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->mentionable is a scalar */
+  (void)d->mentionable;
 }
 
 void discord_create_guild_role_params_init(struct discord_create_guild_role_params *p) {
@@ -2518,7 +2482,7 @@ void discord_create_guild_role_params_init(struct discord_create_guild_role_para
 
 }
 void discord_create_guild_role_params_list_free(struct discord_create_guild_role_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_role_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_role_params_cleanup);
 }
 
 void discord_create_guild_role_params_list_from_json(char *str, size_t len, struct discord_create_guild_role_params ***p)
@@ -2527,14 +2491,14 @@ void discord_create_guild_role_params_list_from_json(char *str, size_t len, stru
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_role_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_role_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_role_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_role_params_list_to_json(char *str, size_t len, struct discord_create_guild_role_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_role_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_role_params_to_json);
 }
 
 
@@ -2594,9 +2558,6 @@ size_t discord_modify_guild_role_positions_params_to_json(char *json, size_t len
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_role_positions_params_cleanup_v(void *p) {
   discord_modify_guild_role_positions_params_cleanup((struct discord_modify_guild_role_positions_params *)p);
 }
@@ -2629,10 +2590,10 @@ size_t discord_modify_guild_role_positions_params_list_to_json_v(char *str, size
 void discord_modify_guild_role_positions_params_cleanup(struct discord_modify_guild_role_positions_params *d) {
   /* discord/guild.params.json:175:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/guild.params.json:176:20
      '{ "name": "position", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"sorting position of the role"}' */
-  /* p->position is a scalar */
+  (void)d->position;
 }
 
 void discord_modify_guild_role_positions_params_init(struct discord_modify_guild_role_positions_params *p) {
@@ -2645,7 +2606,7 @@ void discord_modify_guild_role_positions_params_init(struct discord_modify_guild
 
 }
 void discord_modify_guild_role_positions_params_list_free(struct discord_modify_guild_role_positions_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_role_positions_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_role_positions_params_cleanup);
 }
 
 void discord_modify_guild_role_positions_params_list_from_json(char *str, size_t len, struct discord_modify_guild_role_positions_params ***p)
@@ -2654,14 +2615,14 @@ void discord_modify_guild_role_positions_params_list_from_json(char *str, size_t
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_role_positions_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_role_positions_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_role_positions_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_role_positions_params_list_to_json(char *str, size_t len, struct discord_modify_guild_role_positions_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_role_positions_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_role_positions_params_to_json);
 }
 
 
@@ -2772,9 +2733,6 @@ size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct d
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_role_params_cleanup_v(void *p) {
   discord_modify_guild_role_params_cleanup((struct discord_modify_guild_role_params *)p);
 }
@@ -2811,16 +2769,16 @@ void discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_p
     free(d->name);
   /* discord/guild.params.json:186:20
      '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
-  /* p->permissions is a scalar */
+  (void)d->permissions;
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
-  /* p->color is a scalar */
+  (void)d->color;
   /* discord/guild.params.json:188:20
      '{ "name": "hoist", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be displayed separately in the sidebar"}' */
-  /* p->hoist is a scalar */
+  (void)d->hoist;
   /* discord/guild.params.json:189:20
      '{ "name": "mentionable", "type":{ "base":"bool" }, "option":true, "inject_if_not":false, "comment":"whether the role should be mentionable"}' */
-  /* p->mentionable is a scalar */
+  (void)d->mentionable;
 }
 
 void discord_modify_guild_role_params_init(struct discord_modify_guild_role_params *p) {
@@ -2842,7 +2800,7 @@ void discord_modify_guild_role_params_init(struct discord_modify_guild_role_para
 
 }
 void discord_modify_guild_role_params_list_free(struct discord_modify_guild_role_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_role_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_role_params_cleanup);
 }
 
 void discord_modify_guild_role_params_list_from_json(char *str, size_t len, struct discord_modify_guild_role_params ***p)
@@ -2851,14 +2809,14 @@ void discord_modify_guild_role_params_list_from_json(char *str, size_t len, stru
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_role_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_role_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_role_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_role_params_list_to_json(char *str, size_t len, struct discord_modify_guild_role_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_role_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_role_params_to_json);
 }
 
 
@@ -2918,9 +2876,6 @@ size_t discord_get_guild_prune_count_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_get_guild_prune_count_params_cleanup_v(void *p) {
   discord_get_guild_prune_count_params_cleanup((struct discord_get_guild_prune_count_params *)p);
 }
@@ -2953,7 +2908,7 @@ size_t discord_get_guild_prune_count_params_list_to_json_v(char *str, size_t len
 void discord_get_guild_prune_count_params_cleanup(struct discord_get_guild_prune_count_params *d) {
   /* discord/guild.params.json:198:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
-  /* p->days is a scalar */
+  (void)d->days;
   /* discord/guild.params.json:199:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   if (d->include_roles)
@@ -2970,7 +2925,7 @@ void discord_get_guild_prune_count_params_init(struct discord_get_guild_prune_co
 
 }
 void discord_get_guild_prune_count_params_list_free(struct discord_get_guild_prune_count_params **p) {
-  ntl_free((void**)p, (vfvp)discord_get_guild_prune_count_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_get_guild_prune_count_params_cleanup);
 }
 
 void discord_get_guild_prune_count_params_list_from_json(char *str, size_t len, struct discord_get_guild_prune_count_params ***p)
@@ -2979,14 +2934,14 @@ void discord_get_guild_prune_count_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_get_guild_prune_count_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_get_guild_prune_count_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_get_guild_prune_count_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_get_guild_prune_count_params_list_to_json(char *str, size_t len, struct discord_get_guild_prune_count_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_get_guild_prune_count_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_get_guild_prune_count_params_to_json);
 }
 
 
@@ -3080,9 +3035,6 @@ size_t discord_begin_guild_prune_params_to_json(char *json, size_t len, struct d
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_begin_guild_prune_params_cleanup_v(void *p) {
   discord_begin_guild_prune_params_cleanup((struct discord_begin_guild_prune_params *)p);
 }
@@ -3115,10 +3067,10 @@ size_t discord_begin_guild_prune_params_list_to_json_v(char *str, size_t len, vo
 void discord_begin_guild_prune_params_cleanup(struct discord_begin_guild_prune_params *d) {
   /* discord/guild.params.json:208:20
      '{ "name": "days", "type":{ "base":"int" }, "inject_if_not":0}' */
-  /* p->days is a scalar */
+  (void)d->days;
   /* discord/guild.params.json:209:20
      '{ "name": "compute_prune_count", "type":{ "base":"bool" }, "inject_if_not":false}' */
-  /* p->compute_prune_count is a scalar */
+  (void)d->compute_prune_count;
   /* discord/guild.params.json:210:20
      '{ "name": "include_roles", "type":{ "base":"ja_u64", "dec":"ntl" }, "inject_if_not":null}' */
   if (d->include_roles)
@@ -3145,7 +3097,7 @@ void discord_begin_guild_prune_params_init(struct discord_begin_guild_prune_para
 
 }
 void discord_begin_guild_prune_params_list_free(struct discord_begin_guild_prune_params **p) {
-  ntl_free((void**)p, (vfvp)discord_begin_guild_prune_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_begin_guild_prune_params_cleanup);
 }
 
 void discord_begin_guild_prune_params_list_from_json(char *str, size_t len, struct discord_begin_guild_prune_params ***p)
@@ -3154,13 +3106,13 @@ void discord_begin_guild_prune_params_list_from_json(char *str, size_t len, stru
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_begin_guild_prune_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_begin_guild_prune_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_begin_guild_prune_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_begin_guild_prune_params_list_to_json(char *str, size_t len, struct discord_begin_guild_prune_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_begin_guild_prune_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_begin_guild_prune_params_to_json);
 }
 

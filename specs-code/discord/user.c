@@ -14,9 +14,6 @@
 #include "discord.h"
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_user_flags_list_free_v(void **p) {
   discord_user_flags_list_free((enum discord_user_flags**)p);
 }
@@ -44,6 +41,7 @@ enum discord_user_flags discord_user_flags_eval(char *s){
   if(strcasecmp("VERIFIED_BOT", s) == 0) return DISCORD_USER_VERIFIED_BOT;
   if(strcasecmp("EARLY_VERIFIED_BOT_DEVELOPER", s) == 0) return DISCORD_USER_EARLY_VERIFIED_BOT_DEVELOPER;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_user_flags_print(enum discord_user_flags v){
@@ -89,9 +87,6 @@ size_t discord_user_flags_list_to_json(char *str, size_t len, enum discord_user_
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_user_premium_types_list_free_v(void **p) {
   discord_user_premium_types_list_free((enum discord_user_premium_types**)p);
 }
@@ -108,6 +103,7 @@ enum discord_user_premium_types discord_user_premium_types_eval(char *s){
   if(strcasecmp("NITRO_CLASSIC", s) == 0) return DISCORD_USER_NITRO_CLASSIC;
   if(strcasecmp("NITRO", s) == 0) return DISCORD_USER_NITRO;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_user_premium_types_print(enum discord_user_premium_types v){
@@ -387,9 +383,6 @@ size_t discord_user_to_json(char *json, size_t len, struct discord_user *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_user_cleanup_v(void *p) {
   discord_user_cleanup((struct discord_user *)p);
 }
@@ -422,7 +415,7 @@ size_t discord_user_list_to_json_v(char *str, size_t len, void *p){
 void discord_user_cleanup(struct discord_user *d) {
   /* discord/user.json:44:24
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/user.json:45:24
      '{ "name": "username", "type":{ "base":"char", "dec":"*"}}' */
   if (d->username)
@@ -437,37 +430,37 @@ void discord_user_cleanup(struct discord_user *d) {
     free(d->avatar);
   /* discord/user.json:48:24
      '{ "name": "bot", "type":{ "base":"bool" }}' */
-  /* p->bot is a scalar */
+  (void)d->bot;
   /* discord/user.json:49:24
      '{ "name": "System", "json_key": "system", "type":{ "base":"bool" }}' */
-  /* p->System is a scalar */
+  (void)d->System;
   /* discord/user.json:50:24
      '{ "name": "mfa_enabled", "type":{ "base":"bool" }}' */
-  /* p->mfa_enabled is a scalar */
+  (void)d->mfa_enabled;
   /* discord/user.json:51:24
      '{ "name": "locale", "type":{ "base":"char", "dec":"*" }}' */
   if (d->locale)
     free(d->locale);
   /* discord/user.json:52:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
-  /* p->verified is a scalar */
+  (void)d->verified;
   /* discord/user.json:53:24
      '{ "name": "email", "type":{ "base":"char", "dec":"*" }}' */
   if (d->email)
     free(d->email);
   /* discord/user.json:54:24
      '{ "name": "flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-  /* p->flags is a scalar */
+  (void)d->flags;
   /* discord/user.json:55:24
      '{ "name": "banner", "type":{ "base":"char", "dec":"*" }}' */
   if (d->banner)
     free(d->banner);
   /* discord/user.json:56:24
      '{ "name": "premium_type", "type":{ "base":"int", "int_alias": "enum discord_user_premium_types" }}' */
-  /* p->premium_type is a scalar */
+  (void)d->premium_type;
   /* discord/user.json:57:24
      '{ "name": "public_flags", "type":{ "base":"int", "int_alias": "enum discord_user_flags" }}' */
-  /* p->public_flags is a scalar */
+  (void)d->public_flags;
 }
 
 void discord_user_init(struct discord_user *p) {
@@ -516,7 +509,7 @@ void discord_user_init(struct discord_user *p) {
 
 }
 void discord_user_list_free(struct discord_user **p) {
-  ntl_free((void**)p, (vfvp)discord_user_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_user_cleanup);
 }
 
 void discord_user_list_from_json(char *str, size_t len, struct discord_user ***p)
@@ -525,21 +518,18 @@ void discord_user_list_from_json(char *str, size_t len, struct discord_user ***p
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_user);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_user_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_user_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_user_list_to_json(char *str, size_t len, struct discord_user **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_user_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_user_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_visibility_types_list_free_v(void **p) {
   discord_visibility_types_list_free((enum discord_visibility_types**)p);
 }
@@ -556,6 +546,7 @@ enum discord_visibility_types discord_visibility_types_eval(char *s){
   if(strcasecmp("NONE", s) == 0) return DISCORD_VISIBILITY_NONE;
   if(strcasecmp("EVERYONE", s) == 0) return DISCORD_VISIBILITY_EVERYONE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_visibility_types_print(enum discord_visibility_types v){
@@ -755,9 +746,6 @@ size_t discord_connection_to_json(char *json, size_t len, struct discord_connect
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_connection_cleanup_v(void *p) {
   discord_connection_cleanup((struct discord_connection *)p);
 }
@@ -802,23 +790,23 @@ void discord_connection_cleanup(struct discord_connection *d) {
     free(d->type);
   /* discord/user.json:80:24
      '{ "name": "revoked", "type":{ "base":"bool"}}' */
-  /* p->revoked is a scalar */
+  (void)d->revoked;
   /* discord/user.json:81:24
      '{ "name": "integrations", "type": {"base":"struct discord_integration", "dec":"ntl"}}' */
   if (d->integrations)
     discord_integration_list_free(d->integrations);
   /* discord/user.json:82:24
      '{ "name": "verified", "type":{ "base":"bool" }}' */
-  /* p->verified is a scalar */
+  (void)d->verified;
   /* discord/user.json:83:24
      '{ "name": "friend_sync", "type":{ "base":"bool" }}' */
-  /* p->friend_sync is a scalar */
+  (void)d->friend_sync;
   /* discord/user.json:84:24
      '{ "name": "show_activity", "type":{ "base":"bool" }}' */
-  /* p->show_activity is a scalar */
+  (void)d->show_activity;
   /* discord/user.json:85:24
      '{ "name": "visibility", "type":{ "base":"int", "int_alias":"enum discord_visibility_types" }}' */
-  /* p->visibility is a scalar */
+  (void)d->visibility;
 }
 
 void discord_connection_init(struct discord_connection *p) {
@@ -852,7 +840,7 @@ void discord_connection_init(struct discord_connection *p) {
 
 }
 void discord_connection_list_free(struct discord_connection **p) {
-  ntl_free((void**)p, (vfvp)discord_connection_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_connection_cleanup);
 }
 
 void discord_connection_list_from_json(char *str, size_t len, struct discord_connection ***p)
@@ -861,13 +849,13 @@ void discord_connection_list_from_json(char *str, size_t len, struct discord_con
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_connection);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_connection_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_connection_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_connection_list_to_json(char *str, size_t len, struct discord_connection **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_connection_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_connection_to_json);
 }
 

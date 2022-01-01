@@ -163,9 +163,6 @@ size_t discord_emoji_to_json(char *json, size_t len, struct discord_emoji *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_emoji_cleanup_v(void *p) {
   discord_emoji_cleanup((struct discord_emoji *)p);
 }
@@ -198,7 +195,7 @@ size_t discord_emoji_list_to_json_v(char *str, size_t len, void *p){
 void discord_emoji_cleanup(struct discord_emoji *d) {
   /* discord/emoji.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"emoji id"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/emoji.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"emoji name"}' */
   if (d->name)
@@ -215,16 +212,16 @@ void discord_emoji_cleanup(struct discord_emoji *d) {
   }
   /* discord/emoji.json:16:20
      '{ "name": "require_colons", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji must be wrapped in colons" }' */
-  /* p->require_colons is a scalar */
+  (void)d->require_colons;
   /* discord/emoji.json:17:20
      '{ "name": "managed", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is managed" }' */
-  /* p->managed is a scalar */
+  (void)d->managed;
   /* discord/emoji.json:18:20
      '{ "name": "animated", "type":{ "base":"bool" }, "option":true, "comment":"whether this emoji is animated" }' */
-  /* p->animated is a scalar */
+  (void)d->animated;
   /* discord/emoji.json:19:20
      '{ "name": "available", "type":{ "base":"bool" }, "option":true, "whether this emoji can be used, may be false due to loss of Server Boosts" }' */
-  /* p->available is a scalar */
+  (void)d->available;
 }
 
 void discord_emoji_init(struct discord_emoji *p) {
@@ -255,7 +252,7 @@ void discord_emoji_init(struct discord_emoji *p) {
 
 }
 void discord_emoji_list_free(struct discord_emoji **p) {
-  ntl_free((void**)p, (vfvp)discord_emoji_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_emoji_cleanup);
 }
 
 void discord_emoji_list_from_json(char *str, size_t len, struct discord_emoji ***p)
@@ -264,13 +261,13 @@ void discord_emoji_list_from_json(char *str, size_t len, struct discord_emoji **
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_emoji);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_emoji_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_emoji_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_emoji_list_to_json(char *str, size_t len, struct discord_emoji **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_emoji_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_emoji_to_json);
 }
 

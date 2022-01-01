@@ -67,9 +67,6 @@ size_t discord_modify_current_user_params_to_json(char *json, size_t len, struct
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_current_user_params_cleanup_v(void *p) {
   discord_modify_current_user_params_cleanup((struct discord_modify_current_user_params *)p);
 }
@@ -120,7 +117,7 @@ void discord_modify_current_user_params_init(struct discord_modify_current_user_
 
 }
 void discord_modify_current_user_params_list_free(struct discord_modify_current_user_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_current_user_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_current_user_params_cleanup);
 }
 
 void discord_modify_current_user_params_list_from_json(char *str, size_t len, struct discord_modify_current_user_params ***p)
@@ -129,14 +126,14 @@ void discord_modify_current_user_params_list_from_json(char *str, size_t len, st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_current_user_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_current_user_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_current_user_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_current_user_params_list_to_json(char *str, size_t len, struct discord_modify_current_user_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_current_user_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_current_user_params_to_json);
 }
 
 
@@ -179,9 +176,6 @@ size_t discord_create_dm_params_to_json(char *json, size_t len, struct discord_c
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_dm_params_cleanup_v(void *p) {
   discord_create_dm_params_cleanup((struct discord_create_dm_params *)p);
 }
@@ -214,7 +208,7 @@ size_t discord_create_dm_params_list_to_json_v(char *str, size_t len, void *p){
 void discord_create_dm_params_cleanup(struct discord_create_dm_params *d) {
   /* discord/user.params.json:22:20
      '{ "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }' */
-  /* p->recipient_id is a scalar */
+  (void)d->recipient_id;
 }
 
 void discord_create_dm_params_init(struct discord_create_dm_params *p) {
@@ -224,7 +218,7 @@ void discord_create_dm_params_init(struct discord_create_dm_params *p) {
 
 }
 void discord_create_dm_params_list_free(struct discord_create_dm_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_dm_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_dm_params_cleanup);
 }
 
 void discord_create_dm_params_list_from_json(char *str, size_t len, struct discord_create_dm_params ***p)
@@ -233,14 +227,14 @@ void discord_create_dm_params_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_dm_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_dm_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_dm_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_dm_params_list_to_json(char *str, size_t len, struct discord_create_dm_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_dm_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_dm_params_to_json);
 }
 
 
@@ -308,9 +302,6 @@ size_t discord_create_group_dm_params_to_json(char *json, size_t len, struct dis
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_group_dm_params_cleanup_v(void *p) {
   discord_create_group_dm_params_cleanup((struct discord_create_group_dm_params *)p);
 }
@@ -365,7 +356,7 @@ void discord_create_group_dm_params_init(struct discord_create_group_dm_params *
 
 }
 void discord_create_group_dm_params_list_free(struct discord_create_group_dm_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_group_dm_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_group_dm_params_cleanup);
 }
 
 void discord_create_group_dm_params_list_from_json(char *str, size_t len, struct discord_create_group_dm_params ***p)
@@ -374,13 +365,13 @@ void discord_create_group_dm_params_list_from_json(char *str, size_t len, struct
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_group_dm_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_group_dm_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_group_dm_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_group_dm_params_list_to_json(char *str, size_t len, struct discord_create_group_dm_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_group_dm_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_group_dm_params_to_json);
 }
 

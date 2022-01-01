@@ -211,9 +211,6 @@ size_t discord_guild_template_to_json(char *json, size_t len, struct discord_gui
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_guild_template_cleanup_v(void *p) {
   discord_guild_template_cleanup((struct discord_guild_template *)p);
 }
@@ -258,10 +255,10 @@ void discord_guild_template_cleanup(struct discord_guild_template *d) {
     free(d->description);
   /* discord/guild_template.json:15:20
      '{ "name": "usage_count", "type":{ "base":"int"}}' */
-  /* p->usage_count is a scalar */
+  (void)d->usage_count;
   /* discord/guild_template.json:16:20
      '{ "name": "creator_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  /* p->creator_id is a scalar */
+  (void)d->creator_id;
   /* discord/guild_template.json:17:20
      '{ "name": "creator", "type":{ "base":"struct discord_user", "dec":"*" }}' */
   if (d->creator) {
@@ -270,13 +267,13 @@ void discord_guild_template_cleanup(struct discord_guild_template *d) {
   }
   /* discord/guild_template.json:18:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
-  /* p->created_at is a scalar */
+  (void)d->created_at;
   /* discord/guild_template.json:19:20
      '{ "name": "updated_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601" }}' */
-  /* p->updated_at is a scalar */
+  (void)d->updated_at;
   /* discord/guild_template.json:20:20
      '{ "name": "source_guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  /* p->source_guild_id is a scalar */
+  (void)d->source_guild_id;
   /* discord/guild_template.json:21:20
      '{ "name": "serialized_source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }}' */
   if (d->serialized_source_guild) {
@@ -326,7 +323,7 @@ void discord_guild_template_init(struct discord_guild_template *p) {
 
 }
 void discord_guild_template_list_free(struct discord_guild_template **p) {
-  ntl_free((void**)p, (vfvp)discord_guild_template_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_guild_template_cleanup);
 }
 
 void discord_guild_template_list_from_json(char *str, size_t len, struct discord_guild_template ***p)
@@ -335,13 +332,13 @@ void discord_guild_template_list_from_json(char *str, size_t len, struct discord
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_template);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_guild_template_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_guild_template_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_template_list_to_json(char *str, size_t len, struct discord_guild_template **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_template_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_guild_template_to_json);
 }
 

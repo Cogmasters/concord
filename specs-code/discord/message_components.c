@@ -239,9 +239,6 @@ size_t discord_component_to_json(char *json, size_t len, struct discord_componen
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_component_cleanup_v(void *p) {
   discord_component_cleanup((struct discord_component *)p);
 }
@@ -274,17 +271,17 @@ size_t discord_component_list_to_json_v(char *str, size_t len, void *p){
 void discord_component_cleanup(struct discord_component *d) {
   /* discord/message_components.json:12:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment":"component type"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/message_components.json:13:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "inject_if_not":null, "comment":"a developer-defined identifier for the component, max 100 characters"}' */
   if (d->custom_id)
     free(d->custom_id);
   /* discord/message_components.json:14:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
-  /* p->disabled is a scalar */
+  (void)d->disabled;
   /* discord/message_components.json:15:18
      '{"name":"style", "type":{"base":"int", "int_alias":"enum discord_button_styles"}, "option":true, "inject_if_not":0, "comment":"one of button styles"}' */
-  /* p->style is a scalar */
+  (void)d->style;
   /* discord/message_components.json:16:18
      '{"name":"label", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":null}' */
   if (d->label)
@@ -309,10 +306,10 @@ void discord_component_cleanup(struct discord_component *d) {
     free(d->placeholder);
   /* discord/message_components.json:21:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
-  /* p->min_values is a scalar */
+  (void)d->min_values;
   /* discord/message_components.json:22:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
-  /* p->max_values is a scalar */
+  (void)d->max_values;
   /* discord/message_components.json:23:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"a list of child components", "inject_if_not":null}' */
   if (d->components)
@@ -359,7 +356,7 @@ void discord_component_init(struct discord_component *p) {
 
 }
 void discord_component_list_free(struct discord_component **p) {
-  ntl_free((void**)p, (vfvp)discord_component_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_component_cleanup);
 }
 
 void discord_component_list_from_json(char *str, size_t len, struct discord_component ***p)
@@ -368,21 +365,18 @@ void discord_component_list_from_json(char *str, size_t len, struct discord_comp
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_component);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_component_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_component_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_component_list_to_json(char *str, size_t len, struct discord_component **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_component_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_component_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_component_types_list_free_v(void **p) {
   discord_component_types_list_free((enum discord_component_types**)p);
 }
@@ -400,6 +394,7 @@ enum discord_component_types discord_component_types_eval(char *s){
   if(strcasecmp("BUTTON", s) == 0) return DISCORD_COMPONENT_BUTTON;
   if(strcasecmp("SELECT_MENU", s) == 0) return DISCORD_COMPONENT_SELECT_MENU;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_component_types_print(enum discord_component_types v){
@@ -575,9 +570,6 @@ size_t discord_button_to_json(char *json, size_t len, struct discord_button *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_button_cleanup_v(void *p) {
   discord_button_cleanup((struct discord_button *)p);
 }
@@ -610,10 +602,10 @@ size_t discord_button_list_to_json_v(char *str, size_t len, void *p){
 void discord_button_cleanup(struct discord_button *d) {
   /* discord/message_components.json:44:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "2 for a button"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/message_components.json:45:18
      '{"name":"style", "type": {"base":"int", "int_alias":"enum discord_button_styles"}, "inject_if_not":0, "comment": "one of button styles"}' */
-  /* p->style is a scalar */
+  (void)d->style;
   /* discord/message_components.json:46:18
      '{"name":"label", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"text that appears on the button, max 80 characters", "inject_if_not":null}' */
   if (d->label)
@@ -634,7 +626,7 @@ void discord_button_cleanup(struct discord_button *d) {
     free(d->url);
   /* discord/message_components.json:50:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"whether the component is disabled, default false"}' */
-  /* p->disabled is a scalar */
+  (void)d->disabled;
 }
 
 void discord_button_init(struct discord_button *p) {
@@ -662,7 +654,7 @@ void discord_button_init(struct discord_button *p) {
 
 }
 void discord_button_list_free(struct discord_button **p) {
-  ntl_free((void**)p, (vfvp)discord_button_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_button_cleanup);
 }
 
 void discord_button_list_from_json(char *str, size_t len, struct discord_button ***p)
@@ -671,21 +663,18 @@ void discord_button_list_from_json(char *str, size_t len, struct discord_button 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_button);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_button_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_button_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_button_list_to_json(char *str, size_t len, struct discord_button **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_button_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_button_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_button_styles_list_free_v(void **p) {
   discord_button_styles_list_free((enum discord_button_styles**)p);
 }
@@ -705,6 +694,7 @@ enum discord_button_styles discord_button_styles_eval(char *s){
   if(strcasecmp("DANGER", s) == 0) return DISCORD_BUTTON_DANGER;
   if(strcasecmp("LINK", s) == 0) return DISCORD_BUTTON_LINK;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_button_styles_print(enum discord_button_styles v){
@@ -881,9 +871,6 @@ size_t discord_select_menu_to_json(char *json, size_t len, struct discord_select
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_select_menu_cleanup_v(void *p) {
   discord_select_menu_cleanup((struct discord_select_menu *)p);
 }
@@ -916,7 +903,7 @@ size_t discord_select_menu_list_to_json_v(char *str, size_t len, void *p){
 void discord_select_menu_cleanup(struct discord_select_menu *d) {
   /* discord/message_components.json:73:18
      '{"name":"type", "type": {"base":"int", "int_alias":"enum discord_component_types"}, "inject_if_not":0, "comment": "3 for a select menu"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/message_components.json:74:18
      '{"name":"custom_id", "type":{"base":"char", "dec":"*"}, "comment":"a developer-defined identifier for the component, max 100 characters", "inject_if_not":null}' */
   if (d->custom_id)
@@ -931,13 +918,13 @@ void discord_select_menu_cleanup(struct discord_select_menu *d) {
     free(d->placeholder);
   /* discord/message_components.json:77:18
      '{"name":"min_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the minimum number of items that must be chosen; default 1, min 0, max 25"}' */
-  /* p->min_values is a scalar */
+  (void)d->min_values;
   /* discord/message_components.json:78:18
      '{"name":"max_values", "type":{"base":"int"}, "option":true, "inject_if_not":0, "comment":"the maximum number of items that must be chosen; default 1, min 0, max 25"}' */
-  /* p->max_values is a scalar */
+  (void)d->max_values;
   /* discord/message_components.json:79:18
      '{"name":"disabled", "type":{"base":"bool"}, "option":true, "inject_if_not":false, "comment":"disable the select, default false"}' */
-  /* p->disabled is a scalar */
+  (void)d->disabled;
 }
 
 void discord_select_menu_init(struct discord_select_menu *p) {
@@ -965,7 +952,7 @@ void discord_select_menu_init(struct discord_select_menu *p) {
 
 }
 void discord_select_menu_list_free(struct discord_select_menu **p) {
-  ntl_free((void**)p, (vfvp)discord_select_menu_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_select_menu_cleanup);
 }
 
 void discord_select_menu_list_from_json(char *str, size_t len, struct discord_select_menu ***p)
@@ -974,14 +961,14 @@ void discord_select_menu_list_from_json(char *str, size_t len, struct discord_se
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_select_menu);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_select_menu_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_select_menu_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_select_menu_list_to_json(char *str, size_t len, struct discord_select_menu **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_select_menu_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_select_menu_to_json);
 }
 
 
@@ -1091,9 +1078,6 @@ size_t discord_select_option_to_json(char *json, size_t len, struct discord_sele
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_select_option_cleanup_v(void *p) {
   discord_select_option_cleanup((struct discord_select_option *)p);
 }
@@ -1144,7 +1128,7 @@ void discord_select_option_cleanup(struct discord_select_option *d) {
   }
   /* discord/message_components.json:92:18
      '{"name":"Default", "json_key":"default", "type":{"base":"bool"}, "option":true, "comment":"will render this option as selected by default"}' */
-  /* p->Default is a scalar */
+  (void)d->Default;
 }
 
 void discord_select_option_init(struct discord_select_option *p) {
@@ -1166,7 +1150,7 @@ void discord_select_option_init(struct discord_select_option *p) {
 
 }
 void discord_select_option_list_free(struct discord_select_option **p) {
-  ntl_free((void**)p, (vfvp)discord_select_option_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_select_option_cleanup);
 }
 
 void discord_select_option_list_from_json(char *str, size_t len, struct discord_select_option ***p)
@@ -1175,13 +1159,13 @@ void discord_select_option_list_from_json(char *str, size_t len, struct discord_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_select_option);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_select_option_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_select_option_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_select_option_list_to_json(char *str, size_t len, struct discord_select_option **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_select_option_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_select_option_to_json);
 }
 

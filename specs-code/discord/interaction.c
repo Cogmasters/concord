@@ -202,9 +202,6 @@ size_t discord_interaction_to_json(char *json, size_t len, struct discord_intera
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_cleanup_v(void *p) {
   discord_interaction_cleanup((struct discord_interaction *)p);
 }
@@ -237,13 +234,13 @@ size_t discord_interaction_list_to_json_v(char *str, size_t len, void *p){
 void discord_interaction_cleanup(struct discord_interaction *d) {
   /* discord/interaction.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/interaction.json:13:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the application this iteraction is for"}' */
-  /* p->application_id is a scalar */
+  (void)d->application_id;
   /* discord/interaction.json:14:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/interaction.json:15:18
      '{"name":"data", "type":{"base":"struct discord_interaction_data", "dec":"*"}, "option":true, "comment":"the command data payload", "inject_if_not":null}' */
   if (d->data) {
@@ -252,10 +249,10 @@ void discord_interaction_cleanup(struct discord_interaction *d) {
   }
   /* discord/interaction.json:16:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the guild it was sent from","inject_if_not":0}' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/interaction.json:17:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"the channel it was sent from","inject_if_not":0}' */
-  /* p->channel_id is a scalar */
+  (void)d->channel_id;
   /* discord/interaction.json:18:18
      '{"name":"member", "type":{"base":"struct discord_guild_member", "dec":"*"}, "option":true, "comment":"guild member data for the invoking user, including permissions", "inject_if_not":null}' */
   if (d->member) {
@@ -314,7 +311,7 @@ void discord_interaction_init(struct discord_interaction *p) {
 
 }
 void discord_interaction_list_free(struct discord_interaction **p) {
-  ntl_free((void**)p, (vfvp)discord_interaction_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_interaction_cleanup);
 }
 
 void discord_interaction_list_from_json(char *str, size_t len, struct discord_interaction ***p)
@@ -323,21 +320,18 @@ void discord_interaction_list_from_json(char *str, size_t len, struct discord_in
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_interaction_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_interaction_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_list_to_json(char *str, size_t len, struct discord_interaction **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_interaction_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_types_list_free_v(void **p) {
   discord_interaction_types_list_free((enum discord_interaction_types**)p);
 }
@@ -355,6 +349,7 @@ enum discord_interaction_types discord_interaction_types_eval(char *s){
   if(strcasecmp("APPLICATION_COMMAND", s) == 0) return DISCORD_INTERACTION_APPLICATION_COMMAND;
   if(strcasecmp("MESSAGE_COMPONENT", s) == 0) return DISCORD_INTERACTION_MESSAGE_COMPONENT;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_interaction_types_print(enum discord_interaction_types v){
@@ -544,9 +539,6 @@ size_t discord_interaction_data_to_json(char *json, size_t len, struct discord_i
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_data_cleanup_v(void *p) {
   discord_interaction_data_cleanup((struct discord_interaction_data *)p);
 }
@@ -579,14 +571,14 @@ size_t discord_interaction_data_list_to_json_v(char *str, size_t len, void *p){
 void discord_interaction_data_cleanup(struct discord_interaction_data *d) {
   /* discord/interaction.json:43:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the ID of the invoked command"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/interaction.json:44:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the invoked command"}' */
   if (d->name)
     free(d->name);
   /* discord/interaction.json:45:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "comment":"the type of the invoked command"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/interaction.json:46:18
      '{"name":"resolved", "type":{"base":"struct discord_resolved_data", "dec":"*"}, "option":true, "comment":"converted users + roles + channels", "inject_if_not":null}' */
   if (d->resolved) {
@@ -607,7 +599,7 @@ void discord_interaction_data_cleanup(struct discord_interaction_data *d) {
     ja_str_list_free(d->values);
   /* discord/interaction.json:50:18
      '{"name":"target_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of a user or message targetted by a user or message command", "inject_if_not":0}' */
-  /* p->target_id is a scalar */
+  (void)d->target_id;
 }
 
 void discord_interaction_data_init(struct discord_interaction_data *p) {
@@ -638,7 +630,7 @@ void discord_interaction_data_init(struct discord_interaction_data *p) {
 
 }
 void discord_interaction_data_list_free(struct discord_interaction_data **p) {
-  ntl_free((void**)p, (vfvp)discord_interaction_data_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_interaction_data_cleanup);
 }
 
 void discord_interaction_data_list_from_json(char *str, size_t len, struct discord_interaction_data ***p)
@@ -647,14 +639,14 @@ void discord_interaction_data_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction_data);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_interaction_data_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_interaction_data_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_data_list_to_json(char *str, size_t len, struct discord_interaction_data **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_data_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_interaction_data_to_json);
 }
 
 
@@ -765,9 +757,6 @@ size_t discord_resolved_data_to_json(char *json, size_t len, struct discord_reso
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_resolved_data_cleanup_v(void *p) {
   discord_resolved_data_cleanup((struct discord_resolved_data *)p);
 }
@@ -839,7 +828,7 @@ void discord_resolved_data_init(struct discord_resolved_data *p) {
 
 }
 void discord_resolved_data_list_free(struct discord_resolved_data **p) {
-  ntl_free((void**)p, (vfvp)discord_resolved_data_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_resolved_data_cleanup);
 }
 
 void discord_resolved_data_list_from_json(char *str, size_t len, struct discord_resolved_data ***p)
@@ -848,14 +837,14 @@ void discord_resolved_data_list_from_json(char *str, size_t len, struct discord_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_resolved_data);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_resolved_data_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_resolved_data_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_resolved_data_list_to_json(char *str, size_t len, struct discord_resolved_data **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_resolved_data_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_resolved_data_to_json);
 }
 
 
@@ -945,9 +934,6 @@ size_t discord_message_interaction_to_json(char *json, size_t len, struct discor
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_message_interaction_cleanup_v(void *p) {
   discord_message_interaction_cleanup((struct discord_message_interaction *)p);
 }
@@ -980,10 +966,10 @@ size_t discord_message_interaction_list_to_json_v(char *str, size_t len, void *p
 void discord_message_interaction_cleanup(struct discord_message_interaction *d) {
   /* discord/interaction.json:74:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the interaction"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/interaction.json:75:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_types"}, "comment":"the request type of the interaction"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/interaction.json:76:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"the name of the application command"}' */
   if (d->name)
@@ -1012,7 +998,7 @@ void discord_message_interaction_init(struct discord_message_interaction *p) {
 
 }
 void discord_message_interaction_list_free(struct discord_message_interaction **p) {
-  ntl_free((void**)p, (vfvp)discord_message_interaction_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_message_interaction_cleanup);
 }
 
 void discord_message_interaction_list_from_json(char *str, size_t len, struct discord_message_interaction ***p)
@@ -1021,14 +1007,14 @@ void discord_message_interaction_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_message_interaction);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_message_interaction_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_message_interaction_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_message_interaction_list_to_json(char *str, size_t len, struct discord_message_interaction **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_message_interaction_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_message_interaction_to_json);
 }
 
 
@@ -1087,9 +1073,6 @@ size_t discord_interaction_response_to_json(char *json, size_t len, struct disco
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_response_cleanup_v(void *p) {
   discord_interaction_response_cleanup((struct discord_interaction_response *)p);
 }
@@ -1122,7 +1105,7 @@ size_t discord_interaction_response_list_to_json_v(char *str, size_t len, void *
 void discord_interaction_response_cleanup(struct discord_interaction_response *d) {
   /* discord/interaction.json:87:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_types"}, "comment":"the type of response"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/interaction.json:88:18
      '{"name":"data", "type":{"base":"struct discord_interaction_callback_data", "dec":"*"}, "option":true, "comment":"an optional response message", "inject_if_not":null}' */
   if (d->data) {
@@ -1141,7 +1124,7 @@ void discord_interaction_response_init(struct discord_interaction_response *p) {
 
 }
 void discord_interaction_response_list_free(struct discord_interaction_response **p) {
-  ntl_free((void**)p, (vfvp)discord_interaction_response_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_interaction_response_cleanup);
 }
 
 void discord_interaction_response_list_from_json(char *str, size_t len, struct discord_interaction_response ***p)
@@ -1150,21 +1133,18 @@ void discord_interaction_response_list_from_json(char *str, size_t len, struct d
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction_response);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_interaction_response_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_interaction_response_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_response_list_to_json(char *str, size_t len, struct discord_interaction_response **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_response_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_interaction_response_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_callback_types_list_free_v(void **p) {
   discord_interaction_callback_types_list_free((enum discord_interaction_callback_types**)p);
 }
@@ -1184,6 +1164,7 @@ enum discord_interaction_callback_types discord_interaction_callback_types_eval(
   if(strcasecmp("DEFERRED_UPDATE_MESSAGE", s) == 0) return DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE;
   if(strcasecmp("UPDATE_MESSAGE", s) == 0) return DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_interaction_callback_types_print(enum discord_interaction_callback_types v){
@@ -1360,9 +1341,6 @@ size_t discord_interaction_callback_data_to_json(char *json, size_t len, struct 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_callback_data_cleanup_v(void *p) {
   discord_interaction_callback_data_cleanup((struct discord_interaction_callback_data *)p);
 }
@@ -1395,7 +1373,7 @@ size_t discord_interaction_callback_data_list_to_json_v(char *str, size_t len, v
 void discord_interaction_callback_data_cleanup(struct discord_interaction_callback_data *d) {
   /* discord/interaction.json:112:18
      '{"name":"tts", "type":{"base":"bool"}, "option":true, "comment":"is the response TTS"}' */
-  /* p->tts is a scalar */
+  (void)d->tts;
   /* discord/interaction.json:113:18
      '{"name":"content", "type":{"base":"char", "dec":"*"}, "option":true, "comment":"message content", "inject_if_not":null}' */
   if (d->content)
@@ -1412,7 +1390,7 @@ void discord_interaction_callback_data_cleanup(struct discord_interaction_callba
   }
   /* discord/interaction.json:116:18
      '{"name":"flags", "type":{"base":"int", "int_alias":"enum discord_interaction_callback_data_flags"}, "option":true, "comment":"interaction application command callback data flags", "inject_if_not":0}' */
-  /* p->flags is a scalar */
+  (void)d->flags;
   /* discord/interaction.json:117:18
      '{"name":"components", "type":{ "base":"struct discord_component", "dec":"ntl" }, "option":true, "comment":"message components", "inject_if_not":null}' */
   if (d->components)
@@ -1448,7 +1426,7 @@ void discord_interaction_callback_data_init(struct discord_interaction_callback_
 
 }
 void discord_interaction_callback_data_list_free(struct discord_interaction_callback_data **p) {
-  ntl_free((void**)p, (vfvp)discord_interaction_callback_data_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_interaction_callback_data_cleanup);
 }
 
 void discord_interaction_callback_data_list_from_json(char *str, size_t len, struct discord_interaction_callback_data ***p)
@@ -1457,21 +1435,18 @@ void discord_interaction_callback_data_list_from_json(char *str, size_t len, str
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_interaction_callback_data);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_interaction_callback_data_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_interaction_callback_data_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_interaction_callback_data_list_to_json(char *str, size_t len, struct discord_interaction_callback_data **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_interaction_callback_data_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_interaction_callback_data_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_interaction_callback_data_flags_list_free_v(void **p) {
   discord_interaction_callback_data_flags_list_free((enum discord_interaction_callback_data_flags**)p);
 }
@@ -1487,6 +1462,7 @@ size_t discord_interaction_callback_data_flags_list_to_json_v(char *str, size_t 
 enum discord_interaction_callback_data_flags discord_interaction_callback_data_flags_eval(char *s){
   if(strcasecmp("EPHEMERAL", s) == 0) return DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_interaction_callback_data_flags_print(enum discord_interaction_callback_data_flags v){

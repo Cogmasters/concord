@@ -14,9 +14,6 @@
 #include "discord.h"
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_bitwise_permission_flags_list_free_v(void **p) {
   discord_bitwise_permission_flags_list_free((enum discord_bitwise_permission_flags**)p);
 }
@@ -73,6 +70,7 @@ enum discord_bitwise_permission_flags discord_bitwise_permission_flags_eval(char
   if(strcasecmp("START_EMBEDDED_ACTIVITIES", s) == 0) return DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES;
   if(strcasecmp("MODERATE_MEMBERS", s) == 0) return DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_bitwise_permission_flags_print(enum discord_bitwise_permission_flags v){
@@ -312,9 +310,6 @@ size_t discord_role_to_json(char *json, size_t len, struct discord_role *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_role_cleanup_v(void *p) {
   discord_role_cleanup((struct discord_role *)p);
 }
@@ -347,30 +342,30 @@ size_t discord_role_list_to_json_v(char *str, size_t len, void *p){
 void discord_role_cleanup(struct discord_role *d) {
   /* discord/permissions.json:63:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/permissions.json:64:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
   if (d->name)
     free(d->name);
   /* discord/permissions.json:65:20
      '{ "name": "color", "type":{ "base":"int" }}' */
-  /* p->color is a scalar */
+  (void)d->color;
   /* discord/permissions.json:66:20
      '{ "name": "hoist", "type":{ "base":"bool" }}' */
-  /* p->hoist is a scalar */
+  (void)d->hoist;
   /* discord/permissions.json:67:20
      '{ "name": "position", "type":{ "base":"int" }}' */
-  /* p->position is a scalar */
+  (void)d->position;
   /* discord/permissions.json:68:20
      '{ "name": "permissions", "type":{ "base":"char", "dec":"*" }}' */
   if (d->permissions)
     free(d->permissions);
   /* discord/permissions.json:69:20
      '{ "name": "managed", "type":{ "base":"bool" }}' */
-  /* p->managed is a scalar */
+  (void)d->managed;
   /* discord/permissions.json:70:20
      '{ "name": "mentionable", "type":{ "base":"bool" }}' */
-  /* p->mentionable is a scalar */
+  (void)d->mentionable;
   /* discord/permissions.json:71:20
      '{ "name": "tags", "type":{"base":"struct discord_role_tags", "dec":"*"}}' */
   if (d->tags) {
@@ -410,7 +405,7 @@ void discord_role_init(struct discord_role *p) {
 
 }
 void discord_role_list_free(struct discord_role **p) {
-  ntl_free((void**)p, (vfvp)discord_role_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_role_cleanup);
 }
 
 void discord_role_list_from_json(char *str, size_t len, struct discord_role ***p)
@@ -419,14 +414,14 @@ void discord_role_list_from_json(char *str, size_t len, struct discord_role ***p
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_role);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_role_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_role_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_role_list_to_json(char *str, size_t len, struct discord_role **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_role_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_role_to_json);
 }
 
 
@@ -500,9 +495,6 @@ size_t discord_role_tags_to_json(char *json, size_t len, struct discord_role_tag
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_role_tags_cleanup_v(void *p) {
   discord_role_tags_cleanup((struct discord_role_tags *)p);
 }
@@ -535,13 +527,13 @@ size_t discord_role_tags_list_to_json_v(char *str, size_t len, void *p){
 void discord_role_tags_cleanup(struct discord_role_tags *d) {
   /* discord/permissions.json:81:20
      '{ "name": "bot_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  /* p->bot_id is a scalar */
+  (void)d->bot_id;
   /* discord/permissions.json:82:20
      '{ "name": "integration_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
-  /* p->integration_id is a scalar */
+  (void)d->integration_id;
   /* discord/permissions.json:83:20
      '{ "name": "premium_subscriber", "type":{ "base":"int" }}' */
-  /* p->premium_subscriber is a scalar */
+  (void)d->premium_subscriber;
 }
 
 void discord_role_tags_init(struct discord_role_tags *p) {
@@ -557,7 +549,7 @@ void discord_role_tags_init(struct discord_role_tags *p) {
 
 }
 void discord_role_tags_list_free(struct discord_role_tags **p) {
-  ntl_free((void**)p, (vfvp)discord_role_tags_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_role_tags_cleanup);
 }
 
 void discord_role_tags_list_from_json(char *str, size_t len, struct discord_role_tags ***p)
@@ -566,13 +558,13 @@ void discord_role_tags_list_from_json(char *str, size_t len, struct discord_role
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_role_tags);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_role_tags_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_role_tags_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_role_tags_list_to_json(char *str, size_t len, struct discord_role_tags **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_role_tags_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_role_tags_to_json);
 }
 

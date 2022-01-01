@@ -371,9 +371,6 @@ size_t github_user_to_json(char *json, size_t len, struct github_user *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void github_user_cleanup_v(void *p) {
   github_user_cleanup((struct github_user *)p);
 }
@@ -410,7 +407,7 @@ void github_user_cleanup(struct github_user *d) {
     free(d->login);
   /* github/user.json:13:28
      '{ "name": "id", "type":{ "base":"int"}}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* github/user.json:14:28
      '{ "name": "node_id", "type":{ "base":"char", "dec":"*"}}' */
   if (d->node_id)
@@ -433,7 +430,7 @@ void github_user_cleanup(struct github_user *d) {
     free(d->type);
   /* github/user.json:19:28
      '{ "name": "site_admin", "type":{ "base":"bool"}}' */
-  /* p->site_admin is a scalar */
+  (void)d->site_admin;
   /* github/user.json:20:28
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}}' */
   if (d->name)
@@ -464,16 +461,16 @@ void github_user_cleanup(struct github_user *d) {
     free(d->bio);
   /* github/user.json:27:28
      '{ "name": "public_repos", "type":{ "base":"int"}}' */
-  /* p->public_repos is a scalar */
+  (void)d->public_repos;
   /* github/user.json:28:28
      '{ "name": "public_gists", "type":{ "base":"int"}}' */
-  /* p->public_gists is a scalar */
+  (void)d->public_gists;
   /* github/user.json:29:28
      '{ "name": "followers", "type":{ "base":"int"}}' */
-  /* p->followers is a scalar */
+  (void)d->followers;
   /* github/user.json:30:28
      '{ "name": "following", "type":{ "base":"int"}}' */
-  /* p->following is a scalar */
+  (void)d->following;
   /* github/user.json:31:28
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*"}}' */
   if (d->created_at)
@@ -551,7 +548,7 @@ void github_user_init(struct github_user *p) {
 
 }
 void github_user_list_free(struct github_user **p) {
-  ntl_free((void**)p, (vfvp)github_user_cleanup);
+  ntl_free((void**)p, (void(*)(void*))github_user_cleanup);
 }
 
 void github_user_list_from_json(char *str, size_t len, struct github_user ***p)
@@ -560,13 +557,13 @@ void github_user_list_from_json(char *str, size_t len, struct github_user ***p)
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct github_user);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)github_user_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))github_user_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t github_user_list_to_json(char *str, size_t len, struct github_user **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)github_user_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))github_user_to_json);
 }
 

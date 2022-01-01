@@ -14,9 +14,6 @@
 #include "discord.h"
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_invite_target_user_types_list_free_v(void **p) {
   discord_invite_target_user_types_list_free((enum discord_invite_target_user_types**)p);
 }
@@ -32,6 +29,7 @@ size_t discord_invite_target_user_types_list_to_json_v(char *str, size_t len, vo
 enum discord_invite_target_user_types discord_invite_target_user_types_eval(char *s){
   if(strcasecmp("STREAM", s) == 0) return DISCORD_INVITE_STREAM;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_invite_target_user_types_print(enum discord_invite_target_user_types v){
@@ -214,9 +212,6 @@ size_t discord_invite_to_json(char *json, size_t len, struct discord_invite *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_invite_cleanup_v(void *p) {
   discord_invite_cleanup((struct discord_invite *)p);
 }
@@ -277,13 +272,13 @@ void discord_invite_cleanup(struct discord_invite *d) {
   }
   /* discord/invite.json:27:20
      '{ "name": "target_user_type", "type":{ "base":"int", "int_alias":"enum discord_invite_target_user_types" }}' */
-  /* p->target_user_type is a scalar */
+  (void)d->target_user_type;
   /* discord/invite.json:28:20
      '{ "name": "approximate_presence_count", "type":{ "base":"int" }}' */
-  /* p->approximate_presence_count is a scalar */
+  (void)d->approximate_presence_count;
   /* discord/invite.json:29:20
      '{ "name": "approximate_member_count", "type":{ "base":"int" }}' */
-  /* p->approximate_member_count is a scalar */
+  (void)d->approximate_member_count;
 }
 
 void discord_invite_init(struct discord_invite *p) {
@@ -314,7 +309,7 @@ void discord_invite_init(struct discord_invite *p) {
 
 }
 void discord_invite_list_free(struct discord_invite **p) {
-  ntl_free((void**)p, (vfvp)discord_invite_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_invite_cleanup);
 }
 
 void discord_invite_list_from_json(char *str, size_t len, struct discord_invite ***p)
@@ -323,14 +318,14 @@ void discord_invite_list_from_json(char *str, size_t len, struct discord_invite 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_invite);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_invite_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_invite_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_invite_list_to_json(char *str, size_t len, struct discord_invite **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_invite_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_invite_to_json);
 }
 
 
@@ -436,9 +431,6 @@ size_t discord_invite_metadata_to_json(char *json, size_t len, struct discord_in
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_invite_metadata_cleanup_v(void *p) {
   discord_invite_metadata_cleanup((struct discord_invite_metadata *)p);
 }
@@ -471,19 +463,19 @@ size_t discord_invite_metadata_list_to_json_v(char *str, size_t len, void *p){
 void discord_invite_metadata_cleanup(struct discord_invite_metadata *d) {
   /* discord/invite.json:39:20
      '{ "name": "user", "type":{ "base":"int" }}' */
-  /* p->user is a scalar */
+  (void)d->user;
   /* discord/invite.json:40:20
      '{ "name": "max_uses", "type":{ "base":"int" }}' */
-  /* p->max_uses is a scalar */
+  (void)d->max_uses;
   /* discord/invite.json:41:20
      '{ "name": "max_age", "type":{ "base":"int" }}' */
-  /* p->max_age is a scalar */
+  (void)d->max_age;
   /* discord/invite.json:42:20
      '{ "name": "temporary", "type":{ "base":"int" }}' */
-  /* p->temporary is a scalar */
+  (void)d->temporary;
   /* discord/invite.json:43:20
      '{ "name": "created_at", "type":{ "base":"char", "dec":"*", "converter":"iso8601"}}' */
-  /* p->created_at is a scalar */
+  (void)d->created_at;
 }
 
 void discord_invite_metadata_init(struct discord_invite_metadata *p) {
@@ -505,7 +497,7 @@ void discord_invite_metadata_init(struct discord_invite_metadata *p) {
 
 }
 void discord_invite_metadata_list_free(struct discord_invite_metadata **p) {
-  ntl_free((void**)p, (vfvp)discord_invite_metadata_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_invite_metadata_cleanup);
 }
 
 void discord_invite_metadata_list_from_json(char *str, size_t len, struct discord_invite_metadata ***p)
@@ -514,13 +506,13 @@ void discord_invite_metadata_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_invite_metadata);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_invite_metadata_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_invite_metadata_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_invite_metadata_list_to_json(char *str, size_t len, struct discord_invite_metadata **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_invite_metadata_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_invite_metadata_to_json);
 }
 

@@ -262,9 +262,6 @@ size_t discord_application_to_json(char *json, size_t len, struct discord_applic
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_cleanup_v(void *p) {
   discord_application_cleanup((struct discord_application *)p);
 }
@@ -297,7 +294,7 @@ size_t discord_application_list_to_json_v(char *str, size_t len, void *p){
 void discord_application_cleanup(struct discord_application *d) {
   /* discord/application.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the app" }' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/application.json:13:20
      '{ "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"the name of the app" }' */
   if (d->name)
@@ -316,10 +313,10 @@ void discord_application_cleanup(struct discord_application *d) {
     ja_str_list_free(d->rpc_origins);
   /* discord/application.json:17:19
      '{ "name":"bot_public","type":{"base":"bool"}, "comment":"when false only app owner can join the app's bot to guilds"}' */
-  /* p->bot_public is a scalar */
+  (void)d->bot_public;
   /* discord/application.json:18:19
      '{ "name":"bot_require_code_grant","type":{"base":"bool"}, "comment":"when true the app's bot will only join upon completion of the full oauth2 code grant flow"}' */
-  /* p->bot_require_code_grant is a scalar */
+  (void)d->bot_require_code_grant;
   /* discord/application.json:19:20
      '{ "name": "term_of_service_url", "type":{ "base":"char", "dec":"*"}, "comment":"the url of the app's terms of service", "inject_if_not":null }' */
   if (d->term_of_service_url)
@@ -330,20 +327,20 @@ void discord_application_cleanup(struct discord_application *d) {
     free(d->privacy_policy_url);
   /* discord/application.json:21:19
      '{ "name":"team","type":{"base":"struct discord_team", "dec":"*"}, "comment":"if the application belongs to a team, this will be a list of the members of that team", "inject_if_not":null, "todo":true }' */
-  /* @todo p->(null) */
+  /* @todo d->(null) */
   /* discord/application.json:22:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the guild on which it has been linked", "inject_if_not":0 }' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/application.json:23:20
      '{ "name": "primary_sku_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "comment":"if this application is a game sold on Discord, this field will be the id of the \"Game SKU\" that is created, if exists", "inject_if_not":0 }' */
-  /* p->primary_sku_id is a scalar */
+  (void)d->primary_sku_id;
   /* discord/application.json:24:20
      '{ "name": "slug", "type":{ "base":"char", "dec":"*"}, "comment":"if this application is a game sold on Discord, this field will be the URL slug that links to the store page", "inject_if_not":null }' */
   if (d->slug)
     free(d->slug);
   /* discord/application.json:25:20
      '{ "name": "flags", "type":{ "base":"int", "int_alias":"enum discord_application_flags" }, "comment":"the application's public flags", "inject_if_not":0 }' */
-  /* p->flags is a scalar */
+  (void)d->flags;
 }
 
 void discord_application_init(struct discord_application *p) {
@@ -392,7 +389,7 @@ void discord_application_init(struct discord_application *p) {
 
 }
 void discord_application_list_free(struct discord_application **p) {
-  ntl_free((void**)p, (vfvp)discord_application_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_application_cleanup);
 }
 
 void discord_application_list_from_json(char *str, size_t len, struct discord_application ***p)
@@ -401,21 +398,18 @@ void discord_application_list_from_json(char *str, size_t len, struct discord_ap
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_application_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_application_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_list_to_json(char *str, size_t len, struct discord_application **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_application_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_flags_list_free_v(void **p) {
   discord_application_flags_list_free((enum discord_application_flags**)p);
 }
@@ -436,6 +430,7 @@ enum discord_application_flags discord_application_flags_eval(char *s){
   if(strcasecmp("VERIFICATION_PENDING_GUILD_LIMIT", s) == 0) return DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT;
   if(strcasecmp("EMBEDDED", s) == 0) return DISCORD_APPLICATION_EMBEDDED;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_application_flags_print(enum discord_application_flags v){

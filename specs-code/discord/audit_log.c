@@ -120,9 +120,6 @@ size_t discord_audit_log_to_json(char *json, size_t len, struct discord_audit_lo
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_audit_log_cleanup_v(void *p) {
   discord_audit_log_cleanup((struct discord_audit_log *)p);
 }
@@ -194,7 +191,7 @@ void discord_audit_log_init(struct discord_audit_log *p) {
 
 }
 void discord_audit_log_list_free(struct discord_audit_log **p) {
-  ntl_free((void**)p, (vfvp)discord_audit_log_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_audit_log_cleanup);
 }
 
 void discord_audit_log_list_from_json(char *str, size_t len, struct discord_audit_log ***p)
@@ -203,14 +200,14 @@ void discord_audit_log_list_from_json(char *str, size_t len, struct discord_audi
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_audit_log_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_audit_log_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_list_to_json(char *str, size_t len, struct discord_audit_log **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_audit_log_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_audit_log_to_json);
 }
 
 
@@ -355,9 +352,6 @@ size_t discord_audit_log_entry_to_json(char *json, size_t len, struct discord_au
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_audit_log_entry_cleanup_v(void *p) {
   discord_audit_log_entry_cleanup((struct discord_audit_log_entry *)p);
 }
@@ -398,13 +392,13 @@ void discord_audit_log_entry_cleanup(struct discord_audit_log_entry *d) {
     discord_audit_log_change_list_free(d->changes);
   /* discord/audit_log.json:28:18
      '{"name":"user_id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the user who made the changes", "inject_if_not":0 }' */
-  /* p->user_id is a scalar */
+  (void)d->user_id;
   /* discord/audit_log.json:29:18
      '{"name":"id", "type": {"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the entry", "inject_if_not":0 }' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/audit_log.json:30:18
      '{"name":"action_type", "type": {"base":"int", "c_base":"enum discord_audit_log_events"}, "comment":"type of action that occured", "inject_if_not":0 }' */
-  /* p->action_type is a scalar */
+  (void)d->action_type;
   /* discord/audit_log.json:31:18
      '{"name":"options", "type": {"base":"struct discord_optional_audit_entry_info", "dec":"ntl"}, "comment":"additional info for certain action types", "inject_if_not":null }' */
   if (d->options)
@@ -440,7 +434,7 @@ void discord_audit_log_entry_init(struct discord_audit_log_entry *p) {
 
 }
 void discord_audit_log_entry_list_free(struct discord_audit_log_entry **p) {
-  ntl_free((void**)p, (vfvp)discord_audit_log_entry_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_audit_log_entry_cleanup);
 }
 
 void discord_audit_log_entry_list_from_json(char *str, size_t len, struct discord_audit_log_entry ***p)
@@ -449,21 +443,18 @@ void discord_audit_log_entry_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_entry);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_audit_log_entry_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_audit_log_entry_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_entry_list_to_json(char *str, size_t len, struct discord_audit_log_entry **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_audit_log_entry_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_audit_log_entry_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_audit_log_events_list_free_v(void **p) {
   discord_audit_log_events_list_free((enum discord_audit_log_events**)p);
 }
@@ -521,6 +512,7 @@ enum discord_audit_log_events discord_audit_log_events_eval(char *s){
   if(strcasecmp("THREAD_UPDATE", s) == 0) return DISCORD_AUDIT_LOG_THREAD_UPDATE;
   if(strcasecmp("THREAD_DELETE", s) == 0) return DISCORD_AUDIT_LOG_THREAD_DELETE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_audit_log_events_print(enum discord_audit_log_events v){
@@ -753,9 +745,6 @@ size_t discord_optional_audit_entry_info_to_json(char *json, size_t len, struct 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_optional_audit_entry_info_cleanup_v(void *p) {
   discord_optional_audit_entry_info_cleanup((struct discord_optional_audit_entry_info *)p);
 }
@@ -796,17 +785,17 @@ void discord_optional_audit_entry_info_cleanup(struct discord_optional_audit_ent
     free(d->members_removed);
   /* discord/audit_log.json:96:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"channel in which the entities were targeted", "inject_if_not":0 }' */
-  /* p->channel_id is a scalar */
+  (void)d->channel_id;
   /* discord/audit_log.json:97:20
      '{ "name": "message_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the message that was targeted", "inject_if_not":0 }' */
-  /* p->message_id is a scalar */
+  (void)d->message_id;
   /* discord/audit_log.json:98:20
      '{ "name": "count", "type":{ "base":"char", "dec":"*" }, "comment":"number of entities that were targeted", "inject_if_not":null }' */
   if (d->count)
     free(d->count);
   /* discord/audit_log.json:99:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"id of the ovewritten entity", "inject_if_not":0 }' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/audit_log.json:100:20
      '{ "name": "type", "type":{ "base":"char", "dec":"*" }, "comment":"type of overwritten entity - '0' for role or '1' for member", "inject_if_not":null }' */
   if (d->type)
@@ -845,7 +834,7 @@ void discord_optional_audit_entry_info_init(struct discord_optional_audit_entry_
 
 }
 void discord_optional_audit_entry_info_list_free(struct discord_optional_audit_entry_info **p) {
-  ntl_free((void**)p, (vfvp)discord_optional_audit_entry_info_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_optional_audit_entry_info_cleanup);
 }
 
 void discord_optional_audit_entry_info_list_from_json(char *str, size_t len, struct discord_optional_audit_entry_info ***p)
@@ -854,14 +843,14 @@ void discord_optional_audit_entry_info_list_from_json(char *str, size_t len, str
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_optional_audit_entry_info);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_optional_audit_entry_info_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_optional_audit_entry_info_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_optional_audit_entry_info_list_to_json(char *str, size_t len, struct discord_optional_audit_entry_info **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_optional_audit_entry_info_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_optional_audit_entry_info_to_json);
 }
 
 
@@ -938,9 +927,6 @@ size_t discord_audit_log_change_to_json(char *json, size_t len, struct discord_a
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_audit_log_change_cleanup_v(void *p) {
   discord_audit_log_change_cleanup((struct discord_audit_log_change *)p);
 }
@@ -998,7 +984,7 @@ void discord_audit_log_change_init(struct discord_audit_log_change *p) {
 
 }
 void discord_audit_log_change_list_free(struct discord_audit_log_change **p) {
-  ntl_free((void**)p, (vfvp)discord_audit_log_change_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_audit_log_change_cleanup);
 }
 
 void discord_audit_log_change_list_from_json(char *str, size_t len, struct discord_audit_log_change ***p)
@@ -1007,13 +993,13 @@ void discord_audit_log_change_list_from_json(char *str, size_t len, struct disco
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_audit_log_change);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_audit_log_change_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_audit_log_change_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_audit_log_change_list_to_json(char *str, size_t len, struct discord_audit_log_change **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_audit_log_change_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_audit_log_change_to_json);
 }
 

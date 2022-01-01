@@ -137,9 +137,6 @@ size_t discord_edit_original_interaction_response_params_to_json(char *json, siz
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_edit_original_interaction_response_params_cleanup_v(void *p) {
   discord_edit_original_interaction_response_params_cleanup((struct discord_edit_original_interaction_response_params *)p);
 }
@@ -220,7 +217,7 @@ void discord_edit_original_interaction_response_params_init(struct discord_edit_
 
 }
 void discord_edit_original_interaction_response_params_list_free(struct discord_edit_original_interaction_response_params **p) {
-  ntl_free((void**)p, (vfvp)discord_edit_original_interaction_response_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_edit_original_interaction_response_params_cleanup);
 }
 
 void discord_edit_original_interaction_response_params_list_from_json(char *str, size_t len, struct discord_edit_original_interaction_response_params ***p)
@@ -229,14 +226,14 @@ void discord_edit_original_interaction_response_params_list_from_json(char *str,
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_original_interaction_response_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_edit_original_interaction_response_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_edit_original_interaction_response_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_original_interaction_response_params_list_to_json(char *str, size_t len, struct discord_edit_original_interaction_response_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_edit_original_interaction_response_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_edit_original_interaction_response_params_to_json);
 }
 
 
@@ -441,9 +438,6 @@ size_t discord_create_followup_message_params_to_json(char *json, size_t len, st
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_followup_message_params_cleanup_v(void *p) {
   discord_create_followup_message_params_cleanup((struct discord_create_followup_message_params *)p);
 }
@@ -476,10 +470,10 @@ size_t discord_create_followup_message_params_list_to_json_v(char *str, size_t l
 void discord_create_followup_message_params_cleanup(struct discord_create_followup_message_params *d) {
   /* discord/interaction.params.json:27:20
      '{ "name": "wait", "type":{ "base":"bool"}, "loc":"query", "comment":"	waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that is not saved does not return an error)", "default_value":true }' */
-  /* p->wait is a scalar */
+  (void)d->wait;
   /* discord/interaction.params.json:28:20
      '{ "name": "thread_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"}, "loc":"query", "comment":"Send a message to the specified thread withing a webhook's channel. The thread will automatically be unarchived", "inject_if_not":0 }' */
-  /* p->thread_id is a scalar */
+  (void)d->thread_id;
   /* discord/interaction.params.json:29:20
      '{ "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not": null }' */
   if (d->content)
@@ -494,7 +488,7 @@ void discord_create_followup_message_params_cleanup(struct discord_create_follow
     free(d->avatar_url);
   /* discord/interaction.params.json:32:20
      '{ "name": "tts", "type":{ "base":"bool" }, "comment":"true if this is a TTS message", "inject_if_not":false }' */
-  /* p->tts is a scalar */
+  (void)d->tts;
   /* discord/interaction.params.json:33:20
      '{ "name": "attachments", "type":{ "base":"struct discord_attachment", "dec":"ntl" }, "comment":"attached files to keep", "inject_if_not":null }' */
   if (d->attachments)
@@ -521,7 +515,7 @@ void discord_create_followup_message_params_cleanup(struct discord_create_follow
     discord_component_list_free(d->components);
   /* discord/interaction.params.json:38:20
      '{ "name": "flags", "type":{ "base":"int" }, "comment":"can be set to 64 to send a ephemeral message", "inject_if_not": 0 }' */
-  /* p->flags is a scalar */
+  (void)d->flags;
 }
 
 void discord_create_followup_message_params_init(struct discord_create_followup_message_params *p) {
@@ -564,7 +558,7 @@ void discord_create_followup_message_params_init(struct discord_create_followup_
 
 }
 void discord_create_followup_message_params_list_free(struct discord_create_followup_message_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_followup_message_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_followup_message_params_cleanup);
 }
 
 void discord_create_followup_message_params_list_from_json(char *str, size_t len, struct discord_create_followup_message_params ***p)
@@ -573,14 +567,14 @@ void discord_create_followup_message_params_list_from_json(char *str, size_t len
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_followup_message_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_followup_message_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_followup_message_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_followup_message_params_list_to_json(char *str, size_t len, struct discord_create_followup_message_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_followup_message_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_followup_message_params_to_json);
 }
 
 
@@ -708,9 +702,6 @@ size_t discord_edit_followup_message_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_edit_followup_message_params_cleanup_v(void *p) {
   discord_edit_followup_message_params_cleanup((struct discord_edit_followup_message_params *)p);
 }
@@ -791,7 +782,7 @@ void discord_edit_followup_message_params_init(struct discord_edit_followup_mess
 
 }
 void discord_edit_followup_message_params_list_free(struct discord_edit_followup_message_params **p) {
-  ntl_free((void**)p, (vfvp)discord_edit_followup_message_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_edit_followup_message_params_cleanup);
 }
 
 void discord_edit_followup_message_params_list_from_json(char *str, size_t len, struct discord_edit_followup_message_params ***p)
@@ -800,13 +791,13 @@ void discord_edit_followup_message_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_edit_followup_message_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_edit_followup_message_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_edit_followup_message_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_edit_followup_message_params_list_to_json(char *str, size_t len, struct discord_edit_followup_message_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_edit_followup_message_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_edit_followup_message_params_to_json);
 }
 

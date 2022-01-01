@@ -236,9 +236,6 @@ size_t discord_webhook_to_json(char *json, size_t len, struct discord_webhook *p
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_webhook_cleanup_v(void *p) {
   discord_webhook_cleanup((struct discord_webhook *)p);
 }
@@ -271,16 +268,16 @@ size_t discord_webhook_list_to_json_v(char *str, size_t len, void *p){
 void discord_webhook_cleanup(struct discord_webhook *d) {
   /* discord/webhook.json:12:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the id of the webhook" }' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/webhook.json:13:20
      '{ "name": "type", "type":{ "base":"int", "int_alias":"enum discord_webhook_types" }, "comment":"the type of the webhook" }' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/webhook.json:14:20
      '{ "name": "guild_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the guild id this webhook is for, if any", "inject_if_not":0 }' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/webhook.json:15:20
      '{ "name": "channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the channel id this webhook is for, if any", "inject_if_not":0 }' */
-  /* p->channel_id is a scalar */
+  (void)d->channel_id;
   /* discord/webhook.json:16:20
      '{ "name": "user", "type":{ "base":"struct discord_user", "dec":"*" }, "comment":"the user this webhook was created by (not returned when getting a webhook with its token", "inject_if_not":null }' */
   if (d->user) {
@@ -301,7 +298,7 @@ void discord_webhook_cleanup(struct discord_webhook *d) {
     free(d->token);
   /* discord/webhook.json:20:20
      '{ "name": "application_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the bot/OAuth2 application that created this webhook", "inject_if_not":0 }' */
-  /* p->application_id is a scalar */
+  (void)d->application_id;
   /* discord/webhook.json:21:20
      '{ "name": "source_guild", "type":{ "base":"struct discord_guild", "dec":"*" }, "comment":"the guild of the channel that this webhook is following (returned for Channel Follower Webhook)", "inject_if_not":null }' */
   if (d->source_guild) {
@@ -360,7 +357,7 @@ void discord_webhook_init(struct discord_webhook *p) {
 
 }
 void discord_webhook_list_free(struct discord_webhook **p) {
-  ntl_free((void**)p, (vfvp)discord_webhook_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_webhook_cleanup);
 }
 
 void discord_webhook_list_from_json(char *str, size_t len, struct discord_webhook ***p)
@@ -369,21 +366,18 @@ void discord_webhook_list_from_json(char *str, size_t len, struct discord_webhoo
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_webhook);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_webhook_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_webhook_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_webhook_list_to_json(char *str, size_t len, struct discord_webhook **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_webhook_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_webhook_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_webhook_types_list_free_v(void **p) {
   discord_webhook_types_list_free((enum discord_webhook_types**)p);
 }
@@ -401,6 +395,7 @@ enum discord_webhook_types discord_webhook_types_eval(char *s){
   if(strcasecmp("CHANNEL_FOLLOWER", s) == 0) return DISCORD_WEBHOOK_CHANNEL_FOLLOWER;
   if(strcasecmp("APPLICATION", s) == 0) return DISCORD_WEBHOOK_APPLICATION;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_webhook_types_print(enum discord_webhook_types v){

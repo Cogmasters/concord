@@ -14,9 +14,6 @@
 #include "discord.h"
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_gateway_close_opcodes_list_free_v(void **p) {
   discord_gateway_close_opcodes_list_free((enum discord_gateway_close_opcodes**)p);
 }
@@ -46,6 +43,7 @@ enum discord_gateway_close_opcodes discord_gateway_close_opcodes_eval(char *s){
   if(strcasecmp("CLOSE_REASON_DISALLOWED_INTENTS", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS;
   if(strcasecmp("CLOSE_REASON_RECONNECT", s) == 0) return DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_gateway_close_opcodes_print(enum discord_gateway_close_opcodes v){
@@ -93,9 +91,6 @@ size_t discord_gateway_close_opcodes_list_to_json(char *str, size_t len, enum di
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_gateway_intents_list_free_v(void **p) {
   discord_gateway_intents_list_free((enum discord_gateway_intents**)p);
 }
@@ -125,6 +120,7 @@ enum discord_gateway_intents discord_gateway_intents_eval(char *s){
   if(strcasecmp("DIRECT_MESSAGE_REACTIONS", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS;
   if(strcasecmp("DIRECT_MESSAGE_TYPING", s) == 0) return DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_gateway_intents_print(enum discord_gateway_intents v){
@@ -172,9 +168,6 @@ size_t discord_gateway_intents_list_to_json(char *str, size_t len, enum discord_
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_gateway_opcodes_list_free_v(void **p) {
   discord_gateway_opcodes_list_free((enum discord_gateway_opcodes**)p);
 }
@@ -200,6 +193,7 @@ enum discord_gateway_opcodes discord_gateway_opcodes_eval(char *s){
   if(strcasecmp("HELLO", s) == 0) return DISCORD_GATEWAY_HELLO;
   if(strcasecmp("HEARTBEAT_ACK", s) == 0) return DISCORD_GATEWAY_HEARTBEAT_ACK;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_gateway_opcodes_print(enum discord_gateway_opcodes v){
@@ -243,9 +237,6 @@ size_t discord_gateway_opcodes_list_to_json(char *str, size_t len, enum discord_
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_gateway_events_list_free_v(void **p) {
   discord_gateway_events_list_free((enum discord_gateway_events**)p);
 }
@@ -314,6 +305,7 @@ enum discord_gateway_events discord_gateway_events_eval(char *s){
   if(strcasecmp("EVENTS_VOICE_SERVER_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE;
   if(strcasecmp("EVENTS_WEBHOOKS_UPDATE", s) == 0) return DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_gateway_events_print(enum discord_gateway_events v){
@@ -544,9 +536,6 @@ size_t discord_identify_to_json(char *json, size_t len, struct discord_identify 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_identify_cleanup_v(void *p) {
   discord_identify_cleanup((struct discord_identify *)p);
 }
@@ -589,16 +578,16 @@ void discord_identify_cleanup(struct discord_identify *d) {
   }
   /* discord/gateway.json:145:19
      '{ "name":"compress","type":{"base":"bool"}}' */
-  /* p->compress is a scalar */
+  (void)d->compress;
   /* discord/gateway.json:146:19
      '{ "name":"large_threshold","type":{"base":"int"}}' */
-  /* p->large_threshold is a scalar */
+  (void)d->large_threshold;
   /* discord/gateway.json:147:19
      '{ "name":"guild_subscriptions","type":{"base":"bool"}}' */
-  /* p->guild_subscriptions is a scalar */
+  (void)d->guild_subscriptions;
   /* discord/gateway.json:148:19
      '{ "name":"shard","type":{"base":"int", "dec":"*"}, "todo":true}' */
-  /* @todo p->(null) */
+  /* @todo d->(null) */
   /* discord/gateway.json:149:19
      '{ "name":"presence","type":{"base":"struct discord_presence_status", "dec":"*"}}' */
   if (d->presence) {
@@ -607,7 +596,7 @@ void discord_identify_cleanup(struct discord_identify *d) {
   }
   /* discord/gateway.json:150:19
      '{ "name":"intents","type":{"base":"int"}}' */
-  /* p->intents is a scalar */
+  (void)d->intents;
 }
 
 void discord_identify_init(struct discord_identify *p) {
@@ -638,7 +627,7 @@ void discord_identify_init(struct discord_identify *p) {
 
 }
 void discord_identify_list_free(struct discord_identify **p) {
-  ntl_free((void**)p, (vfvp)discord_identify_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_identify_cleanup);
 }
 
 void discord_identify_list_from_json(char *str, size_t len, struct discord_identify ***p)
@@ -647,14 +636,14 @@ void discord_identify_list_from_json(char *str, size_t len, struct discord_ident
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_identify);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_identify_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_identify_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_identify_list_to_json(char *str, size_t len, struct discord_identify **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_identify_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_identify_to_json);
 }
 
 
@@ -746,9 +735,6 @@ size_t discord_voice_state_status_to_json(char *json, size_t len, struct discord
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_voice_state_status_cleanup_v(void *p) {
   discord_voice_state_status_cleanup((struct discord_voice_state_status *)p);
 }
@@ -781,16 +767,16 @@ size_t discord_voice_state_status_list_to_json_v(char *str, size_t len, void *p)
 void discord_voice_state_status_cleanup(struct discord_voice_state_status *d) {
   /* discord/gateway.json:160:19
      '{ "name":"guild_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the guild", "inject_if_not":0 }' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/gateway.json:161:19
      '{ "name":"channel_id","type":{"base":"char", "dec":"*", "converter":"snowflake"}, "option":true, "comment":"id of the voice channel client wants to join (null if disconnecting)", "inject_if_not":0 }' */
-  /* p->channel_id is a scalar */
+  (void)d->channel_id;
   /* discord/gateway.json:162:19
      '{ "name":"self_mute","type":{"base":"bool"}, "comment":"is the client muted"}' */
-  /* p->self_mute is a scalar */
+  (void)d->self_mute;
   /* discord/gateway.json:163:19
      '{ "name":"self_deaf","type":{"base":"bool"}, "comment":"is the client deafened"}' */
-  /* p->self_deaf is a scalar */
+  (void)d->self_deaf;
 }
 
 void discord_voice_state_status_init(struct discord_voice_state_status *p) {
@@ -809,7 +795,7 @@ void discord_voice_state_status_init(struct discord_voice_state_status *p) {
 
 }
 void discord_voice_state_status_list_free(struct discord_voice_state_status **p) {
-  ntl_free((void**)p, (vfvp)discord_voice_state_status_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_voice_state_status_cleanup);
 }
 
 void discord_voice_state_status_list_from_json(char *str, size_t len, struct discord_voice_state_status ***p)
@@ -818,14 +804,14 @@ void discord_voice_state_status_list_from_json(char *str, size_t len, struct dis
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_voice_state_status);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_voice_state_status_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_voice_state_status_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_voice_state_status_list_to_json(char *str, size_t len, struct discord_voice_state_status **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_voice_state_status_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_voice_state_status_to_json);
 }
 
 
@@ -918,9 +904,6 @@ size_t discord_presence_status_to_json(char *json, size_t len, struct discord_pr
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_presence_status_cleanup_v(void *p) {
   discord_presence_status_cleanup((struct discord_presence_status *)p);
 }
@@ -953,7 +936,7 @@ size_t discord_presence_status_list_to_json_v(char *str, size_t len, void *p){
 void discord_presence_status_cleanup(struct discord_presence_status *d) {
   /* discord/gateway.json:173:19
      '{ "name":"since","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "comment":"unix time (in milliseconds) of when the client went idle, or null if the client is not idle", "inject_if_not":0 }' */
-  /* p->since is a scalar */
+  (void)d->since;
   /* discord/gateway.json:174:19
      '{ "name":"activities","type":{"base":"struct discord_activity", "dec":"ntl"}, "option":true, "comment":"the user's activities", "inject_if_not":null}' */
   if (d->activities)
@@ -964,7 +947,7 @@ void discord_presence_status_cleanup(struct discord_presence_status *d) {
     free(d->status);
   /* discord/gateway.json:176:19
      '{ "name":"afk","type":{"base":"bool"}, "comment":"whether or not the client is afk"}' */
-  /* p->afk is a scalar */
+  (void)d->afk;
 }
 
 void discord_presence_status_init(struct discord_presence_status *p) {
@@ -983,7 +966,7 @@ void discord_presence_status_init(struct discord_presence_status *p) {
 
 }
 void discord_presence_status_list_free(struct discord_presence_status **p) {
-  ntl_free((void**)p, (vfvp)discord_presence_status_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_presence_status_cleanup);
 }
 
 void discord_presence_status_list_from_json(char *str, size_t len, struct discord_presence_status ***p)
@@ -992,14 +975,14 @@ void discord_presence_status_list_from_json(char *str, size_t len, struct discor
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_presence_status);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_presence_status_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_presence_status_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_presence_status_list_to_json(char *str, size_t len, struct discord_presence_status **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_presence_status_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_presence_status_to_json);
 }
 
 
@@ -1076,9 +1059,6 @@ size_t discord_identify_connection_to_json(char *json, size_t len, struct discor
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_identify_connection_cleanup_v(void *p) {
   discord_identify_connection_cleanup((struct discord_identify_connection *)p);
 }
@@ -1136,7 +1116,7 @@ void discord_identify_connection_init(struct discord_identify_connection *p) {
 
 }
 void discord_identify_connection_list_free(struct discord_identify_connection **p) {
-  ntl_free((void**)p, (vfvp)discord_identify_connection_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_identify_connection_cleanup);
 }
 
 void discord_identify_connection_list_from_json(char *str, size_t len, struct discord_identify_connection ***p)
@@ -1145,14 +1125,14 @@ void discord_identify_connection_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_identify_connection);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_identify_connection_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_identify_connection_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_identify_connection_list_to_json(char *str, size_t len, struct discord_identify_connection **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_identify_connection_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_identify_connection_to_json);
 }
 
 
@@ -1312,9 +1292,6 @@ size_t discord_activity_to_json(char *json, size_t len, struct discord_activity 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_activity_cleanup_v(void *p) {
   discord_activity_cleanup((struct discord_activity *)p);
 }
@@ -1351,17 +1328,17 @@ void discord_activity_cleanup(struct discord_activity *d) {
     free(d->name);
   /* discord/gateway.json:198:19
      '{ "name":"type","type":{"base":"int"}}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/gateway.json:199:19
      '{ "name":"url","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":""}' */
   if (d->url)
     free(d->url);
   /* discord/gateway.json:200:19
      '{ "name":"created_at","type":{"base":"char", "dec":"*", "converter":"iso8601"}, "option":true, "inject_if_not":0 }' */
-  /* p->created_at is a scalar */
+  (void)d->created_at;
   /* discord/gateway.json:201:19
      '{ "name":"application_id","type":{"base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0 }' */
-  /* p->application_id is a scalar */
+  (void)d->application_id;
   /* discord/gateway.json:202:19
      '{ "name":"details","type":{"base":"char", "dec":"*"}, "option":true, "inject_if_not":null}' */
   if (d->details)
@@ -1372,7 +1349,7 @@ void discord_activity_cleanup(struct discord_activity *d) {
     free(d->state);
   /* discord/gateway.json:204:19
      '{ "name":"instance","type":{"base":"bool"}, "option":true, "inject_if_not":false}' */
-  /* p->instance is a scalar */
+  (void)d->instance;
 }
 
 void discord_activity_init(struct discord_activity *p) {
@@ -1403,7 +1380,7 @@ void discord_activity_init(struct discord_activity *p) {
 
 }
 void discord_activity_list_free(struct discord_activity **p) {
-  ntl_free((void**)p, (vfvp)discord_activity_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_activity_cleanup);
 }
 
 void discord_activity_list_from_json(char *str, size_t len, struct discord_activity ***p)
@@ -1412,21 +1389,18 @@ void discord_activity_list_from_json(char *str, size_t len, struct discord_activ
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_activity);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_activity_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_activity_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_activity_list_to_json(char *str, size_t len, struct discord_activity **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_activity_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_activity_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_activity_types_list_free_v(void **p) {
   discord_activity_types_list_free((enum discord_activity_types**)p);
 }
@@ -1446,6 +1420,7 @@ enum discord_activity_types discord_activity_types_eval(char *s){
   if(strcasecmp("CUSTOM", s) == 0) return DISCORD_ACTIVITY_CUSTOM;
   if(strcasecmp("COMPETING", s) == 0) return DISCORD_ACTIVITY_COMPETING;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_activity_types_print(enum discord_activity_types v){
@@ -1572,9 +1547,6 @@ size_t discord_session_start_limit_to_json(char *json, size_t len, struct discor
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_session_start_limit_cleanup_v(void *p) {
   discord_session_start_limit_cleanup((struct discord_session_start_limit *)p);
 }
@@ -1607,16 +1579,16 @@ size_t discord_session_start_limit_list_to_json_v(char *str, size_t len, void *p
 void discord_session_start_limit_cleanup(struct discord_session_start_limit *d) {
   /* discord/gateway.json:228:19
      '{ "name":"total","type":{"base":"int"}, "comment":"the total number of session starts the current user is allowed", "inject_if_not":0 }' */
-  /* p->total is a scalar */
+  (void)d->total;
   /* discord/gateway.json:229:19
      '{ "name":"remaining","type":{"base":"int"}, "comment":"the remaining number of session starts the current user is allowed", "inject_if_not":0 }' */
-  /* p->remaining is a scalar */
+  (void)d->remaining;
   /* discord/gateway.json:230:19
      '{ "name":"reset_after","type":{"base":"int"}, "comment":"the number of milliseconds after which the limit resets", "inject_if_not":0 }' */
-  /* p->reset_after is a scalar */
+  (void)d->reset_after;
   /* discord/gateway.json:231:19
      '{ "name":"max_concurrency","type":{"base":"int"}, "comment":"the number of identify requests allowed per 5 seconds", "inject_if_not":0 }' */
-  /* p->max_concurrency is a scalar */
+  (void)d->max_concurrency;
 }
 
 void discord_session_start_limit_init(struct discord_session_start_limit *p) {
@@ -1635,7 +1607,7 @@ void discord_session_start_limit_init(struct discord_session_start_limit *p) {
 
 }
 void discord_session_start_limit_list_free(struct discord_session_start_limit **p) {
-  ntl_free((void**)p, (vfvp)discord_session_start_limit_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_session_start_limit_cleanup);
 }
 
 void discord_session_start_limit_list_from_json(char *str, size_t len, struct discord_session_start_limit ***p)
@@ -1644,13 +1616,13 @@ void discord_session_start_limit_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_session_start_limit);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_session_start_limit_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_session_start_limit_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_session_start_limit_list_to_json(char *str, size_t len, struct discord_session_start_limit **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_session_start_limit_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_session_start_limit_to_json);
 }
 
