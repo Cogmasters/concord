@@ -40,54 +40,30 @@ GITHUB_OBJS  := $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
 REDDIT_OBJS  := $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
 SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
-# API libs ldflags
-LIBDISCORD_LDFLAGS := -ldiscord
-LIBGITHUB_LDFLAGS  := -lgithub
-LIBREDDIT_LDFLAGS  := -lreddit
-LIBSLACK_LDFLAGS   := -lslack
-
 # API libs
 LIBDISCORD := $(LIBDIR)/libdiscord.a
 LIBGITHUB  := $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBDIR)/libslack.a
 
-LIBS_CFLAGS  +=
-LIBS_LDFLAGS += -L./$(LIBDIR)
-
-CFLAGS += -O0 -g -pthread -Wall                                              \
+CFLAGS += -O0 -g -pthread -Wall                                             \
           -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(COMMON_DIR)/third-party \
           -DLOG_USE_COLOR
 
-ifeq ($(BEARSSL),1)
-	LIBS_LDFLAGS += -lbearssl -static
-	CFLAGS += -DBEARSSL
-else ifneq (,$(findstring $(CC),stensal-c sfc)) # ifeq stensal-c OR sfc
-	LIBS_LDFLAGS += -lcurl-bearssl -lbearssl -static
-	CFLAGS += -DBEARSSL
-else
-	LIBS_LDFLAGS += $(pkg-config --libs --cflags libcurl) -lcurl
-endif
-
 ifeq ($(static_debug),1)
-	CFLAGS +=  -D_STATIC_DEBUG
+	CFLAGS += -D_STATIC_DEBUG
 else ifeq ($(static_debug),2) 
-	CFLAGS +=  -D_STRICT_STATIC_DEBUG
+	CFLAGS += -D_STRICT_STATIC_DEBUG
 else ifeq ($(static_debug),3) 
-	CFLAGS +=  -D_STATIC_DEBUG -D_STRICT_STATIC_DEBUG
+	CFLAGS += -D_STATIC_DEBUG -D_STRICT_STATIC_DEBUG
 endif
 
-ifneq (,$(findstring $(CC),stensal-c sfc)) # ifeq stensal-c OR sfc
-	CFLAGS += -D_DEFAULT_SOURCE
-	__D    := $(shell dirname $(shell which $(CC)))
-	__DEST := $(patsubst %/stensal/bin,%,$(__D))
-	PREFIX := $(__DEST)/usr
-else
-	CFLAGS += -fPIC -D_XOPEN_SOURCE=700
+ifeq (,$(findstring $(CC),stensal-c sfc)) # ifneq stensal-c AND sfc
+	CFLAGS  += -fPIC
 endif
 
 $(OBJDIR)/%.o : %.c
-	$(CC) $(CFLAGS) $(LIBS_CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: | $(SPECSCODE_DIR)
 	$(MAKE) discord github reddit slack
@@ -106,10 +82,10 @@ test: all
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-discord: $(LIBDISCORD)
-github: $(LIBGITHUB)
-reddit: $(LIBREDDIT)
-slack: $(LIBSLACK)
+discord: $(LIBDISCORD) | $(SPECSCODE_DIR)
+github: $(LIBGITHUB) | $(SPECSCODE_DIR)
+reddit: $(LIBREDDIT) | $(SPECSCODE_DIR)
+slack: $(LIBSLACK) | $(SPECSCODE_DIR)
 
 # API libraries compilation
 $(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) | $(LIBDIR)
@@ -136,26 +112,30 @@ $(SLACK_OBJS): $(OBJS)
 $(OBJS): | $(OBJDIR)
 
 $(OBJDIR):
-	@ mkdir -p $(OBJDIR)/$(COMMON_DIR)/third-party \
-	           $(OBJDIR)/$(CEEUTILS_DIR)           \
-             $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
+	@ mkdir -p $(OBJDIR)/$(COMMON_DIR)/third-party                     \
+	           $(OBJDIR)/$(CEEUTILS_DIR)                               \
+	           $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
 
 install:
-	mkdir -p $(PREFIX)/lib/
-	mkdir -p $(PREFIX)/include/orca
+	@ mkdir -p $(PREFIX)/lib/
+	@ mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -m 644 $(LIBGITHUB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
-	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h $(COMMON_DIR)/**/*.h $(PREFIX)/include/orca/
+	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
+	               $(COMMON_DIR)/third-party/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
-	install -m 644 $(SPECSCODE_DIR)/discord/*.h $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
+	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
+	               $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
 	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
-	install -m 644 $(SPECSCODE_DIR)/github/*.h $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
+	install -m 644 $(SPECSCODE_DIR)/github/*.h                           \
+	               $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'PREFIX: $(PREFIX)\n'
+	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 	@ echo -e 'SPECS DIRS: $(wildcard $(SPECSCODE_DIR)/*)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
