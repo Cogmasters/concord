@@ -171,13 +171,13 @@ Included headers must be `orca/` prefixed:
 #### GCC (Recommended)
 
 ```bash
-$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl -lm
+$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 #### Clang
 
 ```bash
-$ clang myBot.c -o myBot -pthread -ldiscord -lcurl -lm
+$ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 ## Recommended debuggers

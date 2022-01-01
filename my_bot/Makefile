@@ -49,8 +49,7 @@ CFLAGS  := -O0 -g -Wall -pthread                         \
 # -L add library folder to compiler search path
 # -ldiscord links against libdiscord.a
 # -lcurl links against libcurl, a orca dependency
-# -lm links against math.h, a orca dependency
-LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl -lm
+LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl
 
 all: $(MAIN) $(CONF)
 

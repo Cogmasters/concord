@@ -39,7 +39,7 @@ BOTS := $(BOT_DISCORD) $(BOT_GITHUB)
 CFLAGS  += -I$(TOP) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
            -I$(COMMON_DIR)/third-party                \
            -O0 -g -pthread -Wall
-LDFLAGS += -L$(TOP)/lib -lcurl -lcrypto -lm
+LDFLAGS += -L$(TOP)/lib -lcurl
 
 all: $(BOTS)
 
