@@ -37,7 +37,15 @@ define generate_source
 	  $(VAR)$(\n))
 endef
 
-define generate_header
+define generate_headers
+	# Generate header files (specs-code/%/*.h)
+	$(foreach VAR, $(JSON), ./$(MAIN) \
+	  -h \
+	  -o $(patsubst %, $(WDIR)/%, $(VAR:%.json=%.h)) \
+	  $(VAR)$(\n))
+endef
+
+define generate_headers_amalgamation
 	@ rm -rf $(WDIR)/*/one-specs.h
 	# Generate single header (specs-code/%/one-specs.h)
 	$(foreach VAR, $(JSON), ./$(MAIN) \
@@ -62,13 +70,20 @@ define generate_header
 	  $(VAR)$(\n))
 endef
 
-all: $(CEEUTILS_DIR) $(WDIR)
+all: $(CEEUTILS_DIR) 
+	$(MAKE) gen_source gen_headers gen_headers_amalgamation
+
+gen_source: | $(WDIR)
+	$(generate_source)
+
+gen_headers: | $(WDIR)
+	$(generate_headers)
+
+gen_headers_amalgamation: | $(WDIR)
+	$(generate_headers_amalgamation)
 
 $(WDIR): $(APIS) | $(MAIN)
 	mkdir -p $(addprefix $(WDIR)/, $(APIS))
-	$(generate_source)
-	$(generate_header)
-	@ touch $(WDIR) # Make sure WDIR has a more recent timestamp
 
 $(APIS): ;
 
