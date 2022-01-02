@@ -568,6 +568,13 @@ void discord_gateway_shutdown(struct discord_gateway *gw);
 void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
 
 /**
+ * @brief Send client's presence status update payload
+ *
+ * @param gw the handle initialized with discord_gateway_init()
+ */
+void discord_gateway_send_presence_update(struct discord_gateway *gw);
+
+/**
  * @brief The Discord client handler
  *
  * Used to access/perform public functions from discord.h

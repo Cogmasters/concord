@@ -553,6 +553,7 @@ discord_set_presence(struct discord *client,
                      struct discord_presence_status *presence)
 {
   memcpy(client->gw.id.presence, presence, sizeof *presence);
+  discord_gateway_send_presence_update(&client->gw);
 }
 
 int

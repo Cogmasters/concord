@@ -33,6 +33,31 @@ close_opcode_print(enum discord_gateway_close_opcodes opcode)
   return "Unknown WebSockets close opcode";
 }
 
+void
+discord_gateway_send_presence_update(struct discord_gateway *gw)
+{
+  char buf[2048];
+  size_t len;
+  struct ws_info info = { 0 };
+
+  if (!gw->session->is_ready) return;
+
+  len = json_inject(buf, sizeof(buf),
+                    "(op):3" /* PRESENCE UPDATE OPCODE */
+                    "(d):F",
+                    &discord_presence_status_to_json, gw->id.presence);
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+
+  ws_send_text(gw->ws, &info, buf, len);
+
+  logconf_info(
+    &gw->conf,
+    ANSICOLOR(
+      "SEND",
+      ANSI_FG_BRIGHT_GREEN) " PRESENCE UPDATE (%d bytes) [@@@_%zu_@@@]",
+    len, info.loginfo.counter + 1);
+}
+
 static void
 send_resume(struct discord_gateway *gw)
 {
