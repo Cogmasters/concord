@@ -852,7 +852,7 @@ discord_bulk_delete_messages(struct discord *client,
   char *buf = NULL;
   ORCAcode code;
   size_t count;
-  int i;
+  size_t i;
 
   ORCA_EXPECT(client, messages != NULL, ORCA_BAD_PARAMETER);
 

@@ -585,7 +585,7 @@ ws_set_url(struct websockets *ws,
            const char base_url[],
            const char ws_protocols[])
 {
-  int ret;
+  size_t len;
 
   pthread_mutex_lock(&ws->lock);
 
@@ -595,13 +595,13 @@ ws_set_url(struct websockets *ws,
     logconf_debug(&ws->conf, "WebSockets redirecting:\n\tfrom: %s\n\tto: %s",
                   ws->base_url, base_url);
 
-  ret = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
-  VASSERT_S(ret < sizeof(ws->base_url), "[%s] Out of bounds write attempt",
+  len = snprintf(ws->base_url, sizeof(ws->base_url), "%s", base_url);
+  VASSERT_S(len < sizeof(ws->base_url), "[%s] Out of bounds write attempt",
             ws->conf.id);
 
   if (!IS_EMPTY_STRING(ws_protocols)) {
-    ret = snprintf(ws->protocols, sizeof(ws->protocols), "%s", ws_protocols);
-    VASSERT_S(ret < sizeof(ws->protocols), "[%s] Out of bounds write attempt",
+    len = snprintf(ws->protocols, sizeof(ws->protocols), "%s", ws_protocols);
+    VASSERT_S(len < sizeof(ws->protocols), "[%s] Out of bounds write attempt",
               ws->conf.id);
   }
 

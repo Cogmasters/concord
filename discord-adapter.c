@@ -14,7 +14,7 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 {
   struct sized_buffer *token = p_token;
   char auth[128];
-  int len;
+  size_t len;
 
   len =
     snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size, token->start);
@@ -142,7 +142,7 @@ discord_adapter_run(struct discord_adapter *adapter,
   char endpoint[DISCORD_ENDPT_LEN];
   char route[DISCORD_ROUTE_LEN];
   va_list args;
-  int len;
+  size_t len;
 
   /* have it point somewhere */
   if (!attr) attr = &blank_attr;
@@ -216,8 +216,10 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
     snprintf(name, sizeof(name), "files[%d]", i);
     if (atchs[i]->content) {
       part = curl_mime_addpart(mime);
+      /* TODO: struct discord_attachments->size should be a size_t */
       curl_mime_data(part, atchs[i]->content,
-                     atchs[i]->size ? atchs[i]->size : CURL_ZERO_TERMINATED);
+                     atchs[i]->size ? (size_t)atchs[i]->size
+                                    : CURL_ZERO_TERMINATED);
       curl_mime_filename(part, IS_EMPTY_STRING(atchs[i]->filename)
                                  ? "a.out"
                                  : atchs[i]->filename);

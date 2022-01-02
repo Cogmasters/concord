@@ -23,17 +23,17 @@ _discord_route_init(struct discord_adapter *adapter,
                     struct discord_bucket *b)
 {
   struct _discord_route *r;
-  int ret;
+  size_t len;
 
   r = calloc(1, sizeof(struct _discord_route));
 
   r->bucket = b;
 
-  ret = snprintf(r->route, sizeof(r->route), "%s", route);
-  ASSERT_S(ret < sizeof(r->route), "Out of bounds write attempt");
+  len = snprintf(r->route, sizeof(r->route), "%s", route);
+  ASSERT_S(len < sizeof(r->route), "Out of bounds write attempt");
 
   pthread_mutex_lock(&adapter->global->lock);
-  HASH_ADD(hh, adapter->routes, route, ret, r);
+  HASH_ADD(hh, adapter->routes, route, len, r);
   pthread_mutex_unlock(&adapter->global->lock);
 }
 
@@ -100,16 +100,16 @@ discord_bucket_init(struct discord_adapter *adapter,
                     const long limit)
 {
   struct discord_bucket *b;
-  int ret;
+  size_t len;
 
   b = calloc(1, sizeof(struct discord_bucket));
 
   b->remaining = 1;
   b->limit = limit;
 
-  ret =
+  len =
     snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size, hash->start);
-  ASSERT_S(ret < sizeof(b->hash), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(b->hash), "Out of bounds write attempt");
 
   if (pthread_mutex_init(&b->lock, NULL))
     ERR("Couldn't initialize pthread mutex");
@@ -118,7 +118,7 @@ discord_bucket_init(struct discord_adapter *adapter,
   QUEUE_INIT(&b->busyq);
 
   pthread_mutex_lock(&adapter->global->lock);
-  HASH_ADD(hh, adapter->buckets, hash, ret, b);
+  HASH_ADD(hh, adapter->buckets, hash, len, b);
   pthread_mutex_unlock(&adapter->global->lock);
 
   return b;

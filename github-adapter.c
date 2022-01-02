@@ -116,7 +116,7 @@ github_adapter_run(struct github_adapter *adapter,
   static struct github_request_attr blank_attr = { 0 };
   char endpoint[2048];
   va_list args;
-  int ret;
+  size_t len;
 
   /* have it point somewhere */
   if (!attr) attr = &blank_attr;
@@ -124,8 +124,8 @@ github_adapter_run(struct github_adapter *adapter,
   /* build the endpoint string */
   va_start(args, endpoint_fmt);
 
-  ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
+  len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(len < sizeof(endpoint), "Out of bounds write attempt");
 
   va_end(args);
 

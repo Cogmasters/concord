@@ -219,7 +219,7 @@ ua_conn_add_header(struct ua_conn *conn,
     if (!(ptr = strchr(node->data, ':')))
       ERR("Missing ':' in header:\n\t%s", node->data);
 
-    if (fieldlen == ptr - node->data
+    if (fieldlen == (size_t)(ptr - node->data)
         && 0 == strncasecmp(node->data, field, fieldlen))
     {
       if (strlen(node->data) < buflen) {
@@ -509,7 +509,7 @@ void
 ua_cleanup(struct user_agent *ua)
 {
   QUEUE *ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
-  int i;
+  size_t i;
 
   /* cleanup connection queues */
   for (i = 0; i < sizeof(ua_queues) / sizeof(QUEUE *); ++i) {
