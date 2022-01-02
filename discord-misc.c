@@ -263,8 +263,8 @@ void
 discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
                          u64_snowflake_t id,
                          int type,
-                         enum discord_bitwise_permission_flags allow,
-                         enum discord_bitwise_permission_flags deny)
+                         u64_bitmask_t allow,
+                         u64_bitmask_t deny)
 {
   struct discord_overwrite new_overwrite = { 0 };
 
