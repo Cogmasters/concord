@@ -7,6 +7,7 @@ SPECS_DIR     := specs
 SPECSCODE_DIR := specs-code
 CEEUTILS_DIR  := cee-utils
 COMMON_DIR    := common
+THIRDP_DIR    := $(COMMON_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
 
@@ -18,15 +19,17 @@ CEEUTILS_SRC := $(CEEUTILS_DIR)/cee-utils.c        \
                 $(CEEUTILS_DIR)/logconf.c          \
                 $(CEEUTILS_DIR)/ntl.c
 
-SRC          := $(COMMON_DIR)/common.c                     \
-                $(COMMON_DIR)/work.c                       \
-                $(COMMON_DIR)/user-agent.c                 \
-                $(COMMON_DIR)/websockets.c                 \
-                $(COMMON_DIR)/third-party/sha1.c           \
-                $(COMMON_DIR)/third-party/curl-websocket.c \
-                $(COMMON_DIR)/third-party/threadpool.c
+COMMON_SRC   := $(COMMON_DIR)/common.c     \
+                $(COMMON_DIR)/work.c       \
+                $(COMMON_DIR)/user-agent.c \
+                $(COMMON_DIR)/websockets.c
 
-OBJS := $(CEEUTILS_SRC:%.c=$(OBJDIR)/%.o) $(SRC:%.c=$(OBJDIR)/%.o)
+THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
+                $(THIRDP_DIR)/curl-websocket.c \
+                $(THIRDP_DIR)/threadpool.c
+
+SRC  := $(CEEUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC)
+OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 # APIs src
 DISCORD_SRC := $(wildcard discord-*.c $(SPECSCODE_DIR)/discord/*.c)
@@ -46,9 +49,11 @@ LIBGITHUB  := $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBDIR)/libslack.a
 
-CFLAGS += -O0 -g -pthread -Wall -pedantic                                   \
-          -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(COMMON_DIR)/third-party \
+CFLAGS += -O0 -g -pthread                                       \
+          -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
+
+WFLAGS += -Wall -Wextra
 
 ifeq ($(static_debug),1)
 	CFLAGS += -D_STATIC_DEBUG
@@ -62,8 +67,12 @@ ifeq (,$(findstring $(CC),stensal-c sfc)) # ifneq stensal-c AND sfc
 	CFLAGS  += -fPIC
 endif
 
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/$(CEEUTILS_DIR)/%.o : $(CEEUTILS_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
+$(OBJDIR)/$(THIRDP_DIR)/%.o : $(THIRDP_DIR)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o : %.c
+	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
 
 all: | $(SPECSCODE_DIR)
 	$(MAKE) discord github reddit slack
@@ -113,7 +122,7 @@ $(SLACK_OBJS): $(OBJS)
 $(OBJS): | $(OBJDIR)
 
 $(OBJDIR):
-	@ mkdir -p $(OBJDIR)/$(COMMON_DIR)/third-party                     \
+	@ mkdir -p $(OBJDIR)/$(THIRDP_DIR)                                 \
 	           $(OBJDIR)/$(CEEUTILS_DIR)                               \
 	           $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
 
@@ -125,7 +134,7 @@ install:
 	install -m 644 $(LIBGITHUB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
-	               $(COMMON_DIR)/third-party/*.h $(PREFIX)/include/orca/
+	               $(THIRDP_DIR)/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
 	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
 	               $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
