@@ -10,6 +10,7 @@ COMMON_DIR    := common
 THIRDP_DIR    := $(COMMON_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
+ORCADOCS_DIR  := orca-docs
 
 CEEUTILS_SRC := $(CEEUTILS_DIR)/cee-utils.c        \
                 $(CEEUTILS_DIR)/json-actor.c       \
@@ -53,7 +54,7 @@ CFLAGS += -O0 -g -pthread                                       \
           -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
-WFLAGS += -Wall -Wextra
+WFLAGS += -Wall -Wextra -pedantic
 
 ifeq ($(static_debug),1)
 	CFLAGS += -D_STATIC_DEBUG
@@ -79,7 +80,7 @@ all: | $(SPECSCODE_DIR)
 
 specs_gen: | $(CEEUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
-	@ $(MAKE) -C $(SPECS_DIR)
+	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
 	@ rm -rf $(SPECSCODE_DIR)
 	mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 
@@ -162,4 +163,15 @@ purge: clean
 	rm -rf $(CEEUTILS_DIR)
 	rm -rf $(SPECSCODE_DIR)
 
-.PHONY: all test examples install echo clean purge
+# prepare files for generating documentation at .github/workflows/gh_pages.yml
+docs: | $(ORCADOCS_DIR)
+	@ $(MAKE) -C $(SPECS_DIR) clean
+	@ $(MAKE) -C $(SPECS_DIR) gen_headers
+	@ rm -rf $(SPECSCODE_DIR)
+	@ mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
+
+$(ORCADOCS_DIR):
+	git clone https://github.com/cee-studio/orca-docs
+	cp $(ORCADOCS_DIR)/Doxyfile Doxyfile
+
+.PHONY: all test examples install echo clean purge docs
