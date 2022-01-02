@@ -31,8 +31,7 @@ typedef uint64_t u64_snowflake_t;
 /**
  * @brief Bitmask primitive
  *
- * Used for fields that may store be used to store values of, or perform
- *        bitwise operations
+ * Used for fields that may store values of, or perform bitwise operations
  */
 typedef uint64_t u64_bitmask_t;
 
