@@ -1376,7 +1376,7 @@
 
 <dl class="c var">
 <dt class="sig sig-object c" id="c.discord_role.permissions">
-<span class="target" id="structdiscord__role_1a3f39b0c7f068e33a4ec5770afcef9811"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">permissions</span></span></span><a class="headerlink" href="#c.discord_role.permissions" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="structdiscord__role_1a092c975afe125f55104f7e892087dfd9"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_bitmask_t" title="u64_bitmask_t"><span class="n"><span class="pre">u64_bitmask_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">permissions</span></span></span><a class="headerlink" href="#c.discord_role.permissions" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c var">
@@ -1457,274 +1457,257 @@
 </dd></dl>
 
 <div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
-<dl class="c enum">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_bitwise_permission_flags</span></span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p><p><div class="toggle docutils container">
-<div class="header docutils container">
-<p><strong>Methods</strong></p>
-</div>
-<ul class="simple">
-<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_bitwise_permission_flags_print(enum</span> <span class="pre">discord_bitwise_permission_flags</span> <span class="pre">code)</span></code></p></li>
-<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_bitwise_permission_flags</span> <span class="pre">discord_bitwise_permission_flags_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
-</ul>
-</div>
-</p>
- </p>
-<p><em>Values:</em></p>
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ZERO">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa4a6986980717528f503c505ce5528df1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ZERO</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ZERO" title="Permalink to this definition">¶</a><br /></dt>
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-defines">Defines</p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_ZERO">
+<span class="target" id="permissions_8h_1acb27e6377a220aae0add6c395e04f451"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_ZERO</span></span></span> <span class="pre">0</span><a class="headerlink" href="#c.DISCORD_PERMISSION_ZERO" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>No permission bits </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa22f82689ccb104aeac0d80a8e97d555b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows creation of instant invites T, V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_CREATE_INSTANT_INVITE">
+<span class="target" id="permissions_8h_1a85c9a21fab2f132a658297225f8f1f89"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_CREATE_INSTANT_INVITE</span></span></span> <span class="pre">1</span><a class="headerlink" href="#c.DISCORD_PERMISSION_CREATE_INSTANT_INVITE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows creation of instant invites </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_KICK_MEMBERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fab9ad4327a1cea0d42a53cca6f1ad28c7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_KICK_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_KICK_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_KICK_MEMBERS">
+<span class="target" id="permissions_8h_1ae5a741cfb0ea974c0bbfa64eafe43f48"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_KICK_MEMBERS</span></span></span> <span class="pre">2</span><a class="headerlink" href="#c.DISCORD_PERMISSION_KICK_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows kicking members </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_BAN_MEMBERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa4dc653bba136b1039284d4596ad2c41d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_BAN_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_BAN_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_BAN_MEMBERS">
+<span class="target" id="permissions_8h_1aef1f7558b1c498f8728499e6a9cbf6a4"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_BAN_MEMBERS</span></span></span> <span class="pre">4</span><a class="headerlink" href="#c.DISCORD_PERMISSION_BAN_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows banning members </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADMINISTRATOR">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa919cf838888e9858d0658d92f30b2d28"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ADMINISTRATOR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADMINISTRATOR" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_ADMINISTRATOR">
+<span class="target" id="permissions_8h_1a3647d88f069f0ac3b96a6ce212e9c6d0"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_ADMINISTRATOR</span></span></span> <span class="pre">8</span><a class="headerlink" href="#c.DISCORD_PERMISSION_ADMINISTRATOR" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows all permissions and bypasses channel permission overwrites </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa72c70d64d29f468adb2b1a741a29482f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows management and editing of channels T, V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_CHANNELS">
+<span class="target" id="permissions_8h_1aa8a91c2d4b552123123784227b775008"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_CHANNELS</span></span></span> <span class="pre">16</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_CHANNELS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of channels </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_GUILD">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa16f6a33ca8f7fa0417f88b2d1b7b3af1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_GUILD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_GUILD" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_GUILD">
+<span class="target" id="permissions_8h_1a001ac5f7724c192f07ba04d0d0769290"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_GUILD</span></span></span> <span class="pre">32</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_GUILD" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows management and editing of the guild </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADD_REACTIONS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa484752f0d1eafddccd04be30af312cae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ADD_REACTIONS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADD_REACTIONS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for the addition of reactions to messages T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_ADD_REACTIONS">
+<span class="target" id="permissions_8h_1a1719416d9cc56696a2e446a3d3154193"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_ADD_REACTIONS</span></span></span> <span class="pre">64</span><a class="headerlink" href="#c.DISCORD_PERMISSION_ADD_REACTIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for the addition of reactions to messages </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa7ed54005bd31926b82ee17a9c4f36b87"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">128</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_VIEW_AUDIT_LOG">
+<span class="target" id="permissions_8h_1a1b1f49d1bf58ff0561a144bf044d8982"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_VIEW_AUDIT_LOG</span></span></span> <span class="pre">128</span><a class="headerlink" href="#c.DISCORD_PERMISSION_VIEW_AUDIT_LOG" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for viewing of audit logs </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa5cbac74004d80560987ff49b7231dcb9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">256</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for using priority speaker in a voice channel V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_PRIORITY_SPEAKER">
+<span class="target" id="permissions_8h_1a61e09287ed1088dfa92e9af69ea220f6"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_PRIORITY_SPEAKER</span></span></span> <span class="pre">256</span><a class="headerlink" href="#c.DISCORD_PERMISSION_PRIORITY_SPEAKER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for using priority speaker in a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_STREAM">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa6449f20296b45f8e5990e4a1c3df23ee"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_STREAM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">512</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_STREAM" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows the user to go live V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_STREAM">
+<span class="target" id="permissions_8h_1ad9169d8169cd42a28bfd85f8012209f5"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_STREAM</span></span></span> <span class="pre">512</span><a class="headerlink" href="#c.DISCORD_PERMISSION_STREAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows the user to go live </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa46b331a641ff4a1fad5c68715e264454"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1024</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows guild members to view a channel, which includes reading messages in text channels T, V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_VIEW_CHANNEL">
+<span class="target" id="permissions_8h_1a0b5487f68b226eaf9584861e94d89134"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_VIEW_CHANNEL</span></span></span> <span class="pre">1024</span><a class="headerlink" href="#c.DISCORD_PERMISSION_VIEW_CHANNEL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows guild members to view a channel, which includes reading messages in text channels </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fadc5c41ef6e564d88c4d6c45d4d6049b7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SEND_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2048</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for sending messages in a channel T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_SEND_MESSAGES">
+<span class="target" id="permissions_8h_1a1bbac144d40a8eea1d5a465fe9f6ebc4"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_SEND_MESSAGES</span></span></span> <span class="pre">2048</span><a class="headerlink" href="#c.DISCORD_PERMISSION_SEND_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for sending messages in a channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faa727e02bf3b889c5cda75116e1199af5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4096</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for sending of /tts messages T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_SEND_TTS_MESSAGES">
+<span class="target" id="permissions_8h_1a2effd116f0b5c8568e7c4b4c379b8660"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_SEND_TTS_MESSAGES</span></span></span> <span class="pre">4096</span><a class="headerlink" href="#c.DISCORD_PERMISSION_SEND_TTS_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for sending of /tts messages </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa70ea13db75b637072192c272c79a078a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8192</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for deletion of other users messages T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_MESSAGES">
+<span class="target" id="permissions_8h_1aa68482fed6266f7bc656d3ebe3e8f814"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_MESSAGES</span></span></span> <span class="pre">8192</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for deletion of other users messages </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_EMBED_LINKS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa67d1c66ceef79b843f9ad1510be58f42"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_EMBED_LINKS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16384</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_EMBED_LINKS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Links sent by users with this permission will be auto-embedded T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_EMBED_LINKS">
+<span class="target" id="permissions_8h_1a943c169850987c0aacb52ad40bab94f8"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_EMBED_LINKS</span></span></span> <span class="pre">16384</span><a class="headerlink" href="#c.DISCORD_PERMISSION_EMBED_LINKS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Links sent by users with this permission will be auto-embedded </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ATTACH_FILES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fad081e2a72f5222b972d6852f49879e3b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ATTACH_FILES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32768</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ATTACH_FILES" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for uploading images and files T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_ATTACH_FILES">
+<span class="target" id="permissions_8h_1ab5d2edf2a534ec862be6afaca1063686"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_ATTACH_FILES</span></span></span> <span class="pre">32768</span><a class="headerlink" href="#c.DISCORD_PERMISSION_ATTACH_FILES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for uploading images and files </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa170c55a70b19791149b62f0beda78e7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">65536</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for reading of message history T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_READ_MESSAGE_HISTORY">
+<span class="target" id="permissions_8h_1a19760a4091a4f8bed169e02c5ec2b8b3"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_READ_MESSAGE_HISTORY</span></span></span> <span class="pre">65536</span><a class="headerlink" href="#c.DISCORD_PERMISSION_READ_MESSAGE_HISTORY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for reading of message history </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fac91cc1f136f9d8afff50e27e76636af0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">131072</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for using the &#64;everyone tag to notify all users in a channel, and the &#64;here tag to notify all online users in a channel T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MENTION_EVERYONE">
+<span class="target" id="permissions_8h_1af4919642a795c03e63b420b8f3b32360"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MENTION_EVERYONE</span></span></span> <span class="pre">131072</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MENTION_EVERYONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for using the &#64;everyone tag to notify all users in a channel, and the &#64;here tag to notify all online users in a channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fac106508e8c6ad2f71d6391347c075009"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">262144</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows the usage of custom emojis from other servers T </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_USE_EXTERNAL_EMOJIS">
+<span class="target" id="permissions_8h_1a81efefae80d8447686ec731b8c02bf53"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_USE_EXTERNAL_EMOJIS</span></span></span> <span class="pre">262144</span><a class="headerlink" href="#c.DISCORD_PERMISSION_USE_EXTERNAL_EMOJIS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows the usage of custom emojis from other servers </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa4382c0aa71e34d1b6d40cf520e2860df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">524288</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_VIEW_GUILD_INSIGHTS">
+<span class="target" id="permissions_8h_1ad758a437e4ea16ba722f112063423af2"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_VIEW_GUILD_INSIGHTS</span></span></span> <span class="pre">524288</span><a class="headerlink" href="#c.DISCORD_PERMISSION_VIEW_GUILD_INSIGHTS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for viewing guild insights </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CONNECT">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa0927bc06a30a6d16b915282f2ee1b27a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CONNECT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1048576</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CONNECT" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for joining of a voice channel V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_CONNECT">
+<span class="target" id="permissions_8h_1aff4e232a8de2224154071b5a9349a060"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_CONNECT</span></span></span> <span class="pre">1048576</span><a class="headerlink" href="#c.DISCORD_PERMISSION_CONNECT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for joining of a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SPEAK">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa393e6617d9096babc294ec78a159c3af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SPEAK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2097152</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SPEAK" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for speaking in a voice channel V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_SPEAK">
+<span class="target" id="permissions_8h_1a4bb3f3e05800b35ae01475df17d14ca0"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_SPEAK</span></span></span> <span class="pre">2097152</span><a class="headerlink" href="#c.DISCORD_PERMISSION_SPEAK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for speaking in a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9facd4192a6a32799b52620ba545aab5035"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4194304</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for muting members in a voice channel V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MUTE_MEMBERS">
+<span class="target" id="permissions_8h_1a1ac4cdc3dabe6925219529413e6ffe52"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MUTE_MEMBERS</span></span></span> <span class="pre">4194304</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MUTE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for muting members in a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fabb3649192d765421bde2308100256e3b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8388608</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for deafening of members in a voice channel V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_DEAFEN_MEMBERS">
+<span class="target" id="permissions_8h_1a6b657a0d7ebcbf137f1f87c5af894a62"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_DEAFEN_MEMBERS</span></span></span> <span class="pre">8388608</span><a class="headerlink" href="#c.DISCORD_PERMISSION_DEAFEN_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for deafening of members in a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fab7f6d7604202abd5b5b5385bc73ee34e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16777216</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for moving of members between voice channels V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MOVE_MEMBERS">
+<span class="target" id="permissions_8h_1ac9ed804c7e771c4112cd3da1588a216d"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MOVE_MEMBERS</span></span></span> <span class="pre">16777216</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MOVE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for moving of members between voice channels </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_VAD">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fae4adbd2aff7305da6d850d7833561edc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_VAD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">33554432</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_VAD" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows for using voice-activity-detection in a voice channel V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_USE_VAD">
+<span class="target" id="permissions_8h_1ac6f0fb643f705db9f087d5972125405e"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_USE_VAD</span></span></span> <span class="pre">33554432</span><a class="headerlink" href="#c.DISCORD_PERMISSION_USE_VAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for using voice-activity-detection in a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fabe52c2600d0ee1f12bcdc29ebaa549fb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">67108864</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_CHANGE_NICKNAME">
+<span class="target" id="permissions_8h_1aca5052821e47c75ba790536decd8e39f"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_CHANGE_NICKNAME</span></span></span> <span class="pre">67108864</span><a class="headerlink" href="#c.DISCORD_PERMISSION_CHANGE_NICKNAME" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for modification of own nickname </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa72294f1aa240d80caa43923620b39463"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">134217728</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_NICKNAMES">
+<span class="target" id="permissions_8h_1a568d9febd2b7c2df10cb10d9ebfbc468"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_NICKNAMES</span></span></span> <span class="pre">134217728</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_NICKNAMES" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for modification of other users nicknames </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_ROLES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa2375be7ccdfc9c81453c91c6ad319264"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_ROLES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">268435456</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_ROLES" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows management and editing of roles T, V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_ROLES">
+<span class="target" id="permissions_8h_1ae40076bb61d0158ebc86794fe0573e68"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_ROLES</span></span></span> <span class="pre">268435456</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_ROLES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of roles </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa84f74839f929b6f7382837e2a44ed65c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">536870912</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Allows management and editing of webhooks T, V </p>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_WEBHOOKS">
+<span class="target" id="permissions_8h_1a2074e7d67355f7fde5461cf203e20179"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_WEBHOOKS</span></span></span> <span class="pre">536870912</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_WEBHOOKS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of webhooks </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa501f7564ba78df313b7a6efac85ee696"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1073741824</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_EMOJIS_AND_STICKERS">
+<span class="target" id="permissions_8h_1aab6a9066efa7dc5a91a9a6a7b05d6b17"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_EMOJIS_AND_STICKERS</span></span></span> <span class="pre">1073741824</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_EMOJIS_AND_STICKERS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows management and editing of emojis and stickers </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fac06a740713f9f6668398f3aeb1e46d4c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2147483648</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_USE_APPLICATION_COMMANDS">
+<span class="target" id="permissions_8h_1afa71b6694b55894397d02e2c9f4dbed5"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_USE_APPLICATION_COMMANDS</span></span></span> <span class="pre">2147483648</span><a class="headerlink" href="#c.DISCORD_PERMISSION_USE_APPLICATION_COMMANDS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows members to use application commands, including slash commands and context menu commands. </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa8a45b5dd4e84d20544393107e9e59fdd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4294967296</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_REQUEST_TO_SPEAK">
+<span class="target" id="permissions_8h_1a17dc434457e28034351f932e9bd53ac6"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_REQUEST_TO_SPEAK</span></span></span> <span class="pre">4294967296</span><a class="headerlink" href="#c.DISCORD_PERMISSION_REQUEST_TO_SPEAK" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for requesting to speak in stage channels. (This permission is under active development and may be changed or removed.) </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa39b4c5442b3669e5d038b0af66c2cd9d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8589934592</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_EVENTS">
+<span class="target" id="permissions_8h_1a1f5d4d95c1ba874a3a07fe258fe4496d"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_EVENTS</span></span></span> <span class="pre">8589934592</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_EVENTS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for creating, editing, and deleting scheduled events </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_THREADS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faa707279f4235a7ecf6a9041f4d01641b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">17179869184</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MANAGE_THREADS">
+<span class="target" id="permissions_8h_1a1085e699e8fb0e7ed0163eea98271d6d"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MANAGE_THREADS</span></span></span> <span class="pre">17179869184</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MANAGE_THREADS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for deleting and archiving threads, and viewing all private threads </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fad8c10732f7d674a319fc227bf2bbbe1d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">34359738368</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_CREATE_PUBLIC_THREADS">
+<span class="target" id="permissions_8h_1abf2ff564750a209cdf76f14cdabe1317"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_CREATE_PUBLIC_THREADS</span></span></span> <span class="pre">34359738368</span><a class="headerlink" href="#c.DISCORD_PERMISSION_CREATE_PUBLIC_THREADS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for creating threads </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fabb80bc573b8958c567c8026ad22239b2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">68719476736</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_CREATE_PRIVATE_THREADS">
+<span class="target" id="permissions_8h_1a6f665c752381c57adf8c9a9dbb82bb83"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_CREATE_PRIVATE_THREADS</span></span></span> <span class="pre">68719476736</span><a class="headerlink" href="#c.DISCORD_PERMISSION_CREATE_PRIVATE_THREADS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for creating private threads </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faedb304211d2041b285aa1a734241e8c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">137438953472</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_USE_EXTERNAL_STICKERS">
+<span class="target" id="permissions_8h_1a865931d89f51274a0c4ad6fb3d4663f4"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_USE_EXTERNAL_STICKERS</span></span></span> <span class="pre">137438953472</span><a class="headerlink" href="#c.DISCORD_PERMISSION_USE_EXTERNAL_STICKERS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows the usage of custom stickers from other servers </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa1513f4b6e6f62728760f29efae151f71"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">274877906944</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_SEND_MESSAGES_IN_THREADS">
+<span class="target" id="permissions_8h_1acfe9be74654351b9b12772dd12f627aa"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_SEND_MESSAGES_IN_THREADS</span></span></span> <span class="pre">274877906944</span><a class="headerlink" href="#c.DISCORD_PERMISSION_SEND_MESSAGES_IN_THREADS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for sending messages in threads </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faa3046281425e4594b269c88fc05cb118"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">549755813888</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_START_EMBEDDED_ACTIVITIES">
+<span class="target" id="permissions_8h_1a2048a582cf27b2c82436ce4203666e69"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_START_EMBEDDED_ACTIVITIES</span></span></span> <span class="pre">549755813888</span><a class="headerlink" href="#c.DISCORD_PERMISSION_START_EMBEDDED_ACTIVITIES" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for launching activities (applications with the EMBEDDED flag) in a voice channel </p>
 </dd></dl>
 
-<dl class="c enumerator">
-<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS">
-<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fae8937e675fb8a89473ef948a15d675d4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1099511627776</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="c macro">
+<dt class="sig sig-object c" id="c.DISCORD_PERMISSION_MODERATE_MEMBERS">
+<span class="target" id="permissions_8h_1ab3e7233c1f9a6a721f0eac7f6fe013b9"></span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_PERMISSION_MODERATE_MEMBERS</span></span></span> <span class="pre">1099511627776</span><a class="headerlink" href="#c.DISCORD_PERMISSION_MODERATE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels </p>
-</dd></dl>
-
 </dd></dl>
 
 </div>

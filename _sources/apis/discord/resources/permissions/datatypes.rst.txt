@@ -12,4 +12,4 @@ Datatypes
 =========
 
 .. doxygenfile:: specs-code/discord/permissions.h
-    :sections: detaileddescription briefdescription innerclass enum public-type public-attrib
+    :sections: detaileddescription briefdescription innerclass enum define public-type public-attrib
