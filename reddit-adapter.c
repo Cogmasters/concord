@@ -15,7 +15,8 @@
 #define REQUEST_ATTR_RAW_INIT(ret_json)                                       \
   {                                                                           \
     ret_json, 0, NULL,                                                        \
-      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL   \
+      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL,  \
+      NULL                                                                    \
   }
 
 static void

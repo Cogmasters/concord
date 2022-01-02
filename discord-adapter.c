@@ -315,7 +315,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
                           char endpoint[DISCORD_ENDPT_LEN],
                           char route[DISCORD_ROUTE_LEN])
 {
-  struct ua_conn_attr conn_attr = { method, body, endpoint };
+  struct ua_conn_attr conn_attr = { method, body, endpoint, NULL };
   /* throw-away for ua_conn_set_mime() */
   struct discord_context cxt = { 0 };
   struct discord_bucket *b;

@@ -14,7 +14,8 @@
 #define REQUEST_ATTR_RAW_INIT(ret_json)                                       \
   {                                                                           \
     ret_json, 0, NULL,                                                        \
-      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL   \
+      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL,  \
+      SLACK_TOKEN_BOT, NULL                                                   \
   }
 
 void
@@ -48,7 +49,7 @@ _slack_webapi_run_sync(struct slack_webapi *webapi,
                        enum http_method method,
                        char endpoint[])
 {
-  struct ua_conn_attr conn_attr = { method, body, endpoint };
+  struct ua_conn_attr conn_attr = { method, body, endpoint, NULL };
   struct ua_conn *conn = ua_conn_start(webapi->ua);
   struct sized_buffer *token;
   char *content_type;

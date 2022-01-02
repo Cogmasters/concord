@@ -13,7 +13,8 @@
  */
 #define REQUEST_ATTR_INIT(type, ret)                                          \
   {                                                                           \
-    ret, sizeof *ret, type##_init_v, type##_from_json_v, type##_cleanup_v     \
+    ret, sizeof *ret, type##_init_v, type##_from_json_v, type##_cleanup_v,    \
+      NULL                                                                    \
   }
 
 /**
@@ -25,7 +26,19 @@
 #define REQUEST_ATTR_LIST_INIT(type, list)                                    \
   {                                                                           \
     list, sizeof **list, NULL, type##_list_from_json_v,                       \
-      (void (*)(void *))type##_list_free_v                                    \
+      (void (*)(void *))type##_list_free_v, NULL                              \
+  }
+
+/**
+ * @brief Shortcut for setting request attributes expecting a raw JSON response
+ *
+ * @param ret_json pointer to `struct sized_buffer` to store JSON at
+ */
+#define REQUEST_ATTR_RAW_INIT(ret_json)                                       \
+  {                                                                           \
+    ret_json, 0, NULL,                                                        \
+      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL,  \
+      NULL                                                                    \
   }
 
 /******************************************************************************
@@ -1371,9 +1384,7 @@ discord_delete_guild_emoji(struct discord *client,
 ORCAcode
 discord_get_gateway(struct discord *client, struct sized_buffer *ret)
 {
-  struct discord_request_attr attr = { ret, sizeof(struct sized_buffer), NULL,
-                                       (void (*)(char *, size_t, void *))
-                                         & cee_sized_buffer_from_json };
+  struct discord_request_attr attr = REQUEST_ATTR_RAW_INIT(ret);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/gateway");
@@ -1382,9 +1393,7 @@ discord_get_gateway(struct discord *client, struct sized_buffer *ret)
 ORCAcode
 discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
 {
-  struct discord_request_attr attr = { ret, sizeof(struct sized_buffer), NULL,
-                                       (void (*)(char *, size_t, void *))
-                                         & cee_sized_buffer_from_json };
+  struct discord_request_attr attr = REQUEST_ATTR_RAW_INIT(ret);
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/gateway/bot");
