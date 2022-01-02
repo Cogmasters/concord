@@ -2746,10 +2746,10 @@ void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 "(allow):s_as_u64,"
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 "(deny):s_as_u64,",
   /* discord/channel.json:241:20
      '{ "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }}' */
@@ -2758,10 +2758,10 @@ void discord_overwrite_from_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 &p->allow,
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 &p->deny);
 }
 
@@ -2778,11 +2778,11 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
   arg_switches[1] = &p->type;
 
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
   arg_switches[2] = &p->allow;
 
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
   arg_switches[3] = &p->deny;
 
   r=json_inject(json, len, 
@@ -2793,10 +2793,10 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 "(type):d,"
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 "(allow):s_as_u64,"
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 "(deny):s_as_u64,"
                 "@arg_switches:b",
   /* discord/channel.json:241:20
@@ -2806,10 +2806,10 @@ size_t discord_overwrite_to_json(char *json, size_t len, struct discord_overwrit
      '{ "name": "type", "type":{ "base":"int" }}' */
                 &p->type,
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 &p->allow,
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
                 &p->deny,
                 arg_switches, sizeof(arg_switches), true);
   return r;
@@ -2853,10 +2853,10 @@ void discord_overwrite_cleanup(struct discord_overwrite *d) {
      '{ "name": "type", "type":{ "base":"int" }}' */
   (void)d->type;
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
   (void)d->allow;
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
   (void)d->deny;
 }
 
@@ -2869,10 +2869,10 @@ void discord_overwrite_init(struct discord_overwrite *p) {
      '{ "name": "type", "type":{ "base":"int" }}' */
 
   /* discord/channel.json:243:20
-     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
 
   /* discord/channel.json:244:20
-     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}' */
+     '{ "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}' */
 
 }
 void discord_overwrite_list_free(struct discord_overwrite **p) {
@@ -3272,8 +3272,8 @@ void discord_attachment_from_json(char *json, size_t len, struct discord_attachm
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 "(content_type):?s,"
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
-                "(size):d,"
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+                "(size):zu,"
   /* discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
                 "(url):?s,"
@@ -3302,7 +3302,7 @@ void discord_attachment_from_json(char *json, size_t len, struct discord_attachm
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 &p->content_type,
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
                 &p->size,
   /* discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
@@ -3350,7 +3350,7 @@ size_t discord_attachment_to_json(char *json, size_t len, struct discord_attachm
     arg_switches[4] = p->content_type;
 
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
   if (p->size != 0)
     arg_switches[5] = &p->size;
 
@@ -3393,8 +3393,8 @@ size_t discord_attachment_to_json(char *json, size_t len, struct discord_attachm
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 "(content_type):s,"
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
-                "(size):d,"
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+                "(size):zu,"
   /* discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
                 "(url):s,"
@@ -3424,7 +3424,7 @@ size_t discord_attachment_to_json(char *json, size_t len, struct discord_attachm
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
                 p->content_type,
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
                 &p->size,
   /* discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
@@ -3496,7 +3496,7 @@ void discord_attachment_cleanup(struct discord_attachment *d) {
   if (d->content_type)
     free(d->content_type);
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
   (void)d->size;
   /* discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */
@@ -3535,7 +3535,7 @@ void discord_attachment_init(struct discord_attachment *p) {
      '{ "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"}' */
 
   /* discord/channel.json:286:20
-     '{ "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
+     '{ "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"}' */
 
   /* discord/channel.json:287:20
      '{ "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"}' */

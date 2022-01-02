@@ -240,8 +240,8 @@
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }},
         { "name": "type", "type":{ "base":"int" }},
-        { "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"},
-        { "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags"}, "comment":"permission bit set"}
+        { "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"},
+        { "name": "deny", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set"}
       ]
     },
     {
@@ -283,7 +283,7 @@
         { "name": "filename", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of file attached"},
         { "name": "description", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"description for the file"},
         { "name": "content_type", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"the attachment's media type"},
-        { "name": "size", "type":{ "base":"int" }, "inject_if_not":0, "comment":"size of file in bytes"},
+        { "name": "size", "type":{ "base":"size_t" }, "inject_if_not":0, "comment":"size of file in bytes"},
         { "name": "url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"source url of file"},
         { "name": "proxy_url", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"a proxied url of file"},
         { "name": "height", "type":{ "base":"int" }, "inject_if_not":0, "comment":"height of file (if image)" },

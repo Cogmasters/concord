@@ -107,39 +107,36 @@ struct json_raw_value {
  * all variadic parameters of actions should be address
  *
  */
-extern size_t json_inject (char * pos, size_t size, char * injector, ...);
+extern size_t json_inject(char *pos, size_t size, char *injector, ...);
 
 /*
  * this function will allocate a sufficient memory block and then call
  * json_inject to inject json to the memory block
  */
-extern size_t
-json_ainject (char ** buf_p, char * injector, ...);
+extern size_t json_ainject(char **buf_p, char *injector, ...);
 
 /*
  *
  */
-extern size_t
-json_vinject (char * pos, size_t size, char * injector, va_list ap);
+extern size_t json_vinject(char *pos, size_t size, char *injector, va_list ap);
 
+extern size_t json_extract(char *json, size_t size, char *extractor, ...);
 
-extern size_t
-json_extract (char * json, size_t size, char * extractor, ...);
+extern size_t json_vextract(char *json,
+                            size_t size,
+                            char *extractor,
+                            va_list ap);
 
-extern size_t
-json_vextract (char * json, size_t size, char * extractor, va_list ap);
+extern char *json_string_escape(size_t *new_size, char *str, size_t old_size);
+extern int json_string_unescape(char **new_str,
+                                size_t *new_size,
+                                char *str,
+                                size_t old_size);
 
-extern char* 
-json_string_escape(size_t *new_size, char *str, size_t old_size);
-extern int 
-json_string_unescape(char **new_str, size_t *new_size, char *str, size_t old_size);
+extern size_t query_inject(char *query, size_t size, char *injector, ...);
 
-
-extern size_t
-query_inject(char *query, size_t size, char *injector, ...);
-
-extern char* url_encode(char *str);
-extern char*url_decode(char *str);
+extern char *url_encode(char *str);
+extern char *url_decode(char *str);
 
 /*
  * the line and column in a text file
@@ -151,33 +148,36 @@ struct line_and_column {
   int column;
 };
 
-extern void
-addr_to_lnc (char *json, size_t size, char *addr, struct line_and_column *ln);
+extern void addr_to_lnc(char *json,
+                        size_t size,
+                        char *addr,
+                        struct line_and_column *ln);
 
 void json_actor_strong_type(int b);
 
-extern size_t extract_ntl_from_json(char *buf, size_t len, struct ntl_deserializer *ntl_deserializer);
-extern size_t extract_ntl_from_json2(char *buf, size_t len, struct ntl_deserializer *ntl_deserializer);
+extern size_t extract_ntl_from_json(char *buf,
+                                    size_t len,
+                                    struct ntl_deserializer *ntl_deserializer);
+extern size_t extract_ntl_from_json2(
+  char *buf, size_t len, struct ntl_deserializer *ntl_deserializer);
 
-extern int
-json_to_sized_buffer_ntl
-  (char *json, size_t size, NTL_T(struct sized_buffer) *p);
-
-
+extern int json_to_sized_buffer_ntl(char *json,
+                                    size_t size,
+                                    NTL_T(struct sized_buffer) * p);
 
 /* All of the possible json datatypes */
 enum json_type {
-    /* DATATYPE FLAGS */
-    JSON_UNDEFINED        = 0,
-    JSON_NULL             = 1 << 0,
-    JSON_BOOLEAN          = 1 << 1,
-    JSON_NUMBER           = 1 << 2,
-    JSON_STRING           = 1 << 3,
-    JSON_OBJECT           = 1 << 4,
-    JSON_ARRAY            = 1 << 5,
-    /* SUPERSET FLAGS */
-    JSON_ANY              = JSON_NULL | JSON_BOOLEAN | JSON_NUMBER \
-                             | JSON_STRING | JSON_OBJECT | JSON_ARRAY
+  /* DATATYPE FLAGS */
+  JSON_UNDEFINED = 0,
+  JSON_NULL = 1 << 0,
+  JSON_BOOLEAN = 1 << 1,
+  JSON_NUMBER = 1 << 2,
+  JSON_STRING = 1 << 3,
+  JSON_OBJECT = 1 << 4,
+  JSON_ARRAY = 1 << 5,
+  /* SUPERSET FLAGS */
+  JSON_ANY = JSON_NULL | JSON_BOOLEAN | JSON_NUMBER | JSON_STRING | JSON_OBJECT
+             | JSON_ARRAY
 };
 
 /* forwarding, definition at json-parser.c */
@@ -195,43 +195,43 @@ json_item_t *json_string(const char *key, char *string);
  * clean up json item and global allocated keys */
 void json_cleanup(json_item_t *item);
 
-
 /* JSON DECODING
  * parse buffer and returns a json item */
-json_item_t* json_parse(char *buffer, size_t len);
- 
+json_item_t *json_parse(char *buffer, size_t len);
+
 /* JSON ENCODING */
 struct sized_buffer json_stringify(json_item_t *root, enum json_type type);
 
 /* JSON UTILITIES */
-size_t json_size(const json_item_t* item);
-json_item_t* json_append(json_item_t *item, json_item_t *new_branch);
-json_item_t* json_iter_next(json_item_t* item);
-json_item_t* json_clone(json_item_t *item);
-char* json_typeof(const json_item_t* item);
-char *json_strdup(const json_item_t* item);
-int json_typecmp(const json_item_t* item, const enum json_type type);
-int json_keycmp(const json_item_t* item, const char *key);
-int json_numcmp(const json_item_t* item, const long double number);
+size_t json_size(const json_item_t *item);
+json_item_t *json_append(json_item_t *item, json_item_t *new_branch);
+json_item_t *json_iter_next(json_item_t *item);
+json_item_t *json_clone(json_item_t *item);
+char *json_typeof(const json_item_t *item);
+char *json_strdup(const json_item_t *item);
+int json_typecmp(const json_item_t *item, const enum json_type type);
+int json_keycmp(const json_item_t *item, const char *key);
+int json_numcmp(const json_item_t *item, const long double number);
 
 /* JSON GETTERS */
-json_item_t* json_get_root(json_item_t* item);
-json_item_t* json_get_child(json_item_t* item, const char *key);
-json_item_t* json_get_sibling(const json_item_t* item, const char *key);
-json_item_t* json_get_sibling_byindex(const json_item_t* item, const size_t relative_index);
-json_item_t* json_get_parent(const json_item_t* item);
-json_item_t* json_get_byindex(const json_item_t* item, const size_t index);
-long json_get_index(const json_item_t* item, const char *key);
-enum json_type json_get_type(const json_item_t* item);
-char* json_get_key(const json_item_t* item);
-_Bool json_get_boolean(const json_item_t* item);
-char* json_get_string(const json_item_t* item, size_t *len);
-long double json_get_number(const json_item_t* item);
+json_item_t *json_get_root(json_item_t *item);
+json_item_t *json_get_child(json_item_t *item, const char *key);
+json_item_t *json_get_sibling(const json_item_t *item, const char *key);
+json_item_t *json_get_sibling_byindex(const json_item_t *item,
+                                      const size_t relative_index);
+json_item_t *json_get_parent(const json_item_t *item);
+json_item_t *json_get_byindex(const json_item_t *item, const size_t index);
+long json_get_index(const json_item_t *item, const char *key);
+enum json_type json_get_type(const json_item_t *item);
+char *json_get_key(const json_item_t *item);
+_Bool json_get_boolean(const json_item_t *item);
+char *json_get_string(const json_item_t *item, size_t *len);
+long double json_get_number(const json_item_t *item);
 
 /* JSON SETTERS */
-json_item_t* json_set_boolean(json_item_t* item, _Bool boolean);
-json_item_t* json_set_string(json_item_t* item, char *string);
-json_item_t* json_set_number(json_item_t* item, long double number);
+json_item_t *json_set_boolean(json_item_t *item, _Bool boolean);
+json_item_t *json_set_string(json_item_t *item, char *string);
+json_item_t *json_set_number(json_item_t *item, long double number);
 
 #ifdef __cplusplus
 }

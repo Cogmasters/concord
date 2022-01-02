@@ -216,10 +216,8 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
     snprintf(name, sizeof(name), "files[%d]", i);
     if (atchs[i]->content) {
       part = curl_mime_addpart(mime);
-      /* TODO: struct discord_attachments->size should be a size_t */
       curl_mime_data(part, atchs[i]->content,
-                     atchs[i]->size ? (size_t)atchs[i]->size
-                                    : CURL_ZERO_TERMINATED);
+                     atchs[i]->size ? atchs[i]->size : CURL_ZERO_TERMINATED);
       curl_mime_filename(part, IS_EMPTY_STRING(atchs[i]->filename)
                                  ? "a.out"
                                  : atchs[i]->filename);

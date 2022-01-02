@@ -54,7 +54,7 @@ CFLAGS += -O0 -g -pthread                                       \
           -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
-WFLAGS += -Wall -Wextra
+WFLAGS += -Wall -Wextra -pedantic
 
 ifeq ($(static_debug),1)
 	CFLAGS += -D_STATIC_DEBUG

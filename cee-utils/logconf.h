@@ -11,7 +11,8 @@ extern "C" {
 
 /** @defgroup Log_C_Datatypes
  * @brief Relevant datatypes borrowed from `log.c`
- * @see Read `log.c` <a href="https://github.com/rxi/log.c#usage">documentation</a>
+ * @see Read `log.c`
+ *  <a href="https://github.com/rxi/log.c#usage">documentation</a>
  * @{ */
 /**
  * @var log_Level
