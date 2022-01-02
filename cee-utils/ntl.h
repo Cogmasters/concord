@@ -62,15 +62,14 @@ struct sized_buffer {
 /**
  * @brief Null-terminated list helper type
  */
-typedef void** ntl_t;
+typedef void **ntl_t;
 
 /**
  * @brief Identification macro for null-terminated lists
  *
  * A macro meant to facillitate the identification of null-terminated lists.
  */
-#define NTL_T(t)  t**
-
+#define NTL_T(t) t **
 
 /**
  * @brief Null-terminated list initialization callback
@@ -83,7 +82,8 @@ typedef void (*ntl_init_cb)(void *);
 /**
  * @brief Initialize a null-terminated list and each of its elements
  *
- * Initialize a NTL and fill n `nelems` of size `elem_size` with zeroes, and call `init` for each element.
+ * Initialize a NTL and fill n `nelems` of size `elem_size` with zeroes, and
+ * call `init` for each element.
  * @param nelems the amount of elements for the NTL
  * @param elem_size the size of each NTL element
  * @param init the callback function to be called for each element initialized
@@ -91,7 +91,6 @@ typedef void (*ntl_init_cb)(void *);
  * @note if `init` is NULL, it is the same as ntl_calloc
  */
 ntl_t ntl_calloc_init(size_t nelems, size_t elem_size, ntl_init_cb init_cb);
-
 
 /**
  * @brief Initialize a null-terminated list
@@ -101,8 +100,7 @@ ntl_t ntl_calloc_init(size_t nelems, size_t elem_size, ntl_init_cb init_cb);
  * @param elem_size the size of each NTL element
  * @return the null-terminated list
  */
-ntl_t ntl_calloc(size_t nelems,  size_t elem_size);
-
+ntl_t ntl_calloc(size_t nelems, size_t elem_size);
 
 /**
  * @brief Initialize a null-terminated list and each of its elements
@@ -116,7 +114,6 @@ ntl_t ntl_calloc(size_t nelems,  size_t elem_size);
  */
 ntl_t ntl_malloc_init(size_t nelems, size_t elem_size, ntl_init_cb init_cb);
 
-
 /**
  * @brief Initialize a null-terminated list
  *
@@ -125,19 +122,23 @@ ntl_t ntl_malloc_init(size_t nelems, size_t elem_size, ntl_init_cb init_cb);
  * @return the null-terminated list
  * @warning use ntl_calloc() unless there's a good reason to use this
  */
-ntl_t ntl_malloc(size_t nelems,  size_t elem_size);
+ntl_t ntl_malloc(size_t nelems, size_t elem_size);
 
 /**
  * @brief Changes the size of the null-terminated list
  *
- * Changes the size of the NTL memory block pointed by `p` to `nelems * elem_size` bytes, call `init` for each element.
+ * Changes the size of the NTL memory block pointed by `p` to `nelems *
+ * elem_size` bytes, call `init` for each element.
  * @param p the NTL to be resized
  * @param nelems the amount of elements of the NTL
  * @param elem_size the size of each NTL element
  * @param init the callback function to be called for each element initialized
  * @return the null-terminated list
  */
-ntl_t ntl_realloc_init(ntl_t p, size_t nelems, size_t elem_size, ntl_init_cb init);
+ntl_t ntl_realloc_init(ntl_t p,
+                       size_t nelems,
+                       size_t elem_size,
+                       ntl_init_cb init);
 
 /**
  * @brief Duplicate a null-terminated list
@@ -154,7 +155,7 @@ ntl_t ntl_dup(ntl_t p, size_t elem_size);
  * Callback function that will be called for each element of the NTL
  *        during cleanup
  */
-typedef void (*ntl_free_cb)(void*);
+typedef void (*ntl_free_cb)(void *);
 
 /**
  * @brief Cleanup a null-terminated list
@@ -169,7 +170,8 @@ void ntl_free(ntl_t p, ntl_free_cb cleanup);
 /**
  * @brief Return the null-terminated list length
  *
- * Analogous to `strlen()`, will iterate over the NTL until a NULL is found. If `p` is NULL, it will return 0.
+ * Analogous to `strlen()`, will iterate over the NTL until a NULL is found. If
+ * `p` is NULL, it will return 0.
  * @param p the NTL pointer
  * @return the NTL length
  */
@@ -205,10 +207,14 @@ typedef void (*ntl_elem_map)(void *cxt, void *from_elem, void *to_elem);
  * @param cxt an optional user-arbitrary data to be passed along the callbacks
  * @param in_list the input NTL
  * @param out_elem_size the size of each output element
- * @param map the callback function to map each `in_list` element to the `returned` NTL element
+ * @param map the callback function to map each `in_list` element to the
+ * `returned` NTL element
  * @return the new NTL
  */
-ntl_t ntl_fmap(void *cxt, ntl_t in_list, size_t out_elem_size, ntl_elem_map map);
+ntl_t ntl_fmap(void *cxt,
+               ntl_t in_list,
+               size_t out_elem_size,
+               ntl_elem_map map);
 
 /**
  * @deprecated use ntl_append2() instead
@@ -229,9 +235,9 @@ ntl_t ntl_append(ntl_t p, size_t elem_size, void *added_elem);
 void ntl_append2(ntl_t *p, size_t elem_size, void *added_elem);
 
 /**
- * @brief The callback function to serialize a null-terminate into a buffer 
+ * @brief The callback function to serialize a null-terminate into a buffer
  */
-typedef size_t (*ntl_elem_serializer)(char * buf, size_t size, void *p);
+typedef size_t (*ntl_elem_serializer)(char *buf, size_t size, void *p);
 
 /**
  * @brief Structure to assisti null-terminated list serialization
@@ -240,7 +246,7 @@ struct ntl_serializer {
   /**
    * optional string delimiters
    */
-  struct ntl_str_delimiter * delimiter;
+  struct ntl_str_delimiter *delimiter;
   /**
    * the callback for serializing and appending each NTL element to `buf`
    * `elem_to_buf(NULL,0,p)` calculates the size needed to serializer p
@@ -281,24 +287,34 @@ struct ntl_str_delimiter {
  * @param buf the buffer to store the serialized NTL
  * @param buf_size the buffer size
  * @param p the NTL
- * @param d string delimiters for the resulting serialized string (defaults to JSON array delimiters)
+ * @param d string delimiters for the resulting serialized string (defaults to
+ * JSON array delimiters)
  * @param serialize the element serializer callback
  * @return the amount written to `buf` in bytes
  */
-size_t ntl_to_buf(char *buf, size_t buf_size, ntl_t p, struct ntl_str_delimiter  *d, ntl_elem_serializer serialize);
+size_t ntl_to_buf(char *buf,
+                  size_t buf_size,
+                  ntl_t p,
+                  struct ntl_str_delimiter *d,
+                  ntl_elem_serializer serialize);
 
 /**
  * @deprecated use ntl_to_abuf2() instead
- * @brief Analogous ntl_to_buf(), but will create a buffer thats large enough to hold the output (including the null byte '\0')
+ * @brief Analogous ntl_to_buf(), but will create a buffer thats large enough
+ * to hold the output (including the null byte '\0')
  *
  * @param buf_p the buffer to be created (expects a `char*` address)
  * @param p the NTL
- * @param d string delimiters for the resulting serialized string (defaults to JSON array delimiters)
+ * @param d string delimiters for the resulting serialized string (defaults to
+ * JSON array delimiters)
  * @param serialize the element serializer callback
  * @return the amount written to `buf_p` in bytes
  * @note `buf_p` should be free'd accordingly after done being used
  */
-size_t ntl_to_abuf(char **buf_p, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_serializer serialize);
+size_t ntl_to_abuf(char **buf_p,
+                   ntl_t p,
+                   struct ntl_str_delimiter *d,
+                   ntl_elem_serializer serialize);
 
 /**
  * @brief Behaves similarly to snprintf(), serialize a NTL `p` to string
@@ -315,7 +331,8 @@ size_t ntl_to_abuf(char **buf_p, ntl_t p, struct ntl_str_delimiter *d, ntl_elem_
 size_t ntl_to_buf2(char *buf, size_t size, struct ntl_serializer *serializer);
 
 /**
- * @brief Analogous ntl_to_buf(), but will create a buffer thats large enough to hold the output (including the null byte '\0')
+ * @brief Analogous ntl_to_buf(), but will create a buffer thats large enough
+ * to hold the output (including the null byte '\0')
  *
  * @param buf_p the buffer to be created (expects a `char*` address)
  * @param serializer the serializer config structure
@@ -332,7 +349,9 @@ struct ntl_deserializer {
    * mandatory callback that partition a string to n smaller tokens,
    * each representing a NTL element
    */
-  int (*partition_as_sized_bufs)(char *, size_t, NTL_T(struct sized_buffer) *p);
+  int (*partition_as_sized_bufs)(char *,
+                                 size_t,
+                                 NTL_T(struct sized_buffer) * p);
   /**
    * the size of each NTL element
    */
@@ -361,7 +380,9 @@ struct ntl_deserializer {
  * @param deserializer the de-serializer config structure
  * @return the amount of elements in the new NTL
  */
-size_t ntl_from_buf(char *buf, size_t size, struct ntl_deserializer *deserializer);
+size_t ntl_from_buf(char *buf,
+                    size_t size,
+                    struct ntl_deserializer *deserializer);
 
 /**
  * @brief De-serialize buffer into a null-terminated list
@@ -370,9 +391,12 @@ size_t ntl_from_buf(char *buf, size_t size, struct ntl_deserializer *deserialize
  * @param size the buffer size
  * @param deserializer the de-serializer config structure
  * @return the amount of elements in the new NTL
- * @note this will pass each one of the NTL's elements by its address at the callback
+ * @note this will pass each one of the NTL's elements by its address at the
+ * callback
  */
-size_t ntl_from_buf2(char *buf, size_t size, struct ntl_deserializer *deserializer);
+size_t ntl_from_buf2(char *buf,
+                     size_t size,
+                     struct ntl_deserializer *deserializer);
 
 /**
  * @brief Check if an element is part of a null-terminated list by its address
@@ -381,7 +405,7 @@ size_t ntl_from_buf2(char *buf, size_t size, struct ntl_deserializer *deserializ
  * @param elem the element to be checked against `p`
  * @return `true` if `elem` is a member of the NTL, `false` otherwise
  */
-_Bool ntl_is_a_member(ntl_t p , void *elem);
+_Bool ntl_is_a_member(ntl_t p, void *elem);
 
 #ifdef __cplusplus
 }

@@ -14,8 +14,8 @@
  * <value> := true | false | null | <int> | <float> | <string-literal>
  *            | <composite-value> | <action>
  *
- * <action> := d | ld | lld | f | lf | b | s_as_u64 <size-specifier>s
- *            | F | F_nullable | key | s_as_u64 | s_as_hex64 | lnc
+ * <action> := d | ld | lld | u64 | zu | f | lf | b | s_as_u64
+ * <size-specifier>s | F | F_nullable | key | s_as_u64 | s_as_hex64 | lnc
  *
  * <access-path-value> := <access-path> : <value>
  *
@@ -104,13 +104,6 @@ jsmn_strerror(int code)
   if (code <= 0)                                                              \
   ERR("\n\tFailed at: '%.*s'\n\t%s(code: %d) %s", (int)size, json,            \
       jsmn_code_print(code), code, jsmn_strerror(code))
-
-static int strong_type = 1;
-void
-json_actor_strong_type(int b)
-{
-  strong_type = b;
-}
 
 /*
  * convert address to line and column
@@ -239,6 +232,7 @@ enum builtin_type {
   B_LONG,
   B_LONG_LONG,
   B_UINT64,
+  B_SIZE_T,
   B_STRING_AS_HEX_UINT,
   B_STRING_AS_U64,
   B_STRING_AS_HEX64,
@@ -309,12 +303,10 @@ check_ptr_maps(struct ptr_map **m)
 
   for (i = 0; m[i]; i++) {
     if (m[i]->has_this) {
-      if (m[i]->arg == NULL)
-        ERR("The argument of @ (used for checking the pointer_maps of a "
-            "value) is NULL");
-      if (m[i]->sizeof_arg % sizeof(void *))
-        ERR("The sizeof @arg_switches's argument has to be a multiplication "
-            "of sizeof(void *)\n");
+      ASSERT_S(m[i]->arg != NULL, "Argument matched to @ is NULL");
+      ASSERT_S(
+        0 == m[i]->sizeof_arg % sizeof(void *),
+        "Sizeof argument matched to @ must be a sizeof(void *) multiple");
 
       m[i]->xend_idx = m[i]->sizeof_arg / sizeof(void *);
     }
@@ -328,14 +320,12 @@ get_arg_switches(struct ptr_map **l)
 
   for (i = 0; l[i]; i++)
     if (l[i]->has_this && l[i]->tag == PTR_MAP_ARG_SWITCHES) {
-      if (l[i]->has_enabler)
-        if (l[i]->enabled)
-          return l[i];
-        else
-          return NULL;
-      else
-        return l[i];
+      if (l[i]->has_enabler) {
+        return l[i]->enabled ? l[i] : NULL;
+      }
+      return l[i];
     }
+
   return NULL;
 }
 
@@ -345,7 +335,10 @@ get_record_defined(struct ptr_map **l)
   int i;
 
   for (i = 0; l[i]; i++)
-    if (l[i]->has_this && l[i]->tag == PTR_MAP_RECORD_DEFINED) return l[i];
+    if (l[i]->has_this && l[i]->tag == PTR_MAP_RECORD_DEFINED) {
+      return l[i];
+    }
+
   return NULL;
 }
 
@@ -353,17 +346,14 @@ static void
 add_defined(struct ptr_map **s, void *p)
 {
   struct ptr_map *m = get_record_defined(s);
+
   if (m == NULL) return;
 
   void **v = m->arg;
-  if (m->next_idx < m->xend_idx) {
-    /*fprintf(stderr, "&arg %p, arg %p\n", &m->arg, m->arg); */
-    v[m->next_idx] = p;
-    m->next_idx++;
-  }
-  else {
-    ERR("array is too small\n");
-  }
+  ASSERT_S(m->next_idx < m->xend_idx, "Array is too small");
+
+  v[m->next_idx] = p;
+  m->next_idx++;
 }
 
 static void
@@ -459,6 +449,7 @@ composite_value_init(struct composite_value *c)
   c->maps[1] = c->data + 1;
   c->maps[2] = c->data + 2;
   c->maps[3] = NULL;
+
   memset(c->data, 0, sizeof(c->data));
 }
 
@@ -466,7 +457,9 @@ static struct composite_value *
 composite_value_alloc()
 {
   struct composite_value *cv = calloc(1, sizeof(*cv));
+
   composite_value_init(cv);
+
   return cv;
 }
 
@@ -499,11 +492,13 @@ static int
 has_format_string(char *pos, char *end_pos)
 {
   int count = 0;
+
   while (pos < end_pos) {
     if ('%' == *pos) {
-      if (pos + 1 == end_pos)
-        ERR("dangling format %s string is not allowed\n", pos);
+      VASSERT_S(pos + 1 != end_pos, "dangling format %s string is not allowed",
+                pos);
       pos++;
+
       switch (*pos) {
       case '%': /* escaped % */
         pos++;
@@ -523,6 +518,7 @@ has_format_string(char *pos, char *end_pos)
     else
       pos++;
   }
+
   return count;
 }
 
@@ -536,9 +532,8 @@ is_primitive(struct stack *stack,
   char *const start_pos = pos, *const end_pos = pos + size;
   unsigned char c;
 
-  c = *pos;
   *type = V_PRIMITIVE;
-  switch (c) {
+  switch (c = *pos) {
   case 't': /* true */
     if (pos + 3 < end_pos && 'r' == pos[1] && 'u' == pos[2] && 'e' == pos[3]) {
       pos += 4;
@@ -615,8 +610,8 @@ parse_size_specifier(char *pos,
   long fixed_size = strtol(start_pos, &x, 10);
 
   if (x != start_pos) {
-    if (fixed_size <= 0)
-      ERR("size has to be a non-zero postive value %ld\n", fixed_size);
+    VASSERT_S(fixed_size > 0, "size has to be a non-zero postive value %ld",
+              fixed_size);
 
     p->tag = SIZE_FIXED;
     p->size = fixed_size;
@@ -651,23 +646,29 @@ parse_value(struct stack *stack,
     p->_.primitve.start = pos;
     p->_.primitve.size = next_pos - pos;
     if (v_type == V_STRING_LITERAL) {
+      int n;
+
       /* skip the two delimiter */
       p->_.primitve.start++;
       p->_.primitve.size -= 2;
-      int n = has_format_string(p->_.primitve.start,
-                                p->_.primitve.start + p->_.primitve.size);
+      n = has_format_string(p->_.primitve.start,
+                            p->_.primitve.start + p->_.primitve.size);
       if (n) {
         char *x = p->_.primitve.start;
         size_t s = p->_.primitve.size;
+
         p->_.action._.fmt.start = x;
         p->_.action._.fmt.size = s;
         p->tag = V_ACTION;
         p->_.action.tag = ACT_FORMAT_STRING + n;
       }
     }
+
     *next_pos_p = next_pos;
+
     return 1;
   }
+
   struct action *act = &p->_.action;
   p->tag = V_ACTION;
   int has_size_specifier = 0;
@@ -693,6 +694,7 @@ parse_value(struct stack *stack,
     goto return_true;
   case 'u': {
     size_t sz = strlen("u64");
+
     if (pos + sz <= end_pos && 0 == strncmp(pos, "u64", sz)) {
       act->mem_size.size = sizeof(long);
       act->mem_size.tag = SIZE_FIXED;
@@ -719,6 +721,17 @@ parse_value(struct stack *stack,
     }
     goto return_true;
   }
+  case 'z':
+    if (pos + 1 < end_pos && 0 == strncmp(pos, "zu", 2)) {
+      act->mem_size.size = sizeof(size_t);
+      act->mem_size.tag = SIZE_FIXED;
+      act->_.builtin = B_SIZE_T;
+      pos += 2;
+      goto return_true;
+    }
+    else
+      ERR("unexpected %s\n", pos);
+    break;
   case 'l':
     if (pos + 1 < end_pos && 0 == strncmp(pos, "ld", 2)) {
       act->mem_size.size = sizeof(long);
@@ -1323,6 +1336,8 @@ inject_builtin(char *pos,
     return xprintf(pos, size, info, "%lld", *(long long *)v->operand);
   case B_UINT64:
     return xprintf(pos, size, info, "%" PRIu64, *(uint64_t *)v->operand);
+  case B_SIZE_T:
+    return xprintf(pos, size, info, "%zu", *(size_t *)v->operand);
   case B_STRING_AS_HEX_UINT:
     return xprintf(pos, size, info, "\"%u\"", *(unsigned int *)v->operand);
   case B_STRING_AS_U64:
@@ -1405,8 +1420,7 @@ inject_format_string(char *pos,
   char *p = NULL;
   char *format;
   cee_strndup(sbuf->start, sbuf->size, &format);
-  switch(n)
-  {
+  switch (n) {
   case 1:
     cee_asprintf(&p, format, args[0]._);
     break;
@@ -1421,15 +1435,15 @@ inject_format_string(char *pos,
     break;
   case 5:
     cee_asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._,
-             args[4]._);
+                 args[4]._);
     break;
   case 6:
-    cee_asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._, args[4]._,
-             args[5]._);
+    cee_asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._,
+                 args[4]._, args[5]._);
     break;
   case 7:
-    cee_asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._, args[4]._,
-             args[5]._, args[6]._);
+    cee_asprintf(&p, format, args[0]._, args[1]._, args[2]._, args[3]._,
+                 args[4]._, args[5]._, args[6]._);
     break;
   default:
     ERR("format string '%s' has %d, which is more than 8 arguments\n", format,
@@ -1843,13 +1857,8 @@ extract_str(struct action *v, int i, struct extraction_info *info)
   jsmntok_t *tokens = info->tokens;
   char *json = info->pos;
   if (JSMN_STRING != tokens[i].type && JSMN_PRIMITIVE != tokens[i].type) {
-    if (strong_type) {
-      print_tok(stderr, json, tokens, i);
-      ERR("expected string");
-    }
-    else {
-      return 0;
-    }
+    print_tok(stderr, json, tokens, i);
+    ERR("expected string");
   }
 
   bool is_null = false;
@@ -1912,18 +1921,15 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
   jsmntok_t *tokens = info->tokens;
   char *json = info->pos, *xend; /* exclusive end */
   if (tokens[i].type != JSMN_PRIMITIVE && tokens[i].type != JSMN_STRING) {
-    if (strong_type) {
-      print_tok(stderr, json, tokens, i);
-      ERR("Token is not a primitive or string");
-    }
-    else {
-      return 0;
-    }
+    print_tok(stderr, json, tokens, i);
+    ERR("Token is not a primitive or string");
   }
 
   bool is_null = false;
-  if (JSMN_PRIMITIVE == tokens[i].type && 'n' == json[tokens[i].start])
+  if (JSMN_PRIMITIVE == tokens[i].type && 'n' == json[tokens[i].start]) {
     is_null = true;
+  }
+
   switch (a->_.builtin) {
   case B_INT: {
     if (is_null)
@@ -2013,7 +2019,18 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
     else {
       *(uint64_t *)a->operand = strtoull(json + tokens[i].start, &xend, 0);
       if (xend != json + tokens[i].end)
-        ERR("failed to extract long long from %.*s\n",
+        ERR("failed to extract uint64_t from %.*s\n",
+            tokens[i].end - tokens[i].start, json + tokens[i].start);
+    }
+    add_defined(info->E, a->operand);
+    break;
+  case B_SIZE_T:
+    if (is_null)
+      *(size_t *)a->operand = 0;
+    else {
+      int ret = sscanf(json + tokens[i].start, "%zu", (size_t *)a->operand);
+      if (EOF == ret || ERANGE == errno)
+        ERR("failed to extract size_t from %.*s\n",
             tokens[i].end - tokens[i].start, json + tokens[i].start);
     }
     add_defined(info->E, a->operand);
@@ -2054,6 +2071,7 @@ extract_scalar(struct action *a, int i, struct extraction_info *info)
   default:
     ERR("unexpected %d\n", a->_.builtin);
   }
+
   return 1;
 }
 
