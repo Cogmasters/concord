@@ -1303,9 +1303,192 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/application.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/application">https://discord.com/developers/docs/resources/application</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application">
+<span class="target" id="structdiscord__application"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application</span></span></span><a class="headerlink" href="#c.discord_application" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_init(struct</span> <span class="pre">discord_application</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_cleanup(struct</span> <span class="pre">discord_application</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_list_free(struct</span> <span class="pre">discord_application</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/application#application-object-application-structure">https://discord.com/developers/docs/resources/application#application-object-application-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.id">
+<span class="target" id="structdiscord__application_1a90fd0fd3770771b013c402f0b86d2cbc"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_application.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the app </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.name">
+<span class="target" id="structdiscord__application_1afec86dd347d026a98250768e168e565c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the name of the app </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.icon">
+<span class="target" id="structdiscord__application_1ab4df7149ba054654ac030dd30ef578ae"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">icon</span></span></span><a class="headerlink" href="#c.discord_application.icon" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the icon hash of the app </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.description">
+<span class="target" id="structdiscord__application_1a514b86af56b576f8cec4c73ab1d22eeb"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_application.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the description of the app </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.rpc_origins">
+<span class="target" id="structdiscord__application_1ac6ecc205983edf155e48e52f5ba23676"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">rpc_origins</span></span></span><a class="headerlink" href="#c.discord_application.rpc_origins" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>an array of rpc origin urls, if rpc is enabled </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.bot_public">
+<span class="target" id="structdiscord__application_1a6d121ef2bb376448631db2b2f4c38bc6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bot_public</span></span></span><a class="headerlink" href="#c.discord_application.bot_public" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>when false only app owner can join the app’s bot to guilds </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.bot_require_code_grant">
+<span class="target" id="structdiscord__application_1acf132a3db4ae1727ee9882e359dd2f71"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bot_require_code_grant</span></span></span><a class="headerlink" href="#c.discord_application.bot_require_code_grant" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>when true the app’s bot will only join upon completion of the full oauth2 code grant flow </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.term_of_service_url">
+<span class="target" id="structdiscord__application_1ad653b1e954fe1e6d7b40f55b03c71299"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">term_of_service_url</span></span></span><a class="headerlink" href="#c.discord_application.term_of_service_url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the url of the app’s terms of service </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.privacy_policy_url">
+<span class="target" id="structdiscord__application_1a87a2c23954fb5ac9cf178e071fd984b7"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">privacy_policy_url</span></span></span><a class="headerlink" href="#c.discord_application.privacy_policy_url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the url of the app’s privacy policy </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.guild_id">
+<span class="target" id="structdiscord__application_1aaca55f9d344073d2e1654024df9dd753"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_application.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if this application is a game sold on Discord, this field will be the guild on which it has been linked </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.primary_sku_id">
+<span class="target" id="structdiscord__application_1abb7af95839d308d8452ce37557928cc1"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">primary_sku_id</span></span></span><a class="headerlink" href="#c.discord_application.primary_sku_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if this application is a game sold on Discord, this field will be the id of the “Game SKU” that is created, if exists </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.slug">
+<span class="target" id="structdiscord__application_1ae3924d38c1a46f553d064e171cd3e751"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">slug</span></span></span><a class="headerlink" href="#c.discord_application.slug" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if this application is a game sold on Discord, this field will be the URL slug that links to the store page </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application.flags">
+<span class="target" id="structdiscord__application_1a224fa164972e18887a3cc8a4fe4d87d0"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_flags" title="discord_application_flags"><span class="n"><span class="pre">discord_application_flags</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.discord_application.flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the application’s public flags </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_flags">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_flags</span></span></span><a class="headerlink" href="#c.discord_application_flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_flags_print(enum</span> <span class="pre">discord_application_flags</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_flags</span> <span class="pre">discord_application_flags_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/application#application-object-application-flags">https://discord.com/developers/docs/resources/application#application-object-application-flags</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_PRESENCE">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7af27a0d9cf38e6f8b66eae7be51f3aebb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_GATEWAY_PRESENCE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4096</span></span><a class="headerlink" href="#c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_PRESENCE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 12 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7aa4cb71481afa1d04e3f0c5ecea2af35e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8192</span></span><a class="headerlink" href="#c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 13 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7a9b5a332c9224a2301d2e622360bd20d6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16384</span></span><a class="headerlink" href="#c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 14 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7ac4afc3c12432c9ce87ae9f8a919cb43e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32768</span></span><a class="headerlink" href="#c.discord_application_flags.DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS_LIMITED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 15 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_flags.DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7a671368e1cad01f6fa484ade644ca1476"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">65536</span></span><a class="headerlink" href="#c.discord_application_flags.DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 16 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_flags.DISCORD_APPLICATION_EMBEDDED">
+<span class="target" id="application_8h_1af3ecb5d5ddcb9dd74ab7cb0f1167fbf7a97ca8b0e213e30d8d9f525db7997c3e2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_EMBEDDED</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">131072</span></span><a class="headerlink" href="#c.discord_application_flags.DISCORD_APPLICATION_EMBEDDED" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1 &lt;&lt; 17 </p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

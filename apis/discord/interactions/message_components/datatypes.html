@@ -1303,9 +1303,462 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/message_components.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#message-components">https://discord.com/developers/docs/interactions/message-components#message-components</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_component">
+<span class="target" id="structdiscord__component"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_component</span></span></span><a class="headerlink" href="#c.discord_component" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_init(struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_cleanup(struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_list_free(struct</span> <span class="pre">discord_component</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_component_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_component</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#component-object-component-structure">https://discord.com/developers/docs/interactions/message-components#component-object-component-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.type">
+<span class="target" id="structdiscord__component_1a35503ea32c59eaad2cf0e389e0564dc8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component_types" title="discord_component_types"><span class="n"><span class="pre">discord_component_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_component.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>component type </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.custom_id">
+<span class="target" id="structdiscord__component_1ab28a3af8ee42311d1ac1f75da1d45c36"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><a class="headerlink" href="#c.discord_component.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a developer-defined identifier for the component, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.disabled">
+<span class="target" id="structdiscord__component_1aef289819cd584601e589b35c25b2fe62"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disabled</span></span></span><a class="headerlink" href="#c.discord_component.disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether the component is disabled, default false </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.style">
+<span class="target" id="structdiscord__component_1abaa285203b66bbc5bceb517031709e5e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_button_styles" title="discord_button_styles"><span class="n"><span class="pre">discord_button_styles</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">style</span></span></span><a class="headerlink" href="#c.discord_component.style" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>one of button styles </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.label">
+<span class="target" id="structdiscord__component_1a7e78cfc0d7bcb493cd6dbb0684d61886"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">label</span></span></span><a class="headerlink" href="#c.discord_component.label" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>text that appears on the button, max 80 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.emoji">
+<span class="target" id="structdiscord__component_1a6623fd5c27ecd1f6550415599f44c10e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/emoji/datatypes.html#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emoji</span></span></span><a class="headerlink" href="#c.discord_component.emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name, id and animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.url">
+<span class="target" id="structdiscord__component_1afb1967e57163487f17e4223976f19eaa"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">url</span></span></span><a class="headerlink" href="#c.discord_component.url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a url for link-style buttons </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.options">
+<span class="target" id="structdiscord__component_1ad99946033fc6e1edde7684258b09b4b5"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_select_option" title="discord_select_option"><span class="n"><span class="pre">discord_select_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_component.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the choices in the select, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.placeholder">
+<span class="target" id="structdiscord__component_1ae390990e32d4a5eb585047eab61583fa"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">placeholder</span></span></span><a class="headerlink" href="#c.discord_component.placeholder" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>custom placeholder text if nothing is selected, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.min_values">
+<span class="target" id="structdiscord__component_1ae5d76aee147629ddcc557223b1e99f3c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_values</span></span></span><a class="headerlink" href="#c.discord_component.min_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the minimum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.max_values">
+<span class="target" id="structdiscord__component_1a583903a61ea85201f16c84834af843f9"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_values</span></span></span><a class="headerlink" href="#c.discord_component.max_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the maximum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_component.components">
+<span class="target" id="structdiscord__component_1a2e18820f5c71bad5d5b3f980fefa82f4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component" title="discord_component"><span class="n"><span class="pre">discord_component</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">components</span></span></span><a class="headerlink" href="#c.discord_component.components" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a list of child components </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_button">
+<span class="target" id="structdiscord__button"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_button</span></span></span><a class="headerlink" href="#c.discord_button" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_init(struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_cleanup(struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_list_free(struct</span> <span class="pre">discord_button</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_button_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_button</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#button-object-button-structure">https://discord.com/developers/docs/interactions/message-components#button-object-button-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.type">
+<span class="target" id="structdiscord__button_1ad1e9a398caafcd5ed43c968689eab6cd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component_types" title="discord_component_types"><span class="n"><span class="pre">discord_component_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_button.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>2 for a button </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.style">
+<span class="target" id="structdiscord__button_1ac13e559d5245d152164772ab8b456673"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_button_styles" title="discord_button_styles"><span class="n"><span class="pre">discord_button_styles</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">style</span></span></span><a class="headerlink" href="#c.discord_button.style" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>one of button styles </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.label">
+<span class="target" id="structdiscord__button_1a44927f4fa8e58b0af1fdb1252a829f83"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">label</span></span></span><a class="headerlink" href="#c.discord_button.label" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>text that appears on the button, max 80 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.emoji">
+<span class="target" id="structdiscord__button_1a025e88c52635d1f324ec53051f811a71"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/emoji/datatypes.html#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emoji</span></span></span><a class="headerlink" href="#c.discord_button.emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name, id and animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.custom_id">
+<span class="target" id="structdiscord__button_1a69c5fc7628e7b4acfa3160e3c7a0f407"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><a class="headerlink" href="#c.discord_button.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a developer-defined identifier for the component, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.url">
+<span class="target" id="structdiscord__button_1a5ca9d62564668ebe04efe394bdbbe58f"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">url</span></span></span><a class="headerlink" href="#c.discord_button.url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a url for link-style buttons </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_button.disabled">
+<span class="target" id="structdiscord__button_1a0b7a6ecffcf53d593ac133dc654242d9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disabled</span></span></span><a class="headerlink" href="#c.discord_button.disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether the component is disabled, default false </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_select_menu">
+<span class="target" id="structdiscord__select__menu"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_select_menu</span></span></span><a class="headerlink" href="#c.discord_select_menu" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_init(struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_cleanup(struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_list_free(struct</span> <span class="pre">discord_select_menu</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_menu_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_menu</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure">https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.type">
+<span class="target" id="structdiscord__select__menu_1aab5c2577f0f15c742ca940ca3cf92161"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_component_types" title="discord_component_types"><span class="n"><span class="pre">discord_component_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_select_menu.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>3 for a select menu </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.custom_id">
+<span class="target" id="structdiscord__select__menu_1a693629adb18f3448cfff62058e8f8132"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><a class="headerlink" href="#c.discord_select_menu.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a developer-defined identifier for the component, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.options">
+<span class="target" id="structdiscord__select__menu_1a6d5a0a7c25f592cde28428c152ec9625"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_select_option" title="discord_select_option"><span class="n"><span class="pre">discord_select_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_select_menu.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the choices in the select, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.placeholder">
+<span class="target" id="structdiscord__select__menu_1afd5b5a1367f4c440a9faa0dae5bf941d"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">placeholder</span></span></span><a class="headerlink" href="#c.discord_select_menu.placeholder" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>custom placeholder text if nothing is selected, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.min_values">
+<span class="target" id="structdiscord__select__menu_1a759497142a47dfa17df16092b524ec10"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">min_values</span></span></span><a class="headerlink" href="#c.discord_select_menu.min_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the minimum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.max_values">
+<span class="target" id="structdiscord__select__menu_1a2482d13c77cfed8fb93de51dcb5ebe78"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_values</span></span></span><a class="headerlink" href="#c.discord_select_menu.max_values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the maximum number of items that must be chosen; default 1, min 0, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_menu.disabled">
+<span class="target" id="structdiscord__select__menu_1a728b17adcc128ab3eb2aae72d4fb0dda"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disabled</span></span></span><a class="headerlink" href="#c.discord_select_menu.disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>disable the select, default false </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_select_option">
+<span class="target" id="structdiscord__select__option"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_select_option</span></span></span><a class="headerlink" href="#c.discord_select_option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;message_components.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_init(struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_cleanup(struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_list_free(struct</span> <span class="pre">discord_select_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_select_option_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_select_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure">https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.label">
+<span class="target" id="structdiscord__select__option_1a91880945dbdd5e3f2bce3e77dfc5445b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">label</span></span></span><a class="headerlink" href="#c.discord_select_option.label" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user-facing name of the option, max 25 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.value">
+<span class="target" id="structdiscord__select__option_1ae870ce85bd283e415e791756f4cee915"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#c.discord_select_option.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the dev define value of the option, max 100 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.description">
+<span class="target" id="structdiscord__select__option_1a0fb35e9cb2309b327ea17fffe65909d2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_select_option.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a additional description of the option, max 50 characters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.emoji">
+<span class="target" id="structdiscord__select__option_1ac7c86cde01705e0a0aede26122e76a01"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/emoji/datatypes.html#c.discord_emoji" title="discord_emoji"><span class="n"><span class="pre">discord_emoji</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">emoji</span></span></span><a class="headerlink" href="#c.discord_select_option.emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name, id and animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_select_option.Default">
+<span class="target" id="structdiscord__select__option_1a0728c52bc495b26e9486127298e46965"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Default</span></span></span><a class="headerlink" href="#c.discord_select_option.Default" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>will render this option as selected by default </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_component_types">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_component_types</span></span></span><a class="headerlink" href="#c.discord_component_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_component_types_print(enum</span> <span class="pre">discord_component_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_component_types</span> <span class="pre">discord_component_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#component-object-component-types">https://discord.com/developers/docs/interactions/message-components#component-object-component-types</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_component_types.DISCORD_COMPONENT_ACTION_ROW">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552ca7757d541a7e5c21b2191a7e656470e93"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_COMPONENT_ACTION_ROW</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_component_types.DISCORD_COMPONENT_ACTION_ROW" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_component_types.DISCORD_COMPONENT_BUTTON">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552ca19caf222528f799a21a77ffd5cf6888e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_COMPONENT_BUTTON</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_component_types.DISCORD_COMPONENT_BUTTON" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_component_types.DISCORD_COMPONENT_SELECT_MENU">
+<span class="target" id="message__components_8h_1ad6539677dbe0f162ab7f448aedc4552caecc2c8835eaa4aa34cbf60ec8f05b17f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_COMPONENT_SELECT_MENU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_component_types.DISCORD_COMPONENT_SELECT_MENU" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_button_styles">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_button_styles</span></span></span><a class="headerlink" href="#c.discord_button_styles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_button_styles_print(enum</span> <span class="pre">discord_button_styles</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_button_styles</span> <span class="pre">discord_button_styles_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/message-components#button-object-button-styles">https://discord.com/developers/docs/interactions/message-components#button-object-button-styles</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_PRIMARY">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889af59c747dc53af3c9f511a0cf25aa9bd0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_PRIMARY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_PRIMARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>blurple, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_SECONDARY">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889a0365a3c0f65bdbcf84bce888cc29c176"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_SECONDARY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_SECONDARY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>grey, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_SUCCESS">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889aae9efd069d300db7853ec9405322e97e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_SUCCESS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_SUCCESS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>green, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_DANGER">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889a5332690695481b5c2a29f566c02fcab4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_DANGER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_DANGER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>red, requires custom_id </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_button_styles.DISCORD_BUTTON_LINK">
+<span class="target" id="message__components_8h_1a19e1da603f62a8d55f592c672838d889a455bec2257da12a8b3ea336e3a764b66"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BUTTON_LINK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_button_styles.DISCORD_BUTTON_LINK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>grey, requires url </p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

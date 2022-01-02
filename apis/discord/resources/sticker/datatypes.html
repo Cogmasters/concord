@@ -1303,9 +1303,326 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/sticker.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p>(null) </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_sticker">
+<span class="target" id="structdiscord__sticker"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sticker</span></span></span><a class="headerlink" href="#c.discord_sticker" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sticker.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_init(struct</span> <span class="pre">discord_sticker</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_cleanup(struct</span> <span class="pre">discord_sticker</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_list_free(struct</span> <span class="pre">discord_sticker</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.id">
+<span class="target" id="structdiscord__sticker_1a8cb23db8a04a2b4f4a9623a9ce47737b"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_sticker.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.pack_id">
+<span class="target" id="structdiscord__sticker_1a0c567307d9c52a6e3bd30482463a85dd"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pack_id</span></span></span><a class="headerlink" href="#c.discord_sticker.pack_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>for standard stickers, id of the pack the sticker is from </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.name">
+<span class="target" id="structdiscord__sticker_1a087913dc26d96b3fccf01ffe408d0de0"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_sticker.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name of the sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.description">
+<span class="target" id="structdiscord__sticker_1abece0a153ff847a2d0a4b79e60a79125"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_sticker.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>description of the sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.tags">
+<span class="target" id="structdiscord__sticker_1a2d34ef34788a432a4d0963a4a7b3c4d1"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tags</span></span></span><a class="headerlink" href="#c.discord_sticker.tags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>autocomplete/suggestion tags for the sticker (max 200 characters) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.asset">
+<span class="target" id="structdiscord__sticker_1ab22da9f7ceb8c07e26026bc361a02060"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">asset</span></span></span><a class="headerlink" href="#c.discord_sticker.asset" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Deprecated previously the sticker asset hash, now an empty string </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.type">
+<span class="target" id="structdiscord__sticker_1a199ce8dc64f577d35775e604aa84f8ba"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_sticker_types" title="discord_sticker_types"><span class="n"><span class="pre">discord_sticker_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_sticker.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>type of sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.format_type">
+<span class="target" id="structdiscord__sticker_1ac0a0da2e7d6aea822cd0f28b3c27061d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_sticker_format_types" title="discord_sticker_format_types"><span class="n"><span class="pre">discord_sticker_format_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format_type</span></span></span><a class="headerlink" href="#c.discord_sticker.format_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>type of sticker format </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.available">
+<span class="target" id="structdiscord__sticker_1ad9fd26b1832e7d7287a5f176de364c93"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">available</span></span></span><a class="headerlink" href="#c.discord_sticker.available" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether this guild sticker can be used, may be false due to loss of Server Boosts </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.guild_id">
+<span class="target" id="structdiscord__sticker_1a91cd65dab77bb836f5f07e4e5abb6a78"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_sticker.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the guild that owns this sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.user">
+<span class="target" id="structdiscord__sticker_1a0ae67e50e9822d041b27c2c414268afd"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user</span></span></span><a class="headerlink" href="#c.discord_sticker.user" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user that uploaded the guild sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker.sort_value">
+<span class="target" id="structdiscord__sticker_1a6af12d7941beab40ce0f990f6fde8be8"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sort_value</span></span></span><a class="headerlink" href="#c.discord_sticker.sort_value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the standard sticker’s sort order within its pack </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_sticker_item">
+<span class="target" id="structdiscord__sticker__item"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sticker_item</span></span></span><a class="headerlink" href="#c.discord_sticker_item" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sticker.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_init(struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_cleanup(struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_list_free(struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_item_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_item</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_item.id">
+<span class="target" id="structdiscord__sticker__item_1a5a9815465ff974f6cf16586b9d122a8c"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_sticker_item.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_item.name">
+<span class="target" id="structdiscord__sticker__item_1a9d3659317b779c22554c552a3750a130"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_sticker_item.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name of the sticker </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_item.format_type">
+<span class="target" id="structdiscord__sticker__item_1ab3f6aa5adf69aa21dc9f064ebbf1b1ec"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_sticker_format_types" title="discord_sticker_format_types"><span class="n"><span class="pre">discord_sticker_format_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format_type</span></span></span><a class="headerlink" href="#c.discord_sticker_item.format_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>type of sticker format </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_sticker_pack">
+<span class="target" id="structdiscord__sticker__pack"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sticker_pack</span></span></span><a class="headerlink" href="#c.discord_sticker_pack" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;sticker.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_init(struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_cleanup(struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_list_free(struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_sticker_pack_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_sticker_pack</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.id">
+<span class="target" id="structdiscord__sticker__pack_1ac9d6625aafc1411fa03972f266e94654"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the sticker pack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.stickers">
+<span class="target" id="structdiscord__sticker__pack_1af834f21377232616c240477419ac4fcc"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_sticker" title="discord_sticker"><span class="n"><span class="pre">discord_sticker</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stickers</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.stickers" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the stickers in the pack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.name">
+<span class="target" id="structdiscord__sticker__pack_1ac244af8171eed623c3843703421a0fcd"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name of the sticker pack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.sku_id">
+<span class="target" id="structdiscord__sticker__pack_1a5f68a5bf5e0bcf7b3ef270374856821c"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sku_id</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.sku_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the pack’s SKU </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.cover_sticker_id">
+<span class="target" id="structdiscord__sticker__pack_1a221240309975f34e613551e8109d210a"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cover_sticker_id</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.cover_sticker_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of a sticker in the pack which is shown as the pack’s icon </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.description">
+<span class="target" id="structdiscord__sticker__pack_1a85d5dc4bbed09eb6415f1348a6214946"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>description of the sticker pack </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_sticker_pack.banner_asset_id">
+<span class="target" id="structdiscord__sticker__pack_1a8335032bada26792838de6f92a11ebec"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">banner_asset_id</span></span></span><a class="headerlink" href="#c.discord_sticker_pack.banner_asset_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the sticker pack’s banner image </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_sticker_types">
+<span class="target" id="sticker_8h_1add8dff7e42b02922f4fd9d302252b80b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sticker_types</span></span></span><a class="headerlink" href="#c.discord_sticker_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_sticker_types_print(enum</span> <span class="pre">discord_sticker_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_sticker_types</span> <span class="pre">discord_sticker_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_sticker_types.DISCORD_STICKER_STANDARD">
+<span class="target" id="sticker_8h_1add8dff7e42b02922f4fd9d302252b80ba76761f68dda727d9efc5f49f4eaed48a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STICKER_STANDARD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_sticker_types.DISCORD_STICKER_STANDARD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>an official sticker in a pack, part of Nitro or in a removed purchasable pack </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_sticker_types.DISCORD_STICKER_GUILD">
+<span class="target" id="sticker_8h_1add8dff7e42b02922f4fd9d302252b80ba8bc4d76d9d6c5213d1e50dba71345120"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STICKER_GUILD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_sticker_types.DISCORD_STICKER_GUILD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a sticker uploaded to a Boosted guild for the guild’s members </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_sticker_format_types">
+<span class="target" id="sticker_8h_1a35518bf957f43b333af81a71a31b862a"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_sticker_format_types</span></span></span><a class="headerlink" href="#c.discord_sticker_format_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_sticker_format_types_print(enum</span> <span class="pre">discord_sticker_format_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_sticker_format_types</span> <span class="pre">discord_sticker_format_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_sticker_format_types.DISCORD_STICKER_PNG">
+<span class="target" id="sticker_8h_1a35518bf957f43b333af81a71a31b862aa6b7cf7b40d6030c459a37ec528438390"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STICKER_PNG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_sticker_format_types.DISCORD_STICKER_PNG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_sticker_format_types.DISCORD_STICKER_APNG">
+<span class="target" id="sticker_8h_1a35518bf957f43b333af81a71a31b862aa141b2a1a162244cc10435900603a2740"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STICKER_APNG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_sticker_format_types.DISCORD_STICKER_APNG" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_sticker_format_types.DISCORD_STICKER_LOTTIE">
+<span class="target" id="sticker_8h_1a35518bf957f43b333af81a71a31b862aaf1ddd5ddfca168031936a9e9acc534f0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STICKER_LOTTIE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_sticker_format_types.DISCORD_STICKER_LOTTIE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

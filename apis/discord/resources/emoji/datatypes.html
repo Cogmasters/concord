@@ -1303,10 +1303,102 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/emoji.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/emoji">https://discord.com/developers/docs/resources/emoji</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_emoji">
+<span class="target" id="structdiscord__emoji"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_emoji</span></span></span><a class="headerlink" href="#c.discord_emoji" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;emoji.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
 </div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_init(struct</span> <span class="pre">discord_emoji</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_cleanup(struct</span> <span class="pre">discord_emoji</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_list_free(struct</span> <span class="pre">discord_emoji</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_emoji</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_emoji</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_emoji</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_emoji_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_emoji</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure">https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.id">
+<span class="target" id="structdiscord__emoji_1a712b9dea3254c2ee86db7d3e9f1a82b7"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_emoji.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>emoji id </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.name">
+<span class="target" id="structdiscord__emoji_1a7d50b95159ac0cfcf44fc33b4f139584"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_emoji.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>emoji name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.roles">
+<span class="target" id="structdiscord__emoji_1a85011a843a4dbbf8c7e79dee2b583e8d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../permissions/datatypes.html#c.discord_role" title="discord_role"><span class="n"><span class="pre">discord_role</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_emoji.roles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>roles allowed to use this emoji </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.user">
+<span class="target" id="structdiscord__emoji_1a2f8f871daa760513aca81c79f0c9ad82"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user</span></span></span><a class="headerlink" href="#c.discord_emoji.user" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>user that created this emoji </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.require_colons">
+<span class="target" id="structdiscord__emoji_1ad8658066357ed9c6c3664ea7e1a2c9c5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">require_colons</span></span></span><a class="headerlink" href="#c.discord_emoji.require_colons" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether this emoji must be wrapped in colons </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.managed">
+<span class="target" id="structdiscord__emoji_1aba042a755ea1b4f4b83c88d360dde1c2"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">managed</span></span></span><a class="headerlink" href="#c.discord_emoji.managed" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether this emoji is managed </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.animated">
+<span class="target" id="structdiscord__emoji_1af1cc053f3d90ba95d9a115555a56e926"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">animated</span></span></span><a class="headerlink" href="#c.discord_emoji.animated" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether this emoji is animated </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_emoji.available">
+<span class="target" id="structdiscord__emoji_1aed92c5342557bbbba16b4acca19ae7bd"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">available</span></span></span><a class="headerlink" href="#c.discord_emoji.available" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
 </section>
 
 

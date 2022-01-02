@@ -1303,9 +1303,607 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/interaction.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_interaction">
+<span class="target" id="structdiscord__interaction"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction</span></span></span><a class="headerlink" href="#c.discord_interaction" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;interaction.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_init(struct</span> <span class="pre">discord_interaction</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_cleanup(struct</span> <span class="pre">discord_interaction</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_list_free(struct</span> <span class="pre">discord_interaction</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure">https://discord.com/developers/docs/interactions/slash-commands#interaction-object-interaction-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.id">
+<span class="target" id="structdiscord__interaction_1a0939115f44e73841be700b0e0285d235"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_interaction.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the interaction </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.application_id">
+<span class="target" id="structdiscord__interaction_1a42a1f04ada8826760ec8cff2af2d5497"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_interaction.application_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the application this iteraction is for </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.type">
+<span class="target" id="structdiscord__interaction_1aad9b8b77631a49efb85e7d9b3776fa72"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_types" title="discord_interaction_types"><span class="n"><span class="pre">discord_interaction_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_interaction.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the request type of the interaction </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.data">
+<span class="target" id="structdiscord__interaction_1aa51ca032313f3d65f2c6d641e569b0db"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_data" title="discord_interaction_data"><span class="n"><span class="pre">discord_interaction_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.discord_interaction.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the command data payload </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.guild_id">
+<span class="target" id="structdiscord__interaction_1a7f70c89c522edc65d032aa4ddb7d1f2c"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_interaction.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the guild it was sent from </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.channel_id">
+<span class="target" id="structdiscord__interaction_1af61174eca97a66b800b0c546466cdd52"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_id</span></span></span><a class="headerlink" href="#c.discord_interaction.channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the channel it was sent from </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.member">
+<span class="target" id="structdiscord__interaction_1ac09e579d3ffa481a2622a4ca536538fd"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/guild/datatypes.html#c.discord_guild_member" title="discord_guild_member"><span class="n"><span class="pre">discord_guild_member</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">member</span></span></span><a class="headerlink" href="#c.discord_interaction.member" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>guild member data for the invoking user, including permissions </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.user">
+<span class="target" id="structdiscord__interaction_1abe3d2fff6306f568e39e1b7ee9cdc8ff"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user</span></span></span><a class="headerlink" href="#c.discord_interaction.user" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>user object for the invoking user, if invoked in a DM </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.token">
+<span class="target" id="structdiscord__interaction_1ac1e97e032eec047868dce94121a7d234"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">token</span></span></span><a class="headerlink" href="#c.discord_interaction.token" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>a continuation token for responding to the interaction </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction.message">
+<span class="target" id="structdiscord__interaction_1a4fce044c325fa6452aaa1e8dd89b8d8c"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/channel/datatypes.html#c.discord_message" title="discord_message"><span class="n"><span class="pre">discord_message</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><a class="headerlink" href="#c.discord_interaction.message" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>for components, the message they were attached to </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_interaction_data">
+<span class="target" id="structdiscord__interaction__data"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction_data</span></span></span><a class="headerlink" href="#c.discord_interaction_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;interaction.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_init(struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_cleanup(struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_list_free(struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_data_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_data</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.id">
+<span class="target" id="structdiscord__interaction__data_1a622c9e07b96648dec07f179911122152"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_interaction_data.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the ID of the invoked command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.name">
+<span class="target" id="structdiscord__interaction__data_1a306f118a55417b9029d1ef70e4366f5b"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_interaction_data.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the name of the invoked command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.type">
+<span class="target" id="structdiscord__interaction__data_1af1ffd8ac4051b11c4390a5061e86771d"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="../application_commands/datatypes.html#c.discord_application_command_types" title="discord_application_command_types"><span class="n"><span class="pre">discord_application_command_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_interaction_data.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the type of the invoked command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.resolved">
+<span class="target" id="structdiscord__interaction__data_1ac267cad7cbf9558b3ab8431ec478e789"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_resolved_data" title="discord_resolved_data"><span class="n"><span class="pre">discord_resolved_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">resolved</span></span></span><a class="headerlink" href="#c.discord_interaction_data.resolved" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>converted users + roles + channels </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.options">
+<span class="target" id="structdiscord__interaction__data_1af08744f974af9124385ecda0154cfd26"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../application_commands/datatypes.html#c.discord_application_command_interaction_data_option" title="discord_application_command_interaction_data_option"><span class="n"><span class="pre">discord_application_command_interaction_data_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_interaction_data.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the parameters for the command, max 25 </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.custom_id">
+<span class="target" id="structdiscord__interaction__data_1ad6fc95bd66edbdab4b01f04f96e7cece"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">custom_id</span></span></span><a class="headerlink" href="#c.discord_interaction_data.custom_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the custom id of the component </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.values">
+<span class="target" id="structdiscord__interaction__data_1afdd3f3e63fdb86f3ff81dec3e7d14c0e"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">values</span></span></span><a class="headerlink" href="#c.discord_interaction_data.values" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the values the user selected </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_data.target_id">
+<span class="target" id="structdiscord__interaction__data_1ae04eb9238af60947d9c68ed34ba5345d"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target_id</span></span></span><a class="headerlink" href="#c.discord_interaction_data.target_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of a user or message targetted by a user or message command </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_resolved_data">
+<span class="target" id="structdiscord__resolved__data"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_resolved_data</span></span></span><a class="headerlink" href="#c.discord_resolved_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;interaction.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_init(struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_cleanup(struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_list_free(struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_resolved_data_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_resolved_data</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-resolved-data-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-resolved-data-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_resolved_data.users">
+<span class="target" id="structdiscord__resolved__data_1a19d1a42da8ebbb551e7cb992604903b2"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">users</span></span></span><a class="headerlink" href="#c.discord_resolved_data.users" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the ids and User objects </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_resolved_data.members">
+<span class="target" id="structdiscord__resolved__data_1a2c56f15c905874677336ce8412665810"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">members</span></span></span><a class="headerlink" href="#c.discord_resolved_data.members" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the ids and partial Member objects </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_resolved_data.roles">
+<span class="target" id="structdiscord__resolved__data_1ab318f34358f9292b2869eb48dd116db7"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">roles</span></span></span><a class="headerlink" href="#c.discord_resolved_data.roles" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the ids and Role objects </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_resolved_data.channels">
+<span class="target" id="structdiscord__resolved__data_1a9090483b593f6eb0e5a3b775e1abb362"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channels</span></span></span><a class="headerlink" href="#c.discord_resolved_data.channels" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the ids and partial Channel objects </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_resolved_data.messages">
+<span class="target" id="structdiscord__resolved__data_1a1242f86679f0eb9222b959328ef81b94"></span><span class="n"><span class="pre">ja_str</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">messages</span></span></span><a class="headerlink" href="#c.discord_resolved_data.messages" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the ids and partial Message objects </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_message_interaction">
+<span class="target" id="structdiscord__message__interaction"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_message_interaction</span></span></span><a class="headerlink" href="#c.discord_message_interaction" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;interaction.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_init(struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_cleanup(struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_list_free(struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_message_interaction_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_message_interaction</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#message-interaction-object-message-interaction-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#message-interaction-object-message-interaction-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message_interaction.id">
+<span class="target" id="structdiscord__message__interaction_1afed74e41b482f1e998194dade8d7f3b2"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_message_interaction.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the interaction </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message_interaction.type">
+<span class="target" id="structdiscord__message__interaction_1a84255cc3ea673c0caa1eb76680a4ed64"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_types" title="discord_interaction_types"><span class="n"><span class="pre">discord_interaction_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_message_interaction.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the request type of the interaction </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message_interaction.name">
+<span class="target" id="structdiscord__message__interaction_1a0e72ac995e4ac862d8e5adef03fd4910"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_message_interaction.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the name of the application command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_message_interaction.user">
+<span class="target" id="structdiscord__message__interaction_1a8870e93de627a1b4b1dd75eaad6a0c5c"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">user</span></span></span><a class="headerlink" href="#c.discord_message_interaction.user" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user who invoked the interaction </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_interaction_response">
+<span class="target" id="structdiscord__interaction__response"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction_response</span></span></span><a class="headerlink" href="#c.discord_interaction_response" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;interaction.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_init(struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_cleanup(struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_list_free(struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_response_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_response</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-response-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-response-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_response.type">
+<span class="target" id="structdiscord__interaction__response_1a5f8a72eedbc0d2e5d99d7f31f99dae6e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_callback_types" title="discord_interaction_callback_types"><span class="n"><span class="pre">discord_interaction_callback_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_interaction_response.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the type of response </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_response.data">
+<span class="target" id="structdiscord__interaction__response_1aef73ccc5ef950c8fb29897722151e38e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_callback_data" title="discord_interaction_callback_data"><span class="n"><span class="pre">discord_interaction_callback_data</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><a class="headerlink" href="#c.discord_interaction_response.data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>an optional response message </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data">
+<span class="target" id="structdiscord__interaction__callback__data"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction_callback_data</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;interaction.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_init(struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_cleanup(struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_list_free(struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_interaction_callback_data_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_interaction_callback_data</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.tts">
+<span class="target" id="structdiscord__interaction__callback__data_1aae5ac4514cb1912d3366cdfaee7ce2b3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tts</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.tts" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>is the response TTS </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.content">
+<span class="target" id="structdiscord__interaction__callback__data_1a63cab3580e1cf722dcca0f729c167089"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">content</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.content" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>message content </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.embeds">
+<span class="target" id="structdiscord__interaction__callback__data_1ae03851086e65ba296bbcee4b912b1336"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/channel/datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">embeds</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.embeds" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>support up to 10 embeds </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.allowed_mentions">
+<span class="target" id="structdiscord__interaction__callback__data_1ab6f652e5917f332c855beb91835a6956"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/channel/datatypes.html#c.discord_allowed_mentions" title="discord_allowed_mentions"><span class="n"><span class="pre">discord_allowed_mentions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">allowed_mentions</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.allowed_mentions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>allowed mentions object </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.flags">
+<span class="target" id="structdiscord__interaction__callback__data_1af69f7a2c147342e1a83ff4d2cee9d1b4"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_interaction_callback_data_flags" title="discord_interaction_callback_data_flags"><span class="n"><span class="pre">discord_interaction_callback_data_flags</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>interaction application command callback data flags </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.components">
+<span class="target" id="structdiscord__interaction__callback__data_1acb499dc2b449ffdf6aa7870048cd3405"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../message_components/datatypes.html#c.discord_component" title="discord_component"><span class="n"><span class="pre">discord_component</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">components</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.components" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>message components </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data.attachments">
+<span class="target" id="structdiscord__interaction__callback__data_1adb3397342b65e4c5e40cb515d5aa6e7a"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../resources/channel/datatypes.html#c.discord_attachment" title="discord_attachment"><span class="n"><span class="pre">discord_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">attachments</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data.attachments" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>attachment objects with filename and description </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_interaction_types">
+<span class="target" id="interaction_8h_1acedb17c68eab684a8d0f908bd4af4c3e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction_types</span></span></span><a class="headerlink" href="#c.discord_interaction_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_interaction_types_print(enum</span> <span class="pre">discord_interaction_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_interaction_types</span> <span class="pre">discord_interaction_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_types.DISCORD_INTERACTION_PING">
+<span class="target" id="interaction_8h_1acedb17c68eab684a8d0f908bd4af4c3eaa47817a0acf35b30b3c3657b7c2d0075"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_PING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_interaction_types.DISCORD_INTERACTION_PING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_types.DISCORD_INTERACTION_APPLICATION_COMMAND">
+<span class="target" id="interaction_8h_1acedb17c68eab684a8d0f908bd4af4c3ea7b4304273fd80ebe29cfb49d974d0372"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_APPLICATION_COMMAND</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_interaction_types.DISCORD_INTERACTION_APPLICATION_COMMAND" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_types.DISCORD_INTERACTION_MESSAGE_COMPONENT">
+<span class="target" id="interaction_8h_1acedb17c68eab684a8d0f908bd4af4c3ea2628808d3fdb6a32b6ea2b24182c6203"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_MESSAGE_COMPONENT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_interaction_types.DISCORD_INTERACTION_MESSAGE_COMPONENT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_types">
+<span class="target" id="interaction_8h_1af7a2bdc22799b9d1ac556a6ba7206c83"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction_callback_types</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_interaction_callback_types_print(enum</span> <span class="pre">discord_interaction_callback_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_interaction_callback_types</span> <span class="pre">discord_interaction_callback_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_PONG">
+<span class="target" id="interaction_8h_1af7a2bdc22799b9d1ac556a6ba7206c83a13f10788fa44a64807ccc95e9a45a997"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_CALLBACK_PONG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_PONG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ACK a Ping </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE">
+<span class="target" id="interaction_8h_1af7a2bdc22799b9d1ac556a6ba7206c83a3217e673be5ece5b9499d225e1e87659"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>respond to a interaction with a message </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE">
+<span class="target" id="interaction_8h_1af7a2bdc22799b9d1ac556a6ba7206c83a66dcb98e7af04cf0d1e93aca6b99deca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>ACK an interaction and edit a response later, the user sees a loading state </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE">
+<span class="target" id="interaction_8h_1af7a2bdc22799b9d1ac556a6ba7206c83a0ad95ede1db13145d50fed21e9974429"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_DEFERRED_UPDATE_MESSAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>for components, ACK an interaction and edit the original message later; the user does not see a loading state </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE">
+<span class="target" id="interaction_8h_1af7a2bdc22799b9d1ac556a6ba7206c83a4e90a453bd428db456a11983d79d75ef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.discord_interaction_callback_types.DISCORD_INTERACTION_CALLBACK_UPDATE_MESSAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>for components, edit the message the component was attached to </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data_flags">
+<span class="target" id="interaction_8h_1a7f13e57b9360abefd85d6268d3c15fe1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_interaction_callback_data_flags</span></span></span><a class="headerlink" href="#c.discord_interaction_callback_data_flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_interaction_callback_data_flags_print(enum</span> <span class="pre">discord_interaction_callback_data_flags</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_interaction_callback_data_flags</span> <span class="pre">discord_interaction_callback_data_flags_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-flags">https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-data-flags</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_interaction_callback_data_flags.DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL">
+<span class="target" id="interaction_8h_1a7f13e57b9360abefd85d6268d3c15fe1ab5d874645d4c906619130f9e1075be5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><a class="headerlink" href="#c.discord_interaction_callback_data_flags.DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>only the user receiving the message can see it </p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

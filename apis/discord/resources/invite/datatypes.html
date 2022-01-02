@@ -1303,9 +1303,195 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/invite.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/invite">https://discord.com/developers/docs/resources/invite</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_invite">
+<span class="target" id="structdiscord__invite"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_invite</span></span></span><a class="headerlink" href="#c.discord_invite" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;invite.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_init(struct</span> <span class="pre">discord_invite</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_cleanup(struct</span> <span class="pre">discord_invite</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_list_free(struct</span> <span class="pre">discord_invite</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/invite#invite-object-invite-structure">https://discord.com/developers/docs/resources/invite#invite-object-invite-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.code">
+<span class="target" id="structdiscord__invite_1a935de1f04625fa8c0afccee06ea1a468"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.discord_invite.code" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.guild">
+<span class="target" id="structdiscord__invite_1a9537f5abdd59ec1e7130e7531a548a91"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../guild/datatypes.html#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">guild</span></span></span><a class="headerlink" href="#c.discord_invite.guild" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>partial guild object </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.channel">
+<span class="target" id="structdiscord__invite_1aa2377631804b4cd4514a1c7c5f3fc3fd"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../channel/datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channel</span></span></span><a class="headerlink" href="#c.discord_invite.channel" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>partial channel object </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.inviter">
+<span class="target" id="structdiscord__invite_1a04dba3a1894eec73b7d3d8d1667c8615"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">inviter</span></span></span><a class="headerlink" href="#c.discord_invite.inviter" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.target_user">
+<span class="target" id="structdiscord__invite_1ae4a8f95f668a44854cc380edc02a4284"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">target_user</span></span></span><a class="headerlink" href="#c.discord_invite.target_user" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>partial user object </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.target_user_type">
+<span class="target" id="structdiscord__invite_1a18bf82666512804b31ec2cecb9dd2108"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_invite_target_user_types" title="discord_invite_target_user_types"><span class="n"><span class="pre">discord_invite_target_user_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">target_user_type</span></span></span><a class="headerlink" href="#c.discord_invite.target_user_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.approximate_presence_count">
+<span class="target" id="structdiscord__invite_1a5b88980d5abb29e8125038563c31698c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">approximate_presence_count</span></span></span><a class="headerlink" href="#c.discord_invite.approximate_presence_count" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite.approximate_member_count">
+<span class="target" id="structdiscord__invite_1a51e00a5c2c5d9ed4291655725b69f692"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">approximate_member_count</span></span></span><a class="headerlink" href="#c.discord_invite.approximate_member_count" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_invite_metadata">
+<span class="target" id="structdiscord__invite__metadata"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_invite_metadata</span></span></span><a class="headerlink" href="#c.discord_invite_metadata" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;invite.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_init(struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_cleanup(struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_list_free(struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_invite_metadata_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_invite_metadata</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/invite#invite-metadata-object">https://discord.com/developers/docs/resources/invite#invite-metadata-object</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite_metadata.user">
+<span class="target" id="structdiscord__invite__metadata_1a2d0881318ebbea6fcdbd8803fe9ecf62"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">user</span></span></span><a class="headerlink" href="#c.discord_invite_metadata.user" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite_metadata.max_uses">
+<span class="target" id="structdiscord__invite__metadata_1a6ee645905d5ece4e20468eb8a320d8bf"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_uses</span></span></span><a class="headerlink" href="#c.discord_invite_metadata.max_uses" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite_metadata.max_age">
+<span class="target" id="structdiscord__invite__metadata_1ac1c6dbab5e88af497cf5b33e7b751201"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">max_age</span></span></span><a class="headerlink" href="#c.discord_invite_metadata.max_age" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite_metadata.temporary">
+<span class="target" id="structdiscord__invite__metadata_1ab0ebdcfa9cb74f77971d10a2bcbbbc4c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">temporary</span></span></span><a class="headerlink" href="#c.discord_invite_metadata.temporary" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_invite_metadata.created_at">
+<span class="target" id="structdiscord__invite__metadata_1a9839afe3e8c9ec9fb6c9bffd9ebdcc2f"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">created_at</span></span></span><a class="headerlink" href="#c.discord_invite_metadata.created_at" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_invite_target_user_types">
+<span class="target" id="invite_8h_1a22a4ba67848df3f5d12e41f5d77ffbc1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_invite_target_user_types</span></span></span><a class="headerlink" href="#c.discord_invite_target_user_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_invite_target_user_types_print(enum</span> <span class="pre">discord_invite_target_user_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_invite_target_user_types</span> <span class="pre">discord_invite_target_user_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/invite#invite-object-target-user-types">https://discord.com/developers/docs/resources/invite#invite-object-target-user-types</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_invite_target_user_types.DISCORD_INVITE_STREAM">
+<span class="target" id="invite_8h_1a22a4ba67848df3f5d12e41f5d77ffbc1a2739fefcddb9f89e40390e7a3b31cb62"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_INVITE_STREAM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_invite_target_user_types.DISCORD_INVITE_STREAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

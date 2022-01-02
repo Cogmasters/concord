@@ -1303,9 +1303,430 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/permissions.h </p>
+<p><dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/permissions">https://discord.com/developers/docs/topics/permissions</a> </p>
+</dd>
+</dl>
+</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_role">
+<span class="target" id="structdiscord__role"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_role</span></span></span><a class="headerlink" href="#c.discord_role" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;permissions.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_init(struct</span> <span class="pre">discord_role</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_cleanup(struct</span> <span class="pre">discord_role</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_list_free(struct</span> <span class="pre">discord_role</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/permissions#role-object-role-structure">https://discord.com/developers/docs/topics/permissions#role-object-role-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.id">
+<span class="target" id="structdiscord__role_1a8e53b0147e79970f6eee28c821de27e6"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_role.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.name">
+<span class="target" id="structdiscord__role_1a739fc9dc62cab1919f8bfcdf8daaf1a0"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_role.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.color">
+<span class="target" id="structdiscord__role_1aafd3dfbe3bfb0c1093cf6defe232ddcb"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">color</span></span></span><a class="headerlink" href="#c.discord_role.color" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.hoist">
+<span class="target" id="structdiscord__role_1af9e7c2df359a58ac4c590476afd06de5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hoist</span></span></span><a class="headerlink" href="#c.discord_role.hoist" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.position">
+<span class="target" id="structdiscord__role_1af73a57765f2ba8bf48a99f2a1143cf4e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><a class="headerlink" href="#c.discord_role.position" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.permissions">
+<span class="target" id="structdiscord__role_1a3f39b0c7f068e33a4ec5770afcef9811"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">permissions</span></span></span><a class="headerlink" href="#c.discord_role.permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.managed">
+<span class="target" id="structdiscord__role_1ac2b261d0b151e97f6bcbdf7674405a0c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">managed</span></span></span><a class="headerlink" href="#c.discord_role.managed" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.mentionable">
+<span class="target" id="structdiscord__role_1ae328403b762539b940f3593cc96b78e3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mentionable</span></span></span><a class="headerlink" href="#c.discord_role.mentionable" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role.tags">
+<span class="target" id="structdiscord__role_1a0c823d98c04721bb17e16fe5595a5b28"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_role_tags" title="discord_role_tags"><span class="n"><span class="pre">discord_role_tags</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">tags</span></span></span><a class="headerlink" href="#c.discord_role.tags" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_role_tags">
+<span class="target" id="structdiscord__role__tags"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_role_tags</span></span></span><a class="headerlink" href="#c.discord_role_tags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;permissions.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_init(struct</span> <span class="pre">discord_role_tags</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_cleanup(struct</span> <span class="pre">discord_role_tags</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_list_free(struct</span> <span class="pre">discord_role_tags</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role_tags</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role_tags</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role_tags</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_role_tags_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_role_tags</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure">https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role_tags.bot_id">
+<span class="target" id="structdiscord__role__tags_1a1ec1e77441a5e6693b36f32813046d10"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bot_id</span></span></span><a class="headerlink" href="#c.discord_role_tags.bot_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role_tags.integration_id">
+<span class="target" id="structdiscord__role__tags_1a9582d430da3b034dfe0f98f129b05388"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">integration_id</span></span></span><a class="headerlink" href="#c.discord_role_tags.integration_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_role_tags.premium_subscriber">
+<span class="target" id="structdiscord__role__tags_1aef1414ead37286aa5106ac82c335e2da"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">premium_subscriber</span></span></span><a class="headerlink" href="#c.discord_role_tags.premium_subscriber" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_bitwise_permission_flags</span></span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_bitwise_permission_flags_print(enum</span> <span class="pre">discord_bitwise_permission_flags</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_bitwise_permission_flags</span> <span class="pre">discord_bitwise_permission_flags_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ZERO">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa4a6986980717528f503c505ce5528df1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ZERO</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ZERO" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>No permission bits </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa22f82689ccb104aeac0d80a8e97d555b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_INSTANT_INVITE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows creation of instant invites T, V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_KICK_MEMBERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fab9ad4327a1cea0d42a53cca6f1ad28c7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_KICK_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_KICK_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows kicking members </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_BAN_MEMBERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa4dc653bba136b1039284d4596ad2c41d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_BAN_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_BAN_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows banning members </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADMINISTRATOR">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa919cf838888e9858d0658d92f30b2d28"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ADMINISTRATOR</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADMINISTRATOR" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows all permissions and bypasses channel permission overwrites </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa72c70d64d29f468adb2b1a741a29482f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_CHANNELS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of channels T, V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_GUILD">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa16f6a33ca8f7fa0417f88b2d1b7b3af1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_GUILD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_GUILD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of the guild </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADD_REACTIONS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa484752f0d1eafddccd04be30af312cae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ADD_REACTIONS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">64</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ADD_REACTIONS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for the addition of reactions to messages T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa7ed54005bd31926b82ee17a9c4f36b87"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">128</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_AUDIT_LOG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for viewing of audit logs </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa5cbac74004d80560987ff49b7231dcb9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">256</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_PRIORITY_SPEAKER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for using priority speaker in a voice channel V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_STREAM">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa6449f20296b45f8e5990e4a1c3df23ee"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_STREAM</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">512</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_STREAM" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows the user to go live V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa46b331a641ff4a1fad5c68715e264454"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1024</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_CHANNEL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows guild members to view a channel, which includes reading messages in text channels T, V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fadc5c41ef6e564d88c4d6c45d4d6049b7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SEND_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2048</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for sending messages in a channel T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faa727e02bf3b889c5cda75116e1199af5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4096</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_TTS_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for sending of /tts messages T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa70ea13db75b637072192c272c79a078a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8192</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_MESSAGES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for deletion of other users messages T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_EMBED_LINKS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa67d1c66ceef79b843f9ad1510be58f42"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_EMBED_LINKS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16384</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_EMBED_LINKS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Links sent by users with this permission will be auto-embedded T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ATTACH_FILES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fad081e2a72f5222b972d6852f49879e3b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_ATTACH_FILES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32768</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_ATTACH_FILES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for uploading images and files T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa170c55a70b19791149b62f0beda78e7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">65536</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_READ_MESSAGE_HISTORY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for reading of message history T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fac91cc1f136f9d8afff50e27e76636af0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">131072</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MENTION_EVERYONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for using the &#64;everyone tag to notify all users in a channel, and the &#64;here tag to notify all online users in a channel T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fac106508e8c6ad2f71d6391347c075009"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">262144</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_EMOJIS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows the usage of custom emojis from other servers T </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa4382c0aa71e34d1b6d40cf520e2860df"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">524288</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_VIEW_GUILD_INSIGHTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for viewing guild insights </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CONNECT">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa0927bc06a30a6d16b915282f2ee1b27a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CONNECT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1048576</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CONNECT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for joining of a voice channel V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SPEAK">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa393e6617d9096babc294ec78a159c3af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SPEAK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2097152</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SPEAK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for speaking in a voice channel V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9facd4192a6a32799b52620ba545aab5035"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4194304</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MUTE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for muting members in a voice channel V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fabb3649192d765421bde2308100256e3b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8388608</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_DEAFEN_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for deafening of members in a voice channel V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fab7f6d7604202abd5b5b5385bc73ee34e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">16777216</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MOVE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for moving of members between voice channels V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_VAD">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fae4adbd2aff7305da6d850d7833561edc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_VAD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">33554432</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_VAD" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for using voice-activity-detection in a voice channel V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fabe52c2600d0ee1f12bcdc29ebaa549fb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">67108864</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CHANGE_NICKNAME" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for modification of own nickname </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa72294f1aa240d80caa43923620b39463"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">134217728</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_NICKNAMES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for modification of other users nicknames </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_ROLES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa2375be7ccdfc9c81453c91c6ad319264"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_ROLES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">268435456</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_ROLES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of roles T, V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa84f74839f929b6f7382837e2a44ed65c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">536870912</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_WEBHOOKS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of webhooks T, V </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa501f7564ba78df313b7a6efac85ee696"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1073741824</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EMOJIS_AND_STICKERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows management and editing of emojis and stickers </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fac06a740713f9f6668398f3aeb1e46d4c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2147483648</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_APPLICATION_COMMANDS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows members to use application commands, including slash commands and context menu commands. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa8a45b5dd4e84d20544393107e9e59fdd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4294967296</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_REQUEST_TO_SPEAK" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for requesting to speak in stage channels. (This permission is under active development and may be changed or removed.) </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa39b4c5442b3669e5d038b0af66c2cd9d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8589934592</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_EVENTS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for creating, editing, and deleting scheduled events </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_THREADS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faa707279f4235a7ecf6a9041f4d01641b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MANAGE_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">17179869184</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MANAGE_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for deleting and archiving threads, and viewing all private threads </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fad8c10732f7d674a319fc227bf2bbbe1d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">34359738368</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PUBLIC_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for creating threads </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fabb80bc573b8958c567c8026ad22239b2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">68719476736</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_CREATE_PRIVATE_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for creating private threads </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faedb304211d2041b285aa1a734241e8c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">137438953472</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_USE_EXTERNAL_STICKERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows the usage of custom stickers from other servers </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fa1513f4b6e6f62728760f29efae151f71"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">274877906944</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_SEND_MESSAGES_IN_THREADS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for sending messages in threads </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9faa3046281425e4594b269c88fc05cb118"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">549755813888</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_START_EMBEDDED_ACTIVITIES" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for launching activities (applications with the EMBEDDED flag) in a voice channel </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS">
+<span class="target" id="permissions_8h_1a54ffd9db693f05a34af1a9f99d18ec9fae8937e675fb8a89473ef948a15d675d4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1099511627776</span></span><a class="headerlink" href="#c.discord_bitwise_permission_flags.DISCORD_BITWISE_PERMISSION_MODERATE_MEMBERS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allows for timing out users to prevent them from sending or reacting to messages in chat and threads, and from speaking in voice and stage channels </p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 
