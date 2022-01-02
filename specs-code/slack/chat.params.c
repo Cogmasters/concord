@@ -307,9 +307,6 @@ size_t slack_chat_post_message_params_to_json(char *json, size_t len, struct sla
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void slack_chat_post_message_params_cleanup_v(void *p) {
   slack_chat_post_message_params_cleanup((struct slack_chat_post_message_params *)p);
 }
@@ -362,7 +359,7 @@ void slack_chat_post_message_params_cleanup(struct slack_chat_post_message_param
     free(d->text);
   /* slack/chat.params.json:17:20
      '{ "name": "as_user", "type":{ "base":"bool" }, "comment":"Pass true to post the message as the authed user, instead of as a bot. Defaults to false.", "inject_if_not":false }' */
-  /* p->as_user is a scalar */
+  (void)d->as_user;
   /* slack/chat.params.json:18:20
      '{ "name": "icon_emoji", "type":{ "base":"char", "dec":"*" }, "comment":"Emoji to use as the icon for this message. Overrides icon_url. Must be used in conjunction with as_user set to false, otherwise ignored.", "inject_if_not":null }' */
   if (d->icon_emoji)
@@ -373,27 +370,27 @@ void slack_chat_post_message_params_cleanup(struct slack_chat_post_message_param
     free(d->icon_url);
   /* slack/chat.params.json:20:20
      '{ "name": "link_names", "type":{ "base":"bool" }, "comment":"Find and link channel names and usernames.", "inject_if_not":false }' */
-  /* p->link_names is a scalar */
+  (void)d->link_names;
   /* slack/chat.params.json:21:20
      '{ "name": "mrkdwn", "type":{ "base":"bool" }, "default_value":true, "comment":"Disable Slack markup parsing by setting to false. Enabled by default.", "inject_if_not":true }' */
-  /* p->mrkdwn is a scalar */
+  (void)d->mrkdwn;
   /* slack/chat.params.json:22:20
      '{ "name": "parse", "type":{ "base":"char", "dec":"*" }, "comment":"Change how messages are treated. Defaults to none", "inject_if_not":null }' */
   if (d->parse)
     free(d->parse);
   /* slack/chat.params.json:23:20
      '{ "name": "reply_broadcast", "type":{ "base":"bool" }, "comment":"Used in conjunction with thread_ts and indicates whether reply should be made visible to everyone in the channel or conversation. Defaults to false.", "inject_if_not":false }' */
-  /* p->reply_broadcast is a scalar */
+  (void)d->reply_broadcast;
   /* slack/chat.params.json:24:20
      '{ "name": "thread_ts", "type":{ "base":"char", "dec":"*" }, "comment":"Provide another message's ts value to make this message a reply. Avoid using a reply's ts value; use its parent instead.", "inject_if_not":null }' */
   if (d->thread_ts)
     free(d->thread_ts);
   /* slack/chat.params.json:25:20
      '{ "name": "unfurl_links", "type":{ "base":"bool" }, "comment":"Pass true to enable unfurling of primarily text-based content.", "inject_if_not":false }' */
-  /* p->unfurl_links is a scalar */
+  (void)d->unfurl_links;
   /* slack/chat.params.json:26:20
      '{ "name": "unfurl_media", "type":{ "base":"bool" }, "default_value":true, "comment":"Pass false to disable unfurling of media content.", "inject_if_not":true }' */
-  /* p->unfurl_media is a scalar */
+  (void)d->unfurl_media;
   /* slack/chat.params.json:27:20
      '{ "name": "username", "type":{ "base":"char", "dec":"*" }, "comment":"Set your bot's user name. Must be used in conjunction with as_user set to false, otherwise ignored.", "inject_if_not":null }' */
   if (d->username)
@@ -452,7 +449,7 @@ void slack_chat_post_message_params_init(struct slack_chat_post_message_params *
 
 }
 void slack_chat_post_message_params_list_free(struct slack_chat_post_message_params **p) {
-  ntl_free((void**)p, (vfvp)slack_chat_post_message_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))slack_chat_post_message_params_cleanup);
 }
 
 void slack_chat_post_message_params_list_from_json(char *str, size_t len, struct slack_chat_post_message_params ***p)
@@ -461,13 +458,13 @@ void slack_chat_post_message_params_list_from_json(char *str, size_t len, struct
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct slack_chat_post_message_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)slack_chat_post_message_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))slack_chat_post_message_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t slack_chat_post_message_params_list_to_json(char *str, size_t len, struct slack_chat_post_message_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)slack_chat_post_message_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))slack_chat_post_message_params_to_json);
 }
 

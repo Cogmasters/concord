@@ -121,8 +121,10 @@ int
 cee_strtou64(char *str, size_t len, uint64_t *p_value)
 {
   char fmt[512];
-  int ret = snprintf(fmt, sizeof(fmt), "%%%zu" SCNu64, len);
+  size_t ret = snprintf(fmt, sizeof(fmt), "%%%zu" SCNu64, len);
+
   if (ret >= sizeof(fmt)) return 0;
+
   return sscanf(str, fmt, p_value) != EOF;
 }
 
@@ -251,20 +253,18 @@ cee_join_strings(char **strings,
 void
 cee_gen_readlink(char *linkbuf, size_t linkbuf_size)
 {
-  ssize_t r;
-  r = readlink("/proc/self/exe", linkbuf, linkbuf_size);
+  ssize_t r = readlink("/proc/self/exe", linkbuf, linkbuf_size);
+
   if (r < 0) {
     perror("readlink");
     exit(EXIT_FAILURE);
   }
 
-  if (r > linkbuf_size) {
+  if (r > (ssize_t)linkbuf_size) {
     fprintf(stderr, "symlink size is greater than %zu\n", linkbuf_size);
     exit(EXIT_FAILURE);
   }
   linkbuf[r] = '\0';
-
-  return;
 }
 
 void

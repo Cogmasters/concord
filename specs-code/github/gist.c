@@ -163,9 +163,6 @@ size_t github_gist_to_json(char *json, size_t len, struct github_gist *p)
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void github_gist_cleanup_v(void *p) {
   github_gist_cleanup((struct github_gist *)p);
 }
@@ -226,7 +223,7 @@ void github_gist_cleanup(struct github_gist *d) {
     free(d->description);
   /* github/gist.json:19:28
      '{ "name": "comments", "type":{ "base":"int"}}' */
-  /* p->comments is a scalar */
+  (void)d->comments;
 }
 
 void github_gist_init(struct github_gist *p) {
@@ -257,7 +254,7 @@ void github_gist_init(struct github_gist *p) {
 
 }
 void github_gist_list_free(struct github_gist **p) {
-  ntl_free((void**)p, (vfvp)github_gist_cleanup);
+  ntl_free((void**)p, (void(*)(void*))github_gist_cleanup);
 }
 
 void github_gist_list_from_json(char *str, size_t len, struct github_gist ***p)
@@ -266,13 +263,13 @@ void github_gist_list_from_json(char *str, size_t len, struct github_gist ***p)
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct github_gist);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)github_gist_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))github_gist_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t github_gist_list_to_json(char *str, size_t len, struct github_gist **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)github_gist_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))github_gist_to_json);
 }
 

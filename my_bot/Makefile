@@ -65,7 +65,7 @@ $(OBJDIR):
 
 # Match each .o file to its .c counterpart (foo.o: foo.c)
 $(OBJDIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $< $(LDFLAGS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(CONF):
 	cp -n $(ORCA)/config.json $(CONF)

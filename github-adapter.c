@@ -58,7 +58,7 @@ _github_adapter_perform(struct github_adapter *adapter,
                         enum http_method method,
                         char endpoint[])
 {
-  struct ua_conn_attr conn_attr = { method, body, endpoint };
+  struct ua_conn_attr conn_attr = { method, body, endpoint, NULL };
   struct ua_conn *conn = ua_conn_start(adapter->ua);
   ORCAcode code;
   bool retry;
@@ -116,7 +116,7 @@ github_adapter_run(struct github_adapter *adapter,
   static struct github_request_attr blank_attr = { 0 };
   char endpoint[2048];
   va_list args;
-  int ret;
+  size_t len;
 
   /* have it point somewhere */
   if (!attr) attr = &blank_attr;
@@ -124,8 +124,8 @@ github_adapter_run(struct github_adapter *adapter,
   /* build the endpoint string */
   va_start(args, endpoint_fmt);
 
-  ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
+  len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(len < sizeof(endpoint), "Out of bounds write attempt");
 
   va_end(args);
 
@@ -150,7 +150,7 @@ github_get_repository(struct github *client,
                       char *repo,
                       struct sized_buffer *ret)
 {
-  struct github_request_attr attr = { ret, 0, NULL, &github_write_json };
+  struct github_request_attr attr = { ret, 0, NULL, &github_write_json, NULL };
 
   ORCA_EXPECT(client, !IS_EMPTY_STRING(repo), ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
@@ -172,7 +172,8 @@ github_create_fork(struct github *client, char *owner, char *repo)
 ORCAcode
 github_update_my_fork(struct github *client, char **ret)
 {
-  struct github_request_attr attr = { ret, 0, NULL, &object_sha_from_json };
+  struct github_request_attr attr = { ret, 0, NULL, &object_sha_from_json,
+                                      NULL };
   struct sized_buffer body;
   char *sha = NULL;
   char buf[2048];
@@ -207,7 +208,8 @@ github_update_my_fork(struct github *client, char **ret)
 ORCAcode
 github_get_head_commit(struct github *client, char **ret)
 {
-  struct github_request_attr attr = { ret, 0, NULL, &object_sha_from_json };
+  struct github_request_attr attr = { ret, 0, NULL, &object_sha_from_json,
+                                      NULL };
 
   ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
@@ -224,7 +226,7 @@ github_get_head_commit(struct github *client, char **ret)
 ORCAcode
 github_get_tree_sha(struct github *client, char *commit_sha, char **ret)
 {
-  struct github_request_attr attr = { ret, 0, NULL, &sha_from_json };
+  struct github_request_attr attr = { ret, 0, NULL, &sha_from_json, NULL };
 
   ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_sha), ORCA_BAD_PARAMETER);
   ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
@@ -241,7 +243,7 @@ github_get_tree_sha(struct github *client, char *commit_sha, char **ret)
 ORCAcode
 github_create_blobs(struct github *client, struct github_file **files)
 {
-  struct github_request_attr attr = { NULL, 0, NULL, &sha_from_json };
+  struct github_request_attr attr = { NULL, 0, NULL, &sha_from_json, NULL };
   struct sized_buffer body;
   ORCAcode code;
   char *buf;
@@ -309,7 +311,7 @@ github_create_tree(struct github *client,
                    struct github_file **files,
                    char **ret)
 {
-  struct github_request_attr attr = { ret, 0, NULL, &sha_from_json };
+  struct github_request_attr attr = { ret, 0, NULL, &sha_from_json, NULL };
   struct sized_buffer body;
   char buf[2048];
 
@@ -338,7 +340,7 @@ github_create_a_commit(struct github *client,
                        char *commit_msg,
                        char **ret)
 {
-  struct github_request_attr attr = { ret, 0, NULL, &sha_from_json };
+  struct github_request_attr attr = { ret, 0, NULL, &sha_from_json, NULL };
   struct sized_buffer body;
   char buf[4096];
 
@@ -404,9 +406,10 @@ github_update_a_commit(struct github *client, char *branch, char *commit_sha)
   body.size = json_inject(buf, sizeof(buf), "(sha):s", commit_sha);
   body.start = buf;
 
-  return github_adapter_run(
-    &client->adapter, NULL, &body, HTTP_PATCH, "/repos/%s/%s/git/refs/heads/%s",
-    client->presets.username, client->presets.repo, branch);
+  return github_adapter_run(&client->adapter, NULL, &body, HTTP_PATCH,
+                            "/repos/%s/%s/git/refs/heads/%s",
+                            client->presets.username, client->presets.repo,
+                            branch);
 }
 
 ORCAcode

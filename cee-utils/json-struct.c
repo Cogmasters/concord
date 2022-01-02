@@ -102,27 +102,6 @@ struct converter {
 
 static NTL_T(struct converter) converters = NULL;
 
-static void 
-load_converter(char *pos, size_t size, void *p)
-{
-  struct converter *c = (struct converter *)p;
-  json_extract(pos, size,
-               "(name):?s,"
-               "(input_type):?s,"
-               "(output_type):?s,"
-               "(extractor):?s,"
-               "(injector):?s,"
-               "(free):?s",
-               &c->name,
-               &c->input_type,
-               &c->output_type,
-               &c->extractor,
-               &c->injector,
-               &c->free);
-}
-
-static char * converter_file = NULL;
-
 /* @todo creating a callback for each converter to modify struct action would be much easier to maintain */
 static void 
 init_converters(void) 
@@ -168,22 +147,6 @@ init_converters(void)
   converters[2]->extract_is_user_def = true;
 }
 
-static void 
-load_converters(char *filename)
-{
-  size_t len = 0;
-  char *data = cee_load_whole_file(filename, &len);
-  converter_file = strdup(filename);
-
-  struct ntl_deserializer d = {
-    .ntl_recipient_p = (ntl_t *)&converters,
-    .init_elem = NULL,
-    .elem_size = sizeof(struct converter),
-    .elem_from_buf = (vcpsvp)load_converter
-  };
-  extract_ntl_from_json(data, len, &d);
-}
-
 static struct converter* 
 get_converter(char *name) 
 {
@@ -193,7 +156,7 @@ get_converter(char *name)
       return converters[i];
     }
   }
-  ERR("converter '%s' is not defined in '%s'\n", name, converter_file);
+  ERR("converter '%s' is not defined\n", name);
   return NULL;
 }
 
@@ -395,14 +358,12 @@ struct jc_item {
 };
 
 static void
-print_item(FILE *fp, struct jc_item *p, int i)
+print_item(FILE *fp, struct jc_item *p)
 {
   fprintf(fp, "name %s: ", p->name);
 
   if (p->has_value)
     fprintf(fp, "%lld", p->value);
-  else
-    fprintf(fp, "%d", i);
 }
 
 struct jc_enum {
@@ -427,17 +388,25 @@ print_enum(FILE *fp, struct jc_enum *p)
 }
 
 static void
+print_ns(FILE *fp, name_t *n)
+{
+  fprintf(fp, "%s\n", *n);
+}
+
+static void
 print_def(FILE *fp, struct jc_def *d)
 {
   if (d->is_struct)
     print_struct(fp, (struct jc_struct *)d);
   else
     print_enum(fp, (struct jc_enum *)d);
-};
+}
 
 static void
 emit_field_spec(void *cxt, FILE *fp, struct jc_field *f)
 {
+  (void)cxt;
+
   fprintf(fp, "  /* %s:%d:%d\n", spec_name, f->lnc.line, f->lnc.column);
   fprintf(fp, "     '%s' */\n", f->spec);
 }
@@ -451,24 +420,6 @@ struct jc_definition {
   NTL_T(struct jc_def) defs; /*ntl */
 };
 
-static int has_struct(NTL_T(struct jc_def) defs)
-{
-  int i;
-  for (i = 0; defs[i]; i++)
-    if (defs[i]->is_struct)
-      return 1;
-  return 0;
-}
-
-static int has_enum(NTL_T(struct jc_def) defs)
-{
-  int i;
-  for (i = 0; defs[i]; i++)
-    if (!defs[i]->is_struct)
-      return 1;
-  return 0;
-}
-
 static char* namespace_to_str(NTL_T(name_t) ns)
 {
   int i;
@@ -481,12 +432,12 @@ static char* namespace_to_str(NTL_T(name_t) ns)
   return buf;
 }
 
-static void
+void
 print_definition(FILE *fp, struct jc_definition *p)
 {
   fprintf(fp, "/*\n %s  */\n", p->comment);
   fprintf(fp, "namespace: ");
-  ntl_apply(fp, (ntl_t)p->namespace, (vvpvp)fprintf);
+  ntl_apply(fp, (ntl_t)p->namespace, (vvpvp)print_ns);
 
   fprintf(fp, "\n");
   ntl_apply(fp, (ntl_t)p->defs, (vvpvp)print_def);
@@ -538,7 +489,7 @@ decor_from_json(char *json, size_t size, struct decor *p)
   return 1;
 }
 
-static size_t
+static void
 field_from_json(char *json, size_t size, void *x)
 {
   struct jc_field *p = (struct jc_field *)x;
@@ -550,43 +501,43 @@ field_from_json(char *json, size_t size, void *x)
   bool copy_json_value = false;
 #endif
 
-  size_t s = json_extract(json, size,
-                          "(name):?s,"
-                          "(name):lnc,"
-                          "(todo):b,"
-                          "(json_key):?s,"
+  json_extract(json, size,
+              "(name):?s,"
+              "(name):lnc,"
+              "(todo):b,"
+              "(json_key):?s,"
 #if 0
-                          "(type):?s,"
+              "(type):?s,"
 #endif
-                          "(type.base):?s,"
-                          "(type.int_alias):?s,"
-                          "(type.dec):F,"
-                          "(type.converter):?s,"
-                          "(type.nullable):b,"
-                          "(type.default_value):T,"
-                          "(option):b,"
-                          "(inject_if_not):key,"
-                          "(inject_if_not):T,"
-                          "(loc):F,"
-                          "(comment):?s",
-                          &p->name,
-                          &p->lnc,
-                          &p->todo,
-                          &p->json_key,
+              "(type.base):?s,"
+              "(type.int_alias):?s,"
+              "(type.dec):F,"
+              "(type.converter):?s,"
+              "(type.nullable):b,"
+              "(type.default_value):T,"
+              "(option):b,"
+              "(inject_if_not):key,"
+              "(inject_if_not):T,"
+              "(loc):F,"
+              "(comment):?s",
+              &p->name,
+              &p->lnc,
+              &p->todo,
+              &p->json_key,
 #if 0
-                          &copy_json_value,
+              &copy_json_value,
 #endif
-                          &p->type.base,
-                          &p->type.int_alias,
-                          decor_from_json, &p->type.decor,
-                          &p->type.converter,
-                          &p->type.nullable,
-                          &t_default_value,
-                          &p->option,
-                          &has_inject_if_not,
-                          &t_inject_if_not,
-                          loc_from_json, &p->loc,
-                          &p->comment);
+              &p->type.base,
+              &p->type.int_alias,
+              decor_from_json, &p->type.decor,
+              &p->type.converter,
+              &p->type.nullable,
+              &t_default_value,
+              &p->option,
+              &has_inject_if_not,
+              &t_inject_if_not,
+              loc_from_json, &p->loc,
+              &p->comment);
 
   snprintf(p->spec, sizeof(p->spec), "%.*s", (int)size, json);
   adjust_lnc(json, &p->lnc);
@@ -610,19 +561,16 @@ field_from_json(char *json, size_t size, void *x)
     p->type.default_value.opcode = TYPE_RAW_JSON;
     cee_strndup(t_default_value.start, t_default_value.size, &p->type.default_value.token);
   }
-
-  return s;
 }
 
-static size_t name_from_json(char *json, size_t size, char *p)
+static void name_from_json(char *json, size_t size, char *p)
 {
   ASSERT_S(size < sizeof(name_t), "namespace is too long");
   memcpy(p, json, size);
   p[size] = 0;
-  return size;
 }
 
-static size_t
+static void
 namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
 {
   struct ntl_deserializer d0 = {
@@ -632,7 +580,7 @@ namespace_from_json(char *json, size_t size, NTL_T(name_t) *ns_p)
     .ntl_recipient_p = (ntl_t *)ns_p
   };
 
-  return extract_ntl_from_json(json, size, &d0);
+  extract_ntl_from_json(json, size, &d0);
 }
 
 static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
@@ -663,29 +611,28 @@ static size_t struct_from_json(char *json, size_t size, struct jc_struct *s)
   return ret;
 }
 
-static size_t item_from_json(char *json, size_t size, void *x)
+static void item_from_json(char *json, size_t size, void *x)
 {
   struct jc_item *p = (struct jc_item *)x;
   void * defined[4] = {0};
 
-  size_t s = json_extract(json, size,
-                          "(name):?s,"
-                          "(todo):b,"
-                          "(value):lld,"
-                          "(comment):?s"
-                          "@record_defined",
-                          &p->name,
-                          &p->todo,
-                          &p->value,
-                          &p->comment,
-                          defined, sizeof(defined));
+  json_extract(json, size,
+              "(name):?s,"
+              "(todo):b,"
+              "(value):lld,"
+              "(comment):?s"
+              "@record_defined",
+              &p->name,
+              &p->todo,
+              &p->value,
+              &p->comment,
+              defined, sizeof(defined));
 
   int i;
   for (i = 0; i < 4; i++) {
     if (defined[i] == &p->value)
       p->has_value = true;
   }
-  return s;
 }
 
 static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
@@ -703,7 +650,7 @@ static size_t enum_from_json(char * json, size_t size, struct jc_enum *e)
   return ret;
 }
 
-static size_t def_from_json(char *json, size_t size, struct jc_def *def)
+static void def_from_json(char *json, size_t size, struct jc_def *def)
 {
   bool is_struct = false, is_enum = false;
   struct ntl_deserializer d0 = {
@@ -743,29 +690,34 @@ static size_t def_from_json(char *json, size_t size, struct jc_def *def)
   adjust_lnc(json, &def->name_lnc);
   if (is_struct) {
     def->is_struct = true;
-    return struct_from_json(json, size, (struct jc_struct *)def);
+    struct_from_json(json, size, (struct jc_struct *)def);
   }
   else if (is_enum) {
     def->is_struct = false;
-    return enum_from_json(json, size, (struct jc_enum *)def);
+    enum_from_json(json, size, (struct jc_enum *)def);
   }
   else {
     ERR("missing 'struct' or 'enum' in '%.*s'", (int)size, json);
-    return 0;
   }
 }
 
 
 static void gen_open_namespace(FILE *fp, NTL_T(name_t) p)
 {
+  (void)fp;
+
   if (NULL == p) return;
+
   global_option.namespace_stack[global_option.stack_top] = p;
   ++global_option.stack_top;
 }
 
 static void gen_close_namespace(FILE *fp, NTL_T(name_t) p)
 {
+  (void)fp;
+
   if (NULL == p) return;
+
   global_option.stack_top--;
   global_option.namespace_stack[global_option.stack_top] = NULL;
 }
@@ -858,6 +810,7 @@ static void gen_enum_eval(FILE *fp, struct jc_enum *e)
               item->name, item_name);
   }
   fprintf(fp, "  ERR(\"'%%s' doesn't match any known enumerator.\", s);\n");
+  fprintf(fp, "  return -1;\n");
   fprintf(fp, "}\n");
 }
 
@@ -891,7 +844,6 @@ static void gen_enum_print(FILE *fp, struct jc_enum *e)
 }
 
 static void gen_forward_fun_declare(FILE *fp, struct jc_def *d);
-static void gen_typedef (FILE *fp);
 static void gen_default(FILE *fp, struct jc_def *d);
 static void gen_wrapper(FILE *fp, struct jc_def *d);
 
@@ -910,7 +862,6 @@ static void gen_enum_all(FILE *fp, struct jc_def *d, name_t **ns)
       gen_forward_fun_declare(fp, d);
       break;
   case FILE_CODE:
-      gen_typedef(fp);
       gen_wrapper(fp, d);
 
       gen_enum_eval(fp, e);
@@ -930,7 +881,7 @@ static void gen_enum_all(FILE *fp, struct jc_def *d, name_t **ns)
   gen_close_namespace(fp, ns);
 }
 
-static size_t
+static void
 definition_from_json(char *json, size_t size, struct jc_definition *s)
 {
   struct ntl_deserializer d1 = {
@@ -946,19 +897,19 @@ definition_from_json(char *json, size_t size, struct jc_definition *s)
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)&(s->defs)
   };
-  size_t ret = json_extract(json, size,
-                            "(disabled):b"
-                            "(comment):?s"
-                            "(namespace):F"
-                            "(defs):F",
-                            &s->is_disabled,
-                            &s->comment,
-                            extract_ntl_from_json, &d1,
-                            extract_ntl_from_json, &d2);
-  return ret;
+
+  json_extract(json, size,
+              "(disabled):b"
+              "(comment):?s"
+              "(namespace):F"
+              "(defs):F",
+              &s->is_disabled,
+              &s->comment,
+              extract_ntl_from_json, &d1,
+              extract_ntl_from_json, &d2);
 }
 
-static size_t
+static void
 definition_list_from_json(char *json, size_t size,
                           NTL_T(struct jc_definition) *s)
 {
@@ -968,11 +919,12 @@ definition_list_from_json(char *json, size_t size,
     .init_elem = NULL,
     .ntl_recipient_p = (ntl_t *)s
   };
-  return extract_ntl_from_json(json, size, &d);
+
+  extract_ntl_from_json(json, size, &d);
 }
 
-static size_t spec_from_json(char *json, size_t size,
-                             NTL_T(struct jc_definition) *s)
+void spec_from_json(char *json, size_t size,
+                      NTL_T(struct jc_definition) *s)
 {
   char *const xend_pos = json + size;
 
@@ -980,10 +932,10 @@ static size_t spec_from_json(char *json, size_t size,
     json ++;
   }
   if ('[' == *json)
-    return definition_list_from_json(json, xend_pos - json, s);
+    definition_list_from_json(json, xend_pos - json, s);
   else {
     *s = (NTL_T(struct jc_definition))ntl_calloc(1, sizeof(struct jc_definition));
-    return definition_from_json(json, xend_pos - json, (*s)[0]);
+    definition_from_json(json, xend_pos - json, (*s)[0]);
   }
 }
 
@@ -1303,6 +1255,7 @@ static void emit_field_init(void *cxt, FILE *fp, struct jc_field *f)
 {
   struct action act = { 0 };
   to_action(f, &act);
+  (void)cxt;
 
   if (act.todo) return;
 
@@ -1364,9 +1317,9 @@ static void gen_default(FILE *fp, struct jc_def *d)
   char * prefix;
   if (d->is_struct) {
     gen_init(fp, (struct jc_struct*)d);
-    snprintf(extractor, sizeof(extractor), "(vfcpsvp)%s_from_json_p", type);
-    snprintf(injector, sizeof(injector), "(sfcpsvp)%s_to_json", type);
-    snprintf(cleanup, sizeof(cleanup), "(vfvp)%s_cleanup", type);
+    snprintf(extractor, sizeof(extractor), "(void(*)(char*,size_t,void*))%s_from_json_p", type);
+    snprintf(injector, sizeof(injector), "(size_t(*)(char*,size_t,void*))%s_to_json", type);
+    snprintf(cleanup, sizeof(cleanup), "(void(*)(void*))%s_cleanup", type);
     prefix = "struct";
   }
   else {
@@ -1407,10 +1360,12 @@ static void gen_default(FILE *fp, struct jc_def *d)
 static void emit_field_cleanup(void *cxt, FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
+  (void)cxt;
+
   to_action(f, &act);
 
   if (act.todo)
-    fprintf(fp, "  /* @todo p->%s */\n", act.c_name);
+    fprintf(fp, "  /* @todo d->%s */\n", act.c_name);
   else if (act.free) {
     if (strstr(act.free, "_cleanup"))
       fprintf(fp, "  if (d->%s) {\n"
@@ -1424,26 +1379,31 @@ static void emit_field_cleanup(void *cxt, FILE *fp, struct jc_field *f)
                   act.c_name, act.free, act.c_name);
   } 
   else
-    fprintf(fp, "  /* p->%s is a scalar */\n", act.c_name);
+    fprintf(fp, "  (void)d->%s;\n", act.c_name);
 }
 
 static void gen_cleanup(FILE *fp, struct jc_struct *s)
 {
   char *t = ns_to_symbol_name(s->name);
   int i;
-  fprintf(fp, "void %s_cleanup(struct %s *d) {\n", t, t);
-  for (i = 0; s->fields && s->fields[i]; i++) {
-    emit_field_spec(NULL, fp, s->fields[i]);
-    emit_field_cleanup(NULL, fp, s->fields[i]);
-  }
 
+  fprintf(fp, "void %s_cleanup(struct %s *d) {\n", t, t);
+
+  if (s->fields)
+    for (i = 0; s->fields[i]; i++) {
+      emit_field_spec(NULL, fp, s->fields[i]);
+      emit_field_cleanup(NULL, fp, s->fields[i]);
+    }
   fprintf(fp, "}\n");
 }
 
 static void emit_field(void *cxt, FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
+  (void)cxt;
+
   to_action(f, &act);
+
   if (act.todo) {
     fprintf(fp, "  /* @todo %s %s; */\n", f->name, f->comment);
   }
@@ -1458,9 +1418,11 @@ static void emit_field(void *cxt, FILE *fp, struct jc_field *f)
 static void emit_json_extractor(void *cxt, FILE *fp, struct jc_field *f, bool last_arg)
 {
   char *strend = !last_arg ? "\n" : ",\n";
-
   struct action act = {0};
+  (void)cxt;
+
   to_action(f, &act);
+
   if (act.todo) return;
 
   if (act.extract_is_user_def)
@@ -1472,9 +1434,11 @@ static void emit_json_extractor(void *cxt, FILE *fp, struct jc_field *f, bool la
 static void emit_json_extractor_arg(void *cxt, FILE *fp, struct jc_field *f, bool last_arg)
 {
   char *strend = !last_arg ? ",\n" : ");\n";
-
   struct action act = {0};
+  (void)cxt;
+
   to_action(f, &act);
+
   if (act.todo) return;
 
   if (act.extract_is_user_def) {
@@ -1494,7 +1458,7 @@ static void gen_from_json(FILE *fp, struct jc_struct *s)
 {
   char *t = ns_to_symbol_name(s->name);
   size_t fields_amt = ntl_length((ntl_t)s->fields);
-  int i;
+  size_t i;
 
   if (is_disabled_method((struct jc_def*)s, "from_json")) {
     fprintf(fp, "\n/* This method is disabled at %s:%d:%d */\n",
@@ -1623,7 +1587,10 @@ static void emit_inject_setting(void *cxt, FILE *fp, struct jc_field *f)
 static void emit_json_injector(void *cxt, FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
+  (void)cxt;
+
   to_action(f, &act);
+
   if (act.todo) return;
 
   if (act.inject_is_user_def)
@@ -1638,7 +1605,10 @@ static void emit_json_injector(void *cxt, FILE *fp, struct jc_field *f)
 static void emit_json_injector_arg(void * cxt, FILE *fp, struct jc_field *f)
 {
   struct action act = {0};
+  (void)cxt;
+
   to_action(f, &act);
+
   if (act.todo) return;
 
   if (act.inject_is_user_def)
@@ -1653,7 +1623,7 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
 {
   char *t = ns_to_symbol_name(s->name);
   size_t fields_amt = ntl_length((ntl_t)s->fields);
-  int i;
+  size_t i;
 
   if (is_disabled_method((struct jc_def*)s, "to_json")) {
     fprintf(fp, "\n/* This method is disabled at %s:%d:%d */\n",
@@ -1700,8 +1670,11 @@ static void gen_to_json(FILE *fp, struct jc_struct *s)
 
 static void gen_to_query(FILE *fp, struct jc_struct *s)
 {
+#if 1
+  (void)fp;
+  (void)s;
   return;
-
+#else
   char *t = ns_to_symbol_name(s->name);
   size_t fields_amt = ntl_length((ntl_t)s->fields);
   int i;
@@ -1760,6 +1733,7 @@ static void gen_to_query(FILE *fp, struct jc_struct *s)
     " true;\n");
   fprintf(fp,  "  return r;\n");
   fprintf(fp, "}\n");
+#endif
 }
 
 static void gen_struct(FILE *fp, struct jc_struct *s)
@@ -1945,13 +1919,6 @@ static void gen_forward_fun_declare(FILE *fp, struct jc_def *d)
   }
 }
 
-static void gen_typedef (FILE *fp)
-{
-  fprintf(fp, "typedef void (*vfvp)(void *);\n");
-  fprintf(fp, "typedef void (*vfcpsvp)(char *, size_t, void *);\n");
-  fprintf(fp, "typedef size_t (*sfcpsvp)(char *, size_t, void *);\n");
-}
-
 static void gen_opaque_struct(FILE *fp, struct jc_def *d, name_t **ns)
 {
   struct jc_struct *s = (struct jc_struct*)d;
@@ -2008,7 +1975,6 @@ static void gen_struct_all(FILE *fp, struct jc_def *d, name_t **ns)
       fprintf(fp, "\n");
 
       /* boilerplate */
-      gen_typedef(fp);
       gen_wrapper(fp, d);
       gen_cleanup(fp, s);
       fprintf(fp, "\n");
@@ -2026,7 +1992,6 @@ static void gen_struct_all(FILE *fp, struct jc_def *d, name_t **ns)
       fprintf(fp, "\n");
 
       /* boilerplate */
-      gen_typedef(fp);
       gen_wrapper(fp, d);
       fprintf(fp, "\n");
       gen_cleanup(fp, s);
@@ -2116,7 +2081,7 @@ gen_definition(char *fname, char *openmode, struct emit_option * option, struct 
     fclose(fp);
 }
 
-static void
+void
 gen_definition_list(
   char *folder,
   struct emit_option *opt,
@@ -2138,7 +2103,7 @@ gen_definition_list(
   }
 }
 
-static char*
+char*
 field_to_string(
   void *cxt,
   void (*emitter)(void *cxt, FILE *fp, struct jc_field *),

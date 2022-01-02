@@ -68,9 +68,6 @@ size_t discord_create_guild_from_guild_template_params_to_json(char *json, size_
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_from_guild_template_params_cleanup_v(void *p) {
   discord_create_guild_from_guild_template_params_cleanup((struct discord_create_guild_from_guild_template_params *)p);
 }
@@ -121,7 +118,7 @@ void discord_create_guild_from_guild_template_params_init(struct discord_create_
 
 }
 void discord_create_guild_from_guild_template_params_list_free(struct discord_create_guild_from_guild_template_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_from_guild_template_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_from_guild_template_params_cleanup);
 }
 
 void discord_create_guild_from_guild_template_params_list_from_json(char *str, size_t len, struct discord_create_guild_from_guild_template_params ***p)
@@ -130,14 +127,14 @@ void discord_create_guild_from_guild_template_params_list_from_json(char *str, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_from_guild_template_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_from_guild_template_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_from_guild_template_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_from_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_from_guild_template_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_from_guild_template_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_from_guild_template_params_to_json);
 }
 
 
@@ -196,9 +193,6 @@ size_t discord_create_guild_template_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_template_params_cleanup_v(void *p) {
   discord_create_guild_template_params_cleanup((struct discord_create_guild_template_params *)p);
 }
@@ -249,7 +243,7 @@ void discord_create_guild_template_params_init(struct discord_create_guild_templ
 
 }
 void discord_create_guild_template_params_list_free(struct discord_create_guild_template_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_template_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_template_params_cleanup);
 }
 
 void discord_create_guild_template_params_list_from_json(char *str, size_t len, struct discord_create_guild_template_params ***p)
@@ -258,14 +252,14 @@ void discord_create_guild_template_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_template_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_template_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_template_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_template_params_list_to_json(char *str, size_t len, struct discord_create_guild_template_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_template_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_template_params_to_json);
 }
 
 
@@ -325,9 +319,6 @@ size_t discord_modify_guild_template_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_template_params_cleanup_v(void *p) {
   discord_modify_guild_template_params_cleanup((struct discord_modify_guild_template_params *)p);
 }
@@ -378,7 +369,7 @@ void discord_modify_guild_template_params_init(struct discord_modify_guild_templ
 
 }
 void discord_modify_guild_template_params_list_free(struct discord_modify_guild_template_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_template_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_template_params_cleanup);
 }
 
 void discord_modify_guild_template_params_list_from_json(char *str, size_t len, struct discord_modify_guild_template_params ***p)
@@ -387,13 +378,13 @@ void discord_modify_guild_template_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_template_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_template_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_template_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_template_params_list_to_json(char *str, size_t len, struct discord_modify_guild_template_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_template_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_template_params_to_json);
 }
 

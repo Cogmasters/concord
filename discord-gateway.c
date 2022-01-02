@@ -37,13 +37,13 @@ static void
 send_resume(struct discord_gateway *gw)
 {
   char buf[1024];
-  size_t ret;
+  size_t len;
   struct ws_info info = { 0 };
 
   /* reset */
   gw->session->status ^= DISCORD_SESSION_RESUMABLE;
 
-  ret = json_inject(buf, sizeof(buf),
+  len = json_inject(buf, sizeof(buf),
                     "(op):6" /* RESUME OPCODE */
                     "(d):{"
                     "(token):s"
@@ -51,21 +51,21 @@ send_resume(struct discord_gateway *gw)
                     "(seq):d"
                     "}",
                     gw->id.token, gw->session->id, &gw->payload.seq);
-  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
-  ws_send_text(gw->ws, &info, buf, ret);
+  ws_send_text(gw->ws, &info, buf, len);
 
   logconf_info(
     &gw->conf,
     ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
-    ret, info.loginfo.counter + 1);
+    len, info.loginfo.counter + 1);
 }
 
 static void
 send_identify(struct discord_gateway *gw)
 {
   char buf[1024];
-  size_t ret;
+  size_t len;
   struct ws_info info = { 0 };
 
   /* Ratelimit check */
@@ -80,19 +80,19 @@ send_identify(struct discord_gateway *gw)
     gw->session->concurrent = 0;
   }
 
-  ret = json_inject(buf, sizeof(buf),
+  len = json_inject(buf, sizeof(buf),
                     "(op):2" /* IDENTIFY OPCODE */
                     "(d):F",
                     &discord_identify_to_json, &gw->id);
-  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
-  ws_send_text(gw->ws, &info, buf, ret);
+  ws_send_text(gw->ws, &info, buf, len);
 
   logconf_info(
     &gw->conf,
     ANSICOLOR("SEND",
               ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
-    ret, info.loginfo.counter + 1);
+    len, info.loginfo.counter + 1);
 
   /* get timestamp for this identify */
   gw->timer->identify = gw->timer->now;
@@ -104,19 +104,19 @@ static void
 send_heartbeat(struct discord_gateway *gw)
 {
   char buf[64];
-  int ret;
+  size_t len;
   struct ws_info info = { 0 };
 
-  ret = json_inject(buf, sizeof(buf), "(op):1,(d):d", &gw->payload.seq);
-  ASSERT_S(ret < sizeof(buf), "Out of bounds write attempt");
+  len = json_inject(buf, sizeof(buf), "(op):1,(d):d", &gw->payload.seq);
+  ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
-  ws_send_text(gw->ws, &info, buf, ret);
+  ws_send_text(gw->ws, &info, buf, len);
 
   logconf_info(
     &gw->conf,
     ANSICOLOR("SEND",
               ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-    ret, info.loginfo.counter + 1);
+    len, info.loginfo.counter + 1);
 
   /* update heartbeat timestamp */
   gw->timer->hbeat = gw->timer->now;
@@ -704,6 +704,7 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
+  (void)data;
   ON(ready);
 }
 
@@ -1027,6 +1028,9 @@ on_connect_cb(void *p_gw,
               const char *ws_protocols)
 {
   struct discord_gateway *gw = p_gw;
+  (void)ws;
+  (void)info;
+
   logconf_info(&gw->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
@@ -1041,6 +1045,8 @@ on_close_cb(void *p_gw,
   struct discord_gateway *gw = p_gw;
   enum discord_gateway_close_opcodes opcode =
     (enum discord_gateway_close_opcodes)wscode;
+  (void)ws;
+  (void)info;
 
   logconf_warn(
     &gw->conf,
@@ -1103,6 +1109,7 @@ on_text_cb(void *p_gw,
   struct discord_gateway *gw = p_gw;
   /* check sequence value first, then assign */
   int seq = 0;
+  (void)ws;
 
   json_extract((char *)text, len, "(t):s (s):d (op):d (d):T", gw->payload.name,
                &seq, &gw->payload.opcode, &gw->payload.data);
@@ -1141,9 +1148,12 @@ on_text_cb(void *p_gw,
 
 static discord_event_scheduler_t
 default_scheduler_cb(struct discord *a,
-                     struct sized_buffer *c,
-                     enum discord_gateway_events d)
+                     struct sized_buffer *b,
+                     enum discord_gateway_events c)
 {
+  (void)a;
+  (void)b;
+  (void)c;
   return DISCORD_EVENT_MAIN_THREAD;
 }
 
@@ -1245,7 +1255,7 @@ discord_gateway_start(struct discord_gateway *gw)
   /* build URL that will be used to connect to Discord */
   char *base_url, url[1024];
   /* snprintf() OOB check */
-  size_t ret;
+  size_t len;
 
   if (gw->session->retry.attempt >= gw->session->retry.limit) {
     logconf_fatal(&gw->conf, "Failed reconnecting to Discord after %d tries",
@@ -1263,9 +1273,9 @@ discord_gateway_start(struct discord_gateway *gw)
                &gw->session->shards, &discord_session_start_limit_from_json,
                &gw->session->start_limit);
 
-  ret = snprintf(url, sizeof(url), "%s%s" DISCORD_GATEWAY_URL_SUFFIX, base_url,
+  len = snprintf(url, sizeof(url), "%s%s" DISCORD_GATEWAY_URL_SUFFIX, base_url,
                  ('/' == base_url[strlen(base_url) - 1]) ? "" : "/");
-  ASSERT_S(ret < sizeof(url), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(url), "Out of bounds write attempt");
 
   free(json.start);
   free(base_url);

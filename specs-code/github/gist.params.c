@@ -99,9 +99,6 @@ size_t github_gist_create_params_to_json(char *json, size_t len, struct github_g
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void github_gist_create_params_cleanup_v(void *p) {
   github_gist_create_params_cleanup((struct github_gist_create_params *)p);
 }
@@ -166,7 +163,7 @@ void github_gist_create_params_init(struct github_gist_create_params *p) {
 
 }
 void github_gist_create_params_list_free(struct github_gist_create_params **p) {
-  ntl_free((void**)p, (vfvp)github_gist_create_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))github_gist_create_params_cleanup);
 }
 
 void github_gist_create_params_list_from_json(char *str, size_t len, struct github_gist_create_params ***p)
@@ -175,13 +172,13 @@ void github_gist_create_params_list_from_json(char *str, size_t len, struct gith
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct github_gist_create_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)github_gist_create_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))github_gist_create_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t github_gist_create_params_list_to_json(char *str, size_t len, struct github_gist_create_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)github_gist_create_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))github_gist_create_params_to_json);
 }
 

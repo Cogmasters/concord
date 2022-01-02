@@ -115,9 +115,6 @@ size_t reddit_access_token_params_to_json(char *json, size_t len, struct reddit_
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void reddit_access_token_params_cleanup_v(void *p) {
   reddit_access_token_params_cleanup((struct reddit_access_token_params *)p);
 }
@@ -189,7 +186,7 @@ void reddit_access_token_params_init(struct reddit_access_token_params *p) {
 
 }
 void reddit_access_token_params_list_free(struct reddit_access_token_params **p) {
-  ntl_free((void**)p, (vfvp)reddit_access_token_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))reddit_access_token_params_cleanup);
 }
 
 void reddit_access_token_params_list_from_json(char *str, size_t len, struct reddit_access_token_params ***p)
@@ -198,13 +195,13 @@ void reddit_access_token_params_list_from_json(char *str, size_t len, struct red
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct reddit_access_token_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)reddit_access_token_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))reddit_access_token_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t reddit_access_token_params_list_to_json(char *str, size_t len, struct reddit_access_token_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)reddit_access_token_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))reddit_access_token_params_to_json);
 }
 

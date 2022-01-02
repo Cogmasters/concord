@@ -166,9 +166,6 @@ size_t discord_application_command_to_json(char *json, size_t len, struct discor
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_cleanup_v(void *p) {
   discord_application_command_cleanup((struct discord_application_command *)p);
 }
@@ -201,16 +198,16 @@ size_t discord_application_command_list_to_json_v(char *str, size_t len, void *p
 void discord_application_command_cleanup(struct discord_application_command *d) {
   /* discord/application_commands.json:12:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the command"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/application_commands.json:13:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_types"}, "default_value":1, "comment":"the type of the command, defaults 1 if not set", "inject_if_not":0}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/application_commands.json:14:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"unique id of the parent application"}' */
-  /* p->application_id is a scalar */
+  (void)d->application_id;
   /* discord/application_commands.json:15:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"guild id of the command, if not global","inject_if_not":0}' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/application_commands.json:16:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 character name"}' */
   if (d->name)
@@ -225,7 +222,7 @@ void discord_application_command_cleanup(struct discord_application_command *d) 
     discord_application_command_option_list_free(d->options);
   /* discord/application_commands.json:19:18
      '{"name":"default_permission", "type":{"base":"bool"}, "default_value":true, "comment":"whether the command is enabled by default when the app is added to a guild"}' */
-  /* p->default_permission is a scalar */
+  (void)d->default_permission;
 }
 
 void discord_application_command_init(struct discord_application_command *p) {
@@ -256,7 +253,7 @@ void discord_application_command_init(struct discord_application_command *p) {
 
 }
 void discord_application_command_list_free(struct discord_application_command **p) {
-  ntl_free((void**)p, (vfvp)discord_application_command_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_application_command_cleanup);
 }
 
 void discord_application_command_list_from_json(char *str, size_t len, struct discord_application_command ***p)
@@ -265,21 +262,18 @@ void discord_application_command_list_from_json(char *str, size_t len, struct di
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_application_command_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_application_command_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_list_to_json(char *str, size_t len, struct discord_application_command **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_application_command_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_types_list_free_v(void **p) {
   discord_application_command_types_list_free((enum discord_application_command_types**)p);
 }
@@ -297,6 +291,7 @@ enum discord_application_command_types discord_application_command_types_eval(ch
   if(strcasecmp("USER", s) == 0) return DISCORD_APPLICATION_COMMAND_USER;
   if(strcasecmp("MESSAGE", s) == 0) return DISCORD_APPLICATION_COMMAND_MESSAGE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_application_command_types_print(enum discord_application_command_types v){
@@ -519,9 +514,6 @@ size_t discord_application_command_option_to_json(char *json, size_t len, struct
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_option_cleanup_v(void *p) {
   discord_application_command_option_cleanup((struct discord_application_command_option *)p);
 }
@@ -554,7 +546,7 @@ size_t discord_application_command_option_list_to_json_v(char *str, size_t len, 
 void discord_application_command_option_cleanup(struct discord_application_command_option *d) {
   /* discord/application_commands.json:41:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/application_commands.json:42:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"1-32 lowercase character"}' */
   if (d->name)
@@ -565,7 +557,7 @@ void discord_application_command_option_cleanup(struct discord_application_comma
     free(d->description);
   /* discord/application_commands.json:44:18
      '{"name":"required", "type":{"base":"bool"}, "default_value":false, "comment":"if the parameter is required or optional -- default false"}' */
-  /* p->required is a scalar */
+  (void)d->required;
   /* discord/application_commands.json:45:18
      '{"name":"choices", "type":{"base":"struct discord_application_command_option_choice", "dec":"ntl"}, "comment":"choices for string and int types for the user to pick from", "inject_if_not":null}' */
   if (d->choices)
@@ -588,7 +580,7 @@ void discord_application_command_option_cleanup(struct discord_application_comma
     free(d->max_value);
   /* discord/application_commands.json:50:18
      '{"name":"autocomplete", "type":{"base":"bool"}, "comment":"enable autocomplete interactions for this option", "inject_if_not":false}' */
-  /* p->autocomplete is a scalar */
+  (void)d->autocomplete;
 }
 
 void discord_application_command_option_init(struct discord_application_command_option *p) {
@@ -625,7 +617,7 @@ void discord_application_command_option_init(struct discord_application_command_
 
 }
 void discord_application_command_option_list_free(struct discord_application_command_option **p) {
-  ntl_free((void**)p, (vfvp)discord_application_command_option_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_application_command_option_cleanup);
 }
 
 void discord_application_command_option_list_from_json(char *str, size_t len, struct discord_application_command_option ***p)
@@ -634,21 +626,18 @@ void discord_application_command_option_list_from_json(char *str, size_t len, st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_option);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_application_command_option_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_application_command_option_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_option_list_to_json(char *str, size_t len, struct discord_application_command_option **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_option_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_application_command_option_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_option_types_list_free_v(void **p) {
   discord_application_command_option_types_list_free((enum discord_application_command_option_types**)p);
 }
@@ -673,6 +662,7 @@ enum discord_application_command_option_types discord_application_command_option
   if(strcasecmp("MENTIONABLE", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE;
   if(strcasecmp("NUMBER", s) == 0) return DISCORD_APPLICATION_COMMAND_OPTION_NUMBER;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_application_command_option_types_print(enum discord_application_command_option_types v){
@@ -768,9 +758,6 @@ size_t discord_application_command_option_choice_to_json(char *json, size_t len,
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_option_choice_cleanup_v(void *p) {
   discord_application_command_option_choice_cleanup((struct discord_application_command_option_choice *)p);
 }
@@ -821,7 +808,7 @@ void discord_application_command_option_choice_init(struct discord_application_c
 
 }
 void discord_application_command_option_choice_list_free(struct discord_application_command_option_choice **p) {
-  ntl_free((void**)p, (vfvp)discord_application_command_option_choice_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_application_command_option_choice_cleanup);
 }
 
 void discord_application_command_option_choice_list_from_json(char *str, size_t len, struct discord_application_command_option_choice ***p)
@@ -830,14 +817,14 @@ void discord_application_command_option_choice_list_from_json(char *str, size_t 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_option_choice);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_application_command_option_choice_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_application_command_option_choice_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_option_choice_list_to_json(char *str, size_t len, struct discord_application_command_option_choice **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_option_choice_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_application_command_option_choice_to_json);
 }
 
 
@@ -927,9 +914,6 @@ size_t discord_guild_application_command_permissions_to_json(char *json, size_t 
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_guild_application_command_permissions_cleanup_v(void *p) {
   discord_guild_application_command_permissions_cleanup((struct discord_guild_application_command_permissions *)p);
 }
@@ -962,13 +946,13 @@ size_t discord_guild_application_command_permissions_list_to_json_v(char *str, s
 void discord_guild_application_command_permissions_cleanup(struct discord_guild_application_command_permissions *d) {
   /* discord/application_commands.json:90:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/application_commands.json:91:18
      '{"name":"application_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the parent application the command belongs to"}' */
-  /* p->application_id is a scalar */
+  (void)d->application_id;
   /* discord/application_commands.json:92:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the guild"}' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/application_commands.json:93:18
      '{"name":"permissions", "type":{"base":"struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}' */
   if (d->permissions)
@@ -991,7 +975,7 @@ void discord_guild_application_command_permissions_init(struct discord_guild_app
 
 }
 void discord_guild_application_command_permissions_list_free(struct discord_guild_application_command_permissions **p) {
-  ntl_free((void**)p, (vfvp)discord_guild_application_command_permissions_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_guild_application_command_permissions_cleanup);
 }
 
 void discord_guild_application_command_permissions_list_from_json(char *str, size_t len, struct discord_guild_application_command_permissions ***p)
@@ -1000,14 +984,14 @@ void discord_guild_application_command_permissions_list_from_json(char *str, siz
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_guild_application_command_permissions);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_guild_application_command_permissions_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_guild_application_command_permissions_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_guild_application_command_permissions_list_to_json(char *str, size_t len, struct discord_guild_application_command_permissions **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_guild_application_command_permissions_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_guild_application_command_permissions_to_json);
 }
 
 
@@ -1081,9 +1065,6 @@ size_t discord_application_command_permissions_to_json(char *json, size_t len, s
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_permissions_cleanup_v(void *p) {
   discord_application_command_permissions_cleanup((struct discord_application_command_permissions *)p);
 }
@@ -1116,13 +1097,13 @@ size_t discord_application_command_permissions_list_to_json_v(char *str, size_t 
 void discord_application_command_permissions_cleanup(struct discord_application_command_permissions *d) {
   /* discord/application_commands.json:103:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"the id of the command"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/application_commands.json:104:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_permission_types"}, "comment":"role or user"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/application_commands.json:105:18
      '{"name":"permission", "type":{"base":"bool"}, "comment":"true to allow, false, to disallow"}' */
-  /* p->permission is a scalar */
+  (void)d->permission;
 }
 
 void discord_application_command_permissions_init(struct discord_application_command_permissions *p) {
@@ -1138,7 +1119,7 @@ void discord_application_command_permissions_init(struct discord_application_com
 
 }
 void discord_application_command_permissions_list_free(struct discord_application_command_permissions **p) {
-  ntl_free((void**)p, (vfvp)discord_application_command_permissions_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_application_command_permissions_cleanup);
 }
 
 void discord_application_command_permissions_list_from_json(char *str, size_t len, struct discord_application_command_permissions ***p)
@@ -1147,21 +1128,18 @@ void discord_application_command_permissions_list_from_json(char *str, size_t le
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_permissions);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_application_command_permissions_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_application_command_permissions_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_permissions_list_to_json(char *str, size_t len, struct discord_application_command_permissions **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_permissions_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_application_command_permissions_to_json);
 }
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_permission_types_list_free_v(void **p) {
   discord_application_command_permission_types_list_free((enum discord_application_command_permission_types**)p);
 }
@@ -1178,6 +1156,7 @@ enum discord_application_command_permission_types discord_application_command_pe
   if(strcasecmp("ROLE", s) == 0) return DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE;
   if(strcasecmp("USER", s) == 0) return DISCORD_APPLICATION_COMMAND_PERMISSION_USER;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_application_command_permission_types_print(enum discord_application_command_permission_types v){
@@ -1298,9 +1277,6 @@ size_t discord_application_command_interaction_data_option_to_json(char *json, s
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_application_command_interaction_data_option_cleanup_v(void *p) {
   discord_application_command_interaction_data_option_cleanup((struct discord_application_command_interaction_data_option *)p);
 }
@@ -1337,7 +1313,7 @@ void discord_application_command_interaction_data_option_cleanup(struct discord_
     free(d->name);
   /* discord/application_commands.json:127:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_application_command_option_types"}, "comment":"value of application command option type"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/application_commands.json:128:18
      '{"name":"value", "type":{"base":"char", "dec":"*", "converter":"mixed"}, "comment":"the value of the pair"}' */
   if (d->value)
@@ -1364,7 +1340,7 @@ void discord_application_command_interaction_data_option_init(struct discord_app
 
 }
 void discord_application_command_interaction_data_option_list_free(struct discord_application_command_interaction_data_option **p) {
-  ntl_free((void**)p, (vfvp)discord_application_command_interaction_data_option_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_application_command_interaction_data_option_cleanup);
 }
 
 void discord_application_command_interaction_data_option_list_from_json(char *str, size_t len, struct discord_application_command_interaction_data_option ***p)
@@ -1373,13 +1349,13 @@ void discord_application_command_interaction_data_option_list_from_json(char *st
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_application_command_interaction_data_option);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_application_command_interaction_data_option_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_application_command_interaction_data_option_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_application_command_interaction_data_option_list_to_json(char *str, size_t len, struct discord_application_command_interaction_data_option **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_application_command_interaction_data_option_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_application_command_interaction_data_option_to_json);
 }
 

@@ -79,12 +79,13 @@ size_t ja_str_list_to_json_v(char *str, size_t len, void *p) {
 }
 
 void ja_str_use_default_inject_settings(ja_str *p) {
-  return;
+  (void)p;
 }
 
 
 void ja_u64_from_json(char * json, size_t len, ja_u64 * ja)
 {
+  (void)len;
   ja->value = strtoull(json, NULL, 10);
 }
 
@@ -103,10 +104,11 @@ void ja_u64_init(ja_u64 *p) {
 }
 
 void ja_u64_cleanup(ja_u64 *p) {
-  return;
+  (void)p;
 }
 
 void ja_u64_cleanup_v(void *p) {
+  (void)p;
 }
 
 void ja_u64_init_v(void *p) {
@@ -161,5 +163,5 @@ size_t ja_u64_list_to_json_v(char *str, size_t len, void *p) {
 }
 
 void ja_u64_use_default_inject_settings(ja_u64 *p) {
-  return;
+  (void)p;
 }

@@ -86,9 +86,6 @@ size_t slack_users_info_params_to_json(char *json, size_t len, struct slack_user
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void slack_users_info_params_cleanup_v(void *p) {
   slack_users_info_params_cleanup((struct slack_users_info_params *)p);
 }
@@ -129,7 +126,7 @@ void slack_users_info_params_cleanup(struct slack_users_info_params *d) {
     free(d->user);
   /* slack/users.params.json:14:20
      '{ "name": "include_locale", "type":{ "base":"bool" }, "comment":"Set this to true to receive the locale for this user. Defaults to false", "inject_if_not":false }' */
-  /* p->include_locale is a scalar */
+  (void)d->include_locale;
 }
 
 void slack_users_info_params_init(struct slack_users_info_params *p) {
@@ -145,7 +142,7 @@ void slack_users_info_params_init(struct slack_users_info_params *p) {
 
 }
 void slack_users_info_params_list_free(struct slack_users_info_params **p) {
-  ntl_free((void**)p, (vfvp)slack_users_info_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))slack_users_info_params_cleanup);
 }
 
 void slack_users_info_params_list_from_json(char *str, size_t len, struct slack_users_info_params ***p)
@@ -154,13 +151,13 @@ void slack_users_info_params_list_from_json(char *str, size_t len, struct slack_
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct slack_users_info_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)slack_users_info_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))slack_users_info_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t slack_users_info_params_list_to_json(char *str, size_t len, struct slack_users_info_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)slack_users_info_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))slack_users_info_params_to_json);
 }
 

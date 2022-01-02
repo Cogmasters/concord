@@ -15,7 +15,8 @@
 #define REQUEST_ATTR_RAW_INIT(ret_json)                                       \
   {                                                                           \
     ret_json, 0, NULL,                                                        \
-      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL   \
+      (void (*)(char *, size_t, void *)) & cee_sized_buffer_from_json, NULL,  \
+      NULL                                                                    \
   }
 
 static void
@@ -24,20 +25,20 @@ setopt_cb(struct ua_conn *conn, void *p_client)
   CURL *ehandle = ua_conn_get_easy_handle(conn);
   struct reddit *client = p_client;
   char client_id[512], client_secret[512], ua[512];
-  int ret;
+  size_t len;
 
-  ret = snprintf(client_id, sizeof(client_id), "%.*s",
+  len = snprintf(client_id, sizeof(client_id), "%.*s",
                  (int)client->client_id.size, client->client_id.start);
-  ASSERT_S(ret < sizeof(client_id), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(client_id), "Out of bounds write attempt");
 
-  ret = snprintf(client_secret, sizeof(client_secret), "%.*s",
+  len = snprintf(client_secret, sizeof(client_secret), "%.*s",
                  (int)client->client_secret.size, client->client_secret.start);
-  ASSERT_S(ret < sizeof(client_secret), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(client_secret), "Out of bounds write attempt");
 
-  ret = snprintf(ua, sizeof(ua),
+  len = snprintf(ua, sizeof(ua),
                  "orca:github.com/cee-studio/orca:v.0 (by /u/%.*s)",
                  (int)client->username.size, client->username.start);
-  ASSERT_S(ret < sizeof(ua), "Out of bounds write attempt");
+  ASSERT_S(len < sizeof(ua), "Out of bounds write attempt");
 
   ua_conn_add_header(conn, "User-Agent", ua);
   ua_conn_add_header(conn, "Content-Type",
@@ -138,15 +139,15 @@ reddit_adapter_run(struct reddit_adapter *adapter,
   static struct reddit_request_attr blank_attr = { 0 };
   char endpoint[2048];
   va_list args;
-  int ret;
+  size_t len;
 
   /* have it point somewhere */
   if (!attr) attr = &blank_attr;
 
   va_start(args, endpoint_fmt);
 
-  ret = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-  ASSERT_S(ret < sizeof(endpoint), "Out of bounds write attempt");
+  len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
+  ASSERT_S(len < sizeof(endpoint), "Out of bounds write attempt");
 
   va_end(args);
 
@@ -224,7 +225,7 @@ reddit_access_token(struct reddit *client,
 
   if (ORCA_OK == code) {
     char access_token[64], token_type[64], auth[256];
-    int len;
+    size_t len;
 
     json_extract(ret->start, ret->size,
                  "(access_token):.*s"

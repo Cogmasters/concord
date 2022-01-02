@@ -84,9 +84,6 @@ size_t discord_create_stage_instance_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_stage_instance_params_cleanup_v(void *p) {
   discord_create_stage_instance_params_cleanup((struct discord_create_stage_instance_params *)p);
 }
@@ -119,14 +116,14 @@ size_t discord_create_stage_instance_params_list_to_json_v(char *str, size_t len
 void discord_create_stage_instance_params_cleanup(struct discord_create_stage_instance_params *d) {
   /* discord/stage_instance.params.json:11:18
      '{"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"}' */
-  /* p->channel_id is a scalar */
+  (void)d->channel_id;
   /* discord/stage_instance.params.json:12:18
      '{"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"}' */
   if (d->topic)
     free(d->topic);
   /* discord/stage_instance.params.json:13:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
-  /* p->privacy_level is a scalar */
+  (void)d->privacy_level;
 }
 
 void discord_create_stage_instance_params_init(struct discord_create_stage_instance_params *p) {
@@ -142,7 +139,7 @@ void discord_create_stage_instance_params_init(struct discord_create_stage_insta
 
 }
 void discord_create_stage_instance_params_list_free(struct discord_create_stage_instance_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_stage_instance_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_stage_instance_params_cleanup);
 }
 
 void discord_create_stage_instance_params_list_from_json(char *str, size_t len, struct discord_create_stage_instance_params ***p)
@@ -151,14 +148,14 @@ void discord_create_stage_instance_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_stage_instance_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_stage_instance_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_stage_instance_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_stage_instance_params_list_to_json(char *str, size_t len, struct discord_create_stage_instance_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_stage_instance_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_stage_instance_params_to_json);
 }
 
 
@@ -217,9 +214,6 @@ size_t discord_modify_stage_instance_params_to_json(char *json, size_t len, stru
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_stage_instance_params_cleanup_v(void *p) {
   discord_modify_stage_instance_params_cleanup((struct discord_modify_stage_instance_params *)p);
 }
@@ -256,7 +250,7 @@ void discord_modify_stage_instance_params_cleanup(struct discord_modify_stage_in
     free(d->topic);
   /* discord/stage_instance.params.json:23:18
      '{"name":"privacy_level", "type":{"base":"int", "int_alias":"enum discord_stage_instance_privacy_level", "comment":"The privacy level of the Stage instance (default GUILD_ONLY)"}, "inject_if_not":0}' */
-  /* p->privacy_level is a scalar */
+  (void)d->privacy_level;
 }
 
 void discord_modify_stage_instance_params_init(struct discord_modify_stage_instance_params *p) {
@@ -269,7 +263,7 @@ void discord_modify_stage_instance_params_init(struct discord_modify_stage_insta
 
 }
 void discord_modify_stage_instance_params_list_free(struct discord_modify_stage_instance_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_stage_instance_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_stage_instance_params_cleanup);
 }
 
 void discord_modify_stage_instance_params_list_from_json(char *str, size_t len, struct discord_modify_stage_instance_params ***p)
@@ -278,13 +272,13 @@ void discord_modify_stage_instance_params_list_from_json(char *str, size_t len, 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_stage_instance_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_stage_instance_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_stage_instance_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_stage_instance_params_list_to_json(char *str, size_t len, struct discord_modify_stage_instance_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_stage_instance_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_stage_instance_params_to_json);
 }
 

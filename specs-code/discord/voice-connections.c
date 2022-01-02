@@ -14,9 +14,6 @@
 #include "discord.h"
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_voice_close_event_codes_list_free_v(void **p) {
   discord_voice_close_event_codes_list_free((enum discord_voice_close_event_codes**)p);
 }
@@ -43,6 +40,7 @@ enum discord_voice_close_event_codes discord_voice_close_event_codes_eval(char *
   if(strcasecmp("SERVER_CRASH", s) == 0) return DISCORD_VOICE_CLOSE_EVENT_SERVER_CRASH;
   if(strcasecmp("UNKNOWN_ENCRYPTION_MODE", s) == 0) return DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_ENCRYPTION_MODE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_voice_close_event_codes_print(enum discord_voice_close_event_codes v){
@@ -87,9 +85,6 @@ size_t discord_voice_close_event_codes_list_to_json(char *str, size_t len, enum 
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_voice_opcodes_list_free_v(void **p) {
   discord_voice_opcodes_list_free((enum discord_voice_opcodes**)p);
 }
@@ -116,6 +111,7 @@ enum discord_voice_opcodes discord_voice_opcodes_eval(char *s){
   if(strcasecmp("CLIENT_DISCONNECT", s) == 0) return DISCORD_VOICE_CLIENT_DISCONNECT;
   if(strcasecmp("CODEC", s) == 0) return DISCORD_VOICE_CODEC;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_voice_opcodes_print(enum discord_voice_opcodes v){
@@ -160,9 +156,6 @@ size_t discord_voice_opcodes_list_to_json(char *str, size_t len, enum discord_vo
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_voice_speaking_flags_list_free_v(void **p) {
   discord_voice_speaking_flags_list_free((enum discord_voice_speaking_flags**)p);
 }
@@ -180,6 +173,7 @@ enum discord_voice_speaking_flags discord_voice_speaking_flags_eval(char *s){
   if(strcasecmp("SOUNDSHARE", s) == 0) return DISCORD_VOICE_SOUNDSHARE;
   if(strcasecmp("PRIORITY", s) == 0) return DISCORD_VOICE_PRIORITY;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_voice_speaking_flags_print(enum discord_voice_speaking_flags v){

@@ -139,6 +139,9 @@ on_connect_cb(void *p_sm,
               struct ws_info *info,
               const char *ws_protocols)
 {
+  (void)p_sm;
+  (void)ws;
+  (void)info;
   log_info("Connected, WS-Protocols: '%s'", ws_protocols);
 }
 
@@ -151,6 +154,8 @@ on_close_cb(void *p_sm,
             size_t len)
 {
   struct slack_sm *sm = p_sm;
+  (void)ws;
+  (void)info;
 
   sm->is_ready = false; // reset
 
@@ -166,6 +171,7 @@ on_text_cb(void *p_sm,
            size_t len)
 {
   struct slack_sm *sm = p_sm;
+  (void)ws;
 
   struct sized_buffer data = { 0 };
   char event_type[64] = "";
@@ -210,6 +216,9 @@ default_scheduler_cb(struct slack *a,
                      struct sized_buffer *b,
                      enum slack_sm_types d)
 {
+  (void)a;
+  (void)b;
+  (void)d;
   return SLACK_EVENT_MAIN_THREAD;
 }
 
@@ -282,7 +291,8 @@ slack_sm_run(struct slack_sm *sm)
 
     /* check if timespan since first pulse is greater than
      * minimum heartbeat interval required */
-    if (sm->hbeat.interval_ms < (ws_timestamp(sm->ws) - sm->hbeat.tstamp)) {
+    if (sm->hbeat.interval_ms
+        < (long)(ws_timestamp(sm->ws) - sm->hbeat.tstamp)) {
       refresh_connection(sm);
       sm->hbeat.tstamp = ws_timestamp(sm->ws); /* update heartbeat timestamp */
     }

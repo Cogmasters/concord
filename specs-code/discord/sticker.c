@@ -14,9 +14,6 @@
 #include "discord.h"
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_sticker_types_list_free_v(void **p) {
   discord_sticker_types_list_free((enum discord_sticker_types**)p);
 }
@@ -33,6 +30,7 @@ enum discord_sticker_types discord_sticker_types_eval(char *s){
   if(strcasecmp("STANDARD", s) == 0) return DISCORD_STICKER_STANDARD;
   if(strcasecmp("GUILD", s) == 0) return DISCORD_STICKER_GUILD;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_sticker_types_print(enum discord_sticker_types v){
@@ -67,9 +65,6 @@ size_t discord_sticker_types_list_to_json(char *str, size_t len, enum discord_st
 
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_sticker_format_types_list_free_v(void **p) {
   discord_sticker_format_types_list_free((enum discord_sticker_format_types**)p);
 }
@@ -87,6 +82,7 @@ enum discord_sticker_format_types discord_sticker_format_types_eval(char *s){
   if(strcasecmp("APNG", s) == 0) return DISCORD_STICKER_APNG;
   if(strcasecmp("LOTTIE", s) == 0) return DISCORD_STICKER_LOTTIE;
   ERR("'%s' doesn't match any known enumerator.", s);
+  return -1;
 }
 
 char* discord_sticker_format_types_print(enum discord_sticker_format_types v){
@@ -339,9 +335,6 @@ size_t discord_sticker_to_json(char *json, size_t len, struct discord_sticker *p
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_sticker_cleanup_v(void *p) {
   discord_sticker_cleanup((struct discord_sticker *)p);
 }
@@ -374,10 +367,10 @@ size_t discord_sticker_list_to_json_v(char *str, size_t len, void *p){
 void discord_sticker_cleanup(struct discord_sticker *d) {
   /* discord/sticker.json:31:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/sticker.json:32:18
      '{"name":"pack_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"for standard stickers, id of the pack the sticker is from"}' */
-  /* p->pack_id is a scalar */
+  (void)d->pack_id;
   /* discord/sticker.json:33:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
   if (d->name)
@@ -396,16 +389,16 @@ void discord_sticker_cleanup(struct discord_sticker *d) {
     free(d->asset);
   /* discord/sticker.json:37:18
      '{"name":"type", "type":{"base":"int", "int_alias":"enum discord_sticker_types"}, "comment":"type of sticker"}' */
-  /* p->type is a scalar */
+  (void)d->type;
   /* discord/sticker.json:38:18
      '{"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"}' */
-  /* p->format_type is a scalar */
+  (void)d->format_type;
   /* discord/sticker.json:39:18
      '{"name":"available", "type":{"base":"bool"}, "inject_if_not":false, "comment":"whether this guild sticker can be used, may be false due to loss of Server Boosts"}' */
-  /* p->available is a scalar */
+  (void)d->available;
   /* discord/sticker.json:40:18
      '{"name":"guild_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of the guild that owns this sticker"}' */
-  /* p->guild_id is a scalar */
+  (void)d->guild_id;
   /* discord/sticker.json:41:18
      '{"name":"user", "type":{"base":"struct discord_user", "dec":"*"}, "inject_if_not":null, "comment":"the user that uploaded the guild sticker"}' */
   if (d->user) {
@@ -414,7 +407,7 @@ void discord_sticker_cleanup(struct discord_sticker *d) {
   }
   /* discord/sticker.json:42:18
      '{"name":"sort_value", "type":{"base":"int"}, "comment":"the standard sticker's sort order within its pack"}' */
-  /* p->sort_value is a scalar */
+  (void)d->sort_value;
 }
 
 void discord_sticker_init(struct discord_sticker *p) {
@@ -457,7 +450,7 @@ void discord_sticker_init(struct discord_sticker *p) {
 
 }
 void discord_sticker_list_free(struct discord_sticker **p) {
-  ntl_free((void**)p, (vfvp)discord_sticker_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_sticker_cleanup);
 }
 
 void discord_sticker_list_from_json(char *str, size_t len, struct discord_sticker ***p)
@@ -466,14 +459,14 @@ void discord_sticker_list_from_json(char *str, size_t len, struct discord_sticke
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_sticker);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_sticker_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_sticker_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_sticker_list_to_json(char *str, size_t len, struct discord_sticker **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_sticker_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_sticker_to_json);
 }
 
 
@@ -547,9 +540,6 @@ size_t discord_sticker_item_to_json(char *json, size_t len, struct discord_stick
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_sticker_item_cleanup_v(void *p) {
   discord_sticker_item_cleanup((struct discord_sticker_item *)p);
 }
@@ -582,14 +572,14 @@ size_t discord_sticker_item_list_to_json_v(char *str, size_t len, void *p){
 void discord_sticker_item_cleanup(struct discord_sticker_item *d) {
   /* discord/sticker.json:50:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/sticker.json:51:18
      '{"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker"}' */
   if (d->name)
     free(d->name);
   /* discord/sticker.json:52:18
      '{"name":"format_type", "type":{"base":"int", "int_alias":"enum discord_sticker_format_types"}, "comment":"type of sticker format"}' */
-  /* p->format_type is a scalar */
+  (void)d->format_type;
 }
 
 void discord_sticker_item_init(struct discord_sticker_item *p) {
@@ -605,7 +595,7 @@ void discord_sticker_item_init(struct discord_sticker_item *p) {
 
 }
 void discord_sticker_item_list_free(struct discord_sticker_item **p) {
-  ntl_free((void**)p, (vfvp)discord_sticker_item_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_sticker_item_cleanup);
 }
 
 void discord_sticker_item_list_from_json(char *str, size_t len, struct discord_sticker_item ***p)
@@ -614,14 +604,14 @@ void discord_sticker_item_list_from_json(char *str, size_t len, struct discord_s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_sticker_item);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_sticker_item_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_sticker_item_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_sticker_item_list_to_json(char *str, size_t len, struct discord_sticker_item **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_sticker_item_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_sticker_item_to_json);
 }
 
 
@@ -760,9 +750,6 @@ size_t discord_sticker_pack_to_json(char *json, size_t len, struct discord_stick
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_sticker_pack_cleanup_v(void *p) {
   discord_sticker_pack_cleanup((struct discord_sticker_pack *)p);
 }
@@ -795,7 +782,7 @@ size_t discord_sticker_pack_list_to_json_v(char *str, size_t len, void *p){
 void discord_sticker_pack_cleanup(struct discord_sticker_pack *d) {
   /* discord/sticker.json:60:18
      '{"name":"id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack"}' */
-  /* p->id is a scalar */
+  (void)d->id;
   /* discord/sticker.json:61:18
      '{"name":"stickers", "type":{"base":"struct discord_sticker", "dec":"ntl"}, "comment":"the stickers in the pack"}' */
   if (d->stickers)
@@ -806,17 +793,17 @@ void discord_sticker_pack_cleanup(struct discord_sticker_pack *d) {
     free(d->name);
   /* discord/sticker.json:63:18
      '{"name":"sku_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the pack's SKU"}' */
-  /* p->sku_id is a scalar */
+  (void)d->sku_id;
   /* discord/sticker.json:64:18
      '{"name":"cover_sticker_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "inject_if_not":0, "comment":"id of a sticker in the pack which is shown as the pack's icon"}' */
-  /* p->cover_sticker_id is a scalar */
+  (void)d->cover_sticker_id;
   /* discord/sticker.json:65:18
      '{"name":"description", "type":{"base":"char", "dec":"*"}, "comment":"description of the sticker pack"}' */
   if (d->description)
     free(d->description);
   /* discord/sticker.json:66:18
      '{"name":"banner_asset_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"id of the sticker pack's banner image"}' */
-  /* p->banner_asset_id is a scalar */
+  (void)d->banner_asset_id;
 }
 
 void discord_sticker_pack_init(struct discord_sticker_pack *p) {
@@ -844,7 +831,7 @@ void discord_sticker_pack_init(struct discord_sticker_pack *p) {
 
 }
 void discord_sticker_pack_list_free(struct discord_sticker_pack **p) {
-  ntl_free((void**)p, (vfvp)discord_sticker_pack_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_sticker_pack_cleanup);
 }
 
 void discord_sticker_pack_list_from_json(char *str, size_t len, struct discord_sticker_pack ***p)
@@ -853,13 +840,13 @@ void discord_sticker_pack_list_from_json(char *str, size_t len, struct discord_s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_sticker_pack);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_sticker_pack_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_sticker_pack_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_sticker_pack_list_to_json(char *str, size_t len, struct discord_sticker_pack **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_sticker_pack_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_sticker_pack_to_json);
 }
 

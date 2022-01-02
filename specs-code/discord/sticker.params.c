@@ -51,9 +51,6 @@ size_t discord_list_nitro_sticker_packs_response_to_json(char *json, size_t len,
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_list_nitro_sticker_packs_response_cleanup_v(void *p) {
   discord_list_nitro_sticker_packs_response_cleanup((struct discord_list_nitro_sticker_packs_response *)p);
 }
@@ -97,7 +94,7 @@ void discord_list_nitro_sticker_packs_response_init(struct discord_list_nitro_st
 
 }
 void discord_list_nitro_sticker_packs_response_list_free(struct discord_list_nitro_sticker_packs_response **p) {
-  ntl_free((void**)p, (vfvp)discord_list_nitro_sticker_packs_response_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_list_nitro_sticker_packs_response_cleanup);
 }
 
 void discord_list_nitro_sticker_packs_response_list_from_json(char *str, size_t len, struct discord_list_nitro_sticker_packs_response ***p)
@@ -106,14 +103,14 @@ void discord_list_nitro_sticker_packs_response_list_from_json(char *str, size_t 
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_list_nitro_sticker_packs_response);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_list_nitro_sticker_packs_response_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_list_nitro_sticker_packs_response_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_list_nitro_sticker_packs_response_list_to_json(char *str, size_t len, struct discord_list_nitro_sticker_packs_response **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_list_nitro_sticker_packs_response_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_list_nitro_sticker_packs_response_to_json);
 }
 
 
@@ -191,9 +188,6 @@ size_t discord_create_guild_sticker_params_to_json(char *json, size_t len, struc
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_create_guild_sticker_params_cleanup_v(void *p) {
   discord_create_guild_sticker_params_cleanup((struct discord_create_guild_sticker_params *)p);
 }
@@ -260,7 +254,7 @@ void discord_create_guild_sticker_params_init(struct discord_create_guild_sticke
 
 }
 void discord_create_guild_sticker_params_list_free(struct discord_create_guild_sticker_params **p) {
-  ntl_free((void**)p, (vfvp)discord_create_guild_sticker_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_create_guild_sticker_params_cleanup);
 }
 
 void discord_create_guild_sticker_params_list_from_json(char *str, size_t len, struct discord_create_guild_sticker_params ***p)
@@ -269,14 +263,14 @@ void discord_create_guild_sticker_params_list_from_json(char *str, size_t len, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_create_guild_sticker_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_create_guild_sticker_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_create_guild_sticker_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_create_guild_sticker_params_list_to_json(char *str, size_t len, struct discord_create_guild_sticker_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_create_guild_sticker_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_create_guild_sticker_params_to_json);
 }
 
 
@@ -350,9 +344,6 @@ size_t discord_modify_guild_sticker_params_to_json(char *json, size_t len, struc
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_modify_guild_sticker_params_cleanup_v(void *p) {
   discord_modify_guild_sticker_params_cleanup((struct discord_modify_guild_sticker_params *)p);
 }
@@ -410,7 +401,7 @@ void discord_modify_guild_sticker_params_init(struct discord_modify_guild_sticke
 
 }
 void discord_modify_guild_sticker_params_list_free(struct discord_modify_guild_sticker_params **p) {
-  ntl_free((void**)p, (vfvp)discord_modify_guild_sticker_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_modify_guild_sticker_params_cleanup);
 }
 
 void discord_modify_guild_sticker_params_list_from_json(char *str, size_t len, struct discord_modify_guild_sticker_params ***p)
@@ -419,13 +410,13 @@ void discord_modify_guild_sticker_params_list_from_json(char *str, size_t len, s
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_modify_guild_sticker_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_modify_guild_sticker_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_modify_guild_sticker_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_modify_guild_sticker_params_list_to_json(char *str, size_t len, struct discord_modify_guild_sticker_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_modify_guild_sticker_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_modify_guild_sticker_params_to_json);
 }
 

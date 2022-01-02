@@ -67,9 +67,6 @@ size_t discord_get_invite_params_to_json(char *json, size_t len, struct discord_
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void discord_get_invite_params_cleanup_v(void *p) {
   discord_get_invite_params_cleanup((struct discord_get_invite_params *)p);
 }
@@ -102,10 +99,10 @@ size_t discord_get_invite_params_list_to_json_v(char *str, size_t len, void *p){
 void discord_get_invite_params_cleanup(struct discord_get_invite_params *d) {
   /* discord/invite.params.json:12:20
      '{ "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"}' */
-  /* p->with_counts is a scalar */
+  (void)d->with_counts;
   /* discord/invite.params.json:13:20
      '{ "name": "with_expiration", "type":{ "base":"bool" }, "comment":"whether the invite should contain the expiration date"}' */
-  /* p->with_expiration is a scalar */
+  (void)d->with_expiration;
 }
 
 void discord_get_invite_params_init(struct discord_get_invite_params *p) {
@@ -118,7 +115,7 @@ void discord_get_invite_params_init(struct discord_get_invite_params *p) {
 
 }
 void discord_get_invite_params_list_free(struct discord_get_invite_params **p) {
-  ntl_free((void**)p, (vfvp)discord_get_invite_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))discord_get_invite_params_cleanup);
 }
 
 void discord_get_invite_params_list_from_json(char *str, size_t len, struct discord_get_invite_params ***p)
@@ -127,13 +124,13 @@ void discord_get_invite_params_list_from_json(char *str, size_t len, struct disc
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct discord_get_invite_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)discord_get_invite_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))discord_get_invite_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t discord_get_invite_params_list_to_json(char *str, size_t len, struct discord_get_invite_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)discord_get_invite_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))discord_get_invite_params_to_json);
 }
 

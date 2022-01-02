@@ -243,9 +243,6 @@ size_t reddit_search_params_to_json(char *json, size_t len, struct reddit_search
 }
 
 
-typedef void (*vfvp)(void *);
-typedef void (*vfcpsvp)(char *, size_t, void *);
-typedef size_t (*sfcpsvp)(char *, size_t, void *);
 void reddit_search_params_cleanup_v(void *p) {
   reddit_search_params_cleanup((struct reddit_search_params *)p);
 }
@@ -290,20 +287,20 @@ void reddit_search_params_cleanup(struct reddit_search_params *d) {
     free(d->category);
   /* reddit/search.json:16:20
      '{ "name": "count", "type":{ "base":"int" }, "comment":"a positive integer (default: 0)"}' */
-  /* p->count is a scalar */
+  (void)d->count;
   /* reddit/search.json:17:20
      '{ "name": "include_facets", "type":{ "base":"bool" }, "comment":"boolean value"}' */
-  /* p->include_facets is a scalar */
+  (void)d->include_facets;
   /* reddit/search.json:18:20
      '{ "name": "limit", "type":{ "base":"int" }, "comment":"the maximum number of items desired (default: 25, maximum: 100)"}' */
-  /* p->limit is a scalar */
+  (void)d->limit;
   /* reddit/search.json:19:20
      '{ "name": "q", "type":{ "base":"char", "dec":"*" }, "comment":"a string no longer than 512 characters"}' */
   if (d->q)
     free(d->q);
   /* reddit/search.json:20:20
      '{ "name": "restrict_sr", "type":{ "base":"bool" }, "comment":"boolean value"}' */
-  /* p->restrict_sr is a scalar */
+  (void)d->restrict_sr;
   /* reddit/search.json:21:20
      '{ "name": "show", "type":{ "base":"char", "dec":"*" }, "comment":"(optional)the string all"}' */
   if (d->show)
@@ -369,7 +366,7 @@ void reddit_search_params_init(struct reddit_search_params *p) {
 
 }
 void reddit_search_params_list_free(struct reddit_search_params **p) {
-  ntl_free((void**)p, (vfvp)reddit_search_params_cleanup);
+  ntl_free((void**)p, (void(*)(void*))reddit_search_params_cleanup);
 }
 
 void reddit_search_params_list_from_json(char *str, size_t len, struct reddit_search_params ***p)
@@ -378,13 +375,13 @@ void reddit_search_params_list_from_json(char *str, size_t len, struct reddit_se
   memset(&d, 0, sizeof(d));
   d.elem_size = sizeof(struct reddit_search_params);
   d.init_elem = NULL;
-  d.elem_from_buf = (vfcpsvp)reddit_search_params_from_json_p;
+  d.elem_from_buf = (void(*)(char*,size_t,void*))reddit_search_params_from_json_p;
   d.ntl_recipient_p= (void***)p;
   extract_ntl_from_json2(str, len, &d);
 }
 
 size_t reddit_search_params_list_to_json(char *str, size_t len, struct reddit_search_params **p)
 {
-  return ntl_to_buf(str, len, (void **)p, NULL, (sfcpsvp)reddit_search_params_to_json);
+  return ntl_to_buf(str, len, (void **)p, NULL, (size_t(*)(char*,size_t,void*))reddit_search_params_to_json);
 }
 
