@@ -76,8 +76,7 @@ int main(void)
 
 ### On Linux
 
-The only dependencies are `curl-7.64.0` or higher built with OpenSSL, and `wget` that will 
-be used by the Makefile for fetching [cee-utils](https://github.com/cee-studio/cee-utils) files.
+The only dependency is `curl-7.4.1` or higher
 
 #### Ubuntu and Debian
 
