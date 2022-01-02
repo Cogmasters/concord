@@ -16,6 +16,7 @@ extern "C" {
  *          its purpose is to facilitate identification
  *          and "intent of use".
  *  @{ */
+
 /**
  * @brief Unix time in milliseconds
  */
@@ -26,6 +27,15 @@ typedef uint64_t u64_unix_ms_t;
  * Used in APIs such as Twitter and Discord for their unique IDs
  */
 typedef uint64_t u64_snowflake_t;
+
+/**
+ * @brief Bitmask primitive
+ *
+ * Used for fields that may store be used to store values of, or perform
+ *        bitwise operations
+ */
+typedef uint64_t u64_bitmask_t;
+
 /**
  * @brief Raw JSON string
  *
@@ -34,6 +44,7 @@ typedef uint64_t u64_snowflake_t;
  * parsed with the assistance of a JSON library.
  */
 typedef char json_char_t;
+
 /** @} OrcaTypes */
 
 /** @defgroup OrcaCodes
@@ -104,7 +115,7 @@ typedef int ORCAcode;
  */
 const char *orca_strerror(ORCAcode code);
 
-/** 
+/**
  * @brief Initialize global shared-resources not API-specific
  *
  * @return ORCA_OK on success, ORCA_GLOBAL_INIT on error
