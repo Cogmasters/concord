@@ -2322,7 +2322,7 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):?s,"
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
                 "(permissions):s_as_u64,"
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2337,7 +2337,7 @@ void discord_create_guild_role_params_from_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 &p->name,
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
                 &p->permissions,
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2359,7 +2359,7 @@ size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct d
   arg_switches[0] = p->name;
 
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
   if (p->permissions != 0)
     arg_switches[1] = &p->permissions;
 
@@ -2383,7 +2383,7 @@ size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 "(name):s,"
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
                 "(permissions):s_as_u64,"
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2399,7 +2399,7 @@ size_t discord_create_guild_role_params_to_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
                 p->name,
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
                 &p->permissions,
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2450,7 +2450,7 @@ void discord_create_guild_role_params_cleanup(struct discord_create_guild_role_p
   if (d->name)
     free(d->name);
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
   (void)d->permissions;
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2469,7 +2469,7 @@ void discord_create_guild_role_params_init(struct discord_create_guild_role_para
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }}' */
 
   /* discord/guild.params.json:163:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "inject_if_not":0}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "inject_if_not":0}' */
 
   /* discord/guild.params.json:164:20
      '{ "name": "color", "type":{ "base":"int" }, "inject_if_not":0}' */
@@ -2639,7 +2639,7 @@ void discord_modify_guild_role_params_from_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
                 "(name):?s,"
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
                 "(permissions):s_as_u64,"
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
@@ -2654,7 +2654,7 @@ void discord_modify_guild_role_params_from_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
                 &p->name,
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
                 &p->permissions,
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
@@ -2677,7 +2677,7 @@ size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct d
     arg_switches[0] = p->name;
 
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
   if (p->permissions != 0)
     arg_switches[1] = &p->permissions;
 
@@ -2701,7 +2701,7 @@ size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
                 "(name):s,"
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
                 "(permissions):s_as_u64,"
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
@@ -2717,7 +2717,7 @@ size_t discord_modify_guild_role_params_to_json(char *json, size_t len, struct d
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
                 p->name,
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
                 &p->permissions,
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
@@ -2768,7 +2768,7 @@ void discord_modify_guild_role_params_cleanup(struct discord_modify_guild_role_p
   if (d->name)
     free(d->name);
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
   (void)d->permissions;
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
@@ -2787,7 +2787,7 @@ void discord_modify_guild_role_params_init(struct discord_modify_guild_role_para
      '{ "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"}' */
 
   /* discord/guild.params.json:186:20
-     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"enum discord_bitwise_permission_flags" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
+     '{ "name": "permissions", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t" }, "option":true, "inject_if_not":0, "comment":"bitwise value of the enabled/disabled permissions"}' */
 
   /* discord/guild.params.json:187:20
      '{ "name": "color", "type":{ "base":"int" }, "option":true, "inject_if_not":0, "comment":"RGB color value"}' */
