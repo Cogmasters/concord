@@ -73,10 +73,19 @@ cee_timezone(void)
 
   if (!once) {
     const time_t epoch_plus_11h = 60 * 60 * 11;
-    const int local_time = localtime(&epoch_plus_11h)->tm_hour;
-    const int gm_time = gmtime(&epoch_plus_11h)->tm_hour;
+    const struct tm *local, *gm;
+    long tz_hour, tz_min;
 
-    tz = (local_time - gm_time) * 60 * 60;
+    local = localtime(&epoch_plus_11h);
+    tz_hour = local->tm_hour;
+    tz_min = local->tm_min;
+
+    gm = gmtime(&epoch_plus_11h);
+    tz_hour -= gm->tm_hour;
+    tz_min -= gm->tm_min;
+
+    tz = tz_hour * 60 * 60 + tz_min * 60;
+
     once = 1;
   }
 
