@@ -403,9 +403,9 @@ size_t ntl_from_buf2(char *buf,
  *
  * @param p the NTL
  * @param elem the element to be checked against `p`
- * @return `true` if `elem` is a member of the NTL, `false` otherwise
+ * @return `1` if `elem` is a member of the NTL, `0` otherwise
  */
-_Bool ntl_is_a_member(ntl_t p, void *elem);
+int ntl_is_a_member(ntl_t p, void *elem);
 
 #ifdef __cplusplus
 }

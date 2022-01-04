@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdint.h> /* uint64_t */
 #include "ntl.h" /* struct sized_buffer */
+#include "log.h"
 #include "debug.h"
 
 /** @defgroup Log_C_Datatypes

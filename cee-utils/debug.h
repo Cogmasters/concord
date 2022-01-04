@@ -1,28 +1,21 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include <stdlib.h>
-#include "log.h"
-
 #ifdef __saiph__ /* for error tracing purposes */
-#define ABORT()                                                               \
+# define ABORT()                                                               \
   {                                                                           \
     static char *p = "abort";                                                 \
     *p = 0; /* force segfault with a backtrace */                             \
   }
 #else
-#define ABORT() abort()
+# define ABORT() abort()
 #endif
-
-#define D_OUT        stderr
-#define D_FMT_PREFIX "[%s:%d] %s()\n\t"
-#define D_FMT_ARGS   __FILE__, __LINE__, __func__
 
 /* Encode a string with ANSI color */
 #ifdef LOG_USE_COLOR
-#define ANSICOLOR(str, color) "\x1b[" color "m" str "\x1b[0m"
+# define ANSICOLOR(str, color) "\x1b[" color "m" str "\x1b[0m"
 #else
-#define ANSICOLOR(str, color) str
+# define ANSICOLOR(str, color) str
 #endif
 
 #define ANSI_FG_BLACK          "30"
@@ -59,89 +52,80 @@
 #define ANSI_BG_BRIGHT_CYAN    "106"
 #define ANSI_BG_BRIGHT_WHITE   "107"
 
-#define PUTS(msg)       fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
-#define NOTOP_PUTS(msg) fprintf(D_OUT, "\t%s\n", msg)
-#define __PRINT(fmt, ...)                                                     \
+#ifndef D_OUT
+# define D_OUT stderr
+#endif
+
+#if __STDC_VERSION__ >= 199901L
+# define D_FMT_PREFIX "[%s:%d] %s()\n\t"
+# define D_FMT_ARGS   __FILE__, __LINE__, __func__
+
+# define __PRINT(fmt, ...)                                                     \
   fprintf(D_OUT, D_FMT_PREFIX fmt "\n%s", D_FMT_ARGS, __VA_ARGS__)
-#define PRINT(...)              __PRINT(__VA_ARGS__, "")
-#define __NOTOP_PRINT(fmt, ...) fprintf(D_OUT, "\t" fmt "\n%s", __VA_ARGS__)
-#define NOTOP_PRINT(...)        __NOTOP_PRINT(__VA_ARGS__, "")
-#define __ERR(fmt, ...)         log_fatal(fmt "%s", __VA_ARGS__)
-#define ERR(...)                                                              \
+# define PRINT(...) __PRINT(__VA_ARGS__, "")
+
+# ifdef LOG_H
+#   define __ERR(fmt, ...) log_fatal(fmt "%s", __VA_ARGS__)
+# else
+#   define __ERR(fmt, ...) __PRINT(fmt, __VA_ARGS__)
+# endif
+
+# define ERR(...)                                                             \
   do {                                                                        \
     __ERR(__VA_ARGS__, "");                                                   \
     ABORT();                                                                  \
   } while (0)
 
+/* THIS WILL ONLY WORK IF __VA_ARGS__ IS SET */
+# define VASSERT_S(expr, fmt, ...)                                            \
+  do {                                                                        \
+    if (!(expr)) {                                                            \
+      ERR(ANSICOLOR("\n\tAssert Failed", ANSI_FG_RED)":\t"fmt"\n\t"           \
+          ANSICOLOR("Expected", ANSI_FG_RED)":\t %s", __VA_ARGS__, #expr);    \
+    }                                                                         \
+  } while (0)
+
+#else
+# define D_FMT_PREFIX "[%s:%d]\n\t"
+# define D_FMT_ARGS   __FILE__, __LINE__
+
+static int PRINT(const char *format, ...)
+{
+  va_list ap;
+  int ret;
+
+  fprintf(D_OUT, D_FMT_PREFIX, D_FMT_ARGS);
+
+  va_start(ap, format);
+  ret = vfprintf(D_OUT, format, ap);
+  va_end(ap);
+
+  return ret;
+}
+
+static void ERR(const char *format, ...)
+{
+  va_list ap;
+
+  fprintf(D_OUT, D_FMT_PREFIX, D_FMT_ARGS);
+
+  va_start(ap, format);
+  vfprintf(D_OUT, format, ap);
+  va_end(ap);
+
+  ABORT();
+}
+
+#endif
+
+#define PUTS(msg) fprintf(D_OUT, D_FMT_PREFIX "%s\n", D_FMT_ARGS, msg)
+
 #define ASSERT_S(expr, msg)                                                   \
   do {                                                                        \
     if (!(expr)) {                                                            \
-      ERR(ANSICOLOR("\n\tAssert Failed", ANSI_FG_RED) ":\t%s\n\t" ANSICOLOR(  \
-            "Expected", ANSI_FG_RED) ":\t" #expr,                             \
-          msg);                                                               \
+      ERR(ANSICOLOR("\n\tAssert Failed", ANSI_FG_RED)":\t%s\n\t"              \
+          ANSICOLOR("Expected", ANSI_FG_RED)":\t"msg, #expr);                 \
     }                                                                         \
   } while (0)
-
-/* THIS WILL ONLY WORK IF __VA_ARGS__ IS SET */
-#define VASSERT_S(expr, fmt, ...)                                             \
-  do {                                                                        \
-    if (!(expr)) {                                                            \
-      ERR(ANSICOLOR("\n\tAssert Failed",                                      \
-                    ANSI_FG_RED) ":\t" fmt                                    \
-                                 "\n\t" ANSICOLOR("Expected",                 \
-                                                  ANSI_FG_RED) ":\t" #expr,   \
-          __VA_ARGS__);                                                       \
-    }                                                                         \
-  } while (0)
-
-#if _STATIC_DEBUG /* DEBUG MODE ACTIVE */
-
-/* @param msg string to be printed in debug mode */
-#define D_PUTS(msg)       PUTS(msg)
-#define D_NOTOP_PUTS(msg) NOTOP_PUTS(msg)
-/* @param fmt like printf
-   @param ... arguments to be parsed into fmt */
-#define D_PRINT(...)          PRINT(__VA_ARGS__)
-#define D_NOTOP_PRINT(...)    NOTOP_PRINT(__VA_ARGS__)
-#define D_ERR(...)            ERR(__VA_ARGS__)
-#define D_ASSERT_S(expr, msg) ASSERT_S(expr, msg)
-#define D_RUN(arg)            (arg)
-
-#else /* DEBUG MODE INNACTIVE */
-
-#define D_PUTS(msg)
-#define D_NOTOP_PUTS(msg)
-#define D_PRINT(...)
-#define D_NOTOP_PRINT(...)
-#define D_ERR(...)
-#define D_ASSERT_S(expr, msg)
-#define D_RUN(arg)
-
-#endif
-
-#if _STRICT_STATIC_DEBUG /* DEBUG STRICT MODE ACTIVE */
-
-/* @param msg string to be printed in debug mode */
-#define DS_PUTS(msg)       PUTS(msg)
-#define DS_NOTOP_PUTS(msg) NOTOP_PUTS(msg)
-/* @param fmt like printf
-   @param ... arguments to be parsed into fmt */
-#define DS_PRINT(...)          PRINT(__VA_ARGS__)
-#define DS_NOTOP_PRINT(...)    NOTOP_PRINT(__VA_ARGS__)
-#define DS_ERR(...)            ERR(__VA_ARGS__)
-#define DS_ASSERT_S(expr, msg) ASSERT_S(expr, msg)
-#define DS_RUN(arg)            (arg)
-
-#else
-
-#define DS_PUTS(msg)
-#define DS_NOTOP_PUTS(msg)
-#define DS_PRINT(...)
-#define DS_NOTOP_PRINT(...)
-#define DS_ERR(...)
-#define DS_ASSERT_S(expr, msg)
-#define DS_RUN(arg)
-
-#endif
 
 #endif /* DEBUG_H */

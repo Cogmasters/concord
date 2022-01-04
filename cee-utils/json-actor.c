@@ -1695,21 +1695,15 @@ prepare_actor(
     case ARG_PTR:
       p = va_arg(ap, void *);
       *((void **)operand_addrs->addrs[i]) = p;
-      DS_PRINT("load pointer %p as %dth operand to store in %p\n", p, i,
-               operand_addrs->addrs[i]);
       break;
     case ARG_INT: {
       int iv = va_arg(ap, int);
       *((int *)operand_addrs->addrs[i]) = iv;
-      DS_PRINT("load int %d as %dth operand to store in %p\n", iv, i,
-               operand_addrs->addrs[i]);
       break;
     }
     case ARG_DOUBLE: {
       double dv = va_arg(ap, double);
       *((double *)operand_addrs->addrs[i]) = dv;
-      DS_PRINT("load double %lf as %dth operand to store in %p\n", dv, i,
-               operand_addrs->addrs[i]);
       break;
     }
     }
@@ -2365,7 +2359,6 @@ json_vextract(char *json, size_t size, char *extractor, va_list ap)
   jsmn_init(&parser);
   int num_tok = jsmn_parse(&parser, json, size, NULL, 0);
   JSMN_CHECK(num_tok, json, size);
-  DS_PRINT("# of tokens = %d", num_tok);
 
   jsmntok_t *tokens = malloc(sizeof(jsmntok_t) * num_tok);
 
@@ -2598,7 +2591,6 @@ json_to_sized_buffer_ntl(char *json,
   jsmn_init(&parser);
   jsmntok_t *tokens = NULL;
   num_tok = jsmn_parse(&parser, json, size, NULL, 0);
-  DS_PRINT("# of tokens = %d", num_tok);
   JSMN_CHECK(num_tok, json, size);
 
   tokens = malloc(sizeof(jsmntok_t) * num_tok);

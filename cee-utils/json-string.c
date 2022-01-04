@@ -10,10 +10,10 @@
 char *
 json_string_escape(size_t *output_len_p, char *input, size_t input_len)
 {
-  int extra_bytes = 0;
   char * const input_start = input, * const input_end = input + input_len;
   char * output_start = NULL, * output = NULL;
   char * escaped = NULL, buf[8] = "\\u00";
+  int extra_bytes = 0;
   char * s;
 
   /*
@@ -22,8 +22,9 @@ json_string_escape(size_t *output_len_p, char *input, size_t input_len)
    */
   second_iter:
   for (s = input_start; s < input_end; s++) {
-    escaped = NULL;
     unsigned char c = * s;
+
+    escaped = NULL;
     switch (c) {
       case 0x22: escaped = "\\\""; break;
       case 0x5C: escaped = "\\\\"; break;
@@ -134,14 +135,18 @@ utf8_width(uint32_t value)
 static uint32_t
 next(char ** p, char * e, bool html)
 {
+  unsigned char lead, tmp;
+  int trail_size;
+  uint32_t c;
+
   if(*p==e)
     return utf_illegal;
 
-  unsigned char lead = **p;
+  lead = **p;
   (*p)++;
 
   /* First byte is fully validated here */
-  int trail_size = utf8_trail_length(lead);
+  trail_size = utf8_trail_length(lead);
 
   if(trail_size < 0)
     return utf_illegal;
@@ -156,10 +161,9 @@ next(char ** p, char * e, bool html)
     return utf_illegal;
   }
 
-  uint32_t c = lead & ((1<<(6-trail_size))-1);
+  c = lead & ((1<<(6-trail_size))-1);
 
   /* Read the rest */
-  unsigned char tmp;
   switch(trail_size) {
     case 3:
       if(*p==e)
@@ -169,6 +173,7 @@ next(char ** p, char * e, bool html)
       if (!utf8_is_trail(tmp))
         return utf_illegal;
       c = (c << 6) | ( tmp & 0x3F);
+    /* fall-through */
     case 2:
       if(*p==e)
         return utf_illegal;
@@ -177,6 +182,7 @@ next(char ** p, char * e, bool html)
       if (!utf8_is_trail(tmp))
         return utf_illegal;
       c = (c << 6) | ( tmp & 0x3F);
+    /* fall-through */
     case 1:
       if(*p==e)
         return utf_illegal;
@@ -249,23 +255,28 @@ static bool
 read_4_digits(char ** str_p, char * const buf_end, uint16_t *x)
 {
   char * str = * str_p;
+  char buf[5] = { 0 };
+  unsigned v;
+  int i;
+
   if (buf_end - str < 4)
     return false;
 
-  char buf[5] = { 0 };
-  int i;
   for(i=0; i<4; i++) {
     char c=str[i];
+
     buf[i] = c;
     if(isxdigit(c))
       continue;
 
     return false;
   }
-  unsigned v;
+
   sscanf(buf,"%x",&v);
+
   *x=v;
   *str_p = str + 4;
+
   return true;
 }
 
@@ -288,9 +299,12 @@ static void * append (uint32_t x, char *d)
 {
   unsigned i;
   struct utf8_seq seq = { {0}, 0 };
+
   utf8_encode(x, &seq);
+
   for (i = 0; i < seq.len; ++i, d++)
     *d = seq.c[i];
+
   return d;
 }
 
@@ -298,17 +312,16 @@ int
 json_string_unescape(char **output_p, size_t *output_len_p,
                      char *input, size_t input_len)
 {
-  unsigned char c;
   char * const input_start = input, * const input_end = input + input_len;
   char * out_start = NULL, * d = NULL, * s = NULL;
   uint16_t first_surrogate;
   int second_surrogate_expected;
-
+  char c;
 
   enum state {
     TESTING = 1,
     ALLOCATING,
-    UNESCAPING,
+    UNESCAPING
   } state = TESTING;
 
 second_iter:
@@ -353,6 +366,7 @@ second_iter:
       case	't': *d = '\t'; d ++;  break;
       case	'u': {
           uint16_t x;
+
           if (!read_4_digits(&s, input_end, &x))
             goto return_err;
           if (second_surrogate_expected) {
@@ -414,6 +428,7 @@ static char from_hex(char ch) {
 /* Converts an integer value to its hex character*/
 static char to_hex(char code) {
   static char hex[] = "0123456789abcdef";
+
   return hex[code & 15];
 }
 
@@ -459,20 +474,28 @@ char *url_decode(char *str) {
 
 char * url_encode_ext(char * pos, size_t size)
 {
-  char * str = malloc(size+1);
+  char *str = malloc(size+1);
+  char *encoded;
+
   memcpy(str, pos, size);
   str[size] = '\0';
-  char * encoded = url_encode(str);
+
+  encoded = url_encode(str);
   free(str);
+
   return encoded;
 }
 
 char * url_decode_ext(char * pos, size_t size)
 {
-  char * str = malloc(size+1);
+  char *str = malloc(size+1);
+  char *decoded;
+
   memcpy(str, pos, size);
   str[size] = '\0';
-  char * decoded = url_decode(str);
+
+  decoded = url_decode(str);
   free(str);
+
   return decoded;
 }
