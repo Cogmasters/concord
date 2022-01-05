@@ -152,8 +152,8 @@ github_get_repository(struct github *client,
 {
   struct github_request_attr attr = { ret, 0, NULL, &github_write_json, NULL };
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(repo), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(repo), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                             "/repos/%s/%s", owner, repo);
@@ -162,8 +162,8 @@ github_get_repository(struct github *client,
 ORCAcode
 github_create_fork(struct github *client, char *owner, char *repo)
 {
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(owner), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(repo), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(owner), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(repo), ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(&client->adapter, NULL, NULL, HTTP_POST,
                             "/repos/%s/%s/forks", owner, repo);
@@ -180,9 +180,9 @@ github_update_my_fork(struct github *client, char **ret)
   ORCAcode code;
 
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.default_branch),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   code =
     github_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
@@ -211,11 +211,11 @@ github_get_head_commit(struct github *client, char **ret)
   struct github_request_attr attr = { ret, 0, NULL, &object_sha_from_json,
                                       NULL };
 
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.default_branch),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                             "/repos/%s/%s/git/refs/heads/%s",
@@ -228,12 +228,12 @@ github_get_tree_sha(struct github *client, char *commit_sha, char **ret)
 {
   struct github_request_attr attr = { ret, 0, NULL, &sha_from_json, NULL };
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_sha), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_sha), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.repo),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(
     &client->adapter, &attr, NULL, HTTP_GET, "/repos/%s/%s/git/trees/%s",
@@ -249,11 +249,11 @@ github_create_blobs(struct github *client, struct github_file **files)
   char *buf;
   int i;
 
-  ORCA_EXPECT(client, files != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, files != NULL, ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.repo),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   for (i = 0; files[i]; ++i) {
     char *f_content;
@@ -272,7 +272,7 @@ github_create_blobs(struct github *client, struct github_file **files)
     body.start = buf;
     free(f_content);
 
-    ORCA_EXPECT(client, buf != NULL, ORCA_BAD_JSON);
+    ORCA_EXPECT(client, buf != NULL, ORCA_BAD_JSON, "");
 
     attr.obj = &files[i]->sha;
 
@@ -315,12 +315,12 @@ github_create_tree(struct github *client,
   struct sized_buffer body;
   char buf[2048];
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(base_tree_sha), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, files != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(base_tree_sha), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, files != NULL, ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.repo),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   body.size = json_inject(buf, sizeof(buf),
                           "(tree):F"
@@ -344,13 +344,14 @@ github_create_a_commit(struct github *client,
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(tree_sha), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(parent_commit_sha), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_msg), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(tree_sha), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(parent_commit_sha), ORCA_BAD_PARAMETER,
+              "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_msg), ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.repo),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   body.size = json_inject(buf, sizeof(buf),
                           "(message):s"
@@ -372,12 +373,13 @@ github_create_a_branch(struct github *client,
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(head_commit_sha), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(branch), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(head_commit_sha), ORCA_BAD_PARAMETER,
+              "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(branch), ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.repo),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   body.size = json_inject(buf, sizeof(buf),
                           "(ref):|refs/heads/%s|"
@@ -396,12 +398,12 @@ github_update_a_commit(struct github *client, char *branch, char *commit_sha)
   struct sized_buffer body;
   char buf[512];
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(branch), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_sha), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(branch), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(commit_sha), ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.repo),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   body.size = json_inject(buf, sizeof(buf), "(sha):s", commit_sha);
   body.start = buf;
@@ -420,12 +422,12 @@ github_create_a_pull_request(struct github *client,
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(branch), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(pull_msg), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(branch), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(pull_msg), ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.username),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->presets.default_branch),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   body.size = json_inject(buf, sizeof(buf),
                           "(title):s"
@@ -450,8 +452,8 @@ github_get_user(struct github *client, char *username, struct github_user *ret)
 {
   struct github_request_attr attr = REQUEST_ATTR_INIT(github_user, ret);
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(username), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(username), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                             "/users/%s", username);
@@ -462,8 +464,8 @@ github_get_gist(struct github *client, char *id, struct github_gist *ret)
 {
   struct github_request_attr attr = REQUEST_ATTR_INIT(github_gist, ret);
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(id), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(id), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                             "/gists/%s", id);
@@ -479,11 +481,12 @@ github_create_gist(struct github *client,
   char buf[4096];
   char fmt[2048];
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(params->description),
-              ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->title), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->contents), ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->title), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->contents), ORCA_BAD_PARAMETER,
+              "");
 
   /* Create the format string for the buf
    * TODO: Allocate buffer big enough, then free it after the request is made
@@ -504,7 +507,7 @@ github_create_gist(struct github *client,
 ORCAcode
 github_gist_is_starred(struct github *client, char *id)
 {
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(id), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(id), ORCA_BAD_PARAMETER, "");
 
   return github_adapter_run(&client->adapter, NULL, NULL, HTTP_GET,
                             "/gists/%s/star", id);

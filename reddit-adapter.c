@@ -169,16 +169,16 @@ reddit_access_token(struct reddit *client,
   size_t len = 0;
   ORCAcode code;
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->grant_type),
-              ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->grant_type), ORCA_BAD_PARAMETER,
+              "");
 
   len += snprintf(buf, sizeof(buf), "grant_type=%s", params->grant_type);
   ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
   if (STREQ(params->grant_type, "password")) { // script apps
     if (IS_EMPTY_STRING(params->username)) {
-      ORCA_EXPECT(client, client->username.size != 0, ORCA_BAD_PARAMETER);
+      ORCA_EXPECT(client, client->username.size != 0, ORCA_BAD_PARAMETER, "");
 
       len += snprintf(buf + len, sizeof(buf) - len, "&username=%.*s",
                       (int)client->username.size, client->username.start);
@@ -189,7 +189,7 @@ reddit_access_token(struct reddit *client,
     }
 
     if (IS_EMPTY_STRING(params->password)) {
-      ORCA_EXPECT(client, client->password.size != 0, ORCA_BAD_PARAMETER);
+      ORCA_EXPECT(client, client->password.size != 0, ORCA_BAD_PARAMETER, "");
 
       len += snprintf(buf + len, sizeof(buf) - len, "&password=%.*s",
                       (int)client->password.size, client->password.start);
@@ -201,9 +201,10 @@ reddit_access_token(struct reddit *client,
     ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
   }
   else if (STREQ(params->grant_type, "authorization_code")) { // web apps
-    ORCA_EXPECT(client, !IS_EMPTY_STRING(params->code), ORCA_BAD_PARAMETER);
+    ORCA_EXPECT(client, !IS_EMPTY_STRING(params->code), ORCA_BAD_PARAMETER,
+                "");
     ORCA_EXPECT(client, !IS_EMPTY_STRING(params->redirect_uri),
-                ORCA_BAD_PARAMETER);
+                ORCA_BAD_PARAMETER, "");
 
     len += snprintf(buf + len, sizeof(buf) - len, "&code=%s&redirect_uri=%s",
                     params->code, params->redirect_uri);
@@ -261,9 +262,10 @@ reddit_comment(struct reddit *client,
   char buf[4096];
   size_t len = 0;
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->text), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->thing_id), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->text), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->thing_id), ORCA_BAD_PARAMETER,
+              "");
 
   text_url_encoded = url_encode(params->text);
 
@@ -318,8 +320,8 @@ reddit_search(struct reddit *client,
   char query[1024];
   size_t len = 0;
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(subreddit), ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(subreddit), ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, cee_str_bounds_check(params->category, 5) != 0,
               ORCA_BAD_PARAMETER,
               "Category should be no longer than 5 characters");
@@ -332,7 +334,7 @@ reddit_search(struct reddit *client,
   ORCA_EXPECT(client,
               IS_EMPTY_STRING(params->type)
                 || strstr("sr,link,user", params->type),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   if (!params->limit) // default is 25
     params->limit = 25;
@@ -355,14 +357,14 @@ reddit_search(struct reddit *client,
   }
   if (!IS_EMPTY_STRING(params->t)) {
     ORCA_EXPECT(client, strstr("hour,day,week,month,year,all", params->t),
-                ORCA_BAD_PARAMETER);
+                ORCA_BAD_PARAMETER, "");
 
     len += snprintf(query + len, sizeof(query) - len, "&t=%s", params->t);
     ASSERT_S(len < sizeof(query), "Out of bounds write attempt");
   }
   if (!IS_EMPTY_STRING(params->sort)) {
     ORCA_EXPECT(client, strstr("relevance,hot,top,new,comments", params->sort),
-                ORCA_BAD_PARAMETER);
+                ORCA_BAD_PARAMETER, "");
 
     len +=
       snprintf(query + len, sizeof(query) - len, "&sort=%s", params->sort);

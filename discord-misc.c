@@ -20,8 +20,8 @@ discord_delete_messages_by_author_id(struct discord *client,
   struct discord_message **messages = NULL;
   ORCAcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, author_id != 0, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, author_id != 0, ORCA_BAD_PARAMETER, "");
 
   params.limit = 100;
   code = discord_get_channel_messages(client, channel_id, &params, &messages);
@@ -288,8 +288,8 @@ discord_get_channel_at_pos(struct discord *client,
   struct discord_channel **channels = NULL;
   ORCAcode code;
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
 
   code = discord_get_guild_channels(client, guild_id, &channels);
   if (ORCA_OK != code) {
