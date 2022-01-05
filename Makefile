@@ -56,14 +56,6 @@ CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600          \
 
 WFLAGS += -Wall -Wextra -pedantic
 
-ifeq ($(static_debug),1)
-	CFLAGS += -D_STATIC_DEBUG
-else ifeq ($(static_debug),2) 
-	CFLAGS += -D_STRICT_STATIC_DEBUG
-else ifeq ($(static_debug),3) 
-	CFLAGS += -D_STATIC_DEBUG -D_STRICT_STATIC_DEBUG
-endif
-
 ifeq (,$(findstring $(CC),stensal-c sfc)) # ifneq stensal-c AND sfc
 	CFLAGS  += -fPIC
 endif
