@@ -1,5 +1,6 @@
 #ifndef JSON_ACTOR_H
 #define JSON_ACTOR_H
+
 #include <stdarg.h>
 #include "ntl.h"
 
@@ -187,8 +188,8 @@ typedef struct json_item_s json_item_t;
 json_item_t *json_object(const char *key);
 json_item_t *json_array(const char *key);
 json_item_t *json_null(const char *key);
-json_item_t *json_boolean(const char *key, _Bool boolean);
-json_item_t *json_number(const char *key, long double number);
+json_item_t *json_boolean(const char *key, int boolean);
+json_item_t *json_number(const char *key, double number);
 json_item_t *json_string(const char *key, char *string);
 
 /* JSON DESTRUCTORS
@@ -203,7 +204,7 @@ json_item_t *json_parse(char *buffer, size_t len);
 struct sized_buffer json_stringify(json_item_t *root, enum json_type type);
 
 /* JSON UTILITIES */
-size_t json_size(const json_item_t *item);
+long json_size(const json_item_t *item);
 json_item_t *json_append(json_item_t *item, json_item_t *new_branch);
 json_item_t *json_iter_next(json_item_t *item);
 json_item_t *json_clone(json_item_t *item);
@@ -211,27 +212,27 @@ char *json_typeof(const json_item_t *item);
 char *json_strdup(const json_item_t *item);
 int json_typecmp(const json_item_t *item, const enum json_type type);
 int json_keycmp(const json_item_t *item, const char *key);
-int json_numcmp(const json_item_t *item, const long double number);
+int json_numcmp(const json_item_t *item, const double number);
 
 /* JSON GETTERS */
 json_item_t *json_get_root(json_item_t *item);
 json_item_t *json_get_child(json_item_t *item, const char *key);
 json_item_t *json_get_sibling(const json_item_t *item, const char *key);
 json_item_t *json_get_sibling_byindex(const json_item_t *item,
-                                      const size_t relative_index);
+                                      const long relative_index);
 json_item_t *json_get_parent(const json_item_t *item);
-json_item_t *json_get_byindex(const json_item_t *item, const size_t index);
+json_item_t *json_get_byindex(const json_item_t *item, const long index);
 long json_get_index(const json_item_t *item, const char *key);
 enum json_type json_get_type(const json_item_t *item);
 char *json_get_key(const json_item_t *item);
-_Bool json_get_boolean(const json_item_t *item);
+int json_get_boolean(const json_item_t *item);
 char *json_get_string(const json_item_t *item, size_t *len);
-long double json_get_number(const json_item_t *item);
+double json_get_number(const json_item_t *item);
 
 /* JSON SETTERS */
-json_item_t *json_set_boolean(json_item_t *item, _Bool boolean);
+json_item_t *json_set_boolean(json_item_t *item, int boolean);
 json_item_t *json_set_string(json_item_t *item, char *string);
-json_item_t *json_set_number(json_item_t *item, long double number);
+json_item_t *json_set_number(json_item_t *item, double number);
 
 #ifdef __cplusplus
 }

@@ -8,7 +8,7 @@
 #include "discord-internal.h"
 
 /* shorten event callback for maintainability purposes */
-#define ON(event, ...) gw->cmds.cbs.on_##event(CLIENT(gw, gw), ##__VA_ARGS__)
+#define ON(event, ...) gw->cmds.cbs.on_##event(CLIENT(gw, gw), __VA_ARGS__)
 
 static const char *
 opcode_print(enum discord_gateway_opcodes opcode)
@@ -730,7 +730,7 @@ static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
   (void)data;
-  ON(ready);
+  gw->cmds.cbs.on_ready(CLIENT(gw, gw));
 }
 
 static void
@@ -1374,7 +1374,7 @@ discord_gateway_perform(struct discord_gateway *gw)
     send_heartbeat(gw);
   }
 
-  if (gw->cmds.cbs.on_idle) ON(idle);
+  if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
 
   return ORCA_OK;
 }

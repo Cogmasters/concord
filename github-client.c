@@ -52,7 +52,7 @@ github_fill_repo_config(struct github *client, char *repo_config)
   size_t len = 0;
   char *json;
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(repo_config), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(repo_config), ORCA_BAD_PARAMETER, "");
 
   json = cee_load_whole_file(repo_config, &len);
 

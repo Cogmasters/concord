@@ -433,7 +433,9 @@ _cws_check_protocol(struct cws_data *priv, const char *buffer, size_t len)
     if (priv->websocket_protocols.received)
         free(priv->websocket_protocols.received);
 
-    priv->websocket_protocols.received = strndup(buffer, len);
+    priv->websocket_protocols.received = malloc(len + 1);
+    memcpy(priv->websocket_protocols.received, buffer, len);
+    priv->websocket_protocols.received[len] = '\0';
 }
 
 static void

@@ -224,7 +224,7 @@ ua_conn_add_header(struct ua_conn *conn,
     {
       if (strlen(node->data) < buflen) {
         free(node->data);
-        node->data = strdup(buf);
+        cee_strndup(buf, buflen, &node->data);
       }
       else {
         memcpy(node->data, buf, buflen + 1);

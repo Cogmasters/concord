@@ -154,9 +154,9 @@ slack_apps_connections_open(struct slack *client, struct sized_buffer *ret)
   struct slack_request_attr attr = REQUEST_ATTR_RAW_INIT(ret);
 
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->bot_token.start),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
   ORCA_EXPECT(client, !IS_EMPTY_STRING(client->app_token.start),
-              ORCA_BAD_PARAMETER);
+              ORCA_BAD_PARAMETER, "");
 
   attr.token_level = SLACK_TOKEN_APP;
 
@@ -190,8 +190,8 @@ slack_chat_post_message(struct slack *client,
   struct sized_buffer body;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->channel), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->channel), ORCA_BAD_PARAMETER, "");
 
   body.size = slack_chat_post_message_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -216,8 +216,8 @@ slack_users_info(struct slack *client,
   char buf[4096];
   size_t len;
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER);
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->user), ORCA_BAD_PARAMETER);
+  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->user), ORCA_BAD_PARAMETER, "");
 
   len = snprintf(buf, sizeof(buf), "user=%s", params->user);
   ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");

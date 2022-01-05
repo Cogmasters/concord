@@ -81,6 +81,7 @@ void on_static(struct discord *client, const struct discord_message *msg)
     .description = "Multi-REST Api library",
     .url = "https://github.com/cee-studio/orca",
     .color = 3447003,
+    .timestamp = discord_timestamp(client),
     .footer =
       &(struct discord_embed_footer){
         .text = "github.com/cee-studio/orca",
@@ -122,7 +123,8 @@ void on_builder(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  struct discord_embed embed = { .color = 3447003 };
+  struct discord_embed embed = { .color = 3447003,
+                                 .timestamp = discord_timestamp(client) };
 
   discord_embed_set_title(&embed, "Orca");
   discord_embed_set_description(&embed, "Multi-REST Api library");

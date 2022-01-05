@@ -1,16 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <inttypes.h>
 #include <string.h>
 #include <limits.h>
 #include <time.h>
 #include <errno.h>
+
+#include <sys/time.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #include "cee-utils.h"
-#include "json-actor-boxed.h" /* ja_str and functions */
-#include "json-actor.h"
+#include "debug.h"
 #include "clock.h"
 
 char *
@@ -62,41 +65,64 @@ cee_sized_buffer_from_json(char *str, size_t len, struct sized_buffer *buf)
   buf->size = cee_strndup(str, len, &buf->start);
 }
 
+long
+cee_timezone(void)
+{
+  static int once;
+  static long tz;
+
+  if (!once) {
+    const time_t epoch_plus_11h = 60 * 60 * 11;
+    const struct tm *local, *gm;
+    long tz_hour, tz_min;
+
+    local = localtime(&epoch_plus_11h);
+    tz_hour = local->tm_hour;
+    tz_min = local->tm_min;
+
+    gm = gmtime(&epoch_plus_11h);
+    tz_hour -= gm->tm_hour;
+    tz_min -= gm->tm_min;
+
+    tz = tz_hour * 60 * 60 + tz_min * 60;
+
+    once = 1;
+  }
+
+  return tz;
+}
+
 int
 cee_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
 {
-  (void)len;
   double seconds = 0.0;
-  char tz_operator = 'Z';
+  int tz_operator = 'Z';
   int tz_hour = 0, tz_min = 0;
-  struct tm tm;
-  uint64_t res;
+  struct tm tm = { 0 };
+  (void)len;
 
-  memset(&tm, 0, sizeof(tm));
-
-  sscanf(str, "%d-%d-%dT%d:%d:%lf%c%d:%d", /* ISO-8601 complete format */
-         &tm.tm_year, &tm.tm_mon, &tm.tm_mday, /* Date */
-         &tm.tm_hour, &tm.tm_min, &seconds, /* Time */
-         &tz_operator, &tz_hour, &tz_min); /* Timezone */
+  /* ISO-8601 complete format */
+  sscanf(str, "%d-%d-%dT%d:%d:%lf%d%d:%d", &tm.tm_year, &tm.tm_mon,
+         &tm.tm_mday, &tm.tm_hour, &tm.tm_min, &seconds, &tz_operator,
+         &tz_hour, &tz_min);
 
   tm.tm_mon--; /* struct tm takes month from 0 to 11 */
   tm.tm_year -= 1900; /* struct tm takes years from 1900 */
 
-  res =
-    (((uint64_t)mktime(&tm) - timezone) * 1000) + (uint64_t)seconds * 1000.0;
+  *p_value = (((uint64_t)mktime(&tm) + cee_timezone()) * 1000)
+             + (uint64_t)seconds * 1000.0;
+
   switch (tz_operator) {
   case '+': /* Add hours and minutes */
-    res += (tz_hour * 60 + tz_min) * 60 * 1000;
+    *p_value += (tz_hour * 60 + tz_min) * 60 * 1000;
     break;
   case '-': /* Subtract hours and minutes */
-    res -= (tz_hour * 60 + tz_min) * 60 * 1000;
+    *p_value -= (tz_hour * 60 + tz_min) * 60 * 1000;
     break;
   case 'Z': /* UTC, don't do anything */
-  default: /* @todo should we check for error ? */
+  default:
     break;
   }
-
-  *p_value = res;
 
   return 1; /* SUCCESS */
 }
@@ -104,12 +130,9 @@ cee_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
 int
 cee_unix_ms_to_iso8601(char *str, size_t len, uint64_t *p_value)
 {
-  time_t seconds = *p_value / 1000;
+  time_t seconds = (*p_value / 1000) - cee_timezone();
   int millis = *p_value % 1000;
-
-  seconds += timezone;
-  struct tm buf;
-  struct tm *tm = localtime_r(&seconds, &buf);
+  struct tm *tm = localtime(&seconds);
 
   return snprintf(
     str, len, "%d-%.2d-%dT%.2d:%.2d:%.2d.%.3dZ", /* ISO-8601 complete format */
@@ -175,18 +198,34 @@ cee_asprintf(char **strp, const char fmt[], ...)
 int
 cee_sleep_ms(const long tms)
 {
-  struct timespec ts;
   int ret;
+
+#if _POSIX_C_SOURCE >= 199309L
+  struct timespec ts;
 
   if (tms < 0) {
     errno = EINVAL;
     return -1;
   }
+
   ts.tv_sec = tms / 1000;
   ts.tv_nsec = (tms % 1000) * 1000000;
+
   do {
     ret = nanosleep(&ts, &ts);
   } while (ret && errno == EINTR);
+#else
+  struct timeval timeout;
+  long _tms = tms;
+
+  timeout.tv_sec = _tms / 1000L;
+  _tms = tms % 1000L;
+  timeout.tv_usec = (int)_tms * 1000;
+  select(0, NULL,  NULL, NULL, &timeout);
+
+  ret = 0;
+#endif
+
   return ret;
 }
 
@@ -198,29 +237,17 @@ cee_timestamp_ms(void)
   if (0 == psnip_clock_get_time(PSNIP_CLOCK_TYPE_WALL, &t)) {
     return (uint64_t)t.seconds * 1000 + (uint64_t)t.nanoseconds / 1000000;
   }
-  return 0ULL;
-}
-
-char *
-cee_timestamp_str(char *p_str, int len)
-{
-  time_t t = time(NULL);
-  struct tm buf;
-  struct tm *tm = localtime_r(&t, &buf);
-
-  int ret = strftime(p_str, len, "%c", tm);
-  ASSERT_S(ret != 0, "Could not retrieve string timestamp");
-
-  return p_str;
+  return 0;
 }
 
 /* this can be used for checking if a user-given string does not
  *  exceeds a arbitrary threshold length */
-ssize_t
+size_t
 cee_str_bounds_check(const char *str, const size_t threshold_len)
 {
   size_t i;
-  if (!str) return -1; /* Missing string */
+
+  if (!str) return SIZE_MAX; /* Missing string */
 
   for (i = 0; i < threshold_len; ++i) {
     if ('\0' == str[i]) return i; /* bound check succeeded */
@@ -248,27 +275,4 @@ cee_join_strings(char **strings,
   *(cur - strlen(delim)) = '\0';
 
   return buf;
-}
-
-void
-cee_gen_readlink(char *linkbuf, size_t linkbuf_size)
-{
-  ssize_t r = readlink("/proc/self/exe", linkbuf, linkbuf_size);
-
-  if (r < 0) {
-    perror("readlink");
-    exit(EXIT_FAILURE);
-  }
-
-  if (r > (ssize_t)linkbuf_size) {
-    fprintf(stderr, "symlink size is greater than %zu\n", linkbuf_size);
-    exit(EXIT_FAILURE);
-  }
-  linkbuf[r] = '\0';
-}
-
-void
-cee_gen_dirname(char *linkbuf)
-{
-  *strrchr(linkbuf, '/') = '\0';
 }

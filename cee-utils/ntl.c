@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include "ntl.h"
 
@@ -149,16 +148,16 @@ ntl_free(ntl_t p, ntl_free_cb free_cb)
 STATIC size_t
 ntl_length(ntl_t p)
 {
-  if (NULL == p) /* NULL is treated as empty */
-    return 0;
-
   static size_t dummy;
   size_t i = 0;
-  while (p[i]) {
-    /* dummy will never be used, but it can prevent compilers */
-    /* from optimizing this loop away. */
+
+  /* NULL is treated as empty */
+  if (NULL == p) return 0;
+
+  /* dummy will never be used, but it can prevent compilers */
+  /* from optimizing this loop away. */
+  for (i = 0; p[i]; ++i) {
     dummy++;
-    i++;
   }
 
   return i;
@@ -171,16 +170,16 @@ ntl_length(ntl_t p)
 STATIC size_t
 ntl_length_max(ntl_t p, size_t max)
 {
-  if (NULL == p) /* NULL is treated as empty */
-    return 0;
-
   static size_t dummy;
   size_t i = 0;
-  while (p[i] && i < max) {
-    /* dummy will never be used, but it can prevent compilers */
-    /* from optimizing this loop away. */
+
+  /* NULL is treated as empty */
+  if (NULL == p) return 0;
+
+  /* dummy will never be used, but it can prevent compilers */
+  /* from optimizing this loop away. */
+  for (i = 0; p[i] && i < max; ++i) {
     dummy++;
-    i++;
   }
 
   return i;
@@ -199,8 +198,10 @@ ntl_dup(ntl_t p, size_t elem_size)
 STATIC void
 ntl_apply(void *cxt, ntl_t p, void (*f)(void *cxt, void *p))
 {
-  if (NULL == p) return;
   size_t i;
+
+  if (NULL == p) return;
+
   for (i = 0; p[i]; i++)
     (*f)(cxt, p[i]);
 }
@@ -233,25 +234,18 @@ ntl_to_buf(char *buf,
            struct ntl_str_delimiter *d,
            ntl_elem_serializer x)
 {
-  static struct ntl_str_delimiter dx = { .start_delimiter = '[',
-                                         .element_delimiter = ",",
-                                         .last_element_delimiter = "",
-                                         .end_delimiter = ']',
-                                         .null_ntl = "null" };
-
-  if (!d) d = &dx;
-
+  static struct ntl_str_delimiter dx = { '[', ",", "", ']', "null" };
   const char *start = buf;
   size_t i, tsize = 0;
   size_t psize;
 
+  if (!d) d = &dx;
+
   if (p == NULL) {
-    if (dx.null_ntl == NULL)
-      return 0;
-    else {
-      tsize = snprintf(buf, size, "%s", dx.null_ntl);
-      return tsize;
+    if (dx.null_ntl != NULL) {
+      tsize = sprintf(buf, "%.*s", (int)size, dx.null_ntl);
     }
+    return tsize;
   }
 
   if (start) {
@@ -261,7 +255,8 @@ ntl_to_buf(char *buf,
   tsize++;
 
   for (i = 0; p[i]; i++) {
-    bool is_last = (NULL == p[i + 1]);
+    int is_last = (NULL == p[i + 1]);
+
     psize = (*x)(buf, size, p[i]);
 
     if (start) {
@@ -292,6 +287,7 @@ ntl_to_buf(char *buf,
   *buf = '\0';
 
   tsize++;
+
   return tsize;
 }
 
@@ -301,22 +297,27 @@ ntl_to_abuf(char **buf_p,
             struct ntl_str_delimiter *d,
             ntl_elem_serializer x)
 {
+  int s;
+
   if (p == NULL) return 0;
 
-  int s = ntl_to_buf(NULL, 0, p, d, x);
+  s = ntl_to_buf(NULL, 0, p, d, x);
   if (s < 0) return -1;
 
   *buf_p = (char *)malloc(s);
+
   return ntl_to_buf(*buf_p, s, p, d, x);
 }
 
 STATIC ntl_t
 ntl_fmap(void *cxt, ntl_t in_list, size_t out_elem_size, ntl_elem_map map)
 {
+  ntl_t out_list;
   size_t i;
+
   if (in_list == NULL) return NULL;
 
-  ntl_t out_list = ntl_calloc(ntl_length(in_list), out_elem_size);
+  out_list = ntl_calloc(ntl_length(in_list), out_elem_size);
   if (map)
     for (i = 0; in_list[i]; i++)
       (*map)(cxt, in_list[i], out_list[i]);
@@ -355,14 +356,16 @@ ntl_from_buf(char *buf, size_t len, struct ntl_deserializer *deserializer)
 {
   struct sized_buffer **elem_bufs = NULL;
   int ret = (*deserializer->partition_as_sized_bufs)(buf, len, &elem_bufs);
+  size_t n_elems, i;
+  ntl_t new_ntl;
+
   if (0 == ret) {
     *deserializer->ntl_recipient_p = NULL;
     return 0;
   }
 
-  size_t i;
-  size_t n_elems = ntl_length((void **)elem_bufs);
-  ntl_t new_ntl =
+  n_elems = ntl_length((void **)elem_bufs);
+  new_ntl =
     ntl_calloc_init(n_elems, deserializer->elem_size, deserializer->init_elem);
 
   for (i = 0; elem_bufs[i]; ++i)
@@ -378,15 +381,18 @@ STATIC size_t
 ntl_from_buf2(char *buf, size_t len, struct ntl_deserializer *deserializer)
 {
   struct sized_buffer **elem_bufs = NULL;
+
   int ret = (*deserializer->partition_as_sized_bufs)(buf, len, &elem_bufs);
+  size_t n_elems, i;
+  ntl_t new_ntl;
+
   if (0 == ret) {
     *deserializer->ntl_recipient_p = NULL;
     return 0;
   }
 
-  size_t n_elems = ntl_length((void **)elem_bufs);
-  size_t i;
-  ntl_t new_ntl =
+  n_elems = ntl_length((void **)elem_bufs);
+  new_ntl =
     ntl_calloc_init(n_elems, deserializer->elem_size, deserializer->init_elem);
 
   for (i = 0; elem_bufs[i]; ++i)
@@ -398,7 +404,7 @@ ntl_from_buf2(char *buf, size_t len, struct ntl_deserializer *deserializer)
   return n_elems;
 }
 
-STATIC _Bool
+STATIC int
 ntl_is_a_member(ntl_t p, void *elem)
 {
   size_t i;

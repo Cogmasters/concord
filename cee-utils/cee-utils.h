@@ -1,9 +1,9 @@
 #ifndef CEE_UTILS_H
 #define CEE_UTILS_H
 
+#include <stdio.h>
 #include <stdint.h>
 
-#include "debug.h"
 #include "ntl.h"
 
 #ifdef __cplusplus
@@ -98,6 +98,13 @@ void cee_sized_buffer_from_json(char *str,
                                 struct sized_buffer *buf);
 
 /**
+ * @brief Get the difference between UTC and the latest local standard time, in
+ *        seconds.
+ * @return difference between UTC and local time in seconds
+ */
+long cee_timezone(void);
+
+/**
  * @brief Convert a iso8601 string to a unix timestamp (milliseconds)
  *
  * Can be matched to the json_extract() and json_inject() %F specifier
@@ -178,23 +185,14 @@ int cee_sleep_ms(const long tms);
 uint64_t cee_timestamp_ms(void);
 
 /**
- * @brief Get the preferred date and time representation for the current locale
- *
- * @param p_str the string buffer to be filled
- * @param len the string buffer size
- * @return a pointer to `p_str`
- */
-char *cee_timestamp_str(char *p_str, int len);
-
-/**
  * @brief Check if arbitrary string length is exceeded
  *
  * @param str the string to be checked
  * @param threshold_len maximum length for success
- * @return the string length on success, -1 on `NULL` string, and 0 if string
- * length is greater than threshold
+ * @return the string length on success, SIZE_MAX on `NULL` string, and 0 if string
+ *        length is greater than threshold
  */
-ssize_t cee_str_bounds_check(const char *str, const size_t threshold_len);
+size_t cee_str_bounds_check(const char *str, const size_t threshold_len);
 
 /**
  * @brief Concatenate an array of strings to a buffer
@@ -211,10 +209,6 @@ char *cee_join_strings(char **strings,
                        const char delim[],
                        const size_t wordlen,
                        const size_t maxlen);
-
-void cee_gen_readlink(char *linkbuf, size_t linkbuf_size);
-
-void cee_gen_dirname(char *linkbuf);
 
 #ifdef __cplusplus
 }
