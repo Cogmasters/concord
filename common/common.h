@@ -96,12 +96,12 @@ typedef int ORCAcode;
  * @param expect the expected outcome
  * @param client the discord client
  * @param error return ORCAcode error
- * @param ... optional reason
+ * @param reason for return
  */
-#define ORCA_EXPECT(client, expect, code, ...)                                \
+#define ORCA_EXPECT(client, expect, code, reason)                             \
   do {                                                                        \
     if (!(expect)) {                                                          \
-      logconf_error(&(client)->conf, "Expected: " #expect ": " __VA_ARGS__);  \
+      logconf_error(&(client)->conf, "Expected: " #expect ": " reason);       \
       return code;                                                            \
     }                                                                         \
   } while (0)
