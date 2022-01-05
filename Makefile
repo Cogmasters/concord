@@ -50,7 +50,7 @@ LIBGITHUB  := $(LIBDIR)/libgithub.a
 LIBREDDIT  := $(LIBDIR)/libreddit.a
 LIBSLACK   := $(LIBDIR)/libslack.a
 
-CFLAGS += -O0 -g -pthread                                       \
+CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600          \
           -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
