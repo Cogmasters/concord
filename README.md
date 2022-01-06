@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://cee-studio.github.io/orca"><img src="https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/logo.svg" width="546" alt="Concord" style="background-color:red;" /></a>
+    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/cogmasters/concord/master/docs/logo.svg" width="546" alt="Concord" style="background-color:red;" /></a>
   </p>
   <br />
   <p>
