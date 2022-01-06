@@ -1,26 +1,20 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://cee-studio.github.io/orca"><img src="https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/logo.svg" width="546" alt="orca" style="background-color:red;" /></a>
+    <a href="https://cee-studio.github.io/orca"><img src="https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/source/images/logo.svg" width="546" alt="Concord" style="background-color:red;" /></a>
   </p>
   <br />
   <p>
-    Easy to reason, easy to debug, easy to use.
+    Easy to easy to debug and easy to use.
   </p>
   <p>
-    Join our Discord server: <br> <a href="https://discord.gg/nBUqrWf"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
+    Join our Discord server: <br> <a href="https://discord.gg/vWHGkmKehN"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
   </p>
 </div>
 
 ## About
 
-Orca is implemented in plain C, its symbols are organized to be easily matched to the documentation of the API being covered.
-
-This is done in order to:
-* Minimize the need to thoroughly document every Orca API.
-* Reduce our user's cognitive burden of having to read both Orca API documentation and supported REST API documentation.
-* The codebase becomes easier to navigate.
-
+Concord is implemented in plain C99, its symbols are organized to be easily matched to the documentation of the API being covered.
 Orca's implementation has minimum external dependencies to make bot deployment deadly simple.
 
 ### Design
@@ -38,7 +32,7 @@ Orca's implementation has minimum external dependencies to make bot deployment d
 
 ```c
 #include <string.h> // strcmp()
-#include <orca/discord.h>
+#include <concord/discord.h>
 
 void on_ready(struct discord *client) 
 {
@@ -70,9 +64,8 @@ int main(void)
 
 ### On Windows
 
-* Install **WSL2** and get either Ubuntu or Debian [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-* **Make sure you are in your Linux $HOME folder before proceeding!**
-* Continue to [On Linux](#on-linux) and follow your distro's building steps.
+* Install **Cygwin**
+* **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
 
 ### On Linux
 
@@ -91,19 +84,19 @@ $ sudo xbps-install -S libcurl-devel
 ```
 ### Setting up your environment
 
-#### Clone orca into your workspace
+#### Clone Concord into your workspace
 
 ```bash
-$ git clone https://github.com/cee-studio/orca.git && cd orca
+$ git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
-#### Compile orca
+#### Compile Concord 
 
 ```bash
 $ make
 ```
 
-### Configuring orca
+### Configuring Concord
 
 The following outlines the default fields of `config.json`
 ```js
@@ -128,9 +121,9 @@ The following outlines the default fields of `config.json`
 
 1. Get your bot token and add it to `config.json`, 
    by assigning it to discord's "token" field. There are 
-   well written instructions from the 
+   well written instructions from 
    [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
-   about how to get your bot token and adding it to a server.
+   explaining how to get your bot token and adding it to a server.
 2. Build example executables:
    ```bash
    $ make examples
@@ -153,16 +146,16 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 * Head to `my_bot/`, a special folder set-up for your convenience that may be modified freely.
 * Read our guide for [building your first bot](docs/BUILDING_A_BOT.md).
 
-## Installing orca
+## Installing Concord
 
 Orca can be installed in case developing inside of `my_bot/` doesn't suit your needs:
 ```bash
 $ sudo make install
 ```
 
-Included headers must be `orca/` prefixed:
+Included headers must be `concord/` prefixed:
 ```c
-#include <orca/discord.h>
+#include <concord/discord.h>
 ```
 
 ### Standalone executable
@@ -216,7 +209,6 @@ Problems? Check out our [Discord Server](https://discord.gg/nBUqrWf).
 
 ## Links
 
-- [Documentation](https://cee-studio.github.io/orca/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Contributing](docs/CONTRIBUTING.md)
 <!-- - [Internals](docs/INTERNALS.md) -->

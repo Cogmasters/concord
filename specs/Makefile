@@ -20,8 +20,6 @@ DEPS := $(CEEUTILS_DIR)/cee-utils.c   \
 # default CFLAGS
 CFLAGS  += -O0 -g -Wall -Wno-unused-function -I$(CEEUTILS_DIR)
 
-# for inserting newlines at the end of each foreach
-# see https://stackoverflow.com/questions/29651388/insert-a-new-line-in-a-makefile-foreach-loop
 blank :=
 define \n
 

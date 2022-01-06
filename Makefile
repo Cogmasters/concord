@@ -10,7 +10,7 @@ COMMON_DIR    := common
 THIRDP_DIR    := $(COMMON_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
-ORCADOCS_DIR  := orca-docs
+DOCS_DIR      := concord-docs
 
 CEEUTILS_SRC := $(CEEUTILS_DIR)/cee-utils.c        \
                 $(CEEUTILS_DIR)/json-actor.c       \
@@ -100,15 +100,15 @@ $(OBJDIR):
 
 install:
 	@ mkdir -p $(PREFIX)/lib/
-	@ mkdir -p $(PREFIX)/include/orca
+	@ mkdir -p $(PREFIX)/include/concord
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
-	install -d $(PREFIX)/include/orca/
+	install -d $(PREFIX)/include/concord/
 	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
-	               $(THIRDP_DIR)/*.h $(PREFIX)/include/orca/
-	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
+	               $(THIRDP_DIR)/*.h $(PREFIX)/include/concord/
+	install -d $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
 	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
-	               $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
+	               $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
@@ -131,14 +131,14 @@ purge: clean
 	rm -rf $(SPECSCODE_DIR)
 
 # prepare files for generating documentation at .github/workflows/gh_pages.yml
-docs: | $(ORCADOCS_DIR)
+docs: | $(DOCS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
 	@ rm -rf $(SPECSCODE_DIR)
 	@ mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 
-$(ORCADOCS_DIR):
-	git clone https://github.com/cee-studio/orca-docs
-	cp $(ORCADOCS_DIR)/Doxyfile Doxyfile
+$(DOCS_DIR):
+	git clone https://github.com/cogmasters/concord-docs
+	cp $(DOCS_DIR)/Doxyfile Doxyfile
 
 .PHONY: all test examples install echo clean purge docs

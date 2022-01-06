@@ -15,7 +15,7 @@ Try to use lines that are at most 80 characters long. This is an amount of text 
 We use always two spaces for identation for each new open brace, never TABs. If readability becomes an issue, your better judgment should tell you whether you need more or less identation. For compactness and readability, this is the preferred identation style:
 
 ```c
-for (int i=0; i < n; ++i) {
+for (int i = 0; i < n; ++i) {
   if (something) {
     ...
   }

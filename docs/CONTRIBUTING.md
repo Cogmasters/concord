@@ -1,8 +1,8 @@
-# Contributing to the Orca project
+# Contributing to the Concord project
 
-This document intention is to provide guidelines on how to best contribute to the Orca project.
+This document intention is to provide guidelines on how to best contribute to the Concord project.
 
-## Learning Orca
+## Learning Concord
 
 ### Join the Community
 
@@ -10,7 +10,7 @@ Skip over to our [Discord Server](https://discord.gg/nBUqrWf), we will be more t
 
 ### License and copyright
 
-When contributing with code, you agree to put your changes and new code under the same license Orca is already using unless stated and agreed otherwise.
+When contributing with code, you agree to put your changes and new code under the same license Concord is already using unless stated and agreed otherwise.
 
 When changing existing source code, you do not alter the copyright of the original file(s). The copyright will still be owned by the original creator(s) or those who have been assigned copyright by the original author(s).
 
@@ -34,7 +34,7 @@ Please try to get the latest available sources to make your patches against. It 
 
 ### Documentation
 
-Writing docs is dead boring and one of the big problems with many open source projects. But someone's gotta do it! Please get yourself familiarized with [Doxygen syntax](https://www.doxygen.nl/manual/docblocks.html) and use the surrounding code as a guide when documenting your patch. Once the patch is approved a automated [workflow](.github/workflows/gh_pages.yml) will automatically updated our documentation with your changes. If you wish to patch how the documentation is generated and rendered, please head to [orca-docs](https://github.com/cee-studio/orca-docs) and submit your changes there.
+Writing docs is dead boring and one of the big problems with many open source projects. But someone's gotta do it! Please get yourself familiarized with [Doxygen syntax](https://www.doxygen.nl/manual/docblocks.html) and use the surrounding code as a guide when documenting your patch. Once the patch is approved a automated [workflow](.github/workflows/gh_pages.yml) will automatically updated our documentation with your changes. If you wish to patch how the documentation is generated and rendered, please head to [concord-docs](https://github.com/cee-studio/concord-docs) and submit your changes there.
 
 ### Test Cases
 
@@ -96,8 +96,8 @@ this fork from your git command line
 
 2. run the following command
 ```
-git clone https://github.com/cee-studio/orca.git
-cd orca
+git clone https://github.com/cee-studio/concord.git
+cd concord
 cp config.json .cee-contributor
 ```
 It is important that you clone from this repo, NOT from your fork.
@@ -111,7 +111,7 @@ It is important that you clone from this repo, NOT from your fork.
 #### Build test-git2.exe
 1. run
 ```
-cd orca
+cd concord
 make test
 ```
 Copy test-git2 to your bin folder and make that folder searchable in PATH
@@ -124,7 +124,7 @@ Run the following command that will automatically do the following
 3. submit a commit to the branch
 4. create a pull request
 
-Assume your changes are in the orca folder, you can run the following commands:
+Assume your changes are in the concord folder, you can run the following commands:
 ```
 ./test/test-git2 -m "you commit comments"  files
 ```
