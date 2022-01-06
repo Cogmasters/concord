@@ -34,21 +34,12 @@ OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 # APIs src
 DISCORD_SRC := $(wildcard discord-*.c $(SPECSCODE_DIR)/discord/*.c)
-GITHUB_SRC  := $(wildcard github-*.c $(SPECSCODE_DIR)/github/*.c)
-REDDIT_SRC  := $(wildcard reddit-*.c $(SPECSCODE_DIR)/reddit/*.c)
-SLACK_SRC   := $(wildcard slack-*.c $(SPECSCODE_DIR)/slack/*.c)
 
 # APIs objs
 DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
-GITHUB_OBJS  := $(GITHUB_SRC:%.c=$(OBJDIR)/%.o)
-REDDIT_OBJS  := $(REDDIT_SRC:%.c=$(OBJDIR)/%.o)
-SLACK_OBJS   := $(SLACK_SRC:%.c=$(OBJDIR)/%.o)
 
 # API libs
 LIBDISCORD := $(LIBDIR)/libdiscord.a
-LIBGITHUB  := $(LIBDIR)/libgithub.a
-LIBREDDIT  := $(LIBDIR)/libreddit.a
-LIBSLACK   := $(LIBDIR)/libslack.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600          \
           -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
@@ -68,7 +59,7 @@ $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
 
 all: | $(SPECSCODE_DIR)
-	$(MAKE) discord github reddit slack
+	$(MAKE) discord
 
 specs_gen: | $(CEEUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
@@ -86,18 +77,9 @@ examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
 discord: $(LIBDISCORD) | $(SPECSCODE_DIR)
-github: $(LIBGITHUB) | $(SPECSCODE_DIR)
-reddit: $(LIBREDDIT) | $(SPECSCODE_DIR)
-slack: $(LIBSLACK) | $(SPECSCODE_DIR)
 
 # API libraries compilation
 $(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $?
-$(LIBGITHUB): $(GITHUB_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $?
-$(LIBREDDIT): $(REDDIT_OBJS) $(OBJS) | $(LIBDIR)
-	$(AR) -cqsv $@ $?
-$(LIBSLACK): $(SLACK_OBJS) $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
 $(LIBDIR):
@@ -108,9 +90,6 @@ $(CEEUTILS_DIR):
 	@ $(MAKE) cee_utils
 
 $(DISCORD_OBJS): $(OBJS)
-$(GITHUB_OBJS): $(OBJS)
-$(REDDIT_OBJS): $(OBJS)
-$(SLACK_OBJS): $(OBJS)
 
 $(OBJS): | $(OBJDIR)
 
@@ -124,16 +103,12 @@ install:
 	@ mkdir -p $(PREFIX)/include/orca
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
-	install -m 644 $(LIBGITHUB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/orca/
 	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
 	               $(THIRDP_DIR)/*.h $(PREFIX)/include/orca/
 	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
 	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
 	               $(PREFIX)/include/orca/$(SPECSCODE_DIR)/discord/
-	install -d $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
-	install -m 644 $(SPECSCODE_DIR)/github/*.h                           \
-	               $(PREFIX)/include/orca/$(SPECSCODE_DIR)/github/
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
