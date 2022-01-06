@@ -41,8 +41,8 @@ DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
 # API libs
 LIBDISCORD := $(LIBDIR)/libdiscord.a
 
-CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600          \
-          -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
+CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600          	  \
+          -I. -Isrc -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
