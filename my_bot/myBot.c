@@ -1,6 +1,6 @@
 #include <string.h> // strncmp()
 #include <stdio.h>
-#include <orca/discord.h>
+#include "discord.h"
 
 void on_message(struct discord *client, const struct discord_message *msg)
 {
