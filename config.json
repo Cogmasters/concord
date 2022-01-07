@@ -17,23 +17,5 @@
       "enable": false,
       "prefix": "YOUR-COMMANDS-PREFIX"
     }
-  },
-  "slack": {
-    "app_token": "YOUR-APP-TOKEN",
-    "bot_token": "YOUR-BOT-TOKEN",
-    "user_token": "YOUR-USER-TOKEN",
-    "client_id": "YOUR-CLIENT-ID",
-    "client_secret": "YOUR-CLIENT-SECRET",
-    "signing_secret": "YOUR-SIGNING-SECRET"
-  },
-  "github": {
-    "username": "YOUR-GITHUB-USERNAME",
-    "token": "YOUR-PERSONAL-ACCESS-TOKEN"
-  },
-  "reddit": {
-    "username": "YOUR-REDDIT-USERNAME",
-    "password": "YOUR-REDDIT-PASSWORD",
-    "client_id": "REDDIT-CLIENT-ID",
-    "client_secret": "REDDIT-CLIENT-SECRET"
   }
 }

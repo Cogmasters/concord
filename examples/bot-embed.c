@@ -7,24 +7,22 @@
 
 char JSON_STRING[] =
   "{\n"
-  "  \"title\": \"Orca\",\n"
+  "  \"title\": \"Concord\",\n"
   "  \"description\": \"Multi-REST Api library\",\n"
-  "  \"url\": \"https://github.com/cee-studio/orca\",\n"
+  "  \"url\": \"https://github.com/Cogmasters/concord\",\n"
   "  \"color\": 3447003,\n"
   "  \"footer\": {\n"
-  "    \"text\": \"github.com/cee-studio/orca\",\n"
+  "    \"text\": \"github.com/Cogmasters/concord\",\n"
   "    \"icon_url\": "
-  "\"https://raw.githubusercontent.com/cee-studio/orca-docs/master/docs/"
-  "source/images/icon.svg\"\n"
+  "\"https://raw.githubusercontent.com/cogmasters/concord/master/docs/logo.svg\"\n"
   "  },\n"
   "  \"image\": {\n"
   "    \"url\": "
-  "\"https://github.com/cee-studio/orca-docs/blob/master/docs/source/images/"
-  "social-preview.png?raw=true\"\n"
+  "\"https://raw.githubusercontent.com/cogmasters/concord/master/docs/logo.svg\"\n"
   "  },\n"
   "  \"author\": {\n"
-  "    \"name\": \"cee-studio\",\n"
-  "    \"url\": \"https://github.com/cee-studio\",\n"
+  "    \"name\": \"Cogmasters\",\n"
+  "    \"url\": \"https://github.com/Cogmasters\",\n"
   "    \"icon_url\": \"https://cee.dev/static/images/cee.png\"\n"
   "  },\n"
   "  \"fields\": [\n"
@@ -77,16 +75,15 @@ void on_static(struct discord *client, const struct discord_message *msg)
   if (msg->author->bot) return;
 
   struct discord_embed embed = {
-    .title = "Orca",
+    .title = "Concord",
     .description = "Multi-REST Api library",
     .url = "https://github.com/cee-studio/orca",
     .color = 3447003,
     .timestamp = discord_timestamp(client),
     .footer =
       &(struct discord_embed_footer){
-        .text = "github.com/cee-studio/orca",
-        .icon_url = "https://raw.githubusercontent.com/cee-studio/orca-docs/"
-                    "master/docs/source/images/icon.svg",
+        .text = "github.com/Cogmasters/concord",
+        .icon_url = "https://raw.githubusercontent.com/cogmasters/concord/master/docs/logo.svg",
       },
     .image =
       &(struct discord_embed_image){
@@ -95,8 +92,8 @@ void on_static(struct discord *client, const struct discord_message *msg)
       },
     .author =
       &(struct discord_embed_author){
-        .name = "cee-studio",
-        .url = "https://github.com/cee-studio",
+        .name = "Cogmasters",
+        .url = "https://github.com/Cogmasters",
         .icon_url = "https://cee.dev/static/images/cee.png",
       },
     .fields =
@@ -126,21 +123,19 @@ void on_builder(struct discord *client, const struct discord_message *msg)
   struct discord_embed embed = { .color = 3447003,
                                  .timestamp = discord_timestamp(client) };
 
-  discord_embed_set_title(&embed, "Orca");
+  discord_embed_set_title(&embed, "Concord");
   discord_embed_set_description(&embed, "Multi-REST Api library");
-  discord_embed_set_url(&embed, "https://github.com/cee-studio/orca");
+  discord_embed_set_url(&embed, "https://github.com/Cogmasters/concord");
 
-  discord_embed_set_footer(&embed, "github.com/cee-studio/orca",
-                           "https://raw.githubusercontent.com/cee-studio/"
-                           "orca-docs/master/docs/source/images/icon.svg",
+  discord_embed_set_footer(&embed, "github.com/Cogmasters/concord",
+                           "https://raw.githubusercontent.com/cogmasters/concord/master/docs/logo.svg",
                            NULL);
   discord_embed_set_image(
     &embed,
-    "https://github.com/cee-studio/orca-docs/blob/master/docs/source/images/"
-    "social-preview.png?raw=true",
+    "https://raw.githubusercontent.com/cogmasters/concord/master/docs/logo.svg",
     NULL, 0, 0);
-  discord_embed_set_author(&embed, "cee-studio",
-                           "https://github.com/cee-studio",
+  discord_embed_set_author(&embed, "Cogmasters",
+                           "https://github.com/Cogmasters",
                            "https://cee.dev/static/images/cee.png", NULL);
   discord_embed_add_field(&embed, "Want to learn more?",
                           "Read our "
