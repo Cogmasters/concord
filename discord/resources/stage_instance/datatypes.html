@@ -1287,9 +1287,112 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/stage_instance.h </p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_stage_instance">
+<span class="target" id="structdiscord__stage__instance"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_stage_instance</span></span></span><a class="headerlink" href="#c.discord_stage_instance" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;stage_instance.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_init(struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_cleanup(struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_list_free(struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_stage_instance_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_stage_instance</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_stage_instance.id">
+<span class="target" id="structdiscord__stage__instance_1a4c42ab05951d67c165be28feecd40ebc"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_stage_instance.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The id of this Stage instance </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_stage_instance.guild_id">
+<span class="target" id="structdiscord__stage__instance_1abd44ed9fd2178011ae640d96f043c3c1"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_stage_instance.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The guild id of the associated Stage channel </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_stage_instance.channel_id">
+<span class="target" id="structdiscord__stage__instance_1a223b056beff99a309f2443dce8ef7139"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_id</span></span></span><a class="headerlink" href="#c.discord_stage_instance.channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The id of the associated Stage channel </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_stage_instance.topic">
+<span class="target" id="structdiscord__stage__instance_1aeed84f6983760c62e92e05477078ea48"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">topic</span></span></span><a class="headerlink" href="#c.discord_stage_instance.topic" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The topic of the Stage instance (1-120 characters) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_stage_instance.privacy_level">
+<span class="target" id="structdiscord__stage__instance_1acd83b153949fee6a03dc0a6cfdc1d2ad"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_stage_instance_privacy_level" title="discord_stage_instance_privacy_level"><span class="n"><span class="pre">discord_stage_instance_privacy_level</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">privacy_level</span></span></span><a class="headerlink" href="#c.discord_stage_instance.privacy_level" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The privacy level of the Stage instance </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_stage_instance.discoverable_disabled">
+<span class="target" id="structdiscord__stage__instance_1a2e5f42f61db3ee8fd3761a427bc04980"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discoverable_disabled</span></span></span><a class="headerlink" href="#c.discord_stage_instance.discoverable_disabled" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_stage_instance_privacy_level">
+<span class="target" id="stage__instance_8h_1ae2e95bcf80a25d7e1913abc8ce548a9f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_stage_instance_privacy_level</span></span></span><a class="headerlink" href="#c.discord_stage_instance_privacy_level" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_stage_instance_privacy_level_print(enum</span> <span class="pre">discord_stage_instance_privacy_level</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_stage_instance_privacy_level</span> <span class="pre">discord_stage_instance_privacy_level_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ </p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_stage_instance_privacy_level.DISCORD_STAGE_INSTANCE_PUBLIC">
+<span class="target" id="stage__instance_8h_1ae2e95bcf80a25d7e1913abc8ce548a9fa7bac51e918031353d7b85cbafc0a8f67"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STAGE_INSTANCE_PUBLIC</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_stage_instance_privacy_level.DISCORD_STAGE_INSTANCE_PUBLIC" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The Stage instance is visible publicly, such as on Stage Discovery. </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_stage_instance_privacy_level.DISCORD_STAGE_INSTANCE_GUILD_ONLY">
+<span class="target" id="stage__instance_8h_1ae2e95bcf80a25d7e1913abc8ce548a9fa1dbc84926ee50efb38a7223dec6ffb4d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_STAGE_INSTANCE_GUILD_ONLY</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_stage_instance_privacy_level.DISCORD_STAGE_INSTANCE_GUILD_ONLY" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The Stage instance is visible to only guild members. </p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

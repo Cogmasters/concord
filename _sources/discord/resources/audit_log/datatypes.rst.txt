@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/audit_log.h
+.. doxygenfile:: audit_log.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

@@ -1289,7 +1289,7 @@
 <h1>Create Followup Message<a class="headerlink" href="#create-followup-message" title="Permalink to this headline">¶</a></h1>
 <dl class="c function">
 <dt class="sig sig-object c" id="c.discord_create_followup_message">
-<span class="target" id="discord_8h_1a5890343c4e9903271e269eb2db5d14d3"></span><a class="reference internal" href="../../../../core/common/index.html#c.CCORDcode" title="CCORDcode"><span class="n"><span class="pre">CCORDcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_followup_message</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">application_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">interaction_token</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_create_followup_message_params</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="n"><span class="pre">discord_webhook</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_followup_message" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="discord_8h_1a5890343c4e9903271e269eb2db5d14d3"></span><a class="reference internal" href="../../../../core/common/index.html#c.CCORDcode" title="CCORDcode"><span class="n"><span class="pre">CCORDcode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_followup_message</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../client/datatypes.html#c.discord" title="discord"><span class="n"><span class="pre">discord</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">client</span></span>, <a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">application_id</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n"><span class="pre">interaction_token</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_create_followup_message_params" title="discord_create_followup_message_params"><span class="n"><span class="pre">discord_create_followup_message_params</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">params</span></span>, <span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../resources/webhook/datatypes.html#c.discord_webhook" title="discord_webhook"><span class="n"><span class="pre">discord_webhook</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n"><span class="pre">ret</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.discord_create_followup_message" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a followup message for an Interaction. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1298,7 +1298,7 @@
 <li><p><strong>application_id</strong> – the unique id of the application </p></li>
 <li><p><strong>interaction_token</strong> – the unique token of the interaction </p></li>
 <li><p><strong>params</strong> – request parameters </p></li>
-<li><p><strong>ret</strong> – if successful, a discord_webhook that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_webhook_cleanup()</span></code> </p></li>
+<li><p><strong>ret</strong> – if successful, a <a class="reference internal" href="../../../resources/webhook/datatypes.html#structdiscord__webhook"><span class="std std-ref">discord_webhook</span></a> that should be free’d with <code class="docutils literal notranslate"><span class="pre">discord_webhook_cleanup()</span></code> </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -1307,10 +1307,118 @@
 </dl>
 </dd></dl>
 
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenstruct: Cannot find class “discord_create_followup_message_params” in doxygen xml output for project “Concord” from directory: ../xml</p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params">
+<span class="target" id="structdiscord__create__followup__message__params"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_create_followup_message_params</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
 </div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_init(struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_cleanup(struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_list_free(struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_create_followup_message_params_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_create_followup_message_params</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.wait">
+<span class="target" id="structdiscord__create__followup__message__params_1ad4b24c04e4d85ea0737e6b837cf7a0ed"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wait</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.wait" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>cannot unescape an ill-formed string waits for server confirmation of message send before response, and returns the created message body (defaults to false; when false a message that i </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.thread_id">
+<span class="target" id="structdiscord__create__followup__message__params_1ab7c770e8f7c6b512201546db0f054d05"></span><a class="reference internal" href="../../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread_id</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.thread_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Send a message to the specified thread withing a webhook’s channel. The thread will automatically be unarchived </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.content">
+<span class="target" id="structdiscord__create__followup__message__params_1a97ec457a96ec87eba83b2cc8b1a96984"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">content</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.content" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the message contents (up to 2000 characters) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.username">
+<span class="target" id="structdiscord__create__followup__message__params_1a61cc84e31c9e2ee0c3e32dbda3255936"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">username</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.username" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>override the default username of the webhook </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.avatar_url">
+<span class="target" id="structdiscord__create__followup__message__params_1a0182dbeb9abe3b270959df0faecaa847"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">avatar_url</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.avatar_url" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>override the default avatar of the webhook </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.tts">
+<span class="target" id="structdiscord__create__followup__message__params_1ac80f63ab4ac340780acfeec75e92d0d9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tts</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.tts" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>true if this is a TTS message </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.attachments">
+<span class="target" id="structdiscord__create__followup__message__params_1ae1eae6a190f70ab02053c2c02ddcc730"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../resources/channel/datatypes.html#c.discord_attachment" title="discord_attachment"><span class="n"><span class="pre">discord_attachment</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">attachments</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.attachments" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>attached files to keep </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.embeds">
+<span class="target" id="structdiscord__create__followup__message__params_1a33f55b50bb56f090ae43d4a7d8a18f1e"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../resources/channel/datatypes.html#c.discord_embed" title="discord_embed"><span class="n"><span class="pre">discord_embed</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">embeds</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.embeds" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>embedded rich content </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.payload_json">
+<span class="target" id="structdiscord__create__followup__message__params_1a06882ed2c1060950789b623fadff1fd7"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">payload_json</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.payload_json" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>JSON encoded body of non-file params </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.allowed_mentions">
+<span class="target" id="structdiscord__create__followup__message__params_1adec4c537a280a18db89056ee56178964"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../../resources/channel/datatypes.html#c.discord_allowed_mentions" title="discord_allowed_mentions"><span class="n"><span class="pre">discord_allowed_mentions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">allowed_mentions</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.allowed_mentions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>allowed mentions for the message </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.components">
+<span class="target" id="structdiscord__create__followup__message__params_1af1fa80b68708c155d7154ca778efc82d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../../message_components/datatypes.html#c.discord_component" title="discord_component"><span class="n"><span class="pre">discord_component</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">components</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.components" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the components to include with the message </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_create_followup_message_params.flags">
+<span class="target" id="structdiscord__create__followup__message__params_1a97afa44b51e7fc86d6f259b79cc35092"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flags</span></span></span><a class="headerlink" href="#c.discord_create_followup_message_params.flags" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>can be set to 64 to send a ephemeral message </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
 </section>
 
 

@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/stage_instance.h
+.. doxygenfile:: stage_instance.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

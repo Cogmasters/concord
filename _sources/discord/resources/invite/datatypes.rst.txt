@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/invite.h
+.. doxygenfile:: invite.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

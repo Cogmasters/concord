@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/emoji.h
+.. doxygenfile:: emoji.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

@@ -7,9 +7,9 @@
   - discord-internal.h (for private datatypes)
   - specs/discord/ (for generated datatypes)
 
-================================================================
+=================================================================
 discord_strerror() - return string describing ``CCORDcode`` value
-================================================================
+=================================================================
 
 .. doxygengroup:: ConcordDiscordCodes
 .. doxygenfunction:: discord_strerror

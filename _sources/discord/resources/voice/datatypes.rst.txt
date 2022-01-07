@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/voice.h
+.. doxygenfile:: voice.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

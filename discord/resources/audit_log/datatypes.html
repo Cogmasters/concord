@@ -1287,9 +1287,558 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/audit_log.h </p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_audit_log">
+<span class="target" id="structdiscord__audit__log"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_audit_log</span></span></span><a class="headerlink" href="#c.discord_audit_log" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;audit_log.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_init(struct</span> <span class="pre">discord_audit_log</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_cleanup(struct</span> <span class="pre">discord_audit_log</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_list_free(struct</span> <span class="pre">discord_audit_log</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure">https://discord.com/developers/docs/resources/audit-log#audit-log-object-audit-log-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log.webhooks">
+<span class="target" id="structdiscord__audit__log_1a96d4847d0980b7ad3f65f89767ba6012"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../webhook/datatypes.html#c.discord_webhook" title="discord_webhook"><span class="n"><span class="pre">discord_webhook</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">webhooks</span></span></span><a class="headerlink" href="#c.discord_audit_log.webhooks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>list of webhooks found in the audit log </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log.users">
+<span class="target" id="structdiscord__audit__log_1af8053b685c5a0a1b178dbc5b911968f4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">users</span></span></span><a class="headerlink" href="#c.discord_audit_log.users" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>list of users found in the audit log </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log.audit_log_entries">
+<span class="target" id="structdiscord__audit__log_1a6c001fe9cea7cdda1ef3dc10ef6da964"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_audit_log_entry" title="discord_audit_log_entry"><span class="n"><span class="pre">discord_audit_log_entry</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">audit_log_entries</span></span></span><a class="headerlink" href="#c.discord_audit_log.audit_log_entries" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>list of audit log entries </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log.integrations">
+<span class="target" id="structdiscord__audit__log_1ab06229e453ca634c518a1d6bd9fb7ef0"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../guild/datatypes.html#c.discord_integration" title="discord_integration"><span class="n"><span class="pre">discord_integration</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">integrations</span></span></span><a class="headerlink" href="#c.discord_audit_log.integrations" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>list of partial integration objects </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log.threads">
+<span class="target" id="structdiscord__audit__log_1ad28e47460dc91f3c4633ff39ed21bf38"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../channel/datatypes.html#c.discord_channel" title="discord_channel"><span class="n"><span class="pre">discord_channel</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">threads</span></span></span><a class="headerlink" href="#c.discord_audit_log.threads" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>list of threads found in the audit log </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry">
+<span class="target" id="structdiscord__audit__log__entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_audit_log_entry</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;audit_log.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_init(struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_cleanup(struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_list_free(struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_entry_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_entry</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure">https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-entry-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.target_id">
+<span class="target" id="structdiscord__audit__log__entry_1a965e505841f429834c36e4895212d8b2"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">target_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.target_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the affected entity (webhook,user,role,etc.) </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.changes">
+<span class="target" id="structdiscord__audit__log__entry_1ada09465ba5728b5a425f6f18c223a7ad"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_audit_log_change" title="discord_audit_log_change"><span class="n"><span class="pre">discord_audit_log_change</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">changes</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.changes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>changes made to the target_id </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.user_id">
+<span class="target" id="structdiscord__audit__log__entry_1a0c8bb6db089654b0be3d906afb9b7d46"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">user_id</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.user_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the user who made the changes </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.id">
+<span class="target" id="structdiscord__audit__log__entry_1a55739be4f3734bfb946eda6ec8929cad"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the entry </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.action_type">
+<span class="target" id="structdiscord__audit__log__entry_1ac7d1e4b730e6e0658cd35e74b0249828"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">action_type</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.action_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>type of action that occured </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.options">
+<span class="target" id="structdiscord__audit__log__entry_1a09b247d809281f4eb67b871d8ab9ec8d"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_optional_audit_entry_info" title="discord_optional_audit_entry_info"><span class="n"><span class="pre">discord_optional_audit_entry_info</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>additional info for certain action types </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_entry.reason">
+<span class="target" id="structdiscord__audit__log__entry_1a580d31516425ace52e7e1d2f3b2e40dd"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">reason</span></span></span><a class="headerlink" href="#c.discord_audit_log_entry.reason" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the reason for the change </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info">
+<span class="target" id="structdiscord__optional__audit__entry__info"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_optional_audit_entry_info</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;audit_log.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_init(struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_cleanup(struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_list_free(struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_optional_audit_entry_info_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_optional_audit_entry_info</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info">https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.delete_member_days">
+<span class="target" id="structdiscord__optional__audit__entry__info_1a3c7f76ede6d60c4d935b12381196709e"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">delete_member_days</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.delete_member_days" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>number of days after which inactive members were kicked </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.members_removed">
+<span class="target" id="structdiscord__optional__audit__entry__info_1ab8e124cd648a6a9260a9bd036db37633"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">members_removed</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.members_removed" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>number of members removed by the prune </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.channel_id">
+<span class="target" id="structdiscord__optional__audit__entry__info_1a1e311c2ba31759a225abfe3fec80f6d5"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">channel_id</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.channel_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>channel in which the entities were targeted </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.message_id">
+<span class="target" id="structdiscord__optional__audit__entry__info_1af8a6da23289e85173b0e7a95bbd1996f"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message_id</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.message_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the message that was targeted </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.count">
+<span class="target" id="structdiscord__optional__audit__entry__info_1a92cfb881a1902d1bcca603dbbcfac6b7"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">count</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.count" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>number of entities that were targeted </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.id">
+<span class="target" id="structdiscord__optional__audit__entry__info_1ac48774e059a37c2855ee7d2f57abf629"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>id of the ovewritten entity </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.type">
+<span class="target" id="structdiscord__optional__audit__entry__info_1ac39af0d849ce44d7e45a9df87f63f6b0"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>type of overwritten entity - ‘0’ for role or ‘1’ for member </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_optional_audit_entry_info.role_name">
+<span class="target" id="structdiscord__optional__audit__entry__info_1a58b994f233441d2baf745c3ee3aea460"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">role_name</span></span></span><a class="headerlink" href="#c.discord_optional_audit_entry_info.role_name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name of the role if type is ‘0’ (not present if type is ‘1’) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_audit_log_change">
+<span class="target" id="structdiscord__audit__log__change"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_audit_log_change</span></span></span><a class="headerlink" href="#c.discord_audit_log_change" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;audit_log.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_init(struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_cleanup(struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_list_free(struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_audit_log_change_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_audit_log_change</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure">https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_change.new_value">
+<span class="target" id="structdiscord__audit__log__change_1aab430d94640f6931bd8419f5b18e24f3"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">new_value</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.new_value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>new value of the key </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_change.old_value">
+<span class="target" id="structdiscord__audit__log__change_1ae324b29e4d22bdd453bfffc8de7e1094"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">old_value</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.old_value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>old value of the key </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_audit_log_change.key">
+<span class="target" id="structdiscord__audit__log__change_1a353fd1bc6b11e724bed00dfda37bcd3d"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">key</span></span></span><a class="headerlink" href="#c.discord_audit_log_change.key" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>name of audit log change key </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_audit_log_events">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_audit_log_events</span></span></span><a class="headerlink" href="#c.discord_audit_log_events" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_audit_log_events_print(enum</span> <span class="pre">discord_audit_log_events</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_audit_log_events</span> <span class="pre">discord_audit_log_events_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events">https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_GUILD_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea35ae8c2924a5301b695d72350902db31"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_GUILD_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_GUILD_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea24187d79f9e0e6c2185e68a47a681a9f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_CHANNEL_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eab2b89295c9fcfd3c646bc3f21b76b81c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_CHANNEL_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">11</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea4366f9493fc8176f3a2cd56784cd15bd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_CHANNEL_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">12</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ead470cbfe1bfa579fe1418b50be764208"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">13</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea910b3310a2f5cf36f4914f251d38dba8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">14</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea5eab1eaa1ef680be62b4291a39241989"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_CHANNEL_OVERWRITE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_KICK">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea787f03128478962d044471e4a63ffb8e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_KICK</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_KICK" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_PRUNE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eaed8c8dccd4cd93d005c87c9ac085fafc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_PRUNE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">21</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_PRUNE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_BAN_ADD">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea44e70ab48eb6baa5f52812a07a038149"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_BAN_ADD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">22</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_BAN_ADD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea8867ecb073ad5ba994469346e0b9ee19"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">23</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_BAN_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea1b1f580d091d167594d47ec6a1bf63c3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">24</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea736c8a9076e2984cf5e52a3a257c50f5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">25</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_ROLE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_MOVE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea2822a288a4dc8728076055007b2a2311"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_MOVE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">26</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_MOVE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_DISCONNECT">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eaf1424a3dcb41aa2e684ce645204bec51"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MEMBER_DISCONNECT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">27</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MEMBER_DISCONNECT" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_BOT_ADD">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea3cec658991746aeda4e947c3455201b5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_BOT_ADD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">28</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_BOT_ADD" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_ROLE_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea9c383e3c85aee958dc40ef1f06053c81"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_ROLE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">30</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_ROLE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_ROLE_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea3c58607a6c7d8c116271b7891b9ea075"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_ROLE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">31</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_ROLE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_ROLE_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea5c34bb07b21ce50936a92d6bdc4ecf2b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_ROLE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">32</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_ROLE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_INVITE_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eaadfb15efef3591c77738b8f6a1c08f29"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_INVITE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">40</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_INVITE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_INVITE_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea65f7206318fdc7e81444419f593078b4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_INVITE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">42</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_INVITE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea0c0637eb1d426ff080e2bb58ef605080"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_WEBHOOK_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">50</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eab8f5b2ee7245a50ee6c240e83329946e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_WEBHOOK_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">51</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eafc6763e4f911a37160d222a849a22143"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_WEBHOOK_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">52</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_WEBHOOK_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_EMOJI_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea89fd99d215367ddcc0e91b2960a734db"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_EMOJI_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">60</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_EMOJI_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_EMOJI_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea77218990a94a49f956781fd4efbaf30a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_EMOJI_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">61</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_EMOJI_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_EMOJI_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea148332c00e1fceccf0530d70da2a458e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_EMOJI_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">62</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_EMOJI_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea91ed5fdaa462982a5cd3588161ee4097"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MESSAGE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">72</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eabdf5aed871985bfa526e9a0edde6f568"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">73</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_BULK_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_PIN">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea8755912520472d34bf7b09260ccfdcc4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MESSAGE_PIN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">74</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_PIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_UNPIN">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eaaff88eb3d87437871339161a38ca6ce4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_MESSAGE_UNPIN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">75</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_MESSAGE_UNPIN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_INTEGRATION_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea0bf57200a5f63bbf63e53b1c5788d4ae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_INTEGRATION_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">80</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_INTEGRATION_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_INTEGRATION_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eaf4c23be64b2d32e7b6c4aa63249a0096"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_INTEGRATION_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">81</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_INTEGRATION_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_INTEGRATION_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea6b04c305684f1da98029a86253cc7df3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_INTEGRATION_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">82</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_INTEGRATION_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_STAGE_INSTANCE_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea41152db88cb0f95fc158448bb9687473"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_STAGE_INSTANCE_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">83</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_STAGE_INSTANCE_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_STAGE_INSTANCE_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eae9fc1203780162fcadd3c10d587e685e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_STAGE_INSTANCE_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">84</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_STAGE_INSTANCE_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_STAGE_INSTANCE_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85eaf77fc2cb093bcfad47ff3f12f71dfe04"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_STAGE_INSTANCE_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">85</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_STAGE_INSTANCE_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_STICKER_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea8477d14af61959522c247548cc12511f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_STICKER_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">90</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_STICKER_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_STICKER_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea1c1e2e0c939cddaaa4d0d625256cabe1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_STICKER_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">91</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_STICKER_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_STICKER_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ead6be3684b11e116e22e57d06dbc793f4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_STICKER_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">92</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_STICKER_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_THREAD_CREATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea805caddaa3945130d434c072c05ef4bb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_THREAD_CREATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">110</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_THREAD_CREATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_THREAD_UPDATE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea9e6d03480c14ea6ea2f390959ef1d17e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_THREAD_UPDATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">111</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_THREAD_UPDATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_audit_log_events.DISCORD_AUDIT_LOG_THREAD_DELETE">
+<span class="target" id="audit__log_8h_1a078ff0aa987d45d3c87d0e6d4007f85ea7b5bbd47ef44997ba5143000ac87bc68"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_AUDIT_LOG_THREAD_DELETE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">112</span></span><a class="headerlink" href="#c.discord_audit_log_events.DISCORD_AUDIT_LOG_THREAD_DELETE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 

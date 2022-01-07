@@ -1287,10 +1287,105 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/guild_template.h </p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_guild_template">
+<span class="target" id="structdiscord__guild__template"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_guild_template</span></span></span><a class="headerlink" href="#c.discord_guild_template" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;guild_template.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
 </div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_init(struct</span> <span class="pre">discord_guild_template</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_cleanup(struct</span> <span class="pre">discord_guild_template</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_list_free(struct</span> <span class="pre">discord_guild_template</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_template</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_template</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_template</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_template_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_template</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure">https://discord.com/developers/docs/resources/guild-template#guild-template-object-guild-template-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.code">
+<span class="target" id="structdiscord__guild__template_1ab6a27fdfb28f97baa5c3c339ded79f48"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">code</span></span></span><a class="headerlink" href="#c.discord_guild_template.code" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.name">
+<span class="target" id="structdiscord__guild__template_1ac615fec06acb4b34e707487aadc54dea"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_guild_template.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.description">
+<span class="target" id="structdiscord__guild__template_1ade4f6580395e4d2c8228e2861487300c"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_guild_template.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.usage_count">
+<span class="target" id="structdiscord__guild__template_1a7a548896c45ec302dd0219ba17f9f840"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">usage_count</span></span></span><a class="headerlink" href="#c.discord_guild_template.usage_count" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.creator_id">
+<span class="target" id="structdiscord__guild__template_1a383f955533228cc3f34f7f4d420c2074"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">creator_id</span></span></span><a class="headerlink" href="#c.discord_guild_template.creator_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.creator">
+<span class="target" id="structdiscord__guild__template_1aa8f6527d720c901fd05552de0aff8432"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../user/datatypes.html#c.discord_user" title="discord_user"><span class="n"><span class="pre">discord_user</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">creator</span></span></span><a class="headerlink" href="#c.discord_guild_template.creator" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.created_at">
+<span class="target" id="structdiscord__guild__template_1ade355ea43e6b1e2eaaa3f1e907531355"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">created_at</span></span></span><a class="headerlink" href="#c.discord_guild_template.created_at" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.updated_at">
+<span class="target" id="structdiscord__guild__template_1a066758b6f6607041c027594de28076a4"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_unix_ms_t" title="u64_unix_ms_t"><span class="n"><span class="pre">u64_unix_ms_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updated_at</span></span></span><a class="headerlink" href="#c.discord_guild_template.updated_at" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.source_guild_id">
+<span class="target" id="structdiscord__guild__template_1a573e804f9a31a6026404c8d86783953d"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_guild_id</span></span></span><a class="headerlink" href="#c.discord_guild_template.source_guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.serialized_source_guild">
+<span class="target" id="structdiscord__guild__template_1a130adfc2aefd6bed903ccde59b4b06e4"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../guild/datatypes.html#c.discord_guild" title="discord_guild"><span class="n"><span class="pre">discord_guild</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">serialized_source_guild</span></span></span><a class="headerlink" href="#c.discord_guild_template.serialized_source_guild" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_template.is_dirty">
+<span class="target" id="structdiscord__guild__template_1aca36b57a2221195298de47bf839a316a"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">is_dirty</span></span></span><a class="headerlink" href="#c.discord_guild_template.is_dirty" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
 </section>
 
 

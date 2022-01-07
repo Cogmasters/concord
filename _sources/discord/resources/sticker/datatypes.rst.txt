@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/sticker.h
+.. doxygenfile:: sticker.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

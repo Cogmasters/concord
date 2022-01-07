@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/user.h
+.. doxygenfile:: user.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

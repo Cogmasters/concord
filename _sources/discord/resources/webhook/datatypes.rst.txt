@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/webhook.h
+.. doxygenfile:: webhook.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

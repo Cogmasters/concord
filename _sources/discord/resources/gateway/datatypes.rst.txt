@@ -11,5 +11,5 @@
 Datatypes
 =========
 
-.. doxygenfile:: specs-code/discord/gateway.h
+.. doxygenfile:: gateway.h
     :sections: detaileddescription briefdescription innerclass enum public-type public-attrib

@@ -1287,9 +1287,603 @@
                 
   <section id="datatypes">
 <h1>Datatypes<a class="headerlink" href="#datatypes" title="Permalink to this headline">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenfile: Cannot find file “specs-code/discord/application_commands.h </p>
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command">
+<span class="target" id="structdiscord__application__command"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command</span></span></span><a class="headerlink" href="#c.discord_application_command" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_init(struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_cleanup(struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_list_free(struct</span> <span class="pre">discord_application_command</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.id">
+<span class="target" id="structdiscord__application__command_1a1d1e8dee47017bc7b56332a2f6cfb1ba"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_application_command.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unique id of the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.type">
+<span class="target" id="structdiscord__application__command_1afb6538b1dab513effaf26bf9af8d70e1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_types" title="discord_application_command_types"><span class="n"><span class="pre">discord_application_command_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the type of the command, defaults 1 if not set </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.application_id">
+<span class="target" id="structdiscord__application__command_1a7958c27745543bd8b20ffe1820ae9845"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_application_command.application_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>unique id of the parent application </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.guild_id">
+<span class="target" id="structdiscord__application__command_1af0eff4ee8dce40d88f332735a86dd0c6"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_application_command.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>guild id of the command, if not global </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.name">
+<span class="target" id="structdiscord__application__command_1a9e3bd59f3d5125d4d515363b7a07e489"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-32 character name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.description">
+<span class="target" id="structdiscord__application__command_1a67570a00e66b50ce7fffeba12ab2ba02"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_application_command.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-100 character description for CHAT_INPUT commands, empty string for USER and MESSAGE commands </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.options">
+<span class="target" id="structdiscord__application__command_1a20a43a9e87397276a8430cd8ebb937a5"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option" title="discord_application_command_option"><span class="n"><span class="pre">discord_application_command_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_application_command.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the parameters for the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command.default_permission">
+<span class="target" id="structdiscord__application__command_1a66e1330b69bfe72b45b8922054ebaba8"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_permission</span></span></span><a class="headerlink" href="#c.discord_application_command.default_permission" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>whether the command is enabled by default when the app is added to a guild </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_option">
+<span class="target" id="structdiscord__application__command__option"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_option</span></span></span><a class="headerlink" href="#c.discord_application_command_option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_init(struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_cleanup(struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_list_free(struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.type">
+<span class="target" id="structdiscord__application__command__option_1ad9a9140572a4a0cdf57748889ae988b1"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option_types" title="discord_application_command_option_types"><span class="n"><span class="pre">discord_application_command_option_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command_option.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>value of application command option type </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.name">
+<span class="target" id="structdiscord__application__command__option_1a2b9d7ce772d4428e299b35adb733f4c5"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command_option.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-32 lowercase character </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.description">
+<span class="target" id="structdiscord__application__command__option_1a50ed124fe4fb2224d123d58a2af364b4"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><a class="headerlink" href="#c.discord_application_command_option.description" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-100 character description </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.required">
+<span class="target" id="structdiscord__application__command__option_1ac73196db71c0d4d977eb41212eaa17df"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">required</span></span></span><a class="headerlink" href="#c.discord_application_command_option.required" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the parameter is required or optional  default false </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.choices">
+<span class="target" id="structdiscord__application__command__option_1a01da3589487220a0883b3183c5f29a17"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option_choice" title="discord_application_command_option_choice"><span class="n"><span class="pre">discord_application_command_option_choice</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">choices</span></span></span><a class="headerlink" href="#c.discord_application_command_option.choices" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>choices for string and int types for the user to pick from </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.options">
+<span class="target" id="structdiscord__application__command__option_1a0bc7e50f240760caf024294bc7bbdfff"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option" title="discord_application_command_option"><span class="n"><span class="pre">discord_application_command_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_application_command_option.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the option is a subcommand or subcommand group type, this nested options will be the parameters </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.channel_types">
+<span class="target" id="structdiscord__application__command__option_1a72630592d35ec1da02e8c88254900e6d"></span><span class="n"><span class="pre">ja_u64</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">channel_types</span></span></span><a class="headerlink" href="#c.discord_application_command_option.channel_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the option is a channel type, the channels shown will be restricted to these types </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.min_value">
+<span class="target" id="structdiscord__application__command__option_1a246263a1f073eafcbb33efe7a4270bf0"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">min_value</span></span></span><a class="headerlink" href="#c.discord_application_command_option.min_value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the option is an INTEGER or NUMBER type, the minimum value permitted </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.max_value">
+<span class="target" id="structdiscord__application__command__option_1a270bcbe2c50064b76155e96202d20d9f"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">max_value</span></span></span><a class="headerlink" href="#c.discord_application_command_option.max_value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>if the option is an INTEGER or NUMBER type, the maximum value permitted </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option.autocomplete">
+<span class="target" id="structdiscord__application__command__option_1adb2427eedddf82b994927d586a5ad1e6"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">autocomplete</span></span></span><a class="headerlink" href="#c.discord_application_command_option.autocomplete" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>enable autocomplete interactions for this option </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_option_choice">
+<span class="target" id="structdiscord__application__command__option__choice"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_option_choice</span></span></span><a class="headerlink" href="#c.discord_application_command_option_choice" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_init(struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_cleanup(struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_list_free(struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_option_choice_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_option_choice</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-choice-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option_choice.name">
+<span class="target" id="structdiscord__application__command__option__choice_1a16d11f5b3c62443b263bff86b08ccea3"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command_option_choice.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>1-100 character choice name </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_option_choice.value">
+<span class="target" id="structdiscord__application__command__option__choice_1af69bd5d3c3c4162e3771f85cbf145b85"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#c.discord_application_command_option_choice.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>value of choice, up to 100 characters if string </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions">
+<span class="target" id="structdiscord__guild__application__command__permissions"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_guild_application_command_permissions</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_init(struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_cleanup(struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_list_free(struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_guild_application_command_permissions_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_guild_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.id">
+<span class="target" id="structdiscord__guild__application__command__permissions_1a0b7c5c294fa9733f770a39cedbbc5220"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.application_id">
+<span class="target" id="structdiscord__guild__application__command__permissions_1a7be258adb6f3c497dbd89ce8a806c834"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application_id</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.application_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the parent application the command belongs to </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.guild_id">
+<span class="target" id="structdiscord__guild__application__command__permissions_1a321fc7b25922343416f1f5ea385b2d0e"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">guild_id</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.guild_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the guild </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_guild_application_command_permissions.permissions">
+<span class="target" id="structdiscord__guild__application__command__permissions_1aeeb649655901fe27312771f75d288586"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_permissions" title="discord_application_command_permissions"><span class="n"><span class="pre">discord_application_command_permissions</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">permissions</span></span></span><a class="headerlink" href="#c.discord_guild_application_command_permissions.permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the permissions for the command in the guild </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions">
+<span class="target" id="structdiscord__application__command__permissions"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_permissions</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_init(struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_cleanup(struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_list_free(struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_permissions_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_permissions</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions.id">
+<span class="target" id="structdiscord__application__command__permissions_1ad59d079df44a777d1e8cf107fe672e64"></span><a class="reference internal" href="../../../core/common/index.html#c.u64_snowflake_t" title="u64_snowflake_t"><span class="n"><span class="pre">u64_snowflake_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">id</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions.id" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the id of the command </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions.type">
+<span class="target" id="structdiscord__application__command__permissions_1a21a3804f97df8c50c3f3303281606180"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_permission_types" title="discord_application_command_permission_types"><span class="n"><span class="pre">discord_application_command_permission_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>role or user </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_permissions.permission">
+<span class="target" id="structdiscord__application__command__permissions_1adcf0ce480968fc67044d0c691fd69827"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">permission</span></span></span><a class="headerlink" href="#c.discord_application_command_permissions.permission" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>true to allow, false, to disallow </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="c struct">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option">
+<span class="target" id="structdiscord__application__command__interaction__data__option"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_interaction_data_option</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><em>#include &lt;application_commands.h&gt;</em><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p>Initializer:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_init(struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+</ul>
+</li>
+<li><p>Cleanup:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_cleanup(struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_list_free(struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Decoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_list_from_json(char</span> <span class="pre">*rbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">***)</span></code></p></li>
+</ul>
+</li>
+<li><p>JSON Encoder:</p>
+<ul>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">*)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">discord_application_command_interaction_data_option_list_to_json(char</span> <span class="pre">*wbuf,</span> <span class="pre">size_t</span> <span class="pre">len,</span> <span class="pre">struct</span> <span class="pre">discord_application_command_interaction_data_option</span> <span class="pre">**)</span></code></p></li>
+</ul>
+</li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-interaction-data-option-structure</a></p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.name">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1a11094bb3ab34d431a61dc6fa3191c671"></span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.name" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the name of the parameter </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.type">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1a823d917feb72148b602231d7c537d66b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_option_types" title="discord_application_command_option_types"><span class="n"><span class="pre">discord_application_command_option_types</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>value of application command option type </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.value">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1aa18dbb0abac594312f7e47d0d39429e3"></span><a class="reference internal" href="../../../core/common/index.html#c.json_char_t" title="json_char_t"><span class="n"><span class="pre">json_char_t</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.value" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>the value of the pair </p>
+</dd></dl>
+
+<dl class="c var">
+<dt class="sig sig-object c" id="c.discord_application_command_interaction_data_option.options">
+<span class="target" id="structdiscord__application__command__interaction__data__option_1acdc833f4bf56440e83e6b36b21850569"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="#c.discord_application_command_interaction_data_option" title="discord_application_command_interaction_data_option"><span class="n"><span class="pre">discord_application_command_interaction_data_option</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#c.discord_application_command_interaction_data_option.options" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>present if this option is a group or subcommand </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_command_types">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5ac"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_types</span></span></span><a class="headerlink" href="#c.discord_application_command_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_command_types_print(enum</span> <span class="pre">discord_application_command_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_command_types</span> <span class="pre">discord_application_command_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_CHAT_INPUT">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5aca6bb3a917d85795efdc17adbdb4393766"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_CHAT_INPUT</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_CHAT_INPUT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Slash commands; a text-based command that shows up when a user types / </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_USER">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5aca84ff5f62ac41f767085030fc9abd0232"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_USER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A UI-based command that shows up when you right click or tap on a user </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_MESSAGE">
+<span class="target" id="application__commands_8h_1a57ac2421de18ce66eac17050cefbd5aca2f05c7f82e1799d2ac286bc3611f8fba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_MESSAGE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_application_command_types.DISCORD_APPLICATION_COMMAND_MESSAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A UI-based command that shows up when you right lick or tap on a message </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_option_types</span></span></span><a class="headerlink" href="#c.discord_application_command_option_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_command_option_types_print(enum</span> <span class="pre">discord_application_command_option_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_command_option_types</span> <span class="pre">discord_application_command_option_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28bafb2d94e47a862f4afe7a4496b6e06797"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba28c454b11de6e956eba4821786520d69"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_SUB_COMMAND_GROUP" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_STRING">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba32eb601a40cd92d4d4ca1b2673a36021"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_STRING</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_STRING" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_INTEGER">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba788dbe09be4c8b8fdb3de27cd01ff90e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_INTEGER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_INTEGER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Any integer between -2^53 and 2^53 </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28baa904be2a6f6590c25891d78b6d0858b4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">5</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_BOOLEAN" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_USER">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba96cf263c7193c1535ec8cd9d5bb6b11e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_USER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba8e68d81a9723f525880f9cbbf933e56b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">7</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Includes all channel types + categories </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_ROLE">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba466532de490fb22c87475eb8e57cf97d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_ROLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_ROLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba940d722017db4e499d5b73985faabdeb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">9</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_MENTIONABLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Includes users and roles </p>
+</dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_NUMBER">
+<span class="target" id="application__commands_8h_1a15107c5a0de4294624ec30853e25d28ba48be0fabdbb92fce9ff78e1196648691"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_OPTION_NUMBER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">10</span></span><a class="headerlink" href="#c.discord_application_command_option_types.DISCORD_APPLICATION_COMMAND_OPTION_NUMBER" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Any double between -2^53 and 2^53 </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="c enum">
+<dt class="sig sig-object c" id="c.discord_application_command_permission_types">
+<span class="target" id="application__commands_8h_1af67b9df36cefd62a9264e7207ef718e2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">discord_application_command_permission_types</span></span></span><a class="headerlink" href="#c.discord_application_command_permission_types" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><p><div class="toggle docutils container">
+<div class="header docutils container">
+<p><strong>Methods</strong></p>
+</div>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">char*</span> <span class="pre">discord_application_command_permission_types_print(enum</span> <span class="pre">discord_application_command_permission_types</span> <span class="pre">code)</span></code></p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">enum</span> <span class="pre">discord_application_command_permission_types</span> <span class="pre">discord_application_command_permission_types_eval(char</span> <span class="pre">*code_as_str)</span></code></p></li>
+</ul>
+</div>
+</p>
+ <dl class="simple">
+<dt><strong>See</strong></dt><dd><p><a class="reference external" href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type">https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type</a></p>
+</dd>
+</dl>
+</p>
+<p><em>Values:</em></p>
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE">
+<span class="target" id="application__commands_8h_1af67b9df36cefd62a9264e7207ef718e2a400187b9c23c7a9dd4e43b44cceb230c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_ROLE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c enumerator">
+<dt class="sig sig-object c" id="c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_USER">
+<span class="target" id="application__commands_8h_1af67b9df36cefd62a9264e7207ef718e2acaf4244dd9cfbc6e27cc8081fcbda3c2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISCORD_APPLICATION_COMMAND_PERMISSION_USER</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#c.discord_application_command_permission_types.DISCORD_APPLICATION_COMMAND_PERMISSION_USER" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </section>
 
