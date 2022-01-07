@@ -2408,7 +2408,7 @@ typedef void (*discord_on_voice_server_update)(struct discord *client,
  */
 void discord_set_on_command(struct discord *client,
                             char *command,
-                            discord_on_message cb);
+                            discord_on_message callback);
 
 /**
  * @brief Set a variadic series of NULL terminated commands to a callback
@@ -2422,7 +2422,7 @@ void discord_set_on_command(struct discord *client,
  *       the message content
  */
 void discord_set_on_commands(struct discord *client,
-                             discord_on_message cb,
+                             discord_on_message callback,
                              ...);
 
 /**
@@ -2443,105 +2443,107 @@ void discord_set_voice_cbs(struct discord *client,
  *  @{ */
 
 /** @brief Triggers at every event-loop iteration.  */
-void discord_set_on_idle(struct discord *client, discord_on_idle cb);
+void discord_set_on_idle(struct discord *client, discord_on_idle callback);
 /** @brief Triggers when the client is ready */
-void discord_set_on_ready(struct discord *client, discord_on_idle cb);
+void discord_set_on_ready(struct discord *client, discord_on_idle callback);
 /** @brief Triggers when a application command is created */
 void discord_set_on_application_command_create(
-  struct discord *client, discord_on_application_command cb);
+  struct discord *client, discord_on_application_command callback);
 /** @brief Triggers when a application command is updated */
 void discord_set_on_application_command_update(
-  struct discord *client, discord_on_application_command cb);
+  struct discord *client, discord_on_application_command callback);
 /** @brief Triggers when a application command is deleted */
 void discord_set_on_application_command_delete(
-  struct discord *client, discord_on_application_command cb);
+  struct discord *client, discord_on_application_command callback);
 /** @brief Triggers when a channel is created */
 void discord_set_on_channel_create(struct discord *client,
-                                   discord_on_channel cb);
+                                   discord_on_channel callback);
 /** @brief Triggers when a channel is updated */
 void discord_set_on_channel_update(struct discord *client,
-                                   discord_on_channel cb);
+                                   discord_on_channel callback);
 /** @brief Triggers when a channel is deleted */
 void discord_set_on_channel_delete(struct discord *client,
-                                   discord_on_channel cb);
+                                   discord_on_channel callback);
 /** @brief Triggers when some channel pins are updated */
-void discord_set_on_channel_pins_update(struct discord *client,
-                                        discord_on_channel_pins_update cb);
+void discord_set_on_channel_pins_update(
+  struct discord *client, discord_on_channel_pins_update callback);
 /** @brief Triggers when a thread is created */
 void discord_set_on_thread_create(struct discord *client,
-                                  discord_on_channel cb);
+                                  discord_on_channel callback);
 /** @brief Triggers when a thread is updated */
 void discord_set_on_thread_update(struct discord *client,
-                                  discord_on_channel cb);
+                                  discord_on_channel callback);
 /** @brief Triggers when a thread is deleted */
 void discord_set_on_thread_delete(struct discord *client,
-                                  discord_on_channel cb);
+                                  discord_on_channel callback);
 /** @brief Triggers when guild information becomes available */
-void discord_set_on_guild_create(struct discord *client, discord_on_guild cb);
+void discord_set_on_guild_create(struct discord *client,
+                                 discord_on_guild callback);
 /** @brief Triggers when a guild's information becomes updated */
-void discord_set_on_guild_update(struct discord *client, discord_on_guild cb);
+void discord_set_on_guild_update(struct discord *client,
+                                 discord_on_guild callback);
 /** @brief Triggers when removed from a guild */
 void discord_set_on_guild_delete(struct discord *client,
-                                 discord_on_guild_delete cb);
+                                 discord_on_guild_delete callback);
 /** @brief Triggers when a guild role is created */
 void discord_set_on_guild_role_create(struct discord *client,
-                                      discord_on_guild_role cb);
+                                      discord_on_guild_role callback);
 /** @brief Triggers when a guild role is updated */
 void discord_set_on_guild_role_update(struct discord *client,
-                                      discord_on_guild_role cb);
+                                      discord_on_guild_role callback);
 /** @brief Triggers when a guild role is deleted */
 void discord_set_on_guild_role_delete(struct discord *client,
-                                      discord_on_guild_role_delete cb);
+                                      discord_on_guild_role_delete callback);
 /** @brief Triggers when a guild member is added */
 void discord_set_on_guild_member_add(struct discord *client,
-                                     discord_on_guild_member cb);
+                                     discord_on_guild_member callback);
 /** @brief Triggers when a guild member is updated */
 void discord_set_on_guild_member_update(struct discord *client,
-                                        discord_on_guild_member cb);
+                                        discord_on_guild_member callback);
 /** @brief Triggers when a guild member is removed */
-void discord_set_on_guild_member_remove(struct discord *client,
-                                        discord_on_guild_member_remove cb);
+void discord_set_on_guild_member_remove(
+  struct discord *client, discord_on_guild_member_remove callback);
 /** @brief Triggers when a guild ban is added */
 void discord_set_on_guild_ban_add(struct discord *client,
-                                  discord_on_guild_ban cb);
+                                  discord_on_guild_ban callback);
 /** @brief Triggers when a guild ban is removed */
 void discord_set_on_guild_ban_remove(struct discord *client,
-                                     discord_on_guild_ban cb);
+                                     discord_on_guild_ban callback);
 /** @brief Triggers when a interaction is created */
 void discord_set_on_interaction_create(struct discord *client,
-                                       discord_on_interaction cb);
+                                       discord_on_interaction callback);
 /** @brief Triggers when a message is created */
 void discord_set_on_message_create(struct discord *client,
-                                   discord_on_message cb);
+                                   discord_on_message callback);
 /** @brief Triggers when a message is updated */
 void discord_set_on_message_update(struct discord *client,
-                                   discord_on_message cb);
+                                   discord_on_message callback);
 /** @brief Triggers when a message is deleted */
 void discord_set_on_message_delete(struct discord *client,
-                                   discord_on_message_delete cb);
+                                   discord_on_message_delete callback);
 /** @brief Triggers when a bulk of messages are deleted */
-void discord_set_on_message_delete_bulk(struct discord *client,
-                                        discord_on_message_delete_bulk cb);
+void discord_set_on_message_delete_bulk(
+  struct discord *client, discord_on_message_delete_bulk callback);
 /** @brief Triggers when a message reaction is added */
-void discord_set_on_message_reaction_add(struct discord *client,
-                                         discord_on_message_reaction_add cb);
+void discord_set_on_message_reaction_add(
+  struct discord *client, discord_on_message_reaction_add callback);
 /** @brief Triggers when a message reaction is removed */
 void discord_set_on_message_reaction_remove(
-  struct discord *client, discord_on_message_reaction_remove cb);
+  struct discord *client, discord_on_message_reaction_remove callback);
 /** @brief Triggers when all reaction from some message is removed
  */
 void discord_set_on_message_reaction_remove_all(
-  struct discord *client, discord_on_message_reaction_remove_all cb);
+  struct discord *client, discord_on_message_reaction_remove_all callback);
 /** @brief Triggers when all instances of a particular reaction from some
  *        message is removed */
 void discord_set_on_message_reaction_remove_emoji(
-  struct discord *client, discord_on_message_reaction_remove_emoji cb);
+  struct discord *client, discord_on_message_reaction_remove_emoji callback);
 /** @brief Triggers when a voice state is updated */
 void discord_set_on_voice_state_update(struct discord *client,
-                                       discord_on_voice_state_update cb);
+                                       discord_on_voice_state_update callback);
 /** @brief Triggers when a voice server is updated */
-void discord_set_on_voice_server_update(struct discord *client,
-                                        discord_on_voice_server_update cb);
+void discord_set_on_voice_server_update(
+  struct discord *client, discord_on_voice_server_update callback);
 
 /** @} */
 
