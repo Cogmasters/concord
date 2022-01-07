@@ -140,7 +140,7 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
 ## Installing Concord
 
-Orca can be installed in case developing inside of `my_bot/` doesn't suit your needs:
+Concord can be installed in case developing inside of `my_bot/` doesn't suit your needs:
 ```bash
 $ sudo make install
 ```

@@ -71,11 +71,11 @@ starters, we will want to edit the ``github.h`` header file so that others can u
 our code.
 
 ```c
-ORCAcode github_get_repository_topics(struct github *client, char* owner, char* repository);
+CCORDcode github_get_repository_topics(struct github *client, char* owner, char* repository);
 ```
 
-Here, we define a function that returns an ``ORCACode``, and takes a structure named ``github``.
-``ORCAcode`` is an integer that represents an error code from the request. The ``github``
+Here, we define a function that returns an ``CCORDCode``, and takes a structure named ``github``.
+``CCORDcode`` is an integer that represents an error code from the request. The ``github``
 structure, called the ``client`` in this function, acts as a storage device for information
 that is required for sending requests.
 
@@ -83,15 +83,15 @@ Once this is added into ``github.h``, we can begin writing the function code tha
 make it work underneath. Here is a skeleton of the function:
 
 ```c
-ORCAcode
+CCORDcode
 github_get_repository_topics(struct github *client,
                              char *owner,
                              char *repository)
 {
-    ORCA_EXPECT(client, owner != NULL, ORCA_BAD_PARAMETER);
-    ORCA_EXPECT(client, repository != NULL, ORCA_BAD_PARAMETER);
+    CCORD_EXPECT(client, owner != NULL, CCORD_BAD_PARAMETER);
+    CCORD_EXPECT(client, repository != NULL, CCORD_BAD_PARAMETER);
 
-    return ORCA_OK;
+    return CCORD_OK;
 }
 ```
 
@@ -102,10 +102,10 @@ critical in debugging.
 Next, we verify that the ``owner`` and ``repository`` strings are provided. These are required
 for extracting topics from the correct repository, and so we must not allow the function to
 run unless both are provided. Depending on the nature of the error, it may be desirable to
-return something other than ``ORCA_MISSING_PARAMETER``. However, for most purposes, this is
+return something other than ``CCORD_MISSING_PARAMETER``. However, for most purposes, this is
 fine. If there is a need for another error code, they can be found or added at ``common/types.h``.
 
-When the function ends, we return ``ORCA_OK`` to signal that 'everything went well'.
+When the function ends, we return ``CCORD_OK`` to signal that 'everything went well'.
 
 # Extending our function
 Now that the base skeleton is complete, we can continue on in finishing the function.

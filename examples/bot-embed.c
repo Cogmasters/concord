@@ -8,7 +8,7 @@
 char JSON_STRING[] =
   "{\n"
   "  \"title\": \"Concord\",\n"
-  "  \"description\": \"Multi-REST Api library\",\n"
+  "  \"description\": \"Discord API library\",\n"
   "  \"url\": \"https://github.com/Cogmasters/concord\",\n"
   "  \"color\": 3447003,\n"
   "  \"footer\": {\n"
@@ -29,7 +29,7 @@ char JSON_STRING[] =
   "    {\n"
   "      \"name\":\"Want to learn more?\", \n"
   "      \"value\":\"Read our "
-  "[documentation](https://cee-studio.github.io/orca/"
+  "[documentation](https://Cogmasters.github.io/concord/"
   "discord_api.html#c.discord_embed)!\"\n"
   "    },\n"
   "    {\n"
@@ -76,8 +76,8 @@ void on_static(struct discord *client, const struct discord_message *msg)
 
   struct discord_embed embed = {
     .title = "Concord",
-    .description = "Multi-REST Api library",
-    .url = "https://github.com/cee-studio/orca",
+    .description = "Discord API library",
+    .url = "https://github.com/Cogmasters/concord",
     .color = 3447003,
     .timestamp = discord_timestamp(client),
     .footer =
@@ -87,7 +87,7 @@ void on_static(struct discord *client, const struct discord_message *msg)
       },
     .image =
       &(struct discord_embed_image){
-        .url = "https://github.com/cee-studio/orca-docs/blob/master/docs/"
+        .url = "https://github.com/Cogmasters/concord-docs/blob/master/docs/"
                "source/images/social-preview.png?raw=true",
       },
     .author =
@@ -101,7 +101,7 @@ void on_static(struct discord *client, const struct discord_message *msg)
         &(struct discord_embed_field){
           .name = "Want to learn more?",
           .value = "Read our "
-                   "[documentation](https://cee-studio.github.io/orca/apis/"
+                   "[documentation](https://Cogmasters.github.io/concord/apis/"
                    "discord.html#c.discord_embed)!",
         },
         &(struct discord_embed_field){
@@ -124,7 +124,7 @@ void on_builder(struct discord *client, const struct discord_message *msg)
                                  .timestamp = discord_timestamp(client) };
 
   discord_embed_set_title(&embed, "Concord");
-  discord_embed_set_description(&embed, "Multi-REST Api library");
+  discord_embed_set_description(&embed, "Discord API library");
   discord_embed_set_url(&embed, "https://github.com/Cogmasters/concord");
 
   discord_embed_set_footer(&embed, "github.com/Cogmasters/concord",
@@ -139,7 +139,7 @@ void on_builder(struct discord *client, const struct discord_message *msg)
                            "https://cee.dev/static/images/cee.png", NULL);
   discord_embed_add_field(&embed, "Want to learn more?",
                           "Read our "
-                          "[documentation](https://cee-studio.github.io/orca/"
+                          "[documentation](https://Cogmasters.github.io/concord/"
                           "apis/discord.html#c.discord_embed)!",
                           false);
   discord_embed_add_field(
