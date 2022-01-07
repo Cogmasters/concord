@@ -13,7 +13,7 @@ json-actor-boxed.h
 json-actor.c
 json-actor.h
 json-string.c
-json-struct.c
+specs-gen.c
 log.c
 logconf.c
 logconf.h
