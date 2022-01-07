@@ -23,22 +23,16 @@ char JSON_STRING[] =
   "  \"author\": {\n"
   "    \"name\": \"Cogmasters\",\n"
   "    \"url\": \"https://github.com/Cogmasters\",\n"
-  "    \"icon_url\": \"https://cee.dev/static/images/cee.png\"\n"
   "  },\n"
   "  \"fields\": [\n"
   "    {\n"
   "      \"name\":\"Want to learn more?\", \n"
   "      \"value\":\"Read our "
-  "[documentation](https://Cogmasters.github.io/concord/"
-  "discord_api.html#c.discord_embed)!\"\n"
-  "    },\n"
-  "    {\n"
-  "      \"name\":\"Need help troubleshooting?\", \n"
-  "      \"value\":\"Debug with [Saiph-C](https://www.cee.studio/)\"\n"
+  "[documentation](https://cogmasters.github.io/concord/)!\"\n"
   "    },\n"
   "    {\n"
   "      \"name\":\"Looking for support?\", \n"
-  "      \"value\":\"Join our server [here](https://discord.gg/nBUqrWf)!\"\n"
+  "      \"value\":\"Join our server [here](https://discord.gg/Y7Xa6MA82v)!\"\n"
   "    }\n"
   "  ]\n"
   "}";
@@ -94,15 +88,13 @@ void on_static(struct discord *client, const struct discord_message *msg)
       &(struct discord_embed_author){
         .name = "Cogmasters",
         .url = "https://github.com/Cogmasters",
-        .icon_url = "https://cee.dev/static/images/cee.png",
       },
     .fields =
       (struct discord_embed_field *[]){
         &(struct discord_embed_field){
           .name = "Want to learn more?",
           .value = "Read our "
-                   "[documentation](https://Cogmasters.github.io/concord/apis/"
-                   "discord.html#c.discord_embed)!",
+                   "[documentation](https://cogmasters.github.io/concord/)!",
         },
         &(struct discord_embed_field){
           .name = "Looking for support?",
@@ -136,11 +128,10 @@ void on_builder(struct discord *client, const struct discord_message *msg)
     NULL, 0, 0);
   discord_embed_set_author(&embed, "Cogmasters",
                            "https://github.com/Cogmasters",
-                           "https://cee.dev/static/images/cee.png", NULL);
+                           NULL, NULL);
   discord_embed_add_field(&embed, "Want to learn more?",
                           "Read our "
-                          "[documentation](https://Cogmasters.github.io/concord/"
-                          "apis/discord.html#c.discord_embed)!",
+                          "[documentation](https://cogmasters.github.io/concord/)!",
                           false);
   discord_embed_add_field(
     &embed, "Looking for support?",

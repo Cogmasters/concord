@@ -34,7 +34,7 @@ Please try to get the latest available sources to make your patches against. It 
 
 ### Documentation
 
-Writing docs is dead boring and one of the big problems with many open source projects. But someone's gotta do it! Please get yourself familiarized with [Doxygen syntax](https://www.doxygen.nl/manual/docblocks.html) and use the surrounding code as a guide when documenting your patch. Once the patch is approved a automated [workflow](.github/workflows/gh_pages.yml) will automatically updated our documentation with your changes. If you wish to patch how the documentation is generated and rendered, please head to [concord-docs](https://github.com/cee-studio/concord-docs) and submit your changes there.
+Writing docs is dead boring and one of the big problems with many open source projects. But someone's gotta do it! Please get yourself familiarized with [Doxygen syntax](https://www.doxygen.nl/manual/docblocks.html) and use the surrounding code as a guide when documenting your patch. Once the patch is approved a automated [workflow](.github/workflows/gh_pages.yml) will automatically updated our documentation with your changes. If you wish to patch how the documentation is generated and rendered, please head to [concord-docs](https://github.com/Cogmasters/concord-docs) and submit your changes there.
 
 ### Test Cases
 
@@ -81,50 +81,3 @@ References:
 - https://www.conventionalcommits.org/
 - https://seesparkbox.com/foundry/semantic_commit_messages
 - http://karma-runner.github.io/1.0/dev/git-commit-msg.html
-
-### Easy Pull Request
-
-If you have problems to submit clean pull requests without introducing merge commits, 
-you can use this method, otherwise please use your git commands. 
-
-This section explains how to submit changes and pull requests the easy
-   and cleanest way without causing any merge conflicts.
-
-#### Setup  .cee-contributor
-1. fork this repo to your personal account. Please DO NOT submit any changes to
-this fork from your git command line
-
-2. run the following command
-```
-git clone https://github.com/cee-studio/concord.git
-cd concord
-cp config.json .cee-contributor
-```
-It is important that you clone from this repo, NOT from your fork.
-
-
-3. add replace "YOUR-GITHUB-USERNAME" and "YOUR-PERSONAL-ACCESS-TOKEN"
-   with your github username and your personal access token (which can
-   be obtained thru this
-   [link](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token))
-
-#### Build test-git2.exe
-1. run
-```
-cd concord
-make test
-```
-Copy test-git2 to your bin folder and make that folder searchable in PATH
-
-
-#### Usage
-Run the following command that will automatically do the following
-1. sync up your personal fork
-2. create a branch in your fork
-3. submit a commit to the branch
-4. create a pull request
-
-Assume your changes are in the concord folder, you can run the following commands:
-```
-./test/test-git2 -m "you commit comments"  files
-```

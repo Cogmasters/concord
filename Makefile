@@ -5,15 +5,16 @@ SRC_DIR       := src
 INCLUDE_DIR   := include
 OBJDIR        := obj
 LIBDIR        := lib
-
+DOCS_DIR      := docs
 SPECS_DIR     := specs
-SPECSCODE_DIR := $(SRC_DIR)/specs-code
+C_SPECS_DIR   := $(SRC_DIR)/specs-code
+H_SPECS_DIR   := $(DOCS_DIR)/specs-headers
 COGUTILS_DIR  := cog-utils
 COMMON_DIR    := common
 THIRDP_DIR    := $(COMMON_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
-DOCS_DIR      := concord-docs
+CCORDDOCS_DIR := concord-docs
 
 COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
                 $(COGUTILS_DIR)/json-actor.c       \
@@ -32,7 +33,7 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-DISCORD_SRC  := $(wildcard $(SRC_DIR)/*.c $(SPECSCODE_DIR)/*.c)
+DISCORD_SRC  := $(wildcard $(SRC_DIR)/*.c $(C_SPECS_DIR)/*.c)
 
 SRC  := $(COGUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
@@ -53,15 +54,15 @@ $(OBJDIR)/$(THIRDP_DIR)/%.o : $(THIRDP_DIR)/%.c
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
 
-all: | $(SPECSCODE_DIR)
+all: | $(C_SPECS_DIR)
 	$(MAKE) discord
 
 specs_gen: | $(COGUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
-	@ mkdir -p $(SPECSCODE_DIR)
-	mv $(SPECS_DIR)/specs-code/discord/*.c $(SPECSCODE_DIR)
-	mv $(SPECS_DIR)/specs-code/discord/*.h $(INCLUDE_DIR)
+	@ mkdir -p $(C_SPECS_DIR)
+	mv $(SPECS_DIR)/specs-code/discord/*.c $(C_SPECS_DIR)
+	mv $(SPECS_DIR)/specs-code/discord/one-specs.h $(INCLUDE_DIR)
 
 cog_utils:
 	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
@@ -72,15 +73,15 @@ test: all
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-discord: $(LIB) | $(SPECSCODE_DIR)
+discord: $(LIB) | $(C_SPECS_DIR)
 
 # API libraries compilation
 $(LIB): $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
 $(LIBDIR):
-	@ mkdir -p $(LIBDIR)
-$(SPECSCODE_DIR):
+	@ mkdir -p $@
+$(C_SPECS_DIR):
 	@ $(MAKE) specs_gen
 $(COGUTILS_DIR):
 	@ $(MAKE) cog_utils
@@ -88,9 +89,9 @@ $(COGUTILS_DIR):
 $(OBJS): | $(OBJDIR)
 
 $(OBJDIR):
-	@ mkdir -p $(OBJDIR)/$(THIRDP_DIR)                                 \
-	           $(OBJDIR)/$(COGUTILS_DIR)                               \
-	           $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
+	@ mkdir -p $@/$(THIRDP_DIR)                                 \
+	           $@/$(COGUTILS_DIR)                               \
+	           $(addprefix $@/, $(wildcard $(C_SPECS_DIR)/*))
 
 install:
 	@ mkdir -p $(PREFIX)/lib/
@@ -106,7 +107,7 @@ echo:
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
-	@ echo -e 'SPECS DIRS: $(wildcard $(SPECSCODE_DIR)/*)\n'
+	@ echo -e 'SPECS DIRS: $(wildcard $(C_SPECS_DIR)/*)\n'
 	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
 	@ echo -e 'COMMON_SRC: $(COMMON_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
@@ -120,16 +121,19 @@ clean:
 purge: clean
 	rm -rf $(LIBDIR)
 	rm -rf $(COGUTILS_DIR)
-	rm -rf $(SPECSCODE_DIR)
+	rm -rf $(C_SPECS_DIR)
 
 # prepare files for generating documentation at .github/workflows/gh_pages.yml
-docs: $(COGUTILS_DIR) | $(DOCS_DIR)
+docs: $(COGUTILS_DIR) | $(H_SPECS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
-	@ mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
+	@ mv $(SPECS_DIR)/specs-code/discord/*.h $(H_SPECS_DIR)
 
-$(DOCS_DIR):
-	git clone https://github.com/cogmasters/concord-docs $(DOCS_DIR)
-	cp $(DOCS_DIR)/Doxyfile Doxyfile
+$(H_SPECS_DIR): | $(C_SPECS_DIR)
+	@ mkdir -p $@
+
+$(CCORDDOCS_DIR):
+	git clone https://github.com/cogmasters/concord-docs $@
+	cp $@/Doxyfile Doxyfile
 
 .PHONY: all test examples install echo clean purge docs
