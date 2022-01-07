@@ -11,7 +11,7 @@ extern "C" {
 
 #include <curl/curl.h>
 
-#include "common.h" /* ORCAcode */
+#include "common.h" /* CCORDcode */
 #include "logconf.h" /* logging facilities */
 
 /**
@@ -29,7 +29,7 @@ struct ws_info {
   /** logging info */
   struct loginfo loginfo;
   /** how the transfer went @todo implement */
-  ORCAcode code;
+  CCORDcode code;
 };
 
 /**
@@ -169,11 +169,14 @@ struct ws_attr {
  * @brief Create a new (CURL-based) WebSockets handle
  *
  * @param cbs set of functions to call back when server report events.
- * @param mhandle user-owned curl_multi handle for performing non-blocking transfers
+ * @param mhandle user-owned curl_multi handle for performing non-blocking
+ * transfers
  * @param attr optional attributes to override defaults
  * @return newly created WebSockets handle, free with ws_cleanup()
  */
-struct websockets *ws_init(struct ws_callbacks *cbs, CURLM *mhandle, struct ws_attr *attr);
+struct websockets *ws_init(struct ws_callbacks *cbs,
+                           CURLM *mhandle,
+                           struct ws_attr *attr);
 
 /**
  * @brief Free a WebSockets handle created with ws_init()

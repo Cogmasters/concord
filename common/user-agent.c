@@ -352,7 +352,7 @@ ua_conn_set_mime(struct ua_conn *conn,
 static struct ua_conn *
 _ua_conn_init(struct user_agent *ua)
 {
-  static const char *user_agent = "Orca (https://github.com/cee-studio/orca)";
+  static const char *user_agent = "Cogmasters (https://github.com/Cogmasters)";
   struct ua_conn *new_conn = calloc(1, sizeof(struct ua_conn));
   CURL *new_ehandle = curl_easy_init();
 
@@ -665,7 +665,7 @@ ua_conn_setup(struct ua_conn *conn, struct ua_conn_attr *attr)
 }
 
 /* get request results */
-ORCAcode
+CCORDcode
 ua_info_extract(struct ua_conn *conn, struct ua_info *info)
 {
   _ua_info_populate(info, conn);
@@ -678,7 +678,7 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
       info->httpcode, http_code_print(info->httpcode),
       http_reason_print(info->httpcode), info->loginfo.counter);
 
-    info->code = ORCA_HTTP_CODE;
+    info->code = CCORD_HTTP_CODE;
   }
   else if (info->httpcode >= 400) {
     logconf_error(
@@ -687,7 +687,7 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
       info->httpcode, http_code_print(info->httpcode),
       http_reason_print(info->httpcode), info->loginfo.counter);
 
-    info->code = ORCA_HTTP_CODE;
+    info->code = CCORD_HTTP_CODE;
   }
   else if (info->httpcode >= 300) {
     logconf_warn(
@@ -696,7 +696,7 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
       info->httpcode, http_code_print(info->httpcode),
       http_reason_print(info->httpcode), info->loginfo.counter);
 
-    info->code = ORCA_HTTP_CODE;
+    info->code = CCORD_HTTP_CODE;
   }
   else if (info->httpcode >= 200) {
     logconf_info(
@@ -705,7 +705,7 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
       info->httpcode, http_code_print(info->httpcode),
       http_reason_print(info->httpcode), info->loginfo.counter);
 
-    info->code = ORCA_OK;
+    info->code = CCORD_OK;
   }
   else if (info->httpcode >= 100) {
     logconf_info(&conn->ua->conf,
@@ -713,18 +713,18 @@ ua_info_extract(struct ua_conn *conn, struct ua_info *info)
                  info->httpcode, http_code_print(info->httpcode),
                  http_reason_print(info->httpcode), info->loginfo.counter);
 
-    info->code = ORCA_HTTP_CODE;
+    info->code = CCORD_HTTP_CODE;
   }
   else if (info->httpcode > 0) {
     logconf_error(&conn->ua->conf, "Unusual HTTP response code: %d",
                   info->httpcode);
 
-    info->code = ORCA_UNUSUAL_HTTP_CODE;
+    info->code = CCORD_UNUSUAL_HTTP_CODE;
   }
   else {
     logconf_error(&conn->ua->conf, "No http response received by libcurl");
 
-    info->code = ORCA_CURL_NO_RESPONSE;
+    info->code = CCORD_CURL_NO_RESPONSE;
   }
 
   return info->code;
@@ -736,7 +736,7 @@ ua_conn_get_easy_handle(struct ua_conn *conn)
   return conn->ehandle;
 }
 
-ORCAcode
+CCORDcode
 ua_conn_easy_perform(struct ua_conn *conn)
 {
   CURLcode ecode;
@@ -744,26 +744,26 @@ ua_conn_easy_perform(struct ua_conn *conn)
   ecode = curl_easy_perform(conn->ehandle);
   if (ecode != CURLE_OK) {
     CURLE_LOG(conn, ecode);
-    return ORCA_CURLE_INTERNAL;
+    return CCORD_CURLE_INTERNAL;
   }
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
 /* template function for performing blocking requests */
-ORCAcode
+CCORDcode
 ua_easy_run(struct user_agent *ua,
             struct ua_info *info,
             struct ua_resp_handle *handle,
             struct ua_conn_attr *attr)
 {
   struct ua_conn *conn = ua_conn_start(ua);
-  ORCAcode code;
+  CCORDcode code;
 
   /* populate conn with parameters */
   if (attr) ua_conn_setup(conn, attr);
 
   /* perform blocking request, and check results */
-  if (ORCA_OK == (code = ua_conn_easy_perform(conn))) {
+  if (CCORD_OK == (code = ua_conn_easy_perform(conn))) {
     struct ua_info _info = { 0 };
 
     code = ua_info_extract(conn, &_info);

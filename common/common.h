@@ -9,7 +9,7 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/** @defgroup OrcaTypes
+/** @defgroup ConcordTypes
  *  @brief Commonly used datatypes across various APIs
  *
  *  @note these datatypes are typedefs of C primitives,
@@ -44,41 +44,41 @@ typedef uint64_t u64_bitmask_t;
  */
 typedef char json_char_t;
 
-/** @} OrcaTypes */
+/** @} ConcordTypes */
 
-/** @defgroup OrcaCodes
- *  @brief Orca error values
+/** @defgroup ConcordCodes
+ *  @brief Concord error values
  *  @{ */
 /** the error code datatype */
-typedef int ORCAcode;
+typedef int CCORDcode;
 /** request was a success */
-#define ORCA_OK 0
+#define CCORD_OK 0
 /** request wasn't succesful */
-#define ORCA_HTTP_CODE -1
+#define CCORD_HTTP_CODE -1
 /** no response came through from curl */
-#define ORCA_CURL_NO_RESPONSE -2
+#define CCORD_CURL_NO_RESPONSE -2
 /** received a non-standard http code */
-#define ORCA_UNUSUAL_HTTP_CODE -3
+#define CCORD_UNUSUAL_HTTP_CODE -3
 /** bad value for parameter */
-#define ORCA_BAD_PARAMETER -4
+#define CCORD_BAD_PARAMETER -4
 /** internal failure when encoding or decoding JSON */
-#define ORCA_BAD_JSON -5
+#define CCORD_BAD_JSON -5
 /** curl's easy handle internal error */
-#define ORCA_CURLE_INTERNAL -6
+#define CCORD_CURLE_INTERNAL -6
 /** curl's multi handle internal error */
-#define ORCA_CURLM_INTERNAL -7
+#define CCORD_CURLM_INTERNAL -7
 /** attempt to initialize globals more than once */
-#define ORCA_GLOBAL_INIT -8
-/** @} OrcaCodes */
+#define CCORD_GLOBAL_INIT -8
+/** @} ConcordCodes */
 
-/** @defgroup OrcaLimits
+/** @defgroup ConcordLimits
  *  @brief Limits discovered across the web
  *  @{ */
-#define ORCA_LIMITS_SHA256 1024 + 1
-#define ORCA_LIMITS_LOCALE 16 + 1
-#define ORCA_LIMITS_EMAIL  254 + 1
-#define ORCA_LIMITS_REGION 16 + 1
-/** @} OrcaLimits */
+#define CCORD_LIMITS_SHA256 1024 + 1
+#define CCORD_LIMITS_LOCALE 16 + 1
+#define CCORD_LIMITS_EMAIL  254 + 1
+#define CCORD_LIMITS_REGION 16 + 1
+/** @} ConcordLimits */
 
 /**
  * @brief Get container `type` from a field `ptr`
@@ -95,10 +95,10 @@ typedef int ORCAcode;
  *
  * @param expect the expected outcome
  * @param client the discord client
- * @param error return ORCAcode error
+ * @param error return CCORDcode error
  * @param reason for return
  */
-#define ORCA_EXPECT(client, expect, code, reason)                             \
+#define CCORD_EXPECT(client, expect, code, reason)                            \
   do {                                                                        \
     if (!(expect)) {                                                          \
       logconf_error(&(client)->conf, "Expected: " #expect ": " reason);       \
@@ -107,22 +107,22 @@ typedef int ORCAcode;
   } while (0)
 
 /**
- * @brief Return a generic meaning for ORCAcode
+ * @brief Return a generic meaning for CCORDcode
  *
- * @param code the ORCAcode to be explained
+ * @param code the CCORDcode to be explained
  * @return a string containing the code meaning
  */
-const char *orca_strerror(ORCAcode code);
+const char *ccord_strerror(CCORDcode code);
 
 /**
  * @brief Initialize global shared-resources not API-specific
  *
- * @return ORCA_OK on success, ORCA_GLOBAL_INIT on error
+ * @return CCORD_OK on success, CCORD_GLOBAL_INIT on error
  */
-ORCAcode orca_global_init();
+CCORDcode ccord_global_init();
 
 /** @brief Cleanup global shared-resources */
-void orca_global_cleanup();
+void ccord_global_cleanup();
 
 #ifdef __cplusplus
 }

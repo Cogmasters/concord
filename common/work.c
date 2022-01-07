@@ -23,7 +23,7 @@ work_global_init(void)
   if (once) return 1;
 
   /* get threadpool thread amount */
-  val = getenv("ORCA_THREADPOOL_SIZE");
+  val = getenv("CCORD_THREADPOOL_SIZE");
   if (val != NULL) {
     nthreads = (int)strtol(val, &p_end, 10);
   }
@@ -31,7 +31,7 @@ work_global_init(void)
     nthreads = 2;
   }
   /* get threadpool queue size */
-  val = getenv("ORCA_THREADPOOL_QUEUE_SIZE");
+  val = getenv("CCORD_THREADPOOL_QUEUE_SIZE");
   if (val != NULL) {
     queue_size = (int)strtol(val, &p_end, 10);
   }

@@ -115,22 +115,22 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
   free(adapter->async.idleq);
 }
 
-static ORCAcode _discord_adapter_run_sync(struct discord_adapter *adapter,
-                                          struct discord_request_attr *attr,
-                                          struct sized_buffer *body,
-                                          enum http_method method,
-                                          char endpoint[DISCORD_ENDPT_LEN],
-                                          char route[DISCORD_ROUTE_LEN]);
-
-static ORCAcode _discord_adapter_run_async(struct discord_adapter *adapter,
+static CCORDcode _discord_adapter_run_sync(struct discord_adapter *adapter,
                                            struct discord_request_attr *attr,
                                            struct sized_buffer *body,
                                            enum http_method method,
                                            char endpoint[DISCORD_ENDPT_LEN],
                                            char route[DISCORD_ROUTE_LEN]);
 
+static CCORDcode _discord_adapter_run_async(struct discord_adapter *adapter,
+                                            struct discord_request_attr *attr,
+                                            struct sized_buffer *body,
+                                            enum http_method method,
+                                            char endpoint[DISCORD_ENDPT_LEN],
+                                            char route[DISCORD_ROUTE_LEN]);
+
 /* template function for performing requests */
-ORCAcode
+CCORDcode
 discord_adapter_run(struct discord_adapter *adapter,
                     struct discord_request_attr *attr,
                     struct sized_buffer *body,
@@ -244,8 +244,8 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
                           struct ua_info *info,
                           int64_t *wait_ms)
 {
-  if (info->code != ORCA_HTTP_CODE) {
-    /** ORCA_OK or internal error */
+  if (info->code != CCORD_HTTP_CODE) {
+    /** CCORD_OK or internal error */
     return false;
   }
 
@@ -253,12 +253,12 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
   case HTTP_FORBIDDEN:
   case HTTP_NOT_FOUND:
   case HTTP_BAD_REQUEST:
-    info->code = ORCA_DISCORD_JSON_CODE;
+    info->code = CCORD_DISCORD_JSON_CODE;
     return false;
   case HTTP_UNAUTHORIZED:
     logconf_fatal(&adapter->conf,
                   "UNAUTHORIZED: Please provide a valid authentication token");
-    info->code = ORCA_DISCORD_BAD_AUTH;
+    info->code = CCORD_DISCORD_BAD_AUTH;
     return false;
   case HTTP_METHOD_NOT_ALLOWED:
     logconf_fatal(&adapter->conf,
@@ -307,7 +307,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
 /* SYNCHRONOUS REQUEST LOGIC */
 
 /* perform a blocking request */
-static ORCAcode
+static CCORDcode
 _discord_adapter_run_sync(struct discord_adapter *adapter,
                           struct discord_request_attr *attr,
                           struct sized_buffer *body,
@@ -322,7 +322,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
   struct ua_conn *conn;
   int retry_attempt = 0;
   bool retry;
-  ORCAcode code;
+  CCORDcode code;
 
   b = discord_bucket_get(adapter, route);
   conn = ua_conn_start(adapter->ua);
@@ -355,7 +355,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
     /* perform blocking request, and check results */
     switch (code = ua_conn_easy_perform(conn)) {
-    case ORCA_OK: {
+    case CCORD_OK: {
       struct discord *client = CLIENT(adapter, adapter);
       struct ua_info info = { 0 };
       struct sized_buffer body;
@@ -364,7 +364,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
 
       body = ua_info_get_body(&info);
-      if (info.code != ORCA_OK) {
+      if (info.code != CCORD_OK) {
         _discord_adapter_set_errbuf(adapter, &body);
       }
       else if (attr->ret) {
@@ -389,12 +389,12 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
       ua_info_cleanup(&info);
     } break;
-    case ORCA_CURLE_INTERNAL:
+    case CCORD_CURLE_INTERNAL:
       logconf_error(&adapter->conf, "Curl internal error, will retry again");
       retry = true;
       break;
     default:
-      logconf_error(&adapter->conf, "ORCA code: %d", code);
+      logconf_error(&adapter->conf, "CCORD code: %d", code);
       retry = false;
       break;
     }
@@ -562,7 +562,7 @@ _discord_context_timeout(struct discord_adapter *adapter,
 }
 
 /* enqueue a request to be executed asynchronously */
-static ORCAcode
+static CCORDcode
 _discord_adapter_run_async(struct discord_adapter *adapter,
                            struct discord_request_attr *attr,
                            struct sized_buffer *body,
@@ -595,11 +595,11 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
   /* reset for next call */
   memset(&adapter->async.attr, 0, sizeof(struct discord_async_attr));
 
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
 /* add a request to libcurl's multi handle */
-static ORCAcode
+static CCORDcode
 _discord_adapter_send(struct discord_adapter *adapter,
                       struct discord_context *cxt)
 {
@@ -632,11 +632,11 @@ _discord_adapter_send(struct discord_adapter *adapter,
 
   QUEUE_INSERT_TAIL(&cxt->bucket->busyq, &cxt->entry);
 
-  return mcode ? ORCA_CURLM_INTERNAL : ORCA_OK;
+  return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
 }
 
 /* check and enqueue requests that have been timed out */
-static ORCAcode
+static CCORDcode
 _discord_adapter_check_timeouts(struct discord_adapter *adapter)
 {
   struct discord_context *cxt;
@@ -658,11 +658,11 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
     QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
   }
 
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
 /* send a standalone request to update stale bucket values */
-static ORCAcode
+static CCORDcode
 _discord_adapter_send_single(struct discord_adapter *adapter,
                              struct discord_bucket *b)
 {
@@ -679,12 +679,12 @@ _discord_adapter_send_single(struct discord_adapter *adapter,
 }
 
 /* send a batch of requests */
-static ORCAcode
+static CCORDcode
 _discord_adapter_send_batch(struct discord_adapter *adapter,
                             struct discord_bucket *b)
 {
   struct discord_context *cxt;
-  ORCAcode code = ORCA_OK;
+  CCORDcode code = CCORD_OK;
   QUEUE *q;
   long i;
 
@@ -701,13 +701,13 @@ _discord_adapter_send_batch(struct discord_adapter *adapter,
     if (_discord_context_timeout(adapter, cxt)) break;
 
     code = _discord_adapter_send(adapter, cxt);
-    if (code != ORCA_OK) break;
+    if (code != CCORD_OK) break;
   }
 
   return code;
 }
 
-static ORCAcode
+static CCORDcode
 _discord_adapter_check_pending(struct discord_adapter *adapter)
 {
   struct discord_bucket *b;
@@ -730,17 +730,17 @@ _discord_adapter_check_pending(struct discord_adapter *adapter)
     _discord_adapter_send_batch(adapter, b);
   }
 
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
-static ORCAcode
+static CCORDcode
 _discord_adapter_check_action(struct discord_adapter *adapter,
                               struct CURLMsg *msg)
 {
   struct discord *client = CLIENT(adapter, adapter);
   struct discord_context *cxt;
   int64_t wait_ms = 0LL;
-  ORCAcode code;
+  CCORDcode code;
   bool retry;
 
   curl_easy_getinfo(msg->easy_handle, CURLINFO_PRIVATE, &cxt);
@@ -754,7 +754,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     retry = _discord_adapter_get_info(adapter, &info, &wait_ms);
 
     body = ua_info_get_body(&info);
-    if (info.code != ORCA_OK) {
+    if (info.code != CCORD_OK) {
       _discord_adapter_set_errbuf(adapter, &body);
 
       if (cxt->fail) {
@@ -790,14 +790,14 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     logconf_warn(&adapter->conf, "Read error, will retry again");
     retry = true;
 
-    code = ORCA_CURLE_INTERNAL;
+    code = CCORD_CURLE_INTERNAL;
 
     break;
   default:
     logconf_error(&adapter->conf, "(CURLE code: %d)", msg->data.result);
     retry = false;
 
-    code = ORCA_CURLE_INTERNAL;
+    code = CCORD_CURLE_INTERNAL;
 
     if (cxt->fail) {
       struct discord_async_err err = { code, cxt->udata.data };
@@ -834,26 +834,26 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_adapter_perform(struct discord_adapter *adapter)
 {
   int is_running = 0;
   CURLMcode mcode;
-  ORCAcode code;
+  CCORDcode code;
   int numfds = 0;
 
   code = _discord_adapter_check_timeouts(adapter);
-  if (code != ORCA_OK) return code;
+  if (code != CCORD_OK) return code;
 
   code = _discord_adapter_check_pending(adapter);
-  if (code != ORCA_OK) return code;
+  if (code != CCORD_OK) return code;
 
   if (CURLM_OK == (mcode = curl_multi_perform(adapter->mhandle, &is_running)))
   {
     mcode = curl_multi_wait(adapter->mhandle, NULL, 0, 2, &numfds);
   }
 
-  if (mcode != CURLM_OK) return ORCA_CURLM_INTERNAL;
+  if (mcode != CURLM_OK) return CCORD_CURLM_INTERNAL;
 
   /* ask for any messages/informationals from the individual transfers */
   do {
@@ -869,7 +869,7 @@ discord_adapter_perform(struct discord_adapter *adapter)
     _discord_adapter_check_action(adapter, msg);
   } while (1);
 
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
 void

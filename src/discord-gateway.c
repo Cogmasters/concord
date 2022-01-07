@@ -1223,8 +1223,8 @@ discord_gateway_init(struct discord_gateway *gw,
   /* connection identify properties */
   gw->id.properties = calloc(1, sizeof *gw->id.properties);
   gw->id.properties->os = "POSIX";
-  gw->id.properties->browser = "orca";
-  gw->id.properties->device = "orca";
+  gw->id.properties->browser = "concord";
+  gw->id.properties->device = "concord";
 
   /* the bot initial presence */
   gw->id.presence = calloc(1, sizeof *gw->id.presence);
@@ -1271,7 +1271,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
   if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
 }
 
-ORCAcode
+CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
 {
   struct discord *client = CLIENT(gw, gw);
@@ -1285,12 +1285,12 @@ discord_gateway_start(struct discord_gateway *gw)
   if (gw->session->retry.attempt >= gw->session->retry.limit) {
     logconf_fatal(&gw->conf, "Failed reconnecting to Discord after %d tries",
                   gw->session->retry.limit);
-    return ORCA_DISCORD_CONNECTION;
+    return CCORD_DISCORD_CONNECTION;
   }
 
   if (discord_get_gateway_bot(client, &json)) {
     logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
-    return ORCA_DISCORD_BAD_AUTH;
+    return CCORD_DISCORD_BAD_AUTH;
   }
 
   json_extract(json.start, json.size,
@@ -1312,13 +1312,13 @@ discord_gateway_start(struct discord_gateway *gw)
                   gw->session->start_limit.total,
                   gw->session->start_limit.reset_after / 1000);
 
-    return ORCA_DISCORD_RATELIMIT;
+    return CCORD_DISCORD_RATELIMIT;
   }
 
   ws_set_url(gw->ws, url, NULL);
   ws_start(gw->ws);
 
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
 bool
@@ -1349,23 +1349,23 @@ discord_gateway_end(struct discord_gateway *gw)
   return false;
 }
 
-ORCAcode
+CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
   /* check for pending transfer, exit on failure */
   if (!ws_easy_run(gw->ws, 5, &gw->timer->now)) {
-    return ORCA_DISCORD_CONNECTION;
+    return CCORD_DISCORD_CONNECTION;
     ;
   }
 
   /* client is in the process of shutting down */
   if (gw->session->status & DISCORD_SESSION_SHUTDOWN) {
-    return ORCA_OK;
+    return CCORD_OK;
   }
 
   /* client is in the process of connecting */
   if (!gw->session->is_ready) {
-    return ORCA_OK;
+    return CCORD_OK;
   }
 
   /* check if timespan since first pulse is greater than
@@ -1376,7 +1376,7 @@ discord_gateway_perform(struct discord_gateway *gw)
 
   if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
 
-  return ORCA_OK;
+  return CCORD_OK;
 }
 
 void
