@@ -123,7 +123,7 @@ purge: clean
 	rm -rf $(SPECSCODE_DIR)
 
 # prepare files for generating documentation at .github/workflows/gh_pages.yml
-docs: | $(DOCS_DIR)
+docs: $(COGUTILS_DIR) | $(DOCS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
 	@ mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
