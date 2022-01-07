@@ -129,11 +129,11 @@ docs: $(COGUTILS_DIR) | $(H_SPECS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
 	@ mv $(SPECS_DIR)/specs-code/discord/*.h $(H_SPECS_DIR)
 
-$(H_SPECS_DIR): | $(CCORDDOCS_DIR)
+$(H_SPECS_DIR): | $(C_SPECS_DIR)
 	@ mkdir -p $@
 
-$(CCORDDOCS_DIR): | $(COGUTILS_DIR)
-	git clone https://github.com/cogmasters/concord-docs $(CCORDDOCS_DIR)
+$(CCORDDOCS_DIR):
+	git clone https://github.com/cogmasters/concord-docs $@
 	cp $@/Doxyfile Doxyfile
 
 .PHONY: all test examples install echo clean purge docs
