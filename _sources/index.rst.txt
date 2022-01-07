@@ -6,7 +6,7 @@
 Welcome to Concord
 ==================
 
-.. image:: /icon.svg
+.. image:: /images/logo_text.svg
 
 A Discord API wrapper made in C
 
