@@ -1,0 +1,683 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Initializer / Cleanup &#8212; Concord  documentation</title>
+    
+  <link href="../../../../_static/css/theme.css" rel="stylesheet">
+  <link href="../../../../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/blank.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css" />
+    
+  <link rel="preload" as="script" href="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/icon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Utilities" href="utils.html" />
+    <link rel="prev" title="Null-Terminated List Reference" href="../index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+
+<a class="navbar-brand" href="../../../../index.html">
+  <img src="../../../../_static/icon.svg" class="logo" alt="logo">
+</a>
+
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../../discord/index.html">
+  Discord API Reference
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../../index.html">
+  Concord's core API
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/Cogmasters/concord" rel="noopener" target="_blank" title="Github">
+            <span><i class="fab fa-github"></i></span>
+            <label class="sr-only">Github</label>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://discord.gg/Y7Xa6MA82v" rel="noopener" target="_blank" title="Discord">
+            <span><i class="fab fa-discord"></i></span>
+            <label class="sr-only">Discord</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../../../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Table of Contents
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../../../common/index.html">
+   Common
+  </a>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../user_agent/index.html">
+   User-Agent
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/datatypes.html">
+     Datatypes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/http.html">
+     HTTP - general
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_init.html">
+     ua_init - create a User-Agent handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_cleanup.html">
+     ua_cleanup - cleanup a User-Agent handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_set_url.html">
+     ua_set_url - set User-Agent base URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_get_url.html">
+     ua_get_url - get user-agent base url
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_set_opt.html">
+     ua_set_opt - set connection’s default configuration
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_easy_run.html">
+     ua_easy_run - quickly perform a transfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_start.html">
+     ua_conn_start - get a individual connection handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_setup.html">
+     ua_conn_setup - set transfer attributes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_easy_perform.html">
+     ua_conn_easy_perform - quickly perform a transfer
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_add_header.html">
+     ua_conn_add_header - add a header/field pair
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_print_header.html">
+     ua_conn_print_header - fill a buffer with all headers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_set_mime.html">
+     ua_conn_set_mime - build a libcurl based multipart body
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_reset.html">
+     ua_conn_reset - reset a connection for immediate reuse
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_stop.html">
+     ua_conn_stop - stop a connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_conn_get_easy_handle.html">
+     ua_conn_get_easy_handle - get the libcurl’s easy_handle assigned
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_info_extract.html">
+     ua_info_extract - extract information on latest request
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_info_cleanup.html">
+     ua_info_cleanup - cleanup extracted information
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_info_get_header.html">
+     ua_info_get_header - get response header’s value from field
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../user_agent/methods/ua_info_get_body.html">
+     ua_info_get_body - get response body
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="../../../websockets/index.html">
+   WebSockets
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+  <label for="toctree-checkbox-2">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/datatypes.html">
+     Datatypes
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_init.html">
+     ws_init - initialize a WebSockets handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_cleanup.html">
+     ws_cleanup - cleanup a WebSockets handle
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_set_url.html">
+     ws_set_url - set WebSockets URL
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_add_header.html">
+     ws_add_header - add HTTP header
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_start.html">
+     ws_start - kickstart WebSockets connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_easy_run.html">
+     ws_easy_run - check pending WebSockets transfers
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_end.html">
+     ws_end - exit from a WebSockets connection
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_get_status.html">
+     ws_get_status - get client’s connection status
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_close_opcode_print.html">
+     ws_close_opcode_print - print CLOSE code as string
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_timestamp.html">
+     ws_timestamp - get WebSockets current timestamp
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_timestamp_update.html">
+     ws_timestamp_update - update WebSockets current timestamp
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_send_binary.html">
+     ws_send_binary - send binary control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_send_text.html">
+     ws_send_text - send text control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_ping.html">
+     ws_ping - send PING control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_pong.html">
+     ws_pong - send PONG control-frame
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../../websockets/methods/ws_close.html">
+     ws_close - send CLOSE control-frame
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../../index.html">
+   Cog-Utils
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+  <label for="toctree-checkbox-3">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="../../logconf/index.html">
+     Modular Logging
+    </a>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="../index.html">
+     NTL (null-terminated lists)
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Initializer / Cleanup
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="utils.html">
+       Utilities
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="serializer.html">
+       Serializer
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="deserializer.html">
+       De-serializer
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#initialization">
+   Initialization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cleanup">
+   Cleanup
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+
+<div class="tocsection editthispage">
+    <a href="https://github.com/Cogmasters/concord-docs/edit/master/docs/source/core/cog-utils/ntl/methods/initializer.rst">
+        <i class="fas fa-pencil-alt"></i> Edit this page
+    </a>
+</div>
+
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="initializer-cleanup">
+<h1>Initializer / Cleanup<a class="headerlink" href="#initializer-cleanup" title="Permalink to this headline">¶</a></h1>
+<section id="initialization">
+<h2>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.ntl_init_cb">
+<span class="target" id="ntl_8h_1a98c56416777c6d0c2029d59341165b2d"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ntl_init_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ntl_init_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Null-terminated list initialization callback. </p>
+<p>Callback function that will be called for each element of the NTL during initialization </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_calloc_init">
+<span class="target" id="ntl_8h_1af7e16a996d351ea4e248d83065ade4a9"></span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_calloc_init</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nelems</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">elem_size</span></span>, <a class="reference internal" href="#c.ntl_init_cb" title="ntl_init_cb"><span class="n"><span class="pre">ntl_init_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">init_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_calloc_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a null-terminated list and each of its elements. </p>
+<p>Initialize a NTL and fill n <code class="docutils literal notranslate"><span class="pre">nelems</span></code> of size <code class="docutils literal notranslate"><span class="pre">elem_size</span></code> with zeroes, and call <code class="docutils literal notranslate"><span class="pre">init</span></code> for each element. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if <code class="docutils literal notranslate"><span class="pre">init</span></code> is NULL, it is the same as ntl_calloc </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nelems</strong> – the amount of elements for the NTL </p></li>
+<li><p><strong>elem_size</strong> – the size of each NTL element </p></li>
+<li><p><strong>init</strong> – the callback function to be called for each element initialized </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the null-terminated list </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_calloc">
+<span class="target" id="ntl_8h_1a435c541af65d9993cb287dd5c9538e2e"></span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_calloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nelems</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">elem_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_calloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a null-terminated list. </p>
+<p>Initialize a NTL and fill n <code class="docutils literal notranslate"><span class="pre">nelems</span></code> of size <code class="docutils literal notranslate"><span class="pre">elem_size</span></code> with zeroes </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nelems</strong> – the amount of elements for the NTL </p></li>
+<li><p><strong>elem_size</strong> – the size of each NTL element </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the null-terminated list </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_malloc">
+<span class="target" id="ntl_8h_1a82d8fa1ba08a9899d034aaae58820380"></span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_malloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nelems</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">elem_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_malloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a null-terminated list. </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>use ntl_calloc() unless there’s a good reason to use this </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nelems</strong> – the amount of elements of the NTL </p></li>
+<li><p><strong>elem_size</strong> – the size of each NTL element </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the null-terminated list </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_malloc_init">
+<span class="target" id="ntl_8h_1acc3724fa3bfd50d990fa54d706daf2e6"></span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_malloc_init</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nelems</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">elem_size</span></span>, <a class="reference internal" href="#c.ntl_init_cb" title="ntl_init_cb"><span class="n"><span class="pre">ntl_init_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">init_cb</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_malloc_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize a null-terminated list and each of its elements. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if <code class="docutils literal notranslate"><span class="pre">init</span></code> is NULL, it is the same as ntl_calloc </p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>use ntl_calloc_init() unless there’s a good reason to use this </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nelems</strong> – the amount of elements of the NTL </p></li>
+<li><p><strong>elem_size</strong> – the size of each NTL element </p></li>
+<li><p><strong>init</strong> – the callback function to be called for each element initialized </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the null-terminated list </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_realloc_init">
+<span class="target" id="ntl_8h_1ad04050fd66258cb05ee4b21b4804d8eb"></span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_realloc_init</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">p</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">nelems</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">elem_size</span></span>, <a class="reference internal" href="#c.ntl_init_cb" title="ntl_init_cb"><span class="n"><span class="pre">ntl_init_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">init</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_realloc_init" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Changes the size of the null-terminated list. </p>
+<p>Changes the size of the NTL memory block pointed by <code class="docutils literal notranslate"><span class="pre">p</span></code> to <code class="docutils literal notranslate"><span class="pre">nelems</span> <span class="pre">*</span> <span class="pre">elem_size</span></code> bytes, call <code class="docutils literal notranslate"><span class="pre">init</span></code> for each element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> – the NTL to be resized </p></li>
+<li><p><strong>nelems</strong> – the amount of elements of the NTL </p></li>
+<li><p><strong>elem_size</strong> – the size of each NTL element </p></li>
+<li><p><strong>init</strong> – the callback function to be called for each element initialized </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the null-terminated list </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_dup">
+<span class="target" id="ntl_8h_1a6a998f2c5d265ea09eb4fb8871f9f687"></span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_dup</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">p</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n"><span class="pre">elem_size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_dup" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Duplicate a null-terminated list. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> – pointer to the source NTL </p></li>
+<li><p><strong>elem_size</strong> – the size of each NTL element </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the NTL duplicate </p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="cleanup">
+<h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
+<dl class="c type">
+<dt class="sig sig-object c" id="c.ntl_free_cb">
+<span class="target" id="ntl_8h_1ad134da9018675cb15c84353fe40ea990"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ntl_free_cb</span></span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#c.ntl_free_cb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Null-terminated list cleanup callback. </p>
+<p>Callback function that will be called for each element of the NTL during cleanup </p>
+</dd></dl>
+
+<dl class="c function">
+<dt class="sig sig-object c" id="c.ntl_free">
+<span class="target" id="ntl_8h_1af62a9c9634bdc94f1a032b697e255396"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ntl_free</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../index.html#c.ntl_t" title="ntl_t"><span class="n"><span class="pre">ntl_t</span></span></a><span class="w"> </span><span class="n"><span class="pre">p</span></span>, <a class="reference internal" href="#c.ntl_free_cb" title="ntl_free_cb"><span class="n"><span class="pre">ntl_free_cb</span></span></a><span class="w"> </span><span class="n"><span class="pre">cleanup</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.ntl_free" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cleanup a null-terminated list. </p>
+<p>Call <code class="docutils literal notranslate"><span class="pre">cleanup</span></code> callback for each element of the NTL, and then <code class="docutils literal notranslate"><span class="pre">free()</span></code> the NTL <code class="docutils literal notranslate"><span class="pre">p</span></code> pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> – the NTL to be free’d </p></li>
+<li><p><strong>cleanup</strong> – the cleanup callback to be called for each element </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="../index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Null-Terminated List Reference</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="utils.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Utilities</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../../../../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+         $(".toggle .header").click(function() {
+            $(this).parent().children().not(".header").toggle(400);
+            $(this).parent().children(".header").toggleClass("open");
+         })
+    });
+  </script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2022, Cogmasters.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.3.2.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+
+  </body>
+</html>

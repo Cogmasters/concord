@@ -1,9 +1,10 @@
 ..
   Most of our documentation is generated from our source code comments,
-    please head to github.com/cee-studio/orca if you want to contribute!
+    please head to github.com/Cogmasters/concord if you want to contribute!
 
   The following files contains the documentation used to generate this page: 
   - common/user-agent.h
+
 
 ======================================================
 ua_conn_reset - reset a connection for immediate reuse
@@ -25,7 +26,7 @@ Example
 
    bool retry = true;
    while (retry) {
-     if (ua_conn_perform(conn) != ORCA_OK)
+     if (ua_conn_perform(conn) != CCORD_OK)
        break; /* internal error */
 
      struct ua_info info = { 0 };

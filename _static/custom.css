@@ -19,7 +19,7 @@
 /* THE FOLLOWING MODIFY HOW THE DEFAULT PAGE IS RENDERED */
 
 /* Hide the welcome text */
-.section#welcome-to-orca > h1 {
+.section#welcome-to-concord > h1 {
     display: none;
 }
 

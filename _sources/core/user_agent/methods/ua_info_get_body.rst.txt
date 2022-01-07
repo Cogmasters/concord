@@ -1,6 +1,6 @@
 ..
   Most of our documentation is generated from our source code comments,
-    please head to github.com/cee-studio/orca if you want to contribute!
+    please head to github.com/Cogmasters/concord if you want to contribute!
 
   The following files contains the documentation used to generate this page: 
   - common/user-agent.h
@@ -23,7 +23,7 @@ Example
    struct ua_conn *conn = ua_conn_start(ua);
    ua_conn_setup(conn, &conn_attr);
 
-   if (ORCA_OK == ua_conn_perform(conn)) {
+   if (CCORD_OK == ua_conn_perform(conn)) {
      struct ua_info info = { 0 };
      ua_info_extract(conn, &info);
 

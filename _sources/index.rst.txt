@@ -1,14 +1,14 @@
-.. Orca documentation master file, created by
+.. Concord documentation master file, created by
    sphinx-quickstart on Sun Jun 20 10:59:18 2021.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Orca
+Welcome to Concord
 ===============
 
-.. image:: /images/logo-dropshadow.svg
+.. image:: /icon.svg
 
-A Multi-REST API library that is easy to reason about, easy to debug, and easy to use.
+A Discord API wrapper made in C
 
 Reference
 ---------
@@ -17,8 +17,8 @@ Reference
    :maxdepth: 2
    :glob:
 
-   apis/index
-   Orca's core API <core/index>
+   discord/index
+   Concord's core API <core/index>
   
 Help
 ----

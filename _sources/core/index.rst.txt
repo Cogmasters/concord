@@ -1,8 +1,8 @@
-=========================
-Orca's core API Reference
-=========================
+============================
+Concord's core API Reference
+============================
 
-The following section outlines Orca's core API
+The following section outlines Concord's core API
 
 .. toctree::
    :caption: Table of Contents
@@ -11,4 +11,4 @@ The following section outlines Orca's core API
    Common <common/index>
    User-Agent <user_agent/index>
    WebSockets <websockets/index>
-   Cee-Utils <cee-utils/index>
+   Cog-Utils <cog-utils/index>
