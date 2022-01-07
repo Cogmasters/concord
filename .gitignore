@@ -13,5 +13,5 @@ concord-docs
 Doxyfile
 *.db
 *.swp
-cee-utils
+cog-utils
 src/specs-code

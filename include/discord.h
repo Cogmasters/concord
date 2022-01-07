@@ -1,6 +1,6 @@
 /**
  * @file discord.h
- * @author cee-studio
+ * @author Cogmasters
  * @brief File containing public functions and datatypes
  *
  * These symbols are organized in a intuitive fashion to be easily

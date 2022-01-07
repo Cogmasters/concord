@@ -4,7 +4,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
-#include "cee-utils.h"
+#include "cog-utils.h"
 
 struct msg {
   u64_snowflake_t id;
@@ -83,11 +83,11 @@ discord_embed_set_footer(struct discord_embed *embed,
     embed->footer = malloc(sizeof *embed->footer);
   discord_embed_footer_init(embed->footer);
 
-  if (text) cee_strndup(text, strlen(text), &embed->footer->text);
+  if (text) cog_strndup(text, strlen(text), &embed->footer->text);
   if (icon_url)
-    cee_strndup(icon_url, strlen(icon_url), &embed->footer->icon_url);
+    cog_strndup(icon_url, strlen(icon_url), &embed->footer->icon_url);
   if (proxy_icon_url)
-    cee_strndup(proxy_icon_url, strlen(proxy_icon_url),
+    cog_strndup(proxy_icon_url, strlen(proxy_icon_url),
                 &embed->footer->proxy_icon_url);
 }
 
@@ -104,7 +104,7 @@ discord_embed_set_title(struct discord_embed *embed, char format[], ...)
   ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
   if (embed->title) free(embed->title);
-  cee_strndup(buf, len, &embed->title);
+  cog_strndup(buf, len, &embed->title);
 
   va_end(args);
 }
@@ -122,7 +122,7 @@ discord_embed_set_description(struct discord_embed *embed, char format[], ...)
   ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
   if (embed->description) free(embed->description);
-  cee_strndup(buf, len, &embed->description);
+  cog_strndup(buf, len, &embed->description);
 
   va_end(args);
 }
@@ -140,7 +140,7 @@ discord_embed_set_url(struct discord_embed *embed, char format[], ...)
   ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
   if (embed->url) free(embed->url);
-  cee_strndup(buf, len, &embed->url);
+  cog_strndup(buf, len, &embed->url);
 
   va_end(args);
 }
@@ -158,9 +158,9 @@ discord_embed_set_thumbnail(struct discord_embed *embed,
     embed->thumbnail = malloc(sizeof *embed->thumbnail);
   discord_embed_thumbnail_init(embed->thumbnail);
 
-  if (url) cee_strndup(url, strlen(url), &embed->thumbnail->url);
+  if (url) cog_strndup(url, strlen(url), &embed->thumbnail->url);
   if (proxy_url)
-    cee_strndup(proxy_url, strlen(proxy_url), &embed->thumbnail->proxy_url);
+    cog_strndup(proxy_url, strlen(proxy_url), &embed->thumbnail->proxy_url);
   if (height) embed->thumbnail->height = height;
   if (width) embed->thumbnail->width = width;
 }
@@ -178,9 +178,9 @@ discord_embed_set_image(struct discord_embed *embed,
     embed->image = malloc(sizeof *embed->image);
   discord_embed_image_init(embed->image);
 
-  if (url) cee_strndup(url, strlen(url), &embed->image->url);
+  if (url) cog_strndup(url, strlen(url), &embed->image->url);
   if (proxy_url)
-    cee_strndup(proxy_url, strlen(proxy_url), &embed->image->proxy_url);
+    cog_strndup(proxy_url, strlen(proxy_url), &embed->image->proxy_url);
   if (height) embed->image->height = height;
   if (width) embed->image->width = width;
 }
@@ -198,9 +198,9 @@ discord_embed_set_video(struct discord_embed *embed,
     embed->video = malloc(sizeof *embed->video);
   discord_embed_video_init(embed->video);
 
-  if (url) cee_strndup(url, strlen(url), &embed->video->url);
+  if (url) cog_strndup(url, strlen(url), &embed->video->url);
   if (proxy_url)
-    cee_strndup(proxy_url, strlen(proxy_url), &embed->video->proxy_url);
+    cog_strndup(proxy_url, strlen(proxy_url), &embed->video->proxy_url);
   if (height) embed->video->height = height;
   if (width) embed->video->width = width;
 }
@@ -216,8 +216,8 @@ discord_embed_set_provider(struct discord_embed *embed,
     embed->provider = malloc(sizeof *embed->provider);
   discord_embed_provider_init(embed->provider);
 
-  if (name) cee_strndup(name, strlen(name), &embed->provider->name);
-  if (url) cee_strndup(url, strlen(url), &embed->provider->url);
+  if (name) cog_strndup(name, strlen(name), &embed->provider->name);
+  if (url) cog_strndup(url, strlen(url), &embed->provider->url);
 }
 
 void
@@ -233,12 +233,12 @@ discord_embed_set_author(struct discord_embed *embed,
     embed->author = malloc(sizeof *embed->author);
   discord_embed_author_init(embed->author);
 
-  if (name) cee_strndup(name, strlen(name), &embed->author->name);
-  if (url) cee_strndup(url, strlen(url), &embed->author->url);
+  if (name) cog_strndup(name, strlen(name), &embed->author->name);
+  if (url) cog_strndup(url, strlen(url), &embed->author->url);
   if (icon_url)
-    cee_strndup(icon_url, strlen(icon_url), &embed->author->icon_url);
+    cog_strndup(icon_url, strlen(icon_url), &embed->author->icon_url);
   if (proxy_icon_url)
-    cee_strndup(proxy_icon_url, strlen(proxy_icon_url),
+    cog_strndup(proxy_icon_url, strlen(proxy_icon_url),
                 &embed->author->proxy_icon_url);
 }
 
@@ -252,8 +252,8 @@ discord_embed_add_field(struct discord_embed *embed,
 
   field.Inline = Inline;
 
-  if (name) cee_strndup(name, strlen(name), &field.name);
-  if (value) cee_strndup(value, strlen(value), &field.value);
+  if (name) cog_strndup(name, strlen(name), &field.name);
+  if (value) cog_strndup(value, strlen(value), &field.value);
 
   ntl_append2((ntl_t *)&embed->fields, sizeof(struct discord_embed_field),
               &field);

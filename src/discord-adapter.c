@@ -348,7 +348,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
       /* block thread's runtime for delay amount */
       logconf_info(&adapter->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
                    b->hash, wait_ms);
-      cee_sleep_ms(wait_ms);
+      cog_sleep_ms(wait_ms);
 
       wait_ms = 0LL; /* reset */
     }
@@ -385,7 +385,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
       discord_bucket_build(adapter, b, route, &info);
 
-      if (wait_ms) cee_sleep_ms(wait_ms);
+      if (wait_ms) cog_sleep_ms(wait_ms);
 
       ua_info_cleanup(&info);
     } break;

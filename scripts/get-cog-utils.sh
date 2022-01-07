@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 mypath=$(dirname $(readlink -f $0))
-url="https://raw.githubusercontent.com/cee-studio/cee-utils/master"
+url="https://raw.githubusercontent.com/Cogmasters/cog-utils/master"
 
 list="README.md
 debug.h
@@ -13,23 +13,22 @@ json-actor-boxed.h
 json-actor.c
 json-actor.h
 json-string.c
-json-struct.c
+specs-gen.c
 log.c
 logconf.c
 logconf.h
 log.h
 ntl.c
 ntl.h
-cee-utils.c
-cee-utils.h
+cog-utils.c
+cog-utils.h
 greatest.h
 uthash.h
-cee-data-sizes.h
 clock.h
 "
 
-mkdir -p $mypath/../cee-utils
-pushd $mypath/../cee-utils
+mkdir -p $mypath/../cog-utils
+pushd $mypath/../cog-utils
 for i in $list; do
     echo "getting $i"
     echo "$url/$i"

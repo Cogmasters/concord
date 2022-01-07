@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "cee-utils.h"
 
 char JSON_STRING[] =
   "[\n"

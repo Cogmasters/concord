@@ -1,12 +1,12 @@
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "json-struct.c"
+#include "specs-gen.c"
 
-static void print_usage(char *prog)
+static void
+print_usage(char *prog)
 {
   fprintf(
     stderr,
@@ -24,7 +24,8 @@ static void print_usage(char *prog)
   exit(EXIT_FAILURE);
 }
 
-int main(int argc, char **argv)
+int
+main(int argc, char **argv)
 {
   size_t len = 0;
   char *s;
@@ -82,7 +83,7 @@ int main(int argc, char **argv)
   if (!config_file) print_usage(argv[0]);
 
   char *file = argv[optind];
-  s = cee_load_whole_file(file, &len);
+  s = cog_load_whole_file(file, &len);
   spec_name = file;
   spec_buffer.start = s;
   spec_buffer.size = len;

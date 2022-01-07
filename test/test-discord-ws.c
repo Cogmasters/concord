@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "cee-utils.h"
 #include "json-actor.h" /* json_extract() */
 
 #define THREADPOOL_SIZE "4"

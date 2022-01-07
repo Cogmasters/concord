@@ -5,7 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "discord-voice-connections.h"
-#include "cee-utils.h"
+#include "cog-utils.h"
 
 /* TODO: use a per-client lock instead */
 static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -90,7 +90,7 @@ on_hello(struct discord_voice *vc)
 {
   float hbeat_interval = 0.0f;
 
-  vc->hbeat.tstamp = cee_timestamp_ms();
+  vc->hbeat.tstamp = cog_timestamp_ms();
 
   json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
                "(heartbeat_interval):f", &hbeat_interval);
@@ -185,7 +185,7 @@ static void
 on_heartbeat_ack(struct discord_voice *vc)
 {
   /* get request / response interval in milliseconds */
-  vc->ping_ms = cee_timestamp_ms() - vc->hbeat.tstamp;
+  vc->ping_ms = cog_timestamp_ms() - vc->hbeat.tstamp;
   logconf_trace(&vc->conf, "PING: %d ms", vc->ping_ms);
 }
 
