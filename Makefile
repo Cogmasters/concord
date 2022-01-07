@@ -100,9 +100,6 @@ install:
 	install -d $(PREFIX)/include/concord/
 	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(COMMON_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(PREFIX)/include/concord/
-	install -d $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
-	install -m 644 $(SPECSCODE_DIR)/discord/*.h                              \
-	               $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
