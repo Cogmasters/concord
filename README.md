@@ -15,7 +15,7 @@
 ## About
 
 Concord is implemented in plain C99, its symbols are organized to be easily matched to the documentation of the API being covered.
-Orca's implementation has minimum external dependencies to make bot deployment deadly simple.
+Concord's implementation has minimum external dependencies to make bot deployment deadly simple.
 
 ### Design
 
@@ -26,7 +26,7 @@ Orca's implementation has minimum external dependencies to make bot deployment d
   and logging facilities.
 
 - Easy to use for the end users: highly scalable, all transfers made with
-  Orca are thread-safe.
+  Concord are thread-safe.
 
 ### Minimal example
 
