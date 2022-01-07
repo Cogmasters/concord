@@ -1,6 +1,6 @@
 /**
  * @file discord-internal.h
- * @author cee-studio
+ * @author Cogmasters
  * @brief File containing internal functions and datatypes
  */
 
@@ -16,7 +16,7 @@
 #include "user-agent.h"
 #include "websockets.h"
 #include "work.h"
-#include "cee-utils.h"
+#include "cog-utils.h"
 
 #include "uthash.h"
 #include "queue.h"

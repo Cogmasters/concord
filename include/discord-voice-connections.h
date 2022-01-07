@@ -1,6 +1,6 @@
 /**
  * @file discord-voice-connections.h
- * @author cee-studio
+ * @author Cogmasters
  * @brief File containing internal functions and datatypes for Voice
  * Connections
  */
@@ -10,7 +10,6 @@
 
 #include <time.h>
 #include <pthread.h>
-#include "cee-data-sizes.h"
 
 struct discord_voice; /*forward */
 
@@ -156,8 +155,8 @@ struct discord_voice {
   struct {
     int ssrc;
     int server_port;
-    char server_ip[CEE_MAX_IP_ADDR_STR_LEN];
-    char digest[CEE_SHA1_STR_LEN];
+    char server_ip[256];
+    char digest[256];
     char unique_key[128];
     int audio_udp_pid;
     uintmax_t start_time;

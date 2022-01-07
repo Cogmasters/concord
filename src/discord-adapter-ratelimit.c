@@ -5,7 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-#include "cee-utils.h"
+#include "cog-utils.h"
 #include "clock.h"
 
 struct _discord_route {

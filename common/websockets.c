@@ -6,7 +6,7 @@
 #include "curl-websocket.h"
 
 #include "websockets.h"
-#include "cee-utils.h"
+#include "cog-utils.h"
 
 #define CURLM_LOG(ws, mcode)                                                  \
   logconf_fatal(&ws->conf, "(CURLM code: %d) %s", mcode,                      \
@@ -886,7 +886,7 @@ ws_timestamp_update(struct websockets *ws)
   uint64_t now_tstamp;
 
   pthread_rwlock_wrlock(&ws->rwlock);
-  now_tstamp = ws->now_tstamp = cee_timestamp_ms();
+  now_tstamp = ws->now_tstamp = cog_timestamp_ms();
   pthread_rwlock_unlock(&ws->rwlock);
 
   return now_tstamp;

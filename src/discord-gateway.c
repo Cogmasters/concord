@@ -463,7 +463,7 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
                "(guild_id):s_as_u64"
                "(channel_id):s_as_u64"
                "(last_pin_timestamp):F",
-               &guild_id, &channel_id, &cee_iso8601_to_unix_ms,
+               &guild_id, &channel_id, &cog_iso8601_to_unix_ms,
                &last_pin_timestamp);
 
   ON(channel_pins_update, guild_id, channel_id, last_pin_timestamp);
@@ -988,7 +988,7 @@ on_dispatch(struct discord_gateway *gw)
 
     cxt->name = strdup(gw->payload.name);
     cxt->gw = &(discord_clone(client)->gw);
-    cxt->data.size = cee_strndup(gw->payload.data.start, gw->payload.data.size,
+    cxt->data.size = cog_strndup(gw->payload.data.start, gw->payload.data.size,
                                  &cxt->data.start);
     cxt->event = event;
     cxt->on_event = on_event;
@@ -1218,7 +1218,7 @@ discord_gateway_init(struct discord_gateway *gw,
   gw->session->retry.limit = 5; /**< hard limit for now */
 
   /* connection identify token */
-  cee_strndup(token->start, token->size, &gw->id.token);
+  cog_strndup(token->start, token->size, &gw->id.token);
 
   /* connection identify properties */
   gw->id.properties = calloc(1, sizeof *gw->id.properties);
@@ -1229,7 +1229,7 @@ discord_gateway_init(struct discord_gateway *gw,
   /* the bot initial presence */
   gw->id.presence = calloc(1, sizeof *gw->id.presence);
   presence.status = "online";
-  presence.since = cee_timestamp_ms();
+  presence.since = cog_timestamp_ms();
   discord_set_presence(client, &presence);
 
   /* default callbacks */

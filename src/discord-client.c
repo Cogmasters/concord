@@ -6,7 +6,7 @@
 
 #include "discord.h"
 #include "discord-internal.h"
-#include "cee-utils.h"
+#include "cog-utils.h"
 
 static void
 _discord_init(struct discord *new_client)
@@ -37,7 +37,7 @@ discord_init(const char token[])
   logconf_set_quiet(&new_client->conf, true);
 
   new_client->token.start = (char *)token;
-  new_client->token.size = token ? cee_str_bounds_check(token, 128) : 0;
+  new_client->token.size = token ? cog_str_bounds_check(token, 128) : 0;
 
   _discord_init(new_client);
 
@@ -161,7 +161,7 @@ discord_set_prefix(struct discord *client, char *prefix)
   if (client->gw.cmds.prefix.start) free(client->gw.cmds.prefix.start);
 
   client->gw.cmds.prefix.size =
-    cee_strndup(prefix, strlen(prefix), &client->gw.cmds.prefix.start);
+    cog_strndup(prefix, strlen(prefix), &client->gw.cmds.prefix.start);
 }
 
 const struct discord_user *
@@ -575,7 +575,7 @@ discord_timestamp(struct discord *client)
   if (ws_is_functional(client->gw.ws)) {
     return ws_timestamp(client->gw.ws);
   }
-  return cee_timestamp_ms();
+  return cog_timestamp_ms();
 }
 
 struct logconf *
