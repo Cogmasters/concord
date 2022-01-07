@@ -112,8 +112,7 @@ The following outlines the default fields of `config.json`
       "filename": "http.log" // the output file
     },
     "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
-  },
-  ...         // API directives (discord, slack, github, etc)
+  }
 }
 ```
 
