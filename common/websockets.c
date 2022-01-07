@@ -71,7 +71,7 @@ struct websockets {
   } pending_close;
 };
 
-#ifdef _ORCA_DEBUG_WEBSOCKETS
+#ifdef _CCORD_DEBUG_WEBSOCKETS
 static void
 _ws_curl_debug_dump(const char *text,
                     FILE *stream,
@@ -470,7 +470,7 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
   /* make libcurl safe in a multithreaded context and avoid SIGPIPE */
   curl_easy_setopt(new_ehandle, CURLOPT_NOSIGNAL, 1L);
 
-#ifdef _ORCA_DEBUG_WEBSOCKETS
+#ifdef _CCORD_DEBUG_WEBSOCKETS
   curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
   curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
 #else

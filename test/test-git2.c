@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
-  ORCAcode code;
+  CCORDcode code;
   struct github_file **files =
     (void *)ntl_calloc(argc - optind, sizeof(struct github_file));
   for (int i = 0; files[i]; ++i)
@@ -55,31 +55,31 @@ int main(int argc, char **argv)
   struct github *client = github_config_init(config_file, ".cee-repo");
 
   code = github_update_my_fork(client, NULL);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
 
   code = github_create_blobs(client, files);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
 
   char *head_commit_sha = NULL, *base_tree_sha = NULL, *tree_sha = NULL,
        *commit_sha = NULL;
   code = github_get_head_commit(client, &head_commit_sha);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
   code = github_get_tree_sha(client, head_commit_sha, &base_tree_sha);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
   code = github_create_tree(client, base_tree_sha, files, &tree_sha);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
   code = github_create_a_commit(client, tree_sha, head_commit_sha, commit_msg,
                                 &commit_sha);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
 
   char new_branch[256];
   snprintf(new_branch, sizeof(new_branch), "n%ld", time(NULL));
   code = github_create_a_branch(client, head_commit_sha, new_branch);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
   code = github_update_a_commit(client, new_branch, commit_sha);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
   code = github_create_a_pull_request(client, new_branch, commit_msg);
-  if (code != ORCA_OK) return EXIT_FAILURE;
+  if (code != CCORD_OK) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }

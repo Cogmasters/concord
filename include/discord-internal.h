@@ -168,16 +168,16 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  *        null if unecessary
  * @param method the method in opcode format of the request being sent
  * @param endpoint_fmt the printf-like endpoint formatting string
- * @ORCA_return
+ * @CCORD_return
  * @note if async is set then this function will enqueue the request instead of
  * performing it immediately
  */
-ORCAcode discord_adapter_run(struct discord_adapter *adapter,
-                             struct discord_request_attr *attr,
-                             struct sized_buffer *body,
-                             enum http_method method,
-                             char endpoint_fmt[],
-                             ...);
+CCORDcode discord_adapter_run(struct discord_adapter *adapter,
+                              struct discord_request_attr *attr,
+                              struct sized_buffer *body,
+                              enum http_method method,
+                              char endpoint_fmt[],
+                              ...);
 
 /**
  * @brief Set next request to run asynchronously
@@ -192,9 +192,9 @@ void discord_adapter_async_next(struct discord_adapter *adapter,
  * @brief Check and manage on-going, pending and timed-out requests
  *
  * @param adapter the handle initialized with discord_adapter_init()
- * @ORCA_return
+ * @CCORD_return
  */
-ORCAcode discord_adapter_perform(struct discord_adapter *adapter);
+CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
 
 /**
  * @brief Get global timeout timestamp
@@ -494,7 +494,7 @@ struct discord_gateway {
 
 /**
  * @brief Context in case event is scheduled to be triggered
- *        from Orca's worker threads
+ *        from concord's worker threads
  */
 struct discord_event {
   /** the event name */
@@ -531,9 +531,9 @@ void discord_gateway_cleanup(struct discord_gateway *gw);
  * @brief Initialize handle with the new session primitives
  *
  * @param gw the handle initialized with discord_gateway_init()
- * @ORCA_return
+ * @CCORD_return
  */
-ORCAcode discord_gateway_start(struct discord_gateway *gw);
+CCORDcode discord_gateway_start(struct discord_gateway *gw);
 
 /**
  * @brief Cleanup and reset `gw` session primitives
@@ -547,9 +547,9 @@ bool discord_gateway_end(struct discord_gateway *gw);
  * @brief Check and manage on-going Gateway session
  *
  * @param req the request handler
- * @ORCA_return
+ * @CCORD_return
  */
-ORCAcode discord_gateway_perform(struct discord_gateway *gw);
+CCORDcode discord_gateway_perform(struct discord_gateway *gw);
 
 /**
  * @brief Gracefully shutdown a ongoing Discord connection over WebSockets

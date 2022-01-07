@@ -45,7 +45,7 @@
  * Functions specific to Discord Application Commands
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_global_application_commands(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -54,14 +54,14 @@ discord_get_global_application_commands(
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_application_command, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/commands",
                              application_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_global_application_command(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -73,11 +73,12 @@ discord_create_global_application_command(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->name), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->description),
-              ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(params->name), CCORD_BAD_PARAMETER,
+               "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(params->description),
+               CCORD_BAD_PARAMETER, "");
 
   body.size = discord_create_global_application_command_params_to_json(
     buf, sizeof(buf), params);
@@ -88,7 +89,7 @@ discord_create_global_application_command(
                              application_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_global_application_command(struct discord *client,
                                        u64_snowflake_t application_id,
                                        u64_snowflake_t command_id,
@@ -97,15 +98,15 @@ discord_get_global_application_command(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_application_command, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/commands/%" PRIu64,
                              application_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_edit_global_application_command(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -118,8 +119,8 @@ discord_edit_global_application_command(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_edit_global_application_command_params_to_json(
     buf, sizeof(buf), params);
@@ -130,20 +131,20 @@ discord_edit_global_application_command(
                              application_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_global_application_command(struct discord *client,
                                           u64_snowflake_t application_id,
                                           u64_snowflake_t command_id)
 {
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/applications/%" PRIu64 "/commands/%" PRIu64,
                              application_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_bulk_overwrite_global_application_command(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -155,8 +156,8 @@ discord_bulk_overwrite_global_application_command(
   struct sized_buffer body;
   char buf[8192];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_application_command_list_to_json(buf, sizeof(buf), params);
@@ -167,7 +168,7 @@ discord_bulk_overwrite_global_application_command(
                              application_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_application_commands(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -177,8 +178,8 @@ discord_get_guild_application_commands(
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_application_command, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -186,7 +187,7 @@ discord_get_guild_application_commands(
                              application_id, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_guild_application_command(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -199,12 +200,13 @@ discord_create_guild_application_command(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->name), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->description),
-              ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(params->name), CCORD_BAD_PARAMETER,
+               "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(params->description),
+               CCORD_BAD_PARAMETER, "");
 
   body.size = discord_create_guild_application_command_params_to_json(
     buf, sizeof(buf), params);
@@ -216,7 +218,7 @@ discord_create_guild_application_command(
                              application_id, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_application_command(struct discord *client,
                                       u64_snowflake_t application_id,
                                       u64_snowflake_t guild_id,
@@ -226,9 +228,9 @@ discord_get_guild_application_command(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_application_command, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -236,7 +238,7 @@ discord_get_guild_application_command(struct discord *client,
                              application_id, guild_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_edit_guild_application_command(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -250,9 +252,9 @@ discord_edit_guild_application_command(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_edit_guild_application_command_params_to_json(
     buf, sizeof(buf), params);
@@ -264,15 +266,15 @@ discord_edit_guild_application_command(
                              application_id, guild_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_guild_application_command(struct discord *client,
                                          u64_snowflake_t application_id,
                                          u64_snowflake_t guild_id,
                                          u64_snowflake_t command_id)
 {
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -280,7 +282,7 @@ discord_delete_guild_application_command(struct discord *client,
                              application_id, guild_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_bulk_overwrite_guild_application_command(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -293,9 +295,9 @@ discord_bulk_overwrite_guild_application_command(
   struct sized_buffer body;
   char buf[8192];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_application_command_list_to_json(buf, sizeof(buf), params);
@@ -307,7 +309,7 @@ discord_bulk_overwrite_guild_application_command(
                              application_id, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_application_command_permissions(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -317,8 +319,8 @@ discord_get_guild_application_command_permissions(
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_application_command_permissions, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -326,7 +328,7 @@ discord_get_guild_application_command_permissions(
                              application_id, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_application_command_permissions(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -337,9 +339,9 @@ discord_get_application_command_permissions(
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_application_command_permissions, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -347,7 +349,7 @@ discord_get_application_command_permissions(
                              application_id, guild_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_edit_application_command_permissions(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -361,9 +363,9 @@ discord_edit_application_command_permissions(
   struct sized_buffer body;
   char buf[8192];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, command_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_edit_application_command_permissions_params_to_json(
     buf, sizeof(buf), params);
@@ -375,7 +377,7 @@ discord_edit_application_command_permissions(
                              application_id, guild_id, command_id);
 }
 
-ORCAcode
+CCORDcode
 discord_batch_edit_application_command_permissions(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -388,9 +390,9 @@ discord_batch_edit_application_command_permissions(
   struct sized_buffer body;
   char buf[8192];
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_guild_application_command_permissions_list_to_json(
     buf, sizeof(buf), params);
@@ -406,7 +408,7 @@ discord_batch_edit_application_command_permissions(
  * Functions specific to Discord Audit Log
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_guild_audit_log(struct discord *client,
                             u64_snowflake_t guild_id,
                             struct discord_get_guild_audit_log_params *params,
@@ -415,7 +417,7 @@ discord_get_guild_audit_log(struct discord *client,
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_audit_log, ret);
   char query[1024] = "";
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params) {
     size_t offset = 0;
@@ -453,20 +455,20 @@ discord_get_guild_audit_log(struct discord *client,
  * Functions specific to Discord Channel
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_channel(struct discord *client,
                     u64_snowflake_t channel_id,
                     struct discord_channel *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_channel, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64, channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_channel(struct discord *client,
                        u64_snowflake_t channel_id,
                        struct discord_modify_channel_params *params,
@@ -476,8 +478,8 @@ discord_modify_channel(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_modify_channel_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -486,20 +488,20 @@ discord_modify_channel(struct discord *client,
                              "/channels/%" PRIu64, channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_channel(struct discord *client,
                        u64_snowflake_t channel_id,
                        struct discord_channel *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_channel, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64, channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_channel_messages(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -510,7 +512,7 @@ discord_get_channel_messages(
     REQUEST_ATTR_LIST_INIT(discord_message, ret);
   char query[1024] = "";
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params) {
     size_t offset = 0;
@@ -543,7 +545,7 @@ discord_get_channel_messages(
                              *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_get_channel_message(struct discord *client,
                             u64_snowflake_t channel_id,
                             u64_snowflake_t message_id,
@@ -551,15 +553,15 @@ discord_get_channel_message(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_message, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/messages/%" PRIu64,
                              channel_id, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_message(struct discord *client,
                        u64_snowflake_t channel_id,
                        struct discord_create_message_params *params,
@@ -570,8 +572,8 @@ discord_create_message(struct discord *client,
   enum http_method method;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_create_message_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -588,7 +590,7 @@ discord_create_message(struct discord *client,
                              "/channels/%" PRIu64 "/messages", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_crosspost_message(struct discord *client,
                           u64_snowflake_t channel_id,
                           u64_snowflake_t message_id,
@@ -596,8 +598,8 @@ discord_crosspost_message(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_message, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_POST,
                              "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -605,7 +607,7 @@ discord_crosspost_message(struct discord *client,
                              channel_id, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_reaction(struct discord *client,
                         u64_snowflake_t channel_id,
                         u64_snowflake_t message_id,
@@ -614,10 +616,10 @@ discord_create_reaction(struct discord *client,
 {
   char *pct_emoji_name;
   char emoji_endpoint[256];
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
 
@@ -637,7 +639,7 @@ discord_create_reaction(struct discord *client,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_delete_own_reaction(struct discord *client,
                             u64_snowflake_t channel_id,
                             u64_snowflake_t message_id,
@@ -646,10 +648,10 @@ discord_delete_own_reaction(struct discord *client,
 {
   char *pct_emoji_name;
   char emoji_endpoint[256];
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
 
@@ -669,7 +671,7 @@ discord_delete_own_reaction(struct discord *client,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_delete_user_reaction(struct discord *client,
                              u64_snowflake_t channel_id,
                              u64_snowflake_t message_id,
@@ -679,11 +681,11 @@ discord_delete_user_reaction(struct discord *client,
 {
   char *pct_emoji_name;
   char emoji_endpoint[256];
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
 
@@ -703,7 +705,7 @@ discord_delete_user_reaction(struct discord *client,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_get_reactions(struct discord *client,
                       u64_snowflake_t channel_id,
                       u64_snowflake_t message_id,
@@ -716,17 +718,17 @@ discord_get_reactions(struct discord *client,
   char query[1024] = "";
   char emoji_endpoint[256];
   char *pct_emoji_name;
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params) {
     size_t len;
 
     if (params->limit <= 0 || params->limit > 100) {
       logconf_error(&client->conf, "'params.limit' should be between [1-100]");
-      return ORCA_BAD_PARAMETER;
+      return CCORD_BAD_PARAMETER;
     }
 
     if (params->after) {
@@ -759,13 +761,13 @@ discord_get_reactions(struct discord *client,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_delete_all_reactions(struct discord *client,
                              u64_snowflake_t channel_id,
                              u64_snowflake_t message_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -773,7 +775,7 @@ discord_delete_all_reactions(struct discord *client,
                              channel_id, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_all_reactions_for_emoji(struct discord *client,
                                        u64_snowflake_t channel_id,
                                        u64_snowflake_t message_id,
@@ -782,10 +784,10 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
 {
   char *pct_emoji_name;
   char emoji_endpoint[256];
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
 
@@ -805,7 +807,7 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_edit_message(struct discord *client,
                      u64_snowflake_t channel_id,
                      u64_snowflake_t message_id,
@@ -816,9 +818,9 @@ discord_edit_message(struct discord *client,
   struct sized_buffer body;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_edit_message_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -828,13 +830,13 @@ discord_edit_message(struct discord *client,
                              channel_id, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_message(struct discord *client,
                        u64_snowflake_t channel_id,
                        u64_snowflake_t message_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/messages/%" PRIu64,
@@ -842,7 +844,7 @@ discord_delete_message(struct discord *client,
 }
 
 /** @todo add duplicated ID verification */
-ORCAcode
+CCORDcode
 discord_bulk_delete_messages(struct discord *client,
                              u64_snowflake_t channel_id,
                              u64_snowflake_t **messages)
@@ -850,28 +852,28 @@ discord_bulk_delete_messages(struct discord *client,
   u64_unix_ms_t now = discord_timestamp(client);
   struct sized_buffer body;
   char *buf = NULL;
-  ORCAcode code;
+  CCORDcode code;
   size_t count;
   size_t i;
 
-  ORCA_EXPECT(client, messages != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, messages != NULL, CCORD_BAD_PARAMETER, "");
 
   count = ntl_length_max((ntl_t)messages, 101);
-  ORCA_EXPECT(client, count >= 2 && count <= 100, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, count >= 2 && count <= 100, CCORD_BAD_PARAMETER, "");
 
   for (i = 0; i < count; ++i) {
     u64_unix_ms_t tstamp = (*messages[i] >> 22) + 1420070400000;
 
-    ORCA_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
-                ORCA_BAD_PARAMETER,
-                "Messages should not be older than 2 weeks.");
+    CCORD_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
+                 CCORD_BAD_PARAMETER,
+                 "Messages should not be older than 2 weeks.");
   }
 
   body.size =
     json_ainject(&buf, "(messages):F", ja_u64_list_to_json, messages);
   body.start = buf;
 
-  ORCA_EXPECT(client, buf != NULL, ORCA_BAD_JSON, "");
+  CCORD_EXPECT(client, buf != NULL, CCORD_BAD_JSON, "");
 
   code = discord_adapter_run(&client->adapter, NULL, &body, HTTP_POST,
                              "/channels/%" PRIu64 "/messages/bulk-delete",
@@ -882,7 +884,7 @@ discord_bulk_delete_messages(struct discord *client,
   return code;
 }
 
-ORCAcode
+CCORDcode
 discord_edit_channel_permissions(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -892,9 +894,9 @@ discord_edit_channel_permissions(
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, overwrite_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, overwrite_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_edit_channel_permissions_params_to_json(buf, sizeof(buf), params);
@@ -905,7 +907,7 @@ discord_edit_channel_permissions(
                              channel_id, overwrite_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_channel_invites(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_invite ***ret)
@@ -913,13 +915,13 @@ discord_get_channel_invites(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_invite, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/invites", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_channel_invite(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -931,7 +933,7 @@ discord_create_channel_invite(
   char buf[1024];
   size_t len;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params)
     len =
@@ -945,20 +947,20 @@ discord_create_channel_invite(
                              "/channels/%" PRIu64 "/invites", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_channel_permission(struct discord *client,
                                   u64_snowflake_t channel_id,
                                   u64_snowflake_t overwrite_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, overwrite_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, overwrite_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/permissions/%" PRIu64,
                              channel_id, overwrite_id);
 }
 
-ORCAcode
+CCORDcode
 discord_follow_news_channel(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_follow_news_channel_params *params,
@@ -968,9 +970,10 @@ discord_follow_news_channel(struct discord *client,
   struct sized_buffer body;
   char buf[256]; /* should be more than enough for this */
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params->webhook_channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params->webhook_channel_id != 0, CCORD_BAD_PARAMETER,
+               "");
 
   body.size =
     discord_follow_news_channel_params_to_json(buf, sizeof(buf), params);
@@ -980,17 +983,17 @@ discord_follow_news_channel(struct discord *client,
                              "/channels/%" PRIu64 "/followers", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_trigger_typing_indicator(struct discord *client,
                                  u64_snowflake_t channel_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_POST,
                              "/channels/%" PRIu64 "/typing", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_pinned_messages(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_message ***ret)
@@ -998,39 +1001,39 @@ discord_get_pinned_messages(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_message, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/pins", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_pin_message(struct discord *client,
                     u64_snowflake_t channel_id,
                     u64_snowflake_t message_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_PUT,
                              "/channels/%" PRIu64 "/pins/%" PRIu64, channel_id,
                              message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_unpin_message(struct discord *client,
                       u64_snowflake_t channel_id,
                       u64_snowflake_t message_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/pins/%" PRIu64, channel_id,
                              message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_group_dm_add_recipient(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1040,9 +1043,9 @@ discord_group_dm_add_recipient(
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_group_dm_add_recipient_params_to_json(buf, sizeof(buf), params);
@@ -1053,20 +1056,20 @@ discord_group_dm_add_recipient(
                              channel_id, user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_group_dm_remove_recipient(struct discord *client,
                                   u64_snowflake_t channel_id,
                                   u64_snowflake_t user_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/recipients/%" PRIu64,
                              channel_id, user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_start_thread_with_message(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1078,9 +1081,9 @@ discord_start_thread_with_message(
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_start_thread_with_message_params_to_json(buf, sizeof(buf), params);
@@ -1092,7 +1095,7 @@ discord_start_thread_with_message(
                              channel_id, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_start_thread_without_message(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1103,8 +1106,8 @@ discord_start_thread_without_message(
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_start_thread_without_message_params_to_json(
     buf, sizeof(buf), params);
@@ -1114,53 +1117,53 @@ discord_start_thread_without_message(
                              "/channels/%" PRIu64 "/threads", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_join_thread(struct discord *client, u64_snowflake_t channel_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_PUT,
                              "/channels/%" PRIu64 "/thread-members/@me",
                              channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_add_thread_member(struct discord *client,
                           u64_snowflake_t channel_id,
                           u64_snowflake_t user_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_PUT,
                              "/channels/%" PRIu64 "/thread-members/" PRIu64,
                              channel_id, user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_leave_thread(struct discord *client, u64_snowflake_t channel_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/thread-members/@me",
                              channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_remove_thread_member(struct discord *client,
                              u64_snowflake_t channel_id,
                              u64_snowflake_t user_id)
 {
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/channels/%" PRIu64 "/thread-members/" PRIu64,
                              channel_id, user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_list_thread_members(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_thread_member ***ret)
@@ -1168,14 +1171,14 @@ discord_list_thread_members(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_thread_member, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/thread-members",
                              channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_list_active_threads(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_thread_response_body *body)
@@ -1183,14 +1186,14 @@ discord_list_active_threads(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_thread_response_body, body);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/threads/active",
                              channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_list_public_archived_threads(struct discord *client,
                                      u64_snowflake_t channel_id,
                                      u64_unix_ms_t before,
@@ -1202,7 +1205,7 @@ discord_list_public_archived_threads(struct discord *client,
   char query[1024] = "";
   size_t offset = 0;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (before) {
     offset += snprintf(query + offset, sizeof(query) - offset,
@@ -1221,7 +1224,7 @@ discord_list_public_archived_threads(struct discord *client,
                              channel_id, *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_list_private_archived_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1234,7 +1237,7 @@ discord_list_private_archived_threads(
   char query[1024] = "";
   size_t offset = 0;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (before) {
     offset += snprintf(query + offset, sizeof(query) - offset,
@@ -1253,7 +1256,7 @@ discord_list_private_archived_threads(
                              channel_id, *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_list_joined_private_archived_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
@@ -1266,7 +1269,7 @@ discord_list_joined_private_archived_threads(
   char query[1024] = "";
   size_t offset = 0;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (before) {
     offset += snprintf(query + offset, sizeof(query) - offset,
@@ -1289,7 +1292,7 @@ discord_list_joined_private_archived_threads(
  * Functions specific to Discord Emoji
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_list_guild_emojis(struct discord *client,
                           u64_snowflake_t guild_id,
                           struct discord_emoji ***ret)
@@ -1297,13 +1300,13 @@ discord_list_guild_emojis(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_emoji, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/emojis", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_emoji(struct discord *client,
                         u64_snowflake_t guild_id,
                         u64_snowflake_t emoji_id,
@@ -1311,15 +1314,15 @@ discord_get_guild_emoji(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_emoji, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, emoji_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, emoji_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
                              emoji_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_guild_emoji(struct discord *client,
                            u64_snowflake_t guild_id,
                            struct discord_create_guild_emoji_params *params,
@@ -1329,8 +1332,8 @@ discord_create_guild_emoji(struct discord *client,
   struct sized_buffer body;
   char buf[2048];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_create_guild_emoji_params_to_json(buf, sizeof(buf), params);
@@ -1340,7 +1343,7 @@ discord_create_guild_emoji(struct discord *client,
                              "/guilds/%" PRIu64 "/emojis", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_guild_emoji(struct discord *client,
                            u64_snowflake_t guild_id,
                            u64_snowflake_t emoji_id,
@@ -1351,9 +1354,9 @@ discord_modify_guild_emoji(struct discord *client,
   struct sized_buffer body;
   char buf[2048];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, emoji_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, emoji_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_modify_guild_emoji_params_to_json(buf, sizeof(buf), params);
@@ -1364,13 +1367,13 @@ discord_modify_guild_emoji(struct discord *client,
                              emoji_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_guild_emoji(struct discord *client,
                            u64_snowflake_t guild_id,
                            u64_snowflake_t emoji_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, emoji_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, emoji_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64 "/emojis/%" PRIu64, guild_id,
@@ -1381,7 +1384,7 @@ discord_delete_guild_emoji(struct discord *client,
  * Functions specific to Discord Gateway
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_gateway(struct discord *client, struct sized_buffer *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_RAW_INIT(ret);
@@ -1390,7 +1393,7 @@ discord_get_gateway(struct discord *client, struct sized_buffer *ret)
                              "/gateway");
 }
 
-ORCAcode
+CCORDcode
 discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_RAW_INIT(ret);
@@ -1403,7 +1406,7 @@ discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
  * Functions specific to Discord Guild Template
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_guild_template(struct discord *client,
                            char *code,
                            struct discord_guild_template *ret)
@@ -1411,13 +1414,13 @@ discord_get_guild_template(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_guild_template, ret);
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(code), ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(code), CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/templates/%s", code);
 }
 
-ORCAcode
+CCORDcode
 discord_create_guild_template(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1429,7 +1432,7 @@ discord_create_guild_template(
   struct sized_buffer body;
   char buf[256];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_create_guild_template_params_to_json_v(buf, sizeof(buf), params);
@@ -1439,7 +1442,7 @@ discord_create_guild_template(
                              "/guilds/%" PRIu64 "/templates", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_sync_guild_template(struct discord *client,
                             u64_snowflake_t guild_id,
                             char *code,
@@ -1448,7 +1451,7 @@ discord_sync_guild_template(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_guild_template, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_PUT,
                              "/guilds/%" PRIu64 "/templates/%s", guild_id,
@@ -1459,7 +1462,7 @@ discord_sync_guild_template(struct discord *client,
  * Functions specific to Discord Guild
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_create_guild(struct discord *client,
                      struct discord_create_guild_params *params,
                      struct discord_guild *ret)
@@ -1468,7 +1471,7 @@ discord_create_guild(struct discord *client,
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_create_guild_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -1477,20 +1480,20 @@ discord_create_guild(struct discord *client,
                              "/guilds");
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild(struct discord *client,
                   u64_snowflake_t guild_id,
                   struct discord_guild *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_guild, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_preview(struct discord *client,
                           u64_snowflake_t guild_id,
                           struct discord_guild_preview *ret)
@@ -1498,13 +1501,13 @@ discord_get_guild_preview(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_guild_preview, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/preview", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_guild(struct discord *client,
                      u64_snowflake_t guild_id,
                      struct discord_modify_guild_params *params,
@@ -1514,8 +1517,8 @@ discord_modify_guild(struct discord *client,
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_modify_guild_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -1524,16 +1527,16 @@ discord_modify_guild(struct discord *client,
                              "/guilds/%" PRIu64, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_guild(struct discord *client, u64_snowflake_t guild_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_channels(struct discord *client,
                            u64_snowflake_t guild_id,
                            struct discord_channel ***ret)
@@ -1541,13 +1544,13 @@ discord_get_guild_channels(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_channel, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/channels", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_guild_channel(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1558,8 +1561,8 @@ discord_create_guild_channel(
   struct sized_buffer body;
   char buf[2048];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_create_guild_channel_params_to_json(buf, sizeof(buf), params);
@@ -1569,7 +1572,7 @@ discord_create_guild_channel(
                              "/guilds/%" PRIu64 "/channels", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_guild_channel_positions(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1578,8 +1581,8 @@ discord_modify_guild_channel_positions(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_modify_guild_channel_positions_params_list_to_json(
     buf, sizeof(buf), params);
@@ -1589,7 +1592,7 @@ discord_modify_guild_channel_positions(
                              "/guilds/%" PRIu64 "/channels", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_member(struct discord *client,
                          u64_snowflake_t guild_id,
                          u64_snowflake_t user_id,
@@ -1598,15 +1601,15 @@ discord_get_guild_member(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_guild_member, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
                              user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_list_guild_members(struct discord *client,
                            u64_snowflake_t guild_id,
                            struct discord_list_guild_members_params *params,
@@ -1616,7 +1619,7 @@ discord_list_guild_members(struct discord *client,
     REQUEST_ATTR_LIST_INIT(discord_guild_member, ret);
   char query[1024] = "";
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params) {
     size_t offset = 0;
@@ -1638,7 +1641,7 @@ discord_list_guild_members(struct discord *client,
                              *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_search_guild_members(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1649,7 +1652,7 @@ discord_search_guild_members(
     REQUEST_ATTR_LIST_INIT(discord_guild_member, ret);
   char query[1024] = "";
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params) {
     size_t offset = 0;
@@ -1674,7 +1677,7 @@ discord_search_guild_members(
                              guild_id, *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_add_guild_member(struct discord *client,
                          u64_snowflake_t guild_id,
                          u64_snowflake_t user_id,
@@ -1686,10 +1689,10 @@ discord_add_guild_member(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params->access_token != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params->access_token != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_add_guild_member_params_to_json(buf, sizeof(buf), params);
@@ -1700,7 +1703,7 @@ discord_add_guild_member(struct discord *client,
                              user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_guild_member(struct discord *client,
                             u64_snowflake_t guild_id,
                             u64_snowflake_t user_id,
@@ -1712,9 +1715,9 @@ discord_modify_guild_member(struct discord *client,
   struct sized_buffer body;
   char buf[2048];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_modify_guild_member_params_to_json(buf, sizeof(buf), params);
@@ -1724,7 +1727,7 @@ discord_modify_guild_member(struct discord *client,
                              "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
                              user_id);
 }
-ORCAcode
+CCORDcode
 discord_modify_current_member(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1736,9 +1739,9 @@ discord_modify_current_member(
   struct sized_buffer body;
   char buf[512];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params->nick != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params->nick != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_modify_current_member_params_to_json(buf, sizeof(buf), params);
@@ -1747,7 +1750,7 @@ discord_modify_current_member(
   return discord_adapter_run(&client->adapter, &attr, &body, HTTP_PATCH,
                              "/guilds/%" PRIu64 "/members/@me", guild_id);
 }
-ORCAcode
+CCORDcode
 discord_modify_current_user_nick(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1759,9 +1762,9 @@ discord_modify_current_user_nick(
   struct sized_buffer body;
   char buf[512];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params->nick != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params->nick != NULL, CCORD_BAD_PARAMETER, "");
 
   logconf_warn(&client->conf,
                "This endpoint is now deprecated by Discord. Please use "
@@ -1775,15 +1778,15 @@ discord_modify_current_user_nick(
                              "/guilds/%" PRIu64 "/members/@me/nick", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_add_guild_member_role(struct discord *client,
                               u64_snowflake_t guild_id,
                               u64_snowflake_t user_id,
                               u64_snowflake_t role_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, role_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, role_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_PUT,
                              "/guilds/%" PRIu64 "/members/%" PRIu64
@@ -1791,15 +1794,15 @@ discord_add_guild_member_role(struct discord *client,
                              guild_id, user_id, role_id);
 }
 
-ORCAcode
+CCORDcode
 discord_remove_guild_member_role(struct discord *client,
                                  u64_snowflake_t guild_id,
                                  u64_snowflake_t user_id,
                                  u64_snowflake_t role_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, role_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, role_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64 "/members/%" PRIu64
@@ -1807,33 +1810,33 @@ discord_remove_guild_member_role(struct discord *client,
                              guild_id, user_id, role_id);
 }
 
-ORCAcode
+CCORDcode
 discord_remove_guild_member(struct discord *client,
                             u64_snowflake_t guild_id,
                             u64_snowflake_t user_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64 "/members/%" PRIu64, guild_id,
                              user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_bans(struct discord *client,
                        u64_snowflake_t guild_id,
                        struct discord_ban ***ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_ban, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/bans", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_ban(struct discord *client,
                       u64_snowflake_t guild_id,
                       u64_snowflake_t user_id,
@@ -1841,15 +1844,15 @@ discord_get_guild_ban(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_ban, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
                              user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_guild_ban(struct discord *client,
                          u64_snowflake_t guild_id,
                          u64_snowflake_t user_id,
@@ -1858,13 +1861,13 @@ discord_create_guild_ban(struct discord *client,
   struct sized_buffer body;
   char buf[256];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client,
-              params->delete_message_days >= 0
-                && params->delete_message_days <= 7,
-              ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client,
+               params->delete_message_days >= 0
+                 && params->delete_message_days <= 7,
+               CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_create_guild_ban_params_to_json(buf, sizeof(buf), params);
@@ -1874,33 +1877,33 @@ discord_create_guild_ban(struct discord *client,
                              "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
                              user_id);
 }
-ORCAcode
+CCORDcode
 discord_remove_guild_ban(struct discord *client,
                          u64_snowflake_t guild_id,
                          u64_snowflake_t user_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64 "/bans/%" PRIu64, guild_id,
                              user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_roles(struct discord *client,
                         u64_snowflake_t guild_id,
                         struct discord_role ***ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_role, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/roles", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_guild_role(struct discord *client,
                           u64_snowflake_t guild_id,
                           struct discord_create_guild_role_params *params,
@@ -1910,7 +1913,7 @@ discord_create_guild_role(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_create_guild_role_params_to_json(buf, sizeof(buf), params);
@@ -1920,7 +1923,7 @@ discord_create_guild_role(struct discord *client,
                              "/guilds/%" PRIu64 "/roles", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_guild_role_positions(
   struct discord *client,
   u64_snowflake_t guild_id,
@@ -1931,8 +1934,8 @@ discord_modify_guild_role_positions(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_modify_guild_role_positions_params_list_to_json(
     buf, sizeof(buf), params);
@@ -1942,7 +1945,7 @@ discord_modify_guild_role_positions(
                              "/guilds/%" PRIu64 "/roles", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_guild_role(struct discord *client,
                           u64_snowflake_t guild_id,
                           u64_snowflake_t role_id,
@@ -1954,8 +1957,8 @@ discord_modify_guild_role(struct discord *client,
   char buf[2048] = "{}";
   size_t len;
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, role_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, role_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params)
     len = discord_modify_guild_role_params_to_json(buf, sizeof(buf), params);
@@ -1969,19 +1972,19 @@ discord_modify_guild_role(struct discord *client,
                              role_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_guild_role(struct discord *client,
                           u64_snowflake_t guild_id,
                           u64_snowflake_t role_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, role_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, role_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
                              role_id);
 }
-ORCAcode
+CCORDcode
 discord_begin_guild_prune(struct discord *client,
                           u64_snowflake_t guild_id,
                           struct discord_begin_guild_prune_params *params)
@@ -1990,7 +1993,7 @@ discord_begin_guild_prune(struct discord *client,
   char buf[4096];
   size_t len;
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params)
     len = discord_begin_guild_prune_params_to_json(buf, sizeof(buf), params);
@@ -2003,7 +2006,7 @@ discord_begin_guild_prune(struct discord *client,
                              "/guilds/%" PRIu64 "/prune", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_invites(struct discord *client,
                           u64_snowflake_t guild_id,
                           struct discord_invite ***ret)
@@ -2011,39 +2014,39 @@ discord_get_guild_invites(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_invite, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/invites", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_guild_integrations(struct discord *client,
                                   u64_snowflake_t guild_id,
                                   u64_snowflake_t integration_id)
 {
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, integration_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, integration_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/guilds/%" PRIu64 "/integrations/%" PRIu64,
                              guild_id, integration_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_vanity_url(struct discord *client,
                              u64_snowflake_t guild_id,
                              struct discord_invite *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_invite, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/vanity-url", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_welcome_screen(struct discord *client,
                                  u64_snowflake_t guild_id,
                                  struct discord_welcome_screen *ret)
@@ -2051,7 +2054,7 @@ discord_get_guild_welcome_screen(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_welcome_screen, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/welcome-screen", guild_id);
@@ -2061,7 +2064,7 @@ discord_get_guild_welcome_screen(struct discord *client,
  * Functions specific to Discord Interaction
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_create_interaction_response(
   struct discord *client,
   u64_snowflake_t interaction_id,
@@ -2074,10 +2077,10 @@ discord_create_interaction_response(
   struct sized_buffer body;
   char buf[4096];
 
-  ORCA_EXPECT(client, interaction_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, interaction_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2087,7 +2090,7 @@ discord_create_interaction_response(
                              interaction_id, interaction_token);
 }
 
-ORCAcode
+CCORDcode
 discord_get_original_interaction_response(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -2097,16 +2100,16 @@ discord_get_original_interaction_response(
   struct discord_request_attr attr =
     REQUEST_ATTR_INIT(discord_interaction_response, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/messages/@original",
                              application_id, interaction_token);
 }
 
-ORCAcode
+CCORDcode
 discord_edit_original_interaction_response(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -2120,10 +2123,10 @@ discord_edit_original_interaction_response(
   enum http_method method;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_edit_original_interaction_response_params_to_json(
     buf, sizeof(buf), params);
@@ -2142,21 +2145,21 @@ discord_edit_original_interaction_response(
                              application_id, interaction_token);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_original_interaction_response(struct discord *client,
                                              u64_snowflake_t application_id,
                                              const char interaction_token[])
 {
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/webhooks/%" PRIu64 "/%s/messages/@original",
                              application_id, interaction_token);
 }
 
-ORCAcode
+CCORDcode
 discord_create_followup_message(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -2170,10 +2173,10 @@ discord_create_followup_message(
   char buf[16384]; /**< @todo dynamic buffer */
   char query[4096] = "";
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   if (params->thread_id) {
     size_t ret;
@@ -2200,7 +2203,7 @@ discord_create_followup_message(
                              interaction_token, *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_get_followup_message(struct discord *client,
                              u64_snowflake_t application_id,
                              const char interaction_token[],
@@ -2209,17 +2212,17 @@ discord_get_followup_message(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_message, ret);
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/%" PRIu64,
                              application_id, interaction_token, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_edit_followup_message(
   struct discord *client,
   u64_snowflake_t application_id,
@@ -2233,11 +2236,11 @@ discord_edit_followup_message(
   enum http_method method;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_edit_followup_message_params_to_json(buf, sizeof(buf), params);
@@ -2256,16 +2259,16 @@ discord_edit_followup_message(
                              application_id, interaction_token, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_followup_message(struct discord *client,
                                 u64_snowflake_t application_id,
                                 const char interaction_token[],
                                 u64_snowflake_t message_id)
 {
-  ORCA_EXPECT(client, application_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(interaction_token), ORCA_BAD_PARAMETER,
-              "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
+               CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
@@ -2276,7 +2279,7 @@ discord_delete_followup_message(struct discord *client,
  * Functions specific to Discord Invite
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_invite(struct discord *client,
                    char *invite_code,
                    struct discord_get_invite_params *params,
@@ -2286,8 +2289,8 @@ discord_get_invite(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(invite_code), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(invite_code), CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_get_invite_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2296,14 +2299,14 @@ discord_get_invite(struct discord *client,
                              "/invites/%s", invite_code);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_invite(struct discord *client,
                       char *invite_code,
                       struct discord_invite *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_invite, ret);
 
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(invite_code), ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(invite_code), CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_DELETE,
                              "/invites/%s", invite_code);
@@ -2313,7 +2316,7 @@ discord_delete_invite(struct discord *client,
  * Functions specific to Discord User
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_get_current_user(struct discord *client, struct discord_user *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_user, ret);
@@ -2322,20 +2325,20 @@ discord_get_current_user(struct discord *client, struct discord_user *ret)
                              "/users/@me");
 }
 
-ORCAcode
+CCORDcode
 discord_get_user(struct discord *client,
                  u64_snowflake_t user_id,
                  struct discord_user *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_user, ret);
 
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/users/%" PRIu64, user_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_current_user(struct discord *client,
                             struct discord_modify_current_user_params *params,
                             struct discord_user *ret)
@@ -2344,7 +2347,7 @@ discord_modify_current_user(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_modify_current_user_params_to_json(buf, sizeof(buf), params);
@@ -2354,7 +2357,7 @@ discord_modify_current_user(struct discord *client,
                              "/users/@me");
 }
 
-ORCAcode
+CCORDcode
 discord_get_current_user_guilds(struct discord *client,
                                 struct discord_guild ***ret)
 {
@@ -2365,18 +2368,18 @@ discord_get_current_user_guilds(struct discord *client,
                              "/users/@me/guilds");
 }
 
-ORCAcode
+CCORDcode
 discord_leave_guild(struct discord *client, u64_snowflake_t guild_id)
 {
   struct sized_buffer body = { "{}", 2 };
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, &body, HTTP_DELETE,
                              "/users/@me/guilds/%" PRIu64, guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_create_dm(struct discord *client,
                   struct discord_create_dm_params *params,
                   struct discord_channel *ret)
@@ -2385,7 +2388,7 @@ discord_create_dm(struct discord *client,
   struct sized_buffer body;
   char buf[128];
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_create_dm_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2394,7 +2397,7 @@ discord_create_dm(struct discord *client,
                              "/users/@me/channels");
 }
 
-ORCAcode
+CCORDcode
 discord_create_group_dm(struct discord *client,
                         struct discord_create_group_dm_params *params,
                         struct discord_channel *ret)
@@ -2403,9 +2406,9 @@ discord_create_group_dm(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params->access_tokens != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params->nicks != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params->access_tokens != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params->nicks != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_create_group_dm_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2414,7 +2417,7 @@ discord_create_group_dm(struct discord *client,
                              "/users/@me/channels");
 }
 
-ORCAcode
+CCORDcode
 discord_get_user_connections(struct discord *client,
                              struct discord_connection ***ret)
 {
@@ -2429,7 +2432,7 @@ discord_get_user_connections(struct discord *client,
  * Functions specific to Discord Voice
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_list_voice_regions(struct discord *client,
                            struct discord_voice_region ***ret)
 {
@@ -2444,7 +2447,7 @@ discord_list_voice_regions(struct discord *client,
  * Functions specific to Discord Webhook
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_create_webhook(struct discord *client,
                        u64_snowflake_t channel_id,
                        struct discord_create_webhook_params *params,
@@ -2454,9 +2457,10 @@ discord_create_webhook(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(params->name), ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(params->name), CCORD_BAD_PARAMETER,
+               "");
 
   body.size = discord_create_webhook_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2465,7 +2469,7 @@ discord_create_webhook(struct discord *client,
                              "/channels/%" PRIu64 "/webhooks", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_channel_webhooks(struct discord *client,
                              u64_snowflake_t channel_id,
                              struct discord_webhook ***ret)
@@ -2473,13 +2477,13 @@ discord_get_channel_webhooks(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_webhook, ret);
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/channels/%" PRIu64 "/webhooks", channel_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_guild_webhooks(struct discord *client,
                            u64_snowflake_t guild_id,
                            struct discord_webhook ***ret)
@@ -2487,26 +2491,26 @@ discord_get_guild_webhooks(struct discord *client,
   struct discord_request_attr attr =
     REQUEST_ATTR_LIST_INIT(discord_webhook, ret);
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/guilds/%" PRIu64 "/webhooks", guild_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_webhook(struct discord *client,
                     u64_snowflake_t webhook_id,
                     struct discord_webhook *ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_webhook, ret);
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64, webhook_id);
 }
 
-ORCAcode
+CCORDcode
 discord_get_webhook_with_token(struct discord *client,
                                u64_snowflake_t webhook_id,
                                const char webhook_token[],
@@ -2514,15 +2518,16 @@ discord_get_webhook_with_token(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_webhook, ret);
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s", webhook_id,
                              webhook_token);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_webhook(struct discord *client,
                        u64_snowflake_t webhook_id,
                        struct discord_modify_webhook_params *params,
@@ -2532,7 +2537,7 @@ discord_modify_webhook(struct discord *client,
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size = discord_modify_webhook_params_to_json(buf, sizeof(buf), params);
   body.start = buf;
@@ -2541,7 +2546,7 @@ discord_modify_webhook(struct discord *client,
                              "/webhooks/%" PRIu64, webhook_id);
 }
 
-ORCAcode
+CCORDcode
 discord_modify_webhook_with_token(
   struct discord *client,
   u64_snowflake_t webhook_id,
@@ -2553,8 +2558,9 @@ discord_modify_webhook_with_token(
   struct sized_buffer body;
   char buf[1024];
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
 
   body.size =
     discord_modify_webhook_with_token_params_to_json(buf, sizeof(buf), params);
@@ -2565,29 +2571,30 @@ discord_modify_webhook_with_token(
                              webhook_token);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_webhook(struct discord *client, u64_snowflake_t webhook_id)
 {
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/webhooks/%" PRIu64, webhook_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_webhook_with_token(struct discord *client,
                                   u64_snowflake_t webhook_id,
                                   const char webhook_token[])
 {
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/webhooks/%" PRIu64 "/%s", webhook_id,
                              webhook_token);
 }
 
-ORCAcode
+CCORDcode
 discord_execute_webhook(struct discord *client,
                         u64_snowflake_t webhook_id,
                         const char webhook_token[],
@@ -2601,9 +2608,10 @@ discord_execute_webhook(struct discord *client,
   char query[4096] = "";
   size_t len = 0;
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   if (params->wait) {
     len = snprintf(query, sizeof(query), "wait=1");
@@ -2631,7 +2639,7 @@ discord_execute_webhook(struct discord *client,
                              webhook_token, *query ? "?" : "", query);
 }
 
-ORCAcode
+CCORDcode
 discord_get_webhook_message(struct discord *client,
                             u64_snowflake_t webhook_id,
                             const char webhook_token[],
@@ -2640,16 +2648,17 @@ discord_get_webhook_message(struct discord *client,
 {
   struct discord_request_attr attr = REQUEST_ATTR_INIT(discord_message, ret);
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, &attr, NULL, HTTP_GET,
                              "/webhooks/%" PRIu64 "/%s/%" PRIu64, webhook_id,
                              webhook_token, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_edit_webhook_message(
   struct discord *client,
   u64_snowflake_t webhook_id,
@@ -2663,10 +2672,11 @@ discord_edit_webhook_message(
   enum http_method method;
   char buf[16384]; /**< @todo dynamic buffer */
 
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, params != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
   body.size =
     discord_edit_webhook_message_params_to_json(buf, sizeof(buf), params);
@@ -2685,15 +2695,16 @@ discord_edit_webhook_message(
                              webhook_id, webhook_token, message_id);
 }
 
-ORCAcode
+CCORDcode
 discord_delete_webhook_message(struct discord *client,
                                u64_snowflake_t webhook_id,
                                const char webhook_token[],
                                u64_snowflake_t message_id)
 {
-  ORCA_EXPECT(client, webhook_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, !IS_EMPTY_STRING(webhook_token), ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, message_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+               "");
+  CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   return discord_adapter_run(&client->adapter, NULL, NULL, HTTP_DELETE,
                              "/webhooks/%" PRIu64 "/%s/messages/%" PRIu64,
@@ -2704,7 +2715,7 @@ discord_delete_webhook_message(struct discord *client,
  * Miscellaneous
  ******************************************************************************/
 
-ORCAcode
+CCORDcode
 discord_disconnect_guild_member(struct discord *client,
                                 u64_snowflake_t guild_id,
                                 u64_snowflake_t user_id,
@@ -2715,8 +2726,8 @@ discord_disconnect_guild_member(struct discord *client,
   struct sized_buffer body;
   char buf[128];
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, user_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
   body.size = json_inject(buf, sizeof(buf), "(channel_id):null");
   body.start = buf;

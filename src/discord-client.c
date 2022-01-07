@@ -11,7 +11,7 @@
 static void
 _discord_init(struct discord *new_client)
 {
-  orca_global_init();
+  ccord_global_init();
 
   discord_adapter_init(&new_client->adapter, &new_client->conf,
                        &new_client->token);
@@ -100,19 +100,19 @@ discord_async_next(struct discord *client, struct discord_async_attr *attr)
 }
 
 const char *
-discord_strerror(ORCAcode code, struct discord *client)
+discord_strerror(CCORDcode code, struct discord *client)
 {
   switch (code) {
   default:
-    return orca_strerror(code);
-  case ORCA_DISCORD_JSON_CODE:
+    return ccord_strerror(code);
+  case CCORD_DISCORD_JSON_CODE:
     return client ? client->adapter.errbuf
                   : "Discord JSON Error Code: Failed request";
-  case ORCA_DISCORD_BAD_AUTH:
+  case CCORD_DISCORD_BAD_AUTH:
     return "Discord Bad Authentication: Bad authentication token";
-  case ORCA_DISCORD_RATELIMIT:
+  case CCORD_DISCORD_RATELIMIT:
     return "Discord Ratelimit: You are being ratelimited";
-  case ORCA_DISCORD_CONNECTION:
+  case CCORD_DISCORD_CONNECTION:
     return "Discord Connection: Couldn't establish a connection to discord";
   }
 }
@@ -233,21 +233,21 @@ discord_set_on_ready(struct discord *client, discord_on_idle callback)
   client->gw.cmds.cbs.on_ready = callback;
 }
 
-ORCAcode
+CCORDcode
 discord_run(struct discord *client)
 {
-  ORCAcode code;
+  CCORDcode code;
 
   while (1) {
     code = discord_gateway_start(&client->gw);
-    if (code != ORCA_OK) break;
+    if (code != CCORD_OK) break;
 
     do {
       code = discord_gateway_perform(&client->gw);
-      if (code != ORCA_OK) break;
+      if (code != CCORD_OK) break;
 
       code = discord_adapter_perform(&client->adapter);
-      if (code != ORCA_OK) break;
+      if (code != CCORD_OK) break;
     } while (1);
 
     if (discord_gateway_end(&client->gw)) {
@@ -582,20 +582,4 @@ struct logconf *
 discord_get_logconf(struct discord *client)
 {
   return &client->conf;
-}
-
-/******************************************************************************
- * The following functions are deprecated
- ******************************************************************************/
-
-void
-discord_global_init()
-{
-  orca_global_init();
-}
-
-void
-discord_global_cleanup()
-{
-  orca_global_cleanup();
 }

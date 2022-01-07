@@ -67,7 +67,7 @@ on_interaction_create(struct discord *client,
       }
   };
 
-  ORCAcode code;
+  CCORDcode code;
   code = discord_create_interaction_response(
     client, interaction->id, interaction->token, &params, NULL);
 
@@ -83,7 +83,7 @@ read_input(void *p_client)
   char buf[DISCORD_MAX_MESSAGE_LEN];
   ptrdiff_t bufoffset;
   char cmd_action[9 + 1];
-  ORCAcode code;
+  CCORDcode code;
 
   pthread_detach(pthread_self());
 
@@ -112,7 +112,7 @@ read_input(void *p_client)
         code =
           discord_get_global_application_commands(client, g_app_id, &app_cmds);
 
-      if (ORCA_OK == code && app_cmds) {
+      if (CCORD_OK == code && app_cmds) {
         char list[4096] = ""; // should be large enough ?
         size_t len = 0;
 
@@ -161,7 +161,7 @@ read_input(void *p_client)
           &app_cmd);
       }
 
-      if (ORCA_OK == code && app_cmd.id) {
+      if (CCORD_OK == code && app_cmd.id) {
         log_info("Created command:\t%s (" PRIu64 ")", app_cmd.name,
                  app_cmd.id);
         discord_application_command_cleanup(&app_cmd);
@@ -199,7 +199,7 @@ read_input(void *p_client)
           &app_cmd);
       }
 
-      if (ORCA_OK == code && app_cmd.id) {
+      if (CCORD_OK == code && app_cmd.id) {
         log_info("Edited command:\t%s (%" PRIu64 ")", app_cmd.name,
                  app_cmd.id);
         discord_application_command_cleanup(&app_cmd);
@@ -224,7 +224,7 @@ read_input(void *p_client)
                                                          command_id);
       }
 
-      if (ORCA_OK == code)
+      if (CCORD_OK == code)
         log_info("Deleted command");
       else
         log_error("Couldn't delete command");
@@ -250,7 +250,7 @@ main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Could not initialize client");
 
@@ -278,5 +278,5 @@ main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

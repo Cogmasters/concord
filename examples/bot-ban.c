@@ -61,14 +61,14 @@ void on_ban(struct discord *client, const struct discord_message *msg)
 {
   // get member list
   struct discord_guild_member **members = NULL;
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_list_guild_members(
     client, msg->guild_id,
     &(struct discord_list_guild_members_params){ .limit = 1000, .after = 0 },
     &members);
 
-  if (code != ORCA_OK || !members) return;
+  if (code != CCORD_OK || !members) return;
 
   // get username and discriminator of the to be banned user
   char username[128] = "";
@@ -104,11 +104,11 @@ void on_unban(struct discord *client, const struct discord_message *msg)
 {
   // get banned list
   struct discord_ban **bans = NULL;
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_get_guild_bans(client, msg->guild_id, &bans);
 
-  if (code != ORCA_OK || !bans) return;
+  if (code != CCORD_OK || !bans) return;
 
   // get username and discriminator of the to be banned user
   char username[128] = "";
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -162,5 +162,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

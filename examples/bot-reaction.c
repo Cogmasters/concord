@@ -20,14 +20,14 @@ void on_get_users(struct discord *client, const struct discord_message *msg)
 
   struct discord_user **users = NULL;
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_get_reactions(
     client, msg->referenced_message->channel_id, msg->referenced_message->id,
     0, msg->content, &(struct discord_get_reactions_params){ .limit = 25 },
     &users);
 
-  if (code != ORCA_OK || !users) {
+  if (code != CCORD_OK || !users) {
     snprintf(text, sizeof(text), "Nobody reacted with '%s'!", msg->content);
   }
   else {
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -135,5 +135,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

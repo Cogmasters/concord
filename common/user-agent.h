@@ -9,7 +9,7 @@ extern "C" {
 
 #include <curl/curl.h>
 #include "ntl.h" /* struct sized_buffer */
-#include "common.h" /* ORCAcode */
+#include "common.h" /* CCORDcode */
 #include "logconf.h" /* logging facilities */
 
 /** @brief HTTP methods */
@@ -147,7 +147,7 @@ struct ua_info {
   /** logging informational */
   struct loginfo loginfo;
   /** response code for latest request */
-  ORCAcode code;
+  CCORDcode code;
   /** the HTTP response code */
   long httpcode;
 
@@ -226,15 +226,15 @@ struct ua_resp_handle {
  * @param body the optional request body, can be NULL
  * @param method the HTTP method of this transfer (GET, POST, ...)
  * @param endpoint the endpoint to be appended to the URL set at ua_set_url()
- * @ORCA_return
+ * @CCORD_return
  * @note This is an easy, yet highly abstracted way of performing requests.
  *        If a higher control is necessary, users are better off using the
  *        functions of `ua_conn_xxx()` family.
  */
-ORCAcode ua_easy_run(struct user_agent *ua,
-                     struct ua_info *info,
-                     struct ua_resp_handle *handle,
-                     struct ua_conn_attr *attr);
+CCORDcode ua_easy_run(struct user_agent *ua,
+                      struct ua_info *info,
+                      struct ua_resp_handle *handle,
+                      struct ua_conn_attr *attr);
 
 /**
  * @brief Get a connection handle and mark it as running
@@ -248,9 +248,9 @@ struct ua_conn *ua_conn_start(struct user_agent *ua);
  * @brief Perform a blocking transfer
  *
  * @param conn the connection handle
- * @ORCA_return
+ * @CCORD_return
  */
-ORCAcode ua_conn_easy_perform(struct ua_conn *conn);
+CCORDcode ua_conn_easy_perform(struct ua_conn *conn);
 
 /**
  * @brief Add a field/value pair to the request header
@@ -321,9 +321,9 @@ CURL *ua_conn_get_easy_handle(struct ua_conn *conn);
  *
  * @param conn the connection handle
  * @param info handle to store information on previous request
- * @ORCA_return
+ * @CCORD_return
  */
-ORCAcode ua_info_extract(struct ua_conn *conn, struct ua_info *info);
+CCORDcode ua_info_extract(struct ua_conn *conn, struct ua_info *info);
 
 /**
  * @brief Cleanup informational handle

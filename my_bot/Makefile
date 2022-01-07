@@ -17,14 +17,14 @@
 
 .SILENT: config
 
-# Orca's relative location to this Makefile
-ORCA = ..
+# relative location of concord/ to this Makefile
+TOP = ..
 
 # default compiler is gcc, but can be changed at the CLI
 #    ex: '$ CC=clang make'
 CC ?= gcc
 
-LIBDIR := $(ORCA)/lib
+LIBDIR := $(TOP)/lib
 OBJDIR := obj
 
 # add your source files here
@@ -42,13 +42,13 @@ CONF := config.json
 # -pthread tell the compiler to link the pthread library
 #  			aswell configure compilation for threads
 # -I add header folder to compiler search path
-CFLAGS  := -O0 -g -Wall -pthread                         \
-           -I. -I$(ORCA) -I$(ORCA)/cee-utils             \
-           -I$(ORCA)/common -I$(ORCA)/common/third-party
+CFLAGS  := -O0 -g -Wall -pthread                       \
+           -I. -I$(TOP)/include -I$(TOP)/cee-utils     \
+           -I$(TOP)/common -I$(TOP)/common/third-party
 
 # -L add library folder to compiler search path
 # -ldiscord links against libdiscord.a
-# -lcurl links against libcurl, a orca dependency
+# -lcurl links against libcurl, a concord dependency
 LDFLAGS := -L$(LIBDIR) -ldiscord -lcurl
 
 all: $(MAIN) $(CONF)
@@ -68,7 +68,7 @@ $(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(CONF):
-	cp -n $(ORCA)/config.json $(CONF)
+	cp -n $(TOP)/config.json $(CONF)
 	echo "A template config file was copied into this folder."
 	echo "Replace 'YOUR-BOT-TOKEN' with an actual token at $(CONF)"
 
@@ -78,7 +78,6 @@ clean:
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
-	@ echo -e 'ORCA: $(ORCA)\n'
 	@ echo -e 'SRC: $(SRC)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 	@ echo -e 'MAIN: $(MAIN)\n'

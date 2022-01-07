@@ -1,10 +1,13 @@
 PREFIX ?= /usr/local
 CC     ?= gcc
 
+SRC_DIR       := src
+INCLUDE_DIR   := include
 OBJDIR        := obj
 LIBDIR        := lib
+
 SPECS_DIR     := specs
-SPECSCODE_DIR := specs-code
+SPECSCODE_DIR := $(SRC_DIR)/specs-code
 CEEUTILS_DIR  := cee-utils
 COMMON_DIR    := common
 THIRDP_DIR    := $(COMMON_DIR)/third-party
@@ -33,7 +36,7 @@ SRC  := $(CEEUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 # APIs src
-DISCORD_SRC := $(wildcard discord-*.c $(SPECSCODE_DIR)/discord/*.c)
+DISCORD_SRC := $(wildcard $(SRC_DIR)/discord-*.c $(SPECSCODE_DIR)/*.c)
 
 # APIs objs
 DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
@@ -41,15 +44,11 @@ DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
 # API libs
 LIBDISCORD := $(LIBDIR)/libdiscord.a
 
-CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600          \
-          -I. -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
+CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
+          -I$(INCLUDE_DIR) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
-
-ifeq (,$(findstring $(CC),stensal-c sfc)) # ifneq stensal-c AND sfc
-	CFLAGS  += -fPIC
-endif
 
 $(OBJDIR)/$(CEEUTILS_DIR)/%.o : $(CEEUTILS_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -64,8 +63,9 @@ all: | $(SPECSCODE_DIR)
 specs_gen: | $(CEEUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
-	@ rm -rf $(SPECSCODE_DIR)
-	mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
+	@ mkdir -p $(SPECSCODE_DIR)
+	mv $(SPECS_DIR)/specs-code/discord/*.c $(SPECSCODE_DIR)
+	mv $(SPECS_DIR)/specs-code/discord/*.h $(INCLUDE_DIR)
 
 cee_utils:
 	./scripts/get-cee-utils.sh
@@ -104,7 +104,7 @@ install:
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
-	install -m 644 *.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
+	install -m 644 $(SRC_DIR)/*.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
 	               $(THIRDP_DIR)/*.h $(PREFIX)/include/concord/
 	install -d $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
 	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
@@ -134,7 +134,6 @@ purge: clean
 docs: | $(DOCS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
-	@ rm -rf $(SPECSCODE_DIR)
 	@ mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 
 $(DOCS_DIR):

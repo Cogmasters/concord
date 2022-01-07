@@ -4,15 +4,16 @@ TOP = ..
 CC ?= gcc
 
 CEEUTILS_DIR := $(TOP)/cee-utils
-COMMON_DIR    := $(TOP)/common
+COMMON_DIR   := $(TOP)/common
+INCLUDE_DIR  := $(TOP)/include
 
 TEST_DISCORD := test-discord-api test-discord-async test-discord-ws
 TEST_COMMON  := test-user-agent test-websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)
 
-CFLAGS  += -I$(TOP) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                \
+CFLAGS  += -I$(INCLUDE_DIR) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
+           -I$(COMMON_DIR)/third-party                        \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 

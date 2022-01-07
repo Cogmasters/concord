@@ -11,22 +11,22 @@ struct msg {
   bool matched;
 };
 
-ORCAcode
+CCORDcode
 discord_delete_messages_by_author_id(struct discord *client,
                                      u64_snowflake_t channel_id,
                                      u64_snowflake_t author_id)
 {
   struct discord_get_channel_messages_params params = { 0 };
   struct discord_message **messages = NULL;
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, channel_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, author_id != 0, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, author_id != 0, CCORD_BAD_PARAMETER, "");
 
   params.limit = 100;
   code = discord_get_channel_messages(client, channel_id, &params, &messages);
 
-  if (code != ORCA_OK) {
+  if (code != CCORD_OK) {
     logconf_error(&client->conf, "Couldn't fetch channel messages");
   }
   else {
@@ -45,7 +45,7 @@ discord_delete_messages_by_author_id(struct discord *client,
 
     if (0 == count) {
       logconf_trace(&client->conf, "Couldn't fetch messages from author");
-      return ORCA_OK;
+      return CCORD_OK;
     }
 
     list = (u64_snowflake_t **)ntl_calloc(count, sizeof(u64_snowflake_t));
@@ -278,7 +278,7 @@ discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
 }
 
 /*@todo create some manner of copying a struct, including its pointer fields */
-ORCAcode
+CCORDcode
 discord_get_channel_at_pos(struct discord *client,
                            const u64_snowflake_t guild_id,
                            const enum discord_channel_types type,
@@ -286,13 +286,13 @@ discord_get_channel_at_pos(struct discord *client,
                            struct discord_channel *ret)
 {
   struct discord_channel **channels = NULL;
-  ORCAcode code;
+  CCORDcode code;
 
-  ORCA_EXPECT(client, guild_id != 0, ORCA_BAD_PARAMETER, "");
-  ORCA_EXPECT(client, ret != NULL, ORCA_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
+  CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
   code = discord_get_guild_channels(client, guild_id, &channels);
-  if (ORCA_OK != code) {
+  if (CCORD_OK != code) {
     log_error("Couldn't fetch channels from guild");
     return code;
   }

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
 
   discord_set_on_ready(client, &on_ready);
@@ -51,5 +51,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }
