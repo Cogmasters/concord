@@ -64,7 +64,7 @@ specs_gen: | $(COGUTILS_DIR)
 	mv $(SPECS_DIR)/specs-code/discord/*.h $(INCLUDE_DIR)
 
 cog_utils:
-	./scripts/get-cog-utils.sh
+	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
