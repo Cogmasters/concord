@@ -17,7 +17,7 @@
 #include "logconf.h"
 
 /* see specs/discord/ for specs */
-#include "specs-code/discord/one-specs.h"
+#include "one-specs.h"
 
 #define DISCORD_API_BASE_URL                 "https://discord.com/api/v9"
 #define DISCORD_GATEWAY_URL_SUFFIX           "?v=9&encoding=json"

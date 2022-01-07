@@ -3,8 +3,9 @@
 TOP = ..
 CC ?= gcc
 
-CEEUTILS_DIR := $(TOP)/cee-utils
-COMMON_DIR   := $(TOP)/common
+CEEUTILS_DIR  := $(TOP)/cee-utils
+COMMON_DIR    := $(TOP)/common
+INCLUDE_DIR   := $(TOP)/include
 
 BOT_DISCORD := bot-audit-log \
                bot-ban \
@@ -31,8 +32,8 @@ BOT_DISCORD := bot-audit-log \
 
 BOTS := $(BOT_DISCORD)
 
-CFLAGS  += -I$(TOP) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                \
+CFLAGS  += -I$(INCLUDE_DIR) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
+           -I$(COMMON_DIR)/third-party                        \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 
