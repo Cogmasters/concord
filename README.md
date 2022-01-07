@@ -203,7 +203,7 @@ Problems? Check out our [Discord Server](https://discord.gg/nBUqrWf).
 
 - [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Contributing](docs/CONTRIBUTING.md)
-<!-- - [Internals](docs/INTERNALS.md) -->
+- [Internals](docs/INTERNALS.md)
 
 ## Contributing
 Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).

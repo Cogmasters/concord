@@ -80,21 +80,21 @@ You can also initialize it by providing the token directly to `discord_init()`:
 struct discord *client = discord_init(BOT_TOKEN);
 ```
 
-### [discord\_config\_init()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_config_init)
+### discord\_config\_init()
 
 `discord_config_init(char[])` : initialize the bot with a configuration file
 
-Returns [struct discord](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord): the bot client
+Returns `struct discord`: the bot client
 
 | Member Parameters | Description                     |
 | :---------------- | :------------------------------ |
 | char[]            | the name of the bot config file |
 
-## [discord\_init()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_init)
+## discord\_init()
 
 `discord_init(char[])` : initialize the bot with a token
 
-Returns [struct discord](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord): the bot client
+Returns `struct discord` the bot client
 
 | Member Parameters | Description          |
 | :---------------- | :------------------- |
@@ -110,32 +110,32 @@ discord_set_on_command(client, "pong", &on_pong);
 discord_run(client);
 ```
 
-### [discord\_set\_on\_ready()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_ready)
+### discord\_set\_on\_ready()
 
 `discord_set_on_ready(struct discord*, discord_on_idle*)`: calls `on_ready` callback when the connection is succesfully established
 
-| Member Parameters                                                                            | Description                                           |
-| :------------------------------------------------------------------------------------------- | :---------------------------------------------------- |
-| [struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)              | the client stucture                                   |
-| [discord\_on\_idle](https://cee-studio.github.io/orca/apis/discord.html#c.discord_idle_cb)\* | the callback to run when the READY event is triggered |
+| Member Parameters     | Description                                           |
+| :---------------------| :---------------------------------------------------- |
+| `struct discord`      | the client stucture                                   |
+| `discord\_on\_idle()` | the callback to run when the READY event is triggered |
 
-### [discord\_set\_on\_command()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_set_on_command)
+### discord\_set\_on\_command()
 
 `discord_set_on_command(struct discord*, char[], discord_message_cb*)`: runs callback when a command prefix is detected on chat
 
-| Member Parameters                                                                                  | Description                                                                         |
-| :------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
-| [struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord)                    | the client stucture                                                                 |
-| char[]                                                                                             | The chat command expected to trigger a callback response                            |
-| [discord\_on\_message](https://cee-studio.github.io/orca/apis/discord.html#c.discord_message_cb)\* | the message type function callback to run when its corresponding event is triggered |
+| Member Parameters      | Description                                                                         |
+| :----------------------| :---------------------------------------------------------------------------------- |
+| `struct discord`       | the client stucture                                                                 |
+| char[]                 | The chat command expected to trigger a callback response                            |
+| `discord\_on\_message` | the message type function callback to run when its corresponding event is triggered |
 
-### [discord\_run()](https://cee-studio.github.io/orca/apis/discord.html#c.discord_run)
+### discord\_run()
 
 `discord_run(struct discord*)`: establishes a connection to Discord, run until error or shutdown
 
-| Member Parameters                                                               | Description         |
-| :------------------------------------------------------------------------------ | :------------------ |
-| [struct discord](https://cee-studio.github.io/orca/apis/discord.html#c.discord) | the client stucture |
+| Member Parameters | Description         |
+| :-----------------| :------------------ |
+| `struct discord`  | the client stucture |
 
 ## Clean up the bot
 
@@ -143,7 +143,7 @@ discord_run(client);
 discord_cleanup(client);
 ```
 
-### [discord\_cleanup()](https://cee-studio.github.io/orca/apis/discord.html?highlight=set_on_command#c.discord_cleanup)
+### discord\_cleanup()
 
 `discord_cleanup(struct discord*)`: cleanup client initialized by `discord_init()` or `discord_config_init()`
 

@@ -5,24 +5,23 @@
 # Introduction
 
 If you are interested in contributing with more than just coding, you found the 
-right place! The ultimate goal is to help you understand how Orca works internally, 
-and as a result, write your own API endpoint. <!-- This guide will assist you with writing your first endpoint, we will be using the GitHub API but the same techniques should apply to any other API. -->
+right place! The ultimate goal is to help you understand how Concord works internally, 
+and as a result, write your own API endpoint.
 
 Before starting make sure you have followed the [build instructions](../README.md#build-instructions)!
 
-## About Orca
+## About Concord
 
-Orca is a collection of REST API wrappers that are written in C. Orca currently 
-covers the Discord API (and GitHub, Reddit, and Slack to some degree).
+Concord is a Discord API wrappers written entirely in C.
 
-# A Tour of Orca
+# A Tour of Concord
 
-While Orca is not complex, it is still a decently sized project. Navigating the 
+While Concord is not complex, it is still a decently sized project. Navigating the 
 documentation may be confusing to new potential contributors when searching for 
 certain things. This section aims to assist you with understanding each of the 
 major folders and files.
 
-## Orca Specs
+## Concord Specs
 
 Wrapping an API object in C can quickly get overwhelming and repetitive, considering 
 one have to address many things modern languages would take for granted, such as the 
@@ -31,7 +30,7 @@ for wrapping and generating API objects.
 
 - `specs/`: This is the folder we write our specs for code-generation, it contains multiple
   JSON templates that are parsed by `specs/specs-gen.c`. To generate code from
-  scratch simply run `make specs_gen`, the code will be placed inside of `specs-code/`.
+  scratch simply run `make specs_gen`, the code will be placed inside of `src/specs-code/`.
 
 ## Examples
 
@@ -40,11 +39,16 @@ The `examples/` folder is where we place our up-to-date bot examples.
 When adding a new feature it is encouraged that the contributor writes an example bot 
 to demonstrate said feature, as a sort of makeshift test for other users and developers.
 
-## APIs source-code
+## API source-code
 
-`discord-*.c`, `github-*.c`, `reddit-*.c`, and `slack-*.c` are the source 
-files that handle all the logic behind their individual API wrapper.
+The `src/` folder is where we place all of our Discord API wrapping logic. 
 
+## Common source-code
+
+The `common/` folder is where we place all of our generic logic, such as handling of the
+WebSockets and REST protocols, threadpool management, etc.
+
+<!-- REWRITE FOR DISCORD
 # Choosing an Endpoint
 
 Now that the boring reading stuff is out of the way, we can get to the fun
@@ -142,7 +146,7 @@ that are used internally and by the user.
 On a base level, this allow us to generate a structure that holds a ``ja_str`` which
 has a **decorator** of an ``ntl``.
 
-``ja_str`` is a string found in the JSON library that Orca uses internally.
+``ja_str`` is a string found in the JSON library that Concord uses internally.
 It holds a single value, which is a string.
 
 A **decorator** is simply a token that is put after the type. A decorator you may be familiar with is a `*`
@@ -177,7 +181,7 @@ this format:
 https://api.github.com/repos/{owner}/{repo}/topics
 ```
 
-Anything inside braces are intended to be replaced with a string. If we wanted to get the topics for Orca,
+Anything inside braces are intended to be replaced with a string. If we wanted to get the topics for Concord,
 we would send a GET request to this URL:
 
 ```
@@ -215,4 +219,6 @@ In situations where you do not know how much information the buffer should have,
 much to fit on the stack (unlikely), or because it has dynamic data, you can use a **sized buffer** which must be managed
 through the response handler. This will be covered and added to this section at a later date.
 
-If you have any questions, feel free to join our [Discord server](https://discord.gg/nBUqrWf).
+-->
+
+If you have any questions, feel free to join our [Discord server](https://discord.gg/Y7Xa6MA82v).
