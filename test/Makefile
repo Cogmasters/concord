@@ -3,7 +3,7 @@
 TOP = ..
 CC ?= gcc
 
-CEEUTILS_DIR := $(TOP)/cee-utils
+COGUTILS_DIR := $(TOP)/cog-utils
 COMMON_DIR   := $(TOP)/common
 INCLUDE_DIR  := $(TOP)/include
 
@@ -12,7 +12,7 @@ TEST_COMMON  := test-user-agent test-websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)
 
-CFLAGS  += -I$(INCLUDE_DIR) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) \
+CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) \
            -I$(COMMON_DIR)/third-party                        \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
