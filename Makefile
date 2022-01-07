@@ -32,17 +32,13 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-SRC  := $(COGUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC)
+DISCORD_SRC  := $(wildcard $(SRC_DIR)/*.c $(SPECSCODE_DIR)/*.c)
+
+SRC  := $(COGUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
-# APIs src
-DISCORD_SRC := $(wildcard $(SRC_DIR)/discord-*.c $(SPECSCODE_DIR)/*.c)
-
-# APIs objs
-DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
-
 # API libs
-LIBDISCORD := $(LIBDIR)/libdiscord.a
+LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
@@ -76,10 +72,10 @@ test: all
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-discord: $(LIBDISCORD) | $(SPECSCODE_DIR)
+discord: $(LIB) | $(SPECSCODE_DIR)
 
 # API libraries compilation
-$(LIBDISCORD): $(DISCORD_OBJS) $(OBJS) | $(LIBDIR)
+$(LIB): $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
 $(LIBDIR):
@@ -88,8 +84,6 @@ $(SPECSCODE_DIR):
 	@ $(MAKE) specs_gen
 $(COGUTILS_DIR):
 	@ $(MAKE) cog_utils
-
-$(DISCORD_OBJS): $(OBJS)
 
 $(OBJS): | $(OBJDIR)
 
@@ -102,12 +96,12 @@ install:
 	@ mkdir -p $(PREFIX)/lib/
 	@ mkdir -p $(PREFIX)/include/concord
 	install -d $(PREFIX)/lib/
-	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
+	install -m 644 $(LIB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
-	install -m 644 $(SRC_DIR)/*.h $(COGUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
+	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(COMMON_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(PREFIX)/include/concord/
 	install -d $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
-	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
+	install -m 644 $(SPECSCODE_DIR)/discord/*.h                              \
 	               $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
 
 echo:
@@ -116,8 +110,9 @@ echo:
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 	@ echo -e 'SPECS DIRS: $(wildcard $(SPECSCODE_DIR)/*)\n'
+	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
+	@ echo -e 'COMMON_SRC: $(COMMON_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
-	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
 
 clean: 
 	rm -rf $(OBJDIR)
@@ -137,7 +132,7 @@ docs: | $(DOCS_DIR)
 	@ mv $(SPECS_DIR)/specs-code $(SPECSCODE_DIR)
 
 $(DOCS_DIR):
-	git clone https://github.com/cogmasters/concord-docs
+	git clone https://github.com/cogmasters/concord-docs $(DOCS_DIR)
 	cp $(DOCS_DIR)/Doxyfile Doxyfile
 
 .PHONY: all test examples install echo clean purge docs
