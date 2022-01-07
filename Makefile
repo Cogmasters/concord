@@ -8,20 +8,20 @@ LIBDIR        := lib
 
 SPECS_DIR     := specs
 SPECSCODE_DIR := $(SRC_DIR)/specs-code
-CEEUTILS_DIR  := cee-utils
+COGUTILS_DIR  := cog-utils
 COMMON_DIR    := common
 THIRDP_DIR    := $(COMMON_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
 DOCS_DIR      := concord-docs
 
-CEEUTILS_SRC := $(CEEUTILS_DIR)/cee-utils.c        \
-                $(CEEUTILS_DIR)/json-actor.c       \
-                $(CEEUTILS_DIR)/json-actor-boxed.c \
-                $(CEEUTILS_DIR)/json-string.c      \
-                $(CEEUTILS_DIR)/log.c              \
-                $(CEEUTILS_DIR)/logconf.c          \
-                $(CEEUTILS_DIR)/ntl.c
+COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
+                $(COGUTILS_DIR)/json-actor.c       \
+                $(COGUTILS_DIR)/json-actor-boxed.c \
+                $(COGUTILS_DIR)/json-string.c      \
+                $(COGUTILS_DIR)/log.c              \
+                $(COGUTILS_DIR)/logconf.c          \
+                $(COGUTILS_DIR)/ntl.c
 
 COMMON_SRC   := $(COMMON_DIR)/common.c     \
                 $(COMMON_DIR)/work.c       \
@@ -32,7 +32,7 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-SRC  := $(CEEUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC)
+SRC  := $(COGUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 # APIs src
@@ -45,12 +45,12 @@ DISCORD_OBJS := $(DISCORD_SRC:%.c=$(OBJDIR)/%.o)
 LIBDISCORD := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
-          -I$(INCLUDE_DIR) -I$(CEEUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
+          -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
 
-$(OBJDIR)/$(CEEUTILS_DIR)/%.o : $(CEEUTILS_DIR)/%.c
+$(OBJDIR)/$(COGUTILS_DIR)/%.o : $(COGUTILS_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 $(OBJDIR)/$(THIRDP_DIR)/%.o : $(THIRDP_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
@@ -60,15 +60,15 @@ $(OBJDIR)/%.o : %.c
 all: | $(SPECSCODE_DIR)
 	$(MAKE) discord
 
-specs_gen: | $(CEEUTILS_DIR)
+specs_gen: | $(COGUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
 	@ mkdir -p $(SPECSCODE_DIR)
 	mv $(SPECS_DIR)/specs-code/discord/*.c $(SPECSCODE_DIR)
 	mv $(SPECS_DIR)/specs-code/discord/*.h $(INCLUDE_DIR)
 
-cee_utils:
-	./scripts/get-cee-utils.sh
+cog_utils:
+	./scripts/get-cog-utils.sh
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -86,8 +86,8 @@ $(LIBDIR):
 	@ mkdir -p $(LIBDIR)
 $(SPECSCODE_DIR):
 	@ $(MAKE) specs_gen
-$(CEEUTILS_DIR):
-	@ $(MAKE) cee_utils
+$(COGUTILS_DIR):
+	@ $(MAKE) cog_utils
 
 $(DISCORD_OBJS): $(OBJS)
 
@@ -95,7 +95,7 @@ $(OBJS): | $(OBJDIR)
 
 $(OBJDIR):
 	@ mkdir -p $(OBJDIR)/$(THIRDP_DIR)                                 \
-	           $(OBJDIR)/$(CEEUTILS_DIR)                               \
+	           $(OBJDIR)/$(COGUTILS_DIR)                               \
 	           $(addprefix $(OBJDIR)/, $(wildcard $(SPECSCODE_DIR)/*))
 
 install:
@@ -104,7 +104,7 @@ install:
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIBDISCORD) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
-	install -m 644 $(SRC_DIR)/*.h $(CEEUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
+	install -m 644 $(SRC_DIR)/*.h $(COGUTILS_DIR)/*.h $(COMMON_DIR)/*.h             \
 	               $(THIRDP_DIR)/*.h $(PREFIX)/include/concord/
 	install -d $(PREFIX)/include/concord/$(SPECSCODE_DIR)/discord/
 	install -m 644 $(SPECSCODE_DIR)/discord/*.h                          \
@@ -127,7 +127,7 @@ clean:
 
 purge: clean
 	rm -rf $(LIBDIR)
-	rm -rf $(CEEUTILS_DIR)
+	rm -rf $(COGUTILS_DIR)
 	rm -rf $(SPECSCODE_DIR)
 
 # prepare files for generating documentation at .github/workflows/gh_pages.yml
