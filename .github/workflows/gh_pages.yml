@@ -26,11 +26,11 @@ jobs:
       - name: Doxygen Action
         uses: mattnotmitt/doxygen-action@v1.3.1
 
-      - name: Move XML to Orca-Docs
-        run: sudo mv docs/xml orca-docs/docs
+      - name: Move XML to Concord-Docs
+        run: sudo mv docs/xml concord-docs/docs
 
       - name: Breathe Action
-        run: make -C orca-docs/docs html
+        run: make -C concord-docs/docs html
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3.7.3
@@ -38,4 +38,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./orca-docs/docs/build/html
+          publish_dir: ./concord-docs/docs/build/html

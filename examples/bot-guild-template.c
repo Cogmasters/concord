@@ -54,7 +54,7 @@ void on_create_guild_template(struct discord *client,
 
   struct discord_create_guild_template_params params = {
     .name = "New server template!",
-    .description = "This is a new server templated created with Orca!"
+    .description = "This is a new server template created with Concord!"
   };
 
   code =

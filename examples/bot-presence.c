@@ -16,7 +16,7 @@ void on_ready(struct discord *client)
                                  .activities =
                                    (struct discord_activity *[]){
                                      &(struct discord_activity){
-                                       .name = "with Orca",
+                                       .name = "with Concord",
                                        .type = DISCORD_ACTIVITY_GAME,
                                        .details = "Fixing some bugs",
                                      },
