@@ -197,7 +197,7 @@ For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us
 
 ## Support
 
-Problems? Check out our [Discord Server](https://discord.gg/nBUqrWf).
+Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
 
 ## Links
 
