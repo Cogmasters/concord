@@ -124,16 +124,16 @@ purge: clean
 	rm -rf $(C_SPECS_DIR)
 
 # prepare files for generating documentation at .github/workflows/gh_pages.yml
-docs: $(COGUTILS_DIR) | $(H_SPECS_DIR)
+docs: | $(CCORDDOCS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
 	@ mv $(SPECS_DIR)/specs-code/discord/*.h $(H_SPECS_DIR)
 
-$(H_SPECS_DIR): | $(C_SPECS_DIR)
-	@ mkdir -p $@
-
-$(CCORDDOCS_DIR):
+$(CCORDDOCS_DIR): | $(H_SPECS_DIR)
 	git clone https://github.com/cogmasters/concord-docs $@
 	cp $@/Doxyfile Doxyfile
+
+$(H_SPECS_DIR): | $(C_SPECS_DIR)
+	@ mkdir -p $@
 
 .PHONY: all test examples install echo clean purge docs
