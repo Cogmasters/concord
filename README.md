@@ -5,10 +5,7 @@
   </p>
   <br />
   <p>
-    Easy to easy to debug and easy to use.
-  </p>
-  <p>
-    Join our Discord server: <br> <a href="https://discord.gg/vWHGkmKehN"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
+    <br> <a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/562694099887587338?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
   </p>
 </div>
 
@@ -16,17 +13,6 @@
 
 Concord is implemented in plain C99, its symbols are organized to be easily matched to the documentation of the API being covered.
 Concord's implementation has minimum external dependencies to make bot deployment deadly simple.
-
-### Design
-
-- Easy to reason about the code: the most native data structures,
-   the simplest algorithms, and intuitive interfaces.
-
-- Easy to debug (networking and logic) errors: extensive assertion 
-  and logging facilities.
-
-- Easy to use for the end users: highly scalable, all transfers made with
-  Concord are thread-safe.
 
 ### Minimal example
 
@@ -112,6 +98,13 @@ The following outlines the default fields of `config.json`
       "filename": "http.log" // the output file
     },
     "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
+  },
+  "discord": { // discord directives
+    "token": "YOUR-BOT-TOKEN",          // replace with your bot token
+    "default_prefix": {                 
+      "enable": false,                  // enable default command prefix
+      "prefix": "YOUR-COMMANDS-PREFIX"  // replace with your prefix
+    }
   }
 }
 ```
