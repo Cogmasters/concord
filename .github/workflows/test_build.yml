@@ -13,10 +13,10 @@ jobs:
 
       - name: Dependencies
         run: |
-          echo "Installing build-essential and wget"
-          sudo apt-get install -y build-essential wget
-          echo "Installing libcurl and libssl"
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev
+          echo "Installing build-essential"
+          sudo apt-get install -y build-essential
+          echo "Installing libcurl"
+          sudo apt-get install -y libcurl4-openssl-dev
 
       - name: Run Makefile
         run: |
@@ -24,15 +24,18 @@ jobs:
           make purge
           echo "Building"
           make all
-          echo "Building example bots"
+          echo "Building examples"
           make examples
-          echo "Building test files"
+          echo "Building tests"
           make test
 
       - name: Run Makefile with parallelism
         run: |
           echo "Cleanup"
-          make clean
+          make purge
           echo "Building with parallelism"
+          make all -j$(nproc)
+          echo "Building examples with parallelism"
           make examples -j$(nproc)
+          echo "Building tests with parallelism"
           make test -j$(nproc)
