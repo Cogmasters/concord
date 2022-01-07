@@ -41,7 +41,7 @@ void on_create(struct discord *client, const struct discord_message *msg)
 
   struct discord_guild guild = { 0 };
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_create_guild(
     client,
@@ -49,7 +49,7 @@ void on_create(struct discord *client, const struct discord_message *msg)
       .name = *msg->content ? msg->content : "TestGuild" },
     &guild);
 
-  if (ORCA_OK == code)
+  if (CCORD_OK == code)
     sprintf(text, "%s (%" PRIu64 ") created.", guild.name, guild.id);
   else
     sprintf(text, "Couldn't create guild.");
@@ -68,7 +68,7 @@ void on_modify(struct discord *client, const struct discord_message *msg)
   char text[DISCORD_MAX_MESSAGE_LEN];
   struct discord_guild guild = { 0 };
   u64_snowflake_t guild_id = 0;
-  ORCAcode code;
+  CCORDcode code;
 
   sscanf(msg->content, "%" SCNu64 " %s", &guild_id, guild_name);
 
@@ -78,7 +78,7 @@ void on_modify(struct discord *client, const struct discord_message *msg)
                               },
                               &guild);
 
-  if (ORCA_OK == code)
+  if (CCORD_OK == code)
     sprintf(text, "Renamed guild to %s.", guild.name);
   else
     sprintf(text, "Couldn't rename guild.");
@@ -98,7 +98,7 @@ void on_delete(struct discord *client, const struct discord_message *msg)
 
   sscanf(msg->content, "%" SCNu64, &guild_id);
 
-  if (ORCA_OK == discord_delete_guild(client, guild_id))
+  if (CCORD_OK == discord_delete_guild(client, guild_id))
     params.content = "Succesfully deleted guild.";
   else
     params.content = "Couldn't delete guild.";
@@ -122,7 +122,7 @@ void on_role_create(struct discord *client, const struct discord_message *msg)
     struct discord_role role = { 0 };
 
     struct discord_create_guild_role_params params = { .name = name };
-    if (ORCA_OK
+    if (CCORD_OK
         == discord_create_guild_role(client, msg->guild_id, &params, &role))
       sprintf(text, "Succesfully create <@&%" PRIu64 ">", role.id);
     else
@@ -148,7 +148,7 @@ void on_role_delete(struct discord *client, const struct discord_message *msg)
     sprintf(text, "Invalid format for `guild.role_delete <role_id>`");
   }
   else {
-    if (ORCA_OK == discord_delete_guild_role(client, msg->guild_id, role_id))
+    if (CCORD_OK == discord_delete_guild_role(client, msg->guild_id, role_id))
       sprintf(text, "Succesfully delete role");
     else
       sprintf(text, "Couldn't delete <@&%" PRIu64 ">", role_id);
@@ -173,7 +173,7 @@ void on_role_member_add(struct discord *client,
             "Invalid format for `guild.role_member_add <user_id> <role_id>`");
   }
   else {
-    if (ORCA_OK
+    if (CCORD_OK
         == discord_add_guild_member_role(client, msg->guild_id, user_id,
                                          role_id))
       sprintf(text, "Assigned role <@&%" PRIu64 "> to <@%" PRIu64 ">", role_id,
@@ -203,7 +203,7 @@ void on_role_member_remove(struct discord *client,
       "Invalid format for `guild.role_member_remove <user_id> <role_id>`");
   }
   else {
-    if (ORCA_OK
+    if (CCORD_OK
         == discord_remove_guild_member_role(client, msg->guild_id, user_id,
                                             role_id))
       sprintf(text, "Removed role <@&%" PRIu64 "> from <@%" PRIu64 ">",
@@ -223,11 +223,11 @@ void on_role_list(struct discord *client, const struct discord_message *msg)
 
   struct discord_role **roles = NULL;
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_get_guild_roles(client, msg->guild_id, &roles);
 
-  if (code != ORCA_OK || !roles) {
+  if (code != CCORD_OK || !roles) {
     sprintf(text, "No guild roles found.");
   }
   else {
@@ -272,7 +272,7 @@ void on_member_get(struct discord *client, const struct discord_message *msg)
   else {
     struct discord_guild_member member = { 0 };
 
-    if (ORCA_OK
+    if (CCORD_OK
         == discord_get_guild_member(client, msg->guild_id, msg->author->id,
                                     &member))
       sprintf(text, "Member <@%" PRIu64 "> found!", user_id);
@@ -303,7 +303,7 @@ void on_member_change_nick(struct discord *client,
   else {
     struct discord_modify_guild_member_params params = { .nick = nick };
 
-    if (ORCA_OK
+    if (CCORD_OK
         == discord_modify_guild_member(client, msg->guild_id, user_id, &params,
                                        NULL))
       sprintf(text, "Succesfully changed <@%" PRIu64 "> nick", user_id);
@@ -322,14 +322,14 @@ void on_member_search(struct discord *client,
 
   struct discord_guild_member **members = NULL;
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_search_guild_members(
     client, msg->guild_id,
     &(struct discord_search_guild_members_params){ .query = msg->content },
     &members);
 
-  if (ORCA_OK != code || !members) {
+  if (CCORD_OK != code || !members) {
     sprintf(text, "No members matching '%s' found.", msg->content);
   }
   else {
@@ -375,7 +375,7 @@ void on_bot_change_nick(struct discord *client,
       .nick = msg->content,
     };
 
-    if (ORCA_OK
+    if (CCORD_OK
         == discord_modify_current_member(client, msg->guild_id, &params, NULL))
       sprintf(text, "Succesfully changed <@%" PRIu64 "> nick", bot->id);
     else
@@ -393,7 +393,7 @@ void on_bot_get_welcome_screen(struct discord *client,
 
   struct discord_welcome_screen screen = { 0 };
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   if (!*msg->content) {
     sprintf(text, "Invalid format for `guild.welcome_screen <guild_id>`");
@@ -403,7 +403,7 @@ void on_bot_get_welcome_screen(struct discord *client,
   code = discord_get_guild_welcome_screen(
     client, strtoul(msg->content, NULL, 10), &screen);
 
-  if (code != ORCA_OK) {
+  if (code != CCORD_OK) {
     sprintf(text, "Could not fetch welcome screen from guild %s.",
             msg->content);
   }
@@ -423,7 +423,7 @@ void on_bot_get_invites(struct discord *client,
 
   char text[DISCORD_MAX_MESSAGE_LEN] = { 0 };
   struct discord_invite **invites = { 0 };
-  ORCAcode code;
+  CCORDcode code;
 
   if (!*msg->content) {
     sprintf(text, "Invalid format for `guild.invites <guild_id>`");
@@ -433,7 +433,7 @@ void on_bot_get_invites(struct discord *client,
   code = discord_get_guild_invites(client, strtoul(msg->content, NULL, 10),
                                    &invites);
 
-  if (code != ORCA_OK) {
+  if (code != CCORD_OK) {
     sprintf(text, "Could not fetch invites from guild %s.", msg->content);
   }
   else {
@@ -460,7 +460,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -513,5 +513,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

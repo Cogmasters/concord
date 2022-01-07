@@ -122,7 +122,7 @@ void on_force_error(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return;
 
-  ORCAcode code = discord_delete_channel(client, 123, NULL);
+  CCORDcode code = discord_delete_channel(client, 123, NULL);
 
   struct discord_create_message_params params = {
     .content = (char *)discord_strerror(code, client)
@@ -177,10 +177,10 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  setenv("ORCA_THREADPOOL_SIZE", THREADPOOL_SIZE, 1);
-  setenv("ORCA_THREADPOOL_QUEUE_SIZE", "128", 1);
+  setenv("CCORD_THREADPOOL_SIZE", THREADPOOL_SIZE, 1);
+  setenv("CCORD_THREADPOOL_QUEUE_SIZE", "128", 1);
 
-  discord_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -200,5 +200,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  discord_global_cleanup();
+  ccord_global_cleanup();
 }

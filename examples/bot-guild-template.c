@@ -23,11 +23,11 @@ void on_get_guild_template(struct discord *client,
 {
   struct discord_guild_template template;
   char buf[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_get_guild_template(client, msg->content, &template);
 
-  if (code == ORCA_OK) {
+  if (code == CCORD_OK) {
     snprintf(buf, sizeof(buf),
              "Here is some information about your guild template:\nName: "
              "'%s'\nDescription: '%s'\nCreator Id: %" PRIu64 "\n",
@@ -50,7 +50,7 @@ void on_create_guild_template(struct discord *client,
 {
   struct discord_guild_template template;
   char buf[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   struct discord_create_guild_template_params params = {
     .name = "New server template!",
@@ -60,7 +60,7 @@ void on_create_guild_template(struct discord *client,
   code =
     discord_create_guild_template(client, msg->guild_id, &params, &template);
 
-  if (code == ORCA_OK) {
+  if (code == CCORD_OK) {
     snprintf(buf, sizeof(buf),
              "Successfully synced the guild template! Here is some "
              "information about its current state guild template:\nName: "
@@ -86,12 +86,12 @@ void on_sync_guild_template(struct discord *client,
 {
   struct discord_guild_template template;
   char buf[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_sync_guild_template(client, msg->guild_id, msg->content,
                                      &template);
 
-  if (code == ORCA_OK) {
+  if (code == CCORD_OK) {
     snprintf(buf, sizeof(buf),
              "Successfully synced the guild template! Here is some "
              "information about its current state guild template:\nName: "
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -140,5 +140,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

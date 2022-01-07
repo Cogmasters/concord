@@ -19,7 +19,7 @@ void on_invite_get(struct discord *client, const struct discord_message *msg)
 
   struct discord_invite invite = { 0 };
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_get_invite(client, msg->content,
                             &(struct discord_get_invite_params){
@@ -28,7 +28,7 @@ void on_invite_get(struct discord *client, const struct discord_message *msg)
                             },
                             &invite);
 
-  if (ORCA_OK == code)
+  if (CCORD_OK == code)
     sprintf(text, "https://discord.gg/%s", invite.code);
   else
     sprintf(text, "Couldn't get invite.");
@@ -46,7 +46,7 @@ void on_invite_delete(struct discord *client,
 
   char *text;
 
-  if (ORCA_OK == discord_delete_invite(client, msg->content, NULL))
+  if (CCORD_OK == discord_delete_invite(client, msg->content, NULL))
     text = "Succesfully deleted invite.";
   else
     text = "Couldn't delete invite";
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Could not initialize client");
 
@@ -84,5 +84,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

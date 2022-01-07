@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  discord_global_init();
+  ccord_global_init();
 
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client);
@@ -21,17 +21,17 @@ int main(int argc, char *argv[])
   struct discord_user me;
   discord_user_init(&me);
 
-  assert(ORCA_OK == discord_get_current_user(client, &me));
+  assert(CCORD_OK == discord_get_current_user(client, &me));
   printf("Greetings, %s#%s!\n", me.username, me.discriminator);
 
   struct discord_guild **guilds = NULL;
-  assert(ORCA_OK == discord_get_current_user_guilds(client, &guilds));
+  assert(CCORD_OK == discord_get_current_user_guilds(client, &guilds));
   for (size_t i = 0; guilds[i]; ++i)
     fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name,
             guilds[i]->id);
 
   // Test discord_strerror()
-  ORCAcode code;
+  CCORDcode code;
   code = discord_delete_channel(client, 123, NULL);
   fprintf(stderr, "%s\n", discord_strerror(code, client));
   code = discord_modify_channel(client, 123, NULL, NULL);
@@ -42,5 +42,5 @@ int main(int argc, char *argv[])
 
   discord_cleanup(client);
 
-  discord_global_cleanup();
+  ccord_global_cleanup();
 }

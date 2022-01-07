@@ -81,11 +81,11 @@ void on_channel_get_invites(struct discord *client,
   if (msg->author->bot) return;
 
   struct discord_invite **invites = NULL;
-  ORCAcode code;
+  CCORDcode code;
 
   code = discord_get_channel_invites(client, msg->channel_id, &invites);
 
-  if (code != ORCA_OK || !invites) {
+  if (code != CCORD_OK || !invites) {
     log_info("Couldn't fetch invites");
     return;
   }
@@ -108,7 +108,7 @@ void on_channel_create_invite(struct discord *client,
   struct discord_invite invite = { 0 };
   char text[DISCORD_MAX_MESSAGE_LEN];
 
-  if (ORCA_OK
+  if (CCORD_OK
       == discord_create_channel_invite(client, msg->channel_id, NULL, &invite))
     sprintf(text, "https://discord.gg/%s", invite.code);
   else
@@ -127,7 +127,7 @@ void on_channel_start_thread(struct discord *client,
 
   struct discord_channel channel = { 0 };
   char text[DISCORD_MAX_MESSAGE_LEN];
-  ORCAcode code;
+  CCORDcode code;
 
   if (msg->message_reference) {
     code = discord_start_thread_with_message(
@@ -144,7 +144,7 @@ void on_channel_start_thread(struct discord *client,
       &channel);
   }
 
-  if (ORCA_OK == code)
+  if (CCORD_OK == code)
     sprintf(text, "Created thread-channel <#%" PRIu64 ">", channel.id);
   else
     sprintf(text, "Couldn't create channel.");
@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Could not initialize client");
 
@@ -200,5 +200,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

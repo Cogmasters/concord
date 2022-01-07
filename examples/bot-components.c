@@ -171,7 +171,7 @@ void on_interaction_create(struct discord *client,
       }
   };
 
-  ORCAcode code;
+  CCORDcode code;
   code = discord_create_interaction_response(
     client, interaction->id, interaction->token, &params, NULL);
   if (code) {
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
   else
     config_file = "../config.json";
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -210,5 +210,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }

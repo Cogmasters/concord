@@ -53,7 +53,7 @@ void on_audit_channel_create(struct discord *client,
   struct discord_audit_log audit_log;
   discord_audit_log_init(&audit_log);
 
-  ORCAcode code;
+  CCORDcode code;
   code = discord_get_guild_audit_log(
     client, msg->guild_id,
     &(struct discord_get_guild_audit_log_params){
@@ -61,7 +61,7 @@ void on_audit_channel_create(struct discord *client,
       .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE },
     &audit_log);
 
-  if (code != ORCA_OK) {
+  if (code != CCORD_OK) {
     log_error("%s", discord_strerror(code, client));
     goto _error;
   }
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
   setlocale(LC_ALL, "");
 
-  orca_global_init();
+  ccord_global_init();
   struct discord *client = discord_config_init(config_file);
   assert(NULL != client && "Couldn't initialize client");
 
@@ -123,5 +123,5 @@ int main(int argc, char *argv[])
   discord_run(client);
 
   discord_cleanup(client);
-  orca_global_cleanup();
+  ccord_global_cleanup();
 }
