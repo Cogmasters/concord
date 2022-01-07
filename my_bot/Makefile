@@ -43,7 +43,7 @@ CONF := config.json
 #  			aswell configure compilation for threads
 # -I add header folder to compiler search path
 CFLAGS  := -O0 -g -Wall -pthread                       \
-           -I. -I$(TOP)/include -I$(TOP)/cee-utils     \
+           -I. -I$(TOP)/include -I$(TOP)/cog-utils     \
            -I$(TOP)/common -I$(TOP)/common/third-party
 
 # -L add library folder to compiler search path
