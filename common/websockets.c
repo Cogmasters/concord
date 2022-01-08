@@ -873,7 +873,6 @@ ws_multi_socket_run(struct websockets *ws, uint64_t *tstamp)
 {
   int is_running = 0;
   CURLMcode mcode;
-  /* unused but curl_multi_wait() demands it */
 
   /** update WebSockets concept of "now" */
   *tstamp = ws_timestamp_update(ws);
