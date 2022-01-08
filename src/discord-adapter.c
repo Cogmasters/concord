@@ -27,6 +27,13 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 #endif
 }
 
+static void
+on_io_poller_curl(CURLM *multi, void *user_data)
+{
+  (void) multi;
+  discord_adapter_perform(user_data);
+}
+
 void
 discord_adapter_init(struct discord_adapter *adapter,
                      struct logconf *conf,
@@ -50,6 +57,7 @@ discord_adapter_init(struct discord_adapter *adapter,
   }
 
   adapter->mhandle = curl_multi_init();
+  io_poller_curlm_add(CLIENT(adapter, adapter)->io_poller, adapter->mhandle, on_io_poller_curl, adapter);
 
   /* global ratelimiting resources */
   adapter->global = calloc(1, sizeof *adapter->global);
@@ -89,6 +97,7 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
   /* cleanup User-Agent handle */
   ua_cleanup(adapter->ua);
 
+  io_poller_curlm_del(CLIENT(adapter, adapter)->io_poller, adapter->mhandle);
   curl_multi_cleanup(adapter->mhandle);
 
   /* move pending requests to idle */
@@ -848,10 +857,7 @@ discord_adapter_perform(struct discord_adapter *adapter)
   code = _discord_adapter_check_pending(adapter);
   if (code != CCORD_OK) return code;
 
-  if (CURLM_OK == (mcode = curl_multi_perform(adapter->mhandle, &is_running)))
-  {
-    mcode = curl_multi_wait(adapter->mhandle, NULL, 0, 2, &numfds);
-  }
+  mcode = curl_multi_socket_all(adapter->mhandle, &is_running);
 
   if (mcode != CURLM_OK) return CCORD_CURLM_INTERNAL;
 
