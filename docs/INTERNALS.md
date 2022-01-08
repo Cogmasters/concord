@@ -29,8 +29,8 @@ encoding or decoding of an object with JSON. For this purpose we created our own
 for wrapping and generating API objects.
 
 - `specs/`: This is the folder we write our specs for code-generation, it contains multiple
-  JSON templates that are parsed by `specs/specs-gen.c`. To generate code from
-  scratch simply run `make specs_gen`, the code will be placed inside of `src/specs-code/`.
+  JSON templates that are parsed by `specs/main.c`. To generate code from scratch simply
+  run `make specs_gen`, the code will be placed inside of `src/specs-code/`.
 
 ## Examples
 
