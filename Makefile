@@ -28,7 +28,7 @@ COMMON_SRC   := $(COMMON_DIR)/common.c     \
                 $(COMMON_DIR)/work.c       \
                 $(COMMON_DIR)/user-agent.c \
                 $(COMMON_DIR)/websockets.c \
-								$(COMMON_DIR)/io_poller.c
+                $(COMMON_DIR)/io_poller.c
 
 THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
