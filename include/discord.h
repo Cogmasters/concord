@@ -1221,13 +1221,13 @@ CCORDcode discord_list_thread_members(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be searched for threads
- * @CCORD_ret_obj{body, discord_thread_response_body}
+ * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_active_threads(
   struct discord *client,
   u64_snowflake_t channel_id,
-  struct discord_thread_response_body *body);
+  struct discord_thread_response_body *ret);
 
 /**
  * @brief Get public archived threads in a given channel
@@ -1236,7 +1236,7 @@ CCORDcode discord_list_active_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @CCORD_ret_obj{body, discord_thread_response_body}
+ * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_public_archived_threads(
@@ -1244,7 +1244,7 @@ CCORDcode discord_list_public_archived_threads(
   u64_snowflake_t channel_id,
   u64_unix_ms_t before,
   int limit,
-  struct discord_thread_response_body *body);
+  struct discord_thread_response_body *ret);
 
 /**
  * @brief Get private archived threads in a given channel
@@ -1253,7 +1253,7 @@ CCORDcode discord_list_public_archived_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @CCORD_ret_obj{body, discord_thread_response_body}
+ * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_private_archived_threads(
@@ -1261,7 +1261,7 @@ CCORDcode discord_list_private_archived_threads(
   u64_snowflake_t channel_id,
   u64_unix_ms_t before,
   int limit,
-  struct discord_thread_response_body *body);
+  struct discord_thread_response_body *ret);
 
 /**
  * @brief Get private archived threads that current user has joined
@@ -1270,7 +1270,7 @@ CCORDcode discord_list_private_archived_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @CCORD_ret_obj{body, discord_thread_response_body}
+ * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_joined_private_archived_threads(
@@ -1278,7 +1278,7 @@ CCORDcode discord_list_joined_private_archived_threads(
   u64_snowflake_t channel_id,
   u64_unix_ms_t before,
   int limit,
-  struct discord_thread_response_body *body);
+  struct discord_thread_response_body *ret);
 
 /**
  * @brief Get emojis of a given guild

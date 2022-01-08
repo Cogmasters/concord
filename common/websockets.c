@@ -868,6 +868,22 @@ ws_easy_run(struct websockets *ws, uint64_t wait_ms, uint64_t *tstamp)
   return is_running != 0;
 }
 
+bool
+ws_multi_socket_run(struct websockets *ws, uint64_t *tstamp)
+{
+  int is_running = 0;
+  CURLMcode mcode;
+
+  /** update WebSockets concept of "now" */
+  *tstamp = ws_timestamp_update(ws);
+
+  mcode = curl_multi_socket_all(ws->mhandle, &is_running);
+
+  if (mcode != CURLM_OK) CURLM_LOG(ws, mcode);
+
+  return is_running != 0;
+}
+
 uint64_t
 ws_timestamp(struct websockets *ws)
 {

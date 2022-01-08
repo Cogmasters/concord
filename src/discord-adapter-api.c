@@ -1181,10 +1181,10 @@ discord_list_thread_members(struct discord *client,
 CCORDcode
 discord_list_active_threads(struct discord *client,
                             u64_snowflake_t channel_id,
-                            struct discord_thread_response_body *body)
+                            struct discord_thread_response_body *ret)
 {
   struct discord_request_attr attr =
-    REQUEST_ATTR_INIT(discord_thread_response_body, body);
+    REQUEST_ATTR_INIT(discord_thread_response_body, ret);
 
   CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
@@ -1198,10 +1198,10 @@ discord_list_public_archived_threads(struct discord *client,
                                      u64_snowflake_t channel_id,
                                      u64_unix_ms_t before,
                                      int limit,
-                                     struct discord_thread_response_body *body)
+                                     struct discord_thread_response_body *ret)
 {
   struct discord_request_attr attr =
-    REQUEST_ATTR_INIT(discord_thread_response_body, body);
+    REQUEST_ATTR_INIT(discord_thread_response_body, ret);
   char query[1024] = "";
   size_t offset = 0;
 
@@ -1225,15 +1225,14 @@ discord_list_public_archived_threads(struct discord *client,
 }
 
 CCORDcode
-discord_list_private_archived_threads(
-  struct discord *client,
-  u64_snowflake_t channel_id,
-  u64_unix_ms_t before,
-  int limit,
-  struct discord_thread_response_body *body)
+discord_list_private_archived_threads(struct discord *client,
+                                      u64_snowflake_t channel_id,
+                                      u64_unix_ms_t before,
+                                      int limit,
+                                      struct discord_thread_response_body *ret)
 {
   struct discord_request_attr attr =
-    REQUEST_ATTR_INIT(discord_thread_response_body, body);
+    REQUEST_ATTR_INIT(discord_thread_response_body, ret);
   char query[1024] = "";
   size_t offset = 0;
 
@@ -1262,10 +1261,10 @@ discord_list_joined_private_archived_threads(
   u64_snowflake_t channel_id,
   u64_unix_ms_t before,
   int limit,
-  struct discord_thread_response_body *body)
+  struct discord_thread_response_body *ret)
 {
   struct discord_request_attr attr =
-    REQUEST_ATTR_INIT(discord_thread_response_body, body);
+    REQUEST_ATTR_INIT(discord_thread_response_body, ret);
   char query[1024] = "";
   size_t offset = 0;
 

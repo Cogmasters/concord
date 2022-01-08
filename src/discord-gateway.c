@@ -1182,6 +1182,13 @@ default_scheduler_cb(struct discord *a,
   return DISCORD_EVENT_MAIN_THREAD;
 }
 
+static void
+on_io_poller_curl(CURLM *multi, void *user_data)
+{
+  (void) multi;
+  discord_gateway_perform(user_data);
+}
+
 void
 discord_gateway_init(struct discord_gateway *gw,
                      struct logconf *conf,
@@ -1205,6 +1212,7 @@ discord_gateway_init(struct discord_gateway *gw,
 
   /* Web-Sockets handler */
   gw->mhandle = curl_multi_init();
+  io_poller_curlm_add(client->io_poller, gw->mhandle, on_io_poller_curl, gw);
   gw->ws = ws_init(&cbs, gw->mhandle, &attr);
   logconf_branch(&gw->conf, conf, "DISCORD_GATEWAY");
 
@@ -1255,6 +1263,7 @@ void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
   /* cleanup WebSockets handle */
+  io_poller_curlm_del(CLIENT(gw, gw)->io_poller, gw->mhandle);
   curl_multi_cleanup(gw->mhandle);
   ws_cleanup(gw->ws);
   /* cleanup timers */
@@ -1353,9 +1362,8 @@ CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
   /* check for pending transfer, exit on failure */
-  if (!ws_easy_run(gw->ws, 5, &gw->timer->now)) {
+  if (!ws_multi_socket_run(gw->ws, &gw->timer->now)) {
     return CCORD_DISCORD_CONNECTION;
-    ;
   }
 
   /* client is in the process of shutting down */
@@ -1374,7 +1382,7 @@ discord_gateway_perform(struct discord_gateway *gw)
     send_heartbeat(gw);
   }
 
-  if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
+  //if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
 
   return CCORD_OK;
 }

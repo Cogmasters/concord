@@ -146,17 +146,6 @@
         { "name": "auto_archive_duration", "type":{ "base":"int" }, "inject_if_not":0 },
         { "name": "type", "type":{ "base":"int", "int_alias":"enum discord_channel_types" } }
       ]
-    },
-    {
-      "title":"List Active Threads",
-      "namespace": ["thread"],
-      "struct":"response_body",
-      "fields":
-      [
-        { "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } },
-        { "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } },
-        { "name": "has_more", "type":{ "base":"bool" } }
-      ]
     }
   ]
 }

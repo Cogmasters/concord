@@ -416,6 +416,17 @@
         { "name": "value", "type": { "base":"char", "dec":"*" }, "inject_if_not":null},
         { "name": "Inline", "json_key":"inline", "type": { "base":"bool" }, "option":true}
       ]
+    },
+    {
+      "title":"Thread Response Body",
+      "namespace": ["thread"],
+      "struct":"response_body",
+      "fields":
+      [
+        { "name": "threads", "type":{ "base":"struct discord_channel", "dec":"ntl" } },
+        { "name": "members", "type":{ "base":"struct discord_thread_member", "dec":"ntl" } },
+        { "name": "has_more", "type":{ "base":"bool" } }
+      ]
     }
   ]
 }

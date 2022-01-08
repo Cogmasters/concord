@@ -17,6 +17,7 @@
 #include "websockets.h"
 #include "work.h"
 #include "cog-utils.h"
+#include "io_poller.h"
 
 #include "uthash.h"
 #include "queue.h"
@@ -588,6 +589,8 @@ struct discord {
   bool is_original;
   /** the bot token */
   struct sized_buffer token;
+  /** the io poller for listening to file descriptors */
+  struct io_poller *io_poller;
   /** the HTTP adapter for performing requests */
   struct discord_adapter adapter;
   /** the WebSockets handle for establishing a connection to Discord */
