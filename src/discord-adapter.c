@@ -849,7 +849,6 @@ discord_adapter_perform(struct discord_adapter *adapter)
   int is_running = 0;
   CURLMcode mcode;
   CCORDcode code;
-  int numfds = 0;
 
   code = _discord_adapter_check_timeouts(adapter);
   if (code != CCORD_OK) return code;

@@ -1362,7 +1362,7 @@ CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
   /* check for pending transfer, exit on failure */
-  if (!ws_easy_run(gw->ws, 5, &gw->timer->now)) {
+  if (!ws_multi_socket_run(gw->ws, &gw->timer->now)) {
     return CCORD_DISCORD_CONNECTION;
   }
 
