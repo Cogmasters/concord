@@ -276,16 +276,26 @@ void ws_end(struct websockets *ws);
 
 /**
  * @brief Reads/Write available data from WebSockets
+ * @note Helper over curl_multi_wait()
  *
  * @param ws the WebSockets handle created with ws_init()
  * @param wait_ms limit amount in milliseconds to wait for until activity
  * @param tstamp get current timestamp for this iteration
  * @return `true` if connection is still alive, `false` otherwise
  * @note This is an easy, yet highly abstracted way of performing transfers.
- *        If a higher control is necessary, users are better of using functions
- *        of `curl_multi_xxx()` family.
+ *        If a higher control is necessary, users are better of using ws_multi_socket_run()
  */
 _Bool ws_easy_run(struct websockets *ws, uint64_t wait_ms, uint64_t *tstamp);
+
+/**
+ * @brief Reads/Write available data from WebSockets
+ * @note Helper over curl_multi_socket_all()
+ *
+ * @param ws the WebSockets handle created with ws_init()
+ * @param tstamp get current timestamp for this iteration
+ * @return `true` if connection is still alive, `false` otherwise
+ */
+_Bool ws_multi_socket_run(struct websockets *ws, uint64_t *tstamp);
 
 /**
  * @brief Returns the WebSockets handle connection status
