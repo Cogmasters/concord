@@ -13,6 +13,7 @@ _discord_init(struct discord *new_client)
 {
   ccord_global_init();
 
+  new_client->io_poller = io_poller_create();
   discord_adapter_init(&new_client->adapter, &new_client->conf,
                        &new_client->token);
   discord_gateway_init(&new_client->gw, &new_client->conf, &new_client->token);
@@ -89,6 +90,7 @@ discord_cleanup(struct discord *client)
     discord_adapter_cleanup(&client->adapter);
     discord_gateway_cleanup(&client->gw);
     discord_user_cleanup(&client->self);
+    io_poller_destroy(client->io_poller);
   }
   free(client);
 }
@@ -241,13 +243,23 @@ discord_run(struct discord *client)
   while (1) {
     code = discord_gateway_start(&client->gw);
     if (code != CCORD_OK) break;
-
+    time_t last = 0;
     do {
-      code = discord_gateway_perform(&client->gw);
-      if (code != CCORD_OK) break;
+      io_poller_poll(client->io_poller, client->gw.cmds.cbs.on_idle ? 1 : 1000);
+      io_poller_perform(client->io_poller);
 
-      code = discord_adapter_perform(&client->adapter);
-      if (code != CCORD_OK) break;
+      const time_t now = time(NULL);
+      if (last != now) {
+        if (CCORD_OK != discord_gateway_perform(&client->gw))
+          break;
+        last = now;
+      }
+
+      if (CCORD_OK != discord_adapter_perform(&client->adapter))
+        break;
+
+      if (client->gw.cmds.cbs.on_idle)
+        client->gw.cmds.cbs.on_idle(client);
     } while (1);
 
     if (discord_gateway_end(&client->gw)) {
