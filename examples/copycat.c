@@ -9,7 +9,7 @@ void on_ready(struct discord *client)
 {
   const struct discord_user *bot = discord_get_self(client);
 
-  log_info("Echo-Bot succesfully connected to Discord as %s#%s!",
+  log_info("Copycat-Bot succesfully connected to Discord as %s#%s!",
            bot->username, bot->discriminator);
 }
 
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
   discord_set_on_message_delete_bulk(client, &on_message_delete_bulk);
 
   printf("\n\nThis bot demonstrates how easy it is to setup a bot that"
-         " echoes user actions.\n"
+         " copies user actions.\n"
          "1. Send a message in any chat\n"
          "2. Edit that message\n"
          "3. Delete that message\n"

@@ -30,7 +30,7 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 static void
 on_io_poller_curl(CURLM *multi, void *user_data)
 {
-  (void) multi;
+  (void)multi;
   discord_adapter_perform(user_data);
 }
 
@@ -57,7 +57,8 @@ discord_adapter_init(struct discord_adapter *adapter,
   }
 
   adapter->mhandle = curl_multi_init();
-  io_poller_curlm_add(CLIENT(adapter, adapter)->io_poller, adapter->mhandle, on_io_poller_curl, adapter);
+  io_poller_curlm_add(CLIENT(adapter, adapter)->io_poller, adapter->mhandle,
+                      on_io_poller_curl, adapter);
 
   /* global ratelimiting resources */
   adapter->global = calloc(1, sizeof *adapter->global);
@@ -284,24 +285,11 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
                  "(global):b (message):.*s (retry_after):lf", &is_global,
                  sizeof(message), message, &retry_after);
 
-    if (is_global) {
-      struct discord *client = CLIENT(adapter, adapter);
-      u64_unix_ms_t global;
+    *wait_ms = (int64_t)(1000 * retry_after);
 
-      global = discord_adapter_get_global_wait(adapter);
-      *wait_ms = (int64_t)(global - discord_timestamp(client));
-
-      logconf_warn(&adapter->conf,
-                   "429 GLOBAL RATELIMITING (wait: %" PRId64 " ms) : %s",
-                   *wait_ms, message);
-    }
-    else {
-      *wait_ms = (int64_t)(1000 * retry_after);
-
-      logconf_warn(&adapter->conf,
-                   "429 RATELIMITING (wait: %" PRId64 " ms) : %s", *wait_ms,
-                   message);
-    }
+    logconf_warn(&adapter->conf,
+                 "429 %s RATELIMITING (wait: %" PRId64 " ms) : %s",
+                 is_global ? "GLOBAL" : "", *wait_ms, message);
 
     return true;
   }

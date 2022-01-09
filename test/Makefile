@@ -7,8 +7,8 @@ COGUTILS_DIR := $(TOP)/cog-utils
 COMMON_DIR   := $(TOP)/common
 INCLUDE_DIR  := $(TOP)/include
 
-TEST_DISCORD := test-discord-api test-discord-async test-discord-ws
-TEST_COMMON  := test-user-agent test-websockets
+TEST_DISCORD := discord-api discord-async discord-ws
+TEST_COMMON  := user-agent websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)
 
