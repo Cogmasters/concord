@@ -109,7 +109,7 @@ The following outlines the default fields of `config.json`
 }
 ```
 
-### Test Echo-Bot
+### Test Copycat-Bot
 
 1. Get your bot token and add it to `config.json`, 
    by assigning it to discord's "token" field. There are 
@@ -120,16 +120,16 @@ The following outlines the default fields of `config.json`
    ```bash
    $ make examples
    ```
-3. Run Echo-Bot:
+3. Run Copycat-Bot:
    ```bash
-   $ cd examples && ./bot-echo
+   $ cd examples && ./copycat
    ```
 
-#### Get Echo-Bot Response
+#### Get Copycat-Bot Response
 
-Type a message in any channel the bot is part of and the bot should send an echo response in return.
+Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.
 
-#### Terminate Echo-Bot
+#### Terminate Copycat-Bot
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
