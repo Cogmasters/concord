@@ -34,8 +34,6 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-# TODO: specs-gen.c should generate a Makefile for dealing with
-# 	$(C_SPECS_DIR) files
 C_SPECS_SRC  := $(C_SPECS_DIR)/application.c                 \
                 $(C_SPECS_DIR)/application_commands.c        \
                 $(C_SPECS_DIR)/application_commands.params.c \
@@ -87,14 +85,10 @@ CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
 
 WFLAGS += -Wall -Wextra -pedantic
 
-$(OBJDIR)/$(COGUTILS_DIR)/%.o : $(COGUTILS_DIR)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-$(OBJDIR)/$(THIRDP_DIR)/%.o : $(THIRDP_DIR)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-$(OBJDIR)/$(C_SPECS_DIR)/%.o : $(C_SPECS_DIR)/%.c
-	$(CC) $(CFLAGS) -c -o $@ $<
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
+$(OBJDIR)/%.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: | $(C_SPECS_DIR)
 	$(MAKE) discord
@@ -117,7 +111,6 @@ examples: all
 
 discord: $(LIB) | $(C_SPECS_DIR)
 
-# API libraries compilation
 $(LIB): $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
