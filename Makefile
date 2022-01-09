@@ -34,12 +34,51 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-DISCORD_SRC  := $(wildcard $(SRC_DIR)/*.c $(C_SPECS_DIR)/*.c)
+# TODO: specs-gen.c should generate a Makefile for dealing with
+# 	$(C_SPECS_DIR) files
+C_SPECS_SRC  := $(C_SPECS_DIR)/application.c                 \
+                $(C_SPECS_DIR)/application_commands.c        \
+                $(C_SPECS_DIR)/application_commands.params.c \
+                $(C_SPECS_DIR)/audit_log.c                   \
+                $(C_SPECS_DIR)/audit_log.params.c            \
+                $(C_SPECS_DIR)/channel.c                     \
+                $(C_SPECS_DIR)/channel.params.c              \
+                $(C_SPECS_DIR)/emoji.c                       \
+                $(C_SPECS_DIR)/emoji.params.c                \
+                $(C_SPECS_DIR)/gateway.c                     \
+                $(C_SPECS_DIR)/guild.c                       \
+                $(C_SPECS_DIR)/guild.params.c                \
+                $(C_SPECS_DIR)/guild_template.c              \
+                $(C_SPECS_DIR)/guild_template.params.c       \
+                $(C_SPECS_DIR)/interaction.c                 \
+                $(C_SPECS_DIR)/interaction.params.c          \
+                $(C_SPECS_DIR)/invite.c                      \
+                $(C_SPECS_DIR)/invite.params.c               \
+                $(C_SPECS_DIR)/message_components.c          \
+                $(C_SPECS_DIR)/permissions.c                 \
+                $(C_SPECS_DIR)/stage_instance.c              \
+                $(C_SPECS_DIR)/stage_instance.params.c       \
+                $(C_SPECS_DIR)/sticker.c                     \
+                $(C_SPECS_DIR)/sticker.params.c              \
+                $(C_SPECS_DIR)/user.c                        \
+                $(C_SPECS_DIR)/user.params.c                 \
+                $(C_SPECS_DIR)/voice-connections.c           \
+                $(C_SPECS_DIR)/voice.c                       \
+                $(C_SPECS_DIR)/webhook.c                     \
+                $(C_SPECS_DIR)/webhook.params.c
+
+DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
+                $(SRC_DIR)/adapter-ratelimit.c \
+                $(SRC_DIR)/adapter.c           \
+                $(SRC_DIR)/client.c            \
+                $(SRC_DIR)/gateway.c           \
+                $(SRC_DIR)/misc.c              \
+                $(SRC_DIR)/voice-connections.c \
+                $(C_SPECS_SRC)
 
 SRC  := $(COGUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
-# API libs
 LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
@@ -51,6 +90,8 @@ WFLAGS += -Wall -Wextra -pedantic
 $(OBJDIR)/$(COGUTILS_DIR)/%.o : $(COGUTILS_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 $(OBJDIR)/$(THIRDP_DIR)/%.o : $(THIRDP_DIR)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+$(OBJDIR)/$(C_SPECS_DIR)/%.o : $(C_SPECS_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
@@ -90,9 +131,9 @@ $(COGUTILS_DIR):
 $(OBJS): | $(OBJDIR)
 
 $(OBJDIR):
-	@ mkdir -p $@/$(THIRDP_DIR)                                 \
-	           $@/$(COGUTILS_DIR)                               \
-	           $(addprefix $@/, $(wildcard $(C_SPECS_DIR)/*))
+	@ mkdir -p $@/$(THIRDP_DIR)   \
+	           $@/$(COGUTILS_DIR) \
+	           $@/$(C_SPECS_DIR)
 
 install:
 	@ mkdir -p $(PREFIX)/lib/
@@ -108,7 +149,6 @@ echo:
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
-	@ echo -e 'SPECS DIRS: $(wildcard $(C_SPECS_DIR)/*)\n'
 	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
 	@ echo -e 'COMMON_SRC: $(COMMON_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
