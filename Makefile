@@ -97,8 +97,8 @@ specs_gen: | $(COGUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
 	@ mkdir -p $(C_SPECS_DIR)
-	mv $(SPECS_DIR)/specs-code/discord/*.c $(C_SPECS_DIR)
-	mv $(SPECS_DIR)/specs-code/discord/one-specs.h $(INCLUDE_DIR)
+	mv $(SPECS_DIR)/code/*.c $(C_SPECS_DIR)
+	mv $(SPECS_DIR)/code/discord-specs.h $(INCLUDE_DIR)
 
 cog_utils:
 	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
@@ -161,7 +161,7 @@ purge: clean
 docs: | $(CCORDDOCS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_headers
-	@ mv $(SPECS_DIR)/specs-code/discord/*.h $(H_SPECS_DIR)
+	@ mv $(SPECS_DIR)/code/*.h $(H_SPECS_DIR)
 
 $(CCORDDOCS_DIR): | $(H_SPECS_DIR)
 	git clone https://github.com/cogmasters/concord-docs $@

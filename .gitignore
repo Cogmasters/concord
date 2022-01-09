@@ -15,4 +15,4 @@ Doxyfile
 *.swp
 cog-utils
 src/specs-code
-include/one-specs.h
+include/discord-specs.h
