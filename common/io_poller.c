@@ -50,9 +50,13 @@ io_poller_create(void)
 void
 io_poller_destroy(struct io_poller *io)
 {
+  for (int i=0; i<io->curlm_cnt; i++) {
+    free(io->curlm[i]->fds);
+    free(io->curlm[i]);
+  }
+  free(io->curlm);
   free(io->elements);
   free(io->pollfds);
-  free(io->curlm);
   free(io);
 }
 
