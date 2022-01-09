@@ -50,14 +50,18 @@ io_poller_create(void)
 void
 io_poller_destroy(struct io_poller *io)
 {
+  for (int i=0; i<io->curlm_cnt; i++) {
+    free(io->curlm[i]->fds);
+    free(io->curlm[i]);
+  }
+  free(io->curlm);
   free(io->elements);
   free(io->pollfds);
-  free(io->curlm);
   free(io);
 }
 
 
-void
+int
 io_poller_poll(struct io_poller *io, int milliseconds)
 {
   const int64_t now = cog_timestamp_ms();
@@ -72,11 +76,12 @@ io_poller_poll(struct io_poller *io, int milliseconds)
       if (milliseconds == -1 || io_curlm->timeout < millis)
         milliseconds = io_curlm->timeout < now ? 0 : io_curlm->timeout - now;
   }
-  poll(io->pollfds, io->cnt, milliseconds);
+  return poll(io->pollfds, io->cnt, milliseconds);
 }
 
 
-void io_poller_perform(struct io_poller *io)
+void
+io_poller_perform(struct io_poller *io)
 {
   const int64_t now = cog_timestamp_ms();
   for (int i=0; i<io->cnt; i++) {
@@ -208,12 +213,12 @@ curl_socket_cb(CURL *easy,
       if (tmp) {
         io_curlm->fds = tmp;
         io_curlm->fds_cap = cap;
-      } else return 0;
+      } else return CURLM_OUT_OF_MEMORY;
     }
     io_curlm->fds[io_curlm->fds_cnt++] = fd;
   }
   io_poller_fd_add(io_curlm->io_poller, fd, events, io_curl_cb, io_curlm);
-  return 0;
+  return CURLM_OK;
 }
 
 static int
@@ -226,7 +231,7 @@ curl_timer_cb(CURLM *multi, long timeout_ms, void *userp)
   } else {
     io_curlm->timeout = cog_timestamp_ms() + timeout_ms;
   }
-  return 0;
+  return CURLM_OK;
 }
 
 bool
@@ -277,4 +282,4 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
     }
   }
   return false;
-} 
+}

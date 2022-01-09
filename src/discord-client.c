@@ -245,17 +245,18 @@ discord_run(struct discord *client)
     if (code != CCORD_OK) break;
     time_t last = 0;
     do {
-      io_poller_poll(client->io_poller, client->gw.cmds.cbs.on_idle ? 1 : 1000);
+      io_poller_poll(client->io_poller, 
+                     client->gw.cmds.cbs.on_idle ? 1 : 1000);
       io_poller_perform(client->io_poller);
 
       const time_t now = time(NULL);
       if (last != now) {
-        if (CCORD_OK != discord_gateway_perform(&client->gw))
+        if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
           break;
         last = now;
       }
 
-      if (CCORD_OK != discord_adapter_perform(&client->adapter))
+      if (CCORD_OK != (code = discord_adapter_perform(&client->adapter)))
         break;
 
       if (client->gw.cmds.cbs.on_idle)
