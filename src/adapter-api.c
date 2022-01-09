@@ -715,8 +715,8 @@ discord_get_reactions(struct discord *client,
                       struct discord_user ***ret)
 {
   struct discord_request_attr attr = REQUEST_ATTR_LIST_INIT(discord_user, ret);
-  char query[1024] = "";
   char emoji_endpoint[256];
+  char query[1024] = "";
   char *pct_emoji_name;
   CCORDcode code;
 
@@ -724,23 +724,23 @@ discord_get_reactions(struct discord *client,
   CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
   if (params) {
-    size_t len;
-
-    if (params->limit <= 0 || params->limit > 100) {
-      logconf_error(&client->conf, "'params.limit' should be between [1-100]");
-      return CCORD_BAD_PARAMETER;
-    }
+    size_t offset = 0;
 
     if (params->after) {
-      len = query_inject(query, sizeof(query),
-                         "(after):F"
-                         "(limit):d",
-                         &cog_u64tostr, &params->after, &params->limit);
+      CCORD_EXPECT(client, params->after != 0, CCORD_BAD_PARAMETER, "");
+
+      offset += snprintf(query + offset, sizeof(query) - offset,
+                         "?after=%" PRIu64, params->after);
+      ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
-    else {
-      len = query_inject(query, sizeof(query), "(limit):d", &params->limit);
+    if (params->limit) {
+      CCORD_EXPECT(client, params->limit > 0 && params->limit <= 100,
+                   CCORD_BAD_PARAMETER, "");
+
+      offset += snprintf(query + offset, sizeof(query) - offset, "%slimit=%d",
+                         *query ? "&" : "?", params->limit);
+      ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
     }
-    ASSERT_S(len < sizeof(query), "Out of bounds write attempt");
   }
 
   pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
