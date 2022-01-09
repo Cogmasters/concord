@@ -13,3 +13,11 @@ Create Message
 
 .. doxygenfunction:: discord_create_message
 .. doxygenstruct:: discord_create_message_params
+
+Example
+-------
+
+.. code:: c
+   
+   struct discord_create_message_params params = { .content = "Pong!" };
+   discord_create_message(client, msg->channel_id, &params, NULL);

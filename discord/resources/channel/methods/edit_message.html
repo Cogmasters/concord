@@ -1256,9 +1256,19 @@
               
               <div class="toc-item">
                 
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   Example
+  </a>
+ </li>
+</ul>
+
 </nav>
               </div>
               
@@ -1389,6 +1399,29 @@
 </div>
 </dd></dl>
 
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">discord_message</span> <span class="n">ret</span><span class="p">;</span>
+
+<span class="n">discord_create_message</span><span class="p">(</span><span class="n">client</span><span class="p">,</span>
+                       <span class="n">msg</span><span class="o">-&gt;</span><span class="n">channel_id</span><span class="p">,</span>
+                       <span class="o">&amp;</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord_create_message_params</span><span class="p">){</span>
+                         <span class="p">.</span><span class="n">content</span> <span class="o">=</span> <span class="s">&quot;Hello there?&quot;</span>
+                       <span class="p">},</span>
+                       <span class="o">&amp;</span><span class="n">ret</span><span class="p">);</span>
+
+<span class="n">discord_edit_message</span><span class="p">(</span><span class="n">client</span><span class="p">,</span>
+                     <span class="n">msg</span><span class="o">-&gt;</span><span class="n">channel_id</span><span class="p">,</span>
+                     <span class="n">ret</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+                     <span class="o">&amp;</span><span class="p">(</span><span class="k">struct</span> <span class="n">discord_edit_message_params</span><span class="p">){</span>
+                       <span class="p">.</span><span class="n">content</span> <span class="o">=</span> <span class="s">&quot;Such a fast response!&quot;</span>
+                     <span class="p">},</span>
+                     <span class="nb">NULL</span><span class="p">);</span>
+
+<span class="n">discord_message_cleanup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ret</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
