@@ -7,28 +7,28 @@ COGUTILS_DIR := $(TOP)/cog-utils
 COMMON_DIR   := $(TOP)/common
 INCLUDE_DIR  := $(TOP)/include
 
-BOTS := bot-audit-log \
-        bot-ban \
-        bot-channel \
-        bot-components \
-        bot-delete-messages \
-        bot-echo \
-        bot-embed \
-        bot-emoji \
-        bot-fetch-messages \
-        bot-guild-template \
-        bot-guild \
-        bot-invite \
-        bot-manual-dm \
-        bot-pin \
-        bot-ping-pong \
-        bot-presence \
-        bot-reaction \
-        bot-shell \
-        bot-slash-commands \
-        bot-slash-commands2 \
-        bot-voice \
-        bot-webhook
+BOTS := audit-log \
+        ban \
+        channel \
+        components \
+        delete-messages \
+        copycat \
+        embed \
+        emoji \
+        fetch-messages \
+        guild-template \
+        guild \
+        invite \
+        manual-dm \
+        pin \
+        ping-pong \
+        presence \
+        reaction \
+        shell \
+        slash-commands \
+        slash-commands2 \
+        voice \
+        webhook
 
 CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) \
            -I$(COMMON_DIR)/third-party                        \
