@@ -19,4 +19,4 @@ typedef void (*io_poller_curl_cb)(CURLM *multi, void *user_data);
 bool io_poller_curlm_add(struct io_poller *io, CURLM *multi, io_poller_curl_cb cb, void *user_data);
 bool io_poller_curlm_del(struct io_poller *io, CURLM *multi);
 
-#endif//CONCORD_IO_POLLER_H 
+#endif//CONCORD_IO_POLLER_H

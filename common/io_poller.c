@@ -208,12 +208,12 @@ curl_socket_cb(CURL *easy,
       if (tmp) {
         io_curlm->fds = tmp;
         io_curlm->fds_cap = cap;
-      } else return 0;
+      } else return CURLM_OUT_OF_MEMORY;
     }
     io_curlm->fds[io_curlm->fds_cnt++] = fd;
   }
   io_poller_fd_add(io_curlm->io_poller, fd, events, io_curl_cb, io_curlm);
-  return 0;
+  return CURLM_OK;
 }
 
 static int
@@ -226,7 +226,7 @@ curl_timer_cb(CURLM *multi, long timeout_ms, void *userp)
   } else {
     io_curlm->timeout = cog_timestamp_ms() + timeout_ms;
   }
-  return 0;
+  return CURLM_OK;
 }
 
 bool
@@ -277,4 +277,4 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
     }
   }
   return false;
-} 
+}
