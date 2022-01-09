@@ -61,7 +61,7 @@ io_poller_destroy(struct io_poller *io)
 }
 
 
-void
+int
 io_poller_poll(struct io_poller *io, int milliseconds)
 {
   const int64_t now = cog_timestamp_ms();
@@ -76,11 +76,12 @@ io_poller_poll(struct io_poller *io, int milliseconds)
       if (milliseconds == -1 || io_curlm->timeout < millis)
         milliseconds = io_curlm->timeout < now ? 0 : io_curlm->timeout - now;
   }
-  poll(io->pollfds, io->cnt, milliseconds);
+  return poll(io->pollfds, io->cnt, milliseconds);
 }
 
 
-void io_poller_perform(struct io_poller *io)
+void
+io_poller_perform(struct io_poller *io)
 {
   const int64_t now = cog_timestamp_ms();
   for (int i=0; i<io->cnt; i++) {
