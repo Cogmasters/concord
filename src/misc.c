@@ -277,7 +277,7 @@ discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
               &new_overwrite);
 }
 
-/*@todo create some manner of copying a struct, including its pointer fields */
+/* @todo create some manner of copying a struct, including its pointer fields */
 CCORDcode
 discord_get_channel_at_pos(struct discord *client,
                            const u64_snowflake_t guild_id,
@@ -292,21 +292,30 @@ discord_get_channel_at_pos(struct discord *client,
   CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
   code = discord_get_guild_channels(client, guild_id, &channels);
+
   if (CCORD_OK != code) {
-    log_error("Couldn't fetch channels from guild");
-    return code;
+    logconf_error(&client->conf, "Couldn't fetch channels from guild");
+    memset(ret, 0, sizeof(struct discord_channel));
   }
   else {
-    size_t i, j; /* calculate position */
+    struct discord_channel *channel = NULL;
+    size_t i, pos; /* calculate position */
 
-    for (i = 0, j = 0; channels[i]; ++i) {
-      if (type == channels[i]->type && j++ == position) {
-        memcpy(ret, channels[i], sizeof(struct discord_channel));
-        /* avoid double freeing */
-        memset(channels[i], 0, sizeof(struct discord_channel));
-        break; /* EARLY BREAK */
+    for (i = 0, pos = 0; channels[i]; ++i) {
+      if (type == channels[i]->type && pos++ == position) {
+        channel = channels[i];
+        break;
       }
     }
+
+    if (channel) {
+      memcpy(ret, channel, sizeof(struct discord_channel));
+      memset(channel, 0, sizeof(struct discord_channel));
+    }
+    else {
+      memset(ret, 0, sizeof(struct discord_channel));
+    }
+
     discord_channel_list_free(channels);
   }
 
