@@ -22,6 +22,7 @@
 #include "uthash.h"
 #include "queue.h"
 #include "heap-inl.h"
+#include "banned.h"
 
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)

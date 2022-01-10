@@ -939,7 +939,7 @@ discord_create_channel_invite(
     len =
       discord_create_channel_invite_params_to_json(buf, sizeof(buf), params);
   else
-    len = sprintf(buf, "{}");
+    len = snprintf(buf, sizeof(buf), "{}");
   body.start = buf;
   body.size = len;
 
@@ -1962,7 +1962,7 @@ discord_modify_guild_role(struct discord *client,
   if (params)
     len = discord_modify_guild_role_params_to_json(buf, sizeof(buf), params);
   else
-    len = sprintf(buf, "{}");
+    len = snprintf(buf, sizeof(buf), "{}");
   body.size = len;
   body.start = buf;
 
@@ -1983,6 +1983,7 @@ discord_delete_guild_role(struct discord *client,
                              "/guilds/%" PRIu64 "/roles/%" PRIu64, guild_id,
                              role_id);
 }
+
 CCORDcode
 discord_begin_guild_prune(struct discord *client,
                           u64_snowflake_t guild_id,
@@ -1997,7 +1998,7 @@ discord_begin_guild_prune(struct discord *client,
   if (params)
     len = discord_begin_guild_prune_params_to_json(buf, sizeof(buf), params);
   else
-    len = sprintf(buf, "{}");
+    len = snprintf(buf, sizeof(buf), "{}");
   body.size = len;
   body.start = buf;
 
