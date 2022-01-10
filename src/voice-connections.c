@@ -3,8 +3,8 @@
 #include <math.h>
 
 #include "discord.h"
+#include "discord-voice.h"
 #include "discord-internal.h"
-#include "discord-voice-connections.h"
 #include "cog-utils.h"
 
 /* TODO: use a per-client lock instead */
@@ -331,19 +331,6 @@ send_heartbeat(struct discord_voice *vc)
   ws_send_text(vc->ws, NULL, buf, len);
 }
 
-/* TODO: cleanup afterwards */
-#if 0 
-static void
-_discord_voice_cleanup(struct discord_voice *vc)
-{
-  /* close the descriptor */
-  /* kill the child process */
-  free(vc->mhandle);
-  if (vc->ws) ws_cleanup(vc->ws);
-  free(vc);
-}
-#endif
-
 static void
 reset_vc(struct discord_voice *vc)
 {
@@ -368,6 +355,7 @@ _discord_voice_init(struct discord_voice *new_vc,
       .on_text = &on_text_cb,
       .on_close = &on_close_cb,
     };
+
     struct ws_attr attr = {
       .conf = &client->conf,
     };
@@ -393,13 +381,13 @@ discord_send_speaking(struct discord_voice *vc,
 
   char buf[128];
   size_t len = json_inject(buf, sizeof(buf),
-                        "(op):5," /* VOICE SPEAKING OPCODE */
-                        "(d):{"
-                        "(speaking):d"
-                        "(delay):d"
-                        "(ssrc):d"
-                        "}",
-                        &flag, &delay, &vc->udp_service.ssrc);
+                           "(op):5," /* VOICE SPEAKING OPCODE */
+                           "(d):{"
+                           "(speaking):d"
+                           "(delay):d"
+                           "(ssrc):d"
+                           "}",
+                           &flag, &delay, &vc->udp_service.ssrc);
   ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
   logconf_info(
@@ -485,7 +473,7 @@ discord_voice_join(struct discord *client,
   if (!ws_is_functional(client->gw.ws)) return DISCORD_VOICE_ERROR;
 
   pthread_mutex_lock(&client_lock);
-  for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
+  for (i = 0; i < DISCORD_MAX_VCS; ++i) {
     if (0 == client->vcs[i].guild_id) {
       vc = client->vcs + i;
       _discord_voice_init(vc, client, guild_id, vchannel_id);
@@ -530,12 +518,12 @@ _discord_on_voice_state_update(struct discord *client,
   int i;
 
   pthread_mutex_lock(&client_lock);
-  for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
+  for (i = 0; i < DISCORD_MAX_VCS; ++i) {
     if (vs->guild_id == client->vcs[i].guild_id) {
       vc = client->vcs + i;
       if (vs->channel_id) {
         size_t len = snprintf(vc->session_id, sizeof(vc->session_id), "%s",
-                           vs->session_id);
+                              vs->session_id);
         ASSERT_S(len < sizeof(vc->session_id), "Out of bounds write attempt");
         logconf_info(&vc->conf,
                      "Starting a new voice session (id: " ANSICOLOR(
@@ -653,7 +641,7 @@ _discord_on_voice_server_update(struct discord *client,
   int i;
 
   pthread_mutex_lock(&client_lock);
-  for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
+  for (i = 0; i < DISCORD_MAX_VCS; ++i) {
     if (guild_id == client->vcs[i].guild_id) {
       vc = client->vcs + i;
       break;
@@ -669,7 +657,7 @@ _discord_on_voice_server_update(struct discord *client,
   len = snprintf(vc->new_token, sizeof(vc->new_token), "%s", token);
   ASSERT_S(len < sizeof(vc->new_token), "Out of bounds write attempt");
   len = snprintf(vc->new_url, sizeof(vc->new_url),
-                 "wss://%s" DISCORD_VOICE_CONNECTIONS_URL_SUFFIX, endpoint);
+                 "wss://%s" DISCORD_VCS_URL_SUFFIX, endpoint);
   ASSERT_S(len < sizeof(vc->new_url), "Out of bounds write attempt");
 
   /* TODO: replace with the more reliable thread alive check */
@@ -698,8 +686,25 @@ discord_voice_connections_init(struct discord *client)
 {
   int i;
 
-  for (i = 0; i < DISCORD_MAX_VOICE_CONNECTIONS; ++i) {
+  for (i = 0; i < DISCORD_MAX_VCS; ++i) {
     client->vcs[i].p_voice_cbs = &client->voice_cbs;
+  }
+}
+
+static void
+_discord_voice_cleanup(struct discord_voice *vc)
+{
+  free(vc->mhandle);
+  if (vc->ws) ws_cleanup(vc->ws);
+}
+
+void
+discord_voice_connections_cleanup(struct discord *client)
+{
+  int i;
+
+  for (i = 0; i < DISCORD_MAX_VCS; ++i) {
+    _discord_voice_cleanup(&client->vcs[i]);
   }
 }
 
@@ -737,4 +742,23 @@ bool
 discord_voice_is_alive(struct discord_voice *vc)
 {
   return vc->guild_id && ws_is_alive(vc->ws);
+}
+
+void
+discord_set_voice_cbs(struct discord *client,
+                      struct discord_voice_cbs *callbacks)
+{
+  if (callbacks->on_speaking)
+    client->voice_cbs.on_speaking = callbacks->on_speaking;
+  if (callbacks->on_codec) client->voice_cbs.on_codec = callbacks->on_codec;
+  if (callbacks->on_session_descriptor)
+    client->voice_cbs.on_session_descriptor = callbacks->on_session_descriptor;
+  if (callbacks->on_client_disconnect)
+    client->voice_cbs.on_client_disconnect = callbacks->on_client_disconnect;
+  if (callbacks->on_ready) client->voice_cbs.on_ready = callbacks->on_ready;
+  if (callbacks->on_idle) client->voice_cbs.on_idle = callbacks->on_idle;
+  if (callbacks->on_udp_server_connected)
+    client->voice_cbs.on_udp_server_connected =
+      callbacks->on_udp_server_connected;
+  discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
 }

@@ -1,17 +1,25 @@
 /**
- * @file discord-voice-connections.h
+ * @file discord-voice.h
  * @author Cogmasters
  * @brief File containing internal functions and datatypes for Voice
- * Connections
+ *        Connections
  */
 
-#ifndef DISCORD_VOICE_CONNECTIONS_H
-#define DISCORD_VOICE_CONNECTIONS_H
+#ifndef DISCORD_VOICE_H
+#define DISCORD_VOICE_H
 
 #include <time.h>
 #include <pthread.h>
+#include <curl/curl.h>
 
-struct discord_voice; /*forward */
+struct discord_voice; /* forward declaration */
+
+#define HAS_DISCORD_VOICE
+
+#define DISCORD_VCS_URL_SUFFIX "?v=4"
+
+/* TODO: add to DiscordLimitsGeneral group */
+#define DISCORD_MAX_VCS 512
 
 /**
  * @brief Idle callback
@@ -30,10 +38,10 @@ typedef void (*discord_on_voice_idle)(struct discord *client,
  */
 typedef void (*discord_on_voice_speaking)(struct discord *client,
                                           struct discord_voice *vc,
-                                          const u64_snowflake_t user_id,
-                                          const int speaking,
-                                          const int delay,
-                                          const int ssrc);
+                                          u64_snowflake_t user_id,
+                                          int speaking,
+                                          int delay,
+                                          int ssrc);
 
 /**
  * @brief Voice Client Disconnect callback
@@ -41,10 +49,9 @@ typedef void (*discord_on_voice_speaking)(struct discord *client,
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @see discord_set_voice_cbs()
  */
-typedef void (*discord_on_voice_client_disconnect)(
-  struct discord *client,
-  struct discord_voice *vc,
-  const u64_snowflake_t user_id);
+typedef void (*discord_on_voice_client_disconnect)(struct discord *client,
+                                                   struct discord_voice *vc,
+                                                   u64_snowflake_t user_id);
 
 /**
  * @brief Voice Codec callback
@@ -267,6 +274,15 @@ void discord_voice_shutdown(struct discord_voice *vc);
 void discord_voice_reconnect(struct discord_voice *vc, bool resume);
 
 /**
+ * @brief Helper to quickly set voice callbacks
+ *
+ * @param client the client created with discord_init()
+ * @param callbacks the voice callbacks that will be executed
+ */
+void discord_set_voice_cbs(struct discord *client,
+                           struct discord_voice_cbs *callbacks);
+
+/**
  * @brief Check if a Discord Voice connection is alive
  *
  * @param vc the voice connection obtained with discord_voice_join()
@@ -282,4 +298,11 @@ bool discord_voice_is_alive(struct discord_voice *vc);
  */
 void discord_voice_connections_init(struct discord *client);
 
-#endif /* DISCORD_VOICE_CONNECTIONS_H */
+/**
+ * @brief Cleanup the fields of a Discord Voice Connections handle
+ *
+ * @param client the client created with discord_init()
+ */
+void discord_voice_connections_cleanup(struct discord *client);
+
+#endif /* DISCORD_VOICE_H */

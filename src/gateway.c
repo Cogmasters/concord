@@ -691,15 +691,16 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw,
 static void
 on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord *client = CLIENT(gw, gw);
   struct discord_voice_state vs;
 
   discord_voice_state_from_json(data->start, data->size, &vs);
 
-  if (vs.user_id == client->self.id) {
+#ifdef HAS_DISCORD_VOICE
+  if (vs.user_id == CLIENT(gw, gw)->self.id) {
     /* we only care about the voice_state_update of bot */
-    _discord_on_voice_state_update(client, &vs);
+    _discord_on_voice_state_update(CLIENT(gw, gw), &vs);
   }
+#endif /* HAS_DISCORD_VOICE */
 
   if (gw->cmds.cbs.on_voice_state_update) ON(voice_state_update, &vs);
 
@@ -709,7 +710,6 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-  struct discord *client = CLIENT(gw, gw);
   u64_snowflake_t guild_id = 0;
   char token[512], endpoint[1024];
 
@@ -719,8 +719,10 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
                "(endpoint):s",
                &token, &guild_id, &endpoint);
 
+#ifdef HAS_DISCORD_VOICE
   /* this happens for everyone */
-  _discord_on_voice_server_update(client, guild_id, token, endpoint);
+  _discord_on_voice_server_update(CLIENT(gw, gw), guild_id, token, endpoint);
+#endif /* HAS_DISCORD_VOICE */
 
   if (gw->cmds.cbs.on_voice_server_update)
     ON(voice_server_update, token, guild_id, endpoint);
@@ -1185,7 +1187,7 @@ default_scheduler_cb(struct discord *a,
 static void
 on_io_poller_curl(CURLM *multi, void *user_data)
 {
-  (void) multi;
+  (void)multi;
   discord_gateway_perform(user_data);
 }
 
@@ -1382,7 +1384,7 @@ discord_gateway_perform(struct discord_gateway *gw)
     send_heartbeat(gw);
   }
 
-  //if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
+  // if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
 
   return CCORD_OK;
 }

@@ -23,8 +23,6 @@
 #include "queue.h"
 #include "heap-inl.h"
 
-#include "discord-voice-connections.h"
-
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
@@ -595,14 +593,15 @@ struct discord {
   struct discord_adapter adapter;
   /** the WebSockets handle for establishing a connection to Discord */
   struct discord_gateway gw;
-  /** the WebSockets handles for establishing voice connections to Discord */
-  struct discord_voice vcs[DISCORD_MAX_VOICE_CONNECTIONS];
-  /** @todo create a analogous struct for Gateway's callbacks */
-  struct discord_voice_cbs voice_cbs;
   /** the client's user structure */
   struct discord_user self;
   /** space for user arbitrary data */
   void *data;
+
+#ifdef HAS_DISCORD_VOICE
+  struct discord_voice vcs[DISCORD_MAX_VCS];
+  struct discord_voice_cbs voice_cbs;
+#endif /* HAS_DISCORD_VOICE */
 };
 
 #endif /* DISCORD_INTERNAL_H */

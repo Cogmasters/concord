@@ -12,19 +12,18 @@
 #define DISCORD_H
 
 #include <stdbool.h>
+
 #include "json-actor-boxed.h"
 #include "common.h"
 #include "logconf.h"
 
 #include "discord-specs.h" /* see specs/api/ */
 
-#define DISCORD_API_BASE_URL                 "https://discord.com/api/v9"
-#define DISCORD_GATEWAY_URL_SUFFIX           "?v=9&encoding=json"
-#define DISCORD_VOICE_CONNECTIONS_URL_SUFFIX "?v=4"
+#define DISCORD_API_BASE_URL       "https://discord.com/api/v9"
+#define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 
 /* forward declarations */
 struct discord;
-struct discord_voice_cbs;
 /**/
 
 /** @defgroup DiscordLimitsSnowflake
@@ -47,7 +46,6 @@ struct discord_voice_cbs;
 #define DISCORD_MAX_REASON_LEN        4 * 512 + 1
 #define DISCORD_MAX_MESSAGE_LEN       4 * 2000 + 1
 #define DISCORD_MAX_PAYLOAD_LEN       4 * 4096 + 1
-#define DISCORD_MAX_VOICE_CONNECTIONS 512
 /** @} */
 
 /** @defgroup DiscordLimitsEmbed
@@ -2423,15 +2421,6 @@ void discord_set_on_command(struct discord *client,
 void discord_set_on_commands(struct discord *client,
                              discord_on_message callback,
                              ...);
-
-/**
- * @brief Helper to quickly set voice callbacks
- *
- * @param client the client created with discord_init()
- * @param callbacks the voice callbacks that will be executed
- */
-void discord_set_voice_cbs(struct discord *client,
-                           struct discord_voice_cbs *callbacks);
 
 /** @defgroup DiscordCallbackSet
  * @brief Set callbacks to be triggered on event detection

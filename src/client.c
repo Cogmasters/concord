@@ -17,7 +17,9 @@ _discord_init(struct discord *new_client)
   discord_adapter_init(&new_client->adapter, &new_client->conf,
                        &new_client->token);
   discord_gateway_init(&new_client->gw, &new_client->conf, &new_client->token);
+#ifdef HAS_DISCORD_VOICE
   discord_voice_connections_init(new_client);
+#endif /* HAS_DISCORD_VOICE */
 
   /* fetch the client user structure */
   if (new_client->token.size) {
@@ -91,6 +93,9 @@ discord_cleanup(struct discord *client)
     discord_gateway_cleanup(&client->gw);
     discord_user_cleanup(&client->self);
     io_poller_destroy(client->io_poller);
+#ifdef HAS_DISCORD_VOICE
+    discord_voice_connections_cleanup(client);
+#endif /* HAS_DISCORD_VOICE */
   }
   free(client);
 }
@@ -539,25 +544,6 @@ discord_set_on_voice_server_update(struct discord *client,
                                    discord_on_voice_server_update callback)
 {
   client->gw.cmds.cbs.on_voice_server_update = callback;
-  discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
-}
-
-void
-discord_set_voice_cbs(struct discord *client,
-                      struct discord_voice_cbs *callbacks)
-{
-  if (callbacks->on_speaking)
-    client->voice_cbs.on_speaking = callbacks->on_speaking;
-  if (callbacks->on_codec) client->voice_cbs.on_codec = callbacks->on_codec;
-  if (callbacks->on_session_descriptor)
-    client->voice_cbs.on_session_descriptor = callbacks->on_session_descriptor;
-  if (callbacks->on_client_disconnect)
-    client->voice_cbs.on_client_disconnect = callbacks->on_client_disconnect;
-  if (callbacks->on_ready) client->voice_cbs.on_ready = callbacks->on_ready;
-  if (callbacks->on_idle) client->voice_cbs.on_idle = callbacks->on_idle;
-  if (callbacks->on_udp_server_connected)
-    client->voice_cbs.on_udp_server_connected =
-      callbacks->on_udp_server_connected;
   discord_add_intents(client, DISCORD_GATEWAY_GUILD_VOICE_STATES);
 }
 

@@ -56,9 +56,7 @@ void on_audit_channel_create(struct discord *client,
   CCORDcode code;
   code = discord_get_guild_audit_log(
     client, msg->guild_id,
-    &(struct discord_get_guild_audit_log_params){
-      .user_id = msg->author->id,
-      .action_type = DISCORD_AUDIT_LOG_CHANNEL_CREATE },
+    NULL,
     &audit_log);
 
   if (code != CCORD_OK) {
