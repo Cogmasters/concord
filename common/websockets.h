@@ -26,10 +26,10 @@ struct websockets;
  * @brief Stores info on the latest transfer performed via websockets
  */
 struct ws_info {
-  /** logging info */
-  struct loginfo loginfo;
-  /** how the transfer went @todo implement */
-  CCORDcode code;
+    /** logging info */
+    struct loginfo loginfo;
+    /** how the transfer went @todo implement */
+    CCORDcode code;
 };
 
 /**
@@ -38,14 +38,14 @@ struct ws_info {
  * @see ws_get_status()
  */
 enum ws_status {
-  /** client disconnected from ws */
-  WS_DISCONNECTED = 0,
-  /** client connected to ws */
-  WS_CONNECTED,
-  /** client in the process of disconnecting to ws */
-  WS_DISCONNECTING,
-  /** client in the process of connecting from ws */
-  WS_CONNECTING,
+    /** client disconnected from ws */
+    WS_DISCONNECTED = 0,
+    /** client connected to ws */
+    WS_CONNECTED,
+    /** client in the process of disconnecting to ws */
+    WS_DISCONNECTING,
+    /** client in the process of connecting from ws */
+    WS_CONNECTING,
 };
 
 /**
@@ -54,94 +54,94 @@ enum ws_status {
  * @see https://tools.ietf.org/html/rfc6455#section-7.4.1
  */
 enum ws_close_reason {
-  WS_CLOSE_REASON_NORMAL = 1000,
-  WS_CLOSE_REASON_GOING_AWAY = 1001,
-  WS_CLOSE_REASON_PROTOCOL_ERROR = 1002,
-  WS_CLOSE_REASON_UNEXPECTED_DATA = 1003,
-  WS_CLOSE_REASON_NO_REASON = 1005,
-  WS_CLOSE_REASON_ABRUPTLY = 1006,
-  WS_CLOSE_REASON_INCONSISTENT_DATA = 1007,
-  WS_CLOSE_REASON_POLICY_VIOLATION = 1008,
-  WS_CLOSE_REASON_TOO_BIG = 1009,
-  WS_CLOSE_REASON_MISSING_EXTENSION = 1010,
-  WS_CLOSE_REASON_SERVER_ERROR = 1011,
-  WS_CLOSE_REASON_IANA_REGISTRY_START = 3000,
-  WS_CLOSE_REASON_IANA_REGISTRY_END = 3999,
-  WS_CLOSE_REASON_PRIVATE_START = 4000,
-  WS_CLOSE_REASON_PRIVATE_END = 4999
+    WS_CLOSE_REASON_NORMAL = 1000,
+    WS_CLOSE_REASON_GOING_AWAY = 1001,
+    WS_CLOSE_REASON_PROTOCOL_ERROR = 1002,
+    WS_CLOSE_REASON_UNEXPECTED_DATA = 1003,
+    WS_CLOSE_REASON_NO_REASON = 1005,
+    WS_CLOSE_REASON_ABRUPTLY = 1006,
+    WS_CLOSE_REASON_INCONSISTENT_DATA = 1007,
+    WS_CLOSE_REASON_POLICY_VIOLATION = 1008,
+    WS_CLOSE_REASON_TOO_BIG = 1009,
+    WS_CLOSE_REASON_MISSING_EXTENSION = 1010,
+    WS_CLOSE_REASON_SERVER_ERROR = 1011,
+    WS_CLOSE_REASON_IANA_REGISTRY_START = 3000,
+    WS_CLOSE_REASON_IANA_REGISTRY_END = 3999,
+    WS_CLOSE_REASON_PRIVATE_START = 4000,
+    WS_CLOSE_REASON_PRIVATE_END = 4999
 };
 
 /** @brief WebSockets callbacks */
 struct ws_callbacks {
-  /**
-   * @brief Called upon connection
-   *
-   * @note It is not validated if matches the proposed protocols.
-   */
-  void (*on_connect)(void *data,
-                     struct websockets *ws,
-                     struct ws_info *info,
-                     const char *protocols);
+    /**
+     * @brief Called upon connection
+     *
+     * @note It is not validated if matches the proposed protocols.
+     */
+    void (*on_connect)(void *data,
+                       struct websockets *ws,
+                       struct ws_info *info,
+                       const char *protocols);
 
-  /**
-   * @brief Reports UTF-8 text messages.
-   *
-   * @note it's guaranteed to be NULL (\0) terminated, but the UTF-8 is
-   * not validated. If it's invalid, consider closing the connection
-   * with WS_CLOSE_REASON_INCONSISTENT_DATA.
-   */
-  void (*on_text)(void *data,
-                  struct websockets *ws,
-                  struct ws_info *info,
-                  const char *text,
-                  size_t len);
-
-  /** @brief reports binary data.  */
-  void (*on_binary)(void *data,
+    /**
+     * @brief Reports UTF-8 text messages.
+     *
+     * @note it's guaranteed to be NULL (\0) terminated, but the UTF-8 is
+     * not validated. If it's invalid, consider closing the connection
+     * with WS_CLOSE_REASON_INCONSISTENT_DATA.
+     */
+    void (*on_text)(void *data,
                     struct websockets *ws,
                     struct ws_info *info,
-                    const void *mem,
+                    const char *text,
                     size_t len);
-  /**
-   * @brief reports PING.
-   *
-   * @note if provided you should reply with ws_pong(). If not
-   * provided, pong is sent with the same message payload.
-   */
-  void (*on_ping)(void *data,
-                  struct websockets *ws,
-                  struct ws_info *info,
-                  const char *reason,
-                  size_t len);
 
-  /** @brief reports PONG.  */
-  void (*on_pong)(void *data,
-                  struct websockets *ws,
-                  struct ws_info *info,
-                  const char *reason,
-                  size_t len);
+    /** @brief reports binary data.  */
+    void (*on_binary)(void *data,
+                      struct websockets *ws,
+                      struct ws_info *info,
+                      const void *mem,
+                      size_t len);
+    /**
+     * @brief reports PING.
+     *
+     * @note if provided you should reply with ws_pong(). If not
+     * provided, pong is sent with the same message payload.
+     */
+    void (*on_ping)(void *data,
+                    struct websockets *ws,
+                    struct ws_info *info,
+                    const char *reason,
+                    size_t len);
 
-  /**
-   * @brief reports server closed the connection with the given reason.
-   *
-   * Clients should not transmit any more data after the server is
-   * closed
-   */
-  void (*on_close)(void *data,
-                   struct websockets *ws,
-                   struct ws_info *info,
-                   enum ws_close_reason wscode,
-                   const char *reason,
-                   size_t len);
+    /** @brief reports PONG.  */
+    void (*on_pong)(void *data,
+                    struct websockets *ws,
+                    struct ws_info *info,
+                    const char *reason,
+                    size_t len);
 
-  /** @brief user arbitrary data to be passed around callbacks */
-  void *data;
+    /**
+     * @brief reports server closed the connection with the given reason.
+     *
+     * Clients should not transmit any more data after the server is
+     * closed
+     */
+    void (*on_close)(void *data,
+                     struct websockets *ws,
+                     struct ws_info *info,
+                     enum ws_close_reason wscode,
+                     const char *reason,
+                     size_t len);
+
+    /** @brief user arbitrary data to be passed around callbacks */
+    void *data;
 };
 
 /** @brief WebSockets handle initialization attributes */
 struct ws_attr {
-  /** pre-initialized logging module */
-  struct logconf *conf;
+    /** pre-initialized logging module */
+    struct logconf *conf;
 };
 
 /**
@@ -283,7 +283,8 @@ void ws_end(struct websockets *ws);
  * @param tstamp get current timestamp for this iteration
  * @return `true` if connection is still alive, `false` otherwise
  * @note This is an easy, yet highly abstracted way of performing transfers.
- *        If a higher control is necessary, users are better of using ws_multi_socket_run()
+ *        If a higher control is necessary, users are better of using
+ * ws_multi_socket_run()
  */
 _Bool ws_easy_run(struct websockets *ws, uint64_t wait_ms, uint64_t *tstamp);
 

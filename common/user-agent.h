@@ -14,13 +14,13 @@ extern "C" {
 
 /** @brief HTTP methods */
 enum http_method {
-  HTTP_INVALID = -1,
-  HTTP_DELETE,
-  HTTP_GET,
-  HTTP_POST,
-  HTTP_MIMEPOST,
-  HTTP_PATCH,
-  HTTP_PUT
+    HTTP_INVALID = -1,
+    HTTP_DELETE,
+    HTTP_GET,
+    HTTP_POST,
+    HTTP_MIMEPOST,
+    HTTP_PATCH,
+    HTTP_PUT
 };
 
 /**
@@ -92,20 +92,20 @@ struct ua_conn;
 
 /** @brief User-Agent handle initialization attributes */
 struct ua_attr {
-  /** pre-initialized logging module */
-  struct logconf *conf;
+    /** pre-initialized logging module */
+    struct logconf *conf;
 };
 
 /** @brief Connection attributes */
 struct ua_conn_attr {
-  /** the HTTP method of this transfer (GET, POST, ...) */
-  enum http_method method;
-  /** the optional request body, can be NULL */
-  struct sized_buffer *body;
-  /** the endpoint to be appended to the base URL */
-  char *endpoint;
-  /** optional base_url to override ua_set_url(), can be NULL */
-  char *base_url;
+    /** the HTTP method of this transfer (GET, POST, ...) */
+    enum http_method method;
+    /** the optional request body, can be NULL */
+    struct sized_buffer *body;
+    /** the endpoint to be appended to the base URL */
+    char *endpoint;
+    /** optional base_url to override ua_set_url(), can be NULL */
+    char *base_url;
 };
 
 /** Maximum amount of header pairs */
@@ -113,50 +113,50 @@ struct ua_conn_attr {
 
 /** @brief Structure for storing the request's response header */
 struct ua_resp_header {
-  /** response header buffer */
-  char *buf;
-  /** response header string length */
-  size_t len;
-  /** real size occupied in memory by buffer */
-  size_t bufsize;
-  /** array of header field/value pairs */
-  struct {
+    /** response header buffer */
+    char *buf;
+    /** response header string length */
+    size_t len;
+    /** real size occupied in memory by buffer */
+    size_t bufsize;
+    /** array of header field/value pairs */
     struct {
-      /** offset index of 'buf' for the start of field or value */
-      size_t idx;
-      /** length of individual field or value */
-      size_t size;
-    } field, value;
-  } pairs[UA_MAX_HEADER_PAIRS];
-  /** amount of pairs initialized */
-  int n_pairs;
+        struct {
+            /** offset index of 'buf' for the start of field or value */
+            size_t idx;
+            /** length of individual field or value */
+            size_t size;
+        } field, value;
+    } pairs[UA_MAX_HEADER_PAIRS];
+    /** amount of pairs initialized */
+    int n_pairs;
 };
 
 /** @brief Structure for storing the request's response body */
 struct ua_resp_body {
-  /** response body buffer */
-  char *buf;
-  /** response body string length */
-  size_t len;
-  /** real size occupied in memory by buffer */
-  size_t bufsize;
+    /** response body buffer */
+    char *buf;
+    /** response body string length */
+    size_t len;
+    /** real size occupied in memory by buffer */
+    size_t bufsize;
 };
 
 /** @brief Informational handle received on request's completion */
 struct ua_info {
-  /** logging informational */
-  struct loginfo loginfo;
-  /** response code for latest request */
-  CCORDcode code;
-  /** the HTTP response code */
-  long httpcode;
+    /** logging informational */
+    struct loginfo loginfo;
+    /** response code for latest request */
+    CCORDcode code;
+    /** the HTTP response code */
+    long httpcode;
 
-  /** @privatesection */
+    /** @privatesection */
 
-  /** the response header */
-  struct ua_resp_header header;
-  /** the response body */
-  struct ua_resp_body body;
+    /** the response header */
+    struct ua_resp_header header;
+    /** the response body */
+    struct ua_resp_body body;
 };
 
 /**
@@ -206,14 +206,14 @@ typedef void (*ua_load_obj_cb)(char *str, size_t len, void *p_obj);
 
 /** @brief User callback to be called on request completion */
 struct ua_resp_handle {
-  /** callback called when a successful transfer occurs */
-  ua_load_obj_cb ok_cb;
-  /** the pointer to be passed to ok_cb */
-  void *ok_obj;
-  /** callback called when a failed transfer occurs */
-  ua_load_obj_cb err_cb;
-  /** the pointer to be passed to err_cb */
-  void *err_obj;
+    /** callback called when a successful transfer occurs */
+    ua_load_obj_cb ok_cb;
+    /** the pointer to be passed to ok_cb */
+    void *ok_obj;
+    /** callback called when a failed transfer occurs */
+    ua_load_obj_cb err_cb;
+    /** the pointer to be passed to err_cb */
+    void *err_obj;
 };
 
 /**
