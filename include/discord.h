@@ -266,7 +266,7 @@ struct discord_async_ret {
 
 /** @brief Triggers on a successful async request */
 typedef void (*discord_on_done)(struct discord *client,
-                                struct discord_async_ret *ret);
+                                struct discord_attr *attr);
 
 /** @brief Async `fail` callback return context */
 struct discord_async_err {
@@ -281,7 +281,7 @@ typedef void (*discord_on_fail)(struct discord *client,
                                 struct discord_async_err *err);
 
 /** @brief The async attributes for next request */
-struct discord_async_attr {
+struct discord_attr {
     /** optional callback to be executed on a succesful request */
     discord_on_done done;
     /** optional callback to be executed on a failed request */
@@ -292,17 +292,9 @@ struct discord_async_attr {
     void *data;
     /** optional user data cleanup function */
     void (*cleanup)(void *data);
+    /** run next request synchronously */
+    bool is_sync;
 };
-
-/**
- * @brief Set next request to run asynchronously
- *
- * @param client the client created with discord_init()
- * @param attr optional async attributes for next request, can be NULL if not
- *        needed
- */
-void discord_async_next(struct discord *client,
-                        struct discord_async_attr *attr);
 
 /**
  * @brief Fetch all of the global commands for your application
@@ -315,7 +307,7 @@ void discord_async_next(struct discord *client,
 CCORDcode discord_get_global_application_commands(
     struct discord *client,
     u64_snowflake_t application_id,
-    struct discord_application_command ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Create a new global command
@@ -331,7 +323,7 @@ CCORDcode discord_create_global_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
     struct discord_create_global_application_command_params *params,
-    struct discord_application_command *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Fetch a global command for your application
@@ -346,7 +338,7 @@ CCORDcode discord_get_global_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t command_id,
-    struct discord_application_command *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Edit a global command
@@ -364,7 +356,7 @@ CCORDcode discord_edit_global_application_command(
     u64_snowflake_t application_id,
     u64_snowflake_t command_id,
     struct discord_edit_global_application_command_params *params,
-    struct discord_application_command *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Deletes a global command
@@ -395,7 +387,7 @@ CCORDcode discord_bulk_overwrite_global_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
     struct discord_application_command **params,
-    struct discord_application_command ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Fetch all of the guild commands of a given guild
@@ -410,7 +402,7 @@ CCORDcode discord_get_guild_application_commands(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_application_command ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Create a new guild command
@@ -429,7 +421,7 @@ CCORDcode discord_create_guild_application_command(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     struct discord_create_guild_application_command_params *params,
-    struct discord_application_command *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Fetch a guild command for your application
@@ -441,12 +433,11 @@ CCORDcode discord_create_guild_application_command(
  * @CCORD_ret_obj{ret, discord_application_command}
  * @CCORD_return
  */
-CCORDcode discord_get_guild_application_command(
-    struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
-    u64_snowflake_t command_id,
-    struct discord_application_command *ret);
+CCORDcode discord_get_guild_application_command(struct discord *client,
+                                                u64_snowflake_t application_id,
+                                                u64_snowflake_t guild_id,
+                                                u64_snowflake_t command_id,
+                                                struct discord_attr *attr);
 
 /**
  * @brief Edit a guild command
@@ -466,7 +457,7 @@ CCORDcode discord_edit_guild_application_command(
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
     struct discord_edit_guild_application_command_params *params,
-    struct discord_application_command *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Deletes a guild command
@@ -500,7 +491,7 @@ CCORDcode discord_bulk_overwrite_guild_application_command(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     struct discord_application_command **params,
-    struct discord_application_command ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Fetches command permissions for all commands in a given guild
@@ -515,7 +506,7 @@ CCORDcode discord_get_guild_application_command_permissions(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_guild_application_command_permissions ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Fetches command permissions for a specific command in a given guild
@@ -532,7 +523,7 @@ CCORDcode discord_get_application_command_permissions(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
-    struct discord_guild_application_command_permissions *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Edits command permissions for a specific command in a given guild
@@ -552,7 +543,7 @@ CCORDcode discord_edit_application_command_permissions(
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
     struct discord_edit_application_command_permissions_params *params,
-    struct discord_guild_application_command_permissions *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Batch edits permissions for all commands in a guild
@@ -573,7 +564,7 @@ CCORDcode discord_batch_edit_application_command_permissions(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     struct discord_guild_application_command_permissions **params,
-    struct discord_guild_application_command_permissions ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Create a response to an Interaction from the gateway
@@ -590,7 +581,7 @@ CCORDcode discord_create_interaction_response(
     u64_snowflake_t interaction_id,
     const char interaction_token[],
     struct discord_interaction_response *params,
-    struct discord_interaction_response *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get the initial Interaction response
@@ -605,7 +596,7 @@ CCORDcode discord_get_original_interaction_response(
     struct discord *client,
     u64_snowflake_t application_id,
     const char interaction_token[],
-    struct discord_interaction_response *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Edit the initial Interaction response
@@ -622,7 +613,7 @@ CCORDcode discord_edit_original_interaction_response(
     u64_snowflake_t application_id,
     const char interaction_token[],
     struct discord_edit_original_interaction_response_params *params,
-    struct discord_interaction_response *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Delete the initial Interaction response
@@ -652,7 +643,7 @@ CCORDcode discord_create_followup_message(
     u64_snowflake_t application_id,
     const char interaction_token[],
     struct discord_create_followup_message_params *params,
-    struct discord_webhook *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get a followup message for an interaction
@@ -668,7 +659,7 @@ CCORDcode discord_get_followup_message(struct discord *client,
                                        u64_snowflake_t application_id,
                                        const char interaction_token[],
                                        u64_snowflake_t message_id,
-                                       struct discord_message *ret);
+                                       struct discord_attr *attr);
 
 /**
  * @brief Edits a followup message for an interaction
@@ -687,7 +678,7 @@ CCORDcode discord_edit_followup_message(
     const char interaction_token[],
     u64_snowflake_t message_id,
     struct discord_edit_followup_message_params *params,
-    struct discord_message *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Edits a followup message for an interaction
@@ -717,7 +708,7 @@ CCORDcode discord_get_guild_audit_log(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_get_guild_audit_log_params *params,
-    struct discord_audit_log *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get channel from given id
@@ -731,7 +722,7 @@ CCORDcode discord_get_guild_audit_log(
  */
 CCORDcode discord_get_channel(struct discord *client,
                               u64_snowflake_t channel_id,
-                              struct discord_channel *ret);
+                              struct discord_attr *attr);
 
 /**
  * @brief Update a channel's settings
@@ -745,7 +736,7 @@ CCORDcode discord_get_channel(struct discord *client,
 CCORDcode discord_modify_channel(struct discord *client,
                                  u64_snowflake_t channel_id,
                                  struct discord_modify_channel_params *params,
-                                 struct discord_channel *ret);
+                                 struct discord_attr *attr);
 
 /**
  * @brief Delete a channel, or close a private message
@@ -764,7 +755,7 @@ CCORDcode discord_modify_channel(struct discord *client,
  */
 CCORDcode discord_delete_channel(struct discord *client,
                                  u64_snowflake_t channel_id,
-                                 struct discord_channel *ret);
+                                 struct discord_attr *attr);
 
 /**
  * @brief Get messages for a given channel
@@ -786,7 +777,7 @@ CCORDcode discord_get_channel_messages(
     struct discord *client,
     u64_snowflake_t channel_id,
     struct discord_get_channel_messages_params *params,
-    struct discord_message ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get a specific message in the channel
@@ -801,7 +792,7 @@ CCORDcode discord_get_channel_messages(
 CCORDcode discord_get_channel_message(struct discord *client,
                                       u64_snowflake_t channel_id,
                                       u64_snowflake_t message_id,
-                                      struct discord_message *ret);
+                                      struct discord_attr *attr);
 
 /**
  * @brief Post a message to a guild text or DM channel
@@ -816,7 +807,7 @@ CCORDcode discord_get_channel_message(struct discord *client,
 CCORDcode discord_create_message(struct discord *client,
                                  u64_snowflake_t channel_id,
                                  struct discord_create_message_params *params,
-                                 struct discord_message *ret);
+                                 struct discord_attr *attr);
 
 /**
  * @brief Crosspost a message in a News Channel to following channels
@@ -834,7 +825,7 @@ CCORDcode discord_create_message(struct discord *client,
 CCORDcode discord_crosspost_message(struct discord *client,
                                     u64_snowflake_t channel_id,
                                     u64_snowflake_t message_id,
-                                    struct discord_message *ret);
+                                    struct discord_attr *attr);
 
 /**
  * @brief Create a reaction for the message
@@ -904,7 +895,7 @@ CCORDcode discord_get_reactions(struct discord *client,
                                 u64_snowflake_t emoji_id,
                                 const char emoji_name[],
                                 struct discord_get_reactions_params *params,
-                                struct discord_user ***ret);
+                                struct discord_attr *attr);
 
 /**
  * @brief Deletes all reactions from message
@@ -950,7 +941,7 @@ CCORDcode discord_edit_message(struct discord *client,
                                u64_snowflake_t channel_id,
                                u64_snowflake_t message_id,
                                struct discord_edit_message_params *params,
-                               struct discord_message *ret);
+                               struct discord_attr *attr);
 
 /**
  * @brief Delete a message
@@ -1003,7 +994,7 @@ CCORDcode discord_edit_channel_permissions(
  */
 CCORDcode discord_get_channel_invites(struct discord *client,
                                       u64_snowflake_t channel_id,
-                                      struct discord_invite ***ret);
+                                      struct discord_attr *attr);
 
 /**
  * @brief Create a new invite for the channel
@@ -1018,7 +1009,7 @@ CCORDcode discord_create_channel_invite(
     struct discord *client,
     u64_snowflake_t channel_id,
     struct discord_create_channel_invite_params *params,
-    struct discord_invite *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Delete a channel permission overwrite for a user or role in a
@@ -1056,11 +1047,11 @@ CCORDcode discord_follow_news_channel(
     struct discord *client,
     u64_snowflake_t channel_id,
     struct discord_follow_news_channel_params *params,
-    struct discord_channel *ret);
+    struct discord_attr *attr);
 
 CCORDcode discord_get_pinned_messages(struct discord *client,
                                       u64_snowflake_t channel_id,
-                                      struct discord_message ***ret);
+                                      struct discord_attr *attr);
 
 /**
  * @brief Pin a message to a channel
@@ -1129,7 +1120,7 @@ CCORDcode discord_start_thread_with_message(
     u64_snowflake_t channel_id,
     u64_snowflake_t message_id,
     struct discord_start_thread_with_message_params *params,
-    struct discord_channel *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Creates a new thread that is not connected to an existing message
@@ -1145,7 +1136,7 @@ CCORDcode discord_start_thread_without_message(
     struct discord *client,
     u64_snowflake_t channel_id,
     struct discord_start_thread_without_message_params *params,
-    struct discord_channel *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Adds the current user to an un-archived thread
@@ -1208,7 +1199,7 @@ CCORDcode discord_remove_thread_member(struct discord *client,
  */
 CCORDcode discord_list_thread_members(struct discord *client,
                                       u64_snowflake_t channel_id,
-                                      struct discord_thread_member ***ret);
+                                      struct discord_attr *attr);
 
 /**
  * @todo replace with
@@ -1221,10 +1212,9 @@ CCORDcode discord_list_thread_members(struct discord *client,
  * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
-CCORDcode discord_list_active_threads(
-    struct discord *client,
-    u64_snowflake_t channel_id,
-    struct discord_thread_response_body *ret);
+CCORDcode discord_list_active_threads(struct discord *client,
+                                      u64_snowflake_t channel_id,
+                                      struct discord_attr *attr);
 
 /**
  * @brief Get public archived threads in a given channel
@@ -1236,12 +1226,11 @@ CCORDcode discord_list_active_threads(
  * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
-CCORDcode discord_list_public_archived_threads(
-    struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_unix_ms_t before,
-    int limit,
-    struct discord_thread_response_body *ret);
+CCORDcode discord_list_public_archived_threads(struct discord *client,
+                                               u64_snowflake_t channel_id,
+                                               u64_unix_ms_t before,
+                                               int limit,
+                                               struct discord_attr *attr);
 
 /**
  * @brief Get private archived threads in a given channel
@@ -1253,12 +1242,11 @@ CCORDcode discord_list_public_archived_threads(
  * @CCORD_ret_obj{ret, discord_thread_response_body}
  * @CCORD_return
  */
-CCORDcode discord_list_private_archived_threads(
-    struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_unix_ms_t before,
-    int limit,
-    struct discord_thread_response_body *ret);
+CCORDcode discord_list_private_archived_threads(struct discord *client,
+                                                u64_snowflake_t channel_id,
+                                                u64_unix_ms_t before,
+                                                int limit,
+                                                struct discord_attr *attr);
 
 /**
  * @brief Get private archived threads that current user has joined
@@ -1275,7 +1263,7 @@ CCORDcode discord_list_joined_private_archived_threads(
     u64_snowflake_t channel_id,
     u64_unix_ms_t before,
     int limit,
-    struct discord_thread_response_body *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get emojis of a given guild
@@ -1287,7 +1275,7 @@ CCORDcode discord_list_joined_private_archived_threads(
  */
 CCORDcode discord_list_guild_emojis(struct discord *client,
                                     u64_snowflake_t guild_id,
-                                    struct discord_emoji ***ret);
+                                    struct discord_attr *attr);
 
 /**
  * @brief Get a specific emoji from a guild
@@ -1301,7 +1289,7 @@ CCORDcode discord_list_guild_emojis(struct discord *client,
 CCORDcode discord_get_guild_emoji(struct discord *client,
                                   u64_snowflake_t guild_id,
                                   u64_snowflake_t emoji_id,
-                                  struct discord_emoji *ret);
+                                  struct discord_attr *attr);
 
 /**
  * @brief Create a new emoji for the guild
@@ -1317,7 +1305,7 @@ CCORDcode discord_create_guild_emoji(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_create_guild_emoji_params *params,
-    struct discord_emoji *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Modify the given emoji
@@ -1335,7 +1323,7 @@ CCORDcode discord_modify_guild_emoji(
     u64_snowflake_t guild_id,
     u64_snowflake_t emoji_id,
     struct discord_modify_guild_emoji_params *params,
-    struct discord_emoji *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Deletes the given emoji
@@ -1361,7 +1349,7 @@ CCORDcode discord_delete_guild_emoji(struct discord *client,
  */
 CCORDcode discord_create_guild(struct discord *client,
                                struct discord_create_guild_params *params,
-                               struct discord_guild *ret);
+                               struct discord_attr *attr);
 
 /**
  * @brief Get the guild with given id
@@ -1376,7 +1364,7 @@ CCORDcode discord_create_guild(struct discord *client,
  */
 CCORDcode discord_get_guild(struct discord *client,
                             u64_snowflake_t guild_id,
-                            struct discord_guild *ret);
+                            struct discord_attr *attr);
 
 /**
  * @brief Get the preview for the given guild
@@ -1389,7 +1377,7 @@ CCORDcode discord_get_guild(struct discord *client,
  */
 CCORDcode discord_get_guild_preview(struct discord *client,
                                     u64_snowflake_t guild_id,
-                                    struct discord_guild_preview *ret);
+                                    struct discord_attr *attr);
 
 /**
  * @brief Modify a guild's settings
@@ -1405,7 +1393,7 @@ CCORDcode discord_get_guild_preview(struct discord *client,
 CCORDcode discord_modify_guild(struct discord *client,
                                u64_snowflake_t guild_id,
                                struct discord_modify_guild_params *params,
-                               struct discord_guild *ret);
+                               struct discord_attr *attr);
 
 /**
  * @brief Delete a guild permanently, user must be owner
@@ -1428,7 +1416,7 @@ CCORDcode discord_delete_guild(struct discord *client,
  */
 CCORDcode discord_get_guild_channels(struct discord *client,
                                      u64_snowflake_t guild_id,
-                                     struct discord_channel ***ret);
+                                     struct discord_attr *attr);
 
 /**
  * @brief Create a new guild channel
@@ -1448,7 +1436,7 @@ CCORDcode discord_create_guild_channel(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_create_guild_channel_params *params,
-    struct discord_channel *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Modify guild channel positions
@@ -1477,7 +1465,7 @@ CCORDcode discord_modify_guild_channel_positions(
 CCORDcode discord_get_guild_member(struct discord *client,
                                    u64_snowflake_t guild_id,
                                    u64_snowflake_t user_id,
-                                   struct discord_guild_member *ret);
+                                   struct discord_attr *attr);
 
 /**
  * @brief Get guild members of a guild
@@ -1492,7 +1480,7 @@ CCORDcode discord_list_guild_members(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_list_guild_members_params *params,
-    struct discord_guild_member ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get guild members whose username or nickname starts with a provided
@@ -1508,7 +1496,7 @@ CCORDcode discord_search_guild_members(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_search_guild_members_params *params,
-    struct discord_guild_member ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Adds a user to the guild
@@ -1530,7 +1518,7 @@ CCORDcode discord_add_guild_member(
     u64_snowflake_t guild_id,
     u64_snowflake_t user_id,
     struct discord_add_guild_member_params *params,
-    struct discord_guild_member *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Modify attributes of a guild member
@@ -1549,7 +1537,7 @@ CCORDcode discord_modify_guild_member(
     u64_snowflake_t guild_id,
     u64_snowflake_t user_id,
     struct discord_modify_guild_member_params *params,
-    struct discord_guild_member *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Modifies the current member in the guild
@@ -1565,7 +1553,7 @@ CCORDcode discord_modify_current_member(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_modify_current_member_params *params,
-    struct discord_guild_member *ret);
+    struct discord_attr *attr);
 
 /**
  * @deprecated use discord_modify_current_member() instead
@@ -1582,7 +1570,7 @@ CCORDcode discord_modify_current_user_nick(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_modify_current_user_nick_params *params,
-    struct discord_guild_member *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Adds a role to a guild member
@@ -1640,7 +1628,7 @@ CCORDcode discord_remove_guild_member(struct discord *client,
  */
 CCORDcode discord_get_guild_bans(struct discord *client,
                                  u64_snowflake_t guild_id,
-                                 struct discord_ban ***ret);
+                                 struct discord_attr *attr);
 
 /**
  * @brief Fetch banned user from given guild
@@ -1655,7 +1643,7 @@ CCORDcode discord_get_guild_bans(struct discord *client,
 CCORDcode discord_get_guild_ban(struct discord *client,
                                 u64_snowflake_t guild_id,
                                 u64_snowflake_t user_id,
-                                struct discord_ban *ret);
+                                struct discord_attr *attr);
 
 /**
  * @brief Bans user from a given guild
@@ -1698,7 +1686,7 @@ CCORDcode discord_remove_guild_ban(struct discord *client,
  */
 CCORDcode discord_get_guild_roles(struct discord *client,
                                   u64_snowflake_t guild_id,
-                                  struct discord_role ***ret);
+                                  struct discord_attr *attr);
 
 /**
  * @brief Create a new guild role
@@ -1715,7 +1703,7 @@ CCORDcode discord_create_guild_role(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_create_guild_role_params *params,
-    struct discord_role *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Begin guild prune operation
@@ -1744,7 +1732,7 @@ CCORDcode discord_begin_guild_prune(
  */
 CCORDcode discord_get_guild_invites(struct discord *client,
                                     u64_snowflake_t guild_id,
-                                    struct discord_invite ***ret);
+                                    struct discord_attr *attr);
 
 /**
  * @brief Deletes the integration for the guild. It will also delete any
@@ -1772,7 +1760,7 @@ CCORDcode discord_delete_guild_integrations(struct discord *client,
  */
 CCORDcode discord_get_guild_vanity_url(struct discord *client,
                                        u64_snowflake_t guild_id,
-                                       struct discord_invite *ret);
+                                       struct discord_attr *attr);
 
 /**
  * @brief Get the Welcome Screen for the guild
@@ -1784,7 +1772,7 @@ CCORDcode discord_get_guild_vanity_url(struct discord *client,
  */
 CCORDcode discord_get_guild_welcome_screen(struct discord *client,
                                            u64_snowflake_t guild_id,
-                                           struct discord_welcome_screen *ret);
+                                           struct discord_attr *attr);
 
 /**
  * @brief Modify the positions of a given role list for the guild
@@ -1801,7 +1789,7 @@ CCORDcode discord_modify_guild_role_positions(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_modify_guild_role_positions_params **params,
-    struct discord_role ***ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Modify a guild role
@@ -1820,7 +1808,7 @@ CCORDcode discord_modify_guild_role(
     u64_snowflake_t guild_id,
     u64_snowflake_t role_id,
     struct discord_modify_guild_role_params *params,
-    struct discord_role *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Delete a guild role
@@ -1846,7 +1834,7 @@ CCORDcode discord_delete_guild_role(struct discord *client,
  */
 CCORDcode discord_get_guild_template(struct discord *client,
                                      char *code,
-                                     struct discord_guild_template *ret);
+                                     struct discord_attr *attr);
 
 /**
  * @brief Creates a template for the guild
@@ -1862,7 +1850,7 @@ CCORDcode discord_create_guild_template(
     struct discord *client,
     u64_snowflake_t guild_id,
     struct discord_create_guild_template_params *params,
-    struct discord_guild_template *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Syncs the template to the guild's current state
@@ -1877,7 +1865,7 @@ CCORDcode discord_create_guild_template(
 CCORDcode discord_sync_guild_template(struct discord *client,
                                       u64_snowflake_t guild_id,
                                       char *code,
-                                      struct discord_guild_template *ret);
+                                      struct discord_attr *attr);
 
 /**
  * @brief Get an invite for the given code
@@ -1891,7 +1879,7 @@ CCORDcode discord_sync_guild_template(struct discord *client,
 CCORDcode discord_get_invite(struct discord *client,
                              char *invite_code,
                              struct discord_get_invite_params *params,
-                             struct discord_invite *ret);
+                             struct discord_attr *attr);
 
 /**
  * @brief Delete an invite
@@ -1906,7 +1894,7 @@ CCORDcode discord_get_invite(struct discord *client,
  */
 CCORDcode discord_delete_invite(struct discord *client,
                                 char *invite_code,
-                                struct discord_invite *ret);
+                                struct discord_attr *attr);
 
 /**
  * @brief Get client's user
@@ -1916,7 +1904,7 @@ CCORDcode discord_delete_invite(struct discord *client,
  * @CCORD_return
  */
 CCORDcode discord_get_current_user(struct discord *client,
-                                   struct discord_user *ret);
+                                   struct discord_attr *attr);
 
 /**
  * @brief Get user for a given id
@@ -1928,7 +1916,7 @@ CCORDcode discord_get_current_user(struct discord *client,
  */
 CCORDcode discord_get_user(struct discord *client,
                            u64_snowflake_t user_id,
-                           struct discord_user *ret);
+                           struct discord_attr *attr);
 
 /**
  * @brief Modify client's user account settings
@@ -1941,7 +1929,7 @@ CCORDcode discord_get_user(struct discord *client,
 CCORDcode discord_modify_current_user(
     struct discord *client,
     struct discord_modify_current_user_params *params,
-    struct discord_user *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get guilds client is a member of
@@ -1952,7 +1940,7 @@ CCORDcode discord_modify_current_user(
  * @CCORD_return
  */
 CCORDcode discord_get_current_user_guilds(struct discord *client,
-                                          struct discord_guild ***ret);
+                                          struct discord_attr *attr);
 
 /**
  * @brief Leave a guild
@@ -1977,7 +1965,7 @@ CCORDcode discord_leave_guild(struct discord *client,
  */
 CCORDcode discord_create_dm(struct discord *client,
                             struct discord_create_dm_params *params,
-                            struct discord_channel *ret);
+                            struct discord_attr *attr);
 
 /**
  * @brief Create a new group DM channel with multiple users
@@ -1992,7 +1980,7 @@ CCORDcode discord_create_dm(struct discord *client,
 CCORDcode discord_create_group_dm(
     struct discord *client,
     struct discord_create_group_dm_params *params,
-    struct discord_channel *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get a list of connection objects
@@ -2003,7 +1991,7 @@ CCORDcode discord_create_group_dm(
  * @CCORD_return
  */
 CCORDcode discord_get_user_connections(struct discord *client,
-                                       struct discord_connection ***ret);
+                                       struct discord_attr *attr);
 
 /**
  * @brief Get voice regions that can be used when setting a
@@ -2014,7 +2002,7 @@ CCORDcode discord_get_user_connections(struct discord *client,
  * @CCORD_return
  */
 CCORDcode discord_list_voice_regions(struct discord *client,
-                                     struct discord_voice_region ***ret);
+                                     struct discord_attr *attr);
 
 /**
  * @brief Create a new webhook
@@ -2029,7 +2017,7 @@ CCORDcode discord_list_voice_regions(struct discord *client,
 CCORDcode discord_create_webhook(struct discord *client,
                                  u64_snowflake_t channel_id,
                                  struct discord_create_webhook_params *params,
-                                 struct discord_webhook *ret);
+                                 struct discord_attr *attr);
 
 /**
  * @brief Get webhooks from a given channel
@@ -2042,7 +2030,7 @@ CCORDcode discord_create_webhook(struct discord *client,
  */
 CCORDcode discord_get_channel_webhooks(struct discord *client,
                                        u64_snowflake_t channel_id,
-                                       struct discord_webhook ***ret);
+                                       struct discord_attr *attr);
 
 /**
  * @brief Get webhooks from a given guild webhook objects
@@ -2055,7 +2043,7 @@ CCORDcode discord_get_channel_webhooks(struct discord *client,
  */
 CCORDcode discord_get_guild_webhooks(struct discord *client,
                                      u64_snowflake_t guild_id,
-                                     struct discord_webhook ***ret);
+                                     struct discord_attr *attr);
 
 /**
  * @brief Get the new webhook object for the given id
@@ -2067,7 +2055,7 @@ CCORDcode discord_get_guild_webhooks(struct discord *client,
  */
 CCORDcode discord_get_webhook(struct discord *client,
                               u64_snowflake_t webhook_id,
-                              struct discord_webhook *ret);
+                              struct discord_attr *attr);
 
 /**
  * Same as discord_get_webhook(), except this call does not require
@@ -2081,7 +2069,7 @@ CCORDcode discord_get_webhook(struct discord *client,
 CCORDcode discord_get_webhook_with_token(struct discord *client,
                                          u64_snowflake_t webhook_id,
                                          const char webhook_token[],
-                                         struct discord_webhook *ret);
+                                         struct discord_attr *attr);
 
 /**
  * @brief Modify a webhook
@@ -2096,7 +2084,7 @@ CCORDcode discord_get_webhook_with_token(struct discord *client,
 CCORDcode discord_modify_webhook(struct discord *client,
                                  u64_snowflake_t webhook_id,
                                  struct discord_modify_webhook_params *params,
-                                 struct discord_webhook *ret);
+                                 struct discord_attr *attr);
 
 /**
  * Same discord_modify_webhook(), except this call does not require
@@ -2113,7 +2101,7 @@ CCORDcode discord_modify_webhook_with_token(
     u64_snowflake_t webhook_id,
     const char webhook_token[],
     struct discord_modify_webhook_with_token_params *params,
-    struct discord_webhook *ret);
+    struct discord_attr *attr);
 
 /**
  * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission
@@ -2149,7 +2137,7 @@ CCORDcode discord_execute_webhook(
     u64_snowflake_t webhook_id,
     const char webhook_token[],
     struct discord_execute_webhook_params *params,
-    struct discord_webhook *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Get previously-sent webhook message from the same token
@@ -2165,7 +2153,7 @@ CCORDcode discord_get_webhook_message(struct discord *client,
                                       u64_snowflake_t webhook_id,
                                       const char webhook_token[],
                                       u64_snowflake_t message_id,
-                                      struct discord_message *ret);
+                                      struct discord_attr *attr);
 
 /**
  * @brief Edits a previously-sent webhook message from the same token
@@ -2184,7 +2172,7 @@ CCORDcode discord_edit_webhook_message(
     const char webhook_token[],
     u64_snowflake_t message_id,
     struct discord_edit_webhook_message_params *params,
-    struct discord_message *ret);
+    struct discord_attr *attr);
 
 /**
  * @brief Deletes a message that was created by the webhook
@@ -2210,7 +2198,7 @@ CCORDcode discord_delete_webhook_message(struct discord *client,
  * @CCORD_return
  */
 CCORDcode discord_get_gateway(struct discord *client,
-                              struct sized_buffer *ret);
+                              struct discord_attr *attr);
 
 /**
  * @brief Get a single valid WSS URL, and additional metadata that can help
@@ -2224,7 +2212,7 @@ CCORDcode discord_get_gateway(struct discord *client,
  * @CCORD_return
  */
 CCORDcode discord_get_gateway_bot(struct discord *client,
-                                  struct sized_buffer *ret);
+                                  struct discord_attr *attr);
 
 /**
  * @brief Get a guild's channel from its given numerical position
@@ -2239,7 +2227,7 @@ CCORDcode discord_get_channel_at_pos(struct discord *client,
                                      u64_snowflake_t guild_id,
                                      enum discord_channel_types type,
                                      size_t position,
-                                     struct discord_channel *ret);
+                                     struct discord_attr *attr);
 
 /**
  * @brief Delete messages from a channel by a given author
@@ -2265,7 +2253,7 @@ CCORDcode discord_delete_messages_by_author_id(struct discord *client,
 CCORDcode discord_disconnect_guild_member(struct discord *client,
                                           u64_snowflake_t guild_id,
                                           u64_snowflake_t user_id,
-                                          struct discord_guild_member *ret);
+                                          struct discord_attr *attr);
 
 /******************************************************************************
  * Functions specific to Discord's Gateway

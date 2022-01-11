@@ -28,7 +28,7 @@
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
 /** @brief Behavior of request return struct */
-struct discord_request_attr {
+struct discord_request {
     /** pointer to the request's return struct */
     void *ret;
     /** size of return struct type in bytes */
@@ -39,6 +39,9 @@ struct discord_request_attr {
     void (*from_json)(char *json, size_t len, void *ret);
     /** cleanup return struct */
     void (*cleanup)(void *ret);
+
+    /** request attributes set by client */
+    struct discord_attr attr;
 
     /** in case of HTTP_MIMEPOST, provide attachments */
     struct discord_attachment **attachments;
@@ -53,7 +56,7 @@ struct discord_request_attr {
  */
 struct discord_context {
     /** async return struct attributes */
-    struct discord_request_attr attr;
+    struct discord_request req;
     /** the request's bucket */
     struct discord_bucket *bucket;
     /** callback to be executed on request completion */
@@ -98,8 +101,6 @@ struct discord_adapter {
     struct logconf conf;
     /** the user agent handle for performing requests */
     struct user_agent *ua;
-    /** if true next request will be dealt with asynchronously */
-    bool async_enable;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
     /** routes discovered (declared at discord-adapter-ratelimit.c) */
@@ -124,7 +125,7 @@ struct discord_adapter {
     /** async requests handling */
     struct {
         /** attributes for next async request */
-        struct discord_async_attr attr;
+        struct discord_attr attr;
         /** reusable buffer for request return structs */
         struct sized_buffer ret;
         /** idle request handles of type 'struct discord_context' */
@@ -163,7 +164,7 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  * This functions is a selector over discord_adapter_run() or
  *        discord_adapter_run_async()
  * @param adapter the handle initialized with discord_adapter_init()
- * @param attr attributes of request
+ * @param req return object of request
  * @param body the body sent for methods that require (ex: post), leave as
  *        null if unecessary
  * @param method the method in opcode format of the request being sent
@@ -173,7 +174,7 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  * performing it immediately
  */
 CCORDcode discord_adapter_run(struct discord_adapter *adapter,
-                              struct discord_request_attr *attr,
+                              struct discord_request *req,
                               struct sized_buffer *body,
                               enum http_method method,
                               char endpoint_fmt[],
@@ -186,7 +187,7 @@ CCORDcode discord_adapter_run(struct discord_adapter *adapter,
  * @param attr async attributes for next request
  */
 void discord_adapter_async_next(struct discord_adapter *adapter,
-                                struct discord_async_attr *attr);
+                                struct discord_attr *attr);
 
 /**
  * @brief Check and manage on-going, pending and timed-out requests

@@ -101,12 +101,6 @@ discord_cleanup(struct discord *client)
     free(client);
 }
 
-void
-discord_async_next(struct discord *client, struct discord_async_attr *attr)
-{
-    discord_adapter_async_next(&client->adapter, attr);
-}
-
 const char *
 discord_strerror(CCORDcode code, struct discord *client)
 {
