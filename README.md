@@ -135,12 +135,12 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
 ### Create your first bot
 
-* Head to `my_bot/`, a special folder set-up for your convenience that may be modified freely.
+* Head to `myBot/`, a special folder set-up for your convenience that may be modified freely.
 * Read our guide for [building your first bot](docs/BUILDING_A_BOT.md).
 
 ## Installing Concord
 
-Concord can be installed in case developing inside of `my_bot/` doesn't suit your needs:
+Concord can be installed in case developing inside of `myBot/` doesn't suit your needs:
 ```bash
 $ sudo make install
 ```
