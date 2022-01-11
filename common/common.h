@@ -88,7 +88,7 @@ typedef int CCORDcode;
  * @param path the path to the field from the container POV
  */
 #define CONTAINEROF(ptr, type, path)                                          \
-  ((type *)((char *)(ptr)-offsetof(type, path)))
+    ((type *)((char *)(ptr)-offsetof(type, path)))
 
 /**
  * @brief log and return `code` if `expect` condition is false
@@ -99,12 +99,12 @@ typedef int CCORDcode;
  * @param reason for return
  */
 #define CCORD_EXPECT(client, expect, code, reason)                            \
-  do {                                                                        \
-    if (!(expect)) {                                                          \
-      logconf_error(&(client)->conf, "Expected: " #expect ": " reason);       \
-      return code;                                                            \
-    }                                                                         \
-  } while (0)
+    do {                                                                      \
+        if (!(expect)) {                                                      \
+            logconf_error(&(client)->conf, "Expected: " #expect ": " reason); \
+            return code;                                                      \
+        }                                                                     \
+    } while (0)
 
 /**
  * @brief Return a generic meaning for CCORDcode

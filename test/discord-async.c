@@ -7,166 +7,179 @@
 #include "discord.h"
 
 struct user_cxt {
-  u64_snowflake_t channel_id;
-  unsigned long long counter;
+    u64_snowflake_t channel_id;
+    unsigned long long counter;
 };
 
-void on_ready(struct discord *client)
+void
+on_ready(struct discord *client)
 {
-  const struct discord_user *bot = discord_get_self(client);
+    const struct discord_user *bot = discord_get_self(client);
 
-  log_info("Succesfully connected to Discord as %s#%s!", bot->username,
-           bot->discriminator);
+    log_info("Succesfully connected to Discord as %s#%s!", bot->username,
+             bot->discriminator);
 }
 
-void disconnect(struct discord *client, struct discord_async_ret *ret)
+void
+disconnect(struct discord *client, struct discord_async_ret *ret)
 {
-  discord_shutdown(client);
+    discord_shutdown(client);
 }
 
-void reconnect(struct discord *client, struct discord_async_ret *ret)
+void
+reconnect(struct discord *client, struct discord_async_ret *ret)
 {
-  discord_reconnect(client, true);
+    discord_reconnect(client, true);
 }
 
-void on_disconnect(struct discord *client, const struct discord_message *msg)
+void
+on_disconnect(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+    if (msg->author->bot) return;
 
-  struct discord_async_attr attr = { .done = &disconnect, .high_p = true };
-  struct discord_create_message_params params = { .content =
-                                                    "Disconnecting ..." };
+    struct discord_async_attr attr = { .done = &disconnect, .high_p = true };
+    struct discord_create_message_params params = { .content =
+                                                        "Disconnecting ..." };
 
-  discord_async_next(client, &attr);
-  discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_async_next(client, &attr);
+    discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_reconnect(struct discord *client, const struct discord_message *msg)
+void
+on_reconnect(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+    if (msg->author->bot) return;
 
-  struct discord_async_attr attr = { .done = &reconnect, .high_p = true };
-  struct discord_create_message_params params = { .content =
-                                                    "Reconnecting ..." };
+    struct discord_async_attr attr = { .done = &reconnect, .high_p = true };
+    struct discord_create_message_params params = { .content =
+                                                        "Reconnecting ..." };
 
-  discord_async_next(client, &attr);
-  discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_async_next(client, &attr);
+    discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_single(struct discord *client, const struct discord_message *msg)
+void
+on_single(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+    if (msg->author->bot) return;
 
-  struct discord_create_message_params params = { .content = "Hello" };
-
-  discord_async_next(client, NULL);
-  discord_create_message(client, msg->channel_id, &params, NULL);
-}
-
-void send_batch(struct discord *client, struct discord_async_ret *ret)
-{
-  const struct discord_message *msg = ret->ret;
-
-  struct discord_async_attr attr = { .done = &send_batch };
-  struct discord_create_message_params params = { 0 };
-  char text[32];
-
-  params.content = text;
-  for (int i = 0; i < 128; ++i) {
-    snprintf(text, sizeof(text), "%d", i);
+    struct discord_create_message_params params = { .content = "Hello" };
 
     discord_async_next(client, NULL);
     discord_create_message(client, msg->channel_id, &params, NULL);
-  }
-
-  params.content = "CHECKPOINT";
-
-  discord_async_next(client, &attr);
-  discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void on_spam(struct discord *client, const struct discord_message *msg)
+void
+send_batch(struct discord *client, struct discord_async_ret *ret)
 {
-  struct discord_async_ret ret = { .ret = msg };
+    const struct discord_message *msg = ret->ret;
 
-  send_batch(client, &ret);
+    struct discord_async_attr attr = { .done = &send_batch };
+    struct discord_create_message_params params = { 0 };
+    char text[32];
+
+    params.content = text;
+    for (int i = 0; i < 128; ++i) {
+        snprintf(text, sizeof(text), "%d", i);
+
+        discord_async_next(client, NULL);
+        discord_create_message(client, msg->channel_id, &params, NULL);
+    }
+
+    params.content = "CHECKPOINT";
+
+    discord_async_next(client, &attr);
+    discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-void send_msg(struct discord *client, struct discord_async_ret *ret)
+void
+on_spam(struct discord *client, const struct discord_message *msg)
 {
-  const struct discord_message *msg = ret->ret;
-  char text[32];
+    struct discord_async_ret ret = { .ret = msg };
 
-  struct discord_create_message_params params = { .content = text };
-  struct discord_async_attr attr = { .done = &send_msg };
-  struct user_cxt *cxt = discord_get_data(client);
-
-  snprintf(text, sizeof(text), "%llu", cxt->counter);
-
-  discord_async_next(client, &attr);
-  discord_create_message(client, msg->channel_id, &params, NULL);
-
-  ++cxt->counter;
+    send_batch(client, &ret);
 }
 
-void on_spam_ordered(struct discord *client, const struct discord_message *msg)
+void
+send_msg(struct discord *client, struct discord_async_ret *ret)
 {
-  struct discord_async_ret ret = { .ret = msg };
+    const struct discord_message *msg = ret->ret;
+    char text[32];
 
-  send_msg(client, &ret);
+    struct discord_create_message_params params = { .content = text };
+    struct discord_async_attr attr = { .done = &send_msg };
+    struct user_cxt *cxt = discord_get_data(client);
+
+    snprintf(text, sizeof(text), "%llu", cxt->counter);
+
+    discord_async_next(client, &attr);
+    discord_create_message(client, msg->channel_id, &params, NULL);
+
+    ++cxt->counter;
 }
 
-void send_err(struct discord *client, struct discord_async_err *err)
+void
+on_spam_ordered(struct discord *client, const struct discord_message *msg)
 {
-  u64_snowflake_t channel_id = *(u64_snowflake_t *)err->data;
+    struct discord_async_ret ret = { .ret = msg };
 
-  struct discord_create_message_params params = {
-    .content = (char *)discord_strerror(err->code, client)
-  };
-  discord_async_next(client, NULL);
-  discord_create_message(client, channel_id, &params, NULL);
+    send_msg(client, &ret);
 }
 
-void on_force_error(struct discord *client, const struct discord_message *msg)
+void
+send_err(struct discord *client, struct discord_async_err *err)
 {
-  u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
-  struct discord_async_attr attr = { .fail = &send_err,
-                                     .data = channel_id,
-                                     .cleanup = &free };
+    u64_snowflake_t channel_id = *(u64_snowflake_t *)err->data;
 
-  memcpy(channel_id, &msg->channel_id, sizeof(u64_snowflake_t));
-
-  discord_async_next(client, &attr);
-  discord_delete_channel(client, 123, NULL);
+    struct discord_create_message_params params = {
+        .content = (char *)discord_strerror(err->code, client)
+    };
+    discord_async_next(client, NULL);
+    discord_create_message(client, channel_id, &params, NULL);
 }
 
-int main(int argc, char *argv[])
+void
+on_force_error(struct discord *client, const struct discord_message *msg)
 {
-  const char *config_file;
-  if (argc > 1)
-    config_file = argv[1];
-  else
-    config_file = "../config.json";
+    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    struct discord_async_attr attr = { .fail = &send_err,
+                                       .data = channel_id,
+                                       .cleanup = &free };
 
-  ccord_global_init();
-  struct discord *client = discord_config_init(config_file);
-  assert(NULL != client && "Couldn't initialize client");
+    memcpy(channel_id, &msg->channel_id, sizeof(u64_snowflake_t));
 
-  struct user_cxt cxt = { 0 };
-  discord_set_data(client, &cxt);
+    discord_async_next(client, &attr);
+    discord_delete_channel(client, 123, NULL);
+}
 
-  discord_set_on_ready(client, &on_ready);
+int
+main(int argc, char *argv[])
+{
+    const char *config_file;
+    if (argc > 1)
+        config_file = argv[1];
+    else
+        config_file = "../config.json";
 
-  discord_set_prefix(client, "!");
-  discord_set_on_command(client, "disconnect", &on_disconnect);
-  discord_set_on_command(client, "reconnect", &on_reconnect);
-  discord_set_on_command(client, "single", &on_single);
-  discord_set_on_command(client, "spam", &on_spam);
-  discord_set_on_command(client, "spam-ordered", &on_spam_ordered);
-  discord_set_on_command(client, "force_error", &on_force_error);
+    ccord_global_init();
+    struct discord *client = discord_config_init(config_file);
+    assert(NULL != client && "Couldn't initialize client");
 
-  discord_run(client);
+    struct user_cxt cxt = { 0 };
+    discord_set_data(client, &cxt);
 
-  discord_cleanup(client);
-  ccord_global_cleanup();
+    discord_set_on_ready(client, &on_ready);
+
+    discord_set_prefix(client, "!");
+    discord_set_on_command(client, "disconnect", &on_disconnect);
+    discord_set_on_command(client, "reconnect", &on_reconnect);
+    discord_set_on_command(client, "single", &on_single);
+    discord_set_on_command(client, "spam", &on_spam);
+    discord_set_on_command(client, "spam-ordered", &on_spam_ordered);
+    discord_set_on_command(client, "force_error", &on_force_error);
+
+    discord_run(client);
+
+    discord_cleanup(client);
+    ccord_global_cleanup();
 }
