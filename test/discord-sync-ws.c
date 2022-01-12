@@ -31,7 +31,10 @@ on_disconnect(struct discord *client, const struct discord_message *msg)
     struct discord_create_message_params params = {
         .content = "Disconnecting ...",
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, msg->channel_id, &params,
+                           &(struct discord_attr){
+                               .sync = true,
+                           });
 
     discord_shutdown(client);
 }
@@ -44,7 +47,10 @@ on_reconnect(struct discord *client, const struct discord_message *msg)
     struct discord_create_message_params params = {
         .content = "Reconnecting ...",
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, msg->channel_id, &params,
+                           &(struct discord_attr){
+                               .sync = true,
+                           });
 
     discord_reconnect(client, true);
 }
@@ -64,7 +70,9 @@ on_spam(struct discord *client, const struct discord_message *msg)
                                    .content =
                                        "Too many threads (" THREADPOOL_SIZE
                                        ") will block the threadpool!" },
-                               NULL);
+                               &(struct discord_attr){
+                                   .sync = true,
+                               });
         pthread_mutex_unlock(&g_lock);
         return;
     }
@@ -85,7 +93,10 @@ on_spam(struct discord *client, const struct discord_message *msg)
 
         snprintf(number, sizeof(number), "%d", i);
         params.content = number;
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        discord_create_message(client, msg->channel_id, &params,
+                               &(struct discord_attr){
+                                   .sync = true,
+                               });
     }
 }
 
@@ -95,7 +106,10 @@ on_spam_block(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot) return;
 
     struct discord_create_message_params params = { .content = "No 1" };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, msg->channel_id, &params,
+                           &(struct discord_attr){
+                               .sync = true,
+                           });
 }
 
 void
@@ -112,7 +126,10 @@ on_spam_block_continue(struct discord *client,
     snprintf(text, sizeof(text), "No %d", 1 + number);
 
     struct discord_create_message_params params = { .content = text };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, msg->channel_id, &params,
+                           &(struct discord_attr){
+                               .sync = true,
+                           });
 }
 
 void
@@ -136,7 +153,10 @@ on_force_error(struct discord *client, const struct discord_message *msg)
     struct discord_create_message_params params = {
         .content = (char *)discord_strerror(code, client)
     };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, msg->channel_id, &params,
+                           &(struct discord_attr){
+                               .sync = true,
+                           });
 }
 
 void
@@ -149,7 +169,10 @@ on_ping(struct discord *client, const struct discord_message *msg)
     sprintf(text, "Ping: %d", discord_get_ping(client));
 
     struct discord_create_message_params params = { .content = text };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_create_message(client, msg->channel_id, &params,
+                           &(struct discord_attr){
+                               .sync = true,
+                           });
 }
 
 enum discord_event_scheduler
