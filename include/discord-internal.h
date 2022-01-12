@@ -27,22 +27,26 @@
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
+/** @brief Attributes of response datatype */
+struct discord_generic {
+    /** pointer to the datatype in memory */
+    void *data;
+    /** size of datatype in bytes */
+    size_t size;
+    /** initializer function for datatype fields */
+    void (*init)(void *data);
+    /** populate datatype with JSON values */
+    void (*from_json)(char *json, size_t len, void *data);
+    /** cleanup function for datatype */
+    void (*cleanup)(void *data);
+};
+
 /** @brief Behavior of request return struct */
 struct discord_request {
-    /** pointer to the request's return struct */
-    void *ret;
-    /** size of return struct type in bytes */
-    size_t size;
-    /** initialize return struct fields */
-    void (*init)(void *ret);
-    /** populate return struct with JSON values */
-    void (*from_json)(char *json, size_t len, void *ret);
-    /** cleanup return struct */
-    void (*cleanup)(void *ret);
-
+    /** request response's return datatype attributes */
+    struct discord_generic gnrc;
     /** request attributes set by client */
     struct discord_attr attr;
-
     /** in case of HTTP_MIMEPOST, provide attachments */
     struct discord_attachment **attachments;
 };
@@ -55,14 +59,11 @@ struct discord_request {
  *        asynchronously
  */
 struct discord_context {
-    /** async return struct attributes */
+    /** request return struct attributes */
     struct discord_request req;
+
     /** the request's bucket */
     struct discord_bucket *bucket;
-    /** callback to be executed on request completion */
-    discord_on_done done;
-    /** callback to be executed on request failure */
-    discord_on_fail fail;
 
     /** the request's body @note buffer is kept and recycled */
     struct {
@@ -84,12 +85,6 @@ struct discord_context {
     struct heap_node node;
     /** the timeout timestamp */
     u64_unix_ms_t timeout_ms;
-
-    /** user arbitrary data */
-    struct {
-        void *data;
-        void (*cleanup)(void *data);
-    } udata;
 
     /** current retry attempt (stop at adapter->retry_limit) */
     int retry_attempt;
@@ -122,17 +117,12 @@ struct discord_adapter {
         pthread_mutex_t lock;
     } * global;
 
-    /** async requests handling */
-    struct {
-        /** attributes for next async request */
-        struct discord_attr attr;
-        /** reusable buffer for request return structs */
-        struct sized_buffer ret;
-        /** idle request handles of type 'struct discord_context' */
-        QUEUE *idleq;
-        /* request timeouts */
-        struct heap timeouts;
-    } async;
+    /** reusable buffer for request return structs */
+    struct sized_buffer ret;
+    /** idle request handles of type 'struct discord_context' */
+    QUEUE *idleq;
+    /* request timeouts */
+    struct heap timeouts;
 
     /** error storage */
     char errbuf[2048];
@@ -170,8 +160,8 @@ void discord_adapter_cleanup(struct discord_adapter *adapter);
  * @param method the method in opcode format of the request being sent
  * @param endpoint_fmt the printf-like endpoint formatting string
  * @CCORD_return
- * @note if async is set then this function will enqueue the request instead of
- * performing it immediately
+ * @note if sync is set then this function will block the thread and perform it
+ *              immediately
  */
 CCORDcode discord_adapter_run(struct discord_adapter *adapter,
                               struct discord_request *req,
@@ -179,15 +169,6 @@ CCORDcode discord_adapter_run(struct discord_adapter *adapter,
                               enum http_method method,
                               char endpoint_fmt[],
                               ...);
-
-/**
- * @brief Set next request to run asynchronously
- *
- * @param adapter the handle initialized with discord_adapter_init()
- * @param attr async attributes for next request
- */
-void discord_adapter_async_next(struct discord_adapter *adapter,
-                                struct discord_attr *attr);
 
 /**
  * @brief Check and manage on-going, pending and timed-out requests

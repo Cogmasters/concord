@@ -6,68 +6,6 @@
 #include "discord-internal.h"
 #include "cog-utils.h"
 
-struct msg {
-    u64_snowflake_t id;
-    bool matched;
-};
-
-CCORDcode
-discord_delete_messages_by_author_id(struct discord *client,
-                                     u64_snowflake_t channel_id,
-                                     u64_snowflake_t author_id)
-{
-    struct discord_get_channel_messages_params params = { 0 };
-    struct discord_message **messages = NULL;
-    CCORDcode code;
-
-    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, author_id != 0, CCORD_BAD_PARAMETER, "");
-
-    params.limit = 100;
-    code =
-        discord_get_channel_messages(client, channel_id, &params, &messages);
-
-    if (code != CCORD_OK) {
-        logconf_error(&client->conf, "Couldn't fetch channel messages");
-    }
-    else {
-        u64_unix_ms_t now = discord_timestamp(client);
-        u64_snowflake_t **list = NULL;
-        int count = 0;
-        int i, j;
-
-        for (i = 0; messages[i]; ++i) {
-            if (now > messages[i]->timestamp
-                && now - messages[i]->timestamp > 1209600000) {
-                break;
-            }
-            if (!author_id || author_id == messages[i]->author->id) ++count;
-        }
-
-        if (0 == count) {
-            logconf_trace(&client->conf,
-                          "Couldn't fetch messages from author");
-            return CCORD_OK;
-        }
-
-        list = (u64_snowflake_t **)ntl_calloc(count, sizeof(u64_snowflake_t));
-        for (i = 0, j = 0; messages[i] && j < count; ++i) {
-            if (!author_id || author_id == messages[i]->author->id) {
-                *list[j] = messages[i]->id;
-                ++j;
-            }
-        }
-        ntl_free((ntl_t)messages, discord_message_cleanup_v);
-
-        if (count == 1)
-            code = discord_delete_message(client, channel_id, *list[0]);
-        else
-            code = discord_bulk_delete_messages(client, channel_id, list);
-    }
-
-    return code;
-}
-
 void
 discord_embed_set_footer(struct discord_embed *embed,
                          char text[],
@@ -278,52 +216,6 @@ discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
 
     ntl_append2((ntl_t *)permission_overwrites,
                 sizeof(struct discord_overwrite), &new_overwrite);
-}
-
-/* @todo create some manner of copying a struct, including its pointer fields
- */
-CCORDcode
-discord_get_channel_at_pos(struct discord *client,
-                           const u64_snowflake_t guild_id,
-                           const enum discord_channel_types type,
-                           const size_t position,
-                           struct discord_channel *ret)
-{
-    struct discord_channel **channels = NULL;
-    CCORDcode code;
-
-    CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
-
-    code = discord_get_guild_channels(client, guild_id, &channels);
-
-    if (CCORD_OK != code) {
-        logconf_error(&client->conf, "Couldn't fetch channels from guild");
-        memset(ret, 0, sizeof(struct discord_channel));
-    }
-    else {
-        struct discord_channel *channel = NULL;
-        size_t i, pos; /* calculate position */
-
-        for (i = 0, pos = 0; channels[i]; ++i) {
-            if (type == channels[i]->type && pos++ == position) {
-                channel = channels[i];
-                break;
-            }
-        }
-
-        if (channel) {
-            memcpy(ret, channel, sizeof(struct discord_channel));
-            memset(channel, 0, sizeof(struct discord_channel));
-        }
-        else {
-            memset(ret, 0, sizeof(struct discord_channel));
-        }
-
-        discord_channel_list_free(channels);
-    }
-
-    return code;
 }
 
 void

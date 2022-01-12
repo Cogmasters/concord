@@ -74,10 +74,10 @@ discord_adapter_init(struct discord_adapter *adapter,
 
     /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
      * share the same queue with the original */
-    adapter->async.idleq = malloc(sizeof(QUEUE));
-    QUEUE_INIT(adapter->async.idleq);
+    adapter->idleq = malloc(sizeof(QUEUE));
+    QUEUE_INIT(adapter->idleq);
     /* initialize min-heap for handling request timeouts */
-    heap_init(&adapter->async.timeouts);
+    heap_init(&adapter->timeouts);
 
     adapter->retry_limit = 3; /**< hard limit for now */
 }
@@ -113,7 +113,7 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
     free(adapter->global);
 
     /* cleanup idle requests queue */
-    QUEUE_MOVE(adapter->async.idleq, &queue);
+    QUEUE_MOVE(adapter->idleq, &queue);
     while (!QUEUE_EMPTY(&queue)) {
         q = QUEUE_HEAD(&queue);
         cxt = QUEUE_DATA(q, struct discord_context, entry);
@@ -121,9 +121,9 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
         _discord_context_cleanup(cxt);
     }
 
-    if (adapter->async.ret.size) free(adapter->async.ret.start);
+    if (adapter->ret.size) free(adapter->ret.start);
 
-    free(adapter->async.idleq);
+    free(adapter->idleq);
 }
 
 static CCORDcode _discord_adapter_run_sync(struct discord_adapter *adapter,
@@ -169,7 +169,7 @@ discord_adapter_run(struct discord_adapter *adapter,
     discord_bucket_get_route(method, route, endpoint_fmt, args);
     va_end(args);
 
-    if (req->attr.is_sync) {
+    if (req->attr.sync) {
         /* perform blocking request */
         return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
                                          route);
@@ -355,13 +355,13 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
             if (info.code != CCORD_OK) {
                 _discord_adapter_set_errbuf(adapter, &body);
             }
-            else if (req->ret) {
+            else if (req->gnrc.data) {
                 /* initialize ret */
-                if (req->init) req->init(req->ret);
+                if (req->gnrc.init) req->gnrc.init(req->gnrc.data);
 
                 /* populate ret */
-                if (req->from_json)
-                    req->from_json(body.start, body.size, req->ret);
+                if (req->gnrc.from_json)
+                    req->gnrc.from_json(body.start, body.size, req->gnrc.data);
             }
 
             code = info.code;
@@ -445,8 +445,6 @@ static void
 _discord_context_reset(struct discord_context *cxt)
 {
     cxt->bucket = NULL;
-    cxt->done = NULL;
-    cxt->fail = NULL;
     cxt->body.buf.size = 0;
     cxt->method = 0;
     *cxt->endpoint = '\0';
@@ -459,7 +457,6 @@ _discord_context_reset(struct discord_context *cxt)
         discord_attachment_list_free(cxt->req.attachments);
 
     memset(&cxt->req, 0, sizeof(struct discord_request));
-    memset(&cxt->udata, 0, sizeof cxt->udata);
 }
 
 static void
@@ -472,30 +469,24 @@ _discord_context_populate(struct discord_context *cxt,
                           char route[DISCORD_ROUTE_LEN])
 {
     cxt->method = method;
-    /* user callbacks */
-    cxt->done = adapter->async.req.done;
-    cxt->fail = adapter->async.req.fail;
-    /* user data */
-    cxt->udata.data = adapter->async.req.data;
-    cxt->udata.cleanup = adapter->async.req.cleanup;
 
     memcpy(&cxt->req, req, sizeof(struct discord_request));
     if (req->attachments) {
         cxt->req.attachments = _discord_attachment_list_dup(req->attachments);
     }
 
-    if (cxt->req.size) {
-        if (cxt->req.size > adapter->async.ret.size) {
-            void *tmp = realloc(adapter->async.ret.start, cxt->req.size);
+    if (cxt->req.gnrc.size) {
+        if (cxt->req.gnrc.size > adapter->ret.size) {
+            void *tmp = realloc(adapter->ret.start, cxt->req.gnrc.size);
             VASSERT_S(tmp != NULL,
                       "Couldn't increase buffer %zu -> %zu (bytes)",
-                      adapter->async.ret.size, cxt->req.size);
+                      adapter->ret.size, cxt->req.gnrc.size);
 
-            adapter->async.ret.start = tmp;
-            adapter->async.ret.size = cxt->req.size;
+            adapter->ret.start = tmp;
+            adapter->ret.size = cxt->req.gnrc.size;
         }
 
-        cxt->req.ret = &adapter->async.ret.start;
+        cxt->req.gnrc.data = &adapter->ret.start;
     }
 
     if (body) {
@@ -531,7 +522,7 @@ _discord_context_set_timeout(struct discord_adapter *adapter,
 
     cxt->timeout_ms = timeout;
 
-    heap_insert(&adapter->async.timeouts, &cxt->node, &timer_less_than);
+    heap_insert(&adapter->timeouts, &cxt->node, &timer_less_than);
 }
 
 /* true if a timeout has been set, false otherwise */
@@ -564,13 +555,13 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
 {
     struct discord_context *cxt;
 
-    if (QUEUE_EMPTY(adapter->async.idleq)) {
+    if (QUEUE_EMPTY(adapter->idleq)) {
         /* create new request handler */
         cxt = calloc(1, sizeof(struct discord_context));
     }
     else {
         /* get from idle requests queue */
-        QUEUE *q = QUEUE_HEAD(adapter->async.idleq);
+        QUEUE *q = QUEUE_HEAD(adapter->idleq);
         QUEUE_REMOVE(q);
 
         cxt = QUEUE_DATA(q, struct discord_context, entry);
@@ -580,13 +571,10 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
     _discord_context_populate(cxt, adapter, req, body, method, endpoint,
                               route);
 
-    if (adapter->async.req.high_p)
+    if (req->attr.high_p)
         QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
     else
         QUEUE_INSERT_TAIL(&cxt->bucket->waitq, &cxt->entry);
-
-    /* reset for next call */
-    memset(&adapter->async.req, 0, sizeof adapter->async.req);
 
     return CCORD_OK;
 }
@@ -636,7 +624,7 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
     struct heap_node *hmin;
 
     while (1) {
-        hmin = heap_min(&adapter->async.timeouts);
+        hmin = heap_min(&adapter->timeouts);
         if (!hmin) break;
 
         cxt = CONTAINEROF(hmin, struct discord_context, node);
@@ -645,7 +633,7 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
             break;
         }
 
-        heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
+        heap_remove(&adapter->timeouts, hmin, &timer_less_than);
 
         cxt->bucket->freeze = false;
         QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
@@ -750,29 +738,33 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         if (info.code != CCORD_OK) {
             _discord_adapter_set_errbuf(adapter, &body);
 
-            if (cxt->fail) {
-                struct discord_async_err err = { info.code, cxt->udata.data };
+            if (cxt->req.attr.fail) {
+                struct discord_err err = { info.code, cxt->req.attr.data };
 
-                cxt->fail(client, &err);
+                cxt->req.attr.fail(client, &err);
             }
+            if (cxt->req.attr.fail_cleanup)
+                cxt->req.attr.fail_cleanup(cxt->req.attr.data);
         }
-        else if (cxt->done) {
-            void **p_ret = cxt->req.ret;
-            struct discord_async_ret ret = { p_ret ? *p_ret : NULL,
-                                             cxt->udata.data };
+        else if (cxt->req.attr.done) {
+            void **p_ret = cxt->req.gnrc.data;
+            struct discord_ret ret = { p_ret ? *p_ret : NULL,
+                                       cxt->req.attr.data };
 
             /* initialize ret */
-            if (cxt->req.init) cxt->req.init(*p_ret);
+            if (cxt->req.gnrc.init) cxt->req.gnrc.init(*p_ret);
 
             /* populate ret */
-            if (cxt->req.from_json)
-                cxt->req.from_json(body.start, body.size, *p_ret);
+            if (cxt->req.gnrc.from_json)
+                cxt->req.gnrc.from_json(body.start, body.size, *p_ret);
 
-            cxt->done(client, &ret);
+            cxt->req.attr.done(client, &ret);
 
             /* cleanup ret */
-            if (cxt->req.cleanup) cxt->req.cleanup(*p_ret);
+            if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(*p_ret);
         }
+        if (cxt->req.attr.done_cleanup)
+            cxt->req.attr.done_cleanup(cxt->req.attr.data);
 
         code = info.code;
 
@@ -792,11 +784,13 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
         code = CCORD_CURLE_INTERNAL;
 
-        if (cxt->fail) {
-            struct discord_async_err err = { code, cxt->udata.data };
+        if (cxt->req.attr.fail) {
+            struct discord_err err = { code, cxt->req.attr.data };
 
-            cxt->fail(client, &err);
+            cxt->req.attr.fail(client, &err);
         }
+        if (cxt->req.attr.fail_cleanup)
+            cxt->req.attr.fail_cleanup(cxt->req.attr.data);
 
         break;
     }
@@ -816,12 +810,10 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         }
     }
     else {
-        if (cxt->udata.cleanup) cxt->udata.cleanup(cxt->udata.data);
-
         ua_conn_stop(cxt->conn);
         _discord_context_reset(cxt);
 
-        QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
+        QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
 
     return code;
@@ -870,14 +862,14 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
     QUEUE *q;
 
     /* cancel pending timeouts */
-    while ((hmin = heap_min(&adapter->async.timeouts)) != NULL) {
+    while ((hmin = heap_min(&adapter->timeouts)) != NULL) {
         cxt = CONTAINEROF(hmin, struct discord_context, node);
 
-        heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
+        heap_remove(&adapter->timeouts, hmin, &timer_less_than);
 
         cxt->bucket->freeze = false;
 
-        QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
+        QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
 
     /* cancel bucket's on-going transfers */
@@ -895,11 +887,11 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
 
             /* set for recycling */
             ua_conn_stop(cxt->conn);
-            QUEUE_INSERT_TAIL(adapter->async.idleq, q);
+            QUEUE_INSERT_TAIL(adapter->idleq, q);
         }
 
         /* cancel pending tranfers */
-        QUEUE_ADD(adapter->async.idleq, &b->waitq);
+        QUEUE_ADD(adapter->idleq, &b->waitq);
         QUEUE_INIT(&b->waitq);
     }
 }

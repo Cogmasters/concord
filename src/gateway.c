@@ -1313,10 +1313,16 @@ discord_gateway_start(struct discord_gateway *gw)
                       gw->session->retry.limit);
         return CCORD_DISCORD_CONNECTION;
     }
+    else {
+        struct discord_attr attr = { 0 };
 
-    if (discord_get_gateway_bot(client, &json)) {
-        logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
-        return CCORD_DISCORD_BAD_AUTH;
+        attr.sync = true;
+        attr.sync_ret = &json;
+
+        if (discord_get_gateway_bot(client, &attr)) {
+            logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
+            return CCORD_DISCORD_BAD_AUTH;
+        }
     }
 
     json_extract(json.start, json.size,

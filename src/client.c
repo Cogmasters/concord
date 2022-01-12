@@ -24,7 +24,12 @@ _discord_init(struct discord *new_client)
 
     /* fetch the client user structure */
     if (new_client->token.size) {
-        discord_get_current_user(new_client, &new_client->self);
+        struct discord_attr attr = { 0 };
+
+        attr.sync = true;
+        attr.sync_ret = &new_client->self;
+
+        discord_get_current_user(new_client, &attr);
     }
 
     new_client->is_original = true;
