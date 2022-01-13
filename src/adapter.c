@@ -168,13 +168,13 @@ discord_adapter_run(struct discord_adapter *adapter,
     va_start(args, endpoint_fmt);
     discord_bucket_get_route(method, route, endpoint_fmt, args);
     va_end(args);
-
+#if 0
     if (req->attr.sync) {
         /* perform blocking request */
         return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
                                          route);
     }
-
+#endif
     /* enqueue asynchronous request */
     return _discord_adapter_run_async(adapter, req, body, method, endpoint,
                                       route);
@@ -739,17 +739,13 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             _discord_adapter_set_errbuf(adapter, &body);
 
             if (cxt->req.attr.fail) {
-                struct discord_err err = { info.code, cxt->req.attr.data };
-
-                cxt->req.attr.fail(client, &err);
+                cxt->req.attr.fail(client, info.code, cxt->req.attr.data);
             }
             if (cxt->req.attr.fail_cleanup)
                 cxt->req.attr.fail_cleanup(cxt->req.attr.data);
         }
         else if (cxt->req.attr.done) {
             void **p_ret = cxt->req.gnrc.data;
-            struct discord_ret ret = { p_ret ? *p_ret : NULL,
-                                       cxt->req.attr.data };
 
             /* initialize ret */
             if (cxt->req.gnrc.init) cxt->req.gnrc.init(*p_ret);
@@ -758,7 +754,8 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             if (cxt->req.gnrc.from_json)
                 cxt->req.gnrc.from_json(body.start, body.size, *p_ret);
 
-            cxt->req.attr.done(client, &ret);
+            cxt->req.attr.done(client, cxt->req.attr.data,
+                               p_ret ? *p_ret : NULL);
 
             /* cleanup ret */
             if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(*p_ret);
@@ -785,9 +782,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         code = CCORD_CURLE_INTERNAL;
 
         if (cxt->req.attr.fail) {
-            struct discord_err err = { code, cxt->req.attr.data };
-
-            cxt->req.attr.fail(client, &err);
+            cxt->req.attr.fail(client, code, cxt->req.attr.data);
         }
         if (cxt->req.attr.fail_cleanup)
             cxt->req.attr.fail_cleanup(cxt->req.attr.data);
@@ -822,22 +817,21 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 CCORDcode
 discord_adapter_perform(struct discord_adapter *adapter)
 {
-    int is_running = 0;
     CURLMcode mcode;
     CCORDcode code;
+    int alive = 0;
 
-    code = _discord_adapter_check_timeouts(adapter);
-    if (code != CCORD_OK) return code;
+    if (CCORD_OK != (code = _discord_adapter_check_timeouts(adapter)))
+        return code;
 
-    code = _discord_adapter_check_pending(adapter);
-    if (code != CCORD_OK) return code;
+    if (CCORD_OK != (code = _discord_adapter_check_pending(adapter)))
+        return code;
 
-    mcode = curl_multi_socket_all(adapter->mhandle, &is_running);
-
-    if (mcode != CURLM_OK) return CCORD_CURLM_INTERNAL;
+    if (CURLM_OK != (mcode = curl_multi_socket_all(adapter->mhandle, &alive)))
+        return CCORD_CURLM_INTERNAL;
 
     /* ask for any messages/informationals from the individual transfers */
-    do {
+    while (1) {
         int msgq = 0;
         struct CURLMsg *msg = curl_multi_info_read(adapter->mhandle, &msgq);
 
@@ -848,7 +842,7 @@ discord_adapter_perform(struct discord_adapter *adapter)
 
         /* check for request action */
         _discord_adapter_check_action(adapter, msg);
-    } while (1);
+    }
 
     return CCORD_OK;
 }

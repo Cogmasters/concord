@@ -1315,12 +1315,14 @@ discord_gateway_start(struct discord_gateway *gw)
     }
     else {
         struct discord_attr attr = { 0 };
-
+#if 0
         attr.sync = true;
         attr.sync_ret = &json;
+#endif
 
         if (discord_get_gateway_bot(client, &attr)) {
-            logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
+            logconf_fatal(&gw->conf,
+                          "Couldn't retrieve Gateway Bot information");
             return CCORD_DISCORD_BAD_AUTH;
         }
     }
@@ -1387,27 +1389,24 @@ CCORDcode
 discord_gateway_perform(struct discord_gateway *gw)
 {
     /* check for pending transfer, exit on failure */
-    if (!ws_multi_socket_run(gw->ws, &gw->timer->now)) {
+    if (!ws_multi_socket_run(gw->ws, &gw->timer->now))
         return CCORD_DISCORD_CONNECTION;
-    }
 
     /* client is in the process of shutting down */
-    if (gw->session->status & DISCORD_SESSION_SHUTDOWN) {
-        return CCORD_OK;
-    }
+    if (gw->session->status & DISCORD_SESSION_SHUTDOWN) return CCORD_OK;
 
     /* client is in the process of connecting */
-    if (!gw->session->is_ready) {
-        return CCORD_OK;
-    }
+    if (!gw->session->is_ready) return CCORD_OK;
 
     /* check if timespan since first pulse is greater than
      * minimum heartbeat interval required */
-    if (gw->timer->interval < gw->timer->now - gw->timer->hbeat) {
+    if (gw->timer->interval < gw->timer->now - gw->timer->hbeat)
         send_heartbeat(gw);
-    }
 
-    // if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
+    /* XXX: moved to discord_run() */
+#if 0
+    if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
+#endif
 
     return CCORD_OK;
 }

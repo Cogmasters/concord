@@ -24,11 +24,11 @@ _discord_init(struct discord *new_client)
 
     /* fetch the client user structure */
     if (new_client->token.size) {
-        struct discord_attr attr = { 0 };
-
+        struct discord_attr_user attr = { 0 };
+#if 0
         attr.sync = true;
         attr.sync_ret = &new_client->self;
-
+#endif
         discord_get_current_user(new_client, &attr);
     }
 
@@ -246,21 +246,23 @@ discord_set_on_ready(struct discord *client, discord_on_idle callback)
 CCORDcode
 discord_run(struct discord *client)
 {
+    time_t last, now;
     CCORDcode code;
 
     while (1) {
-        code = discord_gateway_start(&client->gw);
-        if (code != CCORD_OK) break;
-        time_t last = 0;
-        do {
+        if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
+
+        last = 0;
+        while (1) {
             io_poller_poll(client->io_poller,
                            client->gw.cmds.cbs.on_idle ? 1 : 1000);
             io_poller_perform(client->io_poller);
 
-            const time_t now = time(NULL);
+            now = time(NULL);
             if (last != now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
                     break;
+
                 last = now;
             }
 
@@ -269,15 +271,21 @@ discord_run(struct discord *client)
 
             if (client->gw.cmds.cbs.on_idle)
                 client->gw.cmds.cbs.on_idle(client);
-        } while (1);
+        }
 
-        if (discord_gateway_end(&client->gw)) {
+        if (true == discord_gateway_end(&client->gw)) {
             discord_adapter_stop_all(&client->adapter);
             break;
         }
     }
 
     return code;
+}
+
+CCORDcode
+discord_complete(struct discord *client)
+{
+    return discord_adapter_perform(&client->adapter);
 }
 
 void
