@@ -7,115 +7,131 @@
 #ifndef DISCORD_TEMPLATES_H
 #define DISCORD_TEMPLATES_H
 
-#define DISCORD_T_DONE(type)                                                  \
-    typedef void (*discord_done_##type)(struct discord * client, void *data,  \
-                                        const struct discord_##type *ret)
+#define DISCORDT_RET_CALLBACK(type)                                           \
+    /** @brief Triggers on a succesful request */                             \
+    typedef void (*discord_on_##type)(struct discord * client, void *data,    \
+                                      const struct discord_##type *ret)
 
-#define DISCORD_T_DONE_LIST(type)                                             \
-    typedef void (*discord_done_##type##s)(struct discord * client,           \
-                                           void *data,                        \
-                                           const struct discord_##type **ret)
+#define DISCORDT_RET_CALLBACK_LIST(type)                                      \
+    /** @brief Triggers on a succesful request */                             \
+    typedef void (*discord_on_##type##s)(struct discord * client, void *data, \
+                                         const struct discord_##type **ret)
 
-#define DISCORD_T_ATTR_FIELDS                                                 \
-    discord_fail fail;                                                        \
+#define DISCORDT_RET_DEFAULT_FIELDS                                           \
+    /** optional callback to be executed on a failed request */               \
+    discord_on_fail fail;                                                     \
+    /** user arbitrary data to be retrieved at `done` or `fail` callbacks */  \
     void *data;                                                               \
+    /** automatic cleanup for user data after `done` callback returns */      \
     void (*done_cleanup)(void *data);                                         \
+    /** automatic cleanup for user data after `fail` callback returns */      \
     void (*fail_cleanup)(void *data);                                         \
+    /** if `true` then request will take priority over already enqueued       \
+        requests */                                                           \
     bool *high_p
 
-#define DISCORD_T_ATTR(type)                                                  \
-    struct discord_attr_##type {                                              \
-        discord_done_##type done;                                             \
-        DISCORD_T_ATTR_FIELDS;                                                \
+#define DISCORDT_RET(type)                                                    \
+    /** @brief Request's return context */                                    \
+    struct discord_ret_##type {                                               \
+        /** optional callback to be executed on a successful request */       \
+        discord_on_##type done;                                               \
+        DISCORDT_RET_DEFAULT_FIELDS;                                          \
     }
 
-#define DISCORD_T_ATTR_LIST(type)                                             \
-    struct discord_attr_##type##s {                                           \
-        discord_done_##type##s done;                                          \
-        DISCORD_T_ATTR_FIELDS;                                                \
+#define DISCORDT_RET_LIST(type)                                               \
+    /** @brief Request's return context */                                    \
+    struct discord_ret_##type##s {                                            \
+        /** optional callback to be executed on a successful request */       \
+        discord_on_##type##s done;                                            \
+        DISCORDT_RET_DEFAULT_FIELDS;                                          \
     }
 
-#define DISCORD_T_RETURN(type)                                                \
-    DISCORD_T_DONE(type);                                                     \
-    DISCORD_T_ATTR(type)
+#define DISCORDT_RETURN(type)                                                 \
+    DISCORDT_RET_CALLBACK(type);                                              \
+    DISCORDT_RET(type)
 
-#define DISCORD_T_RETURN_LIST(type)                                           \
-    DISCORD_T_DONE_LIST(type);                                                \
-    DISCORD_T_ATTR_LIST(type)
-
-/** @brief Triggers on a successful request */
-typedef void (*discord_done)(struct discord *client, void *data);
+#define DISCORDT_RETURN_LIST(type)                                            \
+    DISCORDT_RET_CALLBACK_LIST(type);                                         \
+    DISCORDT_RET_LIST(type)
 
 /** @brief Triggers on a successful request */
-typedef void (*discord_done_generic)(struct discord *client,
-                                     void *data,
-                                     const void *ret);
+typedef void (*discord_on_done)(struct discord *client, void *data);
+
+/** @brief Triggers on a successful request */
+typedef void (*discord_on_generic)(struct discord *client,
+                                   void *data,
+                                   const void *ret);
 
 /** @brief Triggers on a failed request */
-typedef void (*discord_fail)(struct discord *client,
-                             CCORDcode code,
-                             void *data);
-struct discord_attr {
-    discord_done done;
-    DISCORD_T_ATTR_FIELDS;
+typedef void (*discord_on_fail)(struct discord *client,
+                                CCORDcode code,
+                                void *data);
+
+/** @brief Request's return context */
+struct discord_ret {
+    /** optional callback to be executed on a successful request */
+    discord_on_done done;
+    DISCORDT_RET_DEFAULT_FIELDS;
 };
 
-struct discord_attr_generic {
-    discord_done_generic done;
-    DISCORD_T_ATTR_FIELDS;
+/** @brief Request's return context */
+struct discord_ret_generic {
+    /** optional callback to be executed on a successful request */
+    discord_on_generic done;
+    DISCORDT_RET_DEFAULT_FIELDS;
 };
 
-DISCORD_T_RETURN(application_command);
-DISCORD_T_RETURN_LIST(application_command);
-DISCORD_T_RETURN(application_command_permissions);
-DISCORD_T_RETURN_LIST(application_command_permissions);
-DISCORD_T_RETURN_LIST(guild_application_command_permissions);
-DISCORD_T_RETURN(interaction_response);
+DISCORDT_RETURN(application_command);
+DISCORDT_RETURN_LIST(application_command);
+DISCORDT_RETURN(application_command_permissions);
+DISCORDT_RETURN_LIST(application_command_permissions);
+DISCORDT_RETURN_LIST(guild_application_command_permissions);
+DISCORDT_RETURN(interaction_response);
 
-DISCORD_T_RETURN(audit_log);
+DISCORDT_RETURN(audit_log);
 
-DISCORD_T_RETURN(channel);
-DISCORD_T_RETURN_LIST(channel);
-DISCORD_T_RETURN(message);
-DISCORD_T_RETURN_LIST(message);
+DISCORDT_RETURN(channel);
+DISCORDT_RETURN_LIST(channel);
+DISCORDT_RETURN(message);
+DISCORDT_RETURN_LIST(message);
 
-DISCORD_T_RETURN(user);
-DISCORD_T_RETURN_LIST(user);
+DISCORDT_RETURN(user);
+DISCORDT_RETURN_LIST(user);
 
-DISCORD_T_RETURN(invite);
-DISCORD_T_RETURN_LIST(invite);
+DISCORDT_RETURN(invite);
+DISCORDT_RETURN_LIST(invite);
 
-DISCORD_T_RETURN_LIST(thread_member);
-DISCORD_T_RETURN(thread_response_body);
+DISCORDT_RETURN_LIST(thread_member);
+DISCORDT_RETURN(thread_response_body);
 
-DISCORD_T_RETURN(emoji);
-DISCORD_T_RETURN_LIST(emoji);
+DISCORDT_RETURN(emoji);
+DISCORDT_RETURN_LIST(emoji);
 
-DISCORD_T_RETURN(guild);
-DISCORD_T_RETURN_LIST(guild);
-DISCORD_T_RETURN(guild_preview);
-DISCORD_T_RETURN(guild_member);
-DISCORD_T_RETURN_LIST(guild_member);
-DISCORD_T_RETURN(ban);
-DISCORD_T_RETURN_LIST(ban);
-DISCORD_T_RETURN(role);
-DISCORD_T_RETURN_LIST(role);
-DISCORD_T_RETURN(welcome_screen);
+DISCORDT_RETURN(guild);
+DISCORDT_RETURN_LIST(guild);
+DISCORDT_RETURN(guild_preview);
+DISCORDT_RETURN(guild_member);
+DISCORDT_RETURN_LIST(guild_member);
+DISCORDT_RETURN(ban);
+DISCORDT_RETURN_LIST(ban);
+DISCORDT_RETURN(role);
+DISCORDT_RETURN_LIST(role);
+DISCORDT_RETURN(welcome_screen);
 
-DISCORD_T_RETURN(guild_template);
+DISCORDT_RETURN(guild_template);
 
-DISCORD_T_RETURN_LIST(connection);
-DISCORD_T_RETURN_LIST(voice_region);
+DISCORDT_RETURN_LIST(connection);
+DISCORDT_RETURN_LIST(voice_region);
 
-DISCORD_T_RETURN(webhook);
-DISCORD_T_RETURN_LIST(webhook);
+DISCORDT_RETURN(webhook);
+DISCORDT_RETURN_LIST(webhook);
 
-#undef DISCORD_T_DONE
-#undef DISCORD_T_DONE_LIST
-#undef DISCORD_T_ATTR_FIELDS
-#undef DISCORD_T_ATTR
-#undef DISCORD_T_ATTR_LIST
-#undef DISCORD_T_RETURN
-#undef DISCORD_T_RETURN_LIST
+#undef DISCORDT_RET_CALLBACK
+#undef DISCORDT_RET_CALLBACK_LIST
+#undef DISCORDT_RET_DEFAULT_FIELDS
+#undef DISCORDT_RET
+#undef DISCORDT_RET_LIST
+#undef DISCORDT_RETURN
+#undef DISCORDT_RETURN_LIST
 
 #endif /* DISCORD_TEMPLATES_H */

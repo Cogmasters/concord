@@ -169,7 +169,7 @@ discord_adapter_run(struct discord_adapter *adapter,
     discord_bucket_get_route(method, route, endpoint_fmt, args);
     va_end(args);
 #if 0
-    if (req->attr.sync) {
+    if (req->ret.sync) {
         /* perform blocking request */
         return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
                                          route);
@@ -571,7 +571,7 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
     _discord_context_populate(cxt, adapter, req, body, method, endpoint,
                               route);
 
-    if (req->attr.high_p)
+    if (req->ret.high_p)
         QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
     else
         QUEUE_INSERT_TAIL(&cxt->bucket->waitq, &cxt->entry);
@@ -738,13 +738,13 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         if (info.code != CCORD_OK) {
             _discord_adapter_set_errbuf(adapter, &body);
 
-            if (cxt->req.attr.fail) {
-                cxt->req.attr.fail(client, info.code, cxt->req.attr.data);
+            if (cxt->req.ret.fail) {
+                cxt->req.ret.fail(client, info.code, cxt->req.ret.data);
             }
-            if (cxt->req.attr.fail_cleanup)
-                cxt->req.attr.fail_cleanup(cxt->req.attr.data);
+            if (cxt->req.ret.fail_cleanup)
+                cxt->req.ret.fail_cleanup(cxt->req.ret.data);
         }
-        else if (cxt->req.attr.done) {
+        else if (cxt->req.ret.done) {
             void **p_ret = cxt->req.gnrc.data;
 
             /* initialize ret */
@@ -754,14 +754,14 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             if (cxt->req.gnrc.from_json)
                 cxt->req.gnrc.from_json(body.start, body.size, *p_ret);
 
-            cxt->req.attr.done(client, cxt->req.attr.data,
+            cxt->req.ret.done(client, cxt->req.ret.data,
                                p_ret ? *p_ret : NULL);
 
             /* cleanup ret */
             if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(*p_ret);
         }
-        if (cxt->req.attr.done_cleanup)
-            cxt->req.attr.done_cleanup(cxt->req.attr.data);
+        if (cxt->req.ret.done_cleanup)
+            cxt->req.ret.done_cleanup(cxt->req.ret.data);
 
         code = info.code;
 
@@ -781,11 +781,11 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
         code = CCORD_CURLE_INTERNAL;
 
-        if (cxt->req.attr.fail) {
-            cxt->req.attr.fail(client, code, cxt->req.attr.data);
+        if (cxt->req.ret.fail) {
+            cxt->req.ret.fail(client, code, cxt->req.ret.data);
         }
-        if (cxt->req.attr.fail_cleanup)
-            cxt->req.attr.fail_cleanup(cxt->req.attr.data);
+        if (cxt->req.ret.fail_cleanup)
+            cxt->req.ret.fail_cleanup(cxt->req.ret.data);
 
         break;
     }

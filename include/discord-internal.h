@@ -46,7 +46,7 @@ struct discord_request {
     /** request response's return datatype attributes */
     struct discord_generic gnrc;
     /** request attributes set by client */
-    struct discord_attr_generic attr;
+    struct discord_ret_generic ret;
     /** in case of HTTP_MIMEPOST, provide attachments */
     struct discord_attachment **attachments;
 };

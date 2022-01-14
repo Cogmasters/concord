@@ -1314,13 +1314,13 @@ discord_gateway_start(struct discord_gateway *gw)
         return CCORD_DISCORD_CONNECTION;
     }
     else {
-        struct discord_attr attr = { 0 };
+        struct discord_ret ret = { 0 };
 #if 0
-        attr.sync = true;
-        attr.sync_ret = &json;
+        ret.sync = true;
+        ret.sync_ret = &json;
 #endif
 
-        if (discord_get_gateway_bot(client, &attr)) {
+        if (discord_get_gateway_bot(client, &ret)) {
             logconf_fatal(&gw->conf,
                           "Couldn't retrieve Gateway Bot information");
             return CCORD_DISCORD_BAD_AUTH;
