@@ -16,6 +16,8 @@ EXAMPLES_DIR  := examples
 TEST_DIR      := test
 CCORDDOCS_DIR := concord-docs
 
+H_SPECS := discord-specs.h
+
 COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
                 $(COGUTILS_DIR)/json-actor.c       \
                 $(COGUTILS_DIR)/json-actor-boxed.c \
@@ -98,7 +100,7 @@ specs_gen: | $(COGUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
 	@ mkdir -p $(C_SPECS_DIR)
 	mv $(SPECS_DIR)/code/*.c $(C_SPECS_DIR)
-	mv $(SPECS_DIR)/code/discord-specs.h $(INCLUDE_DIR)
+	mv $(SPECS_DIR)/code/$(H_SPECS) $(INCLUDE_DIR)
 
 cog_utils:
 	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
@@ -156,6 +158,7 @@ purge: clean
 	rm -rf $(LIBDIR)
 	rm -rf $(COGUTILS_DIR)
 	rm -rf $(C_SPECS_DIR)
+	rm -rf $(H_SPECS)
 
 # prepare files for generating documentation at .github/workflows/gh_pages.yml
 docs: | $(CCORDDOCS_DIR)
