@@ -294,89 +294,89 @@ void discord_bucket_build(struct discord_adapter *adapter,
 struct discord_gateway_cmd_cbs {
     char *start;
     size_t size;
-    discord_on_message cb;
+    discord_ev_message cb;
 };
 
 struct discord_gateway_cbs {
     /** triggers on every event loop iteration */
-    discord_on_idle on_idle;
+    discord_ev_idle on_idle;
 
     /** triggers when connection first establishes */
-    discord_on_idle on_ready;
+    discord_ev_idle on_ready;
 
     /** triggers when a command is created */
-    discord_on_application_command on_application_command_create;
+    discord_ev_application_command on_application_command_create;
     /** triggers when a command is updated */
-    discord_on_application_command on_application_command_update;
+    discord_ev_application_command on_application_command_update;
     /** triggers when a command is deleted */
-    discord_on_application_command on_application_command_delete;
+    discord_ev_application_command on_application_command_delete;
 
     /** triggers when a channel is created */
-    discord_on_channel on_channel_create;
+    discord_ev_channel on_channel_create;
     /** triggers when a channel is updated */
-    discord_on_channel on_channel_update;
+    discord_ev_channel on_channel_update;
     /** triggers when a channel is deleted */
-    discord_on_channel on_channel_delete;
+    discord_ev_channel on_channel_delete;
     /** triggers when a channel pinned messages updates */
-    discord_on_channel_pins_update on_channel_pins_update;
+    discord_ev_channel_pins_update on_channel_pins_update;
     /** triggers when a thread is created */
-    discord_on_channel on_thread_create;
+    discord_ev_channel on_thread_create;
     /** triggers when a thread is updated */
-    discord_on_channel on_thread_update;
+    discord_ev_channel on_thread_update;
     /** triggers when a thread is deleted */
-    discord_on_channel on_thread_delete;
+    discord_ev_channel on_thread_delete;
 
     /** triggers when guild info is ready, or a guild has joined */
-    discord_on_guild on_guild_create;
+    discord_ev_guild on_guild_create;
     /** triggers when a guild's information is updated */
-    discord_on_guild on_guild_update;
+    discord_ev_guild on_guild_update;
     /** triggers when removed from guild */
-    discord_on_guild_delete on_guild_delete;
+    discord_ev_guild_delete on_guild_delete;
 
     /** triggers when a ban occurs */
-    discord_on_guild_ban on_guild_ban_add;
+    discord_ev_guild_ban on_guild_ban_add;
     /** triggers when a ban is removed */
-    discord_on_guild_ban on_guild_ban_remove;
+    discord_ev_guild_ban on_guild_ban_remove;
 
     /** triggers when a guild member joins a guild */
-    discord_on_guild_member on_guild_member_add;
+    discord_ev_guild_member on_guild_member_add;
     /** triggers when a guild member is removed from a guild */
-    discord_on_guild_member_remove on_guild_member_remove;
+    discord_ev_guild_member_remove on_guild_member_remove;
     /** triggers when a guild member status is updated (ex: receive role) */
-    discord_on_guild_member on_guild_member_update;
+    discord_ev_guild_member on_guild_member_update;
 
     /** triggers when a guild role is created */
-    discord_on_guild_role on_guild_role_create;
+    discord_ev_guild_role on_guild_role_create;
     /** triggers when a guild role is updated */
-    discord_on_guild_role on_guild_role_update;
+    discord_ev_guild_role on_guild_role_update;
     /** triggers when a guild role is deleted */
-    discord_on_guild_role_delete on_guild_role_delete;
+    discord_ev_guild_role_delete on_guild_role_delete;
 
     /** triggers when a interaction is created  */
-    discord_on_interaction on_interaction_create;
+    discord_ev_interaction on_interaction_create;
 
     /** triggers when a message is created */
-    discord_on_message on_message_create;
+    discord_ev_message on_message_create;
     /** trigger when a message is updated */
-    discord_on_message on_message_update;
+    discord_ev_message on_message_update;
     /** triggers when a message is deleted */
-    discord_on_message_delete on_message_delete;
+    discord_ev_message_delete on_message_delete;
     /** triggers when a bulk of messages is deleted */
-    discord_on_message_delete_bulk on_message_delete_bulk;
+    discord_ev_message_delete_bulk on_message_delete_bulk;
     /** triggers when a reaction is added to a message */
-    discord_on_message_reaction_add on_message_reaction_add;
+    discord_ev_message_reaction_add on_message_reaction_add;
     /** triggers when a reaction is removed from a message */
-    discord_on_message_reaction_remove on_message_reaction_remove;
+    discord_ev_message_reaction_remove on_message_reaction_remove;
     /** triggers when all reactions are removed from a message */
-    discord_on_message_reaction_remove_all on_message_reaction_remove_all;
+    discord_ev_message_reaction_remove_all on_message_reaction_remove_all;
     /** triggers when all occurences of a specific reaction is removed from a
      * message */
-    discord_on_message_reaction_remove_emoji on_message_reaction_remove_emoji;
+    discord_ev_message_reaction_remove_emoji on_message_reaction_remove_emoji;
 
     /** triggers when a voice state is updated */
-    discord_on_voice_state_update on_voice_state_update;
+    discord_ev_voice_state_update on_voice_state_update;
     /** triggers when a voice server is updated */
-    discord_on_voice_server_update on_voice_server_update;
+    discord_ev_voice_server_update on_voice_server_update;
 };
 
 /** @brief The handle used for establishing a WebSockets connection */
@@ -471,7 +471,7 @@ struct discord_gateway {
         /** user's callbacks */
         struct discord_gateway_cbs cbs;
         /** event execution flow callback */
-        discord_on_scheduler scheduler;
+        discord_ev_scheduler scheduler;
     } cmds;
 };
 
