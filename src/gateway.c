@@ -1311,20 +1311,13 @@ discord_gateway_start(struct discord_gateway *gw)
         logconf_fatal(&gw->conf,
                       "Failed reconnecting to Discord after %d tries",
                       gw->session->retry.limit);
+
         return CCORD_DISCORD_CONNECTION;
     }
-    else {
-        struct discord_ret ret = { 0 };
-#if 0
-        ret.sync = true;
-        ret.sync_ret = &json;
-#endif
+    else if (CCORD_OK != discord_get_gateway_bot(client, &json)) {
+        logconf_fatal(&gw->conf, "Couldn't retrieve Gateway Bot information");
 
-        if (discord_get_gateway_bot(client, &ret)) {
-            logconf_fatal(&gw->conf,
-                          "Couldn't retrieve Gateway Bot information");
-            return CCORD_DISCORD_BAD_AUTH;
-        }
+        return CCORD_DISCORD_BAD_AUTH;
     }
 
     json_extract(json.start, json.size,
@@ -1403,7 +1396,7 @@ discord_gateway_perform(struct discord_gateway *gw)
     if (gw->timer->interval < gw->timer->now - gw->timer->hbeat)
         send_heartbeat(gw);
 
-    /* XXX: moved to discord_run() */
+        /* XXX: moved to discord_run() */
 #if 0
     if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
 #endif

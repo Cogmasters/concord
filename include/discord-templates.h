@@ -7,6 +7,10 @@
 #ifndef DISCORD_TEMPLATES_H
 #define DISCORD_TEMPLATES_H
 
+/******************************************************************************
+ * Templates specific to Discord's response datatypes
+ ******************************************************************************/
+
 #define DISCORDT_RET_CALLBACK(type)                                           \
     /** @brief Triggers on a succesful request */                             \
     typedef void (*discord_on_##type)(struct discord * client, void *data,    \
@@ -28,7 +32,7 @@
     void (*fail_cleanup)(void *data);                                         \
     /** if `true` then request will take priority over already enqueued       \
         requests */                                                           \
-    bool *high_p
+    bool high_p
 
 #define DISCORDT_RET(type)                                                    \
     /** @brief Request's return context */                                    \
@@ -36,6 +40,10 @@
         /** optional callback to be executed on a successful request */       \
         discord_on_##type done;                                               \
         DISCORDT_RET_DEFAULT_FIELDS;                                          \
+        /** if an address is provided, then request will block the thread and \
+           perform on-spot.                                                   \
+           On success the response object will be written to the address. */  \
+        struct discord_##type *sync;                                          \
     }
 
 #define DISCORDT_RET_LIST(type)                                               \
@@ -44,23 +52,28 @@
         /** optional callback to be executed on a successful request */       \
         discord_on_##type##s done;                                            \
         DISCORDT_RET_DEFAULT_FIELDS;                                          \
+        /** if an address is provided, then request will block the thread and \
+           perform on-spot.                                                   \
+           On success the response object will be written to the address. */  \
+        struct discord_##type **sync;                                         \
     }
 
 #define DISCORDT_RETURN(type)                                                 \
     DISCORDT_RET_CALLBACK(type);                                              \
+                                                                              \
     DISCORDT_RET(type)
 
 #define DISCORDT_RETURN_LIST(type)                                            \
     DISCORDT_RET_CALLBACK_LIST(type);                                         \
+                                                                              \
     DISCORDT_RET_LIST(type)
+
+/******************************************************************************
+ * Public return datatypes declaration
+ ******************************************************************************/
 
 /** @brief Triggers on a successful request */
 typedef void (*discord_on_done)(struct discord *client, void *data);
-
-/** @brief Triggers on a successful request */
-typedef void (*discord_on_generic)(struct discord *client,
-                                   void *data,
-                                   const void *ret);
 
 /** @brief Triggers on a failed request */
 typedef void (*discord_on_fail)(struct discord *client,
@@ -72,13 +85,8 @@ struct discord_ret {
     /** optional callback to be executed on a successful request */
     discord_on_done done;
     DISCORDT_RET_DEFAULT_FIELDS;
-};
-
-/** @brief Request's return context */
-struct discord_ret_generic {
-    /** optional callback to be executed on a successful request */
-    discord_on_generic done;
-    DISCORDT_RET_DEFAULT_FIELDS;
+    /** if `true`, request will block the thread and perform on-spot */
+    bool sync;
 };
 
 DISCORDT_RETURN(application_command);
@@ -94,6 +102,7 @@ DISCORDT_RETURN(channel);
 DISCORDT_RETURN_LIST(channel);
 DISCORDT_RETURN(message);
 DISCORDT_RETURN_LIST(message);
+DISCORDT_RETURN(followed_channel);
 
 DISCORDT_RETURN(user);
 DISCORDT_RETURN_LIST(user);
@@ -125,13 +134,5 @@ DISCORDT_RETURN_LIST(voice_region);
 
 DISCORDT_RETURN(webhook);
 DISCORDT_RETURN_LIST(webhook);
-
-#undef DISCORDT_RET_CALLBACK
-#undef DISCORDT_RET_CALLBACK_LIST
-#undef DISCORDT_RET_DEFAULT_FIELDS
-#undef DISCORDT_RET
-#undef DISCORDT_RET_LIST
-#undef DISCORDT_RETURN
-#undef DISCORDT_RETURN_LIST
 
 #endif /* DISCORD_TEMPLATES_H */

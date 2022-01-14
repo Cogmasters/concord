@@ -27,6 +27,30 @@
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 
+/** @brief Triggers on a successful request */
+typedef void (*discord_on_generic)(struct discord *client,
+                                   void *data,
+                                   const void *ret);
+
+/** @brief Request's return context */
+struct discord_ret_generic {
+    /** `true` if may receive a datatype from response*/
+    bool has_type;
+
+    /** optional callback to be executed on a successful request */
+    union {
+        discord_on_generic typed;
+        discord_on_done typeless;
+    } done;
+
+    DISCORDT_RET_DEFAULT_FIELDS;
+
+    /** if an address is provided, then request will block the thread and
+     * perform on-spot. On success the response object will be written to
+     * the address. */
+    void *sync;
+};
+
 /** @brief Attributes of response datatype */
 struct discord_generic {
     /** pointer to the datatype in memory */

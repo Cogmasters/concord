@@ -5,7 +5,29 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-static struct discord_request blank_req;
+#define RET_SAFECOPY_TYPED(dest, src)                                         \
+    do {                                                                      \
+        (dest).has_type = true;                                               \
+        (dest).done.typed = (discord_on_generic)(src).done;                   \
+        (dest).fail = (src).fail;                                             \
+        (dest).data = (src).data;                                             \
+        (dest).done_cleanup = (src).done_cleanup;                             \
+        (dest).fail_cleanup = (src).fail_cleanup;                             \
+        (dest).high_p = (src).high_p;                                         \
+        (dest).sync = (src).sync;                                             \
+    } while (0)
+
+#define RET_SAFECOPY_TYPELESS(dest, src)                                      \
+    do {                                                                      \
+        (dest).has_type = false;                                              \
+        (dest).done.typeless = (src).done;                                    \
+        (dest).fail = (src).fail;                                             \
+        (dest).data = (src).data;                                             \
+        (dest).done_cleanup = (src).done_cleanup;                             \
+        (dest).fail_cleanup = (src).fail_cleanup;                             \
+        (dest).high_p = (src).high_p;                                         \
+        (dest).sync = (void *)(src).sync;                                     \
+    } while (0)
 
 /**
  * @brief Helper for setting attributes for a specs-generated return struct
@@ -16,14 +38,11 @@ static struct discord_request blank_req;
  */
 #define REQUEST_INIT(req, type, ret)                                          \
     do {                                                                      \
-        (req) = blank_req;                                                    \
         (req).gnrc.size = sizeof(struct type);                                \
         (req).gnrc.init = type##_init_v;                                      \
         (req).gnrc.from_json = type##_from_json_v;                            \
         (req).gnrc.cleanup = type##_cleanup_v;                                \
-        if ((ret)) {                                                          \
-            memcpy(&(req).ret, ret, sizeof *ret);                             \
-        }                                                                     \
+        if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
 
 /**
@@ -35,31 +54,10 @@ static struct discord_request blank_req;
  */
 #define REQUEST_LIST_INIT(req, type, ret)                                     \
     do {                                                                      \
-        (req) = blank_req;                                                    \
         (req).gnrc.size = sizeof(struct type);                                \
         (req).gnrc.from_json = type##_list_from_json_v;                       \
         (req).gnrc.cleanup = (void (*)(void *))type##_list_free_v;            \
-        if ((ret)) {                                                          \
-            memcpy(&(req).ret, ret, sizeof *ret);                             \
-        }                                                                     \
-    } while (0)
-
-/**
- * @brief Helper for setting request attributes expecting a raw JSON response
- *
- * @param req request handler to be initialized
- * @param ret request attributes
- */
-#define REQUEST_RAW_INIT(req, ret)                                            \
-    do {                                                                      \
-        (req) = blank_req;                                                    \
-        (req).gnrc.size = sizeof(struct sized_buffer);                        \
-        (req).gnrc.from_json =                                                \
-            (void (*)(char *, size_t, void *)) & cog_sized_buffer_from_json;  \
-        (req).gnrc.cleanup = NULL;                                            \
-        if ((ret)) {                                                          \
-            memcpy(&(req).ret, ret, sizeof *ret);                             \
-        }                                                                     \
+        if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
 
 /**
@@ -69,12 +67,7 @@ static struct discord_request blank_req;
  * @param ret request attributes
  */
 #define REQUEST_BLANK_INIT(req, ret)                                          \
-    do {                                                                      \
-        (req) = blank_req;                                                    \
-        if ((ret)) {                                                          \
-            memcpy(&(req).ret, ret, sizeof *ret);                             \
-        }                                                                     \
-    } while (0)
+    if (ret) RET_SAFECOPY_TYPELESS(req.ret, *ret)
 
 /******************************************************************************
  * Functions specific to Discord Application Commands
@@ -1086,7 +1079,7 @@ CCORDcode
 discord_follow_news_channel(struct discord *client,
                             u64_snowflake_t channel_id,
                             struct discord_follow_news_channel *params,
-                            struct discord_ret *ret)
+                            struct discord_ret_followed_channel *ret)
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
@@ -1124,7 +1117,7 @@ discord_trigger_typing_indicator(struct discord *client,
 CCORDcode
 discord_get_pinned_messages(struct discord *client,
                             u64_snowflake_t channel_id,
-                            struct discord_ret *ret)
+                            struct discord_ret_messages *ret)
 {
     struct discord_request req = { 0 };
 
@@ -1574,22 +1567,30 @@ discord_delete_guild_emoji(struct discord *client,
  ******************************************************************************/
 
 CCORDcode
-discord_get_gateway(struct discord *client, struct discord_ret *ret)
+discord_get_gateway(struct discord *client, struct sized_buffer *ret)
 {
     struct discord_request req = { 0 };
 
-    REQUEST_RAW_INIT(req, ret);
+    CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
+
+    req.gnrc.from_json =
+        (void (*)(char *, size_t, void *))cog_sized_buffer_from_json;
+    req.ret.sync = ret;
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/gateway");
 }
 
 CCORDcode
-discord_get_gateway_bot(struct discord *client, struct discord_ret *ret)
+discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
 {
     struct discord_request req = { 0 };
 
-    REQUEST_RAW_INIT(req, ret);
+    CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
+
+    req.gnrc.from_json =
+        (void (*)(char *, size_t, void *))cog_sized_buffer_from_json;
+    req.ret.sync = ret;
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/gateway/bot");

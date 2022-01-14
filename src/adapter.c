@@ -168,13 +168,12 @@ discord_adapter_run(struct discord_adapter *adapter,
     va_start(args, endpoint_fmt);
     discord_bucket_get_route(method, route, endpoint_fmt, args);
     va_end(args);
-#if 0
+
     if (req->ret.sync) {
         /* perform blocking request */
         return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
                                          route);
     }
-#endif
     /* enqueue asynchronous request */
     return _discord_adapter_run_async(adapter, req, body, method, endpoint,
                                       route);
@@ -744,7 +743,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             if (cxt->req.ret.fail_cleanup)
                 cxt->req.ret.fail_cleanup(cxt->req.ret.data);
         }
-        else if (cxt->req.ret.done) {
+        else if (cxt->req.ret.done.typed) {
             void **p_ret = cxt->req.gnrc.data;
 
             /* initialize ret */
@@ -754,8 +753,11 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             if (cxt->req.gnrc.from_json)
                 cxt->req.gnrc.from_json(body.start, body.size, *p_ret);
 
-            cxt->req.ret.done(client, cxt->req.ret.data,
-                               p_ret ? *p_ret : NULL);
+            if (cxt->req.ret.has_type)
+                cxt->req.ret.done.typed(client, cxt->req.ret.data,
+                                   p_ret ? *p_ret : NULL);
+            else
+                cxt->req.ret.done.typeless(client, cxt->req.ret.data);
 
             /* cleanup ret */
             if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(*p_ret);

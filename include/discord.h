@@ -1026,19 +1026,27 @@ CCORDcode discord_trigger_typing_indicator(struct discord *client,
  *        MANAGE_WEBHOOKS permission in the target channel
  *
  * @param client the client created with discord_init()
- * @param channel_id the channel to post the typing indicator to
- * @CCORD_ret{ret}
+ * @param channel_id the channel to be followed
+ * @CCORD_ret_obj{ret, followed_channel}
  * @CCORD_return
  */
 CCORDcode discord_follow_news_channel(
     struct discord *client,
     u64_snowflake_t channel_id,
     struct discord_follow_news_channel *params,
-    struct discord_ret *ret);
+    struct discord_ret_followed_channel *ret);
 
+/**
+ * @brief Get all pineed messages in the channel
+ *
+ * @param client the client created with discord_init()
+ * @param channel_id the channel where the get pinned messages from
+ * @CCORD_ret_list{ret, message}
+ * @CCORD_return
+ */
 CCORDcode discord_get_pinned_messages(struct discord *client,
                                       u64_snowflake_t channel_id,
-                                      struct discord_ret *ret);
+                                      struct discord_ret_messages *ret);
 
 /**
  * @brief Pin a message to a channel
@@ -2219,13 +2227,15 @@ CCORDcode discord_delete_webhook_message(struct discord *client,
  * @brief Get a single valid WSS URL, which the client can use for connecting
  * @note This route should be cached, and only call the function again if
  *        unable to properly establishing a connection with the cached version
+ * @warning This function blocks the running thread
  *
  * @param client the client created with discord_init()
  * @param ret if successful, a @ref sized_buffer containing the JSON response
- * @CCORD_ret{ret}
+ * @param ret a sized buffer containing the response JSON
  * @CCORD_return
  */
-CCORDcode discord_get_gateway(struct discord *client, struct discord_ret *ret);
+CCORDcode discord_get_gateway(struct discord *client,
+                              struct sized_buffer *ret);
 
 /**
  * @brief Get a single valid WSS URL, and additional metadata that can help
@@ -2233,14 +2243,15 @@ CCORDcode discord_get_gateway(struct discord *client, struct discord_ret *ret);
  * @note This route should not be cached for extended periods of time as the
  *        value is not guaranteed to be the same per-call, and changes as the
  *        bot joins/leaves guilds
+ * @warning This function blocks the running thread
  *
  * @param client the client created with discord_init()
  * @param ret if successful, a @ref sized_buffer containing the JSON response
- * @CCORD_ret{ret}
+ * @param ret a sized buffer containing the response JSON
  * @CCORD_return
  */
 CCORDcode discord_get_gateway_bot(struct discord *client,
-                                  struct discord_ret *ret);
+                                  struct sized_buffer *ret);
 
 /**
  * @brief Disconnect a member from voice channel
