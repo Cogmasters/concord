@@ -178,14 +178,6 @@ void discord_set_prefix(struct discord *client, char *prefix);
 CCORDcode discord_run(struct discord *client);
 
 /**
- * @brief Block the thread and complete all pending requests
- *
- * @param client the client created with discord_init()
- * @CCORD_return
- */
-CCORDcode discord_complete(struct discord *client);
-
-/**
  * @brief Gracefully shutdown an ongoing Discord connection
  *
  * @param client the client created with discord_init()

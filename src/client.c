@@ -282,12 +282,6 @@ discord_run(struct discord *client)
     return code;
 }
 
-CCORDcode
-discord_complete(struct discord *client)
-{
-    return discord_adapter_perform(&client->adapter);
-}
-
 void
 discord_shutdown(struct discord *client)
 {
