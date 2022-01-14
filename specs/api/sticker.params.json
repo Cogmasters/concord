@@ -4,8 +4,7 @@
   [
     {
       "title":"List Nitro Sticker Packs",
-      "namespace":["list_nitro_sticker_packs"],
-      "struct":"response",
+      "struct":"list_nitro_sticker_packs",
       "fields":
       [
         {"name":"sticker_packs", "type":{"base":"struct discord_sticker_pack", "dec":"ntl"}, "comment":"array of sticker pack objects"}
@@ -13,8 +12,7 @@
     },
     {
       "title":"Create Guild Sticker",
-      "namespace":["create_guild_sticker"],
-      "struct":"params",
+      "struct":"create_guild_sticker",
       "fields":
       [
         {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"},
@@ -25,8 +23,7 @@
     },
     {
       "title":"Modify Guild Sticker",
-      "namespace":["modify_guild_sticker"],
-      "struct":"params",
+      "struct":"modify_guild_sticker",
       "fields":
       [
         {"name":"name", "type":{"base":"char", "dec":"*"}, "comment":"name of the sticker (2-30 characters)"},

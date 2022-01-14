@@ -5,8 +5,7 @@
   [
     {
       "title":"Create Guild Emoji",
-      "namespace": ["create_guild_emoji"],
-      "struct":"params",
+      "struct":"create_guild_emoji",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}},
@@ -16,8 +15,7 @@
     },
     {
       "title":"Modify Guild Emoji",
-      "namespace": ["modify_guild_emoji"],
-      "struct":"params",
+      "struct":"modify_guild_emoji",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}},

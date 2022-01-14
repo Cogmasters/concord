@@ -5,8 +5,7 @@
   [
     {
       "title":"Create Webhook",
-      "namespace": ["create_webhook"],
-      "struct":"params",
+      "struct":"create_webhook",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-80) chars" },
@@ -15,8 +14,7 @@
     },
     {
       "title":"Modify Webhook",
-      "namespace": ["modify_webhook"],
-      "struct":"params",
+      "struct":"modify_webhook",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" },
@@ -26,8 +24,7 @@
     },
     {
       "title":"Modify Webhook with Token",
-      "namespace": ["modify_webhook_with_token"],
-      "struct":"params",
+      "struct":"modify_webhook_with_token",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment":"name of the webhook(1-80) chars" },
@@ -36,8 +33,7 @@
     },
     {
       "title":"Execute Webhook",
-      "namespace": ["execute_webhook"],
-      "struct":"params",
+      "struct":"execute_webhook",
       "fields":
       [
         
@@ -55,8 +51,7 @@
     },
     {
       "title":"Edit Webhook Message",
-      "namespace": ["edit_webhook_message"],
-      "struct":"params",
+      "struct":"edit_webhook_message",
       "fields":
       [
         { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"name of the webhook(1-2000) chars", "inject_if_not":null },

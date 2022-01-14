@@ -4,8 +4,7 @@
   [
     {
       "title":"Create Stage Instance",
-      "namespace":["create_stage_instance"],
-      "struct":"params",
+      "struct":"create_stage_instance",
       "fields":
       [
         {"name":"channel_id", "type":{"base":"char", "dec":"*", "converter":"snowflake"}, "comment":"The id of the Stage channel"},
@@ -15,8 +14,7 @@
     },
     {
       "title":"Modify Stage Instance",
-      "namespace":["modify_stage_instance"],
-      "struct":"params",
+      "struct":"modify_stage_instance",
       "fields":
       [
         {"name":"topic", "type":{"base":"char", "dec":"*"}, "comment":"The topic of the Stage instance (1-120 characters)"},

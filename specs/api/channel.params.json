@@ -5,8 +5,7 @@
   [
     {
       "title":"Modify Channel",
-      "namespace":["modify_channel"],
-      "struct":"params",
+      "struct":"modify_channel",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
@@ -29,8 +28,7 @@
     },
     {
       "title":"Create Message",
-      "namespace": ["create_message"],
-      "struct":"params",
+      "struct":"create_message",
       "fields":
       [
         { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null },
@@ -46,8 +44,7 @@
     },
     {
       "title":"Get Channel Messages",
-      "namespace": ["get_channel_messages"],
-      "struct":"params",
+      "struct":"get_channel_messages",
       "fields":
       [
         { "name": "around", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query", "comment":"get messages around this message ID", "inject_if_not":0 },
@@ -58,8 +55,7 @@
     },
     {
       "title":"Get Reactions",
-      "namespace": ["get_reactions"],
-      "struct":"params",
+      "struct":"get_reactions",
       "fields":
       [
         { "name": "after", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "loc":"query"},
@@ -68,8 +64,7 @@
     },
     {
       "title":"Edit Channel Permissions",
-      "namespace": ["edit_channel_permissions"],
-      "struct":"params",
+      "struct":"edit_channel_permissions",
       "fields":
       [
         { "name": "allow", "type":{ "base":"s_as_u64", "int_alias":"u64_bitmask_t"}, "comment":"permission bit set" },
@@ -79,8 +74,7 @@
     },
     {
       "title":"Edit Message",
-      "namespace": ["edit_message"],
-      "struct":"params",
+      "struct":"edit_message",
       "fields":
       [
         { "name": "content", "type":{ "base":"char", "dec":"*" }, "comment":"the message contents (up to 2000 characters)", "inject_if_not":null },
@@ -94,8 +88,7 @@
     },
     {
       "title":"Follow News Channel",
-      "namespace": ["follow_news_channel"],
-      "struct":"params",
+      "struct":"follow_news_channel",
       "fields":
       [
         { "name": "webhook_channel_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake"} }
@@ -103,8 +96,7 @@
     },
     {
       "title":"Create Channel Invite",
-      "namespace":["create_channel_invite"],
-      "struct":"params",
+      "struct":"create_channel_invite",
       "fields":
       [
         { "name": "max_age", "type":{ "base":"int" }},
@@ -118,8 +110,7 @@
     },
     {
       "title":"Group DM Add Recipient",
-      "namespace": ["group_dm_add_recipient"],
-      "struct":"params",
+      "struct":"group_dm_add_recipient",
       "fields":
       [
         { "name": "access_token", "type":{ "base":"char", "dec":"*" }},
@@ -128,8 +119,7 @@
     },
     {
       "title":"Start Thread with Message",
-      "namespace": ["start_thread_with_message"],
-      "struct":"params",
+      "struct":"start_thread_with_message",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null },
@@ -138,8 +128,7 @@
     },
     {
       "title":"Start Thread without Message",
-      "namespace": ["start_thread_without_message"],
-      "struct":"params",
+      "struct":"start_thread_without_message",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" } },

@@ -5,8 +5,7 @@
   [
     {
       "title":"Create Guild",
-      "namespace": ["create_guild"],
-      "struct":"params",
+      "struct":"create_guild",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"},
@@ -24,8 +23,7 @@
     },
     {
       "title":"Modify Guild",
-      "namespace": ["modify_guild"],
-      "struct":"params",
+      "struct":"modify_guild",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"name of the guild (2-100) characters"},
@@ -51,8 +49,7 @@
     },
     {
       "title":"Create Guild Channel",
-      "namespace": ["create_guild_channel"],
-      "struct":"params",
+      "struct":"create_guild_channel",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }},
@@ -69,8 +66,7 @@
     },
     {
       "title":"Modify Guild Channel Positions",
-      "namespace": ["modify_guild_channel_positions"],
-      "struct":"params",
+      "struct":"modify_guild_channel_positions",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"channel id"},
@@ -81,8 +77,7 @@
     },
     {
       "title":"List Guild Members",
-      "namespace": ["list_guild_members"],
-      "struct":"params",
+      "struct":"list_guild_members",
       "fields":
       [
         { "name": "limit", "type":{ "base":"int" }, "inject_if_not":0, "comment": "max numbers of members to return (1-1000)", "default_value":1 },
@@ -91,8 +86,7 @@
     },
     {
       "title":"Search Guild Members",
-      "namespace": ["search_guild_members"],
-      "struct":"params",
+      "struct":"search_guild_members",
       "fields":
       [
         { "name": "query", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null, "comment": "Query string to match username(s) and nickname(s) against." },
@@ -101,8 +95,7 @@
     },
     {
       "title":"Add Guild Member",
-      "namespace": ["add_guild_member"],
-      "struct":"params",
+      "struct":"add_guild_member",
       "fields":
       [
         { "name": "access_token", "type":{ "base":"char", "dec":"*" }, "inject_if_not":null},
@@ -114,8 +107,7 @@
     },
     {
       "title":"Modify Guild Member",
-      "namespace": ["modify_guild_member"],
-      "struct":"params",
+      "struct":"modify_guild_member",
       "fields":
       [
         { "name": "nick", "type":{ "base":"char", "dec":"*" }},
@@ -127,8 +119,7 @@
     },
     {
       "title":"Modify Current Member",
-      "namespace": ["modify_current_member"],
-      "struct":"params",
+      "struct":"modify_current_member",
       "fields":
       [
         { "name": "nick", "type":{ "base":"char", "dec":"*" }}
@@ -136,8 +127,7 @@
     },
     {
       "title":"Modify Current User Nick",
-      "namespace": ["modify_current_user_nick"],
-      "struct":"params",
+      "struct":"modify_current_user_nick",
       "fields":
       [
         { "name": "nick", "type":{ "base":"char", "dec":"*" }}
@@ -145,8 +135,7 @@
     },
     {
       "title":"Create Guild Ban",
-      "namespace": ["create_guild_ban"],
-      "struct":"params",
+      "struct":"create_guild_ban",
       "fields":
       [
         { "name": "delete_message_days", "type":{ "base":"int" }, "comment":"number of days to delete messages for(0-7)"},
@@ -155,8 +144,7 @@
     },
     {
       "title":"Create Guild Role",
-      "namespace": ["create_guild_role"],
-      "struct":"params",
+      "struct":"create_guild_role",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }},
@@ -168,8 +156,7 @@
     },
     {
       "title":"Modify Guild Role Positions",
-      "namespace": ["modify_guild_role_positions"],
-      "struct":"params",
+      "struct":"modify_guild_role_positions",
       "fields":
       [
         { "name": "id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "option":true, "inject_if_not":0, "comment":"role"},
@@ -178,8 +165,7 @@
     },
     {
       "title":"Modify Guild Role",
-      "namespace": ["modify_guild_role"],
-      "struct":"params",
+      "struct":"modify_guild_role",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "option":true, "inject_if_not":null, "comment":"name of the role"},
@@ -191,8 +177,7 @@
     },
     {
       "title":"Get Guild Prune Count",
-      "namespace": ["get_guild_prune_count"],
-      "struct":"params",
+      "struct":"get_guild_prune_count",
       "fields":
       [
         { "name": "days", "type":{ "base":"int" }, "inject_if_not":0},
@@ -201,8 +186,7 @@
     },
     {
       "title":"Begin Guild Prune",
-      "namespace": ["begin_guild_prune"],
-      "struct":"params",
+      "struct":"begin_guild_prune",
       "fields":
       [
         { "name": "days", "type":{ "base":"int" }, "inject_if_not":0},
