@@ -31,7 +31,7 @@ void on_message(struct discord *client, const struct discord_message *msg)
   if (strcmp(msg->content, "ping") != 0)
     return; // ignore messages that aren't 'ping'
 
-  struct discord_create_message_params params = { .content = "pong" };
+  struct discord_create_message params = { .content = "pong" };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
