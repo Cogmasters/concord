@@ -11,7 +11,6 @@ BOTS := audit-log \
         ban \
         channel \
         components \
-        delete-messages \
         copycat \
         embed \
         emoji \
@@ -27,6 +26,7 @@ BOTS := audit-log \
         shell \
         slash-commands \
         slash-commands2 \
+        spam \
         voice \
         webhook
 

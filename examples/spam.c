@@ -6,6 +6,15 @@
 #include "discord.h"
 #include "debug.h"
 
+void
+print_usage(void)
+{
+    printf("\n\nThis bot demonstrates how easy it is to delete"
+           " messages.\n"
+           "1. Type !spam to spam 10 random messages in chat\n"
+           "\nTYPE ANY KEY TO START BOT\n");
+}
+
 char *SPAM[] = {
     "Yes I love to spam", // 1
     "Do you?", // 2
@@ -24,26 +33,17 @@ on_spam(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_create_message_params params = { 0 };
     for (size_t i = 0; i < 10; ++i) {
-        params.content = SPAM[i];
-        discord_create_message(client, msg->channel_id, &params, NULL);
+        struct discord_message ret_msg;
+        CCORDcode code;
+
+        // this will block the thread
+        struct discord_ret_message ret = { .sync = &ret_msg };
+        struct discord_create_message params = { .content = SPAM[i] };
+        code = discord_create_message(client, msg->channel_id, &params, &ret);
+
+        if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
     }
-}
-
-void
-on_clear(struct discord *client, const struct discord_message *msg)
-{
-    if (msg->author->bot) return;
-
-    const struct discord_user *bot = discord_get_self(client);
-
-    discord_delete_messages_by_author_id(client, msg->channel_id, bot->id);
-
-    struct discord_create_message_params params = {
-        .content = "Deleted 100 messages or less"
-    };
-    discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
 int
@@ -60,13 +60,8 @@ main(int argc, char *argv[])
     assert(NULL != client && "Couldn't initialize client");
 
     discord_set_on_command(client, "!spam", &on_spam);
-    discord_set_on_command(client, "!clear", &on_clear);
 
-    printf("\n\nThis bot demonstrates how easy it is to delete"
-           " messages.\n"
-           "1. Type !spam to spam 10 random messages in chat\n"
-           "2. Type !clear to delete spam messages\n"
-           "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);
