@@ -462,6 +462,7 @@ discord_batch_edit_application_command_permissions(
  * Functions specific to Discord Audit Log
  ******************************************************************************/
 
+/* FIXME: when response JSON is too large, jsmn crashes on error, most likely json_extract() is handling the tokens incorrectly. */
 CCORDcode
 discord_get_guild_audit_log(struct discord *client,
                             u64_snowflake_t guild_id,
@@ -1575,6 +1576,7 @@ discord_get_gateway(struct discord *client, struct sized_buffer *ret)
 
     req.gnrc.from_json =
         (void (*)(char *, size_t, void *))cog_sized_buffer_from_json;
+    req.ret.has_type = true;
     req.ret.sync = ret;
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
@@ -1590,6 +1592,7 @@ discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
 
     req.gnrc.from_json =
         (void (*)(char *, size_t, void *))cog_sized_buffer_from_json;
+    req.ret.has_type = true;
     req.ret.sync = ret;
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
