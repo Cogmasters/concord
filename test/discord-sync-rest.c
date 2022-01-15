@@ -9,7 +9,13 @@ int
 main(int argc, char *argv[])
 {
     const char *config_file;
+    struct discord *client;
     CCORDcode code;
+
+    const u64_snowflake_t FAUX_CHANNEL_ID = 123;
+    struct discord_guild **guilds = NULL;
+    struct discord_channel channel;
+    struct discord_user bot;
 
     if (argc > 1)
         config_file = argv[1];
@@ -18,25 +24,19 @@ main(int argc, char *argv[])
 
     ccord_global_init();
 
-    struct discord *client = discord_config_init(config_file);
+    client = discord_config_init(config_file);
     assert(NULL != client);
 
-    struct discord_user bot;
-    discord_user_init(&bot);
-
-    code = discord_get_current_user(client, &(struct discord_attr){
-                                                .sync = true,
-                                                .sync_ret = &bot,
+    code = discord_get_current_user(client, &(struct discord_ret_user){
+                                                .sync = &bot,
                                             });
     assert(CCORD_OK == code);
-
     printf("Greetings, %s#%s!\n", bot.username, bot.discriminator);
 
-    struct discord_guild **guilds = NULL;
-    code = discord_get_current_user_guilds(client, &(struct discord_attr){
-                                                       .sync = true,
-                                                       .sync_ret = &guilds,
-                                                   });
+    code =
+        discord_get_current_user_guilds(client, &(struct discord_ret_guilds){
+                                                    .sync = &guilds,
+                                                });
     assert(CCORD_OK == code);
 
     for (size_t i = 0; guilds[i]; ++i)
@@ -44,16 +44,16 @@ main(int argc, char *argv[])
                 guilds[i]->id);
 
     // Test discord_strerror()
-    code = discord_delete_channel(client, 123,
-                                  &(struct discord_attr){
-                                      .sync = true,
+    code = discord_delete_channel(client, FAUX_CHANNEL_ID,
+                                  &(struct discord_ret_channel){
+                                      .sync = &channel,
                                   });
     assert(CCORD_OK != code);
     fprintf(stderr, "%s\n", discord_strerror(code, client));
 
-    code = discord_modify_channel(client, 123, NULL,
-                                  &(struct discord_attr){
-                                      .sync = true,
+    code = discord_modify_channel(client, FAUX_CHANNEL_ID, NULL,
+                                  &(struct discord_ret_channel){
+                                      .sync = &channel,
                                   });
     assert(CCORD_OK != code);
     fprintf(stderr, "%s\n", discord_strerror(code, client));
