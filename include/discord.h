@@ -1037,7 +1037,7 @@ CCORDcode discord_follow_news_channel(
     struct discord_ret_followed_channel *ret);
 
 /**
- * @brief Get all pineed messages in the channel
+ * @brief Get all pinned messages in the channel
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel where the get pinned messages from

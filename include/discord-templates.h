@@ -55,7 +55,7 @@
         /** if an address is provided, then request will block the thread and \
            perform on-spot.                                                   \
            On success the response object will be written to the address. */  \
-        struct discord_##type **sync;                                         \
+        struct discord_##type ***sync;                                        \
     }
 
 #define DISCORDT_RETURN(type)                                                 \
