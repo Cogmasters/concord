@@ -31,7 +31,7 @@ done_list_guild_emojis(struct discord *client,
                        const struct discord_emoji **emojis)
 {
     u64_snowflake_t *channel_id = data;
-    char text[DISCORD_MAX_MESSAGE_LEN];
+    char text[2000];
 
     if (!emojis) {
         log_info("No emojis in guild");
