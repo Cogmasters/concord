@@ -704,14 +704,14 @@ discord_create_reaction(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
+    REQUEST_BLANK_INIT(req, ret);
+
     code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
                                "/channels/%" PRIu64 "/messages/%" PRIu64
                                "/reactions/%s/@me",
                                channel_id, message_id, emoji_endpoint);
 
     free(pct_emoji_name);
-
-    REQUEST_BLANK_INIT(req, ret);
 
     return code;
 }
@@ -740,14 +740,14 @@ discord_delete_own_reaction(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
+    REQUEST_BLANK_INIT(req, ret);
+
     code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
                                "/channels/%" PRIu64 "/messages/%" PRIu64
                                "/reactions/%s/@me",
                                channel_id, message_id, emoji_endpoint);
 
     free(pct_emoji_name);
-
-    REQUEST_BLANK_INIT(req, ret);
 
     return code;
 }
@@ -778,14 +778,14 @@ discord_delete_user_reaction(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
+    REQUEST_BLANK_INIT(req, ret);
+
     code = discord_adapter_run(
         &client->adapter, &req, NULL, HTTP_DELETE,
         "/channels/%" PRIu64 "/messages/%" PRIu64 "/reactions/%s/%" PRIu64,
         channel_id, message_id, emoji_endpoint, user_id);
 
     free(pct_emoji_name);
-
-    REQUEST_BLANK_INIT(req, ret);
 
     return code;
 }
@@ -837,14 +837,14 @@ discord_get_reactions(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
+    REQUEST_LIST_INIT(req, discord_user, ret);
+
     code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/messages/%" PRIu64
                                "/reactions/%s%s",
                                channel_id, message_id, emoji_endpoint, query);
 
     free(pct_emoji_name);
-
-    REQUEST_LIST_INIT(req, discord_user, ret);
 
     return code;
 }
@@ -892,14 +892,14 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
+    REQUEST_BLANK_INIT(req, ret);
+
     code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
                                "/channels/%" PRIu64 "/messages/%" PRIu64
                                "/reactions/%s",
                                channel_id, message_id, emoji_endpoint);
 
     free(pct_emoji_name);
-
-    REQUEST_BLANK_INIT(req, ret);
 
     return code;
 }
@@ -981,13 +981,13 @@ discord_bulk_delete_messages(struct discord *client,
 
     CCORD_EXPECT(client, buf != NULL, CCORD_BAD_JSON, "");
 
+    REQUEST_BLANK_INIT(req, ret);
+
     code = discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
                                "/channels/%" PRIu64 "/messages/bulk-delete",
                                channel_id);
 
     free(buf);
-
-    REQUEST_BLANK_INIT(req, ret);
 
     return code;
 }
