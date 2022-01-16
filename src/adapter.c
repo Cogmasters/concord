@@ -746,26 +746,38 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
                 cxt->req.ret.fail_cleanup(cxt->req.ret.data);
         }
         else if (cxt->req.ret.done.typed) {
-            void **p_ret = cxt->req.gnrc.data;
+            if (cxt->req.ret.is_ntl) {
+                ntl_t ret = NULL;
 
-            /* initialize ret */
-            if (cxt->req.gnrc.init) cxt->req.gnrc.init(*p_ret);
+                /* populate ret */
+                if (cxt->req.gnrc.from_json)
+                    cxt->req.gnrc.from_json(body.start, body.size, &ret);
 
-            /* populate ret */
-            if (cxt->req.gnrc.from_json)
-                cxt->req.gnrc.from_json(body.start, body.size, *p_ret);
+                cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
 
-            if (cxt->req.ret.has_type)
-                cxt->req.ret.done.typed(client, cxt->req.ret.data,
-                                   p_ret ? *p_ret : NULL);
-            else
-                cxt->req.ret.done.typeless(client, cxt->req.ret.data);
+                /* cleanup ret */
+                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
+            }
+            else {
+                void *ret = malloc(cxt->req.gnrc.size);
 
-            /* cleanup ret */
-            if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(*p_ret);
+                /* populate ret */
+                if (cxt->req.gnrc.from_json)
+                    cxt->req.gnrc.from_json(body.start, body.size, ret);
+
+                if (cxt->req.ret.has_type)
+                    cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
+                else
+                    cxt->req.ret.done.typeless(client, cxt->req.ret.data);
+
+                /* cleanup ret */
+                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
+                free(ret);
+            }
+
+            if (cxt->req.ret.done_cleanup)
+                cxt->req.ret.done_cleanup(cxt->req.ret.data);
         }
-        if (cxt->req.ret.done_cleanup)
-            cxt->req.ret.done_cleanup(cxt->req.ret.data);
 
         code = info.code;
 

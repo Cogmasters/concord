@@ -57,6 +57,7 @@
         (req).gnrc.size = sizeof(struct type);                                \
         (req).gnrc.from_json = type##_list_from_json_v;                       \
         (req).gnrc.cleanup = (void (*)(void *))type##_list_free_v;            \
+        req.ret.is_ntl = true;                                                \
         if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
 
@@ -462,7 +463,8 @@ discord_batch_edit_application_command_permissions(
  * Functions specific to Discord Audit Log
  ******************************************************************************/
 
-/* FIXME: when response JSON is too large, jsmn crashes on error, most likely json_extract() is handling the tokens incorrectly. */
+/* FIXME: when response JSON is too large, jsmn crashes on error, most likely
+ * json_extract() is handling the tokens incorrectly. */
 CCORDcode
 discord_get_guild_audit_log(struct discord *client,
                             u64_snowflake_t guild_id,
