@@ -4,7 +4,7 @@ TOP = ..
 CC ?= gcc
 
 COGUTILS_DIR := $(TOP)/cog-utils
-COMMON_DIR   := $(TOP)/common
+CORE_DIR     := $(TOP)/core
 INCLUDE_DIR  := $(TOP)/include
 
 BOTS := audit-log \
@@ -30,8 +30,8 @@ BOTS := audit-log \
         voice \
         webhook
 
-CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                        \
+CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
+           -I$(CORE_DIR)/third-party                        \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 

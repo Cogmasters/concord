@@ -10,8 +10,8 @@ SPECS_DIR     := specs
 C_SPECS_DIR   := $(SRC_DIR)/specs-code
 H_SPECS_DIR   := $(DOCS_DIR)/specs-headers
 COGUTILS_DIR  := cog-utils
-COMMON_DIR    := common
-THIRDP_DIR    := $(COMMON_DIR)/third-party
+CORE_DIR      := core
+THIRDP_DIR    := $(CORE_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
 CCORDDOCS_DIR := concord-docs
@@ -26,11 +26,11 @@ COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
                 $(COGUTILS_DIR)/logconf.c          \
                 $(COGUTILS_DIR)/ntl.c
 
-COMMON_SRC   := $(COMMON_DIR)/common.c     \
-                $(COMMON_DIR)/work.c       \
-                $(COMMON_DIR)/user-agent.c \
-                $(COMMON_DIR)/websockets.c \
-                $(COMMON_DIR)/io_poller.c
+CORE_SRC     := $(CORE_DIR)/common.c     \
+                $(CORE_DIR)/work.c       \
+                $(CORE_DIR)/user-agent.c \
+                $(CORE_DIR)/websockets.c \
+                $(CORE_DIR)/io_poller.c
 
 THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
@@ -76,13 +76,13 @@ DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(SRC_DIR)/voice-connections.c \
                 $(C_SPECS_SRC)
 
-SRC  := $(COGUTILS_SRC) $(COMMON_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
+SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
-          -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) -I$(THIRDP_DIR) \
+          -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
@@ -136,7 +136,7 @@ install:
 	install -d $(PREFIX)/lib/
 	install -m 644 $(LIB) $(PREFIX)/lib/
 	install -d $(PREFIX)/include/concord/
-	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(COMMON_DIR)/*.h  \
+	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(CORE_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(PREFIX)/include/concord/
 
 echo:
@@ -145,7 +145,7 @@ echo:
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
 	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
-	@ echo -e 'COMMON_SRC: $(COMMON_SRC)\n'
+	@ echo -e 'CORE_SRC: $(CORE_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
 
 clean: 
