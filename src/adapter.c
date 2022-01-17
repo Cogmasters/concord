@@ -168,7 +168,7 @@ discord_adapter_run(struct discord_adapter *adapter,
     va_end(args);
 
     if (req->ret.sync) { /* perform blocking request */
-        if (req->ret.has_type && req->ret.sync != DISCORD_SYNC_TRUE)
+        if (req->ret.has_type && req->ret.sync != DISCORD_SYNC_FLAG)
             req->gnrc.data = req->ret.sync;
 
         return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
