@@ -67,6 +67,12 @@ $ sudo apt install -y build-essential libcurl4-openssl-dev
 ```bash
 $ sudo xbps-install -S libcurl-devel
 ```
+
+#### Alpine
+
+```bash
+$ sudo apk add curl-dev
+```
 ### Setting up your environment
 
 #### Clone Concord into your workspace
