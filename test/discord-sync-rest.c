@@ -14,7 +14,6 @@ main(int argc, char *argv[])
 
     const u64_snowflake_t FAUX_CHANNEL_ID = 123;
     struct discord_guild **guilds = NULL;
-    struct discord_channel channel;
     struct discord_user bot;
 
     if (argc > 1)
@@ -46,14 +45,14 @@ main(int argc, char *argv[])
     // Test discord_strerror()
     code = discord_delete_channel(client, FAUX_CHANNEL_ID,
                                   &(struct discord_ret_channel){
-                                      .sync = &channel,
+                                      .sync = DISCORD_SYNC_FLAG,
                                   });
     assert(CCORD_OK != code);
     fprintf(stderr, "%s\n", discord_strerror(code, client));
 
     code = discord_modify_channel(client, FAUX_CHANNEL_ID, NULL,
                                   &(struct discord_ret_channel){
-                                      .sync = &channel,
+                                      .sync = DISCORD_SYNC_FLAG,
                                   });
     assert(CCORD_OK != code);
     fprintf(stderr, "%s\n", discord_strerror(code, client));

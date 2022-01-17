@@ -80,14 +80,10 @@ read_input(void *p_client)
             }
         }
 
-        struct discord_message ret_msg = { 0 };
-        struct discord_ret_message ret = { .sync = &ret_msg };
+        struct discord_ret_message ret = { .sync = DISCORD_SYNC_FLAG };
         struct discord_create_message params = { .content = msg };
 
-        if (CCORD_OK
-            == discord_create_message(client, dm_channel_id, &params, &ret)) {
-            discord_message_cleanup(&ret_msg);
-        }
+        discord_create_message(client, dm_channel_id, &params, &ret);
     }
 
     pthread_exit(NULL);

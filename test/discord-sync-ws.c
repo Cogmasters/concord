@@ -26,20 +26,15 @@ on_ready(struct discord *client)
 void
 on_disconnect(struct discord *client, const struct discord_message *msg)
 {
-    CCORDcode code;
-
     if (msg->author->bot) return;
 
-    struct discord_message ret_msg;
-    code = discord_create_message(client, msg->channel_id,
-                                  &(struct discord_create_message){
-                                      .content = "Disconnecting ...",
-                                  },
-                                  &(struct discord_ret_message){
-                                      .sync = &ret_msg,
-                                  });
-
-    if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
+    discord_create_message(client, msg->channel_id,
+                           &(struct discord_create_message){
+                               .content = "Disconnecting ...",
+                           },
+                           &(struct discord_ret_message){
+                               .sync = DISCORD_SYNC_FLAG,
+                           });
 
     discord_shutdown(client);
 }
@@ -47,20 +42,15 @@ on_disconnect(struct discord *client, const struct discord_message *msg)
 void
 on_reconnect(struct discord *client, const struct discord_message *msg)
 {
-    CCORDcode code;
-
     if (msg->author->bot) return;
 
-    struct discord_message ret_msg;
-    code = discord_create_message(client, msg->channel_id,
-                                  &(struct discord_create_message){
-                                      .content = "Reconnecting ...",
-                                  },
-                                  &(struct discord_ret_message){
-                                      .sync = &ret_msg,
-                                  });
-
-    if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
+    discord_create_message(client, msg->channel_id,
+                           &(struct discord_create_message){
+                               .content = "Reconnecting ...",
+                           },
+                           &(struct discord_ret_message){
+                               .sync = DISCORD_SYNC_FLAG,
+                           });
 
     discord_reconnect(client, true);
 }
@@ -69,25 +59,21 @@ void
 on_spam(struct discord *client, const struct discord_message *msg)
 {
     const unsigned threadpool_size = strtol(THREADPOOL_SIZE, NULL, 10);
-    struct discord_message ret_msg;
-    CCORDcode code;
 
     if (msg->author->bot) return;
 
     // prevent blocking all threads
     pthread_mutex_lock(&g_lock);
     if (g_thread_count >= threadpool_size - 1) {
-        code = discord_create_message(
-            client, msg->channel_id,
-            &(struct discord_create_message){
-                .content = "Too many threads (" THREADPOOL_SIZE
-                           ") will block the threadpool!",
-            },
-            &(struct discord_ret_message){
-                .sync = &ret_msg,
-            });
-
-        if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
+        discord_create_message(client, msg->channel_id,
+                               &(struct discord_create_message){
+                                   .content =
+                                       "Too many threads (" THREADPOOL_SIZE
+                                       ") will block the threadpool!",
+                               },
+                               &(struct discord_ret_message){
+                                   .sync = DISCORD_SYNC_FLAG,
+                               });
 
         pthread_mutex_unlock(&g_lock);
         return;
@@ -107,15 +93,13 @@ on_spam(struct discord *client, const struct discord_message *msg)
         if (!keep_alive) break;
 
         snprintf(number, sizeof(number), "%d", i);
-        code = discord_create_message(client, msg->channel_id,
-                                      &(struct discord_create_message){
-                                          .content = number,
-                                      },
-                                      &(struct discord_ret_message){
-                                          .sync = &ret_msg,
-                                      });
-
-        if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
+        discord_create_message(client, msg->channel_id,
+                               &(struct discord_create_message){
+                                   .content = number,
+                               },
+                               &(struct discord_ret_message){
+                                   .sync = DISCORD_SYNC_FLAG,
+                               });
     }
 }
 
@@ -124,16 +108,13 @@ on_spam_block(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_message ret_msg;
     discord_create_message(client, msg->channel_id,
                            &(struct discord_create_message){
                                .content = "No 1",
                            },
                            &(struct discord_ret_message){
-                               .sync = &ret_msg,
+                               .sync = DISCORD_SYNC_FLAG,
                            });
-
-    discord_message_cleanup(&ret_msg);
 }
 
 void
@@ -149,16 +130,13 @@ on_spam_block_continue(struct discord *client,
     sscanf(msg->content, "No %d", &number);
     snprintf(text, sizeof(text), "No %d", 1 + number);
 
-    struct discord_message ret_msg;
     discord_create_message(client, msg->channel_id,
                            &(struct discord_create_message){
                                .content = text,
                            },
                            &(struct discord_ret_message){
-                               .sync = &ret_msg,
+                               .sync = DISCORD_SYNC_FLAG,
                            });
-
-    discord_message_cleanup(&ret_msg);
 }
 
 void
@@ -180,46 +158,38 @@ on_force_error(struct discord *client, const struct discord_message *msg)
 
     if (msg->author->bot) return;
 
-    struct discord_channel ret_channel;
     code = discord_delete_channel(client, FAUX_CHANNEL_ID,
                                   &(struct discord_ret_channel){
-                                      .sync = &ret_channel,
+                                      .sync = DISCORD_SYNC_FLAG,
                                   });
     assert(code != CCORD_OK);
 
-    struct discord_message ret_msg;
-    code = discord_create_message(
+    discord_create_message(
         client, msg->channel_id,
         &(struct discord_create_message){
             .content = (char *)discord_strerror(code, client),
         },
         &(struct discord_ret_message){
-            .sync = &ret_msg,
+            .sync = DISCORD_SYNC_FLAG,
         });
-
-    if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
 }
 
 void
 on_ping(struct discord *client, const struct discord_message *msg)
 {
     char text[256];
-    CCORDcode code;
 
     if (msg->author->bot) return;
 
     sprintf(text, "Ping: %d", discord_get_ping(client));
 
-    struct discord_message ret_msg;
-    code = discord_create_message(client, msg->channel_id,
-                                  &(struct discord_create_message){
-                                      .content = text,
-                                  },
-                                  &(struct discord_ret_message){
-                                      .sync = &ret_msg,
-                                  });
-
-    if (code == CCORD_OK) discord_message_cleanup(&ret_msg);
+    discord_create_message(client, msg->channel_id,
+                           &(struct discord_create_message){
+                               .content = text,
+                           },
+                           &(struct discord_ret_message){
+                               .sync = DISCORD_SYNC_FLAG,
+                           });
 }
 
 enum discord_event_scheduler
@@ -270,8 +240,9 @@ main(int argc, char *argv[])
     /* trigger event callbacks in a multi-threaded fashion */
     discord_set_event_scheduler(client, &scheduler);
 
-    discord_set_prefix(client, PREFIX);
     discord_set_on_ready(client, &on_ready);
+
+    discord_set_prefix(client, PREFIX);
     discord_set_on_command(client, "disconnect", &on_disconnect);
     discord_set_on_command(client, "reconnect", &on_reconnect);
     discord_set_on_command(client, "spam", &on_spam);
