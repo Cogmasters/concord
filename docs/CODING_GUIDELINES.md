@@ -1,41 +1,48 @@
 # CODING GUIDELINES
 
-In order to keep the code concise and easy to read, there are a few rules to follow. Feel free to use these coding guidelines outside of this project.
+In order to keep the code concise and easy to read, there are a few rules to follow.
 
-## Naming
+## Code Style
+
+As a general rule of thumb the following rules should be automatically enforced by our custom-made [ClangFormat](../.clang-format). You can integrate it to your favorite text-editor (via plugins) and let all the formatting be done automatically:
+
+- For VSCode : [Clang-Format](https://marketplace.visualstudio.com/items?itemName=xaver.clang-format)
+- For (Neo)Vim: [Neoformat](https://github.com/sbdchd/neoformat)
+
+### Naming
 
 Try using an organized naming scheme for your new functions and variable names. It doesn't necessarily mean that you should use the same as in other places of the code. The names should be logical, understandable and be named according to what they're used for. File-local functions should be made static. We require lowercase names for all of our symbols (functions, variables names, etc).
 
-## Line Width
+### Line Width
 
 Try to use lines that are at most 80 characters long. This is an amount of text that is easy to fit in most monitors. Don't be afraid to break a long function into many lines.
 
-## Indentation
+### Indentation
 
-We use always two spaces for identation for each new open brace, never TABs. If readability becomes an issue, your better judgment should tell you whether you need more or less identation. For compactness and readability, this is the preferred identation style:
+We use always four spaces for identation for each new open brace, never TABs. For compactness and readability, this is the preferred identation style:
 
 ```c
-for (int i = 0; i < n; ++i) {
-  if (something) {
-    ...
-  }
-  else if (something_else) {
-    ...
-  } 
-  else {
-    ...
-  }
+for (i = 0; i < n; ++i) {
+      if (FOO) {
+            ...
+      }
+      else if (BAR) {
+            ...
+      } 
+      else {
+            ...
+      }
 }
 ```
 Use your surrounding code as a guide.
 
-## Braces
+### Braces
 
 In if/while/do/for expressions, we write the open brace on the same line as the keyword and we then set the closing brace on the same indentation level as the initial keyword. Like this:
 
 ```c
 if (age < 40) {
-  ...
+      ...
 }
 ```
 
@@ -44,61 +51,59 @@ You may omit the braces if they would contain only a one-line statement:
 ```c
 if (!x) continue;
 ```
-OR
-```c
-if (!x)
-  continue;
-```
 
 For functions, the opening brace should be on a separate line:
 
 ```c
-int main(int argc, char *argv[])
+int 
+main(int argc, char *argv[])
 {
-  return 0;
+    return 0;
 }
 ```
 
-## 'else' on the following line
+### 'else' on the following line
 
 When adding an else clause to a conditional expression using braces, we add it on a new line after the closing brace like this:
 
 ```c
 if (age < 40) {
-  ...
+    ...
 }
 else {
-  ...
+    ...
 }
 ```
 
-## Space before parentheses
+### Space before parentheses
 
 When writing expressions using if/while/do/for, there should be no space between the keyword and the open parenthesis like this:
 
 ```c
 while (1) {
-  ...
+    ...
 }
 ```
 
-## No typedefed structs
+### No typedefed structs
 
 Use structs by all means, but do not typedef them. Use the `struct` syntax to identify them:
 
 ```c
 struct something {
-   void *valid;
-   size_t way_to_write;
+    void *valid;
+    size_t way_to_write;
 };
+
 struct something instance;
 ```
 Not okay:
 ```c
 typedef struct {
-   void *wrong;
-   size_t way_to_write;
+    void *wrong;
+    size_t way_to_write;
 } something;
+
 something instance;
 ```
 
@@ -112,13 +117,13 @@ Instead of checking only for true, like so:
 
 ```c
 if (IS_PAIR(a)) {
-  if (IS_BASE_TWO(a)) {
-    if (a > 100) {
-      for (int i=0; i < a; ++i) {
-        ...
-      }
+    if (IS_BASE_TWO(a)) {
+        if (a > 100) {
+            for (int i = 0; i < a; ++i) {
+                ...
+            }
+        }
     }
-  }
 }
 ```
 
@@ -130,7 +135,7 @@ if (!IS_BASE_TWO(a)) return;
 if (a <= 100) return;
 
 for (int i=0; i < a; ++i) {
-  ...
+    ...
 }
 ```
 
@@ -162,6 +167,7 @@ Try to keep your switch statement(s) similar to the following format:
   }
 ```
 ## Conditional Compilation
+
 Conditional compilations are discouraged in this project.  It makes code harder to read and test. 
 Please only use the portable C/C++ features in the implementation.
 
@@ -177,16 +183,18 @@ For example, a file called `test.h` should have:
 #ifndef TEST_H
 #define TEST_H
 
-// the code goes here
+/* the code goes here */
 
-#endif // TEST_H
+#endif /* TEST_H */
 ```
 
 Don't use `pragam once` which is not supported by all C/C++ compilers
 
 ## Miscellaneous
+
 For subjects that are not covered here, we follow [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style)
 
 ## Commit and Merge
-To avoid creating redundant merge commits, the following methods are recommanded:
+
+To avoid creating redundant merge commits, the following methods are recommended:
 * [How to avoid merge commits from git pull when pushing to remote](https://stackoverflow.com/questions/30052104/how-to-avoid-merge-commits-from-git-pull-when-pushing-to-remote)
