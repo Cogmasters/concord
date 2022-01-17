@@ -2941,7 +2941,7 @@ discord_execute_webhook(struct discord *client,
                         u64_snowflake_t webhook_id,
                         const char webhook_token[],
                         struct discord_execute_webhook *params,
-                        struct discord_ret_webhook *ret)
+                        struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
@@ -2977,7 +2977,7 @@ discord_execute_webhook(struct discord *client,
         method = HTTP_POST;
     }
 
-    REQUEST_INIT(req, discord_webhook, ret);
+    REQUEST_BLANK_INIT(req, ret);
 
     return discord_adapter_run(&client->adapter, &req, &body, method,
                                "/webhooks/%" PRIu64 "/%s%s%s", webhook_id,
@@ -3105,34 +3105,31 @@ _done_get_channels(struct discord *client,
 {
     struct _discord_get_channel_at_pos_cxt *cxt = data;
 
-    struct discord_channel *found_ch = NULL;
+    const struct discord_channel *found_ch = NULL;
     size_t i, pos; /* calculate position */
 
     for (i = 0, pos = 0; chs[i]; ++i) {
         if (cxt->type == chs[i]->type && pos++ == cxt->position) {
-            found_ch = (struct discord_channel *)chs[i];
+            found_ch = chs[i];
             break;
         }
     }
 
-    if (cxt->ret.done) {
-        struct discord_channel ret_ch;
-
-        if (found_ch) {
-            memcpy(&ret_ch, found_ch, sizeof(struct discord_channel));
-            memset(found_ch, 0, sizeof(struct discord_channel));
+    if (found_ch) {
+        if (cxt->ret.done) {
+            cxt->ret.done(client, cxt->ret.data, found_ch);
         }
-        else {
-            memset(&ret_ch, 0, sizeof(struct discord_channel));
-        }
-
-        cxt->ret.done(client, cxt->ret.data, &ret_ch);
-
-        if (cxt->ret.data && cxt->ret.done_cleanup) {
+        if (cxt->ret.done_cleanup) {
             cxt->ret.done_cleanup(cxt->ret.data);
         }
-
-        discord_channel_cleanup(&ret_ch);
+    }
+    else {
+        if (cxt->ret.fail) {
+            cxt->ret.fail(client, CCORD_BAD_PARAMETER, cxt->ret.data);
+        }
+        if (cxt->ret.fail_cleanup) {
+            cxt->ret.fail_cleanup(cxt->ret.data);
+        }
     }
 }
 
@@ -3150,7 +3147,7 @@ discord_get_channel_at_pos(struct discord *client,
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, ret->done != NULL, CCORD_BAD_PARAMETER, "");
 
-    cxt = malloc(sizeof cxt);
+    cxt = malloc(sizeof *cxt);
     cxt->type = type;
     cxt->position = position;
     cxt->ret = *ret;
@@ -3159,7 +3156,8 @@ discord_get_channel_at_pos(struct discord *client,
     _ret.fail = ret->fail;
 
     _ret.data = cxt;
-    _ret.done_cleanup = _ret.fail_cleanup = &free;
+    _ret.done_cleanup = &free;
+    _ret.fail_cleanup = &free;
 
     /* TODO: fetch channel via caching, and return if results are non-existent
      */

@@ -2163,14 +2163,14 @@ CCORDcode discord_delete_webhook_with_token(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret{ret}
  * @CCORD_return
  */
 CCORDcode discord_execute_webhook(struct discord *client,
                                   u64_snowflake_t webhook_id,
                                   const char webhook_token[],
                                   struct discord_execute_webhook *params,
-                                  struct discord_ret_webhook *ret);
+                                  struct discord_ret *ret);
 
 /**
  * @brief Get previously-sent webhook message from the same token
