@@ -200,7 +200,7 @@ Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
 
 ## Contributing
 
-All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links][#Links] sections for more helpful information.
+All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
 
 ## Links
 
