@@ -69,7 +69,7 @@ on_role_create(struct discord *client, const struct discord_message *msg)
         return;
     }
 
-    struct discord_create_guild_role_params params = { .name = name };
+    struct discord_create_guild_role params = { .name = name };
     discord_create_guild_role(client, msg->guild_id, &params, NULL);
 }
 
@@ -171,7 +171,7 @@ on_role_list(struct discord *client, const struct discord_message *msg)
         .done = &done_get_guild_roles,
         .fail = &fail_get_guild_roles,
     };
-    discord_get_guild_roles(client, msg->guild_id, &roles);
+    discord_get_guild_roles(client, msg->guild_id, &ret);
 }
 
 void
@@ -179,7 +179,7 @@ done_get_guild_member(struct discord *client,
                       void *data,
                       const struct discord_guild_member *member)
 {
-    log_info("Member %s (" PRIu64 ") found!", member->user->username,
+    log_info("Member %s (%" PRIu64 ") found!", member->user->username,
              member->user->id);
 }
 
@@ -195,7 +195,6 @@ on_member_get(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    char text[DISCORD_MAX_MESSAGE_LEN];
     u64_snowflake_t user_id = 0;
 
     sscanf(msg->content, "%" SCNu64, &user_id);
@@ -208,7 +207,7 @@ on_member_get(struct discord *client, const struct discord_message *msg)
         .done = &done_get_guild_member,
         .fail = &fail_get_guild_member,
     };
-    discord_get_guild_member(client, msg->guild_id, msg->author->id, &ret);
+    discord_get_guild_member(client, msg->guild_id, user_id, &ret);
 }
 
 int

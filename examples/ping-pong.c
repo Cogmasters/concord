@@ -4,6 +4,15 @@
 #include "discord.h"
 
 void
+print_usage(void)
+{
+    printf("\n\nThis bot demonstrates a simple ping-pong response.\n"
+           "1. Type 'pong' in chat\n"
+           "2. Type 'ping' in chat\n"
+           "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
 on_ready(struct discord *client)
 {
     const struct discord_user *bot = discord_get_self(client);
@@ -17,7 +26,7 @@ on_ping(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_create_message_params params = { .content = "pong" };
+    struct discord_create_message params = { .content = "pong" };
     discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -26,7 +35,7 @@ on_pong(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_create_message_params params = { .content = "ping" };
+    struct discord_create_message params = { .content = "ping" };
     discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -46,10 +55,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "ping", &on_ping);
     discord_set_on_command(client, "pong", &on_pong);
 
-    printf("\n\nThis bot demonstrates a simple ping-pong response.\n"
-           "1. Type 'pong' in chat\n"
-           "2. Type 'ping' in chat\n"
-           "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);

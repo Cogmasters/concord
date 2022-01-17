@@ -7,7 +7,18 @@
 
 #include "discord.h"
 
-unsigned long long g_app_id;
+u64_snowflake_t g_app_id;
+
+void
+print_usage(void)
+{
+    printf("\n\nThis bot demonstrates how easy it is to create, and react to "
+           "application commands\n"
+           "1. Type '!slash_create' to create the application command\n"
+           "2. Type '/' in the same channel and select the newly created "
+           "command\n"
+           "\nTYPE ANY KEY TO START BOT\n");
+}
 
 void
 on_ready(struct discord *client)
@@ -31,7 +42,7 @@ on_slash_command_create(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    struct discord_create_guild_application_command_params params = {
+    struct discord_create_guild_application_command params = {
         .type = DISCORD_APPLICATION_COMMAND_CHAT_INPUT,
         .name = "fill-form",
         .description = "A slash command example for form filling",
@@ -138,13 +149,8 @@ on_interaction_create(struct discord *client,
         .data = &(struct discord_interaction_callback_data){ .content = buf }
     };
 
-    CCORDcode code;
-    code = discord_create_interaction_response(
-        client, interaction->id, interaction->token, &params, NULL);
-
-    if (code) {
-        log_error("%s", discord_strerror(code, client));
-    }
+    discord_create_interaction_response(client, interaction->id,
+                                        interaction->token, &params, NULL);
 }
 
 int
@@ -165,21 +171,16 @@ main(int argc, char *argv[])
     discord_set_on_application_command_create(client, &log_on_app_create);
     discord_set_on_interaction_create(client, &on_interaction_create);
 
+    print_usage();
+    fgetc(stdin); // wait for input
+
     printf("Please provide a valid application id in order to test the Slash "
            "Commands functionality, it can be obtained from: "
            "https://discord.com/developers/applications\n");
     do {
         printf("Application ID:\n");
-        fscanf(stdin, "%llu", &g_app_id);
+        fscanf(stdin, "%" SCNu64, &g_app_id);
     } while (!g_app_id || errno == ERANGE);
-
-    printf("\n\nThis bot demonstrates how easy it is to create, and react to "
-           "application commands\n"
-           "1. Type '!slash_create' to create the application command\n"
-           "2. Type '/' in the same channel and select the newly created "
-           "command\n"
-           "\nTYPE ANY KEY TO START BOT\n");
-    fgetc(stdin); // wait for input
 
     discord_run(client);
 

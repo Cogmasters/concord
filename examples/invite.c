@@ -6,6 +6,18 @@
 #include "discord.h"
 
 void
+print_usage(void)
+{
+    printf(
+        "\n\nThis bot demonstrates how easy it is to fetch/delete invites\n"
+        "1. Type 'invite.get <invite_code>' to get a invite object from its "
+        "particular code\n"
+        "2. Type 'invite.delete <invite_code>' to delete a invite object by "
+        "its particular code\n"
+        "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
 on_ready(struct discord *client)
 {
     const struct discord_user *bot = discord_get_self(client);
@@ -15,30 +27,50 @@ on_ready(struct discord *client)
 }
 
 void
+done(struct discord *client, void *data, const struct discord_invite *invite)
+{
+    u64_snowflake_t *channel_id = data;
+    char text[256];
+
+    snprintf(text, sizeof(text), "Success: https://discord.gg/%s",
+             invite->code);
+
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, *channel_id, &params, NULL);
+}
+
+void
+fail(struct discord *client, CCORDcode code, void *data)
+{
+    u64_snowflake_t *channel_id = data;
+
+    struct discord_create_message params = {
+        .content = "Couldn't perform operation."
+    };
+    discord_create_message(client, *channel_id, &params, NULL);
+}
+
+void
 on_invite_get(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_invite invite = { 0 };
-    char text[DISCORD_MAX_MESSAGE_LEN];
-    CCORDcode code;
+    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    *channel_id = msg->channel_id;
 
-    code = discord_get_invite(client, msg->content,
-                              &(struct discord_get_invite_params){
-                                  .with_counts = true,
-                                  .with_expiration = true,
-                              },
-                              &invite);
+    struct discord_ret_invite ret = {
+        .done = &done,
+        .fail = &fail,
+        .data = channel_id,
+        .done_cleanup = &free,
+        .fail_cleanup = &free,
+    };
 
-    if (CCORD_OK == code)
-        sprintf(text, "https://discord.gg/%s", invite.code);
-    else
-        sprintf(text, "Couldn't get invite.");
-
-    struct discord_create_message_params params = { .content = text };
-    discord_create_message(client, msg->channel_id, &params, NULL);
-
-    discord_invite_cleanup(&invite);
+    struct discord_get_invite params = {
+        .with_counts = true,
+        .with_expiration = true,
+    };
+    discord_get_invite(client, msg->content, &params, &ret);
 }
 
 void
@@ -46,15 +78,15 @@ on_invite_delete(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    char *text;
+    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    *channel_id = msg->channel_id;
 
-    if (CCORD_OK == discord_delete_invite(client, msg->content, NULL))
-        text = "Succesfully deleted invite.";
-    else
-        text = "Couldn't delete invite";
-
-    struct discord_create_message_params params = { .content = text };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    struct discord_ret_invite ret = { .done = &done,
+                                      .fail = &fail,
+                                      .data = channel_id,
+                                      .done_cleanup = &free,
+                                      .fail_cleanup = &free };
+    discord_delete_invite(client, msg->content, &ret);
 }
 
 int
@@ -76,13 +108,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "get", &on_invite_get);
     discord_set_on_command(client, "delete", &on_invite_delete);
 
-    printf(
-        "\n\nThis bot demonstrates how easy it is to fetch/delete invites\n"
-        "1. Type 'invite.get <invite_code>' to get a invite object from its "
-        "particular code\n"
-        "2. Type 'invite.delete <invite_code>' to delete a invite object by "
-        "its particular code\n"
-        "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);
