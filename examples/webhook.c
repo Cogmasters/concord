@@ -9,7 +9,7 @@
 static void
 print_usage(char *prog)
 {
-    fprintf(stderr, "Usage: %s -i webhook-id -h webhook-token\n", prog);
+    fprintf(stderr, "Usage: %s -i webhook-id -t webhook-token\n", prog);
     exit(EXIT_FAILURE);
 }
 
@@ -44,17 +44,25 @@ main(int argc, char *argv[])
     struct discord *client = discord_init(NULL);
     assert(NULL != client && "Couldn't initialize client");
 
-    struct discord_webhook webhook;
-    discord_webhook_init(&webhook);
+    /* Get Webhook */
+    {
+        struct discord_webhook webhook;
+        discord_webhook_init(&webhook);
 
-    discord_get_webhook_with_token(client, webhook_id, webhook_token,
-                                   &webhook);
-    discord_webhook_cleanup(&webhook);
+        struct discord_ret_webhook ret = { .sync = &webhook };
+        CCORDcode code = discord_get_webhook_with_token(client, webhook_id,
+                                                        webhook_token, &ret);
+        if (CCORD_OK == code) discord_webhook_cleanup(&webhook);
+    }
 
-    discord_execute_webhook(
-        client, webhook_id, webhook_token,
-        &(struct discord_execute_webhook_params){ .content = "Hello world!" },
-        NULL);
+    /* Execute Webhook */
+    {
+        struct discord_ret ret = { .sync = true };
+        struct discord_execute_webhook params = { .content = "Hello World!" };
+
+        discord_execute_webhook(client, webhook_id, webhook_token, &params,
+                                &ret);
+    }
 
     free(webhook_token);
     discord_cleanup(client);

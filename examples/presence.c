@@ -6,6 +6,16 @@
 #include "discord.h"
 
 void
+print_usage(void)
+{
+    printf(
+        "\n\nThis bot demonstrates how easy it is to set the bot presence.\n"
+        "1. Start bot\n"
+        "2. Check bot status\n"
+        "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
 on_ready(struct discord *client)
 {
     const struct discord_user *bot = discord_get_self(client);
@@ -13,20 +23,23 @@ on_ready(struct discord *client)
     log_info("Presence-Bot succesfully connected to Discord as %s#%s!",
              bot->username, bot->discriminator);
 
-    discord_set_presence(client, &(struct discord_presence_status){
-                                     .activities =
-                                         (struct discord_activity *[]){
-                                             &(struct discord_activity){
-                                                 .name = "with Concord",
-                                                 .type = DISCORD_ACTIVITY_GAME,
-                                                 .details = "Fixing some bugs",
-                                             },
-                                             NULL // END OF ACTIVITY ARRAY
-                                         },
-                                     .status = "idle",
-                                     .afk = false,
-                                     .since = discord_timestamp(client),
-                                 });
+    struct discord_activity **activities = (struct discord_activity *[]){
+        &(struct discord_activity){
+            .name = "with Concord",
+            .type = DISCORD_ACTIVITY_GAME,
+            .details = "Fixing some bugs",
+        },
+        NULL // end of array
+    };
+
+    struct discord_presence_status status = {
+        .activities = activities,
+        .status = "idle",
+        .afk = false,
+        .since = discord_timestamp(client),
+    };
+
+    discord_set_presence(client, &status);
 }
 
 int
@@ -44,11 +57,7 @@ main(int argc, char *argv[])
 
     discord_set_on_ready(client, &on_ready);
 
-    printf(
-        "\n\nThis bot demonstrates how easy it is to set the bot presence.\n"
-        "1. Login\n"
-        "2. Check the bot status\n"
-        "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);

@@ -5,8 +5,7 @@
   [
     {
       "title":"Get Invite",
-      "namespace": ["get_invite"],
-      "struct":"params",
+      "struct":"get_invite",
       "fields":
       [
         { "name": "with_counts", "type":{ "base":"bool" }, "comment":"whether the invite should contain approximate member counts"},

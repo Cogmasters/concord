@@ -27,7 +27,7 @@ struct discord_voice; /* forward declaration */
  * Runs on every WebSockets loop iteration, no trigger required
  * @see discord_set_voice_cbs()
  */
-typedef void (*discord_on_voice_idle)(struct discord *client,
+typedef void (*discord_ev_voice_idle)(struct discord *client,
                                       struct discord_voice *vc);
 
 /**
@@ -36,7 +36,7 @@ typedef void (*discord_on_voice_idle)(struct discord *client,
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @see discord_set_voice_cbs()
  */
-typedef void (*discord_on_voice_speaking)(struct discord *client,
+typedef void (*discord_ev_voice_speaking)(struct discord *client,
                                           struct discord_voice *vc,
                                           u64_snowflake_t user_id,
                                           int speaking,
@@ -49,7 +49,7 @@ typedef void (*discord_on_voice_speaking)(struct discord *client,
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @see discord_set_voice_cbs()
  */
-typedef void (*discord_on_voice_client_disconnect)(struct discord *client,
+typedef void (*discord_ev_voice_client_disconnect)(struct discord *client,
                                                    struct discord_voice *vc,
                                                    u64_snowflake_t user_id);
 
@@ -59,7 +59,7 @@ typedef void (*discord_on_voice_client_disconnect)(struct discord *client,
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @see discord_set_voice_cbs()
  */
-typedef void (*discord_on_voice_codec)(struct discord *client,
+typedef void (*discord_ev_voice_codec)(struct discord *client,
                                        struct discord_voice *vc,
                                        const char audio_codec[],
                                        const char video_codec[]);
@@ -67,13 +67,13 @@ typedef void (*discord_on_voice_codec)(struct discord *client,
 /* CALLBACKS STRUCTURE */
 struct discord_voice_cbs {
     /** triggers on every event loop iteration */
-    discord_on_voice_idle on_idle;
+    discord_ev_voice_idle on_idle;
     /** triggers when a user start speaking */
-    discord_on_voice_speaking on_speaking;
+    discord_ev_voice_speaking on_speaking;
     /** triggers when a user has disconnected from the voice channel */
-    discord_on_voice_client_disconnect on_client_disconnect;
+    discord_ev_voice_client_disconnect on_client_disconnect;
     /** triggers when a codec is received */
-    discord_on_voice_codec on_codec;
+    discord_ev_voice_codec on_codec;
 
     void (*on_ready)(struct discord_voice *vc);
     void (*on_session_descriptor)(struct discord_voice *vc);
@@ -187,7 +187,7 @@ struct discord_voice {
  * @param callback the callback that will be executed
  */
 void discord_voice_set_on_idle(struct discord_voice *vc,
-                               discord_on_voice_idle *callback);
+                               discord_ev_voice_idle *callback);
 
 enum discord_voice_status {
     DISCORD_VOICE_ERROR = 0,

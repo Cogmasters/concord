@@ -5,8 +5,7 @@
   [
     {
       "title":"Modify Current User",
-      "namespace": ["modify_current_user"],
-      "struct":"params",
+      "struct":"modify_current_user",
       "fields":
       [
         { "name": "username", "type":{ "base":"char", "dec":"*" }},
@@ -15,8 +14,7 @@
     },
     {
       "title":"Create DM",
-      "namespace": ["create_dm"],
-      "struct":"params",
+      "struct":"create_dm",
       "fields":
       [
         { "name": "recipient_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"the recipient to open a DM channel with", "inject_if_not":0 }
@@ -24,8 +22,7 @@
     },
     {
       "title":"Create Group DM",
-      "namespace": ["create_group_dm"],
-      "struct":"params",
+      "struct":"create_group_dm",
       "fields":
       [
         { "name": "access_tokens", "type":{ "base":"ja_str", "dec":"ntl" }, 

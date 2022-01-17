@@ -6,6 +6,20 @@
 
 #include "discord.h"
 
+void
+print_usage(void)
+{
+    printf(
+        "\n\nThis bot demonstrates how to load message components"
+        " with three different methods.\n"
+        "1 - Dynamic-approach (type !dynamic): Load the components from "
+        "a JSON string.\n"
+        "2 - Static-approach (type !static): A clean initialization approach "
+        "using the combination of designated initialization and compound "
+        "literals.\n"
+        "\nTYPE ANY KEY TO START BOT\n");
+}
+
 char JSON_STRING[] =
     "[\n"
     "    {\n"
@@ -70,7 +84,7 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
     discord_component_list_from_json(JSON_STRING, sizeof(JSON_STRING),
                                      &components);
 
-    struct discord_create_message_params params = {
+    struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
                    "you play?",
         .components = components
@@ -139,7 +153,7 @@ on_static(struct discord *client, const struct discord_message *msg)
         NULL /* ARRAY END */
     };
 
-    struct discord_create_message_params params = {
+    struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
                    "you play?",
         .components = components
@@ -174,13 +188,8 @@ on_interaction_create(struct discord *client,
                 .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL // 1 << 6
             }
     };
-
-    CCORDcode code;
-    code = discord_create_interaction_response(
-        client, interaction->id, interaction->token, &params, NULL);
-    if (code) {
-        log_error("%s", discord_strerror(code, client));
-    }
+    discord_create_interaction_response(client, interaction->id,
+                                        interaction->token, &params, NULL);
 }
 
 int
@@ -202,15 +211,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "static", &on_static);
     discord_set_on_interaction_create(client, &on_interaction_create);
 
-    printf(
-        "\n\nThis bot demonstrates how to load message components"
-        " with three different methods.\n"
-        "1 - Dynamic-approach (type !dynamic): Load the components from "
-        "a JSON string.\n"
-        "2 - Static-approach (type !static): A clean initialization approach "
-        "using the combination of designated initialization and compound "
-        "literals.\n"
-        "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);

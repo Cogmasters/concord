@@ -38,7 +38,7 @@ void on_ping(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return; // ignore bots
 
-  struct discord_create_message_params params = { .content = "pong" };
+  struct discord_create_message params = { .content = "pong" };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -46,7 +46,7 @@ void on_pong(struct discord *client, const struct discord_message *msg)
 {
   if (msg->author->bot) return; // ignore bots
 
-  struct discord_create_message_params params = { .content = "ping" };
+  struct discord_create_message params = { .content = "ping" };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 

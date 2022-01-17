@@ -1,10 +1,10 @@
 {
-  "namespace": ["discord", "get_guild_audit_log"],
+  "namespace": ["discord"],
   "comment": "https://discord.com/developers/docs/resources/audit-log",
   "defs":
   [
     {
-      "struct":"params",
+      "struct":"get_guild_audit_log",
       "fields":
       [
         { "name": "user_id", "type":{ "base":"char", "dec":"*", "converter":"snowflake" }, "comment":"filter the log for actions made by a user", "inject_if_not":0 },

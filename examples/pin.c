@@ -6,6 +6,20 @@
 #include "discord.h"
 
 void
+print_usage(void)
+{
+    printf(
+        "\n\nThis bot demonstrates how easy it is to have a"
+        " message be pinned.\n"
+        "1. Reply to a message with '!pin' or type '!pin <message_id> to pin "
+        "it\n"
+        "2. Reply to a message with '!unpin' or type '!unpin <message_id> to "
+        "unpin it\n"
+        "3. Type '!get_pins' to get a id list of pinned messages\n"
+        "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
 on_ready(struct discord *client)
 {
     const struct discord_user *bot = discord_get_self(client);
@@ -29,7 +43,7 @@ on_pin(struct discord *client, const struct discord_message *msg)
         msg_id = msg->referenced_message->id;
     }
 
-    discord_pin_message(client, msg->channel_id, msg_id);
+    discord_pin_message(client, msg->channel_id, msg_id, NULL);
 }
 
 void
@@ -47,7 +61,46 @@ on_unpin(struct discord *client, const struct discord_message *msg)
         msg_id = msg->referenced_message->id;
     }
 
-    discord_unpin_message(client, msg->channel_id, msg_id);
+    discord_unpin_message(client, msg->channel_id, msg_id, NULL);
+}
+
+struct context {
+    u64_snowflake_t channel_id;
+    u64_snowflake_t guild_id;
+};
+
+void
+done_get_pins(struct discord *client, void *data, const struct discord_message **msgs)
+{
+    struct context *cxt = data;
+    char text[2000];
+
+    char *cur = text;
+    char *end = &text[sizeof(text) - 1];
+
+    for (size_t i = 0; msgs[i]; ++i) {
+        cur += snprintf(cur, end - cur,
+                        "https://discord.com/channels/%" PRIu64 "/%" PRIu64
+                        "/%" PRIu64 "\n",
+                        cxt->guild_id, cxt->channel_id, msgs[i]->id);
+
+        if (cur >= end) break;
+    }
+
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, cxt->channel_id, &params, NULL);
+}
+
+void
+fail_get_pins(struct discord *client, CCORDcode code, void *data)
+{
+    struct context *cxt = data;
+    char text[2000];
+
+    snprintf(text, sizeof(text), "No pinned messages in <#%" PRIu64 ">", cxt->channel_id);
+
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, cxt->channel_id, &params, NULL);
 }
 
 void
@@ -55,31 +108,19 @@ on_get_pins(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_message **msgs = NULL;
-    char text[DISCORD_MAX_MESSAGE_LEN];
+    struct context *cxt = malloc(sizeof(struct context));
+    cxt->channel_id = msg->channel_id;
+    cxt->guild_id = msg->guild_id;
 
-    discord_get_pinned_messages(client, msg->channel_id, &msgs);
+    struct discord_ret_messages ret = {
+        .done = &done_get_pins,
+        .fail = &fail_get_pins,
+        .data = cxt,
+        .done_cleanup = &free,
+        .fail_cleanup = &free,
+    };
 
-    if (!msgs) {
-        sprintf(text, "No pinned messages in <#%" PRIu64 ">", msg->channel_id);
-    }
-    else {
-        char *cur = text;
-        char *end = &text[sizeof(text) - 1];
-
-        for (size_t i = 0; msgs[i]; ++i) {
-            cur += snprintf(cur, end - cur,
-                            "https://discord.com/channels/%" PRIu64 "/%" PRIu64
-                            "/%" PRIu64 "\n",
-                            msg->guild_id, msg->channel_id, msgs[i]->id);
-            if (cur >= end) break;
-        }
-
-        discord_message_list_free(msgs);
-    }
-
-    struct discord_create_message_params params = { .content = text };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    discord_get_pinned_messages(client, msg->channel_id, &ret);
 }
 
 int
@@ -102,15 +143,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "unpin", &on_unpin);
     discord_set_on_command(client, "get_pins", &on_get_pins);
 
-    printf(
-        "\n\nThis bot demonstrates how easy it is to have a"
-        " message be pinned.\n"
-        "1. Reply to a message with '!pin' or type '!pin <message_id> to pin "
-        "it\n"
-        "2. Reply to a message with '!unpin' or type '!unpin <message_id> to "
-        "unpin it\n"
-        "3. Type '!get_pins' to get a id list of pinned messages\n"
-        "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);

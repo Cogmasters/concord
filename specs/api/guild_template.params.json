@@ -5,8 +5,7 @@
   [
     {
       "title":"Create Guild From Guild Template",
-      "namespace": ["create_guild_from_guild_template"],
-      "struct":"params",
+      "struct":"create_guild_from_guild_template",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"},
@@ -15,8 +14,7 @@
     },
     {
       "title":"Create Guild Template",
-      "namespace": ["create_guild_template"],
-      "struct":"params",
+      "struct":"create_guild_template",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild"},
@@ -25,8 +23,7 @@
     },
     {
       "title":"Modify Guild Template",
-      "namespace": ["modify_guild_template"],
-      "struct":"params",
+      "struct":"modify_guild_template",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*"}, "comment":"name of the guild", "inject_if_not": null},

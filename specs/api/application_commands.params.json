@@ -5,9 +5,8 @@
   [
     {
       "title":"Create Global Application Command",
-      "namespace": ["create_global_application_command"],
       "comment":"https://discord.com/developers/docs/interactions/application-commands#create-global-application-command",
-      "struct":"params",
+      "struct":"create_global_application_command",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"},
@@ -19,9 +18,8 @@
     },
     {
       "title":"Edit Global Application Command",
-      "namespace": ["edit_global_application_command"],
       "comment": "https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command",
-      "struct": "params",
+      "struct": "edit_global_application_command",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null},
@@ -32,9 +30,8 @@
     },
     {
       "title":"Create Guild Application Command",
-      "namespace": ["create_guild_application_command"],
       "comment": "https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command",
-      "struct": "params",
+      "struct": "create_guild_application_command",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name"},
@@ -46,9 +43,8 @@
     },
     {
       "title":"Edit Guild Application Command",
-      "namespace": ["edit_guild_application_command"],
       "comment": "https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command",
-      "struct": "params",
+      "struct": "edit_guild_application_command",
       "fields":
       [
         { "name": "name", "type":{ "base":"char", "dec":"*" }, "comment":"1-32 lowercase character name", "inject_if_not":null},
@@ -59,9 +55,8 @@
     },
     {
       "title":"Edit Application Command Permissions",
-      "namespace": ["edit_application_command_permissions"],
       "comment": "https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions",
-      "struct": "params",
+      "struct": "edit_application_command_permissions",
       "fields":
       [
         { "name": "permissions", "type":{"base": "struct discord_application_command_permissions", "dec":"ntl"}, "comment":"the permissions for the command in the guild"}

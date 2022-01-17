@@ -23,7 +23,7 @@ setopt_cb(struct ua_conn *conn, void *p_token)
     ua_conn_add_header(conn, "Authorization", auth);
 
 #if 0 /* enable for debugging */
-  curl_easy_setopt(ua_conn_get_easy_handle(conn), CURLOPT_VERBOSE, 1L);
+    curl_easy_setopt(ua_conn_get_easy_handle(conn), CURLOPT_VERBOSE, 1L);
 #endif
 }
 
@@ -74,10 +74,10 @@ discord_adapter_init(struct discord_adapter *adapter,
 
     /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
      * share the same queue with the original */
-    adapter->async.idleq = malloc(sizeof(QUEUE));
-    QUEUE_INIT(adapter->async.idleq);
+    adapter->idleq = malloc(sizeof(QUEUE));
+    QUEUE_INIT(adapter->idleq);
     /* initialize min-heap for handling request timeouts */
-    heap_init(&adapter->async.timeouts);
+    heap_init(&adapter->timeouts);
 
     adapter->retry_limit = 3; /**< hard limit for now */
 }
@@ -113,7 +113,7 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
     free(adapter->global);
 
     /* cleanup idle requests queue */
-    QUEUE_MOVE(adapter->async.idleq, &queue);
+    QUEUE_MOVE(adapter->idleq, &queue);
     while (!QUEUE_EMPTY(&queue)) {
         q = QUEUE_HEAD(&queue);
         cxt = QUEUE_DATA(q, struct discord_context, entry);
@@ -121,20 +121,20 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
         _discord_context_cleanup(cxt);
     }
 
-    if (adapter->async.ret.size) free(adapter->async.ret.start);
+    if (adapter->ret.size) free(adapter->ret.start);
 
-    free(adapter->async.idleq);
+    free(adapter->idleq);
 }
 
 static CCORDcode _discord_adapter_run_sync(struct discord_adapter *adapter,
-                                           struct discord_request_attr *attr,
+                                           struct discord_request *req,
                                            struct sized_buffer *body,
                                            enum http_method method,
                                            char endpoint[DISCORD_ENDPT_LEN],
                                            char route[DISCORD_ROUTE_LEN]);
 
 static CCORDcode _discord_adapter_run_async(struct discord_adapter *adapter,
-                                            struct discord_request_attr *attr,
+                                            struct discord_request *req,
                                             struct sized_buffer *body,
                                             enum http_method method,
                                             char endpoint[DISCORD_ENDPT_LEN],
@@ -143,20 +143,20 @@ static CCORDcode _discord_adapter_run_async(struct discord_adapter *adapter,
 /* template function for performing requests */
 CCORDcode
 discord_adapter_run(struct discord_adapter *adapter,
-                    struct discord_request_attr *attr,
+                    struct discord_request *req,
                     struct sized_buffer *body,
                     enum http_method method,
                     char endpoint_fmt[],
                     ...)
 {
-    static struct discord_request_attr blank_attr = { 0 };
+    static struct discord_request blank_req = { 0 };
     char endpoint[DISCORD_ENDPT_LEN];
     char route[DISCORD_ROUTE_LEN];
     va_list args;
     size_t len;
 
     /* have it point somewhere */
-    if (!attr) attr = &blank_attr;
+    if (!req) req = &blank_req;
 
     /* build the endpoint string */
     va_start(args, endpoint_fmt);
@@ -169,28 +169,16 @@ discord_adapter_run(struct discord_adapter *adapter,
     discord_bucket_get_route(method, route, endpoint_fmt, args);
     va_end(args);
 
-    /* enqueue asynchronous request */
-    if (true == adapter->async_enable) {
-        adapter->async_enable = false;
-        return _discord_adapter_run_async(adapter, attr, body, method,
-                                          endpoint, route);
+    if (req->ret.sync) {
+        req->gnrc.data = req->ret.has_type ? req->ret.sync : NULL;
+
+        /* perform blocking request */
+        return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
+                                         route);
     }
-
-    /* perform blocking request */
-    return _discord_adapter_run_sync(adapter, attr, body, method, endpoint,
-                                     route);
-}
-
-void
-discord_adapter_async_next(struct discord_adapter *adapter,
-                           struct discord_async_attr *attr)
-{
-    adapter->async_enable = true;
-
-    if (attr)
-        memcpy(&adapter->async.attr, attr, sizeof(struct discord_async_attr));
-    else
-        memset(&adapter->async.attr, 0, sizeof(struct discord_async_attr));
+    /* enqueue asynchronous request */
+    return _discord_adapter_run_async(adapter, req, body, method, endpoint,
+                                      route);
 }
 
 static void
@@ -208,7 +196,7 @@ static void
 _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
-    struct discord_attachment **atchs = cxt->attr.attachments;
+    struct discord_attachment **atchs = cxt->req.attachments;
     struct sized_buffer *body = &cxt->body.buf;
     curl_mimepart *part;
     char name[64];
@@ -309,7 +297,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
 /* perform a blocking request */
 static CCORDcode
 _discord_adapter_run_sync(struct discord_adapter *adapter,
-                          struct discord_request_attr *attr,
+                          struct discord_request *req,
                           struct sized_buffer *body,
                           enum http_method method,
                           char endpoint[DISCORD_ENDPT_LEN],
@@ -328,7 +316,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     conn = ua_conn_start(adapter->ua);
 
     if (HTTP_MIMEPOST == method) {
-        cxt.attr.attachments = attr->attachments;
+        cxt.req.attachments = req->attachments;
         cxt.body.buf = *body;
 
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
@@ -368,13 +356,13 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
             if (info.code != CCORD_OK) {
                 _discord_adapter_set_errbuf(adapter, &body);
             }
-            else if (attr->ret) {
+            else if (req->gnrc.data) {
                 /* initialize ret */
-                if (attr->init) attr->init(attr->ret);
+                if (req->gnrc.init) req->gnrc.init(req->gnrc.data);
 
                 /* populate ret */
-                if (attr->from_json)
-                    attr->from_json(body.start, body.size, attr->ret);
+                if (req->gnrc.from_json)
+                    req->gnrc.from_json(body.start, body.size, req->gnrc.data);
             }
 
             code = info.code;
@@ -458,8 +446,6 @@ static void
 _discord_context_reset(struct discord_context *cxt)
 {
     cxt->bucket = NULL;
-    cxt->done = NULL;
-    cxt->fail = NULL;
     cxt->body.buf.size = 0;
     cxt->method = 0;
     *cxt->endpoint = '\0';
@@ -468,48 +454,40 @@ _discord_context_reset(struct discord_context *cxt)
     cxt->timeout_ms = 0;
     cxt->retry_attempt = 0;
 
-    if (cxt->attr.attachments)
-        discord_attachment_list_free(cxt->attr.attachments);
+    if (cxt->req.attachments)
+        discord_attachment_list_free(cxt->req.attachments);
 
-    memset(&cxt->attr, 0, sizeof(struct discord_request_attr));
-    memset(&cxt->udata, 0, sizeof cxt->udata);
+    memset(&cxt->req, 0, sizeof(struct discord_request));
 }
 
 static void
 _discord_context_populate(struct discord_context *cxt,
                           struct discord_adapter *adapter,
-                          struct discord_request_attr *attr,
+                          struct discord_request *req,
                           struct sized_buffer *body,
                           enum http_method method,
                           char endpoint[DISCORD_ENDPT_LEN],
                           char route[DISCORD_ROUTE_LEN])
 {
     cxt->method = method;
-    /* user callbacks */
-    cxt->done = adapter->async.attr.done;
-    cxt->fail = adapter->async.attr.fail;
-    /* user data */
-    cxt->udata.data = adapter->async.attr.data;
-    cxt->udata.cleanup = adapter->async.attr.cleanup;
 
-    memcpy(&cxt->attr, attr, sizeof(struct discord_request_attr));
-    if (attr->attachments) {
-        cxt->attr.attachments =
-            _discord_attachment_list_dup(attr->attachments);
+    memcpy(&cxt->req, req, sizeof(struct discord_request));
+    if (req->attachments) {
+        cxt->req.attachments = _discord_attachment_list_dup(req->attachments);
     }
 
-    if (cxt->attr.size) {
-        if (cxt->attr.size > adapter->async.ret.size) {
-            void *tmp = realloc(adapter->async.ret.start, cxt->attr.size);
+    if (cxt->req.gnrc.size) {
+        if (cxt->req.gnrc.size > adapter->ret.size) {
+            void *tmp = realloc(adapter->ret.start, cxt->req.gnrc.size);
             VASSERT_S(tmp != NULL,
                       "Couldn't increase buffer %zu -> %zu (bytes)",
-                      adapter->async.ret.size, cxt->attr.size);
+                      adapter->ret.size, cxt->req.gnrc.size);
 
-            adapter->async.ret.start = tmp;
-            adapter->async.ret.size = cxt->attr.size;
+            adapter->ret.start = tmp;
+            adapter->ret.size = cxt->req.gnrc.size;
         }
 
-        cxt->attr.ret = &adapter->async.ret.start;
+        cxt->req.gnrc.data = &adapter->ret.start;
     }
 
     if (body) {
@@ -545,7 +523,7 @@ _discord_context_set_timeout(struct discord_adapter *adapter,
 
     cxt->timeout_ms = timeout;
 
-    heap_insert(&adapter->async.timeouts, &cxt->node, &timer_less_than);
+    heap_insert(&adapter->timeouts, &cxt->node, &timer_less_than);
 }
 
 /* true if a timeout has been set, false otherwise */
@@ -570,7 +548,7 @@ _discord_context_timeout(struct discord_adapter *adapter,
 /* enqueue a request to be executed asynchronously */
 static CCORDcode
 _discord_adapter_run_async(struct discord_adapter *adapter,
-                           struct discord_request_attr *attr,
+                           struct discord_request *req,
                            struct sized_buffer *body,
                            enum http_method method,
                            char endpoint[DISCORD_ENDPT_LEN],
@@ -578,29 +556,26 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
 {
     struct discord_context *cxt;
 
-    if (QUEUE_EMPTY(adapter->async.idleq)) {
+    if (QUEUE_EMPTY(adapter->idleq)) {
         /* create new request handler */
         cxt = calloc(1, sizeof(struct discord_context));
     }
     else {
         /* get from idle requests queue */
-        QUEUE *q = QUEUE_HEAD(adapter->async.idleq);
+        QUEUE *q = QUEUE_HEAD(adapter->idleq);
         QUEUE_REMOVE(q);
 
         cxt = QUEUE_DATA(q, struct discord_context, entry);
     }
     QUEUE_INIT(&cxt->entry);
 
-    _discord_context_populate(cxt, adapter, attr, body, method, endpoint,
+    _discord_context_populate(cxt, adapter, req, body, method, endpoint,
                               route);
 
-    if (adapter->async.attr.high_p)
+    if (req->ret.high_p)
         QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
     else
         QUEUE_INSERT_TAIL(&cxt->bucket->waitq, &cxt->entry);
-
-    /* reset for next call */
-    memset(&adapter->async.attr, 0, sizeof(struct discord_async_attr));
 
     return CCORD_OK;
 }
@@ -650,7 +625,7 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
     struct heap_node *hmin;
 
     while (1) {
-        hmin = heap_min(&adapter->async.timeouts);
+        hmin = heap_min(&adapter->timeouts);
         if (!hmin) break;
 
         cxt = CONTAINEROF(hmin, struct discord_context, node);
@@ -659,7 +634,7 @@ _discord_adapter_check_timeouts(struct discord_adapter *adapter)
             break;
         }
 
-        heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
+        heap_remove(&adapter->timeouts, hmin, &timer_less_than);
 
         cxt->bucket->freeze = false;
         QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
@@ -764,28 +739,44 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         if (info.code != CCORD_OK) {
             _discord_adapter_set_errbuf(adapter, &body);
 
-            if (cxt->fail) {
-                struct discord_async_err err = { info.code, cxt->udata.data };
-
-                cxt->fail(client, &err);
+            if (cxt->req.ret.fail) {
+                cxt->req.ret.fail(client, info.code, cxt->req.ret.data);
             }
+            if (cxt->req.ret.fail_cleanup)
+                cxt->req.ret.fail_cleanup(cxt->req.ret.data);
         }
-        else if (cxt->done) {
-            void **p_ret = cxt->attr.ret;
-            struct discord_async_ret ret = { p_ret ? *p_ret : NULL,
-                                             cxt->udata.data };
+        else if (cxt->req.ret.done.typed) {
+            if (cxt->req.ret.is_ntl) {
+                ntl_t ret = NULL;
 
-            /* initialize ret */
-            if (cxt->attr.init) cxt->attr.init(*p_ret);
+                /* populate ret */
+                if (cxt->req.gnrc.from_json)
+                    cxt->req.gnrc.from_json(body.start, body.size, &ret);
 
-            /* populate ret */
-            if (cxt->attr.from_json)
-                cxt->attr.from_json(body.start, body.size, *p_ret);
+                cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
 
-            cxt->done(client, &ret);
+                /* cleanup ret */
+                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
+            }
+            else {
+                void *ret = malloc(cxt->req.gnrc.size);
 
-            /* cleanup ret */
-            if (cxt->attr.cleanup) cxt->attr.cleanup(*p_ret);
+                /* populate ret */
+                if (cxt->req.gnrc.from_json)
+                    cxt->req.gnrc.from_json(body.start, body.size, ret);
+
+                if (cxt->req.ret.has_type)
+                    cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
+                else
+                    cxt->req.ret.done.typeless(client, cxt->req.ret.data);
+
+                /* cleanup ret */
+                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
+                free(ret);
+            }
+
+            if (cxt->req.ret.done_cleanup)
+                cxt->req.ret.done_cleanup(cxt->req.ret.data);
         }
 
         code = info.code;
@@ -806,11 +797,11 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
         code = CCORD_CURLE_INTERNAL;
 
-        if (cxt->fail) {
-            struct discord_async_err err = { code, cxt->udata.data };
-
-            cxt->fail(client, &err);
+        if (cxt->req.ret.fail) {
+            cxt->req.ret.fail(client, code, cxt->req.ret.data);
         }
+        if (cxt->req.ret.fail_cleanup)
+            cxt->req.ret.fail_cleanup(cxt->req.ret.data);
 
         break;
     }
@@ -830,12 +821,10 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         }
     }
     else {
-        if (cxt->udata.cleanup) cxt->udata.cleanup(cxt->udata.data);
-
         ua_conn_stop(cxt->conn);
         _discord_context_reset(cxt);
 
-        QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
+        QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
 
     return code;
@@ -844,22 +833,21 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 CCORDcode
 discord_adapter_perform(struct discord_adapter *adapter)
 {
-    int is_running = 0;
     CURLMcode mcode;
     CCORDcode code;
+    int alive = 0;
 
-    code = _discord_adapter_check_timeouts(adapter);
-    if (code != CCORD_OK) return code;
+    if (CCORD_OK != (code = _discord_adapter_check_timeouts(adapter)))
+        return code;
 
-    code = _discord_adapter_check_pending(adapter);
-    if (code != CCORD_OK) return code;
+    if (CCORD_OK != (code = _discord_adapter_check_pending(adapter)))
+        return code;
 
-    mcode = curl_multi_socket_all(adapter->mhandle, &is_running);
-
-    if (mcode != CURLM_OK) return CCORD_CURLM_INTERNAL;
+    if (CURLM_OK != (mcode = curl_multi_socket_all(adapter->mhandle, &alive)))
+        return CCORD_CURLM_INTERNAL;
 
     /* ask for any messages/informationals from the individual transfers */
-    do {
+    while (1) {
         int msgq = 0;
         struct CURLMsg *msg = curl_multi_info_read(adapter->mhandle, &msgq);
 
@@ -870,7 +858,7 @@ discord_adapter_perform(struct discord_adapter *adapter)
 
         /* check for request action */
         _discord_adapter_check_action(adapter, msg);
-    } while (1);
+    }
 
     return CCORD_OK;
 }
@@ -884,14 +872,14 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
     QUEUE *q;
 
     /* cancel pending timeouts */
-    while ((hmin = heap_min(&adapter->async.timeouts)) != NULL) {
+    while ((hmin = heap_min(&adapter->timeouts)) != NULL) {
         cxt = CONTAINEROF(hmin, struct discord_context, node);
 
-        heap_remove(&adapter->async.timeouts, hmin, &timer_less_than);
+        heap_remove(&adapter->timeouts, hmin, &timer_less_than);
 
         cxt->bucket->freeze = false;
 
-        QUEUE_INSERT_TAIL(adapter->async.idleq, &cxt->entry);
+        QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
 
     /* cancel bucket's on-going transfers */
@@ -909,11 +897,11 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
 
             /* set for recycling */
             ua_conn_stop(cxt->conn);
-            QUEUE_INSERT_TAIL(adapter->async.idleq, q);
+            QUEUE_INSERT_TAIL(adapter->idleq, q);
         }
 
         /* cancel pending tranfers */
-        QUEUE_ADD(adapter->async.idleq, &b->waitq);
+        QUEUE_ADD(adapter->idleq, &b->waitq);
         QUEUE_INIT(&b->waitq);
     }
 }

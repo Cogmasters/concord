@@ -7,6 +7,27 @@
 #include "discord.h"
 
 void
+print_usage(void)
+{
+    printf(
+        "\n\nThis bot demonstrates how easy it is to create/delete"
+        " reactions from a message.\n"
+        "1. Reply to a message with 'reaction.get_users <emoji>' to get all "
+        "the users who reacted with that particular emoji\n"
+        "2. Reply to a message with 'reaction.create <emoji>' and the bot "
+        "will react with that emoji\n"
+        "3. Reply to a message with 'reaction.delete <emoji>' to delete all "
+        "reactions with a particular emoji\n"
+        "4. Reply to a message with 'reaction.delete_all' to delete all "
+        "reactions\n"
+        "5. Reply to a message with 'reaction.delete_self <emoji>' to delete "
+        "your reaction with a particular emoji\n"
+        "6. Reply to a message with 'reaction.delete_user <user_id> <emoji>' "
+        "to delete the user reaction with a particular emoji\n"
+        "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
 on_ready(struct discord *client)
 {
     const struct discord_user *bot = discord_get_self(client);
@@ -16,22 +37,15 @@ on_ready(struct discord *client)
 }
 
 void
-on_get_users(struct discord *client, const struct discord_message *msg)
+done_get_users(struct discord *client,
+               void *data,
+               const struct discord_user **users)
 {
-    if (msg->author->bot || !msg->referenced_message) return;
+    u64_snowflake_t *channel_id = data;
+    char text[2000];
 
-    struct discord_user **users = NULL;
-    char text[DISCORD_MAX_MESSAGE_LEN];
-    CCORDcode code;
-
-    code = discord_get_reactions(
-        client, msg->referenced_message->channel_id,
-        msg->referenced_message->id, 0, msg->content,
-        &(struct discord_get_reactions_params){ .limit = 25 }, &users);
-
-    if (code != CCORD_OK || !users) {
-        snprintf(text, sizeof(text), "Nobody reacted with '%s'!",
-                 msg->content);
+    if (!users) {
+        snprintf(text, sizeof(text), "Nobody reacted with that emoji!");
     }
     else {
         char *cur = text;
@@ -40,13 +54,47 @@ on_get_users(struct discord *client, const struct discord_message *msg)
         for (size_t i = 0; users[i]; ++i) {
             cur += snprintf(cur, end - cur, "%s (%" PRIu64 ")\n",
                             users[i]->username, users[i]->id);
+
             if (cur >= end) break;
         }
-        discord_user_list_free(users);
     }
 
-    struct discord_create_message_params params = { .content = text };
-    discord_create_message(client, msg->channel_id, &params, NULL);
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, *channel_id, &params, NULL);
+}
+
+void
+fail_get_users(struct discord *client, CCORDcode code, void *data)
+{
+    u64_snowflake_t *channel_id = data;
+    char text[256];
+
+    snprintf(text, sizeof(text), "Couldn't fetch reactions: %s",
+             discord_strerror(code, client));
+
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, *channel_id, &params, NULL);
+}
+
+void
+on_get_users(struct discord *client, const struct discord_message *msg)
+{
+    if (msg->author->bot || !msg->referenced_message) return;
+
+    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    *channel_id = msg->channel_id;
+
+    struct discord_ret_users ret = {
+        .done = &done_get_users,
+        .fail = &fail_get_users,
+        .data = channel_id,
+        .done_cleanup = &free,
+        .fail_cleanup = &free,
+    };
+    struct discord_get_reactions params = { .limit = 25 };
+
+    discord_get_reactions(client, msg->channel_id, msg->referenced_message->id,
+                          0, msg->content, &params, &ret);
 }
 
 void
@@ -55,7 +103,8 @@ on_create(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot || !msg->referenced_message) return;
 
     discord_create_reaction(client, msg->referenced_message->channel_id,
-                            msg->referenced_message->id, 0, msg->content);
+                            msg->referenced_message->id, 0, msg->content,
+                            NULL);
 }
 
 void
@@ -65,7 +114,7 @@ on_delete(struct discord *client, const struct discord_message *msg)
 
     discord_delete_all_reactions_for_emoji(
         client, msg->referenced_message->channel_id,
-        msg->referenced_message->id, 0, msg->content);
+        msg->referenced_message->id, 0, msg->content, NULL);
 }
 
 void
@@ -74,7 +123,7 @@ on_delete_all(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot || !msg->referenced_message) return;
 
     discord_delete_all_reactions(client, msg->referenced_message->channel_id,
-                                 msg->referenced_message->id);
+                                 msg->referenced_message->id, NULL);
 }
 
 void
@@ -83,7 +132,8 @@ on_delete_self(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot || !msg->referenced_message) return;
 
     discord_delete_own_reaction(client, msg->referenced_message->channel_id,
-                                msg->referenced_message->id, 0, msg->content);
+                                msg->referenced_message->id, 0, msg->content,
+                                NULL);
 }
 
 void
@@ -98,7 +148,7 @@ on_delete_user(struct discord *client, const struct discord_message *msg)
 
     discord_delete_user_reaction(client, msg->referenced_message->channel_id,
                                  msg->referenced_message->id, user_id, 0,
-                                 emoji_name);
+                                 emoji_name, NULL);
 }
 
 int
@@ -124,22 +174,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "delete_self", &on_delete_self);
     discord_set_on_command(client, "delete_user", &on_delete_user);
 
-    printf(
-        "\n\nThis bot demonstrates how easy it is to create/delete"
-        " reactions from a message.\n"
-        "1. Reply to a message with 'reaction.get_users <emoji>' to get all "
-        "the users who reacted with that particular emoji\n"
-        "2. Reply to a message with 'reaction.create <emoji>' and the bot "
-        "will react with that emoji\n"
-        "3. Reply to a message with 'reaction.delete <emoji>' to delete all "
-        "reactions with a particular emoji\n"
-        "4. Reply to a message with 'reaction.delete_all' to delete all "
-        "reactions\n"
-        "5. Reply to a message with 'reaction.delete_self <emoji>' to delete "
-        "your reaction with a particular emoji\n"
-        "6. Reply to a message with 'reaction.delete_user <user_id> <emoji>' "
-        "to delete the user reaction with a particular emoji\n"
-        "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);

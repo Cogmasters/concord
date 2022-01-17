@@ -7,7 +7,7 @@ COGUTILS_DIR := $(TOP)/cog-utils
 COMMON_DIR   := $(TOP)/common
 INCLUDE_DIR  := $(TOP)/include
 
-TEST_DISCORD := discord-api discord-async discord-ws
+TEST_DISCORD := discord-sync-rest discord-sync-ws discord-async
 TEST_COMMON  := user-agent websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)

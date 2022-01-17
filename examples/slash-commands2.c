@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include <inttypes.h> /* SCNu64 */
 #include <pthread.h>
 #include <assert.h>
+#include <errno.h>
+#include <inttypes.h> /* SCNu64 */
 
 #include "discord.h"
 
@@ -13,8 +14,19 @@ u64_snowflake_t g_app_id;
 void
 print_usage(void)
 {
-    log_info("\nUsage :\n"
-             "\tPrint Usage : HELP\n"
+    printf("\n\nThis bot demonstrates how easy it is to create/update/delete "
+           "application commands\n"
+           "1. Input a valid application id from "
+           "https://discord.com/developers/applications\n"
+           "2. Type HELP to see commands\n"
+           "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
+print_help(void)
+{
+    log_info("\nHelp :\n"
+             "\tPrint help : HELP\n"
              "\tList Commands : LIST <?guild_id>\n"
              "\tCreate Command : CREATE <cmd_name>[<cmd_desc>] <?guild_id>\n"
              "\tUpdate Command : UPDATE <cmd_id> <cmd_name>[<cmd_desc>] "
@@ -53,33 +65,38 @@ log_on_app_delete(struct discord *client,
 }
 
 void
+fail_interaction_create(struct discord *client, CCORDcode code, void *data)
+{
+    log_error("%s", discord_strerror(code, client));
+}
+
+void
 on_interaction_create(struct discord *client,
                       const struct discord_interaction *interaction)
 {
     log_info("Interaction %" PRIu64 " received", interaction->id);
 
+    struct discord_interaction_callback_data data = {
+        .content = "Hello World!",
+        .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL,
+    };
     struct discord_interaction_response params = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE, // 4
-        .data =
-            &(struct discord_interaction_callback_data){
-                .content = "Hello World!",
-                .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL // 1 << 6
-            }
+        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .data = &data
+    };
+    struct discord_ret_interaction_response ret = {
+        .fail = &fail_interaction_create
     };
 
-    CCORDcode code;
-    code = discord_create_interaction_response(
-        client, interaction->id, interaction->token, &params, NULL);
-
-    if (code) {
-        log_error("%s", discord_strerror(code, client));
-    }
+    discord_create_interaction_response(client, interaction->id,
+                                        interaction->token, &params, &ret);
 }
 
 void *
 read_input(void *p_client)
 {
     struct discord *client = p_client;
+
     char buf[DISCORD_MAX_MESSAGE_LEN];
     ptrdiff_t bufoffset;
     char cmd_action[9 + 1];
@@ -105,12 +122,16 @@ read_input(void *p_client)
 
             sscanf(buf + bufoffset, "%" SCNu64, &guild_id);
 
+            struct discord_ret_application_commands ret = {
+                .sync = &app_cmds,
+            };
+
             if (guild_id)
-                code = discord_get_guild_application_commands(
-                    client, g_app_id, guild_id, &app_cmds);
+                code = discord_get_guild_application_commands(client, g_app_id,
+                                                              guild_id, &ret);
             else
-                code = discord_get_global_application_commands(
-                    client, g_app_id, &app_cmds);
+                code = discord_get_global_application_commands(client,
+                                                               g_app_id, &ret);
 
             if (CCORD_OK == code && app_cmds) {
                 char list[4096] = ""; // should be large enough ?
@@ -121,7 +142,9 @@ read_input(void *p_client)
                                     "\t%d:\t%s (%" PRIu64 ")\n", i,
                                     app_cmds[i]->name, app_cmds[i]->id);
                 }
+
                 log_info("\nCommands: \n%.*s", (int)len, list);
+
                 discord_application_command_list_free(app_cmds);
             }
             else {
@@ -138,27 +161,31 @@ read_input(void *p_client)
 
             if (!*cmd_name || !*cmd_desc) goto _help;
 
+            struct discord_ret_application_command ret = {
+                .sync = &app_cmd,
+            };
+
             if (guild_id) {
+                struct discord_create_guild_application_command params = {
+                    .name = cmd_name,
+                    .description = cmd_desc,
+                    .default_permission = true,
+                    .type = 1,
+                };
+
                 code = discord_create_guild_application_command(
-                    client, g_app_id, guild_id,
-                    &(struct discord_create_guild_application_command_params){
-                        .name = cmd_name,
-                        .description = cmd_desc,
-                        .default_permission = true,
-                        .type = 1,
-                    },
-                    &app_cmd);
+                    client, g_app_id, guild_id, &params, &ret);
             }
             else {
+                struct discord_create_global_application_command params = {
+                    .name = cmd_name,
+                    .description = cmd_desc,
+                    .default_permission = true,
+                    .type = 1,
+                };
+
                 code = discord_create_global_application_command(
-                    client, g_app_id,
-                    &(struct discord_create_global_application_command_params){
-                        .name = cmd_name,
-                        .description = cmd_desc,
-                        .default_permission = true,
-                        .type = 1,
-                    },
-                    &app_cmd);
+                    client, g_app_id, &params, &ret);
             }
 
             if (CCORD_OK == code && app_cmd.id) {
@@ -180,23 +207,30 @@ read_input(void *p_client)
             if (!command_id) goto _help;
 
             struct discord_application_command app_cmd = { 0 };
+
+            struct discord_ret_application_command ret = {
+                .sync = &app_cmd,
+            };
+
             if (guild_id) {
+                struct discord_edit_guild_application_command params = {
+                    .name = *cmd_name ? cmd_name : NULL,
+                    .description = *cmd_desc ? cmd_desc : NULL,
+                    .default_permission = true,
+                };
+
                 code = discord_edit_guild_application_command(
-                    client, g_app_id, guild_id, command_id,
-                    &(struct discord_edit_guild_application_command_params){
-                        .name = *cmd_name ? cmd_name : NULL,
-                        .description = *cmd_desc ? cmd_desc : NULL,
-                        .default_permission = true },
-                    &app_cmd);
+                    client, g_app_id, guild_id, command_id, &params, &ret);
             }
             else {
+                struct discord_edit_global_application_command params = {
+                    .name = *cmd_name ? cmd_name : NULL,
+                    .description = *cmd_desc ? cmd_desc : NULL,
+                    .default_permission = true,
+                };
+
                 code = discord_edit_global_application_command(
-                    client, g_app_id, command_id,
-                    &(struct discord_edit_global_application_command_params){
-                        .name = *cmd_name ? cmd_name : NULL,
-                        .description = *cmd_desc ? cmd_desc : NULL,
-                        .default_permission = true },
-                    &app_cmd);
+                    client, g_app_id, command_id, &params, &ret);
             }
 
             if (CCORD_OK == code && app_cmd.id) {
@@ -216,13 +250,15 @@ read_input(void *p_client)
 
             if (!command_id) goto _help;
 
+            struct discord_ret ret = { .sync = true };
+
             if (guild_id) {
                 code = discord_delete_guild_application_command(
-                    client, g_app_id, guild_id, command_id);
+                    client, g_app_id, guild_id, command_id, &ret);
             }
             else {
                 code = discord_delete_global_application_command(
-                    client, g_app_id, command_id);
+                    client, g_app_id, command_id, &ret);
             }
 
             if (CCORD_OK == code)
@@ -236,7 +272,7 @@ read_input(void *p_client)
 
         continue;
     _help:
-        print_usage();
+        print_help();
     }
 
     pthread_exit(NULL);
@@ -261,17 +297,16 @@ main(int argc, char *argv[])
     discord_set_on_application_command_delete(client, &log_on_app_delete);
     discord_set_on_interaction_create(client, &on_interaction_create);
 
-    printf("\n\nThis bot demonstrates how easy it is to create/update/delete "
-           "application commands\n"
-           "1. Input a valid application id from "
-           "https://discord.com/developers/applications\n"
-           "2. Type HELP to see commands\n"
-           "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
-    printf("Please input a valid application id: ");
-    scanf("%" SCNu64 "%*[^\n]", &g_app_id);
-    scanf("%*c"); // eat-up newline
+    printf("Please provide a valid application id in order to test the Slash "
+           "Commands functionality, it can be obtained from: "
+           "https://discord.com/developers/applications\n");
+    do {
+        printf("Application ID:\n");
+        fscanf(stdin, "%" SCNu64, &g_app_id);
+    } while (!g_app_id || errno == ERANGE);
 
     pthread_t tid;
     pthread_create(&tid, NULL, &read_input, client);

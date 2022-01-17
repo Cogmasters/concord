@@ -5,6 +5,22 @@
 
 #include "discord.h"
 
+void
+print_usage(void)
+{
+    printf("\n\nThis bot demonstrates how to embeds"
+           " with three different methods.\n"
+           "1 - Dynamic-approach (type !dynamic): Load the embed from "
+           "a JSON string.\n"
+           "2 - Static-approach (type !static): A  clean  initialization "
+           "approach "
+           "using the combination of designated initialization and compound "
+           "literals.\n"
+           "3 - Builder-approach (type !builder): A dynamic and flexible "
+           "approach that relies on embed builder functions.\n"
+           "\nTYPE ANY KEY TO START BOT\n");
+}
+
 char JSON_STRING[] =
     "{\n"
     "  \"title\": \"Concord\",\n"
@@ -59,7 +75,7 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
     discord_embed_from_json(JSON_STRING, sizeof(JSON_STRING), &embed);
     embed.timestamp = discord_timestamp(client); // get current timestamp
 
-    struct discord_create_message_params params = {
+    struct discord_create_message params = {
         .content = "This is an embed",
         .embed = &embed,
     };
@@ -114,7 +130,7 @@ on_static(struct discord *client, const struct discord_message *msg)
             }
     };
 
-    struct discord_create_message_params params = { .embed = &embed };
+    struct discord_create_message params = { .embed = &embed };
     discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -149,7 +165,7 @@ on_builder(struct discord *client, const struct discord_message *msg)
         &embed, "Looking for support?",
         "Join our server [here](https://discord.gg/x4hhGQYu)!", false);
 
-    struct discord_create_message_params params = { .embed = &embed };
+    struct discord_create_message params = { .embed = &embed };
     discord_create_message(client, msg->channel_id, &params, NULL);
 
     /* must cleanup 'embed' afterwards */
@@ -176,17 +192,7 @@ main(int argc, char *argv[])
     discord_set_on_command(client, "static", &on_static);
     discord_set_on_command(client, "builder", &on_builder);
 
-    printf("\n\nThis bot demonstrates how to embeds"
-           " with three different methods.\n"
-           "1 - Dynamic-approach (type !dynamic): Load the embed from "
-           "a JSON string.\n"
-           "2 - Static-approach (type !static): A  clean  initialization "
-           "approach "
-           "using the combination of designated initialization and compound "
-           "literals.\n"
-           "3 - Builder-approach (type !builder): A dynamic and flexible "
-           "approach that relies on embed builder functions.\n"
-           "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     discord_run(client);

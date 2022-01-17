@@ -8,6 +8,21 @@
 #include "discord.h"
 
 void
+print_usage(void)
+{
+    printf("\n\nThis bot demonstrates how easy it is to start a DM"
+           " with someone and talk without leaving the terminal\n"
+           "1. Type at the terminal <recipient_id>:<message> to start your "
+           "conversation\n"
+           "\tex: 1232232312321232123:Hello there friend!\n"
+           "2. For successive messages to the same person, you can just type "
+           "the message"
+           " without the need of specifying the recipient_id everytime\n"
+           "3. If you wish to start a new conversation, repeat the #1 format\n"
+           "\nTYPE ANY KEY TO START BOT\n");
+}
+
+void
 on_ready(struct discord *client)
 {
     const struct discord_user *bot = discord_get_self(client);
@@ -28,6 +43,7 @@ void *
 read_input(void *p_client)
 {
     struct discord *client = p_client;
+
     char buf[32 + DISCORD_MAX_MESSAGE_LEN];
     char msg[DISCORD_MAX_MESSAGE_LEN];
     u64_snowflake_t recipient_id;
@@ -54,20 +70,24 @@ read_input(void *p_client)
             }
         }
         else { /* reset active chat */
-            struct discord_channel dm_channel = { 0 };
-            struct discord_create_dm_params params = {
-                .recipient_id = recipient_id,
-            };
+            struct discord_channel ret_channel = { 0 };
+            struct discord_ret_channel ret = { .sync = &ret_channel };
+            struct discord_create_dm params = { .recipient_id = recipient_id };
 
-            discord_create_dm(client, &params, &dm_channel);
-
-            dm_channel_id = dm_channel.id;
-
-            discord_channel_cleanup(&dm_channel);
+            if (CCORD_OK == discord_create_dm(client, &params, &ret)) {
+                dm_channel_id = ret_channel.id;
+                discord_channel_cleanup(&ret_channel);
+            }
         }
 
-        struct discord_create_message_params params = { .content = msg };
-        discord_create_message(client, dm_channel_id, &params, NULL);
+        struct discord_message ret_msg = { 0 };
+        struct discord_ret_message ret = { .sync = &ret_msg };
+        struct discord_create_message params = { .content = msg };
+
+        if (CCORD_OK
+            == discord_create_message(client, dm_channel_id, &params, &ret)) {
+            discord_message_cleanup(&ret_msg);
+        }
     }
 
     pthread_exit(NULL);
@@ -92,16 +112,7 @@ main(int argc, char *argv[])
     /* Keep just DISCORD_GATEWAY_DIRECT_MESSAGES */
     discord_remove_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES);
 
-    printf("\n\nThis bot demonstrates how easy it is to start a DM"
-           " with someone and talk without leaving the terminal\n"
-           "1. Type at the terminal <recipient_id>:<message> to start your "
-           "conversation\n"
-           "\tex: 1232232312321232123:Hello there friend!\n"
-           "2. For successive messages to the same person, you can just type "
-           "the message"
-           " without the need of specifying the recipient_id everytime\n"
-           "3. If you wish to start a new conversation, repeat the #1 format\n"
-           "\nTYPE ANY KEY TO START BOT\n");
+    print_usage();
     fgetc(stdin); // wait for input
 
     pthread_t tid;

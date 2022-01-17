@@ -1,32 +1,26 @@
 #include <string.h> // strncmp()
 #include <stdio.h>
+#include <stdlib.h>
 #include "discord.h"
 
 void
 on_message(struct discord *client, const struct discord_message *msg)
 {
-    if (msg->author->bot)
-        return; // Verify if the author, if it is, stops here.
+    if (msg->author->bot) return; // early return if author is a bot
+
     if (0 == strcmp(msg->content, "!ping")) {
         char ping[64];
 
-        snprintf(ping, sizeof(ping), "Pong, `%d`ms",
-                 discord_get_ping(client)); // Setting value for char "ping";
+        snprintf(ping, sizeof(ping), "Pong, `%d`ms", discord_get_ping(client));
 
-        struct discord_create_message_params params = { .content = ping };
-
-        discord_async_next(client, NULL); // Next request will be async.
-        discord_create_message(client, msg->channel_id, &params,
-                               NULL); // Sending message.
+        struct discord_create_message params = { .content = ping };
+        discord_create_message(client, msg->channel_id, &params, NULL);
     }
     if (0 == strncmp("!say ", msg->content, 5)) {
         char *content = msg->content + 5;
 
-        struct discord_create_message_params params = { .content = content };
-
-        discord_async_next(client, NULL); // Next request will be async.
-        discord_create_message(client, msg->channel_id, &params,
-                               NULL); // Sending message.
+        struct discord_create_message params = { .content = content };
+        discord_create_message(client, msg->channel_id, &params, NULL);
     }
 }
 
@@ -49,5 +43,5 @@ main(void)
 
     discord_cleanup(client);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -31,8 +31,7 @@ void on_message(struct discord *client, const struct discord_message *msg)
   if (strcmp(msg->content, "ping") != 0)
     return; // ignore messages that aren't 'ping'
 
-  discord_async_next(client, NULL); // make next request non-blocking (OPTIONAL)
-  struct discord_create_message_params params = { .content = "pong" };
+  struct discord_create_message params = { .content = "pong" };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -204,6 +203,7 @@ Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
 - [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Contributing](docs/CONTRIBUTING.md)
 - [Internals](docs/INTERNALS.md)
+- [Concord Documentation](https://cogmasters.github.io/concord/)
 
 ## Contributing
 Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).
