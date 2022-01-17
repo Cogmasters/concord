@@ -73,7 +73,7 @@ DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(SRC_DIR)/client.c            \
                 $(SRC_DIR)/gateway.c           \
                 $(SRC_DIR)/misc.c              \
-                $(SRC_DIR)/voice-connections.c \
+                $(SRC_DIR)/voice.c             \
                 $(C_SPECS_SRC)
 
 SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
