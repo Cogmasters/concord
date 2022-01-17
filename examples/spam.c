@@ -9,10 +9,13 @@
 void
 print_usage(void)
 {
-    printf("\n\nThis bot demonstrates how easy it is to delete"
-           " messages.\n"
-           "1. Type !spam to spam 10 random messages in chat\n"
-           "\nTYPE ANY KEY TO START BOT\n");
+    printf(
+        "\n\nThis bot demonstrates how easy it is to spam"
+        " messages, in the default async or sync mode.\n"
+        "1. Type !spam-async to spam 10 random messages in chat in the "
+        "default async mode\n"
+        "2. Type !spam-sync to spam 10 random messages in chat in sync mode\n"
+        "\nTYPE ANY KEY TO START BOT\n");
 }
 
 char *SPAM[] = {
@@ -29,20 +32,25 @@ char *SPAM[] = {
 };
 
 void
-on_spam(struct discord *client, const struct discord_message *msg)
+on_spam_async(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
     for (size_t i = 0; i < 10; ++i) {
-        struct discord_message ret_msg;
-        CCORDcode code;
-
-        // this will block the thread
-        struct discord_ret_message ret = { .sync = &ret_msg };
         struct discord_create_message params = { .content = SPAM[i] };
-        code = discord_create_message(client, msg->channel_id, &params, &ret);
+        discord_create_message(client, msg->channel_id, &params, NULL);
+    }
+}
 
-        if (CCORD_OK == code) discord_message_cleanup(&ret_msg);
+void
+on_spam_sync(struct discord *client, const struct discord_message *msg)
+{
+    if (msg->author->bot) return;
+
+    for (size_t i = 0; i < 10; ++i) {
+        struct discord_ret_message ret = { .sync = DISCORD_SYNC_FLAG };
+        struct discord_create_message params = { .content = SPAM[i] };
+        discord_create_message(client, msg->channel_id, &params, &ret);
     }
 }
 
@@ -59,7 +67,8 @@ main(int argc, char *argv[])
     struct discord *client = discord_config_init(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
-    discord_set_on_command(client, "!spam", &on_spam);
+    discord_set_on_command(client, "!spam-async", &on_spam_async);
+    discord_set_on_command(client, "!spam-sync", &on_spam_sync);
 
     print_usage();
     fgetc(stdin); // wait for input
