@@ -121,8 +121,6 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
         _discord_context_cleanup(cxt);
     }
 
-    if (adapter->ret.size) free(adapter->ret.start);
-
     free(adapter->idleq);
 }
 
@@ -474,20 +472,6 @@ _discord_context_populate(struct discord_context *cxt,
     memcpy(&cxt->req, req, sizeof(struct discord_request));
     if (req->attachments) {
         cxt->req.attachments = _discord_attachment_list_dup(req->attachments);
-    }
-
-    if (cxt->req.gnrc.size) {
-        if (cxt->req.gnrc.size > adapter->ret.size) {
-            void *tmp = realloc(adapter->ret.start, cxt->req.gnrc.size);
-            VASSERT_S(tmp != NULL,
-                      "Couldn't increase buffer %zu -> %zu (bytes)",
-                      adapter->ret.size, cxt->req.gnrc.size);
-
-            adapter->ret.start = tmp;
-            adapter->ret.size = cxt->req.gnrc.size;
-        }
-
-        cxt->req.gnrc.data = &adapter->ret.start;
     }
 
     if (body) {

@@ -143,8 +143,6 @@ struct discord_adapter {
         pthread_mutex_t lock;
     } * global;
 
-    /** reusable buffer for request return structs */
-    struct sized_buffer ret;
     /** idle request handles of type 'struct discord_context' */
     QUEUE *idleq;
     /* request timeouts */
