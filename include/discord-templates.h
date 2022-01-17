@@ -7,6 +7,9 @@
 #ifndef DISCORD_TEMPLATES_H
 #define DISCORD_TEMPLATES_H
 
+/** @brief flag for enabling `sync` mode without expecting a datatype return */
+#define DISCORD_SYNC_FLAG ((void *)-1)
+
 /******************************************************************************
  * Templates specific to Discord's response datatypes
  ******************************************************************************/
@@ -42,7 +45,8 @@
         DISCORDT_RET_DEFAULT_FIELDS;                                          \
         /** if an address is provided, then request will block the thread and \
            perform on-spot.                                                   \
-           On success the response object will be written to the address. */  \
+           On success the response object will be written to the address,     \
+           unless enabled with @ref DISCORD_SYNC_FLAG */                      \
         struct discord_##type *sync;                                          \
     }
 
@@ -54,7 +58,8 @@
         DISCORDT_RET_DEFAULT_FIELDS;                                          \
         /** if an address is provided, then request will block the thread and \
            perform on-spot.                                                   \
-           On success the response object will be written to the address. */  \
+           On success the response object will be written to the address,     \
+           unless enabled with @ref DISCORD_SYNC_FLAG. */                     \
         struct discord_##type ***sync;                                        \
     }
 

@@ -167,13 +167,14 @@ discord_adapter_run(struct discord_adapter *adapter,
     discord_bucket_get_route(method, route, endpoint_fmt, args);
     va_end(args);
 
-    if (req->ret.sync) {
-        req->gnrc.data = req->ret.has_type ? req->ret.sync : NULL;
+    if (req->ret.sync) { /* perform blocking request */
+        if (req->ret.has_type && req->ret.sync != DISCORD_SYNC_TRUE)
+            req->gnrc.data = req->ret.sync;
 
-        /* perform blocking request */
         return _discord_adapter_run_sync(adapter, req, body, method, endpoint,
                                          route);
     }
+
     /* enqueue asynchronous request */
     return _discord_adapter_run_async(adapter, req, body, method, endpoint,
                                       route);
