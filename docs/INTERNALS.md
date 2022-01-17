@@ -45,7 +45,7 @@ The `src/` folder is where we place all of our Discord API wrapping logic.
 
 ## Common source-code
 
-The `common/` folder is where we place all of our generic logic, such as handling of the
+The `core/` folder is where we place all of Concord core's logic, such as handling of the
 WebSockets and REST protocols, threadpool management, etc.
 
 <!-- REWRITE FOR DISCORD
@@ -103,7 +103,7 @@ Next, we verify that the ``owner`` and ``repository`` strings are provided. Thes
 for extracting topics from the correct repository, and so we must not allow the function to
 run unless both are provided. Depending on the nature of the error, it may be desirable to
 return something other than ``CCORD_MISSING_PARAMETER``. However, for most purposes, this is
-fine. If there is a need for another error code, they can be found or added at ``common/types.h``.
+fine. If there is a need for another error code, they can be found or added at ``core/types.h``.
 
 When the function ends, we return ``CCORD_OK`` to signal that 'everything went well'.
 

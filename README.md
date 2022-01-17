@@ -198,14 +198,17 @@ For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us
 
 Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
 
+## Contributing
+
+All kinds of contributions are welcome and all we ask of contributors is that they abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links][#Links] sections for other helpful information.
+
 ## Links
 
+- [Documentation](https://cogmasters.github.io/concord/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
-- [Contributing](docs/CONTRIBUTING.md)
+- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
+- [Contributing Guidelines](docs/CONTRIBUTING.md)
 - [Internals](docs/INTERNALS.md)
-- [Concord Documentation](https://cogmasters.github.io/concord/)
-
-## Contributing
-Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).
+- [Project Outline](docs/PROJECT_OUTLINE.md)
 
 **Give us a star if you like this project!**
