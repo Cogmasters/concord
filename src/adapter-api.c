@@ -11,8 +11,7 @@
         (dest).done.typed = (discord_on_generic)(src).done;                   \
         (dest).fail = (src).fail;                                             \
         (dest).data = (src).data;                                             \
-        (dest).done_cleanup = (src).done_cleanup;                             \
-        (dest).fail_cleanup = (src).fail_cleanup;                             \
+        (dest).cleanup = (src).cleanup;                                       \
         (dest).high_p = (src).high_p;                                         \
         (dest).sync = (src).sync;                                             \
     } while (0)
@@ -23,8 +22,7 @@
         (dest).done.typeless = (src).done;                                    \
         (dest).fail = (src).fail;                                             \
         (dest).data = (src).data;                                             \
-        (dest).done_cleanup = (src).done_cleanup;                             \
-        (dest).fail_cleanup = (src).fail_cleanup;                             \
+        (dest).cleanup = (src).cleanup;                                       \
         (dest).high_p = (src).high_p;                                         \
         (dest).sync = (void *)(src).sync;                                     \
     } while (0)
@@ -3116,21 +3114,14 @@ _done_get_channels(struct discord *client,
     }
 
     if (found_ch) {
-        if (cxt->ret.done) {
-            cxt->ret.done(client, cxt->ret.data, found_ch);
-        }
-        if (cxt->ret.done_cleanup) {
-            cxt->ret.done_cleanup(cxt->ret.data);
-        }
+        if (cxt->ret.done) cxt->ret.done(client, cxt->ret.data, found_ch);
     }
-    else {
-        if (cxt->ret.fail) {
-            cxt->ret.fail(client, CCORD_BAD_PARAMETER, cxt->ret.data);
-        }
-        if (cxt->ret.fail_cleanup) {
-            cxt->ret.fail_cleanup(cxt->ret.data);
-        }
+    else if (cxt->ret.fail) {
+        cxt->ret.fail(client, CCORD_BAD_PARAMETER, cxt->ret.data);
     }
+
+    /* @todo cleanup if `data` reference count is 0 */
+    if (cxt->ret.cleanup) cxt->ret.cleanup(cxt->ret.data);
 }
 
 CCORDcode
@@ -3156,8 +3147,7 @@ discord_get_channel_at_pos(struct discord *client,
     _ret.fail = ret->fail;
 
     _ret.data = cxt;
-    _ret.done_cleanup = &free;
-    _ret.fail_cleanup = &free;
+    _ret.cleanup = &free;
 
     /* TODO: fetch channel via caching, and return if results are non-existent
      */

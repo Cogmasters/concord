@@ -28,9 +28,9 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 }
 
 static void
-on_io_poller_curl(CURLM *multi, void *user_data)
+on_io_poller_curl(CURLM *mhandle, void *user_data)
 {
-    (void)multi;
+    (void)mhandle;
     discord_adapter_perform(user_data);
 }
 
@@ -430,20 +430,11 @@ _discord_attachment_list_dup(struct discord_attachment **src)
     return dest;
 }
 
-static int
-timer_less_than(const struct heap_node *ha, const struct heap_node *hb)
-{
-    const struct discord_context *a =
-        CONTAINEROF(ha, struct discord_context, node);
-    const struct discord_context *b =
-        CONTAINEROF(hb, struct discord_context, node);
-
-    return a->timeout_ms <= b->timeout_ms;
-}
-
 static void
 _discord_context_reset(struct discord_context *cxt)
 {
+    ua_conn_stop(cxt->conn);
+
     cxt->bucket = NULL;
     cxt->body.buf.size = 0;
     cxt->method = 0;
@@ -499,6 +490,17 @@ _discord_context_populate(struct discord_context *cxt,
     cxt->bucket = discord_bucket_get(adapter, route);
 }
 
+static int
+timer_less_than(const struct heap_node *ha, const struct heap_node *hb)
+{
+    const struct discord_context *a =
+        CONTAINEROF(ha, struct discord_context, node);
+    const struct discord_context *b =
+        CONTAINEROF(hb, struct discord_context, node);
+
+    return a->timeout_ms <= b->timeout_ms;
+}
+
 static void
 _discord_context_set_timeout(struct discord_adapter *adapter,
                              u64_unix_ms_t timeout,
@@ -528,6 +530,37 @@ _discord_context_timeout(struct discord_adapter *adapter,
     _discord_context_set_timeout(adapter, timeout, cxt);
 
     return true;
+}
+
+static void
+_discord_refcount_incr(struct discord_adapter *adapter,
+                       struct discord_ret_generic *ret)
+{
+    struct discord_refcount *ref;
+
+    HASH_FIND_PTR(adapter->refcounts, ret->data, ref);
+    if (NULL == ref) {
+        ref = calloc(1, sizeof(struct discord_refcount));
+        ref->data = ret->data;
+        ref->cleanup = ret->cleanup;
+
+        HASH_ADD_PTR(adapter->refcounts, data, ref);
+    }
+
+    ++ref->visits;
+}
+
+static void
+_discord_refcount_decr(struct discord_adapter *adapter, void *data)
+{
+    struct discord_refcount *ref;
+
+    HASH_FIND_PTR(adapter->refcounts, data, ref);
+    if (ref && --ref->visits <= 0 && ref->cleanup) {
+        ref->cleanup(ref->data);
+        HASH_DEL(adapter->refcounts, ref);
+        free(ref);
+    }
 }
 
 /* enqueue a request to be executed asynchronously */
@@ -561,6 +594,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
         QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
     else
         QUEUE_INSERT_TAIL(&cxt->bucket->waitq, &cxt->entry);
+
+    if (req->ret.data) _discord_refcount_incr(adapter, &req->ret);
 
     return CCORD_OK;
 }
@@ -727,8 +762,6 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             if (cxt->req.ret.fail) {
                 cxt->req.ret.fail(client, info.code, cxt->req.ret.data);
             }
-            if (cxt->req.ret.fail_cleanup)
-                cxt->req.ret.fail_cleanup(cxt->req.ret.data);
         }
         else if (cxt->req.ret.done.typed) {
             if (cxt->req.ret.is_ntl) {
@@ -759,9 +792,6 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
                 if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
                 free(ret);
             }
-
-            if (cxt->req.ret.done_cleanup)
-                cxt->req.ret.done_cleanup(cxt->req.ret.data);
         }
 
         code = info.code;
@@ -785,8 +815,6 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         if (cxt->req.ret.fail) {
             cxt->req.ret.fail(client, code, cxt->req.ret.data);
         }
-        if (cxt->req.ret.fail_cleanup)
-            cxt->req.ret.fail_cleanup(cxt->req.ret.data);
 
         break;
     }
@@ -806,7 +834,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         }
     }
     else {
-        ua_conn_stop(cxt->conn);
+        _discord_refcount_decr(adapter, cxt->req.ret.data);
         _discord_context_reset(cxt);
 
         QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);

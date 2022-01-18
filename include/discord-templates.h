@@ -29,10 +29,10 @@
     discord_on_fail fail;                                                     \
     /** user arbitrary data to be retrieved at `done` or `fail` callbacks */  \
     void *data;                                                               \
-    /** automatic cleanup for user data after `done` callback returns */      \
-    void (*done_cleanup)(void *data);                                         \
-    /** automatic cleanup for user data after `fail` callback returns */      \
-    void (*fail_cleanup)(void *data);                                         \
+    /** cleanup for when `data` is no longer needed                           \
+        @note this only has to be defined once, it shall be called once       \
+       `data` is no longer referenced by any callback */                      \
+    void (*cleanup)(void *data);                                              \
     /** if `true` then request will take priority over already enqueued       \
         requests */                                                           \
     bool high_p

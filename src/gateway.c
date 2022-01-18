@@ -1199,9 +1199,9 @@ default_scheduler_cb(struct discord *a,
 }
 
 static void
-on_io_poller_curl(CURLM *multi, void *user_data)
+on_io_poller_curl(CURLM *mhandle, void *user_data)
 {
-    (void)multi;
+    (void)mhandle;
     discord_gateway_perform(user_data);
 }
 

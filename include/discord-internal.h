@@ -116,6 +116,21 @@ struct discord_context {
     int retry_attempt;
 };
 
+/** @brief Naive garbage collector to cleanup user arbitrary data */
+struct discord_refcount {
+    /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
+    void *data;
+    /**
+     * cleanup for when `data` is no longer needed
+     * @note this only has to be assigned once, it shall be called once `data`
+     *      is no longer referenced by any callback */
+    void (*cleanup)(void *data);
+    /** `data` references count */
+    int visits;
+    /** makes this structure hashable */
+    UT_hash_handle hh;
+};
+
 /** @brief The handle used for performing HTTP Requests */
 struct discord_adapter {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
@@ -124,7 +139,9 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /** routes discovered (declared at discord-adapter-ratelimit.c) */
+    /** client-side data reference counter for cleanup */
+    struct discord_refcount *refcounts;
+    /** routes discovered (declared at adapter-ratelimit.c) */
     struct _discord_route *routes;
     /** buckets discovered */
     struct discord_bucket *buckets;
