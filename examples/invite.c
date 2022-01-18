@@ -62,8 +62,7 @@ on_invite_get(struct discord *client, const struct discord_message *msg)
         .done = &done,
         .fail = &fail,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     struct discord_get_invite params = {
@@ -81,11 +80,12 @@ on_invite_delete(struct discord *client, const struct discord_message *msg)
     u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
     *channel_id = msg->channel_id;
 
-    struct discord_ret_invite ret = { .done = &done,
-                                      .fail = &fail,
-                                      .data = channel_id,
-                                      .done_cleanup = &free,
-                                      .fail_cleanup = &free };
+    struct discord_ret_invite ret = {
+        .done = &done,
+        .fail = &fail,
+        .data = channel_id,
+        .cleanup = &free,
+    };
     discord_delete_invite(client, msg->content, &ret);
 }
 

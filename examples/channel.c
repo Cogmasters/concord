@@ -143,8 +143,7 @@ on_channel_get_invites(struct discord *client,
         .done = &done_get_channel_invites,
         .fail = &fail_get_channel_invites,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
     discord_get_channel_invites(client, msg->channel_id, &ret);
 }
@@ -187,8 +186,7 @@ on_channel_create_invite(struct discord *client,
         .done = &done_create_channel_invite,
         .fail = &fail_create_channel_invite,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
     discord_create_channel_invite(client, msg->channel_id, NULL, &ret);
 }
@@ -233,8 +231,7 @@ on_channel_start_thread(struct discord *client,
         .done = &done_start_thread,
         .fail = &fail_start_thread,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     if (msg->message_reference) {

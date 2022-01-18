@@ -116,8 +116,7 @@ on_get_pins(struct discord *client, const struct discord_message *msg)
         .done = &done_get_pins,
         .fail = &fail_get_pins,
         .data = cxt,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     discord_get_pinned_messages(client, msg->channel_id, &ret);

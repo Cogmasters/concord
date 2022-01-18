@@ -92,8 +92,7 @@ on_list_guild_emojis(struct discord *client, const struct discord_message *msg)
         .done = &done_list_guild_emojis,
         .fail = &fail_list_guild_emojis,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
     discord_list_guild_emojis(client, msg->guild_id, &ret);
 }
@@ -143,8 +142,7 @@ on_get_guild_emoji(struct discord *client, const struct discord_message *msg)
         .done = &done_get_guild_emoji,
         .fail = &fail_get_guild_emoji,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
     discord_get_guild_emoji(client, msg->guild_id, emoji_id, &ret);
 }

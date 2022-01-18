@@ -166,8 +166,7 @@ on_force_error(struct discord *client, const struct discord_message *msg)
                            &(struct discord_ret_channel){
                                .fail = &send_err,
                                .data = channel_id,
-                               .fail_cleanup = &free,
-                               .done_cleanup = &free,
+                               .cleanup = &free,
                            });
 }
 

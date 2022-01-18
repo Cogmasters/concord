@@ -83,8 +83,7 @@ on_list_voice_regions(struct discord *client,
         .done = &done_list_voice_regions,
         .fail = &fail_list_voice_regions,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     discord_list_voice_regions(client, &ret);
@@ -134,8 +133,7 @@ on_voice_join(struct discord *client, const struct discord_message *msg)
         .done = &done_get_vchannel_position,
         .fail = &fail_get_vchannel_position,
         .data = cxt,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     discord_get_channel_at_pos(client, msg->guild_id,
@@ -194,8 +192,7 @@ on_voice_kick(struct discord *client, const struct discord_message *msg)
             .done = &done_disconnect_guild_member,
             .fail = &fail_disconnect_guild_member,
             .data = cxt,
-            .done_cleanup = &free,
-            .fail_cleanup = &free,
+            .cleanup = &free,
         };
 
         discord_disconnect_guild_member(client, msg->guild_id, user_id, &ret);

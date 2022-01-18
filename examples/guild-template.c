@@ -68,8 +68,7 @@ on_get_guild_template(struct discord *client,
         .done = &done,
         .fail = &fail,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
     discord_get_guild_template(client, msg->content, &ret);
 }
@@ -85,8 +84,7 @@ on_create_guild_template(struct discord *client,
         .done = &done,
         .fail = &fail,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     struct discord_create_guild_template params = {
@@ -108,8 +106,7 @@ on_sync_guild_template(struct discord *client,
         .done = &done,
         .fail = &fail,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
 
     discord_sync_guild_template(client, msg->guild_id, msg->content, &ret);

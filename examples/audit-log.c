@@ -106,8 +106,7 @@ on_audit_channel_create(struct discord *client,
         .done = &done,
         .fail = &fail,
         .data = channel_id,
-        .fail_cleanup = &free,
-        .done_cleanup = &free,
+        .cleanup = &free,
     };
     struct discord_get_guild_audit_log params = {
         .user_id = msg->author->id,

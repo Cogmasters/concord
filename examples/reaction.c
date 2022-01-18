@@ -88,8 +88,7 @@ on_get_users(struct discord *client, const struct discord_message *msg)
         .done = &done_get_users,
         .fail = &fail_get_users,
         .data = channel_id,
-        .done_cleanup = &free,
-        .fail_cleanup = &free,
+        .cleanup = &free,
     };
     struct discord_get_reactions params = { .limit = 25 };
 
