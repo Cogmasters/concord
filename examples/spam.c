@@ -23,7 +23,7 @@ char *SPAM[] = {
     "Do you?", // 2
     "ROFL", // 3
     "What are you going to do about it?", // 4
-    "Are you going to !clear me?", // 5
+    "Are you going to stop me?", // 5
     "Good luck with that.", // 6
     "Many have tried but..", // 7
     "They all fail.", // 8
