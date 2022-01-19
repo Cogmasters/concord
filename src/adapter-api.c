@@ -3113,6 +3113,8 @@ _done_get_channels(struct discord *client,
         }
     }
 
+    /* TODO: the following should be replaced by a discord_set_timeout()
+     * implementation */
     if (found_ch) {
         if (cxt->ret.done) cxt->ret.done(client, cxt->ret.data, found_ch);
     }
@@ -3120,8 +3122,7 @@ _done_get_channels(struct discord *client,
         cxt->ret.fail(client, CCORD_BAD_PARAMETER, cxt->ret.data);
     }
 
-    /* @todo cleanup if `data` reference count is 0 */
-    if (cxt->ret.cleanup) cxt->ret.cleanup(cxt->ret.data);
+    discord_refcount_decr(&client->adapter, cxt->ret.data);
 }
 
 CCORDcode
@@ -3145,9 +3146,14 @@ discord_get_channel_at_pos(struct discord *client,
 
     _ret.done = &_done_get_channels;
     _ret.fail = ret->fail;
-
     _ret.data = cxt;
     _ret.cleanup = &free;
+
+    /* TODO: the following should be replaced by a discord_set_timeout()
+     * implementation */
+    if (ret->data) {
+        discord_refcount_incr(&client->adapter, ret->data, ret->cleanup);
+    }
 
     /* TODO: fetch channel via caching, and return if results are non-existent
      */

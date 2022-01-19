@@ -532,17 +532,18 @@ _discord_context_timeout(struct discord_adapter *adapter,
     return true;
 }
 
-static void
-_discord_refcount_incr(struct discord_adapter *adapter,
-                       struct discord_ret_generic *ret)
+void
+discord_refcount_incr(struct discord_adapter *adapter,
+                      void *data,
+                      void (*cleanup)(void *data))
 {
-    struct discord_refcount *ref;
+    struct discord_refcount *ref = NULL;
 
-    HASH_FIND_PTR(adapter->refcounts, ret->data, ref);
+    HASH_FIND_PTR(adapter->refcounts, &data, ref);
     if (NULL == ref) {
-        ref = calloc(1, sizeof(struct discord_refcount));
-        ref->data = ret->data;
-        ref->cleanup = ret->cleanup;
+        ref = calloc(1, sizeof *ref);
+        ref->data = data;
+        ref->cleanup = cleanup;
 
         HASH_ADD_PTR(adapter->refcounts, data, ref);
     }
@@ -550,14 +551,15 @@ _discord_refcount_incr(struct discord_adapter *adapter,
     ++ref->visits;
 }
 
-static void
-_discord_refcount_decr(struct discord_adapter *adapter, void *data)
+void
+discord_refcount_decr(struct discord_adapter *adapter, void *data)
 {
-    struct discord_refcount *ref;
+    struct discord_refcount *ref = NULL;
 
-    HASH_FIND_PTR(adapter->refcounts, data, ref);
-    if (ref && --ref->visits <= 0 && ref->cleanup) {
-        ref->cleanup(ref->data);
+    HASH_FIND_PTR(adapter->refcounts, &data, ref);
+    if (ref && --ref->visits <= 0) {
+        if (ref->cleanup) ref->cleanup(ref->data);
+
         HASH_DEL(adapter->refcounts, ref);
         free(ref);
     }
@@ -595,7 +597,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
     else
         QUEUE_INSERT_TAIL(&cxt->bucket->waitq, &cxt->entry);
 
-    if (req->ret.data) _discord_refcount_incr(adapter, &req->ret);
+    if (req->ret.data)
+        discord_refcount_incr(adapter, req->ret.data, req->ret.cleanup);
 
     return CCORD_OK;
 }
@@ -834,7 +837,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         }
     }
     else {
-        _discord_refcount_decr(adapter, cxt->req.ret.data);
+        discord_refcount_decr(adapter, cxt->req.ret.data);
         _discord_context_reset(cxt);
 
         QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);

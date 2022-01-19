@@ -116,21 +116,6 @@ struct discord_context {
     int retry_attempt;
 };
 
-/** @brief Naive garbage collector to cleanup user arbitrary data */
-struct discord_refcount {
-    /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
-    void *data;
-    /**
-     * cleanup for when `data` is no longer needed
-     * @note this only has to be assigned once, it shall be called once `data`
-     *      is no longer referenced by any callback */
-    void (*cleanup)(void *data);
-    /** `data` references count */
-    int visits;
-    /** makes this structure hashable */
-    UT_hash_handle hh;
-};
-
 /** @brief The handle used for performing HTTP Requests */
 struct discord_adapter {
     /** DISCORD_HTTP or DISCORD_WEBHOOK logging module */
@@ -185,7 +170,7 @@ void discord_adapter_init(struct discord_adapter *adapter,
 /**
  * @brief Free a Discord Adapter handle
  *
- * @param adapter a pointer to the adapter handle
+ * @param adapter the handle initialized with discord_adapter_init()
  */
 void discord_adapter_cleanup(struct discord_adapter *adapter);
 
@@ -234,6 +219,44 @@ u64_unix_ms_t discord_adapter_get_global_wait(struct discord_adapter *adapter);
  * @param adapter the handle initialized with discord_adapter_init()
  */
 void discord_adapter_stop_all(struct discord_adapter *adapter);
+
+/** @brief Naive garbage collector to cleanup user arbitrary data */
+struct discord_refcount {
+    /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
+    void *data;
+    /**
+     * cleanup for when `data` is no longer needed
+     * @note this only has to be assigned once, it shall be called once `data`
+     *      is no longer referenced by any callback */
+    void (*cleanup)(void *data);
+    /** `data` references count */
+    int visits;
+    /** makes this structure hashable */
+    UT_hash_handle hh;
+};
+
+/**
+ * @brief Increment the reference counter for `ret->data`
+ *
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param data the user arbitrary data to have its reference counter
+ * @param cleanup user-defined function for cleaning `data` resources once its
+ *      no longer referenced
+ */
+void discord_refcount_incr(struct discord_adapter *adapter,
+                           void *data,
+                           void (*cleanup)(void *data));
+
+/**
+ * @brief Decrement the reference counter for `data`
+ *
+ * If the count reaches zero then `data` shall be cleanup up with its
+ *      user-defined cleanup function
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param data the user arbitrary data to have its reference counter
+ *      decremented
+ */
+void discord_refcount_decr(struct discord_adapter *adapter, void *data);
 
 /** @brief The bucket struct for handling ratelimiting */
 struct discord_bucket {
