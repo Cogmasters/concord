@@ -14,8 +14,6 @@
 
 struct discord_voice; /* forward declaration */
 
-#define HAS_DISCORD_VOICE
-
 #define DISCORD_VCS_URL_SUFFIX "?v=4"
 
 /* TODO: add to DiscordLimitsGeneral group */

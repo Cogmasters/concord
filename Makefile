@@ -73,27 +73,30 @@ DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(SRC_DIR)/client.c            \
                 $(SRC_DIR)/gateway.c           \
                 $(SRC_DIR)/misc.c              \
-                $(SRC_DIR)/voice.c             \
-                $(C_SPECS_SRC)
+                $(C_SPECS_SRC)                 \
+                $(XSRC)
 
 SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 LIB := $(LIBDIR)/libdiscord.a
 
-CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                       \
+CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
 
 $(OBJDIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(WFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(WFLAGS) $(XFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: | $(C_SPECS_DIR)
 	$(MAKE) discord
+
+voice:
+	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
 
 specs_gen: | $(COGUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean

@@ -700,7 +700,7 @@ discord_voice_connections_init(struct discord *client)
 static void
 _discord_voice_cleanup(struct discord_voice *vc)
 {
-    free(vc->mhandle);
+    if (vc->mhandle) curl_multi_cleanup(vc->mhandle);
     if (vc->ws) ws_cleanup(vc->ws);
 }
 

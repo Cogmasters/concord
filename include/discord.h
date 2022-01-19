@@ -27,6 +27,10 @@ struct discord;
 #include "discord-specs.h" /* see specs/api/ */
 #include "discord-templates.h"
 
+#ifdef HAS_DISCORD_VOICE
+#include "discord-voice.h"
+#endif /* HAS_DISCORD_VOICE */
+
 /** @defgroup DiscordLimitsSnowflake
  *  @{ */
 #define DISCORD_SNOWFLAKE_INCREMENT          12

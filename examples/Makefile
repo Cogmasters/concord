@@ -27,15 +27,18 @@ BOTS := audit-log \
         slash-commands \
         slash-commands2 \
         spam \
-        voice \
-        webhook
+        webhook \
+        $(XSRC)
 
 CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
            -I$(CORE_DIR)/third-party                        \
-           -O0 -g -pthread -Wall
+           -O0 -g -pthread -Wall $(XFLAGS)
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 
 all: $(BOTS)
+
+voice:
+	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=voice all
 
 $(BOTS): %: %.c
 	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)

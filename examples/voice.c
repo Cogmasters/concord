@@ -5,7 +5,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "discord-voice.h"
 
 struct context {
     u64_snowflake_t channel_id;
