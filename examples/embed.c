@@ -35,8 +35,8 @@ char JSON_STRING[] =
     "  },\n"
     "  \"image\": {\n"
     "    \"url\": "
-    "\"https://raw.githubusercontent.com/cogmasters/concord/master/docs/"
-    "logo.svg\"\n"
+    "\"https://github.com/Cogmasters/concord-docs/blob/master/docs/source/"
+    "images/social-preview.png?raw=true\"\n"
     "  },\n"
     "  \"author\": {\n"
     "    \"name\": \"Cogmasters\",\n"
@@ -151,8 +151,9 @@ on_builder(struct discord *client, const struct discord_message *msg)
                              "concord/master/docs/logo.svg",
                              NULL);
     discord_embed_set_image(&embed,
-                            "https://raw.githubusercontent.com/cogmasters/"
-                            "concord/master/docs/logo.svg",
+                            "https://github.com/Cogmasters/concord-docs/blob/"
+                            "master/docs/"
+                            "source/images/social-preview.png?raw=true",
                             NULL, 0, 0);
     discord_embed_set_author(&embed, "Cogmasters",
                              "https://github.com/Cogmasters", NULL, NULL);
