@@ -379,8 +379,6 @@ _ua_conn_init(struct user_agent *ua)
                      &_ua_conn_respheader_cb);
     /* set ptr to response header to be filled at callback */
     curl_easy_setopt(new_ehandle, CURLOPT_HEADERDATA, &new_conn->info.header);
-    /* make libcurl safe in a multithreaded context and avoid SIGPIPE */
-    curl_easy_setopt(new_ehandle, CURLOPT_NOSIGNAL, 1L);
 
     new_conn->ehandle = new_ehandle;
     new_conn->ua = ua;

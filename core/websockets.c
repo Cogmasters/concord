@@ -476,8 +476,6 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
                      &_ws_check_action_cb);
     curl_easy_setopt(new_ehandle, CURLOPT_XFERINFODATA, ws);
     curl_easy_setopt(new_ehandle, CURLOPT_NOPROGRESS, 0L);
-    /* make libcurl safe in a multithreaded context and avoid SIGPIPE */
-    curl_easy_setopt(new_ehandle, CURLOPT_NOSIGNAL, 1L);
 
 #ifdef _CCORD_DEBUG_WEBSOCKETS
     curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
