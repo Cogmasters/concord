@@ -2350,6 +2350,7 @@ discord_create_interaction_response(
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
+    enum http_method method;
     char buf[4096];
 
     CCORD_EXPECT(client, interaction_id != 0, CCORD_BAD_PARAMETER, "");
@@ -2360,9 +2361,17 @@ discord_create_interaction_response(
     body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
+    if (params->data && params->data->attachments) {
+        method = HTTP_MIMEPOST;
+        req.attachments = params->data->attachments;
+    }
+    else {
+        method = HTTP_POST;
+    }
+
     REQUEST_INIT(req, discord_interaction_response, ret);
 
-    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+    return discord_adapter_run(&client->adapter, &req, &body, method,
                                "/interactions/%" PRIu64 "/%s/callback",
                                interaction_id, interaction_token);
 }
