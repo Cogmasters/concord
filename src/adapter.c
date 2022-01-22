@@ -417,7 +417,11 @@ _discord_attachment_list_dup(struct discord_attachment **src)
     for (i = 0; src[i]; ++i) {
         memcpy(dest[i], src[i], sizeof **dest);
         if (src[i]->content) {
-            dest[i]->content = strdup(src[i]->content);
+            dest[i]->size =
+                src[i]->size ? src[i]->size : strlen(src[i]->content) + 1;
+
+            dest[i]->content = malloc(dest[i]->size);
+            memcpy(dest[i]->content, src[i]->content, dest[i]->size);
         }
         if (src[i]->filename) {
             dest[i]->filename = strdup(src[i]->filename);
