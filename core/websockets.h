@@ -9,10 +9,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include <curl/curl.h>
-
 #include "common.h" /* CCORDcode */
 #include "logconf.h" /* logging facilities */
+#include "curl-forwarding.h"
 
 /**
  * @struct websockets

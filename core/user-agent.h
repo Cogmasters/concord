@@ -7,10 +7,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#include <curl/curl.h>
 #include "ntl.h" /* struct sized_buffer */
 #include "common.h" /* CCORDcode */
 #include "logconf.h" /* logging facilities */
+#include "curl-forwarding.h"
 
 /** @brief HTTP methods */
 enum http_method {
