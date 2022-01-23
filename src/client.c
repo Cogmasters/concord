@@ -8,6 +8,8 @@
 #include "discord-internal.h"
 #include "cog-utils.h"
 
+#include "log.h"
+
 static void
 _discord_init(struct discord *new_client)
 {
@@ -117,6 +119,33 @@ discord_strerror(CCORDcode code, struct discord *client)
   case CCORD_DISCORD_CONNECTION:
     return "Discord Connection: Couldn't establish a connection to discord";
   }
+}
+
+void concord_return_error(struct discord *client, const char *error, int32_t error_code) {
+
+  if(error_code < 0) {
+    return 1;
+  } else if(error_code > 2) {
+    return 1;
+  }
+  
+  log_info(error);
+  
+  //logconf_error(&client->conf, error);
+  
+  return error_code;
+  
+  /*
+    ex:
+    
+    const char *MyError = "ERROR:: something bad happened";
+  
+    if(something bad) {
+      concord_return_error(client, MyError, 1);
+    }
+  
+  */
+  
 }
 
 void *
