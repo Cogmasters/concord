@@ -6,7 +6,6 @@
 #include <string.h>
 #include <strings.h>
 #include <pthread.h>
-#include <curl/curl.h>
 
 #include "user-agent.h"
 #include "cog-utils.h"
