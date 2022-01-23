@@ -100,6 +100,15 @@ struct discord_voice_cbs;
  */
 const char *discord_strerror(CCORDcode code, struct discord *client);
 
+/*
+* @brief return an error from concord
+* @note used to log an error and to return an error
+*
+* @return an error code for your error
+*/
+
+void concord_return_error(struct discord *client, const char *error, int32_t error_code);
+
 /**
  * @brief Create a Discord Client handle by its token
  * @see discord_get_logconf() to configure logging behavior
