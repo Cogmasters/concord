@@ -121,7 +121,7 @@ discord_strerror(CCORDcode code, struct discord *client)
   }
 }
 
-void concord_return_error(struct discord *client, const char *error, int32_t error_code) {
+void concord_return_error(const char *error, int32_t error_code) {
 
   if(error_code < 0) {
     return 1;
@@ -130,8 +130,6 @@ void concord_return_error(struct discord *client, const char *error, int32_t err
   }
   
   log_info(error);
-  
-  //logconf_error(&client->conf, error);
   
   return error_code;
   
