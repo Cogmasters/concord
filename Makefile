@@ -98,6 +98,9 @@ all: | $(C_SPECS_DIR)
 voice:
 	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
 
+debug:
+	$(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
+
 specs_gen: | $(COGUTILS_DIR)
 	@ $(MAKE) -C $(SPECS_DIR) clean
 	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation

@@ -264,8 +264,9 @@ _Bool ws_pong(struct websockets *ws,
  * @brief Signals connecting state before entering the WebSockets event loop
  *
  * @param ws the WebSockets handle created with ws_init()
+ * @return the WebSockets easy_handle that is free'd at ws_end()
  */
-void ws_start(struct websockets *ws);
+CURL* ws_start(struct websockets *ws);
 
 /**
  * @brief Cleanup and reset `ws` connection resources

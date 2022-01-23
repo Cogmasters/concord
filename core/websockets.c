@@ -71,93 +71,6 @@ struct websockets {
     } pending_close;
 };
 
-#ifdef _CCORD_DEBUG_WEBSOCKETS
-static void
-_ws_curl_debug_dump(const char *text,
-                    FILE *stream,
-                    unsigned char *ptr,
-                    size_t size)
-{
-    unsigned int width = 0x10;
-    size_t i;
-    size_t c;
-
-    fprintf(stream, "%s, %10.10lu bytes (0x%8.8lx)\n", text,
-            (unsigned long)size, (unsigned long)size);
-
-    for (i = 0; i < size; i += width) {
-
-        fprintf(stream, "%4.4lx: ", (unsigned long)i);
-
-        for (c = 0; c < width; c++)
-            if (i + c < size)
-                fprintf(stream, "%02x ", ptr[i + c]);
-            else
-                fputs("   ", stream);
-
-        for (c = 0; (c < width) && (i + c < size); c++) {
-            /* check for 0D0A; if found, skip past and start a new line of
-             * output */
-            if ((i + c + 1 < size) && ptr[i + c] == 0x0D
-                && ptr[i + c + 1] == 0x0A) {
-                i += (c + 2 - width);
-                break;
-            }
-            fprintf(stream, "%c",
-                    (ptr[i + c] >= 0x20) && (ptr[i + c] < 0x80) ? ptr[i + c]
-                                                                : '.');
-            /* check again for 0D0A, to avoid an extra \n if it's at width */
-            if ((i + c + 2 < size) && ptr[i + c + 1] == 0x0D
-                && ptr[i + c + 2] == 0x0A) {
-                i += (c + 3 - width);
-                break;
-            }
-        }
-        fputc('\n', stream); /* newline */
-    }
-    fflush(stream);
-}
-
-static int
-_ws_curl_debug_trace(
-    CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
-{
-    const char *text;
-    (void)handle;
-    (void)userp;
-
-    switch (type) {
-    case CURLINFO_TEXT:
-        fprintf(stderr, "== Info: %s", data);
-        /* FALLTHROUGH */
-    default:
-        return 0;
-
-    case CURLINFO_HEADER_OUT:
-        text = "=> Send header";
-        break;
-    case CURLINFO_DATA_OUT:
-        text = "=> Send data";
-        break;
-    case CURLINFO_SSL_DATA_OUT:
-        text = "=> Send SSL data";
-        break;
-    case CURLINFO_HEADER_IN:
-        text = "<= Recv header";
-        break;
-    case CURLINFO_DATA_IN:
-        text = "<= Recv data";
-        break;
-    case CURLINFO_SSL_DATA_IN:
-        text = "<= Recv SSL data";
-        break;
-    }
-
-    _ws_curl_debug_dump(text, stderr, (unsigned char *)data, size);
-    return 0;
-}
-#endif
-
 static int
 _ws_curl_tls_check(
     CURL *handle, curl_infotype type, char *data, size_t size, void *userp)
@@ -477,14 +390,9 @@ _ws_cws_new(struct websockets *ws, const char ws_protocols[])
     curl_easy_setopt(new_ehandle, CURLOPT_XFERINFODATA, ws);
     curl_easy_setopt(new_ehandle, CURLOPT_NOPROGRESS, 0L);
 
-#ifdef _CCORD_DEBUG_WEBSOCKETS
-    curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
-    curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
-#else
     curl_easy_setopt(new_ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_tls_check);
     curl_easy_setopt(new_ehandle, CURLOPT_VERBOSE, 1L);
     curl_easy_setopt(new_ehandle, CURLOPT_DEBUGDATA, ws);
-#endif
 
     return new_ehandle;
 }
@@ -787,7 +695,7 @@ ws_pong(struct websockets *ws,
     return true;
 }
 
-void
+CURL*
 ws_start(struct websockets *ws)
 {
     memset(&ws->pending_close, 0, sizeof ws->pending_close);
@@ -807,6 +715,8 @@ ws_start(struct websockets *ws)
     curl_multi_add_handle(ws->mhandle, ws->ehandle);
 
     _ws_set_status(ws, WS_CONNECTING);
+
+    return ws->ehandle;
 }
 
 void
