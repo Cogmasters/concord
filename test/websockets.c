@@ -3,8 +3,10 @@
 #include <stdint.h>
 #include <string.h>
 #include <unistd.h>
+#include <curl/curl.h>
 
 #include "websockets.h"
+
 #include "log.h"
 
 void
