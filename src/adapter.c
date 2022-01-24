@@ -211,7 +211,9 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 
     /* attachment part */
     for (i = 0; atchs[i]; ++i) {
-        snprintf(name, sizeof(name), "files[%d]", i);
+        size_t len = snprintf(name, sizeof(name), "files[%d]", i);
+        ASSERT_S(len < sizeof(name), "Out of bounds write attempt");
+
         if (atchs[i]->content) {
             part = curl_mime_addpart(mime);
             curl_mime_data(part, atchs[i]->content,
@@ -226,9 +228,17 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
             curl_mime_name(part, name);
         }
         else if (!IS_EMPTY_STRING(atchs[i]->filename)) {
+            CURLcode code;
+
             /* fetch local file by the filename */
             part = curl_mime_addpart(mime);
-            curl_mime_filedata(part, atchs[i]->filename);
+            code = curl_mime_filedata(part, atchs[i]->filename);
+            if (code != CURLE_OK) {
+                char errbuf[256];
+                snprintf(errbuf, sizeof(errbuf), "%s (file: %s)",
+                         curl_easy_strerror(code), atchs[i]->filename);
+                perror(errbuf);
+            }
             curl_mime_type(part, IS_EMPTY_STRING(atchs[i]->content_type)
                                      ? "application/octet-stream"
                                      : atchs[i]->content_type);
