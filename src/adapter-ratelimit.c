@@ -61,7 +61,7 @@ discord_bucket_get_route(enum http_method method,
 
     ROUTE_PUSH(route, &routelen, "%d", method);
     do {
-        u64_snowflake_t id_arg= 0ULL;
+        u64_snowflake_t id_arg = 0ULL;
         int i;
 
         curr += 1 + currlen;
@@ -81,7 +81,7 @@ discord_bucket_get_route(enum http_method method,
                               "Internal error: Missing check for '%%%s'",
                               type);
 
-                    id_arg= va_arg(args, u64_snowflake_t);
+                    id_arg = va_arg(args, u64_snowflake_t);
                     break;
                 case 's':
                     (void)va_arg(args, char *);
