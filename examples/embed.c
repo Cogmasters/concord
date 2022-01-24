@@ -77,7 +77,7 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
 
     struct discord_create_message params = {
         .content = "This is an embed",
-        .embed = &embed,
+        .embeds = (struct discord_embed *[]){ &embed, NULL },
     };
     discord_create_message(client, msg->channel_id, &params, NULL);
 
@@ -130,7 +130,9 @@ on_static(struct discord *client, const struct discord_message *msg)
             }
     };
 
-    struct discord_create_message params = { .embed = &embed };
+    struct discord_create_message params = {
+        .embeds = (struct discord_embed *[]){ &embed, NULL }
+    };
     discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -139,8 +141,10 @@ on_builder(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_embed embed = { .color = 3447003,
-                                   .timestamp = discord_timestamp(client) };
+    struct discord_embed embed = {
+        .color = 3447003,
+        .timestamp = discord_timestamp(client),
+    };
 
     discord_embed_set_title(&embed, "Concord");
     discord_embed_set_description(&embed, "Discord API library");
@@ -166,7 +170,9 @@ on_builder(struct discord *client, const struct discord_message *msg)
         &embed, "Looking for support?",
         "Join our server [here](https://discord.gg/x4hhGQYu)!", false);
 
-    struct discord_create_message params = { .embed = &embed };
+    struct discord_create_message params = {
+        .embeds = (struct discord_embed *[]){ &embed, NULL }
+    };
     discord_create_message(client, msg->channel_id, &params, NULL);
 
     /* must cleanup 'embed' afterwards */
