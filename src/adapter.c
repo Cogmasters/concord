@@ -374,7 +374,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
             discord_bucket_build(adapter, b, route, &info);
 
-            if (wait_ms) cog_sleep_ms(wait_ms);
+            if (wait_ms > 0) cog_sleep_ms(wait_ms);
 
             ua_info_cleanup(&info);
         } break;
