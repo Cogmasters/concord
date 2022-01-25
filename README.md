@@ -94,21 +94,21 @@ The following outlines the default fields of `config.json`
 {
   "logging": { // logging directives
     "level": "trace",        // trace, debug, info, warn, error, fatal
-    "filename": "bot.log",   // the output file
+    "filename": "bot.log",   // the log output file
     "quiet": false,          // change to true to disable logs in console
-    "overwrite": false,      // overwrite existing file with "filename"
-    "use_color": true,       // log with color
+    "overwrite": true,       // overwrite file if already exists, append otherwise
+    "use_color": true,       // display color for log entries
     "http": {
       "enable": true,        // generate http specific logging
-      "filename": "http.log" // the output file
+      "filename": "http.log" // the HTTP log output file
     },
     "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
   },
   "discord": { // discord directives
-    "token": "YOUR-BOT-TOKEN",          // replace with your bot token
+    "token": "YOUR-BOT-TOKEN",         // replace with your bot token
     "default_prefix": {                 
-      "enable": false,                  // enable default command prefix
-      "prefix": "YOUR-COMMANDS-PREFIX"  // replace with your prefix
+      "enable": false,                 // enable default command prefix
+      "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
     }
   }
 }
