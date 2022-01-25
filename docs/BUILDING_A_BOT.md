@@ -11,7 +11,7 @@ cd my_bot
 make config
 ```
 
-Add your token to `mybot_config.json` by assigning it to discord's "token" field.
+Add your token to `config.json` by assigning it to discord's "token" field.
 
  Here you have the option of editing `myBot.c` or start one from scratch.
 
@@ -52,7 +52,7 @@ void on_pong(struct discord *client, const struct discord_message *msg)
 
 int main(void)
 {
-  struct discord *client = discord_config_init("./mybot_config.json");
+  struct discord *client = discord_config_init("../config.json");
 
   discord_set_on_ready(client, &on_ready);
   discord_set_on_command(client, "ping", &on_ping);
@@ -71,7 +71,7 @@ int main(void)
 You can initialize the bot by providing a `config.json` file:
 
 ```c
-struct discord *client = discord_config_init("./mybot_config.json");
+struct discord *client = discord_config_init("../config.json");
 ```
 
 You can also initialize it by providing the token directly to `discord_init()`:

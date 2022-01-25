@@ -35,7 +35,7 @@ on_ready(struct discord *client)
 int
 main(void)
 {
-    struct discord *client = discord_config_init("config.json");
+    struct discord *client = discord_config_init("../config.json");
 
     discord_set_on_ready(client, &on_ready);
     discord_set_on_message_create(client, &on_message);

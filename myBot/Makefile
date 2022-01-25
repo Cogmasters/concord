@@ -42,9 +42,9 @@ CONF := config.json
 # -pthread tell the compiler to link the pthread library
 #  			aswell configure compilation for threads
 # -I add header folder to compiler search path
-CFLAGS  := -O0 -g -Wall -pthread                       \
-           -I. -I$(TOP)/include -I$(TOP)/cog-utils     \
-           -I$(TOP)/common -I$(TOP)/common/third-party
+CFLAGS  := -O0 -g -Wall -pthread                   \
+           -I. -I$(TOP)/include -I$(TOP)/cog-utils \
+           -I$(TOP)/core -I$(TOP)/core/third-party
 
 # -L add library folder to compiler search path
 # -ldiscord links against libdiscord.a
