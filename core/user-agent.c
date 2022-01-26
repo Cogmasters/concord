@@ -225,7 +225,10 @@ ua_conn_add_header(struct ua_conn *conn,
             && 0 == strncasecmp(node->data, field, fieldlen))
         {
             if (strlen(node->data) < buflen) {
+                /* FIXME: For some reason, cygwin builds will abort on this free() */
+#ifndef __CYGWIN__
                 free(node->data);
+#endif
                 node->data = strdup(buf);
             }
             else {
