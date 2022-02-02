@@ -40,25 +40,42 @@ static void
 send_resume(struct discord_voice *vc)
 {
     char buf[1024];
-    size_t len;
+    jsonb b;
 
     vc->is_resumable = false; /* reset */
 
-    len = json_inject(buf, sizeof(buf),
-                      "(op):7" /* RESUME OPCODE */
-                      "(d):{"
-                      "(server_id):s_as_u64"
-                      "(session_id):s"
-                      "(token):s"
-                      "}",
-                      &vc->guild_id, vc->session_id, vc->token);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 7);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_push_object(&b, buf, sizeof(buf));
+        {
+            char tok[32];
+            size_t toklen =
+                snprintf(tok, sizeof(tok), "%" PRIu64, vc->guild_id);
+            jsonb_push_key(&b, buf, sizeof(buf), "server_id",
+                           sizeof("server_id") - 1);
+            jsonb_push_token(&b, buf, sizeof(buf), tok, toklen);
+            jsonb_push_key(&b, buf, sizeof(buf), "session_id",
+                           sizeof("session_id") - 1);
+            jsonb_push_string(&b, buf, sizeof(buf), vc->session_id,
+                              strlen(vc->session_id));
+            jsonb_push_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
+            jsonb_push_string(&b, buf, sizeof(buf), vc->token,
+                              strlen(vc->token));
+            jsonb_pop_object(&b, buf, sizeof(buf));
+        }
+        jsonb_pop_object(&b, buf, sizeof(buf));
+    }
 
     logconf_info(
         &vc->conf,
         ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_RESUME (%d bytes)",
-        len);
-    ws_send_text(vc->ws, NULL, buf, len);
+        b.pos);
+
+    ws_send_text(vc->ws, NULL, buf, b.pos);
 }
 
 static void
@@ -66,24 +83,44 @@ send_identify(struct discord_voice *vc)
 {
     const struct discord_user *self = discord_get_self(vc->p_client);
     char buf[1024];
-    size_t len;
+    jsonb b;
 
-    len = json_inject(buf, sizeof(buf),
-                      "(op):0" /* IDENTIFY OPCODE */
-                      "(d):{"
-                      "(server_id):s_as_u64"
-                      "(user_id):s_as_u64"
-                      "(session_id):s"
-                      "(token):s"
-                      "}",
-                      &vc->guild_id, &self->id, vc->session_id, vc->token);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 0);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_push_object(&b, buf, sizeof(buf));
+        {
+            char tok[32];
+            size_t toklen =
+                snprintf(tok, sizeof(tok), "%" PRIu64, vc->guild_id);
+            jsonb_push_key(&b, buf, sizeof(buf), "server_id",
+                           sizeof("server_id") - 1);
+            jsonb_push_token(&b, buf, sizeof(buf), tok, toklen);
+            toklen = snprintf(tok, sizeof(tok), "%" PRIu64, self->id);
+            jsonb_push_key(&b, buf, sizeof(buf), "user_id",
+                           sizeof("user_id") - 1);
+            jsonb_push_token(&b, buf, sizeof(buf), tok, toklen);
+            jsonb_push_key(&b, buf, sizeof(buf), "session_id",
+                           sizeof("session_id") - 1);
+            jsonb_push_string(&b, buf, sizeof(buf), vc->session_id,
+                              strlen(vc->session_id));
+            jsonb_push_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
+            jsonb_push_string(&b, buf, sizeof(buf), vc->token,
+                              strlen(vc->token));
+            jsonb_pop_object(&b, buf, sizeof(buf));
+        }
+        jsonb_pop_object(&b, buf, sizeof(buf));
+    }
 
     logconf_info(
         &vc->conf,
         ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_IDENTIFY (%d bytes)",
-        len);
-    ws_send_text(vc->ws, NULL, buf, len);
+        b.pos);
+
+    ws_send_text(vc->ws, NULL, buf, b.pos);
 }
 
 static void
@@ -321,17 +358,24 @@ static void
 send_heartbeat(struct discord_voice *vc)
 {
     char buf[64];
-    size_t len;
+    jsonb b;
 
-    len = json_inject(buf, sizeof(buf), "(op):3, (d):ld",
-                      &vc->hbeat.interval_ms);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 3);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), vc->hbeat.interval_ms);
+        jsonb_pop_object(&b, buf, sizeof(buf));
+    }
 
     logconf_info(
         &vc->conf,
         ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_HEARTBEAT (%d bytes)",
-        len);
-    ws_send_text(vc->ws, NULL, buf, len);
+        b.pos);
+
+    ws_send_text(vc->ws, NULL, buf, b.pos);
 }
 
 static void
@@ -379,25 +423,38 @@ discord_send_speaking(struct discord_voice *vc,
                       enum discord_voice_speaking_flags flag,
                       int delay)
 {
+    char buf[128];
+    jsonb b;
+
     ASSERT_S(WS_CONNECTED == ws_get_status(vc->ws),
              "Action requires an active connection to Discord");
 
-    char buf[128];
-    size_t len = json_inject(buf, sizeof(buf),
-                             "(op):5," /* VOICE SPEAKING OPCODE */
-                             "(d):{"
-                             "(speaking):d"
-                             "(delay):d"
-                             "(ssrc):d"
-                             "}",
-                             &flag, &delay, &vc->udp_service.ssrc);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 7);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_push_object(&b, buf, sizeof(buf));
+        {
+            jsonb_push_key(&b, buf, sizeof(buf), "speaking",
+                           sizeof("speaking") - 1);
+            jsonb_push_number(&b, buf, sizeof(buf), flag);
+            jsonb_push_key(&b, buf, sizeof(buf), "delay", sizeof("delay") - 1);
+            jsonb_push_number(&b, buf, sizeof(buf), delay);
+            jsonb_push_key(&b, buf, sizeof(buf), "ssrc", sizeof("ssrc") - 1);
+            jsonb_push_number(&b, buf, sizeof(buf), vc->udp_service.ssrc);
+            jsonb_pop_object(&b, buf, sizeof(buf));
+        }
+        jsonb_pop_object(&b, buf, sizeof(buf));
+    }
 
     logconf_info(
         &vc->conf,
         ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_SPEAKING (%d bytes)",
-        len);
-    ws_send_text(vc->ws, NULL, buf, len);
+        b.pos);
+
+    ws_send_text(vc->ws, NULL, buf, b.pos);
 }
 
 static void
@@ -422,43 +479,49 @@ send_voice_state_update(struct discord_voice *vc,
 {
     struct discord_gateway *gw = &vc->p_client->gw;
     char buf[256];
-    size_t len;
+    jsonb b;
 
-    if (channel_id) {
-        len = json_inject(buf, sizeof(buf),
-                          "(op):4," /* VOICE STATE UPDATE OPCODE */
-                          "(d):{"
-                          "(guild_id):s_as_u64,"
-                          "(channel_id):s_as_u64,"
-                          "(self_mute):b,"
-                          "(self_deaf):b"
-                          "}",
-                          &guild_id, &channel_id, &self_mute, &self_deaf);
-        ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
-        logconf_info(
-            &vc->conf,
-            ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_STATE_UPDATE (%d "
-                                                    "bytes): join channel",
-            len);
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 4);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_push_object(&b, buf, sizeof(buf));
+        {
+            char tok[32];
+            size_t toklen = snprintf(tok, sizeof(tok), "%" PRIu64, guild_id);
+
+            jsonb_push_key(&b, buf, sizeof(buf), "guild_id",
+                           sizeof("guild_id") - 1);
+            jsonb_push_token(&b, buf, sizeof(buf), tok, toklen);
+            jsonb_push_key(&b, buf, sizeof(buf), "channel_id",
+                           sizeof("channel_id") - 1);
+            if (channel_id) {
+                toklen = snprintf(tok, sizeof(tok), "%" PRIu64, channel_id);
+                jsonb_push_token(&b, buf, sizeof(buf), tok, toklen);
+            }
+            else {
+                jsonb_push_null(&b, buf, sizeof(buf));
+            }
+            jsonb_push_key(&b, buf, sizeof(buf), "self_mute",
+                           sizeof("self_mute") - 1);
+            jsonb_push_bool(&b, buf, sizeof(buf), self_mute);
+            jsonb_push_key(&b, buf, sizeof(buf), "self_deaf",
+                           sizeof("self_deaf") - 1);
+            jsonb_push_bool(&b, buf, sizeof(buf), self_deaf);
+            jsonb_pop_object(&b, buf, sizeof(buf));
+        }
+        jsonb_pop_object(&b, buf, sizeof(buf));
     }
-    else {
-        len = json_inject(buf, sizeof(buf),
-                          "(op):4," /* VOICE STATE UPDATE OPCODE */
-                          "(d):{"
-                          "(guild_id):s_as_u64,"
-                          "(channel_id):null,"
-                          "(self_mute):b,"
-                          "(self_deaf):b"
-                          "}",
-                          &guild_id, &self_mute, &self_deaf);
-        ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
-        logconf_info(
-            &vc->conf,
-            ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_STATE_UPDATE (%d "
-                                                    "bytes): leave channel",
-            len);
-    }
-    ws_send_text(gw->ws, NULL, buf, len);
+
+    logconf_info(
+        &vc->conf,
+        ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " VOICE_STATE_UPDATE (%d "
+                                                "bytes): %s channel",
+        b.pos, channel_id ? "join" : "leave");
+
+    ws_send_text(gw->ws, NULL, buf, b.pos);
 }
 
 enum discord_voice_status

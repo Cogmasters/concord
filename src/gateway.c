@@ -36,9 +36,9 @@ close_opcode_print(enum discord_gateway_close_opcodes opcode)
 void
 discord_gateway_send_presence_update(struct discord_gateway *gw)
 {
+    struct ws_info info = { 0 };
     char buf[2048];
     size_t len;
-    struct ws_info info = { 0 };
 
     if (!gw->session->is_ready) return;
 
@@ -61,38 +61,50 @@ discord_gateway_send_presence_update(struct discord_gateway *gw)
 static void
 send_resume(struct discord_gateway *gw)
 {
-    char buf[1024];
-    size_t len;
     struct ws_info info = { 0 };
+    char buf[1024];
+    jsonb b;
 
     /* reset */
     gw->session->status ^= DISCORD_SESSION_RESUMABLE;
 
-    len = json_inject(buf, sizeof(buf),
-                      "(op):6" /* RESUME OPCODE */
-                      "(d):{"
-                      "(token):s"
-                      "(session_id):s"
-                      "(seq):d"
-                      "}",
-                      gw->id.token, gw->session->id, &gw->payload.seq);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 6);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", 1);
+        jsonb_push_object(&b, buf, sizeof(buf));
+        {
+            jsonb_push_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
+            jsonb_push_string(&b, buf, sizeof(buf), gw->id.token,
+                              strlen(gw->id.token));
+            jsonb_push_key(&b, buf, sizeof(buf), "session_id",
+                           sizeof("session_id") - 1);
+            jsonb_push_string(&b, buf, sizeof(buf), gw->session->id,
+                              strlen(gw->session->id));
+            jsonb_push_key(&b, buf, sizeof(buf), "seq", sizeof("seq") - 1);
+            jsonb_push_number(&b, buf, sizeof(buf), gw->payload.seq);
+            jsonb_pop_object(&b, buf, sizeof(buf));
+        }
+        jsonb_pop_object(&b, buf, sizeof(buf));
+    }
 
-    ws_send_text(gw->ws, &info, buf, len);
+    ws_send_text(gw->ws, &info, buf, b.pos);
 
     logconf_info(
         &gw->conf,
         ANSICOLOR("SEND",
                   ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
-        len, info.loginfo.counter + 1);
+        b.pos, info.loginfo.counter + 1);
 }
 
 static void
 send_identify(struct discord_gateway *gw)
 {
+    struct ws_info info = { 0 };
     char buf[1024];
     size_t len;
-    struct ws_info info = { 0 };
 
     /* Ratelimit check */
     if (gw->timer->now - gw->timer->identify < 5) {
@@ -129,20 +141,27 @@ send_identify(struct discord_gateway *gw)
 static void
 send_heartbeat(struct discord_gateway *gw)
 {
-    char buf[64];
-    size_t len;
     struct ws_info info = { 0 };
+    char buf[64];
+    jsonb b;
 
-    len = json_inject(buf, sizeof(buf), "(op):1,(d):d", &gw->payload.seq);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    jsonb_init(&b);
+    jsonb_push_object(&b, buf, sizeof(buf));
+    {
+        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), 1);
+        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_push_number(&b, buf, sizeof(buf), gw->payload.seq);
+        jsonb_pop_object(&b, buf, sizeof(buf));
+    }
 
-    ws_send_text(gw->ws, &info, buf, len);
+    ws_send_text(gw->ws, &info, buf, b.pos);
 
     logconf_info(
         &gw->conf,
         ANSICOLOR("SEND",
                   ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-        len, info.loginfo.counter + 1);
+        b.pos, info.loginfo.counter + 1);
 
     /* update heartbeat timestamp */
     gw->timer->hbeat = gw->timer->now;
