@@ -11,6 +11,8 @@
 #include <pthread.h>
 
 #include "json-actor.h"
+#define JSONB_HEADER
+#include "json-build.h"
 
 #include "logconf.h" /* struct logconf */
 #include "user-agent.h"
