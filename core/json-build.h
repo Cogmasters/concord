@@ -76,9 +76,7 @@ JSONB_API void jsonb_init(jsonb *builder);
  * @param bufsize the JSON buffer size
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_object(jsonb *builder,
-                                      char buf[],
-                                      size_t bufsize);
+JSONB_API jsonbcode jsonb_object(jsonb *builder, char buf[], size_t bufsize);
 
 /**
  * @brief Pop an object from the builder
@@ -88,7 +86,7 @@ JSONB_API jsonbcode jsonb_push_object(jsonb *builder,
  * @param bufsize the JSON buffer size
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_pop_object(jsonb *builder,
+JSONB_API jsonbcode jsonb_object_pop(jsonb *builder,
                                      char buf[],
                                      size_t bufsize);
 
@@ -102,7 +100,7 @@ JSONB_API jsonbcode jsonb_pop_object(jsonb *builder,
  * @param len the key length
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_key(
+JSONB_API jsonbcode jsonb_key(
     jsonb *builder, char buf[], size_t bufsize, const char key[], size_t len);
 
 /**
@@ -113,9 +111,7 @@ JSONB_API jsonbcode jsonb_push_key(
  * @param bufsize the JSON buffer size
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_array(jsonb *builder,
-                                     char buf[],
-                                     size_t bufsize);
+JSONB_API jsonbcode jsonb_array(jsonb *builder, char buf[], size_t bufsize);
 
 /**
  * @brief Pop an array from the builder
@@ -125,7 +121,7 @@ JSONB_API jsonbcode jsonb_push_array(jsonb *builder,
  * @param bufsize the JSON buffer size
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_pop_array(jsonb *builder,
+JSONB_API jsonbcode jsonb_array_pop(jsonb *builder,
                                     char buf[],
                                     size_t bufsize);
 
@@ -139,11 +135,11 @@ JSONB_API jsonbcode jsonb_pop_array(jsonb *builder,
  * @param len the token length
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_token(jsonb *builder,
-                                     char buf[],
-                                     size_t bufsize,
-                                     const char token[],
-                                     size_t len);
+JSONB_API jsonbcode jsonb_token(jsonb *builder,
+                                char buf[],
+                                size_t bufsize,
+                                const char token[],
+                                size_t len);
 
 /**
  * @brief Push a boolean token to the builder
@@ -154,10 +150,10 @@ JSONB_API jsonbcode jsonb_push_token(jsonb *builder,
  * @param boolean the boolean to be inserted
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_bool(jsonb *builder,
-                                    char buf[],
-                                    size_t bufsize,
-                                    int boolean);
+JSONB_API jsonbcode jsonb_bool(jsonb *builder,
+                               char buf[],
+                               size_t bufsize,
+                               int boolean);
 
 /**
  * @brief Push a null token to the builder
@@ -167,9 +163,7 @@ JSONB_API jsonbcode jsonb_push_bool(jsonb *builder,
  * @param bufsize the JSON buffer size
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_null(jsonb *builder,
-                                    char buf[],
-                                    size_t bufsize);
+JSONB_API jsonbcode jsonb_null(jsonb *builder, char buf[], size_t bufsize);
 
 /**
  * @brief Push a string token to the builder
@@ -181,7 +175,7 @@ JSONB_API jsonbcode jsonb_push_null(jsonb *builder,
  * @param len the string length
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_string(
+JSONB_API jsonbcode jsonb_string(
     jsonb *builder, char buf[], size_t bufsize, const char str[], size_t len);
 
 /**
@@ -193,10 +187,10 @@ JSONB_API jsonbcode jsonb_push_string(
  * @param number the number to be inserted
  * @return @ref jsonbcode value
  */
-JSONB_API jsonbcode jsonb_push_number(jsonb *builder,
-                                      char buf[],
-                                      size_t bufsize,
-                                      double number);
+JSONB_API jsonbcode jsonb_number(jsonb *builder,
+                                 char buf[],
+                                 size_t bufsize,
+                                 double number);
 
 #ifndef JSONB_HEADER
 #include <stdio.h>
@@ -208,24 +202,15 @@ static const char *
 _jsonb_eval_state(enum jsonbstate state)
 {
     switch (state) {
-    case JSONB_ARRAY_OR_OBJECT_OR_VALUE:
-        return "array or object or value";
-    case JSONB_OBJECT_KEY_OR_CLOSE:
-        return "object key or close";
-    case JSONB_OBJECT_NEXT_KEY_OR_CLOSE:
-        return "object next key or close";
-    case JSONB_OBJECT_VALUE:
-        return "object value";
-    case JSONB_ARRAY_VALUE_OR_CLOSE:
-        return "array value or close";
-    case JSONB_ARRAY_NEXT_VALUE_OR_CLOSE:
-        return "array next value or close";
-    case JSONB_ERROR:
-        return "error";
-    case JSONB_DONE:
-        return "done";
-    default:
-        return "unknown";
+    case JSONB_ARRAY_OR_OBJECT_OR_VALUE: return "array or object or value";
+    case JSONB_OBJECT_KEY_OR_CLOSE: return "object key or close";
+    case JSONB_OBJECT_NEXT_KEY_OR_CLOSE: return "object next key or close";
+    case JSONB_OBJECT_VALUE: return "object value";
+    case JSONB_ARRAY_VALUE_OR_CLOSE: return "array value or close";
+    case JSONB_ARRAY_NEXT_VALUE_OR_CLOSE: return "array next value or close";
+    case JSONB_ERROR: return "error";
+    case JSONB_DONE: return "done";
+    default: return "unknown";
     }
 }
 #define TRACE(prev, next)                                                     \
@@ -270,7 +255,7 @@ jsonb_init(jsonb *b)
 }
 
 jsonbcode
-jsonb_push_object(jsonb *b, char buf[], size_t bufsize)
+jsonb_object(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbstate new_state;
     size_t pos = 0;
@@ -303,7 +288,7 @@ jsonb_push_object(jsonb *b, char buf[], size_t bufsize)
 }
 
 jsonbcode
-jsonb_pop_object(jsonb *b, char buf[], size_t bufsize)
+jsonb_object_pop(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbcode code;
     size_t pos = 0;
@@ -388,8 +373,7 @@ second_iter:
 }
 
 jsonbcode
-jsonb_push_key(
-    jsonb *b, char buf[], size_t bufsize, const char key[], size_t len)
+jsonb_key(jsonb *b, char buf[], size_t bufsize, const char key[], size_t len)
 {
     size_t pos = 0;
     switch (*b->top) {
@@ -415,7 +399,7 @@ jsonb_push_key(
 }
 
 jsonbcode
-jsonb_push_array(jsonb *b, char buf[], size_t bufsize)
+jsonb_array(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbstate new_state;
     size_t pos = 0;
@@ -448,7 +432,7 @@ jsonb_push_array(jsonb *b, char buf[], size_t bufsize)
 }
 
 jsonbcode
-jsonb_pop_array(jsonb *b, char buf[], size_t bufsize)
+jsonb_array_pop(jsonb *b, char buf[], size_t bufsize)
 {
     enum jsonbcode code;
     size_t pos = 0;
@@ -471,7 +455,7 @@ jsonb_pop_array(jsonb *b, char buf[], size_t bufsize)
 }
 
 jsonbcode
-jsonb_push_token(
+jsonb_token(
     jsonb *b, char buf[], size_t bufsize, const char token[], size_t len)
 {
     enum jsonbstate next_state;
@@ -507,20 +491,20 @@ jsonb_push_token(
 }
 
 jsonbcode
-jsonb_push_bool(jsonb *b, char buf[], size_t bufsize, int boolean)
+jsonb_bool(jsonb *b, char buf[], size_t bufsize, int boolean)
 {
-    if (boolean) return jsonb_push_token(b, buf, bufsize, "true", 4);
-    return jsonb_push_token(b, buf, bufsize, "false", 5);
+    if (boolean) return jsonb_token(b, buf, bufsize, "true", 4);
+    return jsonb_token(b, buf, bufsize, "false", 5);
 }
 
 jsonbcode
-jsonb_push_null(jsonb *b, char buf[], size_t bufsize)
+jsonb_null(jsonb *b, char buf[], size_t bufsize)
 {
-    return jsonb_push_token(b, buf, bufsize, "null", 4);
+    return jsonb_token(b, buf, bufsize, "null", 4);
 }
 
 jsonbcode
-jsonb_push_string(
+jsonb_string(
     jsonb *b, char buf[], size_t bufsize, const char str[], size_t len)
 {
     enum jsonbstate next_state;
@@ -559,12 +543,12 @@ jsonb_push_string(
 }
 
 jsonbcode
-jsonb_push_number(jsonb *b, char buf[], size_t bufsize, double number)
+jsonb_number(jsonb *b, char buf[], size_t bufsize, double number)
 {
     char token[32];
     long len = sprintf(token, "%.17G", number);
     if (len < 0) return JSONB_ERROR_INPUT;
-    return jsonb_push_token(b, buf, bufsize, token, len);
+    return jsonb_token(b, buf, bufsize, token, len);
 }
 #endif /* JSONB_HEADER */
 

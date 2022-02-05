@@ -3089,10 +3089,12 @@ discord_disconnect_guild_member(struct discord *client,
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
     jsonb_init(&b);
-    jsonb_push_object(&b, buf, sizeof(buf));
-    jsonb_push_key(&b, buf, sizeof(buf), "channel_id", sizeof("channel_id") - 1);
-    jsonb_push_null(&b, buf, sizeof(buf));
-    jsonb_pop_object(&b, buf, sizeof(buf));
+    jsonb_object(&b, buf, sizeof(buf));
+    {
+        jsonb_key(&b, buf, sizeof(buf), "channel_id", sizeof("channel_id") - 1);
+        jsonb_null(&b, buf, sizeof(buf));
+        jsonb_object_pop(&b, buf, sizeof(buf));
+    }
 
     body.start = buf;
     body.size = b.pos;

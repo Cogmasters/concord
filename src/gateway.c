@@ -69,25 +69,25 @@ send_resume(struct discord_gateway *gw)
     gw->session->status ^= DISCORD_SESSION_RESUMABLE;
 
     jsonb_init(&b);
-    jsonb_push_object(&b, buf, sizeof(buf));
+    jsonb_object(&b, buf, sizeof(buf));
     {
-        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
-        jsonb_push_number(&b, buf, sizeof(buf), 6);
-        jsonb_push_key(&b, buf, sizeof(buf), "d", 1);
-        jsonb_push_object(&b, buf, sizeof(buf));
+        jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_number(&b, buf, sizeof(buf), 6);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
+        jsonb_object(&b, buf, sizeof(buf));
         {
-            jsonb_push_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
-            jsonb_push_string(&b, buf, sizeof(buf), gw->id.token,
+            jsonb_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
+            jsonb_string(&b, buf, sizeof(buf), gw->id.token,
                               strlen(gw->id.token));
-            jsonb_push_key(&b, buf, sizeof(buf), "session_id",
+            jsonb_key(&b, buf, sizeof(buf), "session_id",
                            sizeof("session_id") - 1);
-            jsonb_push_string(&b, buf, sizeof(buf), gw->session->id,
+            jsonb_string(&b, buf, sizeof(buf), gw->session->id,
                               strlen(gw->session->id));
-            jsonb_push_key(&b, buf, sizeof(buf), "seq", sizeof("seq") - 1);
-            jsonb_push_number(&b, buf, sizeof(buf), gw->payload.seq);
-            jsonb_pop_object(&b, buf, sizeof(buf));
+            jsonb_key(&b, buf, sizeof(buf), "seq", sizeof("seq") - 1);
+            jsonb_number(&b, buf, sizeof(buf), gw->payload.seq);
+            jsonb_object_pop(&b, buf, sizeof(buf));
         }
-        jsonb_pop_object(&b, buf, sizeof(buf));
+        jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
     ws_send_text(gw->ws, &info, buf, b.pos);
@@ -146,13 +146,13 @@ send_heartbeat(struct discord_gateway *gw)
     jsonb b;
 
     jsonb_init(&b);
-    jsonb_push_object(&b, buf, sizeof(buf));
+    jsonb_object(&b, buf, sizeof(buf));
     {
-        jsonb_push_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
-        jsonb_push_number(&b, buf, sizeof(buf), 1);
-        jsonb_push_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
-        jsonb_push_number(&b, buf, sizeof(buf), gw->payload.seq);
-        jsonb_pop_object(&b, buf, sizeof(buf));
+        jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_number(&b, buf, sizeof(buf), 1);
+        jsonb_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_number(&b, buf, sizeof(buf), gw->payload.seq);
+        jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
     ws_send_text(gw->ws, &info, buf, b.pos);
