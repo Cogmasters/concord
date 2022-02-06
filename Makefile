@@ -31,7 +31,8 @@ CORE_SRC     := $(CORE_DIR)/common.c     \
                 $(CORE_DIR)/user-agent.c \
                 $(CORE_DIR)/websockets.c \
                 $(CORE_DIR)/io_poller.c  \
-                $(CORE_DIR)/json-build.c
+                $(CORE_DIR)/json-build.c \
+                $(CORE_DIR)/jsmn-find.c
 
 THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
