@@ -1,0 +1,10 @@
+# Ignore all
+*
+# But these
+!.gitignore
+!*.c
+![^db].*.h
+!discord.h
+!Makefile
+
+
