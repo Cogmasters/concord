@@ -13,9 +13,10 @@ ENUM_BEGIN(discord_channel_types)
 ENUM_END(discord_channel_types)
 
 STRUCT_BEGIN(discord_overwrite)
-  COND_INSERT(id, !=, 0)
+  IF(id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, id)
-    FIELD(int, type)
+  ENDIF
+    FIELD(int, type, 0)
     FIELD_PRINTF(uint64_t, SCNu64, PRIu64, allow)
     FIELD_PRINTF(uint64_t, SCNu64, PRIu64, deny)
 STRUCT_END(discord_overwrite)
@@ -25,39 +26,53 @@ LIST_BEGIN(discord_overwrites)
 LIST_END(discord_overwrites)
 
 STRUCT_BEGIN(discord_channel)
-  COND_INSERT(id, !=, 0)
+  IF(id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, id)
+  ENDIF
     FIELD_ENUM(discord_channel_types, type)
-  COND_INSERT(guild_id, !=, 0)
+  IF(guild_id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, guild_id)
-    FIELD(int, position)
-  COND_INSERT(permission_overwrites, !=, NULL)
+  ENDIF
+    FIELD(int, position, 0)
+  IF(permission_overwrites, !=, NULL)
     FIELD_STRUCT_PTR(discord_overwrites, *, permission_overwrites)
-  COND_INSERT(name, !=, NULL)
+  ENDIF
+  IF(name, !=, NULL)
     FIELD_PTR(char, *, name)
-  COND_INSERT(topic, !=, NULL)
+  ENDIF
+  IF(topic, !=, NULL)
     FIELD_PTR(char, *, topic)
-    FIELD(bool, nsfw)
-  COND_INSERT(last_message_id, !=, 0)
+  ENDIF
+    FIELD(bool, nsfw, false)
+  IF(last_message_id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, last_message_id)
-  COND_INSERT(bitrate, !=, 0)
-    FIELD(int, bitrate)
-  COND_INSERT(user_limit, !=, 0)
-    FIELD(int, user_limit)
-  COND_INSERT(rate_limit_per_user, !=, 0)
-    FIELD(int, rate_limit_per_user)
-  COND_INSERT(recipients, !=, NULL)
+  ENDIF
+  IF(bitrate, !=, 0)
+    FIELD(int, bitrate, 0)
+  ENDIF
+  IF(user_limit, !=, 0)
+    FIELD(int, user_limit, 0)
+  ENDIF
+  IF(rate_limit_per_user, !=, 0)
+    FIELD(int, rate_limit_per_user, 0)
+  ENDIF
+  IF(recipients, !=, NULL)
     FIELD_STRUCT_PTR(discord_users, *, recipients)
-  COND_INSERT(icon, !=, NULL)
+  ENDIF
+  IF(icon, !=, NULL)
     FIELD_PTR(char, *, icon)
-  COND_INSERT(owner_id, !=, 0)
+  ENDIF
+  IF(owner_id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, owner_id)
-  COND_INSERT(application_id, !=, 0)
+  ENDIF
+  IF(application_id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, application_id)
-  COND_INSERT(parent_id, !=, 0)
+  ENDIF
+  IF(parent_id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, parent_id)
+  ENDIF
 #if 0
-  COND_INSERT(last_pin_timestamp, !=, 0)
+  IF(last_pin_timestamp, !=, 0)
     FIELD_PRINTF(u64unix_ms, last_pin_timestamp)
     FIELD_STRUCT_PTR(discord_messages, *, messages)
 #endif
@@ -85,26 +100,33 @@ ENUM_BEGIN(discord_premium_types)
 ENUM_END(discord_premium_types)
 
 STRUCT_BEGIN(discord_user)
-  COND_INSERT(id, !=, 0)
+  IF(id, !=, 0)
     FIELD_PRINTF(u64snowflake, SCNu64, PRIu64, id)
-  COND_INSERT(username, !=, NULL)
+  ENDIF
+  IF(username, !=, NULL)
     FIELD_PTR(char, *, username)
-  COND_INSERT(discriminator, !=, NULL)
+  ENDIF
+  IF(discriminator, !=, NULL)
     FIELD_PTR(char, *, discriminator)
-  COND_INSERT(avatar, !=, NULL)
+  ENDIF
+  IF(avatar, !=, NULL)
     FIELD_PTR(char, *, avatar)
-    FIELD(bool, bot)
+  ENDIF
+    FIELD(bool, bot, false)
     FIELD_CUSTOM(bool, DECOR_BLANK, System, INIT_BLANK, CLEANUP_BLANK, 
-                 JSON_ENCODER_bool, JSON_DECODER_bool, system)
-    FIELD(bool, mfa_enabled)
-  COND_INSERT(locale, !=, NULL)
+                 JSON_ENCODER_bool, JSON_DECODER_bool, system, false)
+    FIELD(bool, mfa_enabled, false)
+  IF(locale, !=, NULL)
     FIELD_PTR(char, *, locale)
-    FIELD(bool, verified)
-  COND_INSERT(email, !=, NULL)
+  ENDIF
+    FIELD(bool, verified, false)
+  IF(email, !=, NULL)
     FIELD_PTR(char, *, email)
+  ENDIF
     FIELD_ENUM(discord_user_flags, flags)
-  COND_INSERT(banner, !=, NULL)
+  IF(banner, !=, NULL)
     FIELD_PTR(char, *, banner)
+  ENDIF
     FIELD_ENUM(discord_premium_types, premium_type)
     FIELD_ENUM(discord_user_flags, public_flags)
 STRUCT_END(discord_user)

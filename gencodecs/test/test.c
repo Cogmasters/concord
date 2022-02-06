@@ -176,7 +176,7 @@ check_deep_nested_object_json_decoding(void)
         jsonb_object_pop(&b, json, sizeof(json));
     jsonb_object_pop(&b, json, sizeof(json));
 
-    foo_from_json(json, sizeof(json), &foo);
+    ASSERT_FALSE(0 == foo_from_json(json, sizeof(json), &foo));
     ASSERTm(buf, foo_to_json(buf, sizeof(buf), &foo) != 0);
     ASSERT_STR_EQ(json, buf);
 
@@ -202,8 +202,7 @@ check_deep_nested_list_json_decoding(void)
         jsonb_array_pop(&b, json, sizeof(json));
     jsonb_array_pop(&b, json, sizeof(json));
 
-    bars_from_json(json, sizeof(json), &bars);
-
+    ASSERT_FALSE(0 == bars_from_json(json, sizeof(json), &bars));
     ASSERTm(buf, bars_to_json(buf, sizeof(buf), &bars) != 0);
     ASSERT_STR_EQ(json, buf);
 
@@ -233,7 +232,7 @@ check_channel_decoding(void)
         "\"XXnR3q/DxXc\"}}}";
     char buf[sizeof(json)];
 
-    discord_channel_from_json(json, sizeof(json), &channel);
+    ASSERT_FALSE(0 == discord_channel_from_json(json, sizeof(json), &channel));
     ASSERT_FALSEm(buf, !discord_channel_to_json(buf, sizeof(buf), &channel));
     ASSERT_EQ(0, channel.type);
     ASSERT_EQ(NULL, channel.topic);

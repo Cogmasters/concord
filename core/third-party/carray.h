@@ -1,3 +1,6 @@
+/* Modified by Lucas Müller (muller.lucas@hotmail.com), 06 Feb 2022 
+ * - __carray_init() accept initial length
+ */
 /* Modified by Lucas Müller (muller.lucas@hotmail.com), 02 Feb 2022 
  * - remove free(carray) at __carrray_free()
  */
@@ -27,14 +30,14 @@
 
 /* carray_init */
 #ifndef CARRAY_STACKFUL
-#define __carray_init(carray, _type, _compare, _free)             \
-do {                                                              \
-    (carray)->realsize = CARRAY_INITIAL_SIZE;                     \
-    (carray)->array = calloc(CARRAY_INITIAL_SIZE, sizeof(_type)); \
+#define __carray_init(carray, length, _type, _compare, _free) \
+do {                                                          \
+    (carray)->realsize = length;                              \
+    (carray)->array = calloc(length, sizeof(_type));          \
 } while (0)
 
 #define carray_init(carray, settings) \
-    __carray_init(carray, settings)
+    __carray_init(carray, CARRAY_INITIAL_SIZE, settings)
 #else
 #define carray_init(carray, length, block) \
 do {                                       \
