@@ -60,26 +60,26 @@ The only dependency is `curl-7.4.1` or higher
 #### Ubuntu and Debian
 
 ```bash
-$ sudo apt install -y build-essential libcurl4-openssl-dev
+sudo apt install -y build-essential libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```bash
-$ sudo xbps-install -S libcurl-devel
+sudo xbps-install -S libcurl-devel
 ```
 ### Setting up your environment
 
 #### Clone Concord into your workspace
 
 ```bash
-$ git clone https://github.com/cogmasters/concord.git && cd concord
+git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
 #### Compile Concord 
 
 ```bash
-$ make
+make
 ```
 
 ### Configuring Concord
@@ -118,11 +118,11 @@ The following outlines the default fields of `config.json`
    explaining how to get your bot token and adding it to a server.
 2. Build example executables:
    ```bash
-   $ make examples
+   make examples
    ```
 3. Run Copycat-Bot:
    ```bash
-   $ cd examples && ./copycat
+   cd examples && ./copycat
    ```
 
 #### Get Copycat-Bot Response
@@ -142,7 +142,7 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
 Concord can be installed in case developing inside of `my_bot/` doesn't suit your needs:
 ```bash
-$ sudo make install
+sudo make install
 ```
 
 Included headers must be `concord/` prefixed:
@@ -155,13 +155,13 @@ Included headers must be `concord/` prefixed:
 #### GCC (Recommended)
 
 ```bash
-$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
+gcc myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 #### Clang
 
 ```bash
-$ clang myBot.c -o myBot -pthread -ldiscord -lcurl
+clang myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 ## Recommended debuggers
@@ -173,7 +173,7 @@ First, make sure your executable is compiled with the `-g` flag to ensure human-
 Using valgrind to check for memory leaks:
 
 ```bash
-$ valgrind --leak-check=full ./myBot
+valgrind --leak-check=full ./myBot
 ```
 For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
 
@@ -182,7 +182,7 @@ For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.o
 Using GDB to check for runtime errors, such as segmentation faults:
 
 ```bash
-$ gdb ./myBot
+gdb ./myBot
 ```
 And then execute your bot from the gdb environment:
 ```bash
