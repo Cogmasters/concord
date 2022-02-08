@@ -41,10 +41,9 @@ typedef void (*discord_on_voice_speaking)(struct discord *client,
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @see discord_set_voice_cbs()
  */
-typedef void (*discord_on_voice_client_disconnect)(
-  struct discord *client,
-  struct discord_voice *vc,
-  const u64_snowflake_t user_id);
+typedef void (*discord_on_voice_client_disconnect)(struct discord *client,
+                                                   struct discord_voice *vc,
+                                                   const u64_snowflake_t user_id);
 
 /**
  * @brief Voice Codec callback
