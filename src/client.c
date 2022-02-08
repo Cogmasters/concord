@@ -125,6 +125,17 @@ discord_strerror(CCORDcode code, struct discord *client)
     }
 }
 
+int
+concord_return_error(const char *error, int32_t error_code)
+{
+  if (error_code < 0 || error_code > 2) {
+    return 1;
+  }
+  
+  log_info("%s", error);
+  
+  return error_code;
+}
 void *
 discord_set_data(struct discord *client, void *data)
 {
