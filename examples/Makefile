@@ -22,6 +22,7 @@ BOTS := audit-log \
         manual-dm \
         pin \
         ping-pong \
+	8ball \
         presence \
         reaction \
         shell \
