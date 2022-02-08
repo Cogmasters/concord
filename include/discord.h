@@ -1533,11 +1533,10 @@ CCORDcode discord_modify_guild_member(struct discord *client,
  * @CCORD_ret_obj{ret, discord_guild_member}
  * @CCORD_return
  */
-CCORDcode discord_modify_current_member(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  struct discord_modify_current_member_params *params,
-  struct discord_guild_member *ret);
+CCORDcode discord_modify_current_member(struct discord *client,
+                                        u64_snowflake_t guild_id,
+                                        struct discord_modify_current_member_params *params,
+                                        struct discord_guild_member *ret);
 
 /**
  * @deprecated use discord_modify_current_member() instead
@@ -1550,11 +1549,10 @@ CCORDcode discord_modify_current_member(
  * @CCORD_ret_obj{ret, discord_guild_member}
  * @CCORD_return
  */
-CCORDcode discord_modify_current_user_nick(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  struct discord_modify_current_user_nick_params *params,
-  struct discord_guild_member *ret);
+CCORDcode discord_modify_current_user_nick(struct discord *client,
+                                           u64_snowflake_t guild_id,
+                                           struct discord_modify_current_user_nick_params *params,
+                                           struct discord_guild_member *ret);
 
 /**
  * @brief Adds a role to a guild member
@@ -1640,11 +1638,10 @@ CCORDcode discord_get_guild_ban(struct discord *client,
  * @param params request parameters
  * @CCORD_return
  */
-CCORDcode discord_create_guild_ban(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t user_id,
-  struct discord_create_guild_ban_params *params);
+CCORDcode discord_create_guild_ban(struct discord *client,
+                                   u64_snowflake_t guild_id,
+                                   u64_snowflake_t user_id,
+                                   struct discord_create_guild_ban_params *params);
 
 /**
  * @brief Remove the ban for a user
@@ -1683,11 +1680,10 @@ CCORDcode discord_get_guild_roles(struct discord *client,
  * @CCORD_ret_obj{ret, discord_role}
  * @CCORD_return
  */
-CCORDcode discord_create_guild_role(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  struct discord_create_guild_role_params *params,
-  struct discord_role *ret);
+CCORDcode discord_create_guild_role(struct discord *client,
+                                    u64_snowflake_t guild_id,
+                                    struct discord_create_guild_role_params *params,
+                                    struct discord_role *ret);
 
 /**
  * @brief Begin guild prune operation
@@ -1700,10 +1696,9 @@ CCORDcode discord_create_guild_role(
  * @param guild_id the unique id of the guild to start the prune
  * @CCORD_return
  */
-CCORDcode discord_begin_guild_prune(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  struct discord_begin_guild_prune_params *params);
+CCORDcode discord_begin_guild_prune(struct discord *client,
+                                    u64_snowflake_t guild_id,
+                                    struct discord_begin_guild_prune_params *params);
 
 /**
  * @brief Get guild invites
@@ -1769,11 +1764,10 @@ CCORDcode discord_get_guild_welcome_screen(struct discord *client,
  * @CCORD_ret_list{ret, discord_role}
  * @CCORD_return
  */
-CCORDcode discord_modify_guild_role_positions(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  struct discord_modify_guild_role_positions_params **params,
-  struct discord_role ***ret);
+CCORDcode discord_modify_guild_role_positions(struct discord *client,
+                                              u64_snowflake_t guild_id,
+                                              struct discord_modify_guild_role_positions_params **params,
+                                              struct discord_role ***ret);
 
 /**
  * @brief Modify a guild role
@@ -1787,12 +1781,11 @@ CCORDcode discord_modify_guild_role_positions(
  * @CCORD_ret_obj{ret, discord_role}
  * @CCORD_return
  */
-CCORDcode discord_modify_guild_role(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t role_id,
-  struct discord_modify_guild_role_params *params,
-  struct discord_role *ret);
+CCORDcode discord_modify_guild_role(struct discord *client,
+                                    u64_snowflake_t guild_id,
+                                    u64_snowflake_t role_id,
+                                    struct discord_modify_guild_role_params *params,
+                                    struct discord_role *ret);
 
 /**
  * @brief Delete a guild role
@@ -1830,11 +1823,10 @@ CCORDcode discord_get_guild_template(struct discord *client,
  * @CCORD_ret_obj{ret, discord_guild_template}
  * @CCORD_return
  */
-CCORDcode discord_create_guild_template(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  struct discord_create_guild_template_params *params,
-  struct discord_guild_template *ret);
+CCORDcode discord_create_guild_template(struct discord *client,
+                                        u64_snowflake_t guild_id,
+                                        struct discord_create_guild_template_params *params,
+                                        struct discord_guild_template *ret);
 
 /**
  * @brief Syncs the template to the guild's current state
@@ -1910,10 +1902,9 @@ CCORDcode discord_get_user(struct discord *client,
  * @CCORD_ret_obj{ret, discord_user}
  * @CCORD_return
  */
-CCORDcode discord_modify_current_user(
-  struct discord *client,
-  struct discord_modify_current_user_params *params,
-  struct discord_user *ret);
+CCORDcode discord_modify_current_user(struct discord *client,
+                                      struct discord_modify_current_user_params *params,
+                                      struct discord_user *ret);
 
 /**
  * @brief Get guilds client is a member of
@@ -1961,10 +1952,9 @@ CCORDcode discord_create_dm(struct discord *client,
  * @CCORD_ret_obj{ret, discord_channel}
  * @CCORD_return
  */
-CCORDcode discord_create_group_dm(
-  struct discord *client,
-  struct discord_create_group_dm_params *params,
-  struct discord_channel *ret);
+CCORDcode discord_create_group_dm(struct discord *client,
+                                  struct discord_create_group_dm_params *params,
+                                  struct discord_channel *ret);
 
 /**
  * @brief Get a list of connection objects
@@ -2080,12 +2070,11 @@ CCORDcode discord_modify_webhook(struct discord *client,
  * @CCORD_ret_obj{ret, discord_webhook}
  * @CCORD_return
  */
-CCORDcode discord_modify_webhook_with_token(
-  struct discord *client,
-  u64_snowflake_t webhook_id,
-  const char webhook_token[],
-  struct discord_modify_webhook_with_token_params *params,
-  struct discord_webhook *ret);
+CCORDcode discord_modify_webhook_with_token(struct discord *client,
+                                            u64_snowflake_t webhook_id,
+                                            const char webhook_token[],
+                                            struct discord_modify_webhook_with_token_params *params,
+                                            struct discord_webhook *ret);
 
 /**
  * Delete a webhook permanently. Requires the MANAGE_WEBHOOKS permission
@@ -2116,12 +2105,10 @@ CCORDcode discord_delete_webhook_with_token(struct discord *client,
  * @CCORD_ret_obj{ret, discord_webhook}
  * @CCORD_return
  */
-CCORDcode discord_execute_webhook(
-  struct discord *client,
-  u64_snowflake_t webhook_id,
-  const char webhook_token[],
-  struct discord_execute_webhook_params *params,
-  struct discord_webhook *ret);
+CCORDcode discord_execute_webhook(struct discord *client,u64_snowflake_t webhook_id,
+                                  const char webhook_token[],
+                                  struct discord_execute_webhook_params *params,
+                                  struct discord_webhook *ret);
 
 /**
  * @brief Get previously-sent webhook message from the same token
@@ -2150,13 +2137,11 @@ CCORDcode discord_get_webhook_message(struct discord *client,
  * @CCORD_ret_obj{ret, discord_message}
  * @CCORD_return
  */
-CCORDcode discord_edit_webhook_message(
-  struct discord *client,
-  u64_snowflake_t webhook_id,
-  const char webhook_token[],
-  u64_snowflake_t message_id,
-  struct discord_edit_webhook_message_params *params,
-  struct discord_message *ret);
+CCORDcode discord_edit_webhook_message(struct discord *client,u64_snowflake_t webhook_id,
+                                       const char webhook_token[],
+                                       u64_snowflake_t message_id,
+                                       struct discord_edit_webhook_message_params *params,
+                                       struct discord_message *ret);
 
 /**
  * @brief Deletes a message that was created by the webhook
@@ -2263,10 +2248,9 @@ typedef enum discord_event_scheduler {
  *        of how each event is handled: blocking, non-blocking or ignored
  * @see discord_set_event_scheduler(), @ref discord_gateway_events
  */
-typedef enum discord_event_scheduler (*discord_on_scheduler)(
-  struct discord *client,
-  struct sized_buffer *event_data,
-  enum discord_gateway_events event);
+typedef enum discord_event_scheduler (*discord_on_scheduler)(struct discord *client,
+                                                             struct sized_buffer *event_data,
+                                                             enum discord_gateway_events event);
 
 /**
  * @brief Provides the user with a fine-grained control of the Discord's
@@ -2292,11 +2276,10 @@ typedef void (*discord_on_application_command)(
   struct discord *client, const struct discord_application_command *app_cmd);
 typedef void (*discord_on_channel)(struct discord *client,
                                    const struct discord_channel *channel);
-typedef void (*discord_on_channel_pins_update)(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  u64_snowflake_t channel_id,
-  u64_unix_ms_t last_pin_timestamp);
+typedef void (*discord_on_channel_pins_update)(struct discord *client,
+                                               u64_snowflake_t guild_id,
+                                               u64_snowflake_t channel_id,
+                                               u64_unix_ms_t last_pin_timestamp);
 typedef void (*discord_on_guild)(struct discord *client,
                                  const struct discord_guild *guild);
 typedef void (*discord_on_guild_delete)(struct discord *client,
@@ -2307,19 +2290,17 @@ typedef void (*discord_on_guild_role)(struct discord *client,
 typedef void (*discord_on_guild_role_delete)(struct discord *client,
                                              u64_snowflake_t guild_id,
                                              u64_snowflake_t role_id);
-typedef void (*discord_on_guild_member)(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  const struct discord_guild_member *member);
-typedef void (*discord_on_guild_member_remove)(
-  struct discord *client,
-  u64_snowflake_t guild_id,
-  const struct discord_user *user);
+typedef void (*discord_on_guild_member)(struct discord *client,
+                                        u64_snowflake_t guild_id,
+                                        const struct discord_guild_member *member);
+typedef void (*discord_on_guild_member_remove)(struct discord *client,
+                                               u64_snowflake_t guild_id,
+                                               const struct discord_user *user);
 typedef void (*discord_on_guild_ban)(struct discord *client,
                                      u64_snowflake_t guild_id,
                                      const struct discord_user *user);
-typedef void (*discord_on_interaction)(
-  struct discord *client, const struct discord_interaction *interaction);
+typedef void (*discord_on_interaction)(struct discord *client,
+                                       const struct discord_interaction *interaction);
 typedef void (*discord_on_message)(struct discord *client,
                                    const struct discord_message *message);
 typedef void (*discord_on_message_delete)(struct discord *client,
@@ -2330,34 +2311,30 @@ typedef void (*discord_on_message_delete_bulk)(struct discord *client,
                                                const u64_snowflake_t **ids,
                                                u64_snowflake_t channel_id,
                                                u64_snowflake_t guild_id);
-typedef void (*discord_on_message_reaction_add)(
-  struct discord *client,
-  u64_snowflake_t user_id,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id,
-  const struct discord_guild_member *member,
-  const struct discord_emoji *emoji);
-typedef void (*discord_on_message_reaction_remove)(
-  struct discord *client,
-  u64_snowflake_t user_id,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id,
-  const struct discord_emoji *emoji);
-typedef void (*discord_on_message_reaction_remove_all)(
-  struct discord *client,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id);
-typedef void (*discord_on_message_reaction_remove_emoji)(
-  struct discord *client,
-  u64_snowflake_t channel_id,
-  u64_snowflake_t message_id,
-  u64_snowflake_t guild_id,
-  const struct discord_emoji *emoji);
-typedef void (*discord_on_voice_state_update)(
-  struct discord *client, const struct discord_voice_state *voice_state);
+typedef void (*discord_on_message_reaction_add)(struct discord *client,
+                                                u64_snowflake_t user_id,
+                                                u64_snowflake_t channel_id,
+                                                u64_snowflake_t message_id,
+                                                u64_snowflake_t guild_id,
+                                                const struct discord_guild_member *member,
+                                                const struct discord_emoji *emoji);
+typedef void (*discord_on_message_reaction_remove)(struct discord *client,
+                                                   u64_snowflake_t user_id,
+                                                   u64_snowflake_t channel_id,
+                                                   u64_snowflake_t message_id,
+                                                   u64_snowflake_t guild_id,
+                                                   const struct discord_emoji *emoji);
+typedef void (*discord_on_message_reaction_remove_all)(struct discord *client,
+                                                       u64_snowflake_t channel_id,
+                                                       u64_snowflake_t message_id,
+                                                       u64_snowflake_t guild_id);
+typedef void (*discord_on_message_reaction_remove_emoji)(struct discord *client,
+                                                         u64_snowflake_t channel_id,
+                                                         u64_snowflake_t message_id,
+                                                         u64_snowflake_t guild_id,
+                                                         const struct discord_emoji *emoji);
+typedef void (*discord_on_voice_state_update)(struct discord *client,
+                                              const struct discord_voice_state *voice_state);
 typedef void (*discord_on_voice_server_update)(struct discord *client,
                                                const char *token,
                                                u64_snowflake_t guild_id,
@@ -2677,12 +2654,10 @@ void discord_embed_add_field(struct discord_embed *embed,
  * @param allow permission bit set
  * @param deny permission bit set
  */
-void discord_overwrite_append(
-  struct discord_overwrite ***permission_overwrites,
-  u64_snowflake_t id,
-  int type,
-  u64_bitmask_t allow,
-  u64_bitmask_t deny);
+void discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
+                              u64_snowflake_t id,int type,
+                              u64_bitmask_t allow,
+                              u64_bitmask_t deny);
 
 /**
  * @brief Helper function to add presence activities
