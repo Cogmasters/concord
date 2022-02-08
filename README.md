@@ -78,13 +78,13 @@ sudo apk add curl-dev
 #### Clone Concord into your workspace
 
 ```bash
-git clone https://github.com/cogmasters/concord.git && cd concord
+$ git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
 #### Compile Concord 
 
 ```bash
-make
+$ make
 ```
 
 ### Configuring Concord
