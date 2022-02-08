@@ -40,7 +40,7 @@ void eight_ball(struct discord *client, const struct discord_message *msg) {
 		":red_circle: Very doubtful."
 		};
 
-	int32_t answer = rand() % 20; //random number from 0 - 20
+	int answer = rand() % 20; //random number from 0 - 20
 
 	struct discord_embed embed = { // simple embed message
 		.title = ":8ball:8-Ball",
