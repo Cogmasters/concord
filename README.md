@@ -59,32 +59,32 @@ The only dependency is `curl-7.4.1` or higher
 #### Ubuntu and Debian
 
 ```bash
-$ sudo apt install -y build-essential libcurl4-openssl-dev
+sudo apt install -y build-essential libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```bash
-$ sudo xbps-install -S libcurl-devel
+sudo xbps-install -S libcurl-devel
 ```
 
 #### Alpine
 
 ```bash
-$ sudo apk add curl-dev
+sudo apk add curl-dev
 ```
 ### Setting up your environment
 
 #### Clone Concord into your workspace
 
 ```bash
-$ git clone https://github.com/cogmasters/concord.git && cd concord
+git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
 #### Compile Concord 
 
 ```bash
-$ make
+make
 ```
 
 ### Configuring Concord
@@ -147,7 +147,7 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
 Concord can be installed in case developing inside of `myBot/` doesn't suit your needs:
 ```bash
-$ sudo make install
+sudo make install
 ```
 
 Included headers must be `concord/` prefixed:
@@ -178,7 +178,7 @@ First, make sure your executable is compiled with the `-g` flag to ensure human-
 Using valgrind to check for memory leaks:
 
 ```bash
-$ valgrind --leak-check=full ./myBot
+valgrind --leak-check=full ./myBot
 ```
 For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
 
