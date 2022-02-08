@@ -141,17 +141,6 @@ int concord_return_error(const char *error, int32_t error_code) {
   
   return error_code;
   
-  /*
-    ex:
-    
-    const char *MyError = "ERROR:: something bad happened";
-  
-    if(something bad) {
-      concord_return_error(client, MyError, 1);
-    }
-  
-  */
-  
 }
 
 void *
