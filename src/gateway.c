@@ -49,6 +49,7 @@ discord_gateway_send_presence_update(struct discord_gateway *gw)
     ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
     ws_send_text(gw->ws, &info, buf, len);
+    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 
     logconf_info(
         &gw->conf,
@@ -91,6 +92,7 @@ send_resume(struct discord_gateway *gw)
     }
 
     ws_send_text(gw->ws, &info, buf, b.pos);
+    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 
     logconf_info(
         &gw->conf,
@@ -125,6 +127,7 @@ send_identify(struct discord_gateway *gw)
     ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
 
     ws_send_text(gw->ws, &info, buf, len);
+    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 
     logconf_info(
         &gw->conf,
@@ -156,6 +159,7 @@ send_heartbeat(struct discord_gateway *gw)
     }
 
     ws_send_text(gw->ws, &info, buf, b.pos);
+    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
 
     logconf_info(
         &gw->conf,
@@ -1217,11 +1221,11 @@ default_scheduler_cb(struct discord *a,
     return DISCORD_EVENT_MAIN_THREAD;
 }
 
-static void
+static int
 on_io_poller_curl(CURLM *mhandle, void *user_data)
 {
     (void)mhandle;
-    discord_gateway_perform(user_data);
+    return discord_gateway_perform(user_data);
 }
 
 void

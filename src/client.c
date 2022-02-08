@@ -256,7 +256,8 @@ discord_run(struct discord *client)
         while (1) {
             io_poller_poll(client->io_poller,
                            client->gw.cmds.cbs.on_idle ? 1 : 1000);
-            io_poller_perform(client->io_poller);
+            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
+                break;
 
             now = time(NULL);
             if (last != now) {
@@ -266,11 +267,11 @@ discord_run(struct discord *client)
                 last = now;
             }
 
-            if (CCORD_OK != (code = discord_adapter_perform(&client->adapter)))
-                break;
-
             if (client->gw.cmds.cbs.on_idle)
                 client->gw.cmds.cbs.on_idle(client);
+            
+            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
+                break;
         }
 
         if (true == discord_gateway_end(&client->gw)) {

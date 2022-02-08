@@ -79,13 +79,14 @@ io_poller_poll(struct io_poller *io, int milliseconds)
     return poll(io->pollfds, io->cnt, milliseconds);
 }
 
-void
+int
 io_poller_perform(struct io_poller *io)
 {
     const int64_t now = cog_timestamp_ms();
     for (int i = 0; i < io->cnt; i++) {
         int events;
         if ((events = io->pollfds[i].revents)) {
+            io->pollfds[i].revents = 0;
             struct io_poller_element *element = &io->elements[i];
             element->cb(element->user_data, events);
         }
@@ -94,7 +95,9 @@ io_poller_perform(struct io_poller *io)
         if (io->curlm[i]->should_perform || now >= io->curlm[i]->timeout) {
             io->curlm[i]->should_perform = false;
             if (io->curlm[i]->cb) {
-                io->curlm[i]->cb(io->curlm[i]->multi, io->curlm[i]->user_data);
+                int result = io->curlm[i]->cb(io->curlm[i]->multi, io->curlm[i]->user_data);
+                if (result != 0)
+                    return result;
             }
             else {
                 curl_multi_socket_all(io->curlm[i]->multi,
@@ -102,6 +105,7 @@ io_poller_perform(struct io_poller *io)
             }
         }
     }
+    return 0;
 }
 
 bool
@@ -286,4 +290,16 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
         }
     }
     return false;
+}
+
+
+bool
+io_poller_curlm_enable_perform(struct io_poller *io, CURLM *multi)
+{
+    for (int i = 0; i < io->curlm_cnt; i++) {
+        if (io->curlm[i]->multi == multi) {
+            io->curlm[i]->should_perform = true;
+            break;
+        }
+    }
 }
