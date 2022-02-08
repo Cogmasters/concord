@@ -127,6 +127,7 @@ struct discord *discord_config_init(const char config_file[]);
  * @param orig_client the original client created with discord_init()
  * @return the original client clone
  */
+
 struct discord *discord_clone(const struct discord *orig_client);
 
 /**
@@ -134,7 +135,18 @@ struct discord *discord_clone(const struct discord *orig_client);
  *
  * @param client the client created with discord_init()
  */
+
 void discord_cleanup(struct discord *client);
+
+/*
+* @brief return an error from concord
+* @note used to log an error and to return an error
+*
+* @return an error code for your error
+*/
+
+int concord_return_error(const char *error, 
+                         int32_t error_code);
 
 /**
  * @brief Get the client's cached user
@@ -142,6 +154,7 @@ void discord_cleanup(struct discord *client);
  * @param client the client created with discord_init()
  * @warning the returned structure should NOT be modified
  */
+
 const struct discord_user *discord_get_self(struct discord *client);
 
 /**
