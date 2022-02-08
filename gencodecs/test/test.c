@@ -3,35 +3,24 @@
 #include <limits.h>
 #include <inttypes.h>
 
-#define JSMN_STRICT
-#define JSMN_HEADER
-#include "jsmn.h"
-#include "jsmn-find.h"
-#define JSONB_HEADER
-#include "json-build.h"
-#include "carray.h"
-
 #include "greatest.h"
 
-#include "gencodecs.h"
+#define JSONB_HEADER
+#include "json-build.h"
 
-typedef uint64_t u64snowflake;
-
-#include "db.test.h"
+#include "header.h"
 
 TEST
 check_primitives_list_json_encoding(void)
 {
     int array[] = { INT_MIN, -1, 0, 1, INT_MAX };
-    struct integers list = {
-        .size = sizeof(array) / sizeof(int),
-        .array = array,
-    };
+    struct integers list = { 0 };
+    char buf[1024], expect[1024];
 
-    char buf[1024];
-    char expect[1024];
+    list.size = sizeof(array) / sizeof(int);
+    list.array = array;
 
-    snprintf(expect, sizeof(expect), "[%d,-1,0,1,%d]", INT_MIN, INT_MAX);
+    sprintf(expect, "[%d,-1,0,1,%d]", INT_MIN, INT_MAX);
 
     ASSERTm(buf, integers_to_json(buf, sizeof(buf), &list) != 0);
     ASSERT_STR_EQ(expect, buf);
@@ -42,32 +31,25 @@ check_primitives_list_json_encoding(void)
 TEST
 check_nested_object_json_encoding(void)
 {
-    struct foo foo = {
-        .id = "1234",
-        .name = "Marcel",
-        .b = 12,
-        .child =
-            &(struct foo){
-                .id = "4321",
-                .name = "Lecram",
-                .b = 21,
-                .child =
-                    &(struct foo){
-                        .child =
-                            &(struct foo){
-                                .child =
-                                    &(struct foo){
-                                        .child =
-                                            &(struct foo){
-                                                .child = &(struct foo){ 0 },
-                                            },
-                                    },
-                            },
-                    },
-            },
-    };
-
+    struct foo foo = { 0 };
+    struct foo child1 = { 0 }, child2 = { 0 }, child3 = { 0 }, child4 = { 0 },
+               child5 = { 0 }, child6 = { 0 };
     char buf[1024];
+
+    foo.id = "1234";
+    foo.name = "Marcel";
+    foo.b = 12;
+    foo.child = &child1;
+
+    child1.id = "4321";
+    child1.name = "Lecram";
+    child1.b = 21;
+    child1.child = &child2;
+
+    child2.child = &child3;
+    child3.child = &child4;
+    child4.child = &child5;
+    child5.child = &child6;
 
     ASSERTm(buf, foo_to_json(buf, sizeof(buf), &foo) != 0);
     ASSERT_STR_EQ("{\"id\":\"1234\",\"name\":\"Marcel\",\"b\":12,\"child\":{"
@@ -117,28 +99,25 @@ check_deep_nested_object_json_encoding(void)
 TEST
 check_nested_list_json_encoding(void)
 {
-    struct bars bars = {
-        .size = 1,
-        .array =
-            &(struct bars){
-                .size = 1,
-                .array =
-                    &(struct bars){
-                        .size = 1,
-                        .array =
-                            &(struct bars){
-                                .size = 1,
-                                .array =
-                                    &(struct bars){
-                                        .size = 1,
-                                        .array = &(struct bars){ 0 },
-                                    },
-                            },
-                    },
-            },
-    };
-
+    struct bars bars = { 0 };
+    struct bars child1 = { 0 }, child2 = { 0 }, child3 = { 0 }, child4 = { 0 },
+                child5 = { 0 };
     char buf[1024];
+
+    bars.size = 1;
+    bars.array = &child1;
+
+    child1.size = 1;
+    child1.array = &child2;
+
+    child2.size = 1;
+    child2.array = &child3;
+
+    child3.size = 1;
+    child3.array = &child4;
+
+    child4.size = 1;
+    child4.array = &child5;
 
     ASSERTm(buf, bars_to_json(buf, sizeof(buf), &bars) != 0);
     ASSERT_STR_EQ("[[[[[[]]]]]]", buf);

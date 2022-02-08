@@ -6,8 +6,7 @@ extern "C" {
 #include "recipes/json-decoder.h"
 #include "recipes/json-encoder.h"
 
-#undef GENCODECS_INCLUDE
-#undef GENCODECS_FORWARD
+#undef GENCODECS_READ
 
 #ifdef __cplusplus
 }

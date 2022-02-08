@@ -1,99 +1,100 @@
 #define JSON_ENCODER_int(b, buf, size, _var, _type)                           \
-    if (jsonb_number(b, buf, size, _var) < 0) return 0
+    if (0 > jsonb_number(b, buf, size, _var)) return 0
 #define JSON_ENCODER_PTR_char(b, buf, size, _var, _type)                      \
-    if (jsonb_string(b, buf, size, _var, strlen(_var)) < 0) return 0
+    if (0 > jsonb_string(b, buf, size, _var, strlen(_var))) return 0
 #define JSON_ENCODER_bool(b, buf, size, _var, _type)                          \
-    if (jsonb_bool(b, buf, size, _var) < 0) return 0
+    if (0 > jsonb_bool(b, buf, size, _var)) return 0
 #define JSON_ENCODER_STRUCT_PTR(b, buf, size, _var, _type)                    \
     if (!_##_type##_to_json(b, buf, size, _var)) return 0;
 
 #ifdef GENCODECS_STRUCT_JSON_ENCODER
-#ifdef GENCODECS_FORWARD
+#ifdef GENCODECS_HEADER
+
+#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+    size_t _type##_to_json(char buf[], size_t size, const struct _type *this);
+#define GENCODECS_LIST_BEGIN(_type) GENCODECS_STRUCT_BEGIN(_type)
+#include "gencodecs-gen.H"
+
+#else
 
 #define GENCODECS_STRUCT_BEGIN(_type)                                         \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
-                                     const struct _type *p);
-#define GENCODECS_STRUCT_END(_type)                                           \
-    size_t _type##_to_json(char buf[], size_t size, const struct _type *p);
+                                     const struct _type *this);
+#define GENCODECS_LIST_BEGIN(_type) GENCODECS_STRUCT_BEGIN(_type)
+#include "gencodecs-gen.H"
 
-#define GENCODECS_LIST_BEGIN(_type)                                           \
-    static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
-                                     const struct _type *p);
-#define GENCODECS_LIST_END(_type)                                             \
-    size_t _type##_to_json(char buf[], size_t size, const struct _type *p);
-
-#include "gencodecs-gen.h"
-
-#endif /* GENCODECS_FORWARD */
-
-#define GENCODECS_IF(_name, _op, _value)                                      \
-    if (p->_name _op _value) {
-#define GENCODECS_ENDIF }
+#define GENCODECS_COND_WRITE(_condition)                                      \
+    if (_condition) {
+#define GENCODECS_COND_END                                                    \
+    }
 
 #define GENCODECS_STRUCT_BEGIN(_type)                                         \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
-                                     const struct _type *p)                   \
+                                     const struct _type *this)                \
     {                                                                         \
-        if (jsonb_object(b, buf, size) < 0) return 0;                         \
-        if (p != NULL) {
+        if (0 > jsonb_object(b, buf, size)) return 0;                         \
+        if (this != NULL) {
 #define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,         \
                                _encoder, _decoder, _key, _default_value)      \
-        if (jsonb_key(b, buf, size, #_key, sizeof(#_key) - 1) < 0) return 0;  \
-        _encoder(b, buf, size, p->_name, _type);
+        if (0 > jsonb_key(b, buf, size, #_key, sizeof(#_key) - 1)) return 0;  \
+        _encoder(b, buf, size, this->_name, _type);
 #define GENCODECS_FIELD_PRINTF(_type, _scanf_type, _printf_type, _name)       \
-        if (jsonb_key(b, buf, size, #_name, sizeof(#_name) - 1) < 0)          \
+        if (0 > jsonb_key(b, buf, size, #_name, sizeof(#_name) - 1))          \
             return 0;                                                         \
         else {                                                                \
             char tok[64];                                                     \
             int toklen;                                                       \
-            toklen = sprintf(tok, "%" _printf_type, p->_name);                \
-            if (jsonb_string(b, buf, size, tok, toklen) < 0) return 0;        \
+            toklen = sprintf(tok, "%" _printf_type, this->_name);             \
+            if (0 > jsonb_string(b, buf, size, tok, toklen)) return 0;        \
         }
-#define GENCODECS_STRUCT_END(_type)                                           \
+#define GENCODECS_STRUCT_END                                                  \
         }                                                                     \
-        if (jsonb_object_pop(b, buf, size) < 0) return 0;                     \
+        if (0 > jsonb_object_pop(b, buf, size)) return 0;                     \
         return b->pos;                                                        \
-    }                                                                         \
-                                                                              \
-    size_t _type##_to_json(char buf[], size_t size, const struct _type *p)    \
-    {                                                                         \
-        jsonb b;                                                              \
-        jsonb_init(&b);                                                       \
-        return _##_type##_to_json(&b, buf, size, p);                          \
     }
 
 #define GENCODECS_LIST_BEGIN(_type)                                           \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
-                                     const struct _type *p)                   \
+                                     const struct _type *this)                \
     {                                                                         \
-        if (jsonb_array(b, buf, size) < 0) return 0;                          \
-        if (p != NULL) {                                                      \
+        if (0 > jsonb_array(b, buf, size)) return 0;                          \
+        if (this != NULL) {                                                   \
             int i;
 #define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
-        for (i = 0; i < p->size; ++i) {                                       \
-            JSON_ENCODER_##_type(b, buf, size, p->array[i], _type);           \
+        for (i = 0; i < this->size; ++i) {                                    \
+            JSON_ENCODER_##_type(b, buf, size, this->array[i], _type);        \
         }
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
-        for (i = 0; i < p->size; ++i)                                         \
-            if (!_##_type##_to_json(b, buf, size, &p->array[i])) return 0;
+        for (i = 0; i < this->size; ++i)                                      \
+            if (!_##_type##_to_json(b, buf, size, &this->array[i])) return 0;
 #define GENCODECS_LISTTYPE_PTR(_type)                                         \
-        for (i = 0; i < p->size; ++i) {                                       \
-            JSON_ENCODER_PTR_##_type(b, buf, size, p->array[i], _type);       \
+        for (i = 0; i < this->size; ++i) {                                    \
+            JSON_ENCODER_PTR_##_type(b, buf, size, this->array[i], _type);    \
         }
-#define GENCODECS_LIST_END(_type)                                             \
+#define GENCODECS_LIST_END                                                    \
         }                                                                     \
-        if (jsonb_array_pop(b, buf, size) < 0) return 0;                      \
+        if (0 > jsonb_array_pop(b, buf, size)) return 0;                      \
         return b->pos;                                                        \
-    }                                                                         \
-                                                                              \
-    size_t _type##_to_json(char buf[], size_t size, const struct _type *p)    \
+    }
+
+#include "gencodecs-gen.H"
+
+#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+    size_t _type##_to_json(char buf[], size_t size, const struct _type *this) \
     {                                                                         \
         jsonb b;                                                              \
         jsonb_init(&b);                                                       \
-        return _##_type##_to_json(&b, buf, size, p);                          \
+        return _##_type##_to_json(&b, buf, size, this);                       \
+    }
+#define GENCODECS_LIST_BEGIN(_type)                                           \
+    size_t _type##_to_json(char buf[], size_t size, const struct _type *this) \
+    {                                                                         \
+        jsonb b;                                                              \
+        jsonb_init(&b);                                                       \
+        return _##_type##_to_json(&b, buf, size, this);                       \
     }
 
-#include "gencodecs-gen.h"
+#include "gencodecs-gen.H"
 
-#undef GENCODECS_STRUCT_JSON_ENCODER
+#endif /* GENCODECS_HEADER */
 #endif /* GENCODECS_STRUCT_JSON_ENCODER */

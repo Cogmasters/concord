@@ -1,10 +1,10 @@
 #define DECOR_BLANK
 
-#ifndef GENCODECS_IF
-#   define GENCODECS_IF(_name, _op, _value)
+#ifndef GENCODECS_COND_WRITE
+#   define GENCODECS_COND_WRITE(_condition)
 #endif
-#ifndef GENCODECS_ENDIF
-#   define GENCODECS_ENDIF
+#ifndef GENCODECS_COND_END
+#   define GENCODECS_COND_END
 #endif
 
 #ifndef GENCODECS_STRUCT_BEGIN
@@ -39,7 +39,7 @@
 #   define GENCODECS_FIELD_ENUM(_type, _name) GENCODECS_FIELD(int, _name, 0)
 #endif
 #ifndef GENCODECS_STRUCT_END
-#   define GENCODECS_STRUCT_END(_type)
+#   define GENCODECS_STRUCT_END
 #endif
 
 #ifndef GENCODECS_LIST_BEGIN
@@ -55,26 +55,29 @@
 #   define GENCODECS_LISTTYPE_PTR(_type)
 #endif
 #ifndef GENCODECS_LIST_END
-#   define GENCODECS_LIST_END(_type)
+#   define GENCODECS_LIST_END
 #endif
 
 #ifndef GENCODECS_ENUM_BEGIN
 #   define GENCODECS_ENUM_BEGIN(_name)
 #endif
 #ifndef GENCODECS_ENUM_END
-#   define GENCODECS_ENUM_END(_name)
+#   define GENCODECS_ENUM_END
 #endif
 #ifndef GENCODECS_ENUMERATOR
 #   define GENCODECS_ENUMERATOR(_enumerator, _value)
+#endif
+#ifndef GENCODECS_ENUMERATOR_LAST
+#   define GENCODECS_ENUMERATOR_LAST(_enumerator, _value)
 #endif
 #ifndef GENCODECS_ENUMERATOR_END
 #   define GENCODECS_ENUMERATOR_END(_name)
 #endif
 
-#include GENCODECS_INCLUDE
+#include GENCODECS_READ
 
-#undef GENCODECS_IF
-#undef GENCODECS_ENDIF
+#undef GENCODECS_COND_WRITE
+#undef GENCODECS_COND_END
 
 #undef GENCODECS_STRUCT_BEGIN
 #undef GENCODECS_FIELD
@@ -94,4 +97,5 @@
 #undef GENCODECS_ENUM_BEGIN
 #undef GENCODECS_ENUM_END
 #undef GENCODECS_ENUMERATOR
+#undef GENCODECS_ENUMERATOR_LAST
 #undef GENCODECS_ENUMERATOR_END
