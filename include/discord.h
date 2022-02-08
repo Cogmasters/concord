@@ -618,8 +618,8 @@ CCORDcode discord_get_original_interaction_response(struct discord *client,
 CCORDcode discord_edit_original_interaction_response(struct discord *client,
                                                      u64_snowflake_t application_id,
                                                      const char interaction_token[],
-                                                     struct discord_edit_original_interaction_response_params *params,s
-                                                     truct discord_interaction_response *ret);
+                                                     struct discord_edit_original_interaction_response_params *params,
+                                                     struct discord_interaction_response *ret);
 
 /**
  * @brief Delete the initial Interaction response
