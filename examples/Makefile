@@ -13,6 +13,7 @@ BOTS := audit-log \
         components \
         delete-messages \
         copycat \
+	8ball \
         embed \
         emoji \
         fetch-messages \
