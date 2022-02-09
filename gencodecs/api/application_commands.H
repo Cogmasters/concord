@@ -17,40 +17,32 @@ ENUM_END
 STRUCT_BEGIN(discord_application_command_option)
   DESC("value of application command option type")
     FIELD_ENUM(discord_application_command_option_types, type)
-
   DESC("1-100 character description")
     FIELD_PTR(char, *, description)
-
   DESC("if the parameter is required or optional -- default false")
     FIELD(bool, required, false)
-
   DESC("choices for string and int types for the user to pick from")
   COND_WRITE(choices != NULL)
     FIELD_STRUCT_PTR(discord_application_command_option_choices, *, choices)
   COND_END
-
   DESC("if the option is a subcommand or subcommand group type, this nested"
        "options will be the parameters")
   COND_WRITE(options != NULL)
     FIELD_STRUCT_PTR(discord_application_command_options, *, options)
   COND_END
-
   DESC("if the option is a channel type, the channels shown will be restricted"
        "to these types")
   COND_WRITE(channel_types != NULL)
     FIELD_STRUCT_PTR(snowflakes, *, channel_types)
   COND_END
-
   DESC("if the option is an INTEGER or NUMBER type, the minimum value permitted")
   COND_WRITE(min_value != NULL)
     FIELD_PTR(char, *, min_value)
   COND_END
-
   DESC("if the option is an INTEGER or NUMBER type, the maximum value permitted")
   COND_WRITE(min_value != NULL)
     FIELD_PTR(char, *, min_value)
   COND_END
-
   DESC("enable autocomplete interactions for this option")
     FIELD(bool, autocomplete, false)
 STRUCT_END
