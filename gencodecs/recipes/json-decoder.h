@@ -36,11 +36,11 @@
     {                                                                         \
         jsmnfind *f;                                                          \
         size_t ret = 0;
-#define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,         \
-                               _encoder, _decoder, _key, _default_value)      \
+#define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
+                               _encoder, _decoder, _default_value)            \
         f = jsmnfind_find(root, #_key, sizeof(#_key) - 1);                    \
         _decoder(f, buf, this->_name, _type);
-#define GENCODECS_FIELD_PRINTF(_type, _scanf_type, _printf_type, _name)       \
+#define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
         f = jsmnfind_find(root, #_name, sizeof(#_name) - 1);                  \
         if (f && f->val->type == JSMN_STRING)                                 \
             sscanf(buf + f->val->start, "%" _scanf_type, &this->_name);

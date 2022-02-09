@@ -34,11 +34,11 @@
     {                                                                         \
         if (0 > jsonb_object(b, buf, size)) return 0;                         \
         if (this != NULL) {
-#define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,         \
-                               _encoder, _decoder, _key, _default_value)      \
+#define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
+                               _encoder, _decoder, _default_value)            \
         if (0 > jsonb_key(b, buf, size, #_key, sizeof(#_key) - 1)) return 0;  \
         _encoder(b, buf, size, this->_name, _type);
-#define GENCODECS_FIELD_PRINTF(_type, _scanf_type, _printf_type, _name)       \
+#define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
         if (0 > jsonb_key(b, buf, size, #_name, sizeof(#_name) - 1))          \
             return 0;                                                         \
         else {                                                                \

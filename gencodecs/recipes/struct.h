@@ -21,18 +21,18 @@
 
 #define GENCODECS_STRUCT_BEGIN(_type)                                         \
     struct _type {
-#define GENCODECS_FIELD(_type, _name, _default_value)                         \
+#define GENCODECS_FIELD(_name, _type, _default_value)                         \
         _type _name;
-#define GENCODECS_FIELD_STRUCT_PTR(_type, _decor, _name)                      \
+#define GENCODECS_FIELD_STRUCT_PTR(_name, _type, _decor)                      \
         struct _type _decor _name;
-#define GENCODECS_FIELD_PTR(_type, _decor, _name)                             \
+#define GENCODECS_FIELD_PTR(_name, _type, _decor)                             \
         _type _decor _name;
-#define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,         \
-                               _encoder, _decoder, _key, _default_value)      \
+#define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
+                               _encoder, _decoder, _default_value)            \
         _type _decor _name;
-#define GENCODECS_FIELD_PRINTF(_type, _scanf_type, _printf_type, _name)       \
+#define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
         _type _name;
-#define GENCODECS_FIELD_ENUM(_type, _name)                                    \
+#define GENCODECS_FIELD_ENUM(_name, _type)                                    \
         enum _type _name;
 #define GENCODECS_STRUCT_END                                                  \
     };
@@ -81,10 +81,10 @@
 #define GENCODECS_STRUCT_BEGIN(_type)                                         \
     void _type##_init(struct _type *this)                                     \
     {
-#define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,         \
-                               _encoder, _decoder, _key, _default_value)      \
+#define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
+                               _encoder, _decoder, _default_value)            \
         this->_name = _default_value;
-#define GENCODECS_FIELD_PRINTF(_type, _scanf_type, _printf_type, _name)       \
+#define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
         this->_name = (_type)0;
 #define GENCODECS_STRUCT_END                                                  \
     }
@@ -94,10 +94,10 @@
 #define GENCODECS_STRUCT_BEGIN(_type)                                         \
     void _type##_cleanup(struct _type *this)                                  \
     {
-#define GENCODECS_FIELD(_type, _name, _default_value)                         \
+#define GENCODECS_FIELD(_name, _type, _default_value)                         \
         (void)this->_name;
-#define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,         \
-                               _encoder, _decoder, _key, _default_value)      \
+#define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
+                               _encoder, _decoder, _default_value)            \
         _cleanup(this->_name, _type);
 #define GENCODECS_STRUCT_END                                                  \
     }

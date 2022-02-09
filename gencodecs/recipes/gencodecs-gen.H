@@ -11,32 +11,32 @@
 #   define GENCODECS_STRUCT_BEGIN(_type)
 #endif
 #ifndef GENCODECS_FIELD_CUSTOM
-#   define GENCODECS_FIELD_CUSTOM(_type, _decor, _name, _init, _cleanup,      \
-                               _encoder, _decoder, _key, _default_value)
+#   define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,\
+                                  _encoder, _decoder, _default_value)
 #endif
 #ifndef GENCODECS_FIELD
-#   define GENCODECS_FIELD(_type, _name, _default_value)                      \
-        GENCODECS_FIELD_CUSTOM(_type, , _name, , CLEANUP_BLANK,               \
+#   define GENCODECS_FIELD(_name, _type, _default_value)                      \
+        GENCODECS_FIELD_CUSTOM(_name, _name, _type, , , CLEANUP_BLANK,        \
                                JSON_ENCODER_##_type, JSON_DECODER_##_type,    \
-                               _name, _default_value)
+                               _default_value)
 #endif
 #ifndef GENCODECS_FIELD_STRUCT_PTR
-#   define GENCODECS_FIELD_STRUCT_PTR(_type, _decor, _name)                   \
-        GENCODECS_FIELD_CUSTOM(_type, _decor, _name, , CLEANUP_STRUCT_PTR,    \
-                           JSON_ENCODER_STRUCT_PTR, JSON_DECODER_STRUCT_PTR,  \
-                           _name, NULL)
+#   define GENCODECS_FIELD_STRUCT_PTR(_name, _type, _decor)                   \
+        GENCODECS_FIELD_CUSTOM(_name, _name, _type, _decor, ,                 \
+                               CLEANUP_STRUCT_PTR, JSON_ENCODER_STRUCT_PTR,   \
+                               JSON_DECODER_STRUCT_PTR,  NULL)
 #endif
 #ifndef GENCODECS_FIELD_PTR
-#   define GENCODECS_FIELD_PTR(_type, _decor, _name)                          \
-        GENCODECS_FIELD_CUSTOM(_type, _decor, _name, , CLEANUP_PTR,           \
+#   define GENCODECS_FIELD_PTR(_name, _type, _decor)                          \
+        GENCODECS_FIELD_CUSTOM(_name, _name, _type, _decor, , CLEANUP_PTR,    \
                                JSON_ENCODER_PTR_##_type,                      \
-                               JSON_DECODER_PTR_##_type, _name, NULL)
+                               JSON_DECODER_PTR_##_type, NULL)
 #endif
 #ifndef GENCODECS_FIELD_PRINTF
-#   define GENCODECS_FIELD_PRINTF(_type, _scanf_type, _printf_type, _name)
+#   define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)
 #endif
 #ifndef GENCODECS_FIELD_ENUM
-#   define GENCODECS_FIELD_ENUM(_type, _name) GENCODECS_FIELD(int, _name, 0)
+#   define GENCODECS_FIELD_ENUM(_name, _type) GENCODECS_FIELD(_name, int, 0)
 #endif
 #ifndef GENCODECS_STRUCT_END
 #   define GENCODECS_STRUCT_END
