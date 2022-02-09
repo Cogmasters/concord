@@ -1,54 +1,52 @@
 ENUM_BEGIN(discord_application_command_types)
-  DESC(Slash commands: a text-based command that shows up when a user 
-       types `/`)
+  DESC("Slash commands: a text-based command that shows up when a user" 
+       "types `/`")
     ENUMERATOR(DISCORD_APPLICATION_CHAT_INPUT, = 1)
-
-  DESC(A UI-based command that shows up when a user 
-       right clicks or taps on another user)
+  DESC("A UI-based command that shows up when a user"
+       "right clicks or taps on another user")
     ENUMERATOR(DISCORD_APPLICATION_USER, = 2)
-
-  DESC(A UI-based command that shows up when a user 
-       right clicks or tap on a message)
+  DESC("A UI-based command that shows up when a user"
+       "right clicks or tap on a message")
     ENUMERATOR_LAST(DISCORD_APPLICATION_MESSAGE, = 3)
 ENUM_END
 
 STRUCT_BEGIN(discord_application_command_option)
-  DESC(value of application command option type)
+  DESC("value of application command option type")
     FIELD_ENUM(discord_application_command_option_types, type)
 
-  DESC(1-100 character description)
+  DESC("1-100 character description")
     FIELD_PTR(char, *, description)
 
-  DESC(if the parameter is required or optional -- default false)
+  DESC("if the parameter is required or optional -- default false")
     FIELD(bool, required, false)
 
-  DESC(choices for string and int types for the user to pick from)
+  DESC("choices for string and int types for the user to pick from")
   COND_WRITE(choices != NULL)
     FIELD_STRUCT_PTR(discord_application_command_option_choices, *, choices)
   COND_END
 
-  DESC(if the option is a subcommand or subcommand group type, this nested
-       options will be the parameters)
+  DESC("if the option is a subcommand or subcommand group type, this nested"
+       "options will be the parameters")
   COND_WRITE(options != NULL)
     FIELD_STRUCT_PTR(discord_application_command_options, *, options)
   COND_END
 
-  DESC(if the option is a channel type, the channels shown will be restricted
-       to these types)
+  DESC("if the option is a channel type, the channels shown will be restricted"
+       "to these types")
   COND_WRITE(channel_types != NULL)
     FIELD_STRUCT_PTR(snowflakes, *, channel_types)
   COND_END
 
-  DESC(if the option is an INTEGER or NUMBER type, the minimum value permitted)
+  DESC("if the option is an INTEGER or NUMBER type, the minimum value permitted")
   COND_WRITE(min_value != NULL)
     FIELD_PTR(char, *, min_value)
   COND_END
 
-  DESC(if the option is an INTEGER or NUMBER type, the maximum value permitted)
+  DESC("if the option is an INTEGER or NUMBER type, the maximum value permitted")
   COND_WRITE(min_value != NULL)
     FIELD_PTR(char, *, min_value)
   COND_END
 
-  DESC(enable autocomplete interactions for this option)
+  DESC("enable autocomplete interactions for this option")
     FIELD(bool, autocomplete, false)
 STRUCT_END

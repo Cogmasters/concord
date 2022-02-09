@@ -7,6 +7,9 @@ extern "C" {
 
 /* Allow symbols usage without GENCODECS_ prefix */
 #ifndef GENCODECS_USE_PREFIX
+#   define DIRECTIVE GENCODECS_DIRECTIVE
+#   define DESC GENCODECS_DESC
+
 #   define COND_WRITE GENCODECS_COND_WRITE
 #   define COND_END GENCODECS_COND_END
 
@@ -33,35 +36,36 @@ extern "C" {
 #endif /* GENCODECS_USE_PREFIX */
 
 #ifndef GENCODECS_HEADER
+#   define GENCODECS_DESC(_description)
 #   ifdef GENCODECS_STRUCT
-        GENCODECS_DIRECTIVE(include <stdio.h>)
-        GENCODECS_DIRECTIVE(include <stdlib.h>)
+GENCODECS_DIRECTIVE(include <stdio.h>)
+GENCODECS_DIRECTIVE(include <stdlib.h>)
 #       ifdef GENCODECS_STRUCT_INIT
-            GENCODECS_DIRECTIVE(include "carray.h")
+GENCODECS_DIRECTIVE(include "carray.h")
 #       endif
 #       ifdef GENCODECS_STRUCT_JSON_ENCODER
-            GENCODECS_DIRECTIVE(define JSONB_HEADER)
-            GENCODECS_DIRECTIVE(include "json-build.h")
+GENCODECS_DIRECTIVE(define JSONB_HEADER)
+GENCODECS_DIRECTIVE(include "json-build.h")
 #       endif
 #       ifdef GENCODECS_STRUCT_JSON_DECODER
-            GENCODECS_DIRECTIVE(define JSMN_STRICT)
-            GENCODECS_DIRECTIVE(define JSMN_HEADER)
-            GENCODECS_DIRECTIVE(include "jsmn.h")
-            GENCODECS_DIRECTIVE(include "jsmn-find.h")
+GENCODECS_DIRECTIVE(define JSMN_STRICT)
+GENCODECS_DIRECTIVE(define JSMN_HEADER)
+GENCODECS_DIRECTIVE(include "jsmn.h")
+GENCODECS_DIRECTIVE(include "jsmn-find.h")
 
-            static char *
-            _gc_strndup(const char *src, size_t len)
-            {
-                char *dest = malloc(len + 1);
-                memcpy(dest, src, len);
-                dest[len] = '\0';
-                return dest;
-            }
+static char *
+_gc_strndup(const char *src, size_t len)
+{
+    char *dest = malloc(len + 1);
+    memcpy(dest, src, len);
+    dest[len] = '\0';
+    return dest;
+}
 #       endif
 #   endif
 #else
-    GENCODECS_DIRECTIVE(include <stddef.h>)
-    GENCODECS_DIRECTIVE(include <stdbool.h>)
+GENCODECS_DIRECTIVE(include <stddef.h>)
+GENCODECS_DIRECTIVE(include <stdbool.h>)
 #endif
 
 #ifdef __cplusplus

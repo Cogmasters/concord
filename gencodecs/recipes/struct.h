@@ -16,6 +16,7 @@
 #define GENCODECS_STRUCT_BEGIN(_type) struct _type;
 #define GENCODECS_LIST_BEGIN(_type)   struct _type;
 
+#define GENCODECS_DESC(_description)
 #include "gencodecs-gen.H"
 
 #define GENCODECS_STRUCT_BEGIN(_type)                                         \
@@ -38,7 +39,6 @@
 
 #define GENCODECS_LIST_BEGIN(_type)                                           \
     struct _type {                                                            \
-        int realsize;                                                         \
         int size;
 #define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
         _type *array;
@@ -47,6 +47,7 @@
 #define GENCODECS_LISTTYPE_PTR(_type)                                         \
         _type **array;
 #define GENCODECS_LIST_END                                                    \
+        int realsize;                                                         \
     };
 
 #define GENCODECS_ENUM_BEGIN(_name)                                           \
@@ -58,6 +59,7 @@
 #define GENCODECS_ENUM_END                                                    \
     };
 
+#undef GENCODECS_DESC
 #include "gencodecs-gen.H"
 
 #ifdef GENCODECS_STRUCT_INIT
