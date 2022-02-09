@@ -96,9 +96,9 @@ struct discord_ret {
 
 DISCORDT_RETURN(application_command);
 DISCORDT_RETURN_LIST(application_command);
-DISCORDT_RETURN(application_command_permissions);
-DISCORDT_RETURN_LIST(application_command_permissions);
-DISCORDT_RETURN_LIST(guild_application_command_permissions);
+DISCORDT_RETURN(application_command_permission);
+DISCORDT_RETURN_LIST(application_command_permission);
+DISCORDT_RETURN_LIST(guild_application_command_permission);
 DISCORDT_RETURN(interaction_response);
 
 DISCORDT_RETURN(audit_log);

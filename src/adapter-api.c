@@ -37,9 +37,10 @@
 #define REQUEST_INIT(req, type, ret)                                          \
     do {                                                                      \
         (req).gnrc.size = sizeof(struct type);                                \
-        (req).gnrc.init = type##_init_v;                                      \
-        (req).gnrc.from_json = type##_from_json_v;                            \
-        (req).gnrc.cleanup = type##_cleanup_v;                                \
+        (req).gnrc.init = (void (*)(void *))type##_init;                      \
+        (req).gnrc.from_json =                                                \
+            (void (*)(char *, size_t, void *))type##_from_json;               \
+        (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
         if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
 
@@ -53,8 +54,9 @@
 #define REQUEST_LIST_INIT(req, type, ret)                                     \
     do {                                                                      \
         (req).gnrc.size = sizeof(struct type);                                \
-        (req).gnrc.from_json = type##_list_from_json_v;                       \
-        (req).gnrc.cleanup = (void (*)(void *))type##_list_free_v;            \
+        (req).gnrc.from_json =                                                \
+            (void (*)(char *, size_t, void *))type##_from_json;               \
+        (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
         req.ret.is_ntl = true;                                                \
         if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
@@ -195,8 +197,7 @@ discord_bulk_overwrite_global_application_command(
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size =
-        discord_application_command_list_to_json(buf, sizeof(buf), params);
+    body.size = discord_application_commands_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
     REQUEST_LIST_INIT(req, discord_application_command, ret);
@@ -346,8 +347,7 @@ discord_bulk_overwrite_guild_application_command(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size =
-        discord_application_command_list_to_json(buf, sizeof(buf), params);
+    body.size = discord_application_commands_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
     REQUEST_LIST_INIT(req, discord_application_command, ret);
@@ -363,7 +363,7 @@ discord_get_guild_application_command_permissions(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_ret_guild_application_command_permissionss *ret)
+    struct discord_ret_guild_application_command_permissions *ret)
 {
     struct discord_request req = { 0 };
 
@@ -384,7 +384,7 @@ discord_get_application_command_permissions(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
-    struct discord_ret_application_command_permissions *ret)
+    struct discord_ret_application_command_permission *ret)
 {
     struct discord_request req = { 0 };
 
@@ -392,7 +392,7 @@ discord_get_application_command_permissions(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, command_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_INIT(req, discord_application_command_permissions, ret);
+    REQUEST_INIT(req, discord_application_command_permission, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -407,7 +407,7 @@ discord_edit_application_command_permissions(
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
     struct discord_edit_application_command_permissions *params,
-    struct discord_ret_application_command_permissions *ret)
+    struct discord_ret_application_command_permission *ret)
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
@@ -421,7 +421,7 @@ discord_edit_application_command_permissions(
         buf, sizeof(buf), params);
     body.start = buf;
 
-    REQUEST_INIT(req, discord_application_command_permissions, ret);
+    REQUEST_INIT(req, discord_application_command_permission, ret);
 
     return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
                                "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -435,7 +435,7 @@ discord_batch_edit_application_command_permissions(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     struct discord_guild_application_command_permissions **params,
-    struct discord_ret_guild_application_command_permissionss *ret)
+    struct discord_ret_guild_application_command_permissions *ret)
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
@@ -445,7 +445,7 @@ discord_batch_edit_application_command_permissions(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_guild_application_command_permissions_list_to_json(
+    body.size = discord_guild_application_command_permissions_to_json(
         buf, sizeof(buf), params);
     body.start = buf;
 
@@ -3091,7 +3091,8 @@ discord_disconnect_guild_member(struct discord *client,
     jsonb_init(&b);
     jsonb_object(&b, buf, sizeof(buf));
     {
-        jsonb_key(&b, buf, sizeof(buf), "channel_id", sizeof("channel_id") - 1);
+        jsonb_key(&b, buf, sizeof(buf), "channel_id",
+                  sizeof("channel_id") - 1);
         jsonb_null(&b, buf, sizeof(buf));
         jsonb_object_pop(&b, buf, sizeof(buf));
     }

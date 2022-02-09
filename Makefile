@@ -10,6 +10,7 @@ SPECS_DIR     := specs
 C_SPECS_DIR   := $(SRC_DIR)/specs-code
 H_SPECS_DIR   := $(DOCS_DIR)/specs-headers
 COGUTILS_DIR  := cog-utils
+GENCODECS_DIR := gencodecs/api
 CORE_DIR      := core
 THIRDP_DIR    := $(CORE_DIR)/third-party
 EXAMPLES_DIR  := examples
@@ -78,13 +79,16 @@ DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(C_SPECS_SRC)                 \
                 $(XSRC)
 
-SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
+GENCODECS_SRC := $(GENCODECS_DIR)/discord-codecs.c
+
+SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC) $(GENCODECS_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
+          -I$(GENCODECS_DIR)                                               \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
@@ -155,6 +159,7 @@ echo:
 	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
 	@ echo -e 'CORE_SRC: $(CORE_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
+	@ echo -e 'GENCODECS_SRC: $(GENCODECS_SRC)\n'
 
 clean: 
 	rm -rf $(OBJDIR)

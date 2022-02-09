@@ -24,6 +24,7 @@
 struct discord;
 /**/
 
+#include "discord-codecs.h"
 #include "discord-specs.h" /* see specs/api/ */
 #include "discord-templates.h"
 
@@ -473,7 +474,7 @@ CCORDcode discord_get_guild_application_command_permissions(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_ret_guild_application_command_permissionss *ret);
+    struct discord_ret_guild_application_command_permissions *ret);
 
 /**
  * @brief Fetches command permissions for a specific command in a given guild
@@ -490,7 +491,7 @@ CCORDcode discord_get_application_command_permissions(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
-    struct discord_ret_application_command_permissions *ret);
+    struct discord_ret_application_command_permission *ret);
 
 /**
  * @brief Edits command permissions for a specific command in a given guild
@@ -510,7 +511,7 @@ CCORDcode discord_edit_application_command_permissions(
     u64_snowflake_t guild_id,
     u64_snowflake_t command_id,
     struct discord_edit_application_command_permissions *params,
-    struct discord_ret_application_command_permissions *ret);
+    struct discord_ret_application_command_permission *ret);
 
 /**
  * @brief Batch edits permissions for all commands in a guild
@@ -531,7 +532,7 @@ CCORDcode discord_batch_edit_application_command_permissions(
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
     struct discord_guild_application_command_permissions **params,
-    struct discord_ret_guild_application_command_permissionss *ret);
+    struct discord_ret_guild_application_command_permissions *ret);
 
 /**
  * @brief Create a response to an Interaction from the gateway
