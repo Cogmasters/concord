@@ -7,6 +7,7 @@
 #ifdef GENCODECS_HEADER
 DIRECTIVE(include <inttypes.h>)
 typedef uint64_t u64snowflake;
+typedef char json_char;
 #endif
 
 #define GENCODECS_READ "application_commands.H"
