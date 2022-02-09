@@ -7,20 +7,24 @@
 #define JSON_ENCODER_STRUCT_PTR(b, buf, size, _var, _type)                    \
     if (!_##_type##_to_json(b, buf, size, _var)) return 0;
 
-#ifdef GENCODECS_STRUCT_JSON_ENCODER
+#ifdef GENCODECS_JSON_ENCODER
 #ifdef GENCODECS_HEADER
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_PUB_STRUCT(_type)                                           \
     size_t _type##_to_json(char buf[], size_t size, const struct _type *this);
-#define GENCODECS_LIST_BEGIN(_type) GENCODECS_STRUCT_BEGIN(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
+
 #include "gencodecs-gen.H"
 
 #else
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
                                      const struct _type *this);
-#define GENCODECS_LIST_BEGIN(_type) GENCODECS_STRUCT_BEGIN(_type)
+#define GENCODECS_LIST(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
 #include "gencodecs-gen.H"
 
 #define GENCODECS_COND_WRITE(_condition)                                      \
@@ -28,7 +32,7 @@
 #define GENCODECS_COND_END                                                    \
     }
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
                                      const struct _type *this)                \
     {                                                                         \
@@ -53,7 +57,7 @@
         return b->pos;                                                        \
     }
 
-#define GENCODECS_LIST_BEGIN(_type)                                           \
+#define GENCODECS_LIST(_type)                                                 \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
                                      const struct _type *this)                \
     {                                                                         \
@@ -77,16 +81,19 @@
         return b->pos;                                                        \
     }
 
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
 #include "gencodecs-gen.H"
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_PUB_STRUCT(_type)                                           \
     size_t _type##_to_json(char buf[], size_t size, const struct _type *this) \
     {                                                                         \
         jsonb b;                                                              \
         jsonb_init(&b);                                                       \
         return _##_type##_to_json(&b, buf, size, this);                       \
     }
-#define GENCODECS_LIST_BEGIN(_type)                                           \
+#define GENCODECS_PUB_LIST(_type)                                             \
     size_t _type##_to_json(char buf[], size_t size, const struct _type *this) \
     {                                                                         \
         jsonb b;                                                              \
@@ -97,4 +104,4 @@
 #include "gencodecs-gen.H"
 
 #endif /* GENCODECS_HEADER */
-#endif /* GENCODECS_STRUCT_JSON_ENCODER */
+#endif /* GENCODECS_JSON_ENCODER */

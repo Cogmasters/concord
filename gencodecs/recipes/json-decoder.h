@@ -14,23 +14,27 @@
         ret += sizeof *_var + _##_type##_from_json(f, buf, _var);             \
     }
 
-#ifdef GENCODECS_STRUCT_JSON_DECODER
+#ifdef GENCODECS_JSON_DECODER
 #ifdef GENCODECS_HEADER
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_PUB_STRUCT(_type)                                            \
     size_t _type##_from_json(const char buf[], size_t size, struct _type *this);
-#define GENCODECS_LIST_BEGIN(_type) GENCODECS_STRUCT_BEGIN(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
+
 #include "gencodecs-gen.H"
 
 #else
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
                                        struct _type *this);
-#define GENCODECS_LIST_BEGIN(_type) GENCODECS_STRUCT_BEGIN(_type)
+#define GENCODECS_LIST(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
 #include "gencodecs-gen.H"
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
                                        struct _type *this)                    \
     {                                                                         \
@@ -48,7 +52,7 @@
         return ret;                                                           \
     }
 
-#define GENCODECS_LIST_BEGIN(_type)                                           \
+#define GENCODECS_LIST(_type)                                                 \
     static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
                                        struct _type *this)                    \
     {                                                                         \
@@ -84,9 +88,12 @@
         return ret;                                                           \
     }
 
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
 #include "gencodecs-gen.H"
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_PUB_STRUCT(_type)                                           \
     size_t _type##_from_json(const char buf[], size_t size,                   \
                              struct _type *this)                              \
     {                                                                         \
@@ -97,7 +104,7 @@
         return ret;                                                           \
     }
     
-#define GENCODECS_LIST_BEGIN(_type)                                           \
+#define GENCODECS_PUB_LIST(_type)                                             \
     size_t _type##_from_json(const char buf[], size_t size,                   \
                              struct _type *this)                              \
     {                                                                         \
@@ -112,4 +119,4 @@
 #include "gencodecs-gen.H"
 
 #endif /* GENCODECS_HEADER */
-#endif /* GENCODECS_STRUCT_JSON_DECODER */
+#endif /* GENCODECS_JSON_DECODER */

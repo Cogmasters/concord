@@ -10,16 +10,19 @@
 #define CLEANUP_PTR(_var, _type)                                              \
     if (_var) free(_var)
 
-#ifdef GENCODECS_STRUCT
+#ifdef GENCODECS_DATA
 #ifdef GENCODECS_HEADER
 
-#define GENCODECS_STRUCT_BEGIN(_type) struct _type;
-#define GENCODECS_LIST_BEGIN(_type)   struct _type;
+#define GENCODECS_STRUCT(_type) struct _type;
+#define GENCODECS_LIST(_type)   struct _type;
+
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
 
 #define GENCODECS_DESC(_description)
 #include "gencodecs-gen.H"
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_STRUCT(_type)                                               \
     struct _type {
 #define GENCODECS_FIELD(_name, _type, _default_value)                         \
         _type _name;
@@ -37,7 +40,7 @@
 #define GENCODECS_STRUCT_END                                                  \
     };
 
-#define GENCODECS_LIST_BEGIN(_type)                                           \
+#define GENCODECS_LIST(_type)                                                 \
     struct _type {                                                            \
         int size;
 #define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
@@ -50,7 +53,7 @@
         int realsize;                                                         \
     };
 
-#define GENCODECS_ENUM_BEGIN(_name)                                           \
+#define GENCODECS_ENUM(_name)                                                 \
     enum _name {
 #define GENCODECS_ENUMERATOR(_enumerator, _value)                             \
         _enumerator _value,
@@ -59,27 +62,30 @@
 #define GENCODECS_ENUM_END                                                    \
     };
 
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
 #undef GENCODECS_DESC
 #include "gencodecs-gen.H"
 
-#ifdef GENCODECS_STRUCT_INIT
+#ifdef GENCODECS_INIT
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
+#define GENCODECS_PUB_STRUCT(_type)                                           \
     void _type##_init(struct _type *this);                                    \
     void _type##_cleanup(struct _type *this);
-#define GENCODECS_LIST_BEGIN(_type)                                           \
+#define GENCODECS_PUB_LIST(_type)                                             \
     void _type##_cleanup(struct _type *this);
 
 #include "gencodecs-gen.H"
 
-#endif /* GENCODECSS_STRUCT_INIT */
+#endif /* GENCODECSS_INIT */
 
 #else
 
-#ifdef GENCODECS_STRUCT_INIT
+#ifdef GENCODECS_INIT
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
-    void _type##_init(struct _type *this)                                     \
+#define GENCODECS_STRUCT(_type)                                               \
+    static void _##_type##_init(struct _type *this)                           \
     {
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
@@ -89,10 +95,12 @@
 #define GENCODECS_STRUCT_END                                                  \
     }
 
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+
 #include "gencodecs-gen.H"
 
-#define GENCODECS_STRUCT_BEGIN(_type)                                         \
-    void _type##_cleanup(struct _type *this)                                  \
+#define GENCODECS_STRUCT(_type)                                               \
+    static void _##_type##_cleanup(struct _type *this)                        \
     {
 #define GENCODECS_FIELD(_name, _type, _default_value)                         \
         (void)this->_name;
@@ -102,8 +110,8 @@
 #define GENCODECS_STRUCT_END                                                  \
     }
 
-#define GENCODECS_LIST_BEGIN(_type)                                           \
-    void _type##_cleanup(struct _type *this)                                  \
+#define GENCODECS_LIST(_type)                                                 \
+    static void _##_type##_cleanup(struct _type *this)                        \
     {
 #define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
         __carray_free(this, _type, NULL, NULL);
@@ -115,8 +123,29 @@
 #define GENCODECS_LIST_END                                                    \
     }
 
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
 #include "gencodecs-gen.H"
 
-#endif /* GENCODECS_STRUCT_INIT */
+#define GENCODECS_PUB_STRUCT(_type)                                           \
+    void _type##_init(struct _type *this)                                     \
+    {                                                                         \
+        _##_type##_init(this);                                                \
+    }                                                                         \
+    void _type##_cleanup(struct _type *this)                                  \
+    {                                                                         \
+        _##_type##_cleanup(this);                                             \
+    }
+
+#define GENCODECS_PUB_LIST(_type)                                             \
+    void _type##_cleanup(struct _type *this)                                  \
+    {                                                                         \
+        _##_type##_cleanup(this);                                             \
+    }
+
+#include "gencodecs-gen.H"
+
+#endif /* GENCODECS_INIT */
 #endif /* GENCODECS_HEADER */
-#endif /* GENCODECS_STRUCT */
+#endif /* GENCODECS_DATA */
