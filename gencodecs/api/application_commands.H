@@ -1,3 +1,7 @@
+/*****************************************************************************
+ * Application Commands Datatypes
+ * **************************************************************************/
+
 ENUM_BEGIN(discord_application_command_types)
   DESC("Slash commands: a text-based command that shows up when a user" 
        "types `/`")
@@ -49,4 +53,79 @@ STRUCT_BEGIN(discord_application_command_option)
 
   DESC("enable autocomplete interactions for this option")
     FIELD(bool, autocomplete, false)
+STRUCT_END
+
+/*****************************************************************************
+ * Application Commands REST parameters
+ * **************************************************************************/
+
+STRUCT_BEGIN(discord_create_global_application_command)
+  DESC("1-32 lowercase character name")
+    FIELD_PTR(char, *, name)
+  DESC("1-100 character description")
+    FIELD_PTR(char, *, description)
+  DESC("the parameters for the command")
+  COND_WRITE(options != NULL)
+    FIELD_STRUCT_PTR(discord_application_command_options, *, options)
+  COND_END
+  DESC("whether the command is enabled by default when the app is added to a"
+       "guild")
+    FIELD(bool, default_permission, true)
+  DESC("the type of command, default `1` if not set")
+  COND_WRITE(type != 0)
+    FIELD_ENUM(discord_application_command_types, type)
+  COND_END
+STRUCT_END
+
+STRUCT_BEGIN(discord_edit_global_application_command)
+  DESC("1-32 lowercase character name")
+    FIELD_PTR(char, *, name)
+  DESC("1-100 character description")
+    FIELD_PTR(char, *, description)
+  DESC("the parameters for the command")
+  COND_WRITE(options != NULL)
+    FIELD_STRUCT_PTR(discord_application_command_options, *, options)
+  COND_END
+  DESC("whether the command is enabled by default when the app is added to a"
+       "guild")
+    FIELD(bool, default_permission, true)
+STRUCT_END
+
+STRUCT_BEGIN(discord_create_guild_application_command)
+  DESC("1-32 lowercase character name")
+    FIELD_PTR(char, *, name)
+  DESC("1-100 character description")
+    FIELD_PTR(char, *, description)
+  DESC("the parameters for the command")
+  COND_WRITE(options != NULL)
+    FIELD_STRUCT_PTR(discord_application_command_options, *, options)
+  COND_END
+  DESC("whether the command is enabled by default when the app is added to a"
+       "guild")
+    FIELD(bool, default_permission, true)
+  DESC("the type of command, default `1` if not set")
+  COND_WRITE(type != 0)
+    FIELD_ENUM(discord_application_command_types, type)
+  COND_END
+STRUCT_END
+
+STRUCT_BEGIN(discord_edit_guild_application_command)
+  DESC("1-32 lowercase character name")
+    FIELD_PTR(char, *, name)
+  DESC("1-100 character description")
+    FIELD_PTR(char, *, description)
+  DESC("the parameters for the command")
+  COND_WRITE(options != NULL)
+    FIELD_STRUCT_PTR(discord_application_command_options, *, options)
+  COND_END
+  DESC("whether the command is enabled by default when the app is added to a"
+       "guild")
+    FIELD(bool, default_permission, true)
+STRUCT_END
+
+STRUCT_BEGIN(discord_edit_application_command_permissions)
+  DESC("the permissions for the command in the guild")
+  COND_WRITE(permissions != NULL)
+    FIELD_STRUCT_PTR(discord_application_command_permissions, *, permissions)
+  COND_END
 STRUCT_END
