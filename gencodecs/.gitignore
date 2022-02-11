@@ -1,1 +1,8 @@
-obj
+# Ignore all
+*
+# But these
+!.gitignore
+!test.c
+!*.H
+!discord-codecs.H
+!Makefile
