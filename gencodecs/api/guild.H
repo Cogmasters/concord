@@ -57,15 +57,15 @@ ENUM(discord_premium_tier)
     ENUMERATOR_LAST(DISCORD_PREMIUM_TIER_3, = 3)
 ENUM_END
 
-ENUM(discord_channel_flags)
+ENUM(discord_system_channel_flags)
   DESC("suppress member join notifications")
-    ENUMERATOR(DISCORD_CHANNEL_SUPPRESS_JOIN_NOTIFICATIONS, = 1 << 0)
+    ENUMERATOR(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATIONS, = 1 << 0)
   DESC("suppress server boost notifications")
-    ENUMERATOR(DISCORD_CHANNEL_SUPPRESS_PREMIUM_NOTIFICATIONS, = 1 << 1)
+    ENUMERATOR(DISCORD_SYSTEM_SUPPRESS_PREMIUM_NOTIFICATIONS, = 1 << 1)
   DESC("suppress server setup tips")
-    ENUMERATOR(DISCORD_CHANNEL_SUPPRESS_GUILD_REMINDER_NOTIFICATIONS, = 1 << 2)
+    ENUMERATOR(DISCORD_SYSTEM_SUPPRESS_GUILD_REMINDER_NOTIFICATIONS, = 1 << 2)
   DESC("hide member join sticker reply buttons")
-    ENUMERATOR_LAST(DISCORD_CHANNEL_SUPPRESS_JOIN_NOTIFICATION_REPLIES, = 1 << 3)
+    ENUMERATOR_LAST(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATION_REPLIES, = 1 << 3)
 ENUM_END
 
 ENUM(discord_integration_expire_behaviors)
@@ -421,3 +421,301 @@ STRUCT_END
 /*****************************************************************************
  * Guild REST parameters
  * **************************************************************************/
+
+PUB_STRUCT(discord_modify_guild)
+  DESC("guild name")
+    FIELD_PTR(name, char, *)
+  DESC("verification level")
+    FIELD_ENUM(verification_level, discord_verification_level)
+  DESC("default message notification level")
+    FIELD_ENUM(default_message_notifications, discord_message_notification_level)
+  DESC("explicit content filter level")
+    FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
+  DESC("ID for afk channel")
+    FIELD_PRINTF(afk_channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("afk timeout in seconds")
+    FIELD(afk_timeout, int, 0)
+  DESC("base64 1024x1024 png/jpeg/gif image for the guild icon (can be"
+       "animated gif when the server has the `ANIMATED_ICON` feature)")
+    FIELD_PTR(icon, char, *)
+  DESC("user ID to transfer guild ownership to (must be owner)")
+    FIELD_PRINTF(owner_id, u64snowflake, PRIu64, SCNu64)
+  DESC("base64 1024x1024 png/jpeg/gif image for the guild splash (can be"
+       "animated gif when the server has the `INVITE_SPLASH` feature)")
+    FIELD_PTR(splash, char, *)
+  DESC("base64 1024x1024 png/jpeg/gif image for the guild discovery splash"
+       "(can be animated gif when the server has the `DISCOVERABLE` feature)")
+    FIELD_PTR(discovery_splash, char, *)
+  DESC("base64 1024x1024 png/jpeg/gif image for the guild banner (can be"
+       "animated gif when the server has the `BANNER` feature)")
+    FIELD_PTR(banner, char, *)
+  DESC("the ID of the channel when guild notices such as welcome messages and"
+       "boost events are posted")
+    FIELD_PRINTF(system_channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("system channel flags")
+    FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
+  DESC("the ID of the channel where Community guilds display rules and/or"
+       "guidelines")
+    FIELD_PRINTF(rules_channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("the ID of the channel where admins and moderators of Community guild"
+       "receive notices from Discord")
+    FIELD_PRINTF(public_updates_channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("the preferred locale of a Community guild used in a server discovery"
+       "and notices from Discord; defaults to \"en-US\"")
+    FIELD_PTR(preferred_locale, char, *)
+  DESC("enabled guild features")
+    FIELD_STRUCT_PTR(features, json_strings, *)
+  DESC("the description for the guild, if the guild is discoverable")
+    FIELD_PTR(description, char, *)
+  DESC("whether the guild's boost progress bar should be enabled")
+    FIELD(premium_progress_bar_enabled, bool, false)
+STRUCT_END
+
+PUB_STRUCT(discord_create_guild_channel)
+  DESC("channel name (1-100 characters)")
+    FIELD_PTR(name, char, *)
+  DESC("the type of channel")
+    FIELD_ENUM(type, discord_channel_types)
+  DESC("channel topic (0-1024 characters)")
+    FIELD_PTR(topic, char, *)
+  DESC("the bitrate (in bits) of the voice channel (voice only)")
+  COND_WRITE(this->bitrate != 0)
+    FIELD(bitrate, int, 0)
+  COND_END
+  DESC("the user limit of the voice channel (voice only)")
+  COND_WRITE(this->user_limit != 0)
+    FIELD(user_limit, int, 0)
+  COND_END
+  DESC("amount of seconds a user has to wait before sending another message"
+       "(0-21600); bots, as well as users with the permission"
+       "`MANAGE_MESSAGES` or `MANAGE_CHANNEL`, are unaffected")
+    FIELD(rate_limit_per_user, int, 0)
+  DESC("sorting position of the channel")
+    FIELD(position, int, 0)
+  DESC("the channel's permission overwrites")
+    FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
+  DESC("ID of the parent category for a channel")
+  COND_WRITE(this->parent_id != 0)
+    FIELD_PRINTF(parent_id, u64snowflake, PRIu64, SCNu64)
+  COND_END
+  DESC("whether the channel is nsfw")
+    FIELD(nsfw, bool, false)
+STRUCT_END
+
+PUB_STRUCT(discord_modify_guild_channel_positions)
+  DESC("channel ID")
+    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+  DESC("sorting position of the channel")
+  COND_WRITE(this->position != 0)
+    FIELD(position, int, 0)
+  COND_END
+  DESC("syncs the permission overwrites with the new parent, if moving to a new"
+       "category")
+    FIELD(lock_category, bool, false)
+  DESC("the new parent ID for the channel that is moved")
+  COND_WRITE(this->parent_id != 0)
+    FIELD_PRINTF(parent_id, u64snowflake, PRIu64, SCNu64)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_list_active_threads)
+  DESC("the active threads")
+    FIELD_STRUCT_PTR(threads, discord_channels, *)
+  DESC("a thread member object for each returned thread the current user has"
+       "joined")
+    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+STRUCT_END
+
+/* TODO: disable json encoding functions */
+STRUCT(discord_list_guild_members)
+  DESC("max number of members to return (1-1000)")
+    FIELD(limit, int, 0)
+  DESC("the highest user ID in the previous page")
+    FIELD_PRINTF(after, u64snowflake, PRIu64, SCNu64)
+STRUCT_END
+
+/* TODO: disable json encoding functions */
+STRUCT(discord_search_guild_members)
+  DESC("query string to match username(s) and nickname(s) against")
+    FIELD_PTR(query, char, *)
+  DESC("max number of members to return (1-1000)")
+    FIELD(limit, int, 0)
+STRUCT_END
+
+PUB_STRUCT(discord_add_guild_member)
+  DESC("an oauth2 access token granted with the `guild.join` to the bot's"
+       "application for the user you want to add in the guild")
+    FIELD_PTR(access_token, char, *)
+  DESC("value to set user's nickname to")
+    FIELD_PTR(nick, char, *)
+  DESC("array of role IDs the member is assigned")
+    FIELD_STRUCT_PTR(roles, snowflakes, *)
+  DESC("whether the user is muted in voice channels")
+    FIELD(mute, bool, false)
+  DESC("whether the user is deafened in voice channels")
+    FIELD(deaf, bool, false)
+STRUCT_END
+
+PUB_STRUCT(discord_modify_guild_member)
+  DESC("value to set user's nickname to")
+    FIELD_PTR(nick, char, *)
+  DESC("array of role IDs the member is assigned")
+    FIELD_STRUCT_PTR(roles, snowflakes, *)
+  DESC("whether the user is muted in voice channels. will return a"
+       "@ref CCORD_HTTP_ERROR (400) if the user is not in a voice channel")
+    FIELD(mute, bool, false)
+  DESC("whether the user is deafened in voice channels. will return a"
+       "@ref CCORD_HTTP_ERROR (400) if the user is not in a voice channel")
+    FIELD(deaf, bool, false)
+  DESC("ID of channel to move user to (if they are connect to voice)")
+    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+  /* TODO: implement iso8601 conversion */
+  /* TODO: should be able to write `null` */
+#if 0
+  DESC("when the uesr's timeout will expire and the user will be able to"
+       "communicate in the guild again (up to 28 days in the future), set"
+       "to NULL to remove timeout. WIll throw a @ref CCORD_HTTP_ERROR (403)"
+       "error if the user has the `ADMINISTRATOR` permission or is the owner"
+       "of the guild")
+  COND_WRITE(this->communication_disabled_until != 0)
+    FIELD_PRINTF(communication_disabled_until, u64snowflake, PRIu64, SCNu64)
+  COND_END
+#endif
+STRUCT_END
+
+PUB_STRUCT(discord_modify_current_member)
+  DESC("value to set user's nickname to")
+  COND_WRITE(this->nick != NULL)
+    FIELD_PTR(nick, char, *)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_modify_current_user_nick)
+  DESC("value to set user's nickname to")
+  COND_WRITE(this->nick != NULL)
+    FIELD_PTR(nick, char, *)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_create_guild_ban)
+  DESC("number of days to delete messages for (0-7)")
+  COND_WRITE(this->delete_message_days >= 0 && this->delete_message_days <= 7)
+    FIELD(delete_message_days, int, 0)
+  COND_END
+  DESC("reason for the ban @deprecated deprecated field")
+  COND_WRITE(this->reason != NULL)
+    FIELD_PTR(reason, char, *)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_create_guild_role)
+  DESC("name of the role")
+    FIELD_PTR(name, char, *)
+  DESC("`@everyone` permissions in guild")
+    FIELD_PRINTF(permissions, uint64_t, PRIu64, SCNu64)
+  DESC("RGB color value")
+    FIELD(color, int, 0)
+  DESC("whether the role should be displayed separately in the sidebar")
+    FIELD(hoist, bool, false)
+  DESC("the role's icon image (if the guild has the `ROLE_ICONS` feature)")
+    FIELD_PTR(icon, char, *)
+  DESC("the role's unicode emoji as a standard emoji (if the guild has the"
+       "`ROLE_ICONS` feature)")
+    FIELD_PTR(unicode_emoji, char, *)
+  DESC("whether the role should be mentionable")
+    FIELD(mentionable, bool, false)
+STRUCT_END
+
+PUB_STRUCT(discord_modify_guild_role_positions)
+  DESC("role")
+    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+  DESC("sorting position of the role")
+  COND_WRITE(this->position != 0)
+    FIELD(position, int, 0)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_modify_guild_role)
+  DESC("name of the role")
+    FIELD_PTR(name, char, *)
+  DESC("bitwise value of the enabled/disabled permissions")
+    FIELD_PRINTF(permissions, uint64_t, PRIu64, SCNu64)
+  DESC("RGB color value")
+    FIELD(color, int, 0)
+  DESC("whether the role should be displayed separately in the sidebar")
+    FIELD(hoist, bool, false)
+  DESC("the role's icon image (if the guild has the `ROLE_ICONS` feature)")
+    FIELD_PTR(icon, char, *)
+  DESC("the role's unicode emoji as a standard emoji (if the guild has the"
+       "`ROLE_ICONS` feature)")
+    FIELD_PTR(unicode_emoji, char, *)
+  DESC("whether the role should be mentionable")
+    FIELD(mentionable, bool, false)
+STRUCT_END
+
+/* TODO: disable json encoding functions */
+STRUCT(discord_get_guild_prune_count)
+  DESC("number of days to count prune for (1-30)")
+  COND_WRITE(this->count != 0)
+    FIELD(count, int, 7)
+  COND_END
+  DESC("role(s) to include")
+    FIELD_STRUCT_PTR(include_roles, snowflakes, *)
+STRUCT_END
+
+PUB_STRUCT(discord_begin_guild_prune)
+  DESC("number of days to prune")
+  COND_WRITE(this->days != 0)
+    FIELD(days, int, 7)
+  COND_END
+  DESC("whether 'pruned' is returned, discouraged for large guilds")
+    FIELD(compute_prune_count, bool, true)
+  DESC("role(s) to include")
+    FIELD_STRUCT_PTR(include_roles, snowflakes, *)
+  DESC("reason for the prune @deprecated deprecated field")
+  COND_WRITE(this->reason != NULL)
+    FIELD_PTR(reason, char, *)
+  COND_END
+STRUCT_END
+
+/* TODO: disable json encoding functions */
+STRUCT(discord_get_guild_widget_image)
+  DESC("style of the widget image returned"
+       "@see https://discord.com/developers/docs/resources/guild#membership-screening-object-widget-style-options")
+  COND_WRITE(this->style != NULL)
+    FIELD_PTR(style, char, *)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_modify_guild_welcome_screen)
+  DESC("whether the welcome screen is enabled")
+    FIELD(enabled, bool, false)
+  DESC("channels linked in the welcome screen and their display options")
+    FIELD_STRUCT_PTR(welcome_channels, discord_welcome_screen_channels, *)
+  DESC("the server description to show in the welcome screen")
+  COND_WRITE(this->description != NULL)
+    FIELD_PTR(description, char, *)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_modify_current_user_voice_state)
+  DESC("the ID of the channel the user is currently in")
+    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("toggles the user's suppress state")
+    FIELD(suppress, bool, false)
+  /* TODO: implement iso8601 conversion */
+  /* TODO: should be able to write `null` */
+#if 0
+  DESC("set the user's request to speak")
+  COND_WRITE(this->request_to_speak_timestamp != 0)
+    FIELD_PRINTF(request_to_speak_timestamp, u64snowflake, PRIu64, SCNu64)
+  COND_END
+#endif
+STRUCT_END
+
+PUB_STRUCT(discord_modify_user_voice_state)
+  DESC("the ID of the channel the user is currently in")
+    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("toggles the user's suppress state")
+    FIELD(suppress, bool, false)
+STRUCT_END
