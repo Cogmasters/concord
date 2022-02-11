@@ -560,6 +560,17 @@ STRUCT(discord_allowed_mention)
     FIELD(replied_user, bool, false)
 STRUCT_END
 
+PUB_STRUCT(discord_thread_response_body)
+  DESC("the archived threads")
+    FIELD_STRUCT_PTR(threads, discord_channels, *)
+  DESC("a thread member object for each returned thread the current user has"
+       "joined")
+    FIELD_STRUCT_PTR(members, discord_thread_members, *)
+  DESC("whether there are potentially additional threads that could be returned"
+       "on a subsequent call")
+    FIELD(has_more, bool, false)
+STRUCT_END
+
 /*****************************************************************************
  * Channel REST parameters
  * **************************************************************************/
