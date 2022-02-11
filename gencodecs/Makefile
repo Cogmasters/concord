@@ -3,6 +3,7 @@ CC ?= gcc
 PP := ./gencodecs-pp
 
 INCLUDEDIR := $(TOP)/include
+APIDIR     := api
 OBJDIR     := $(TOP)/obj
 
 TEMPLATES_IN    := discord-codecs.H
@@ -12,7 +13,7 @@ TEMPLATES_OUT_C := $(TEMPLATES_IN:%.H=%.c)
 OBJS := $(OBJDIR)/jsmn-find.o $(OBJDIR)/json-build.o \
         $(TEMPLATES_OUT_C:%.c=$(OBJDIR)/%.o)
 
-CFLAGS += -std=c89 -Wall -Wextra -Wpedantic -g -I. -I.. -I$(INCLUDEDIR)
+CFLAGS += -std=c89 -Wall -Wextra -Wpedantic -g -I. -I$(APIDIR) -I$(INCLUDEDIR)
 
 HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.H/\U\1/' | sed -e 's/-/_/')_H"
 
