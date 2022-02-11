@@ -1,0 +1,108 @@
+/*****************************************************************************
+ * Invite Datatypes
+ * **************************************************************************/
+
+ENUM(discord_invite_target_types)
+    ENUMERATOR(DISCORD_INVITE_TARGET_STREAM, = 1)
+    ENUMERATOR_LAST(DISCORD_INVITE_TARGET_EMBEDDED_APPLICATION, = 2)
+ENUM_END
+
+PUB_STRUCT(discord_invite)
+  DESC("the invite code (unique ID)")
+    FIELD_PTR(code, char, *)
+  DESC("the guild this invite is for")
+  COND_WRITE(this->guild != NULL)
+    FIELD_STRUCT_PTR(guild, discord_guild, *)
+  COND_END
+  DESC("the channel this invite is for")
+    FIELD_STRUCT_PTR(channel, discord_channel, *)
+  DESC("the user who created the invite")
+  COND_WRITE(this->inviter != NULL)
+    FIELD_STRUCT_PTR(inviter, discord_user, *)
+  COND_END
+  DESC("the type of target for this voice channel invite")
+  COND_WRITE(this->target_type != 0)
+    FIELD_ENUM(target_type, discord_invite_target_types)
+  COND_END
+  DESC("the user whose stream to display for this voice channel stream invite")
+  COND_WRITE(this->target_user != NULL)
+    FIELD_STRUCT_PTR(target_user, discord_user, *)
+  COND_END
+  DESC("the embedded application to open for this voice channel embedded"
+       "application invite")
+  COND_WRITE(this->target_application != NULL)
+    FIELD_STRUCT_PTR(target_application, discord_application, *)
+  COND_END
+  DESC("approximate count of online members")
+    FIELD(approximate_presence_count, int, 0)
+  DESC("approximate count of total members")
+    FIELD(approximate_member_count, int, 0)
+  /* TODO: implement iso8601 conversion */
+  /* TODO: nullable */
+#if 0
+  DESC("the expiration date of this invite")
+  COND_WRITE(this->expires_at != 0)
+    FIELD_PRINTF(expires_at, u64snowflake, PRIu64, SCNu64)
+  COND_END
+#endif
+  DESC("stage instance data if there is a public stage instance in the stage"
+       "channel this invite is for")
+  COND_WRITE(this->stage_instance != NULL)
+    FIELD_STRUCT_PTR(stage_instance, discord_invite_stage_instance, *)
+  COND_END
+  DESC("guild scheduled event data, only included if `guild_scheduled_event_id`"
+       "contains a valid guild scheduled event ID")
+  COND_WRITE(this->guild_scheduled_event != NULL)
+    FIELD_STRUCT_PTR(guild_scheduled_event, discord_guild_scheduled_event, *)
+  COND_END
+STRUCT_END
+
+PUB_LIST(discord_invites)
+    LISTTYPE_STRUCT(discord_invite)
+LIST_END
+
+STRUCT(discord_invite_metadata)
+  DESC("number of times this invite has been used")
+    FIELD(uses, int, 0)
+  DESC("max number of times this invite can been used")
+    FIELD(max_uses, int, 0)
+  DESC("duration (in seconds) after which the invite expires")
+    FIELD(max_age, int, 0)
+  DESC("whether this invite only grants temporary membership")
+    FIELD(temporary, bool, false)
+  /* TODO: implement iso8601 conversion */
+#if 0
+  DESC("when this invite was created")
+  COND_WRITE(this->created_at != 0)
+    FIELD_PRINTF(created_at, u64snowflake, PRIu64, SCNu64)
+  COND_END
+#endif
+STRUCT_END
+
+STRUCT(discord_invite_stage_instance)
+  DESC("the members speaking in the Stage")
+  COND_WRITE(this->members != NULL)
+    FIELD_STRUCT_PTR(members, discord_guild_members, *)
+  COND_END
+  DESC("the number of users in the Stage")
+    FIELD(participant_count, int, 0)
+  DESC("the number of users speaking in the Stage")
+    FIELD(speaker_count, int, 0)
+  DESC("the topic of the Stage instance (1-120 characters)")
+    FIELD_PTR(topic, char, *)
+STRUCT_END
+
+/*****************************************************************************
+ * Invite REST parameters
+ * **************************************************************************/
+
+PUB_STRUCT(discord_get_invite)
+  DESC("whether the invite should contain approximate member counts")
+    FIELD(with_counts, bool, false)
+  DESC("whether the invite should contain the expiration date")
+    FIELD(with_expiration, bool, false)
+  DESC("the guild scheduled event to include with the invite")
+  COND_WRITE(this->guild_scheduled_event_id != 0)
+    FIELD_PRINTF(guild_scheduled_event_id, u64snowflake, PRIu64, SCNu64)
+  COND_END
+STRUCT_END
