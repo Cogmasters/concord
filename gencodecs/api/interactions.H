@@ -119,6 +119,10 @@ PUB_STRUCT(discord_interaction_response)
 STRUCT_END
 
 STRUCT(discord_interaction_callback_data)
+  DESC("message components")
+  COND_WRITE(this->components != NULL)
+    FIELD_STRUCT_PTR(components, discord_components, *)
+  COND_END
   /* MESSAGES */
   DESC("is the response TTS")
   COND_WRITE(this->tts != false)
@@ -138,10 +142,6 @@ STRUCT(discord_interaction_callback_data)
   COND_WRITE(this->flags != 0)
     FIELD_ENUM(flags, discord_message_flags)
   COND_END
-  DESC("message components")
-  COND_WRITE(this->components != NULL)
-    FIELD_STRUCT_PTR(components, discord_components, *)
-  COND_END
   DESC("attachment objects with filename and description")
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
@@ -154,9 +154,4 @@ STRUCT(discord_interaction_callback_data)
     FIELD_PTR(custom_id, char, *)
   DESC("the title of the popup modal")
     FIELD_PTR(title, char, *)
-  /* XXX: components is a duplicate field */
-#if 0 
-  DESC("between 1 and 5 (inclusive) components that make up the modal")
-    FIELD_STRUCT_PTR(components, discord_components, *)
-#endif
 STRUCT_END
