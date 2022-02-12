@@ -138,7 +138,7 @@ discord_get_data(struct discord *client)
 }
 
 void
-discord_add_intents(struct discord *client, enum discord_gateway_intents code)
+discord_add_intents(struct discord *client, uint64_t code)
 {
     if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
         logconf_error(&client->conf, "Can't set intents to a running client.");
@@ -149,8 +149,7 @@ discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 }
 
 void
-discord_remove_intents(struct discord *client,
-                       enum discord_gateway_intents code)
+discord_remove_intents(struct discord *client, uint64_t code)
 {
     if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
         logconf_error(&client->conf,

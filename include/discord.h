@@ -25,7 +25,6 @@ struct discord;
 /**/
 
 #include "discord-codecs.h"
-#include "discord-specs.h" /* see specs/api/ */
 #include "discord-templates.h"
 
 #ifdef HAS_DISCORD_VOICE
@@ -151,8 +150,7 @@ const struct discord_user *discord_get_self(struct discord *client);
  * @param client the client created with discord_init()
  * @param code the intents opcode, can be set as a bitmask operation
  */
-void discord_add_intents(struct discord *client,
-                         enum discord_gateway_intents code);
+void discord_add_intents(struct discord *client, uint64_t code);
 /**
  * @brief Unsubscribe from Discord Events
  *
@@ -161,8 +159,7 @@ void discord_add_intents(struct discord *client,
  *        Ex: 1 << 0 | 1 << 1 | 1 << 4
  *
  */
-void discord_remove_intents(struct discord *client,
-                            enum discord_gateway_intents code);
+void discord_remove_intents(struct discord *client, uint64_t code);
 /**
  * @brief Set a mandatory prefix before commands
  * @see discord_set_on_command()
@@ -351,7 +348,7 @@ CCORDcode discord_delete_global_application_command(
 CCORDcode discord_bulk_overwrite_global_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
-    struct discord_application_command **params,
+    struct discord_application_commands *params,
     struct discord_ret_application_commands *ret);
 
 /**
@@ -458,7 +455,7 @@ CCORDcode discord_bulk_overwrite_guild_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_application_command **params,
+    struct discord_application_commands *params,
     struct discord_ret_application_commands *ret);
 
 /**
@@ -531,7 +528,7 @@ CCORDcode discord_batch_edit_application_command_permissions(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_guild_application_command_permissions **params,
+    struct discord_guild_application_command_permissions *params,
     struct discord_ret_guild_application_command_permissions *ret);
 
 /**
@@ -950,7 +947,7 @@ CCORDcode discord_delete_message(struct discord *client,
  */
 CCORDcode discord_bulk_delete_messages(struct discord *client,
                                        u64_snowflake_t channel_id,
-                                       u64_snowflake_t **messages,
+                                       struct snowflakes *messages,
                                        struct discord_ret *ret);
 
 /**
@@ -1372,6 +1369,7 @@ CCORDcode discord_create_guild(struct discord *client,
 
 /**
  * @brief Get the guild with given id
+ * @todo missing query parameters
  * @note If with_counts is set to true, this endpoint will also return
  *        approximate_member_count and approximate_presence_count for the
  *        guild
@@ -1473,7 +1471,7 @@ CCORDcode discord_create_guild_channel(
 CCORDcode discord_modify_guild_channel_positions(
     struct discord *client,
     u64_snowflake_t guild_id,
-    struct discord_modify_guild_channel_positions **params,
+    struct discord_modify_guild_channel_positions *params,
     struct discord_ret *ret);
 
 /**
@@ -1821,7 +1819,7 @@ CCORDcode discord_get_guild_welcome_screen(
 CCORDcode discord_modify_guild_role_positions(
     struct discord *client,
     u64_snowflake_t guild_id,
-    struct discord_modify_guild_role_positions **params,
+    struct discord_modify_guild_role_positions *params,
     struct discord_ret_roles *ret);
 
 /**
@@ -2285,7 +2283,7 @@ CCORDcode discord_disconnect_guild_member(
 CCORDcode discord_get_channel_at_pos(struct discord *client,
                                      u64_snowflake_t guild_id,
                                      enum discord_channel_types type,
-                                     size_t position,
+                                     int position,
                                      struct discord_ret_channel *ret);
 
 /******************************************************************************
@@ -2376,7 +2374,7 @@ typedef void (*discord_ev_message_delete)(struct discord *client,
                                           u64_snowflake_t channel_id,
                                           u64_snowflake_t guild_id);
 typedef void (*discord_ev_message_delete_bulk)(struct discord *client,
-                                               const u64_snowflake_t **ids,
+                                               const struct snowflakes *ids,
                                                u64_snowflake_t channel_id,
                                                u64_snowflake_t guild_id);
 typedef void (*discord_ev_message_reaction_add)(
@@ -2717,12 +2715,11 @@ void discord_embed_add_field(struct discord_embed *embed,
  * @param allow permission bit set
  * @param deny permission bit set
  */
-void discord_overwrite_append(
-    struct discord_overwrite ***permission_overwrites,
-    u64_snowflake_t id,
-    int type,
-    u64_bitmask_t allow,
-    u64_bitmask_t deny);
+void discord_overwrite_append(struct discord_overwrites *permission_overwrites,
+                              u64_snowflake_t id,
+                              int type,
+                              u64_bitmask_t allow,
+                              u64_bitmask_t deny);
 
 /**
  * @brief Helper function to add presence activities

@@ -84,7 +84,7 @@ discord_get_global_application_commands(
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_application_command, ret);
+    REQUEST_LIST_INIT(req, discord_application_commands, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/applications/%" PRIu64 "/commands",
@@ -187,7 +187,7 @@ CCORDcode
 discord_bulk_overwrite_global_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
-    struct discord_application_command **params,
+    struct discord_application_commands *params,
     struct discord_ret_application_commands *ret)
 {
     struct discord_request req = { 0 };
@@ -200,7 +200,7 @@ discord_bulk_overwrite_global_application_command(
     body.size = discord_application_commands_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    REQUEST_LIST_INIT(req, discord_application_command, ret);
+    REQUEST_LIST_INIT(req, discord_application_commands, ret);
 
     return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
                                "/applications/%" PRIu64 "/commands",
@@ -219,7 +219,7 @@ discord_get_guild_application_commands(
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_application_command, ret);
+    REQUEST_LIST_INIT(req, discord_application_commands, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -336,7 +336,7 @@ discord_bulk_overwrite_guild_application_command(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_application_command **params,
+    struct discord_application_commands *params,
     struct discord_ret_application_commands *ret)
 {
     struct discord_request req = { 0 };
@@ -350,7 +350,7 @@ discord_bulk_overwrite_guild_application_command(
     body.size = discord_application_commands_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    REQUEST_LIST_INIT(req, discord_application_command, ret);
+    REQUEST_LIST_INIT(req, discord_application_commands, ret);
 
     return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
                                "/applications/%" PRIu64 "/guilds/%" PRIu64
@@ -434,7 +434,7 @@ discord_batch_edit_application_command_permissions(
     struct discord *client,
     u64_snowflake_t application_id,
     u64_snowflake_t guild_id,
-    struct discord_guild_application_command_permissions **params,
+    struct discord_guild_application_command_permissions *params,
     struct discord_ret_guild_application_command_permissions *ret)
 {
     struct discord_request req = { 0 };
@@ -603,7 +603,7 @@ discord_get_channel_messages(struct discord *client,
         }
     }
 
-    REQUEST_LIST_INIT(req, discord_message, ret);
+    REQUEST_LIST_INIT(req, discord_messages, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/messages%s%s",
@@ -835,7 +835,7 @@ discord_get_reactions(struct discord *client,
     else
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
 
-    REQUEST_LIST_INIT(req, discord_user, ret);
+    REQUEST_LIST_INIT(req, discord_users, ret);
 
     code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/messages/%" PRIu64
@@ -949,45 +949,37 @@ discord_delete_message(struct discord *client,
 CCORDcode
 discord_bulk_delete_messages(struct discord *client,
                              u64_snowflake_t channel_id,
-                             u64_snowflake_t **messages,
+                             struct snowflakes *messages,
                              struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
     u64_unix_ms_t now = discord_timestamp(client);
     struct sized_buffer body;
-    char *buf = NULL;
-    CCORDcode code;
-    size_t count;
-    size_t i;
+    char buf[4096] = "";
+    int i;
 
     CCORD_EXPECT(client, messages != NULL, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, messages->size >= 2 && messages->size <= 100,
+                 CCORD_BAD_PARAMETER, "");
 
-    count = ntl_length_max((ntl_t)messages, 101);
-    CCORD_EXPECT(client, count >= 2 && count <= 100, CCORD_BAD_PARAMETER, "");
-
-    for (i = 0; i < count; ++i) {
-        u64_unix_ms_t tstamp = (*messages[i] >> 22) + 1420070400000;
+    for (i = 0; i < messages->size; ++i) {
+        u64_unix_ms_t tstamp = (messages->array[i] >> 22) + 1420070400000;
 
         CCORD_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
                      CCORD_BAD_PARAMETER,
                      "Messages should not be older than 2 weeks.");
     }
 
-    body.size =
-        json_ainject(&buf, "(messages):F", ja_u64_list_to_json, messages);
+    body.size = snowflakes_to_json(buf, sizeof(buf), messages);
     body.start = buf;
 
     CCORD_EXPECT(client, buf != NULL, CCORD_BAD_JSON, "");
 
     REQUEST_BLANK_INIT(req, ret);
 
-    code = discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
                                "/channels/%" PRIu64 "/messages/bulk-delete",
                                channel_id);
-
-    free(buf);
-
-    return code;
 }
 
 CCORDcode
@@ -1026,7 +1018,7 @@ discord_get_channel_invites(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_invite, ret);
+    REQUEST_LIST_INIT(req, discord_invites, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/invites", channel_id);
@@ -1124,7 +1116,7 @@ discord_get_pinned_messages(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_message, ret);
+    REQUEST_LIST_INIT(req, discord_messages, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/pins", channel_id);
@@ -1339,7 +1331,7 @@ discord_list_thread_members(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_thread_member, ret);
+    REQUEST_LIST_INIT(req, discord_thread_members, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/thread-members",
@@ -1474,7 +1466,7 @@ discord_list_guild_emojis(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_emoji, ret);
+    REQUEST_LIST_INIT(req, discord_emojis, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/emojis", guild_id);
@@ -1631,7 +1623,7 @@ discord_create_guild_template(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
     body.size =
-        discord_create_guild_template_to_json_v(buf, sizeof(buf), params);
+        discord_create_guild_template_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
     REQUEST_INIT(req, discord_guild_template, ret);
@@ -1757,7 +1749,7 @@ discord_get_guild_channels(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_channel, ret);
+    REQUEST_LIST_INIT(req, discord_channels, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/channels", guild_id);
@@ -1789,7 +1781,7 @@ CCORDcode
 discord_modify_guild_channel_positions(
     struct discord *client,
     u64_snowflake_t guild_id,
-    struct discord_modify_guild_channel_positions **params,
+    struct discord_modify_guild_channel_positions *params,
     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1799,7 +1791,7 @@ discord_modify_guild_channel_positions(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_modify_guild_channel_positions_list_to_json(
+    body.size = discord_modify_guild_channel_positions_to_json(
         buf, sizeof(buf), params);
     body.start = buf;
 
@@ -1854,7 +1846,7 @@ discord_list_guild_members(struct discord *client,
         }
     }
 
-    REQUEST_LIST_INIT(req, discord_guild_member, ret);
+    REQUEST_LIST_INIT(req, discord_guild_members, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/members%s%s", guild_id,
@@ -1890,7 +1882,7 @@ discord_search_guild_members(struct discord *client,
         }
     }
 
-    REQUEST_LIST_INIT(req, discord_guild_member, ret);
+    REQUEST_LIST_INIT(req, discord_guild_members, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/members/search%s%s",
@@ -2070,7 +2062,7 @@ discord_get_guild_bans(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_ban, ret);
+    REQUEST_LIST_INIT(req, discord_bans, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/bans", guild_id);
@@ -2149,7 +2141,7 @@ discord_get_guild_roles(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_role, ret);
+    REQUEST_LIST_INIT(req, discord_roles, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/roles", guild_id);
@@ -2180,7 +2172,7 @@ CCORDcode
 discord_modify_guild_role_positions(
     struct discord *client,
     u64_snowflake_t guild_id,
-    struct discord_modify_guild_role_positions **params,
+    struct discord_modify_guild_role_positions *params,
     struct discord_ret_roles *ret)
 {
     struct discord_request req = { 0 };
@@ -2190,11 +2182,11 @@ discord_modify_guild_role_positions(
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
-    body.size = discord_modify_guild_role_positions_list_to_json(
-        buf, sizeof(buf), params);
+    body.size =
+        discord_modify_guild_role_positions_to_json(buf, sizeof(buf), params);
     body.start = buf;
 
-    REQUEST_LIST_INIT(req, discord_role, ret);
+    REQUEST_LIST_INIT(req, discord_roles, ret);
 
     return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
                                "/guilds/%" PRIu64 "/roles", guild_id);
@@ -2282,7 +2274,7 @@ discord_get_guild_invites(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_invite, ret);
+    REQUEST_LIST_INIT(req, discord_invites, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/invites", guild_id);
@@ -2676,7 +2668,7 @@ discord_get_current_user_guilds(struct discord *client,
 {
     struct discord_request req = { 0 };
 
-    REQUEST_LIST_INIT(req, discord_guild, ret);
+    REQUEST_LIST_INIT(req, discord_guilds, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/users/@me/guilds");
@@ -2747,7 +2739,7 @@ discord_get_user_connections(struct discord *client,
 {
     struct discord_request req = { 0 };
 
-    REQUEST_LIST_INIT(req, discord_connection, ret);
+    REQUEST_LIST_INIT(req, discord_connections, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/users/@me/connections");
@@ -2763,7 +2755,7 @@ discord_list_voice_regions(struct discord *client,
 {
     struct discord_request req = { 0 };
 
-    REQUEST_LIST_INIT(req, discord_voice_region, ret);
+    REQUEST_LIST_INIT(req, discord_voice_regions, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/voice/regions");
@@ -2806,7 +2798,7 @@ discord_get_channel_webhooks(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_webhook, ret);
+    REQUEST_LIST_INIT(req, discord_webhooks, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/channels/%" PRIu64 "/webhooks", channel_id);
@@ -2821,7 +2813,7 @@ discord_get_guild_webhooks(struct discord *client,
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
-    REQUEST_LIST_INIT(req, discord_webhook, ret);
+    REQUEST_LIST_INIT(req, discord_webhooks, ret);
 
     return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
                                "/guilds/%" PRIu64 "/webhooks", guild_id);
@@ -3109,7 +3101,7 @@ discord_disconnect_guild_member(struct discord *client,
 
 struct _discord_get_channel_at_pos_cxt {
     enum discord_channel_types type;
-    size_t position;
+    int position;
     struct discord_ret_channel ret;
 };
 
@@ -3118,16 +3110,16 @@ struct _discord_get_channel_at_pos_cxt {
 static void
 _done_get_channels(struct discord *client,
                    void *data,
-                   const struct discord_channel **chs)
+                   const struct discord_channels *chs)
 {
     struct _discord_get_channel_at_pos_cxt *cxt = data;
 
     const struct discord_channel *found_ch = NULL;
-    size_t i, pos; /* calculate position */
+    int i, pos; /* calculate position */
 
-    for (i = 0, pos = 0; chs[i]; ++i) {
-        if (cxt->type == chs[i]->type && pos++ == cxt->position) {
-            found_ch = chs[i];
+    for (i = 0, pos = 0; i < chs->size; ++i) {
+        if (cxt->type == chs->array[i].type && pos++ == cxt->position) {
+            found_ch = &chs->array[i];
             break;
         }
     }
@@ -3148,7 +3140,7 @@ CCORDcode
 discord_get_channel_at_pos(struct discord *client,
                            u64_snowflake_t guild_id,
                            enum discord_channel_types type,
-                           size_t position,
+                           int position,
                            struct discord_ret_channel *ret)
 {
     struct _discord_get_channel_at_pos_cxt *cxt;

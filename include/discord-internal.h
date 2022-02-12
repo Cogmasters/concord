@@ -76,7 +76,7 @@ struct discord_request {
     /** request attributes set by client */
     struct discord_ret_generic ret;
     /** in case of HTTP_MIMEPOST, provide attachments */
-    struct discord_attachment **attachments;
+    struct discord_attachments *attachments;
 };
 
 #define DISCORD_ENDPT_LEN 2048

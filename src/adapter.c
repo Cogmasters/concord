@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdarg.h>
 
+#include "carray.h"
+
 #include "discord.h"
 #include "discord-internal.h"
 
@@ -195,7 +197,7 @@ static void
 _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
-    struct discord_attachment **atchs = cxt->req.attachments;
+    struct discord_attachments *atchs = cxt->req.attachments;
     struct sized_buffer *body = &cxt->body.buf;
     curl_mimepart *part;
     char name[64];
@@ -210,38 +212,38 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
     }
 
     /* attachment part */
-    for (i = 0; atchs[i]; ++i) {
+    for (i = 0; i < atchs->size; ++i) {
         size_t len = snprintf(name, sizeof(name), "files[%d]", i);
         ASSERT_S(len < sizeof(name), "Out of bounds write attempt");
 
-        if (atchs[i]->content) {
+        if (atchs->array[i].content) {
             part = curl_mime_addpart(mime);
-            curl_mime_data(part, atchs[i]->content,
-                           atchs[i]->size ? atchs[i]->size
-                                          : CURL_ZERO_TERMINATED);
-            curl_mime_filename(part, IS_EMPTY_STRING(atchs[i]->filename)
+            curl_mime_data(part, atchs->array[i].content,
+                           atchs->array[i].size ? atchs->array[i].size
+                                                : (int)CURL_ZERO_TERMINATED);
+            curl_mime_filename(part, IS_EMPTY_STRING(atchs->array[i].filename)
                                          ? "a.out"
-                                         : atchs[i]->filename);
-            curl_mime_type(part, IS_EMPTY_STRING(atchs[i]->content_type)
+                                         : atchs->array[i].filename);
+            curl_mime_type(part, IS_EMPTY_STRING(atchs->array[i].content_type)
                                      ? "application/octet-stream"
-                                     : atchs[i]->content_type);
+                                     : atchs->array[i].content_type);
             curl_mime_name(part, name);
         }
-        else if (!IS_EMPTY_STRING(atchs[i]->filename)) {
+        else if (!IS_EMPTY_STRING(atchs->array[i].filename)) {
             CURLcode code;
 
             /* fetch local file by the filename */
             part = curl_mime_addpart(mime);
-            code = curl_mime_filedata(part, atchs[i]->filename);
+            code = curl_mime_filedata(part, atchs->array[i].filename);
             if (code != CURLE_OK) {
                 char errbuf[256];
                 snprintf(errbuf, sizeof(errbuf), "%s (file: %s)",
-                         curl_easy_strerror(code), atchs[i]->filename);
+                         curl_easy_strerror(code), atchs->array[i].filename);
                 perror(errbuf);
             }
-            curl_mime_type(part, IS_EMPTY_STRING(atchs[i]->content_type)
+            curl_mime_type(part, IS_EMPTY_STRING(atchs->array[i].content_type)
                                      ? "application/octet-stream"
-                                     : atchs[i]->content_type);
+                                     : atchs->array[i].content_type);
             curl_mime_name(part, name);
         }
     }
@@ -325,7 +327,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     conn = ua_conn_start(adapter->ua);
 
     if (HTTP_MIMEPOST == method) {
-        cxt.req.attachments = req->attachments;
+        cxt.req.attachments = calloc(1, sizeof(struct discord_attachments));
+        *cxt.req.attachments = *req->attachments;
         cxt.body.buf = *body;
 
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
@@ -412,36 +415,34 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
 /* ASYNCHRONOUS REQUEST LOGIC */
 
-/* TODO: make this kind of function specs generated (optional)
+/* TODO: make this kind of function gencodecs generated (optional)
  *
  * Only the fields that are required at _discord_context_to_mime()
  *        are duplicated*/
-static struct discord_attachment **
-_discord_attachment_list_dup(struct discord_attachment **src)
+static void
+_discord_attachments_dup(struct discord_attachments *dest,
+                         struct discord_attachments *src)
 {
-    size_t i, len = ntl_length((ntl_t)src);
-    struct discord_attachment **dest;
+    int i;
 
-    dest = (struct discord_attachment **)ntl_calloc(len, sizeof **dest);
+    for (i = 0; i < src->size; ++i) {
+        carray_insert(dest, i, src->array[i]);
+        if (src->array[i].content) {
+            dest->array[i].size = src->array[i].size
+                                      ? src->array[i].size
+                                      : (int)strlen(src->array[i].content) + 1;
 
-    for (i = 0; src[i]; ++i) {
-        memcpy(dest[i], src[i], sizeof **dest);
-        if (src[i]->content) {
-            dest[i]->size =
-                src[i]->size ? src[i]->size : strlen(src[i]->content) + 1;
-
-            dest[i]->content = malloc(dest[i]->size);
-            memcpy(dest[i]->content, src[i]->content, dest[i]->size);
+            dest->array[i].content = malloc(dest->array[i].size);
+            memcpy(dest->array[i].content, src->array[i].content,
+                   dest->array[i].size);
         }
-        if (src[i]->filename) {
-            dest[i]->filename = strdup(src[i]->filename);
+        if (src->array[i].filename) {
+            dest->array[i].filename = strdup(src->array[i].filename);
         }
-        if (src[i]->content_type) {
-            dest[i]->content_type = strdup(src[i]->content_type);
+        if (src->array[i].content_type) {
+            dest->array[i].content_type = strdup(src->array[i].content_type);
         }
     }
-
-    return dest;
 }
 
 static void
@@ -458,8 +459,8 @@ _discord_context_reset(struct discord_context *cxt)
     cxt->timeout_ms = 0;
     cxt->retry_attempt = 0;
 
-    if (cxt->req.attachments)
-        discord_attachment_list_free(cxt->req.attachments);
+    discord_attachments_cleanup(cxt->req.attachments);
+    free(cxt->req.attachments);
 
     memset(&cxt->req, 0, sizeof(struct discord_request));
 }
@@ -476,9 +477,7 @@ _discord_context_populate(struct discord_context *cxt,
     cxt->method = method;
 
     memcpy(&cxt->req, req, sizeof(struct discord_request));
-    if (req->attachments) {
-        cxt->req.attachments = _discord_attachment_list_dup(req->attachments);
-    }
+    _discord_attachments_dup(cxt->req.attachments, req->attachments);
 
     if (body) {
         /* copy request body */
