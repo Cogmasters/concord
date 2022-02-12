@@ -364,7 +364,7 @@ struct discord_gateway_cmd_cbs {
 };
 
 struct discord_gateway_cbs {
-    /** triggers on every event loop iteration */
+    /** triggers when idle.  */
     discord_ev_idle on_idle;
 
     /** triggers when connection first establishes */

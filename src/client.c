@@ -265,8 +265,14 @@ discord_run(struct discord *client)
 
         last = 0;
         while (1) {
-            io_poller_poll(client->io_poller,
-                           client->gw.cmds.cbs.on_idle ? 1 : 1000);
+            int poll_time = client->gw.cmds.cbs.on_idle ? 0 : 1000;
+            int poll_result = io_poller_poll(client->io_poller, poll_time);
+            if (-1 == poll_result) {
+                //TODO: handle poll error here
+            } else if (0 == poll_result) {
+                if (client->gw.cmds.cbs.on_idle)
+                    client->gw.cmds.cbs.on_idle(client);
+            }
             if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
                 break;
 
@@ -277,12 +283,6 @@ discord_run(struct discord *client)
 
                 last = now;
             }
-
-            if (client->gw.cmds.cbs.on_idle)
-                client->gw.cmds.cbs.on_idle(client);
-            
-            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
-                break;
         }
 
         if (true == discord_gateway_end(&client->gw)) {

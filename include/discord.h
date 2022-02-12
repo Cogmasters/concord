@@ -2463,7 +2463,7 @@ void discord_set_on_commands(struct discord *client,
  *        the callback triggerable
  *  @{ */
 
-/** @brief Triggers at every event-loop iteration.  */
+/** @brief Triggers when idle.  */
 void discord_set_on_idle(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when the client is ready */
 void discord_set_on_ready(struct discord *client, discord_ev_idle callback);
