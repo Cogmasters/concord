@@ -249,6 +249,12 @@ discord_set_on_idle(struct discord *client, discord_ev_idle callback)
 }
 
 void
+discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
+{
+    client->gw.cmds.cbs.on_cycle = callback;
+}
+
+void
 discord_set_on_ready(struct discord *client, discord_ev_idle callback)
 {
     client->gw.cmds.cbs.on_ready = callback;
