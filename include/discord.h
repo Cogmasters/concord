@@ -2465,6 +2465,8 @@ void discord_set_on_commands(struct discord *client,
 
 /** @brief Triggers when idle.  */
 void discord_set_on_idle(struct discord *client, discord_ev_idle callback);
+/** @brief Triggers once per loop cycle.  */
+void discord_set_on_cycle(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when the client is ready */
 void discord_set_on_ready(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when a application command is created */

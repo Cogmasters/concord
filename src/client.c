@@ -273,6 +273,8 @@ discord_run(struct discord *client)
                 if (client->gw.cmds.cbs.on_idle)
                     client->gw.cmds.cbs.on_idle(client);
             }
+            if (client->gw.cmds.cbs.on_cycle)
+                client->gw.cmds.cbs.on_cycle(client);
             if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
                 break;
 
