@@ -144,13 +144,13 @@ STRUCT_END
 
 STRUCT(discord_identify_connection)
   DESC("your operating system")
-    FIELD_CUSTOM(os, $os, char, *, INIT_BLANK, CLEANUP_PTR,
+    FIELD_CUSTOM(os, "$os", char, *, INIT_BLANK, CLEANUP_PTR,
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
   DESC("your library name")
-    FIELD_CUSTOM(browser, $browser, char, *, INIT_BLANK, CLEANUP_PTR,
+    FIELD_CUSTOM(browser, "$browser", char, *, INIT_BLANK, CLEANUP_PTR,
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
   DESC("your library name")
-    FIELD_CUSTOM(device, $device, char, *, INIT_BLANK, CLEANUP_PTR,
+    FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
 STRUCT_END
 

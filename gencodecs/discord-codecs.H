@@ -10,6 +10,9 @@ typedef uint64_t u64snowflake;
 typedef char json_char;
 #endif
 
+#define GENCODECS_READ "permissions.H"
+#include "gencodecs-process.H"
+
 #define GENCODECS_READ "application.H"
 #include "gencodecs-process.H"
 #define GENCODECS_READ "audit_log.H"
