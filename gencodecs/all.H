@@ -1,0 +1,21 @@
+#include "custom.H"
+
+#include "permissions.H"
+#include "application.H"
+#include "audit_log.H"
+#include "invite.H"
+#include "channel.H"
+#include "emoji.H"
+#include "guild.H"
+#include "guild_template.H"
+#include "sticker.H"
+#include "user.H"
+#include "voice.H"
+#include "webhook.H"
+
+#include "gateway.H"
+#include "voice_connections.H"
+
+#include "application_commands.H"
+#include "message_components.H"
+#include "interactions.H"

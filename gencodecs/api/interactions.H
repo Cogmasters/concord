@@ -155,3 +155,98 @@ STRUCT(discord_interaction_callback_data)
   DESC("the title of the popup modal")
     FIELD_PTR(title, char, *)
 STRUCT_END
+
+/*****************************************************************************
+ * Interactions REST parameters
+ * **************************************************************************/
+
+PUB_STRUCT(discord_edit_original_interaction_response)
+  /* QUERY FIELDS */
+  /* TODO: ignored by JSON encoding, is a query parameter */
+  DESC("id of the thread the message is in")
+    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+  /* JSON FIELDS */
+  DESC("the message contents (up to 2000 characters)")
+    FIELD_PTR(content, char, *)
+  DESC("embedded `rich` content")
+  COND_WRITE(this->embeds != NULL)
+    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+  COND_END
+  DESC("allowed mentions for the message")
+  COND_WRITE(this->allowed_mentions != NULL)
+    FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
+  COND_END
+  DESC("the components to include with the message")
+  COND_WRITE(this->components != NULL)
+    FIELD_STRUCT_PTR(components, discord_components, *)
+  COND_END
+  DESC("attached files to keep and possible descriptions for new files")
+  COND_WRITE(this->attachments != NULL)
+    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_create_followup_message)
+  /* QUERY FIELDS */
+  /* TODO: ignored by JSON encoding, is a query parameter */
+  DESC("waits for server confirmation of message send before response, and"
+       "returns the created message body (defaults to `false`; when `false` a"
+       "message that is not saved does not return an error)")
+    FIELD(wait, bool, true)
+  /* TODO: ignored by JSON encoding, is a query parameter */
+  DESC("send a message to the specified thread within a webhook's channel; the"
+       "thread will automatically be unarchived")
+    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+  /* JSON FIELDS */
+  DESC("override the default avatar of the webhook")
+    FIELD_PTR(avatar_url, char, *)
+  DESC("true if this is a TTS message")
+    FIELD(tts, bool, false)
+  DESC("embedded `rich` content")
+  COND_WRITE(this->embeds != NULL)
+    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+  COND_END
+  DESC("allowed mentions for the message")
+  COND_WRITE(this->allowed_mentions != NULL)
+    FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
+  COND_END
+  DESC("the components to include with the message")
+  COND_WRITE(this->components != NULL)
+    FIELD_STRUCT_PTR(components, discord_components, *)
+  COND_END
+  DESC("attachment objects with filename and description")
+  COND_WRITE(this->attachments != NULL)
+    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+  COND_END
+  DESC("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
+       "set)")
+  COND_WRITE(this->flags != 0)
+    FIELD_PRINTF(flags, uint64_t, PRIu64, SCNu64)
+  COND_END
+STRUCT_END
+
+PUB_STRUCT(discord_edit_followup_message)
+  /* QUERY FIELDS */
+  /* TODO: ignored by JSON encoding, is a query parameter */
+  DESC("id of the thread the message is in")
+    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+  /* JSON FIELDS */
+  DESC("the message contents (up to 2000 characters)")
+    FIELD_PTR(content, char, *)
+  DESC("embedded `rich` content")
+  COND_WRITE(this->embeds != NULL)
+    FIELD_STRUCT_PTR(embeds, discord_embeds, *)
+  COND_END
+  DESC("allowed mentions for the message")
+  COND_WRITE(this->allowed_mentions != NULL)
+    FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
+  COND_END
+  DESC("the components to include with the message")
+  COND_WRITE(this->components != NULL)
+    FIELD_STRUCT_PTR(components, discord_components, *)
+  COND_END
+  DESC("attached files to keep and possible descriptions for new files")
+  COND_WRITE(this->attachments != NULL)
+    FIELD_STRUCT_PTR(attachments, discord_attachments, *)
+  COND_END
+STRUCT_END

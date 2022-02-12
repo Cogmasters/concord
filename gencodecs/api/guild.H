@@ -109,7 +109,7 @@ PUB_STRUCT(discord_guild)
   DESC("verification level required for the guild")
     FIELD_ENUM(verification_level, discord_verification_level)
   DESC("default message notifications level")
-    FIELD_ENUM(default_message_notifications, discord_message_notifications_level)
+    FIELD_ENUM(default_message_notifications, discord_message_notification_level)
   DESC("explicit content filter level")
     FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
   DESC("roles in the guilds")
@@ -276,7 +276,7 @@ STRUCT(discord_get_guild_widget)
     FIELD(presence_count, int, 0)
 STRUCT_END
 
-STRUCT(discord_guild_member)
+PUB_STRUCT(discord_guild_member)
   DESC("the user this guild member represents")
   COND_WRITE(this->user != NULL)
     FIELD_STRUCT_PTR(user, discord_user, *)
@@ -342,7 +342,7 @@ STRUCT(discord_integration)
        "currently)")
     FIELD(enable_emoticons, bool, false)
   DESC("the behavior of expiring subscribers")
-    FIELD_ENUM(expire_behavior, discord_expire_behaviors)
+    FIELD_ENUM(expire_behavior, discord_integration_expire_behaviors)
   DESC("the grace period (in days) before expiring subscribers")
     FIELD(expire_grace_period, int, 0)
   DESC("user for this integration")
@@ -421,6 +421,45 @@ STRUCT_END
 /*****************************************************************************
  * Guild REST parameters
  * **************************************************************************/
+
+PUB_STRUCT(discord_create_guild)
+  DESC("name of the guild (2-100 charaters)")
+    FIELD_PTR(name, char, *)
+  DESC("voice region ID @deprecated deprecated field")
+  COND_WRITE(this->region != NULL)
+    FIELD_PTR(region, char, *)
+  COND_END
+  DESC("base64 1024x1024 png/jpeg/gif image for the guild icon (can be"
+       "animated gif when the server has the `ANIMATED_ICON` feature)")
+  COND_WRITE(this->icon != NULL)
+    FIELD_PTR(icon, char, *)
+  COND_END
+  DESC("verification level")
+    FIELD_ENUM(verification_level, discord_verification_level)
+  DESC("default message notification level")
+    FIELD_ENUM(default_message_notifications, discord_message_notification_level)
+  DESC("explicit content filter level")
+    FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
+  DESC("new guild roles")
+  COND_WRITE(this->roles != NULL)
+    FIELD_STRUCT_PTR(roles, discord_roles, *)
+  COND_END
+  DESC("new guild's channels")
+  COND_WRITE(this->channels != NULL)
+    FIELD_STRUCT_PTR(channels, discord_channels, *)
+  COND_END
+  DESC("ID for afk channel")
+  COND_WRITE(this->afk_channel_id != 0)
+    FIELD_PRINTF(afk_channel_id, u64snowflake, PRIu64, SCNu64)
+  COND_END
+  DESC("afk timeout in seconds")
+    FIELD(afk_timeout, int, 0)
+  DESC("the ID of the channel when guild notices such as welcome messages and"
+       "boost events are posted")
+    FIELD_PRINTF(system_channel_id, u64snowflake, PRIu64, SCNu64)
+  DESC("system channel flags")
+    FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
+STRUCT_END
 
 PUB_STRUCT(discord_modify_guild)
   DESC("guild name")
@@ -502,7 +541,7 @@ PUB_STRUCT(discord_create_guild_channel)
     FIELD(nsfw, bool, false)
 STRUCT_END
 
-PUB_STRUCT(discord_modify_guild_channel_positions)
+STRUCT(discord_modify_guild_channel_position)
   DESC("channel ID")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
   DESC("sorting position of the channel")
@@ -518,7 +557,11 @@ PUB_STRUCT(discord_modify_guild_channel_positions)
   COND_END
 STRUCT_END
 
-PUB_STRUCT(discord_list_active_threads)
+PUB_LIST(discord_modify_guild_channel_positions)
+    LISTTYPE_STRUCT(discord_modify_guild_channel_position)
+LIST_END
+
+PUB_STRUCT(discord_list_active_guild_threads)
   DESC("the active threads")
     FIELD_STRUCT_PTR(threads, discord_channels, *)
   DESC("a thread member object for each returned thread the current user has"
@@ -626,7 +669,7 @@ PUB_STRUCT(discord_create_guild_role)
     FIELD(mentionable, bool, false)
 STRUCT_END
 
-PUB_STRUCT(discord_modify_guild_role_positions)
+STRUCT(discord_modify_guild_role_position)
   DESC("role")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
   DESC("sorting position of the role")
@@ -634,6 +677,10 @@ PUB_STRUCT(discord_modify_guild_role_positions)
     FIELD(position, int, 0)
   COND_END
 STRUCT_END
+
+PUB_LIST(discord_modify_guild_role_positions)
+    LISTTYPE_STRUCT(discord_modify_guild_role_position)
+LIST_END
 
 PUB_STRUCT(discord_modify_guild_role)
   DESC("name of the role")

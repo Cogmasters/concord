@@ -37,6 +37,10 @@ PUB_STRUCT(discord_voice_state)
 #endif
 STRUCT_END
 
+PUB_LIST(discord_voice_states)
+    LISTTYPE_STRUCT(discord_voice_state)
+LIST_END
+
 STRUCT(discord_voice_region)
   DESC("unique ID for the region")
     FIELD_PTR(id, char, *)

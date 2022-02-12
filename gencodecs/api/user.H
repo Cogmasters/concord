@@ -110,6 +110,10 @@ STRUCT(discord_connection)
     FIELD_ENUM(visibility, discord_visibility_types)
 STRUCT_END
 
+PUB_LIST(discord_connections)
+    LISTTYPE_STRUCT(discord_connection)
+LIST_END
+
 /*****************************************************************************
  * User REST parameters
  * **************************************************************************/

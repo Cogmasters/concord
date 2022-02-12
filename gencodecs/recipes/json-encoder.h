@@ -64,7 +64,7 @@
         if (0 > jsonb_array(b, buf, size)) return 0;                          \
         if (this != NULL) {                                                   \
             int i;
-#define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
+#define GENCODECS_LISTTYPE(_type)                                             \
         for (i = 0; i < this->size; ++i) {                                    \
             JSON_ENCODER_##_type(b, buf, size, this->array[i], _type);        \
         }

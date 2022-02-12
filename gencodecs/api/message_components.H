@@ -96,7 +96,8 @@ STRUCT(discord_select_option)
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
   COND_END
   DESC("will render this option as selected by default")
-    FIELD(default, bool, false)
+    FIELD_CUSTOM(Default, default, bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
+                 JSON_ENCODER_bool, JSON_DECODER_bool, false)
 STRUCT_END
 
 PUB_LIST(discord_select_options)

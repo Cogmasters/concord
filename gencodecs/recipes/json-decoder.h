@@ -60,7 +60,7 @@
         size_t ret, nelems = HASH_COUNT(root->child);                         \
         if (!nelems) return 0;                                                \
         ret = sizeof *this * nelems;
-#define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
+#define GENCODECS_LISTTYPE(_type)                                             \
         __carray_init(this, nelems, _type, , );                               \
         HASH_ITER(hh, root->child, f, tmp)                                    \
         {                                                                     \

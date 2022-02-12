@@ -44,6 +44,10 @@ PUB_STRUCT(discord_webhook)
     FIELD_PTR(url, char, *)
 STRUCT_END
 
+PUB_LIST(discord_webhooks)
+    LISTTYPE_STRUCT(discord_webhook)
+LIST_END
+
 /*****************************************************************************
  * Webhook REST parameters
  * **************************************************************************/
@@ -72,6 +76,18 @@ PUB_STRUCT(discord_modify_webhook)
 #endif
   DESC("the new channel ID for this webhook should be moved to")
     FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+STRUCT_END
+
+PUB_STRUCT(discord_modify_webhook_with_token)
+  DESC("the default name of the webhook")
+    FIELD_PTR(name, char, *)
+  /* TODO: base64 conv */
+#if 0
+  DESC("image for the default webhook avatar")
+  COND_WRITE(this->avatar != NULL)
+    FIELD_PTR(avatar, char, *)
+  COND_END
+#endif
 STRUCT_END
 
 PUB_STRUCT(discord_execute_webhook)
@@ -121,10 +137,10 @@ STRUCT(discord_get_webhook_message)
   COND_END
 STRUCT_END
 
-PUB_STRUCT(discord_execute_webhook)
+PUB_STRUCT(discord_edit_webhook_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
-  DESC("ID of the thread the message is in")
+  DESC("id of the thread the message is in")
     FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
   /* JSON FIELDS */
   DESC("the message contents (up to 2000 characters)")
@@ -141,7 +157,7 @@ PUB_STRUCT(discord_execute_webhook)
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
-  DESC("attachment objects with filename and description")
+  DESC("attached files to keep and possible descriptions for new files")
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END

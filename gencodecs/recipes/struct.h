@@ -43,7 +43,7 @@
 #define GENCODECS_LIST(_type)                                                 \
     struct _type {                                                            \
         int size;
-#define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
+#define GENCODECS_LISTTYPE(_type)                                             \
         _type *array;
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         struct _type *array;
@@ -113,11 +113,11 @@
 #define GENCODECS_LIST(_type)                                                 \
     static void _##_type##_cleanup(struct _type *this)                        \
     {
-#define GENCODECS_LISTTYPE_PRIMITIVE(_type)                                   \
+#define GENCODECS_LISTTYPE(_type)                                             \
         __carray_free(this, _type, NULL, NULL);
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         __carray_free(this, struct _type, NULL,                               \
-                      _type##_cleanup(&__CARRAY_OPERAND_A));
+                      _##_type##_cleanup(&__CARRAY_OPERAND_A));
 #define GENCODECS_LISTTYPE_PTR(_type)                                         \
         __carray_free(this, _type, NULL, free(&__CARRAY_OPERAND_A));
 #define GENCODECS_LIST_END                                                    \

@@ -527,7 +527,7 @@ PUB_STRUCT(discord_embed_field)
   DESC("name of the field")
     FIELD_PTR(name, char, *)
   DESC("value of the field")
-    FIELD_PTR(name, char, *)
+    FIELD_PTR(value, char, *)
   DESC("whether or not this field should display inline")
     FIELD_CUSTOM(Inline, inline, bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
                  JSON_ENCODER_bool, JSON_DECODER_bool, false)
@@ -641,25 +641,27 @@ PUB_STRUCT(discord_modify_channel)
   DESC("whether non-moderators can add other non-moderators to a thread; only"
        "available on private threads")
     FIELD(invitable, bool, false)
-  DESC("amount of seconds a user has to wait before sending another message"
-       "(0-21600); bots, as well as users with the permission"
-       "`MANAGE_MESSAGES`, `MANAGE_THREAD`, or `MANAGE_CHANNEL`, are"
-       "unaffected")
-  COND_WRITE(this->rate_limit_per_user != 0)
-    FIELD(rate_limit_per_user, int, 0)
-  COND_END
 STRUCT_END
 
 /* FIXME: shouldn't generate JSON functions */
 /* TODO: to_query encoding */
 PUB_STRUCT(discord_get_channel_messages)
   DESC("get messages around this message ID")
+  COND_WRITE(this->around != 0)
     FIELD_PRINTF(around, u64snowflake, PRIu64, SCNu64)
+  COND_END
   DESC("get messages before this message ID")
+  COND_WRITE(this->before != 0)
     FIELD_PRINTF(before, u64snowflake, PRIu64, SCNu64)
+  COND_END
   DESC("get messages after this message ID")
+  COND_WRITE(this->after != 0)
     FIELD_PRINTF(after, u64snowflake, PRIu64, SCNu64)
+  COND_END
   DESC("max number of messages to return (1-100)")
+  COND_WRITE(this->limit != 0)
+    FIELD(limit, int, 50)
+  COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_create_message)
@@ -738,7 +740,7 @@ PUB_STRUCT(discord_bulk_delete_messages)
     FIELD_STRUCT_PTR(messages, snowflakes, *)
 STRUCT_END
 
-PUB_STRUCT(discord_edit_channel_permission)
+PUB_STRUCT(discord_edit_channel_permissions)
   DESC("the bitwise value of all allowed permissions (default \"0\")")
   COND_WRITE(this->allow != NULL)
     FIELD_PTR(allow, char, *)
@@ -777,19 +779,19 @@ PUB_STRUCT(discord_create_channel_invite)
   DESC("the id of the user whose stream to display for this invite, required"
        "if `target_type` is 1, the user must be streaming in the channel")
   COND_WRITE(this->target_user_id != 0)
-    FIELD_PRINTF(target_user_id, u64_snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(target_user_id, u64snowflake, PRIu64, SCNu64)
   COND_END
   DESC("the id of the embedded application to open for this invite, required"
        "if `target_type` is 2, the application must have the `EMBEDDED` flag")
   COND_WRITE(this->target_application_id != 0)
-    FIELD_PRINTF(target_application_id, u64_snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(target_application_id, u64snowflake, PRIu64, SCNu64)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_follow_news_channel)
   DESC("id of target channel")
   COND_WRITE(this->webhook_channel_id != 0)
-    FIELD_PRINTF(webhook_channel_id, u64_snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(webhook_channel_id, u64snowflake, PRIu64, SCNu64)
   COND_END
 STRUCT_END
 
