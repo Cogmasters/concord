@@ -10,7 +10,15 @@ typedef uint64_t u64snowflake;
 typedef char json_char;
 #endif
 
+#define GENCODECS_READ "application.H"
+#include "gencodecs-process.H"
+#define GENCODECS_READ "audit_log.H"
+#include "gencodecs-process.H"
 #define GENCODECS_READ "application_commands.H"
+#include "gencodecs-process.H"
+#define GENCODECS_READ "message_components.H"
+#include "gencodecs-process.H"
+#define GENCODECS_READ "interactions.H"
 #include "gencodecs-process.H"
 #define GENCODECS_READ "channel.H"
 #include "gencodecs-process.H"
@@ -19,8 +27,6 @@ typedef char json_char;
 #define GENCODECS_READ "guild.H"
 #include "gencodecs-process.H"
 #define GENCODECS_READ "guild_template.H"
-#include "gencodecs-process.H"
-#define GENCODECS_READ "interactions.H"
 #include "gencodecs-process.H"
 #define GENCODECS_READ "invite.H"
 #include "gencodecs-process.H"

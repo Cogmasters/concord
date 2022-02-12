@@ -42,7 +42,7 @@ STRUCT(discord_audit_log_entry)
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
   DESC("type of action that occurred")
   COND_WRITE(this->action_type != 0)
-    FIELD_ENUM(action_type, discord_audit_log_events, *)
+    FIELD_ENUM(action_type, discord_audit_log_events)
   COND_END
   DESC("additional info for certain action types")
   COND_WRITE(this->options != NULL)
