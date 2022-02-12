@@ -44,3 +44,5 @@ typedef char json_char;
 
 #define GENCODECS_READ "gateway.H"
 #include "gencodecs-process.H"
+#define GENCODECS_READ "voice_connections.H"
+#include "gencodecs-process.H"
