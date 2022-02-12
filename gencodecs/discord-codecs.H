@@ -38,3 +38,6 @@ typedef char json_char;
 #include "gencodecs-process.H"
 #define GENCODECS_READ "webhook.H"
 #include "gencodecs-process.H"
+
+#define GENCODECS_READ "gateway.H"
+#include "gencodecs-process.H"
