@@ -257,15 +257,19 @@ discord_set_on_ready(struct discord *client, discord_ev_idle callback)
 CCORDcode
 discord_run(struct discord *client)
 {
-    time_t last, now;
+    int64_t next_gateway_run, now;
     CCORDcode code;
 
     while (1) {
         if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
 
-        last = 0;
+        next_gateway_run = cog_timestamp_ms();
         while (1) {
-            int poll_time = client->gw.cmds.cbs.on_idle ? 0 : 1000;
+            now = cog_timestamp_ms();
+            int poll_time = 0;
+            if (!client->gw.cmds.cbs.on_idle)
+                poll_time = now < next_gateway_run ? next_gateway_run - now : 0;
+            
             int poll_result = io_poller_poll(client->io_poller, poll_time);
             if (-1 == poll_result) {
                 //TODO: handle poll error here
@@ -275,15 +279,16 @@ discord_run(struct discord *client)
             }
             if (client->gw.cmds.cbs.on_cycle)
                 client->gw.cmds.cbs.on_cycle(client);
+            
             if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
                 break;
 
-            now = time(NULL);
-            if (last != now) {
+            now = cog_timestamp_ms();
+            if (next_gateway_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
                     break;
 
-                last = now;
+                next_gateway_run = now + 1000;
             }
         }
 
