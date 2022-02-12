@@ -647,6 +647,10 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+    struct {
+        discord_ev_idle cb;
+        int64_t next;
+    } wakeup_timer;
     /** space for user arbitrary data */
     void *data;
 

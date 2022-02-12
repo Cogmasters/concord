@@ -2462,7 +2462,13 @@ void discord_set_on_commands(struct discord *client,
  * @note the functions will automatically set the necessary intent(s) to make
  *        the callback triggerable
  *  @{ */
-
+/** @brief Set the time for wakeup function to be called
+ *  @see discord_set_on_wakeup
+ *  @param delay time to delay in milliseconds, or -1 to disable
+ */
+void discord_set_next_wakeup(struct discord *client, int64_t delay);
+/** @brief Triggers when wakeup timeout reached and disables any active timer */
+void discord_set_on_wakeup(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when idle.  */
 void discord_set_on_idle(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers once per loop cycle.  */

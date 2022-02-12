@@ -242,6 +242,24 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
+
+void
+discord_set_next_wakeup(struct discord *client, int64_t delay)
+{
+    if (delay == -1) {
+        client->wakeup_timer.next = -1;
+    } else if (delay >= 0) {
+        client->wakeup_timer.next = cog_timestamp_ms() + delay;
+    }
+}
+
+void
+discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
+{
+    client->wakeup_timer.cb = callback;
+    client->wakeup_timer.next = -1;
+}
+
 void
 discord_set_on_idle(struct discord *client, discord_ev_idle callback)
 {
@@ -273,8 +291,12 @@ discord_run(struct discord *client)
         while (1) {
             now = cog_timestamp_ms();
             int poll_time = 0;
-            if (!client->gw.cmds.cbs.on_idle)
+            if (!client->gw.cmds.cbs.on_idle) {
                 poll_time = now < next_gateway_run ? next_gateway_run - now : 0;
+                if (-1 != client->wakeup_timer.next)
+                    if (client->wakeup_timer.next <= now + poll_time)
+                        poll_time = client->wakeup_timer.next - now;
+            }
             
             int poll_result = io_poller_poll(client->io_poller, poll_time);
             if (-1 == poll_result) {
@@ -283,6 +305,7 @@ discord_run(struct discord *client)
                 if (client->gw.cmds.cbs.on_idle)
                     client->gw.cmds.cbs.on_idle(client);
             }
+            
             if (client->gw.cmds.cbs.on_cycle)
                 client->gw.cmds.cbs.on_cycle(client);
             
@@ -290,6 +313,13 @@ discord_run(struct discord *client)
                 break;
 
             now = cog_timestamp_ms();
+            if (client->wakeup_timer.next != -1) {
+                if (now >= client->wakeup_timer.next) {
+                    client->wakeup_timer.next = -1;
+                    if (client->wakeup_timer.cb)
+                        client->wakeup_timer.cb(client);
+                }
+            }
             if (next_gateway_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
                     break;
