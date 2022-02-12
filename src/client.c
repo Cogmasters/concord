@@ -263,13 +263,13 @@ discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
 void
 discord_set_on_idle(struct discord *client, discord_ev_idle callback)
 {
-    client->gw.cmds.cbs.on_idle = callback;
+    client->on_idle = callback;
 }
 
 void
 discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
 {
-    client->gw.cmds.cbs.on_cycle = callback;
+    client->on_cycle = callback;
 }
 
 void
@@ -291,7 +291,7 @@ discord_run(struct discord *client)
         while (1) {
             now = cog_timestamp_ms();
             int poll_time = 0;
-            if (!client->gw.cmds.cbs.on_idle) {
+            if (!client->on_idle) {
                 poll_time = now < next_gateway_run ? next_gateway_run - now : 0;
                 if (-1 != client->wakeup_timer.next)
                     if (client->wakeup_timer.next <= now + poll_time)
@@ -302,12 +302,12 @@ discord_run(struct discord *client)
             if (-1 == poll_result) {
                 //TODO: handle poll error here
             } else if (0 == poll_result) {
-                if (client->gw.cmds.cbs.on_idle)
-                    client->gw.cmds.cbs.on_idle(client);
+                if (client->on_idle)
+                    client->on_idle(client);
             }
             
-            if (client->gw.cmds.cbs.on_cycle)
-                client->gw.cmds.cbs.on_cycle(client);
+            if (client->on_cycle)
+                client->on_cycle(client);
             
             if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
                 break;
