@@ -362,6 +362,10 @@ STRUCT(discord_integration)
     FIELD_STRUCT_PTR(application, discord_integration_application, *)
 STRUCT_END
 
+LIST(discord_integrations)
+    LISTTYPE_STRUCT(discord_integration)
+LIST_END
+
 STRUCT(discord_integration_account)
   DESC("id of the account")
     FIELD_PTR(id, char, *)
@@ -417,6 +421,10 @@ STRUCT(discord_welcome_screen_channel)
        "no emoji is set")
     FIELD_PTR(emoji_name, char, *)
 STRUCT_END
+
+LIST(discord_welcome_screen_channels)
+    LISTTYPE_STRUCT(discord_welcome_screen_channel)
+LIST_END
 
 /*****************************************************************************
  * Guild REST parameters

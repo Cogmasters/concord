@@ -185,7 +185,7 @@ PUB_STRUCT(discord_message)
   DESC("partial guild member")
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   DESC("contents of the message")
-    FIELD_PTR(contents, char, *)
+    FIELD_PTR(content, char, *)
   /* TODO: iso8601 support */
 #if 0
   DESC("when this message was sent")
@@ -284,11 +284,15 @@ STRUCT(discord_reaction)
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
 STRUCT_END
 
+LIST(discord_reactions)
+    LISTTYPE_STRUCT(discord_reaction)
+LIST_END
+
 STRUCT(discord_overwrite)
   DESC("role or user id")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
   DESC("either 0 (role) or 1 (member)")
-    FIELD(count, int, 0)
+    FIELD(type, int, 0)
   DESC("permission bit set")
     FIELD_PRINTF(allow, uint64_t, PRIu64, SCNu64)
   DESC("permission bit set")
@@ -428,6 +432,10 @@ PUB_STRUCT(discord_embed)
     FIELD_STRUCT_PTR(fields, discord_embed_fields, *)
   COND_END
 STRUCT_END
+
+PUB_LIST(discord_embeds)
+    LISTTYPE_STRUCT(discord_embed)
+LIST_END
 
 PUB_STRUCT(discord_embed_thumbnail)
   DESC("source url of thumbnail (only supports http(s) and attachments)")

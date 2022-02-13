@@ -97,7 +97,7 @@ STRUCT(discord_connection)
     FIELD(revoked, bool, false)
   DESC("an array of partial server integrations")
   COND_WRITE(this->integrations != NULL)
-    FIELD_STRUCT_PTR(integrations, discord_server_integrations, *)
+    FIELD_STRUCT_PTR(integrations, discord_integrations, *)
   COND_END
   DESC("whether the connection is verified")
     FIELD(verified, bool, false)

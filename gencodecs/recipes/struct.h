@@ -4,7 +4,7 @@
 #define CLEANUP_BLANK(_var, _type)
 #define CLEANUP_STRUCT_PTR(_var, _type)                                       \
     if (_var) {                                                               \
-        _type##_cleanup(_var);                                                \
+        _##_type##_cleanup(_var);                                             \
         free(_var);                                                           \
     }
 #define CLEANUP_PTR(_var, _type)                                              \

@@ -145,6 +145,10 @@ STRUCT(discord_application_command_interaction_data_option)
     FIELD(focused, bool, false)
 STRUCT_END
 
+LIST(discord_application_command_interaction_data_options)
+    LISTTYPE_STRUCT(discord_application_command_interaction_data_option)
+LIST_END
+
 STRUCT(discord_guild_application_command_permission)
   DESC("the ID of the command")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)

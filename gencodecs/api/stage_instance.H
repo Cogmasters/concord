@@ -26,6 +26,10 @@ PUB_STRUCT(discord_stage_instance)
     FIELD(discoverable_disabled, bool, false)
 STRUCT_END
 
+LIST(discord_stage_instances)
+    LISTTYPE_STRUCT(discord_stage_instance)
+LIST_END
+
 /*****************************************************************************
  * Stage Instance REST parameters
  * **************************************************************************/

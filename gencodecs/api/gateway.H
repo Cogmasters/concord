@@ -101,9 +101,10 @@ ENUM(discord_gateway_events)
     ENUMERATOR(DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_DELETE, = 47)
     ENUMERATOR(DISCORD_GATEWAY_EVENTS_STAGE_INSTANCE_UPDATE, = 48)
     ENUMERATOR(DISCORD_GATEWAY_EVENTS_TYPING_START, = 49)
-    ENUMERATOR(DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE, = 50)
-    ENUMERATOR(DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE, = 51)
-    ENUMERATOR_LAST(DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE, = 52)
+    ENUMERATOR(DISCORD_GATEWAY_EVENTS_USER_UPDATE, = 50)
+    ENUMERATOR(DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE, = 51)
+    ENUMERATOR(DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE, = 52)
+    ENUMERATOR_LAST(DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE, = 53)
 ENUM_END
 
 ENUM(discord_activity_types)
@@ -121,6 +122,16 @@ ENUM(discord_activity_types)
     ENUMERATOR_LAST(DISCORD_ACTIVITY_COMPETING, = 5)
 ENUM_END
 
+DIRECTIVE(define DISCORD_ACTIVITY_INSTANCE 1 << 0)
+DIRECTIVE(define DISCORD_ACTIVITY_JOIN 1 << 1)
+DIRECTIVE(define DISCORD_ACTIVITY_SPECTATE 1 << 2)
+DIRECTIVE(define DISCORD_ACTIVITY_JOIN_REQUEST 1 << 3)
+DIRECTIVE(define DISCORD_ACTIVITY_SYNC 1 << 4)
+DIRECTIVE(define DISCORD_ACTIVITY_PLAY 1 << 5)
+DIRECTIVE(define DISCORD_ACTIVITY_PARTY_PRIVACY_FRIENDS 1 << 6)
+DIRECTIVE(define DISCORD_ACTIVITY_PARTY_PRIVACY_VOICE_CHANNEL 1 << 7)
+DIRECTIVE(define DISCORD_ACTIVITY_EMBEDDED 1 << 8)
+
 PUB_STRUCT(discord_identify)
   DESC("authentication token")
     FIELD_PTR(token, char, *)
@@ -137,7 +148,7 @@ PUB_STRUCT(discord_identify)
     FIELD_STRUCT_PTR(shard, shards, *)
 #endif
   DESC("presence structure for initial presence information")
-    FIELD_STRUCT_PTR(presence, discord_presence_status, *)
+    FIELD_STRUCT_PTR(presence, discord_presence_update, *)
   DESC("the gateway intents you wish to receive")
     FIELD(intents, int, 0)
 STRUCT_END
@@ -165,7 +176,7 @@ PUB_STRUCT(discord_voice_state_status)
     FIELD(self_deaf, bool, false)
 STRUCT_END
 
-PUB_STRUCT(discord_presence_status)
+PUB_STRUCT(discord_presence_update)
   /* TODO: iso8601 conversion */
 #if 0
   DESC("unix time (in milliseconds) of when the client went idle, or null if"
@@ -180,6 +191,10 @@ PUB_STRUCT(discord_presence_status)
     FIELD(afk, bool, false)
 STRUCT_END
 
+LIST(discord_presence_updates)
+    LISTTYPE_STRUCT(discord_presence_update)
+LIST_END
+
 STRUCT(discord_activity)
   DESC("the activity's name")
     FIELD_PTR(name, char, *)
@@ -192,9 +207,9 @@ STRUCT(discord_activity)
   DESC("unix timestamp (in milliseconds)of when the activity was added to the"
        "user's session")
     FIELD_PRINTF(created_at, u64snowflake, PRIu64, SCNu64)
-  DESC("unix timestamps for start and/or end of the game")
-    FIELD_STRUCT_PTR(timestamps, timestamps, *)
 #endif
+  DESC("unix timestamps for start and/or end of the game")
+    FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
   DESC("application ID for the game")
     FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
   DESC("what the player is currently doing")
@@ -202,23 +217,85 @@ STRUCT(discord_activity)
   DESC("the user's current party status")
     FIELD_PTR(state, char, *)
   DESC("the emoji used for a custom status")
-    FIELD_STRUCT_PTR(emoji, discord_emoji, *)
+    FIELD_STRUCT_PTR(emoji, discord_activity_emoji, *)
   DESC("information for the current party of the player")
-    FIELD_STRUCT_PTR(party, discord_party, *)
+    FIELD_STRUCT_PTR(party, discord_activity_party, *)
   DESC("images for the presence and their hover texts")
-    FIELD_STRUCT_PTR(assets, discord_assets, *)
+    FIELD_STRUCT_PTR(assets, discord_activity_assets, *)
   DESC("secrets for Rich Presence joining and spectating")
-    FIELD_STRUCT_PTR(secrets, discord_secrets, *)
+    FIELD_STRUCT_PTR(secrets, discord_activity_secrets, *)
   DESC("whether or not the activity is an instanced game session")
     FIELD(instance, bool, false)
   DESC("activity flags bitwise mask, describes what they payload includes")
     FIELD_PRINTF(flags, uint64_t, PRIu64, SCNu64)
   DESC("the custom buttons shown in the Rich Presence (max 2)")
-    FIELD_STRUCT_PTR(buttons, discord_components, *)
+    FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
 STRUCT_END
 
 LIST(discord_activities)
     LISTTYPE_STRUCT(discord_activity)
+LIST_END
+
+STRUCT(discord_activity_timestamps)
+  /* TODO: iso8601 conversion */
+#if 0
+  DESC("unix timestamp (in milliseconds)of when the activity started")
+    FIELD_PRINTF(start, u64snowflake, PRIu64, SCNu64)
+  DESC("unix timestamp (in milliseconds)of when the activity ends")
+    FIELD_PRINTF(end, u64snowflake, PRIu64, SCNu64)
+#endif
+STRUCT_END
+
+STRUCT(discord_activity_emoji)
+  DESC("the name of the emoji")
+    FIELD_PTR(name, char, *)
+  DESC("the ID of the emoji")
+  COND_WRITE(this->id != 0)
+    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+  COND_END
+  DESC("whether this emoji is animated")
+    FIELD(animated, bool, false)
+STRUCT_END
+
+STRUCT(discord_activity_party)
+  DESC("the ID of the party")
+    FIELD_PTR(id, char, *)
+  /* TODO: array of two integers (current_size, max_size) */
+#if 0
+  DESC("used to show the party's current and maximum size")
+    FIELD_STRUCT_PTR(size, sizes, *)
+#endif
+STRUCT_END
+
+STRUCT(discord_activity_assets)
+  DESC("activity large asset image")
+    FIELD_PTR(large_image, char, *)
+  DESC("text displayed when hovering over the large image of the activity")
+    FIELD_PTR(large_text, char, *)
+  DESC("activity small asset image")
+    FIELD_PTR(small_image, char, *)
+  DESC("text displayed when hovering over the small image of the activity")
+    FIELD_PTR(small_text, char, *)
+STRUCT_END
+
+STRUCT(discord_activity_secrets)
+  DESC("the secret for joining a party")
+    FIELD_PTR(join, char, *)
+  DESC("the secret for spectating a game")
+    FIELD_PTR(spectate, char, *)
+  DESC("the secret for a specific instanced match")
+    FIELD_PTR(match, char, *)
+STRUCT_END
+
+STRUCT(discord_activity_button)
+  DESC("the text shown on the button (1-32 characters)")
+    FIELD_PTR(label, char, *)
+  DESC("the url opened when clicking the button (1-512 characters)")
+    FIELD_PTR(url, char, *)
+STRUCT_END
+
+LIST(discord_activity_buttons)
+    LISTTYPE_STRUCT(discord_activity_button)
 LIST_END
 
 PUB_STRUCT(discord_session_start_limit)
