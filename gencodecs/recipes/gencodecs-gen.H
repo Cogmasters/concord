@@ -36,7 +36,7 @@
                                JSON_DECODER_PTR_##_type, NULL)
 #endif
 #ifndef GENCODECS_FIELD_PRINTF
-#   define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)
+#   define GENCODECS_FIELD_PRINTF(_name, _type, _printf_type, _scanf_type)
 #endif
 #ifndef GENCODECS_FIELD_ENUM
 #   define GENCODECS_FIELD_ENUM(_name, _type) GENCODECS_FIELD(_name, int, 0)

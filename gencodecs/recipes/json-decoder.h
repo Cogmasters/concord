@@ -49,10 +49,9 @@
                                _encoder, _decoder, _default_value)            \
         f = jsmnfind_find(root, _key, sizeof(_key) - 1);                      \
         _decoder(f, buf, this->_name, _type);
-#define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
+#define GENCODECS_FIELD_PRINTF(_name, _type, _printf_type, _scanf_type)       \
         f = jsmnfind_find(root, #_name, sizeof(#_name) - 1);                  \
-        if (f && f->val->type == JSMN_STRING)                                 \
-            sscanf(buf + f->val->start, "%" _scanf_type, &this->_name);
+        if (f) sscanf(buf + f->val->start, _scanf_type, &this->_name);
 #define GENCODECS_STRUCT_END                                                  \
         return ret;                                                           \
     }

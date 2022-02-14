@@ -57,14 +57,14 @@
         if (0 > (code = jsonb_key(b, buf, size, _key, sizeof(_key) - 1)))     \
             return code;                                                      \
         _encoder(b, buf, size, this->_name, _type);
-#define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
+#define GENCODECS_FIELD_PRINTF(_name, _type, _printf_type, _scanf_type)       \
         if (0 > (code = jsonb_key(b, buf, size, #_name, sizeof(#_name) - 1))) \
             return code;                                                      \
         else {                                                                \
             char tok[64];                                                     \
             int toklen;                                                       \
-            toklen = sprintf(tok, "%" _printf_type, this->_name);             \
-            if (0 > (code = jsonb_string(b, buf, size, tok, toklen)))         \
+            toklen = sprintf(tok, _printf_type, this->_name);                 \
+            if (0 > (code = jsonb_token(b, buf, size, tok, toklen)))          \
                 return code;                                                  \
         }
 #define GENCODECS_STRUCT_END                                                  \

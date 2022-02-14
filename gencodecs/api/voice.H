@@ -4,11 +4,11 @@
 
 PUB_STRUCT(discord_voice_state)
   PP("the guild ID this voice state is for")
-    FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the channel ID this user is connected to")
-    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the user ID this voice state is for")
-    FIELD_PRINTF(user_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(user_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the guild member this voice state is for")
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   PP("the session ID for this voice state")
@@ -32,7 +32,7 @@ PUB_STRUCT(discord_voice_state)
 #if 0
   PP("the time at which the user requested to speak")
   COND_WRITE(this->request_to_speak_timestamp)
-    FIELD_PRINTF(request_to_speak_timestamp, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(request_to_speak_timestamp, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 #endif
 STRUCT_END

@@ -14,15 +14,15 @@ ENUM_END
 
 PUB_STRUCT(discord_webhook)
   PP("the ID of the webhook")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the type of the webhook")
   COND_WRITE(this->type != 0)
     FIELD_ENUM(type, discord_webhook_types)
   COND_END
   PP("the guild ID this webhook is for, if any")
-    FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the channel ID this webhook is for, if any")
-    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the user this webhook was created by (not returned when getting a"
        "webhook with its token)")
   COND_WRITE(this->user != NULL)
@@ -33,7 +33,7 @@ PUB_STRUCT(discord_webhook)
   PP("the secure token of the webhook (returned for Incoming Webhooks)")
     FIELD_PTR(token, char, *)
   PP("the bot/OAuth2 application that created this webhook")
-    FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the guild of the channel that this webhook is following (returned for"
        "Channel Follower Webhooks)")
   COND_WRITE(this->source_channel != NULL)
@@ -75,7 +75,7 @@ PUB_STRUCT(discord_modify_webhook)
   COND_END
 #endif
   PP("the new channel ID for this webhook should be moved to")
-    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
 STRUCT_END
 
 PUB_STRUCT(discord_modify_webhook_with_token)
@@ -100,7 +100,7 @@ PUB_STRUCT(discord_execute_webhook)
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("send a message to the specified thread within a webhook's channel; the"
        "thread will automatically be unarchived")
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   /* JSON FIELDS */
   PP("override the default avatar of the webhook")
     FIELD_PTR(avatar_url, char, *)
@@ -125,7 +125,7 @@ PUB_STRUCT(discord_execute_webhook)
   PP("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
        "set)")
   COND_WRITE(this->flags != 0)
-    FIELD_PRINTF(flags, uint64_t, PRIu64, SCNu64)
+    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 STRUCT_END
 
@@ -133,7 +133,7 @@ STRUCT_END
 STRUCT(discord_get_webhook_message)
   PP("ID of the thread the message is in")
   COND_WRITE(this->thread_id != 0)
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 STRUCT_END
 
@@ -141,7 +141,7 @@ PUB_STRUCT(discord_edit_webhook_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("id of the thread the message is in")
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   /* JSON FIELDS */
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
@@ -167,6 +167,6 @@ STRUCT_END
 STRUCT(discord_delete_webhook_message)
   PP("ID of the thread the message is in")
   COND_WRITE(this->thread_id != 0)
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 STRUCT_END

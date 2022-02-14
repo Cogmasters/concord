@@ -48,7 +48,7 @@ ENUM_END
 
 PUB_STRUCT(discord_user)
   PP("the user's ID")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the user's username, not unique across the platform")
     FIELD_PTR(username, char, *)
   PP("the user's 4-digit discord tag")
@@ -75,11 +75,11 @@ PUB_STRUCT(discord_user)
   PP("the user's email")
     FIELD_PTR(email, char, *)
   PP("the flags on a user's account")
-    FIELD_PRINTF(flags, uint64_t, PRIu64, SCNu64)
+    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the type of Nitro subscription on a user's account")
     FIELD_ENUM(premium_type, discord_premium_types)
   PP("the public flags on a user's account")
-    FIELD_PRINTF(public_flags, uint64_t, PRIu64, SCNu64)
+    FIELD_PRINTF(public_flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
 STRUCT_END
 
 PUB_LIST(discord_users)
@@ -88,7 +88,7 @@ LIST_END
 
 STRUCT(discord_connection)
   PP("ID of the connection account")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the username of the connection account")
     FIELD_PTR(name, char, *)
   PP("the service of the connection (twitch, youtube)")
@@ -134,11 +134,11 @@ STRUCT_END
 STRUCT(discord_get_current_user_guilds)
   PP("get guilds before this guild ID")
   COND_WRITE(this->before != 0)
-    FIELD_PRINTF(before, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(before, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
   PP("get guilds after this guild ID")
   COND_WRITE(this->after != 0)
-    FIELD_PRINTF(after, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(after, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
   PP("max number of guilds to return (1-200)")
   COND_WRITE(this->limit >= 1 && this->limit <= 200)
@@ -149,7 +149,7 @@ STRUCT_END
 PUB_STRUCT(discord_create_dm)
   PP("the recipient to open a DM channel with")
   COND_WRITE(this->recipient_id != 0)
-    FIELD_PRINTF(recipient_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(recipient_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 STRUCT_END
 

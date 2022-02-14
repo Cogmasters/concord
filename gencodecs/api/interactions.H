@@ -31,21 +31,23 @@ ENUM_END
 
 PUB_STRUCT(discord_interaction)
   PP("ID of the interaction")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("ID of the application this interaction is for")
-    FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the type of the interaction")
     FIELD_ENUM(type, discord_interaction_types)
   PP("the command data payload")
     FIELD_STRUCT_PTR(data, discord_interaction_data, *)
   PP("the guild it was sent from")
-    FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the channel it was sent from")
-    FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("guild member data for the invoking user, including permissions")
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   PP("user object for the invoking user, if invoked in a DM")
     FIELD_STRUCT_PTR(user, discord_user, *)
+  PP("a continuation token for responding to the interaction")
+    FIELD_PTR(token, char, *)
   PP("read-only property, always `1`")
     FIELD(version, int, 1)
   PP("for components, the message they were attached to")
@@ -58,7 +60,7 @@ STRUCT_END
 
 STRUCT(discord_interaction_data)
   PP("the ID of the invoked command")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the name of the invoked command")
     FIELD_PTR(name, char, *)
   PP("the type of the invoked command")
@@ -76,7 +78,7 @@ STRUCT(discord_interaction_data)
     FIELD_STRUCT_PTR(values, json_values, *)
 #endif
   PP("the ID of the user or messaged targetted by a user or message command")
-    FIELD_PRINTF(target_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(target_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the values submitted by the user")
     FIELD_STRUCT_PTR(components, discord_components, *)
 STRUCT_END
@@ -98,7 +100,7 @@ STRUCT_END
 
 STRUCT(discord_message_interaction)
   PP("ID of the interaction")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the type of interaction")
     FIELD_ENUM(type, discord_interaction_types)
   PP("the name of the application command")
@@ -164,7 +166,7 @@ PUB_STRUCT(discord_edit_original_interaction_response)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("id of the thread the message is in")
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   /* JSON FIELDS */
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
@@ -196,7 +198,7 @@ PUB_STRUCT(discord_create_followup_message)
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("send a message to the specified thread within a webhook's channel; the"
        "thread will automatically be unarchived")
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   /* JSON FIELDS */
   PP("override the default avatar of the webhook")
     FIELD_PTR(avatar_url, char, *)
@@ -221,7 +223,7 @@ PUB_STRUCT(discord_create_followup_message)
   PP("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
        "set)")
   COND_WRITE(this->flags != 0)
-    FIELD_PRINTF(flags, uint64_t, PRIu64, SCNu64)
+    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 STRUCT_END
 
@@ -229,7 +231,7 @@ PUB_STRUCT(discord_edit_followup_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("id of the thread the message is in")
-    FIELD_PRINTF(thread_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   /* JSON FIELDS */
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)

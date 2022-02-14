@@ -13,7 +13,7 @@ PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED 1 << 19)
 
 PUB_STRUCT(discord_application)
   PP("the ID of the app")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the name of the app")
     FIELD_PTR(name, char, *)
   PP("the icon hash of the app")
@@ -50,15 +50,15 @@ PUB_STRUCT(discord_application)
   COND_END
   PP("if this application is a game sold on Discord, this field will be the"
        "guild to which it has been linked")
-    FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("if this application is a game sold on Discord, this field will be the"
        "ID of the \"Game SKU\" that is created, if exists")
-    FIELD_PRINTF(primary_sku_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(primary_sku_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("if this application is a game sold on Discord, this field will be the"
        "URL slug that links to the store page")
     FIELD_PTR(slug, char, *)
   PP("the application's default rich presence invite cover image hash")
     FIELD_PTR(cover_image, char, *)
   PP("the application's public flags")
-    FIELD_PRINTF(flags, uint64_t, PRIu64, SCNu64)
+    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
 STRUCT_END

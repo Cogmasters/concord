@@ -40,16 +40,16 @@ ENUM_END
 
 PUB_STRUCT(discord_application_command)
   PP("unique ID of the command")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("one of application command types")
   COND_WRITE(this->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
   PP("unique ID of the parent application")
-    FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_WRITE(this->guild_id != 0)
   PP("guild ID of the command, if not global")
-    FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
   PP("1-32 character name")
     FIELD_PTR(name, char, *)
@@ -67,7 +67,7 @@ PUB_STRUCT(discord_application_command)
   COND_END
   PP("autoincrementing version identifier updated during substantial"
        "record changes")
-    FIELD_PRINTF(version, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(version, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
 STRUCT_END
 
 PUB_LIST(discord_application_commands)
@@ -151,11 +151,11 @@ LIST_END
 
 STRUCT(discord_guild_application_command_permission)
   PP("the ID of the command")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the ID of the application the command belongs to")
-    FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the ID of the guild")
-    FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("the permissions for the command in the guild")
     FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
 STRUCT_END
@@ -166,7 +166,7 @@ LIST_END
 
 PUB_STRUCT(discord_application_command_permission)
   PP("the ID of the role or user")
-    FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   PP("role or user")
     FIELD_ENUM(type, discord_application_command_permission_types)
   PP("`true` to allow, `false` to disallow")

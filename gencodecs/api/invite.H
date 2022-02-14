@@ -42,7 +42,7 @@ PUB_STRUCT(discord_invite)
 #if 0
   PP("the expiration date of this invite")
   COND_WRITE(this->expires_at != 0)
-    FIELD_PRINTF(expires_at, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(expires_at, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 #endif
   PP("stage instance data if there is a public stage instance in the stage"
@@ -74,7 +74,7 @@ STRUCT(discord_invite_metadata)
 #if 0
   PP("when this invite was created")
   COND_WRITE(this->created_at != 0)
-    FIELD_PRINTF(created_at, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(created_at, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 #endif
 STRUCT_END
@@ -103,6 +103,6 @@ PUB_STRUCT(discord_get_invite)
     FIELD(with_expiration, bool, false)
   PP("the guild scheduled event to include with the invite")
   COND_WRITE(this->guild_scheduled_event_id != 0)
-    FIELD_PRINTF(guild_scheduled_event_id, u64snowflake, PRIu64, SCNu64)
+    FIELD_PRINTF(guild_scheduled_event_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
   COND_END
 STRUCT_END
