@@ -59,7 +59,7 @@ PUB_STRUCT(discord_user)
     FIELD(bot, bool, false)
   DESC("whether the user is an Official Discord System user (part of the"
        "urgent message system)")
-    FIELD_CUSTOM(System, system, bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
+    FIELD_CUSTOM(System, "system", bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
                  JSON_ENCODER_bool, JSON_DECODER_bool, false)
   DESC("whether the user has two factor enabled on their account")
     FIELD(mfa_enabled, bool, false)

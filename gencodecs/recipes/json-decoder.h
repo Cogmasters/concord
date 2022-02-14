@@ -1,6 +1,9 @@
 #define JSON_DECODER_int(f, buf, _var, _type)                                 \
     if (f && f->val->type == JSMN_PRIMITIVE)                                  \
         _var = (int)strtol(buf + f->val->start, NULL, 10)
+#define JSON_DECODER_ullong(f, buf, _var, _type)                              \
+    if (f && f->val->type == JSMN_PRIMITIVE)                                  \
+        _var = strtoull(buf + f->val->start, NULL, 10)
 #define JSON_DECODER_bool(f, buf, _var, _type)                                \
     if (f && f->val->type == JSMN_PRIMITIVE) _var = ('t' == buf[f->val->start])
 #define JSON_DECODER_PTR_char(f, buf, _var, _type)                            \
@@ -14,6 +17,11 @@
         ret += sizeof *_var + _##_type##_from_json(f, buf, _var);             \
     }
 
+#define JSON_DECODER_PTR_json_char(f, buf, _var, _type)                       \
+    JSON_DECODER_PTR_char(f, buf, _var, _type)
+#define JSON_DECODER_u64snowflake(f, buf, _var, _type)                        \
+    JSON_DECODER_ullong(f, buf, _var, _type)
+
 #ifdef GENCODECS_JSON_DECODER
 #ifdef GENCODECS_HEADER
 
@@ -23,7 +31,7 @@
 
 #include "gencodecs-gen.H"
 
-#else
+#elif defined(GENCODECS_FORWARD)
 
 #define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
@@ -34,6 +42,8 @@
 
 #include "gencodecs-gen.H"
 
+#else
+
 #define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
                                        struct _type *this)                    \
@@ -42,7 +52,7 @@
         size_t ret = 0;
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
-        f = jsmnfind_find(root, #_key, sizeof(#_key) - 1);                    \
+        f = jsmnfind_find(root, _key, sizeof(_key) - 1);                      \
         _decoder(f, buf, this->_name, _type);
 #define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
         f = jsmnfind_find(root, #_name, sizeof(#_name) - 1);                  \
@@ -76,8 +86,8 @@
             ret += _##_type##_from_json(f, buf, &o);                          \
             carray_insert(this, f->idx, o);                                   \
         }
-#define GENCODECS_LISTTYPE_PTR(_type)                                         \
-        __carray_init(this, nelems, _type *, , );                             \
+#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
+        __carray_init(this, nelems, _type _decor, , );                        \
         HASH_ITER(hh, root->child, f, tmp)                                    \
         {                                                                     \
             _type *o;                                                         \

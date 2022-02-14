@@ -2,10 +2,22 @@
     if (0 > jsonb_number(b, buf, size, _var)) return 0
 #define JSON_ENCODER_PTR_char(b, buf, size, _var, _type)                      \
     if (0 > jsonb_string(b, buf, size, _var, strlen(_var))) return 0
+#define JSON_ENCODER_ullong(b, buf, size, _var, _type)                        \
+        {                                                                     \
+            char tok[64];                                                     \
+            int toklen;                                                       \
+            toklen = sprintf(tok, "%" PRIu64, _var);                          \
+            if (0 > jsonb_string(b, buf, size, tok, toklen)) return 0;        \
+        }
 #define JSON_ENCODER_bool(b, buf, size, _var, _type)                          \
     if (0 > jsonb_bool(b, buf, size, _var)) return 0
 #define JSON_ENCODER_STRUCT_PTR(b, buf, size, _var, _type)                    \
     if (!_##_type##_to_json(b, buf, size, _var)) return 0;
+
+#define JSON_ENCODER_PTR_json_char(b, buf, size, _var, _type)                  \
+    JSON_ENCODER_PTR_char(b, buf, size, _var, _type)
+#define JSON_ENCODER_u64snowflake(b, buf, size, _var, _type)                   \
+    JSON_ENCODER_ullong(b, buf, size, _var, _type)
 
 #ifdef GENCODECS_JSON_ENCODER
 #ifdef GENCODECS_HEADER
@@ -16,7 +28,7 @@
 
 #include "gencodecs-gen.H"
 
-#else
+#elif defined(GENCODECS_FORWARD)
 
 #define GENCODECS_STRUCT(_type)                                               \
     static size_t _##_type##_to_json(jsonb *b, char buf[], size_t size,       \
@@ -26,6 +38,8 @@
 #define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
 
 #include "gencodecs-gen.H"
+
+#else
 
 #define GENCODECS_COND_WRITE(_condition)                                      \
     if (_condition) {
@@ -40,7 +54,7 @@
         if (this != NULL) {
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
-        if (0 > jsonb_key(b, buf, size, #_key, sizeof(#_key) - 1)) return 0;  \
+        if (0 > jsonb_key(b, buf, size, _key, sizeof(_key) - 1)) return 0;    \
         _encoder(b, buf, size, this->_name, _type);
 #define GENCODECS_FIELD_PRINTF(_name, _type, _scanf_type, _printf_type)       \
         if (0 > jsonb_key(b, buf, size, #_name, sizeof(#_name) - 1))          \
@@ -71,7 +85,7 @@
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         for (i = 0; i < this->size; ++i)                                      \
             if (!_##_type##_to_json(b, buf, size, &this->array[i])) return 0;
-#define GENCODECS_LISTTYPE_PTR(_type)                                         \
+#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
         for (i = 0; i < this->size; ++i) {                                    \
             JSON_ENCODER_PTR_##_type(b, buf, size, this->array[i], _type);    \
         }

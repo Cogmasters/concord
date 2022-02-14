@@ -54,7 +54,7 @@ GENCODECS_DIRECTIVE(define JSMN_STRICT)
 GENCODECS_DIRECTIVE(define JSMN_HEADER)
 GENCODECS_DIRECTIVE(include "jsmn.h")
 GENCODECS_DIRECTIVE(include "jsmn-find.h")
-
+#           ifdef GENCODECS_FORWARD
 static char *
 _gc_strndup(const char *src, size_t len)
 {
@@ -63,12 +63,13 @@ _gc_strndup(const char *src, size_t len)
     dest[len] = '\0';
     return dest;
 }
-#       endif
-#   endif
+#           endif /* GENCODECS_FORWARD */
+#       endif /* GENCODECS_JSON_DECODER */
+#   endif /* GENCODECS_DATA */
 #else
 GENCODECS_DIRECTIVE(include <stddef.h>)
 GENCODECS_DIRECTIVE(include <stdbool.h>)
-#endif
+#endif /* GENCODECS_HEADER */
 
 #ifdef __cplusplus
 }

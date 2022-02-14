@@ -537,7 +537,7 @@ PUB_STRUCT(discord_embed_field)
   DESC("value of the field")
     FIELD_PTR(value, char, *)
   DESC("whether or not this field should display inline")
-    FIELD_CUSTOM(Inline, inline, bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
+    FIELD_CUSTOM(Inline, "inline", bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
                  JSON_ENCODER_bool, JSON_DECODER_bool, false)
 STRUCT_END
 

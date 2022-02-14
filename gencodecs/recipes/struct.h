@@ -47,8 +47,8 @@
         _type *array;
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         struct _type *array;
-#define GENCODECS_LISTTYPE_PTR(_type)                                         \
-        _type **array;
+#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                         \
+        _type * _decor array;
 #define GENCODECS_LIST_END                                                    \
         int realsize;                                                         \
     };
@@ -78,7 +78,23 @@
 
 #include "gencodecs-gen.H"
 
-#endif /* GENCODECSS_INIT */
+#endif /* GENCODECS_INIT */
+
+#elif defined(GENCODECS_FORWARD)
+
+#ifdef GENCODECS_INIT
+
+#define GENCODECS_STRUCT(_type)                                               \
+    static void _##_type##_init(struct _type *this);                          \
+    static void _##_type##_cleanup(struct _type *this);
+#define GENCODECS_LIST(_type)                                                 \
+    static void _##_type##_cleanup(struct _type *this);
+#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
+#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
+
+#include "gencodecs-gen.H"
+
+#endif /* GENCODECS_INIT */
 
 #else
 
@@ -118,8 +134,8 @@
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         __carray_free(this, struct _type, NULL,                               \
                       _##_type##_cleanup(&__CARRAY_OPERAND_A));
-#define GENCODECS_LISTTYPE_PTR(_type)                                         \
-        __carray_free(this, _type, NULL, free(&__CARRAY_OPERAND_A));
+#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                         \
+        __carray_free(this, _type _decor, NULL, NULL);
 #define GENCODECS_LIST_END                                                    \
     }
 
