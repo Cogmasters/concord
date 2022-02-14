@@ -3,9 +3,10 @@
 TOP = ..
 CC ?= gcc
 
-COGUTILS_DIR := $(TOP)/cog-utils
-CORE_DIR     := $(TOP)/core
-INCLUDE_DIR  := $(TOP)/include
+COGUTILS_DIR  := $(TOP)/cog-utils
+CORE_DIR      := $(TOP)/core
+GENCODECS_DIR := $(TOP)/gencodecs
+INCLUDE_DIR   := $(TOP)/include
 
 TEST_DISCORD := discord-sync-rest discord-sync-ws discord-async
 TEST_CORE  := user-agent websockets
@@ -13,7 +14,7 @@ TEST_CORE  := user-agent websockets
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_CORE)
 
 CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
-           -I$(CORE_DIR)/third-party                        \
+           -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 

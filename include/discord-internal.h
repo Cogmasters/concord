@@ -11,8 +11,13 @@
 #include <pthread.h>
 
 #include "json-actor.h"
+
 #define JSONB_HEADER
 #include "json-build.h"
+#define JSMN_STRICT
+#define JSMN_HEADER
+#include "jsmn.h"
+#include "jsmn-find.h"
 
 #include "logconf.h" /* struct logconf */
 #include "user-agent.h"
@@ -64,7 +69,7 @@ struct discord_generic {
     /** initializer function for datatype fields */
     void (*init)(void *data);
     /** populate datatype with JSON values */
-    void (*from_json)(char *json, size_t len, void *data);
+    size_t (*from_json)(const char *json, size_t len, void *data);
     /** cleanup function for datatype */
     void (*cleanup)(void *data);
 };

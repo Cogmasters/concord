@@ -39,7 +39,7 @@
         (req).gnrc.size = sizeof(struct type);                                \
         (req).gnrc.init = (void (*)(void *))type##_init;                      \
         (req).gnrc.from_json =                                                \
-            (void (*)(char *, size_t, void *))type##_from_json;               \
+            (size_t(*)(const char *, size_t, void *))type##_from_json;        \
         (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
         if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
@@ -55,7 +55,7 @@
     do {                                                                      \
         (req).gnrc.size = sizeof(struct type);                                \
         (req).gnrc.from_json =                                                \
-            (void (*)(char *, size_t, void *))type##_from_json;               \
+            (size_t(*)(const char *, size_t, void *))type##_from_json;        \
         (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
         req.ret.is_ntl = true;                                                \
         if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
@@ -1567,7 +1567,7 @@ discord_get_gateway(struct discord *client, struct sized_buffer *ret)
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
     req.gnrc.from_json =
-        (void (*)(char *, size_t, void *))cog_sized_buffer_from_json;
+        (size_t(*)(const char *, size_t, void *))cog_sized_buffer_from_json;
     req.ret.has_type = true;
     req.ret.sync = ret;
 
@@ -1583,7 +1583,7 @@ discord_get_gateway_bot(struct discord *client, struct sized_buffer *ret)
     CCORD_EXPECT(client, ret != NULL, CCORD_BAD_PARAMETER, "");
 
     req.gnrc.from_json =
-        (void (*)(char *, size_t, void *))cog_sized_buffer_from_json;
+        (size_t(*)(const char *, size_t, void *))cog_sized_buffer_from_json;
     req.ret.has_type = true;
     req.ret.sync = ret;
 

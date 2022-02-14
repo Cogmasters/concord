@@ -201,7 +201,7 @@ discord_embed_add_field(struct discord_embed *embed,
 }
 
 void
-discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
+discord_overwrite_append(struct discord_overwrites *permission_overwrites,
                          u64_snowflake_t id,
                          int type,
                          u64_bitmask_t allow,
@@ -219,7 +219,7 @@ discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
 }
 
 void
-discord_presence_add_activity(struct discord_presence_status *presence,
+discord_presence_add_activity(struct discord_presence_update *presence,
                               struct discord_activity *activity)
 {
     ntl_append2((ntl_t *)&presence->activities,

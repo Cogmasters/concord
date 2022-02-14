@@ -13,7 +13,7 @@ main(int argc, char *argv[])
     CCORDcode code;
 
     const u64_snowflake_t FAUX_CHANNEL_ID = 123;
-    struct discord_guild **guilds = NULL;
+    struct discord_guilds guilds = { 0 };
     struct discord_user bot;
 
     if (argc > 1)
@@ -38,9 +38,9 @@ main(int argc, char *argv[])
                                                 });
     assert(CCORD_OK == code);
 
-    for (size_t i = 0; guilds[i]; ++i)
-        fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds[i]->name,
-                guilds[i]->id);
+    for (size_t i = 0; i < guilds.size; ++i)
+        fprintf(stderr, "Guild[%s] id:\n\t%" PRIu64 "\n", guilds.array[i].name,
+                guilds.array[i].id);
 
     // Test discord_strerror()
     code = discord_delete_channel(client, FAUX_CHANNEL_ID,
@@ -57,7 +57,7 @@ main(int argc, char *argv[])
     assert(CCORD_OK != code);
     fprintf(stderr, "%s\n", discord_strerror(code, client));
 
-    discord_guild_list_free(guilds);
+    discord_guilds_cleanup(&guilds);
     discord_user_cleanup(&bot);
     discord_cleanup(client);
 

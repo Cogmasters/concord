@@ -34,6 +34,7 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
+GENCODECS_HDR := $(GENCODECS_DIR)/discord-codecs.h
 GENCODECS_SRC := $(GENCODECS_DIR)/discord-codecs.c
 
 DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
@@ -55,21 +56,23 @@ CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(GENCODECS_DIR)                                               \
           -DLOG_USE_COLOR
 
-WFLAGS += -Wno-cast-function-type -Wall -Wextra -pedantic
+WFLAGS += -Wall -Wextra -pedantic
 
 $(OBJDIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(WFLAGS) $(XFLAGS) -c -o $@ $<
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all:
-	$(MAKE) discord
+all: $(COGUTILS_DIR) $(GENCODECS_HDR)
+	@ $(MAKE) discord
+
+discord: $(LIB)
 
 voice:
-	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
+	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
 
 debug:
-	$(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
+	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
 
 cog_utils:
 	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
@@ -79,8 +82,6 @@ test: all
 
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
-
-discord: $(LIB)
 
 $(LIB): $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
@@ -92,10 +93,14 @@ $(COGUTILS_DIR):
 
 $(OBJS): | $(OBJDIR)
 
+$(GENCODECS_HDR):
+	@ $(MAKE) -C $(GENCODECS_DIR)
+
 $(OBJDIR):
 	@ mkdir -p $@/$(THIRDP_DIR)   \
 	           $@/$(COGUTILS_DIR) \
-	           $@/$(SRC_DIR)
+	           $@/$(SRC_DIR)      \
+	           $@/$(GENCODECS_DIR)
 
 install:
 	@ mkdir -p $(PREFIX)/lib/

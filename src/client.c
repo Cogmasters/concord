@@ -557,7 +557,7 @@ discord_set_on_voice_server_update(struct discord *client,
 
 void
 discord_set_presence(struct discord *client,
-                     struct discord_presence_status *presence)
+                     struct discord_presence_update *presence)
 {
     memcpy(client->gw.id.presence, presence, sizeof *presence);
     discord_gateway_send_presence_update(&client->gw);

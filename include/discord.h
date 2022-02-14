@@ -224,7 +224,7 @@ void *discord_get_data(struct discord *client);
  * @param presence overwrite client's presence with it
  */
 void discord_set_presence(struct discord *client,
-                          struct discord_presence_status *presence);
+                          struct discord_presence_update *presence);
 
 /**
  * @brief Get the client WebSockets ping
@@ -2727,7 +2727,7 @@ void discord_overwrite_append(struct discord_overwrites *permission_overwrites,
  *
  * This function is a wrapper over ntl_append2()
  */
-void discord_presence_add_activity(struct discord_presence_status *presence,
+void discord_presence_add_activity(struct discord_presence_update *presence,
                                    struct discord_activity *activity);
 
 #endif /* DISCORD_H */
