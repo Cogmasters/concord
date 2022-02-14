@@ -17,11 +17,6 @@
         ret += sizeof *_var + _##_type##_from_json(f, buf, _var);             \
     }
 
-#define JSON_DECODER_PTR_json_char(f, buf, _var, _type)                       \
-    JSON_DECODER_PTR_char(f, buf, _var, _type)
-#define JSON_DECODER_u64snowflake(f, buf, _var, _type)                        \
-    JSON_DECODER_ullong(f, buf, _var, _type)
-
 #ifdef GENCODECS_JSON_DECODER
 #ifdef GENCODECS_HEADER
 

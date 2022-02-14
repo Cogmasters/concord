@@ -7,8 +7,9 @@ extern "C" {
 
 /* Allow symbols usage without GENCODECS_ prefix */
 #ifndef GENCODECS_USE_PREFIX
-#   define DIRECTIVE GENCODECS_DIRECTIVE
-#   define DESC GENCODECS_DESC
+#   define PP_INCLUDE GENCODECS_PP_INCLUDE
+#   define PP_DEFINE GENCODECS_PP_DEFINE
+#   define PP GENCODECS_PP
 
 #   define COND_WRITE GENCODECS_COND_WRITE
 #   define COND_END GENCODECS_COND_END
@@ -38,22 +39,17 @@ extern "C" {
 #endif /* GENCODECS_USE_PREFIX */
 
 #ifndef GENCODECS_HEADER
-#   define GENCODECS_DESC(_description)
 #   ifdef GENCODECS_DATA
-GENCODECS_DIRECTIVE(include <stdio.h>)
-GENCODECS_DIRECTIVE(include <stdlib.h>)
+GENCODECS_PP_INCLUDE(<stdio.h>)
+GENCODECS_PP_INCLUDE(<stdlib.h>)
 #       ifdef GENCODECS_INIT
-GENCODECS_DIRECTIVE(include "carray.h")
-#       endif
-#       ifdef GENCODECS_JSON_ENCODER
-GENCODECS_DIRECTIVE(define JSONB_HEADER)
-GENCODECS_DIRECTIVE(include "json-build.h")
+GENCODECS_PP_INCLUDE("carray.h")
 #       endif
 #       ifdef GENCODECS_JSON_DECODER
-GENCODECS_DIRECTIVE(define JSMN_STRICT)
-GENCODECS_DIRECTIVE(define JSMN_HEADER)
-GENCODECS_DIRECTIVE(include "jsmn.h")
-GENCODECS_DIRECTIVE(include "jsmn-find.h")
+GENCODECS_PP_DEFINE(JSMN_STRICT)
+GENCODECS_PP_DEFINE(JSMN_HEADER)
+GENCODECS_PP_INCLUDE("jsmn.h")
+GENCODECS_PP_INCLUDE("jsmn-find.h")
 #           ifdef GENCODECS_FORWARD
 static char *
 _gc_strndup(const char *src, size_t len)
@@ -67,9 +63,16 @@ _gc_strndup(const char *src, size_t len)
 #       endif /* GENCODECS_JSON_DECODER */
 #   endif /* GENCODECS_DATA */
 #else
-GENCODECS_DIRECTIVE(include <stddef.h>)
-GENCODECS_DIRECTIVE(include <stdbool.h>)
+GENCODECS_PP_INCLUDE(<stddef.h>)
+GENCODECS_PP_INCLUDE(<stdbool.h>)
+#       ifdef GENCODECS_JSON_ENCODER
+GENCODECS_PP_DEFINE(JSONB_HEADER)
+GENCODECS_PP_INCLUDE("json-build.h")
+#       endif
 #endif /* GENCODECS_HEADER */
+
+#define GENCODECS_PP(_description)
+#define GENCODECS_PP_DEFINE(_description)
 
 #ifdef __cplusplus
 }

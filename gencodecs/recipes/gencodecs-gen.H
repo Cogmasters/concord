@@ -82,8 +82,8 @@
 
 #include GENCODECS_READ
 
-#ifndef GENCODECS_DESC
-#define GENCODECS_DESC(_description)
+#ifndef GENCODECS_PP
+#define GENCODECS_PP(_description)
 #endif
 
 #undef GENCODECS_COND_WRITE

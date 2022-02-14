@@ -1,5 +1,5 @@
-/* replace GENCODECS_DIRECTIVE() and GENCODECS_DESC() with '#' and comments,
- * respectively */
+/* replace GENCODECS_PP_INCLUDE()/GENCODECS_PP_DEFINE() and GENCODECS_PP() with
+ * '#' and comments, respectively */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,13 +30,26 @@ expand_desc(char **src, const char tok[], size_t toklen)
 
 /* return non-zero on succesful expansion */
 static int
-expand_directive(char **src, const char tok[], size_t toklen)
+expand_include(char **src, const char tok[], size_t toklen)
 {
     if (0 == strncmp(*src, tok, toklen - 1)) {
         state = DIRECTIVE;
         *src += toklen - 1;
         closestr = "";
-        fputc('#', stdout);
+        fputs("#include ", stdout);
+        return 1;
+    }
+    return 0;
+}
+
+static int
+expand_define(char **src, const char tok[], size_t toklen)
+{
+    if (0 == strncmp(*src, tok, toklen - 1)) {
+        state = DIRECTIVE;
+        *src += toklen - 1;
+        closestr = "";
+        fputs("#define ", stdout);
         return 1;
     }
     return 0;
@@ -82,12 +95,14 @@ main(void)
                 ++p;
                 break;
             case 'G': {
-                static const char tok1[] = "GENCODECS_DESC(";
-                static const char tok2[] = "GENCODECS_DIRECTIVE(";
+                static const char tok1[] = "GENCODECS_PP(";
+                static const char tok2[] = "GENCODECS_PP_INCLUDE(";
+                static const char tok3[] = "GENCODECS_PP_DEFINE(";
 
                 if (state == NONE) {
                     if (expand_desc(&p, tok1, sizeof(tok1))) break;
-                    if (expand_directive(&p, tok2, sizeof(tok2))) break;
+                    if (expand_include(&p, tok2, sizeof(tok2))) break;
+                    if (expand_define(&p, tok3, sizeof(tok3))) break;
                 }
                 fputc(*p++, stdout);
             } break;

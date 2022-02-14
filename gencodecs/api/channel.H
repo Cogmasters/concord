@@ -3,38 +3,38 @@
  * **************************************************************************/
 
 ENUM(discord_channel_types)
-  DESC("a text channel within a server")
+  PP("a text channel within a server")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_TEXT, = 0)
-  DESC("a direct message between users")
+  PP("a direct message between users")
     ENUMERATOR(DISCORD_CHANNEL_DM, = 1)
-  DESC("a voice channel within a server")
+  PP("a voice channel within a server")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_VOICE, = 2)
-  DESC("a direct message between multiple users")
+  PP("a direct message between multiple users")
     ENUMERATOR(DISCORD_CHANNEL_GROUP_DM, = 3)
-  DESC("an organization category that contains up to 50 channels")
+  PP("an organization category that contains up to 50 channels")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_CATEGORY, = 4)
-  DESC("a channel that users can follow and crosspost into their own server")
+  PP("a channel that users can follow and crosspost into their own server")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_NEWS, = 5)
-  DESC("a channel in which game developers can seel their game on Discord")
+  PP("a channel in which game developers can seel their game on Discord")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_STORE, = 6)
-  DESC("a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_NEWS"
+  PP("a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_NEWS"
        "channel")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_NEWS_THREAD, = 10)
-  DESC("a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_TEXT"
+  PP("a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_TEXT"
        "channel")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_PUBLIC_THREAD, = 11)
-  DESC("a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_TEXT"
+  PP("a temporary sub-channel within a @ref DISCORD_CHANNEL_GUILD_TEXT"
        "channel that is only viewable by those invited and those with the"
        "`MANAGE_THREADS` permission")
     ENUMERATOR(DISCORD_CHANNEL_GUILD_PRIVATE_THREAD, = 12)
-  DESC("a voice channel for hosting events with an audience")
+  PP("a voice channel for hosting events with an audience")
     ENUMERATOR_LAST(DISCORD_CHANNEL_GUILD_STAGE_VOICE, = 13)
 ENUM_END
 
 ENUM(discord_video_quality_modes)
-  DESC("Discord chooses the quality for optimal performance")
+  PP("Discord chooses the quality for optimal performance")
     ENUMERATOR(DISCORD_VIDEO_QUALITY_AUTO, = 1)
-  DESC("720p")
+  PP("720p")
     ENUMERATOR_LAST(DISCORD_VIDEO_QUALITY_FULL, = 2)
 ENUM_END
 
@@ -72,98 +72,98 @@ ENUM(discord_message_activity_types)
 ENUM_END
 
 ENUM(discord_message_flags)
-  DESC("this message has been published to subscribed channels (via Channel"
+  PP("this message has been published to subscribed channels (via Channel"
        "Following)")
     ENUMERATOR(DISCORD_MESSAGE_CROSSPOSTED, = 1 << 0)
-  DESC("this message originated from a message in another channel (via Channel"
+  PP("this message originated from a message in another channel (via Channel"
        "Following)")
     ENUMERATOR(DISCORD_MESSAGE_IS_CROSSPOST, = 1 << 1)
-  DESC("do not include any embed when serializing this message")
+  PP("do not include any embed when serializing this message")
     ENUMERATOR(DISCORD_MESSAGE_SUPRPRESS_EMBEDS, = 1 << 2)
-  DESC("the source message for this crosspost has been deleted (via Channel"
+  PP("the source message for this crosspost has been deleted (via Channel"
        "Following)")
     ENUMERATOR(DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED, = 1 << 3)
-  DESC("this message came from the urgent message system")
+  PP("this message came from the urgent message system")
     ENUMERATOR(DISCORD_MESSAGE_URGENT, = 1 << 4)
-  DESC("this message has an associated thread, with the same ID as the message")
+  PP("this message has an associated thread, with the same ID as the message")
     ENUMERATOR(DISCORD_MESSAGE_HAS_THREAD, = 1 << 5)
-  DESC("this message is only visible to the user who invoked the interaction")
+  PP("this message is only visible to the user who invoked the interaction")
     ENUMERATOR(DISCORD_MESSAGE_EPHEMERAL, = 1 << 6)
-  DESC("this message is an interaction response and the bot is thinking")
+  PP("this message is an interaction response and the bot is thinking")
     ENUMERATOR(DISCORD_MESSAGE_LOADING, = 1 << 7)
-  DESC("this message failed to mention some roles and add the members to the"
+  PP("this message failed to mention some roles and add the members to the"
        "thread")
     ENUMERATOR_LAST(DISCORD_MESSAGE_FAILED_TO_MENTION_SOME_ROLES_IN_THREAD,
                     = 1 << 8)
 ENUM_END
 
 PUB_STRUCT(discord_channel)
-  DESC("the ID of this channel")
+  PP("the ID of this channel")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
-  DESC("the type of channel")
+  PP("the type of channel")
     FIELD_ENUM(type, discord_channel_types)
-  DESC("the ID of the guild (may be missing for some channel objects received"
+  PP("the ID of the guild (may be missing for some channel objects received"
        "over gateway guild dispatches)")
   COND_WRITE(this->guild_id != 0)
     FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("sorting position of the channel")
+  PP("sorting position of the channel")
     FIELD(position, int, 0)
-  DESC("explicit permission overwrites for members and roles")
+  PP("explicit permission overwrites for members and roles")
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
-  DESC("the name of the channel (0-1024 characters)")
+  PP("the name of the channel (0-1024 characters)")
     FIELD_PTR(name, char, *)
-  DESC("the channel topic (0-1024 characters)")
+  PP("the channel topic (0-1024 characters)")
     FIELD_PTR(topic, char, *)
-  DESC("whether the channel is nsfw")
+  PP("whether the channel is nsfw")
     FIELD(nsfw, bool, false)
-  DESC("the id of the last message sent in this channel (may not point to an"
+  PP("the id of the last message sent in this channel (may not point to an"
        "existing or valid message)")
     FIELD_PRINTF(last_message_id, u64snowflake, PRIu64, SCNu64)
-  DESC("the bitrate (in bits) of the voice channel")
+  PP("the bitrate (in bits) of the voice channel")
     FIELD(bitrate, int, 0)
-  DESC("the user limit of the voice channel")
+  PP("the user limit of the voice channel")
     FIELD(user_limit, int, 0)
-  DESC("amount of seconds a user has to wait before sending another message"
+  PP("amount of seconds a user has to wait before sending another message"
        " (0-21600). bots, as well as users with the permission"
        "`MANAGE_MESSAGES` or `MANAGE_CHANNEL` are unaffected")
     FIELD(rate_limit_per_user, int, 0)
-  DESC("array of user objects")
+  PP("array of user objects")
     FIELD_STRUCT_PTR(recipients, discord_users, *)
-  DESC("icon hash of the group DM")
+  PP("icon hash of the group DM")
     FIELD_PTR(icon, char, *)
-  DESC("id of the creator of the group DM or thread")
+  PP("id of the creator of the group DM or thread")
     FIELD_PRINTF(owner_id, u64snowflake, PRIu64, SCNu64)
-  DESC("application ID of the group DM creator if its bot-created")
+  PP("application ID of the group DM creator if its bot-created")
     FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
-  DESC("for guild channels: ID of the parent category for a channel (each"
+  PP("for guild channels: ID of the parent category for a channel (each"
        "parent category can contain up to 50 channels), for threads: id of"
        "the text channel this thread was created")
     FIELD_PRINTF(parent_id, u64snowflake, PRIu64, SCNu64)
   /* TODO: iso8601 support */
 #if 0
-  DESC("when the last pinned message was pinned. This may be `NULL` in events"
+  PP("when the last pinned message was pinned. This may be `NULL` in events"
        "such as `GUILD_CREATE` when a message is not pinned")
     FIELD_PRINTF(last_pin_timestamp, u64snowflake, PRIu64, SCNu64)
 #endif
-  DESC("voice region ID for the voice channel, automatic when set to null")
+  PP("voice region ID for the voice channel, automatic when set to null")
     FIELD_PTR(rtc_region, char, *)
-  DESC("the camera video quality mode of the voice channel, 1 when not present")
+  PP("the camera video quality mode of the voice channel, 1 when not present")
     FIELD(voice_quality_mode, int, 0)
-  DESC("an approximate count of messages in a thread, stops counting at 50")
+  PP("an approximate count of messages in a thread, stops counting at 50")
     FIELD(message_count, int, 0)
-  DESC("an approximate count of users in a thread, stops counting at 50")
+  PP("an approximate count of users in a thread, stops counting at 50")
     FIELD(member_count, int, 0)
-  DESC("thread-specific fields not needed by other channels")
+  PP("thread-specific fields not needed by other channels")
     FIELD_STRUCT_PTR(thread_metadata, discord_thread_metadata, *)
-  DESC("thread member object for the current user, if they have joined the"
+  PP("thread member object for the current user, if they have joined the"
        "thread, only included on certain API endpoints")
     FIELD_STRUCT_PTR(member, discord_thread_member, *)
-  DESC("default duration that the clients (not the API) will use for newly"
+  PP("default duration that the clients (not the API) will use for newly"
        "created threads, in minutes, to automatically archive the thread"
        "after recent activity, can be set to: 60, 1440, 4320, 10080")
     FIELD(default_auto_archive_duration, int, 0)
-  DESC("computed permissions for the invoking user in the channel, including"
+  PP("computed permissions for the invoking user in the channel, including"
        "overwrites, only included when part of the `resolved` data received"
        "on a application command interaction")
     FIELD_PTR(permissions, char, *)
@@ -174,74 +174,74 @@ PUB_LIST(discord_channels)
 LIST_END
 
 PUB_STRUCT(discord_message)
-  DESC("ID of the message")
+  PP("ID of the message")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
-  DESC("ID of the channel the message was sent in")
+  PP("ID of the channel the message was sent in")
     FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
-  DESC("ID of the guild the message was sent in")
+  PP("ID of the guild the message was sent in")
     FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
-  DESC("the author of this message (not guaranteed to be a valid user)")
+  PP("the author of this message (not guaranteed to be a valid user)")
     FIELD_STRUCT_PTR(author, discord_user, *)
-  DESC("partial guild member")
+  PP("partial guild member")
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
-  DESC("contents of the message")
+  PP("contents of the message")
     FIELD_PTR(content, char, *)
   /* TODO: iso8601 support */
 #if 0
-  DESC("when this message was sent")
+  PP("when this message was sent")
     FIELD_PRINTF(timestamp, u64snowflake, PRIu64, SCNu64)
-  DESC("when this message was edited (or null if never)")
+  PP("when this message was edited (or null if never)")
     FIELD_PRINTF(edited_timestamp, u64snowflake, PRIu64, SCNu64)
 #endif
-  DESC("whether this was a TTS message")
+  PP("whether this was a TTS message")
     FIELD(tts, bool, false)
-  DESC("whether this message mentions everyone")
+  PP("whether this message mentions everyone")
     FIELD(mention_everyone, bool, false)
   /** FIXME: expects additional member field */
-  DESC("users specifically mentioned in the message")
+  PP("users specifically mentioned in the message")
     FIELD_STRUCT_PTR(mentions, discord_users, *)
-  DESC("roles specifically mentioned in this message")
+  PP("roles specifically mentioned in this message")
     FIELD_STRUCT_PTR(mention_roles, discord_roles, *)
-  DESC("channels specifically mentioned in this message")
+  PP("channels specifically mentioned in this message")
     FIELD_STRUCT_PTR(mention_channels, discord_channels, *)
-  DESC("any attached files")
+  PP("any attached files")
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
-  DESC("any embedded content")
+  PP("any embedded content")
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
-  DESC("reactions to the message")
+  PP("reactions to the message")
     FIELD_STRUCT_PTR(reactions, discord_reactions, *)
   /** FIXME: expects raw json (can be integer or string) */
-  DESC("used for validating a message was sent")
+  PP("used for validating a message was sent")
     FIELD_PTR(nonce, char, *)
-  DESC("whether this message is pinned")
+  PP("whether this message is pinned")
     FIELD(pinned, bool, false)
-  DESC("if the message is generated by a webhook, this is the webhook's ID")
+  PP("if the message is generated by a webhook, this is the webhook's ID")
     FIELD_PRINTF(webhook_id, u64snowflake, PRIu64, SCNu64)
-  DESC("type of message")
+  PP("type of message")
     FIELD_ENUM(type, discord_message_types)
-  DESC("sent with Rich Presence-related chat embeds")
+  PP("sent with Rich Presence-related chat embeds")
     FIELD_STRUCT_PTR(activity, discord_message_activity, *)
-  DESC("sent with Rich Presence-related chat embeds")
+  PP("sent with Rich Presence-related chat embeds")
     FIELD_STRUCT_PTR(application, discord_application, *)
-  DESC("if the message is an interaction or an application-owned webhook, this"
+  PP("if the message is an interaction or an application-owned webhook, this"
        "is the ID of the application")
     FIELD_PRINTF(application_id, u64snowflake, PRIu64, SCNu64)
-  DESC("data showing the source of a crosspost, channel follow add, pin, or"
+  PP("data showing the source of a crosspost, channel follow add, pin, or"
        "reply message")
     FIELD_STRUCT_PTR(message_reference, discord_message_reference, *)
-  DESC("message flags combined as a bitfield")
+  PP("message flags combined as a bitfield")
     FIELD_ENUM(flags, discord_message_flags)
-  DESC("the message associated with the message_reference")
+  PP("the message associated with the message_reference")
     FIELD_STRUCT_PTR(referenced_message, discord_message, *)
-  DESC("sent if the message is a response to an interaction")
+  PP("sent if the message is a response to an interaction")
     FIELD_STRUCT_PTR(interaction, discord_message_interaction, *)
-  DESC("the thread that was started from this message, includes"
+  PP("the thread that was started from this message, includes"
        "@ref discord_thread_member")
     FIELD_STRUCT_PTR(thread, discord_channel, *)
-  DESC("sent if the message contains components like buttons, action rows, or"
+  PP("sent if the message contains components like buttons, action rows, or"
        "other interactive components")
     FIELD_STRUCT_PTR(components, discord_components, *)
-  DESC("sent if the message contains stickers")
+  PP("sent if the message contains stickers")
     FIELD_STRUCT_PTR(sticker_items, discord_sticker_items, *)
 STRUCT_END
 
@@ -250,37 +250,37 @@ PUB_LIST(discord_messages)
 LIST_END
 
 STRUCT(discord_message_activity)
-  DESC("type of message activity")
+  PP("type of message activity")
     FIELD_ENUM(type, discord_message_activity_types)
-  DESC("party_id from a Rich Presence event")
+  PP("party_id from a Rich Presence event")
     FIELD_PTR(party_id, char, *)
 STRUCT_END
 
 STRUCT(discord_message_reference)
-  DESC("id of the originating message")
+  PP("id of the originating message")
     FIELD_PRINTF(message_id, u64snowflake, PRIu64, SCNu64)
-  DESC("id of the originating message's channel")
+  PP("id of the originating message's channel")
     FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
-  DESC("id of the originating message's guild")
+  PP("id of the originating message's guild")
     FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
-  DESC("when sending, whether to error if the referenced message doesn't exist"
+  PP("when sending, whether to error if the referenced message doesn't exist"
        "instead of sending as normal (non-reply) message, default true")
     FIELD(fail_if_not_exists, bool, true)
 STRUCT_END
 
 PUB_STRUCT(discord_followed_channel)
-  DESC("source channel id")
+  PP("source channel id")
     FIELD_PRINTF(channel_id, u64snowflake, PRIu64, SCNu64)
-  DESC("created target webhook id")
+  PP("created target webhook id")
     FIELD_PRINTF(webhook_id, u64snowflake, PRIu64, SCNu64)
 STRUCT_END
 
 STRUCT(discord_reaction)
-  DESC("times this emoji has been used to react")
+  PP("times this emoji has been used to react")
     FIELD(count, int, 0)
-  DESC("whether the current user reacted using this emoji")
+  PP("whether the current user reacted using this emoji")
     FIELD(me, bool, false)
-  DESC("emoji information")
+  PP("emoji information")
     FIELD_STRUCT_PTR(emoji, discord_emoji, *)
 STRUCT_END
 
@@ -289,13 +289,13 @@ LIST(discord_reactions)
 LIST_END
 
 STRUCT(discord_overwrite)
-  DESC("role or user id")
+  PP("role or user id")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
-  DESC("either 0 (role) or 1 (member)")
+  PP("either 0 (role) or 1 (member)")
     FIELD(type, int, 0)
-  DESC("permission bit set")
+  PP("permission bit set")
     FIELD_PRINTF(allow, uint64_t, PRIu64, SCNu64)
-  DESC("permission bit set")
+  PP("permission bit set")
     FIELD_PRINTF(deny, uint64_t, PRIu64, SCNu64)
 STRUCT_END
 
@@ -304,42 +304,42 @@ LIST(discord_overwrites)
 LIST_END
 
 STRUCT(discord_thread_metadata)
-  DESC("whether the thread is archived")
+  PP("whether the thread is archived")
     FIELD(archived, bool, false)
-  DESC("duration in minutes to automatically archive the thread after recent"
+  PP("duration in minutes to automatically archive the thread after recent"
        "activity, can be set to: 60, 1440, 3320, 10080")
     FIELD(auto_archive_duration, int, 0)
   /* TODO: iso8601 support */
 #if 0
-  DESC("timestamp when the thread's archive status was last changed, used for"
+  PP("timestamp when the thread's archive status was last changed, used for"
        "calculating recent activity")
     FIELD_PRINTF(archive_timestamp, u64snowflake, PRIu64, SCNu64)
 #endif
-  DESC("whether the thread is locked; when a thread is locked only users with"
+  PP("whether the thread is locked; when a thread is locked only users with"
        "`MANAGE_THREADS` can unarchive it")
     FIELD(locked, bool, false)
-  DESC("whether non-moderators cana dd other non-moderators to a thread; only"
+  PP("whether non-moderators cana dd other non-moderators to a thread; only"
        "available on private threads")
     FIELD(invitable, bool, false)
   /* TODO: iso8601 support */
 #if 0
-  DESC("timestamp when the thread was created; only populated for threads"
+  PP("timestamp when the thread was created; only populated for threads"
        "created after 2022-01-09")
     FIELD_PRINTF(create_timestamp, u64snowflake, PRIu64, SCNu64)
 #endif
 STRUCT_END
 
 STRUCT(discord_thread_member)
-  DESC("the id of the thread")
+  PP("the id of the thread")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
-  DESC("the id of the user")
+  PP("the id of the user")
     FIELD_PRINTF(user_id, u64snowflake, PRIu64, SCNu64)
   /* TODO: iso8601 support */
 #if 0
-  DESC("the time the current user last joined the thread")
+  PP("the time the current user last joined the thread")
     FIELD_PRINTF(join_timestamp, u64snowflake, PRIu64, SCNu64)
 #endif
-  DESC("anyuser-thread settings, currently only used for notifications")
+  PP("anyuser-thread settings, currently only used for notifications")
     FIELD(flags, int, 0)
 STRUCT_END
 
@@ -349,38 +349,38 @@ LIST_END
 
 STRUCT(discord_attachment)
   /* FIXME: content shouldn't be included at from_json and to_json */
-  DESC("the file contents")
+  PP("the file contents")
     FIELD_PTR(content, char, *)
-  DESC("attachment ID")
+  PP("attachment ID")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
-  DESC("name of file attached")
+  PP("name of file attached")
   COND_WRITE(this->filename != NULL)
     FIELD_PTR(filename, char, *)
   COND_END
-  DESC("description for the file")
+  PP("description for the file")
   COND_WRITE(this->description != NULL)
     FIELD_PTR(description, char, *)
   COND_END
-  DESC("the attachment media type")
+  PP("the attachment media type")
   COND_WRITE(this->content_type != NULL)
     FIELD_PTR(content_type, char, *)
   COND_END
   /* TODO: make it size_t */
-  DESC("size of file in bytes")
+  PP("size of file in bytes")
     FIELD(size, int, 0)
-  DESC("source url of file")
+  PP("source url of file")
     FIELD_PTR(url, char, *)
-  DESC("proxied url of file")
+  PP("proxied url of file")
     FIELD_PTR(proxy_url, char, *)
-  DESC("height of file (if image)")
+  PP("height of file (if image)")
   COND_WRITE(this->height != 0)
     FIELD(height, int, 0)
   COND_END
-  DESC("width of file (if image)")
+  PP("width of file (if image)")
   COND_WRITE(this->width != 0)
     FIELD(width, int, 0)
   COND_END
-  DESC("whether this attachment is ephemeral")
+  PP("whether this attachment is ephemeral")
     FIELD(ephemeral, bool, false)
 STRUCT_END
 
@@ -389,36 +389,36 @@ PUB_LIST(discord_attachments)
 LIST_END
 
 PUB_STRUCT(discord_embed)
-  DESC("title of embed")
+  PP("title of embed")
     FIELD_PTR(title, char, *)
-  DESC("type of embed (always \"rich\" for webhook embeds)")
+  PP("type of embed (always \"rich\" for webhook embeds)")
     FIELD_PTR(type, char, *)
-  DESC("description of embed")
+  PP("description of embed")
     FIELD_PTR(description, char, *)
-  DESC("url of embed")
+  PP("url of embed")
     FIELD_PTR(url, char, *)
   /* TODO: iso8601 support */
 #if 0
-  DESC("timestamp of embed content")
+  PP("timestamp of embed content")
     FIELD_PRINTF(timestamp, u64snowflake, PRIu64, SCNu64)
 #endif
-  DESC("color code of the embed")
+  PP("color code of the embed")
   COND_WRITE(this->color != 0)
     FIELD(color, int, 0)
   COND_END
-  DESC("footer information")
+  PP("footer information")
   COND_WRITE(this->footer != NULL)
     FIELD_STRUCT_PTR(footer, discord_embed_footer, *)
   COND_END
-  DESC("image information")
+  PP("image information")
   COND_WRITE(this->image != NULL)
     FIELD_STRUCT_PTR(image, discord_embed_image, *)
   COND_END
-  DESC("thumbnail information")
+  PP("thumbnail information")
   COND_WRITE(this->thumbnail != NULL)
     FIELD_STRUCT_PTR(thumbnail, discord_embed_thumbnail, *)
   COND_END
-  DESC("video information")
+  PP("video information")
   COND_WRITE(this->video != NULL)
     FIELD_STRUCT_PTR(video, discord_embed_video, *)
   COND_END
@@ -438,105 +438,105 @@ PUB_LIST(discord_embeds)
 LIST_END
 
 PUB_STRUCT(discord_embed_thumbnail)
-  DESC("source url of thumbnail (only supports http(s) and attachments)")
+  PP("source url of thumbnail (only supports http(s) and attachments)")
     FIELD_PTR(url, char, *)
-  DESC("a proxied url of the thumbnail")
+  PP("a proxied url of the thumbnail")
   COND_WRITE(this->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
   COND_END
-  DESC("height of thumbnail")
+  PP("height of thumbnail")
   COND_WRITE(this->height != 0)
     FIELD(height, int, 0)
   COND_END
-  DESC("width of thumbnail")
+  PP("width of thumbnail")
   COND_WRITE(this->width != 0)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_embed_video)
-  DESC("source url of video")
+  PP("source url of video")
   COND_WRITE(this->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
-  DESC("a proxied url of the video")
+  PP("a proxied url of the video")
   COND_WRITE(this->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
   COND_END
-  DESC("height of video")
+  PP("height of video")
   COND_WRITE(this->height != 0)
     FIELD(height, int, 0)
   COND_END
-  DESC("width of video")
+  PP("width of video")
   COND_WRITE(this->width != 0)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_embed_image)
-  DESC("source url of image (only supports http(s) and attachments)")
+  PP("source url of image (only supports http(s) and attachments)")
     FIELD_PTR(url, char, *)
-  DESC("a proxied url of the image")
+  PP("a proxied url of the image")
   COND_WRITE(this->proxy_url != NULL)
     FIELD_PTR(proxy_url, char, *)
   COND_END
-  DESC("height of image")
+  PP("height of image")
   COND_WRITE(this->height != 0)
     FIELD(height, int, 0)
   COND_END
-  DESC("width of image")
+  PP("width of image")
   COND_WRITE(this->width != 0)
     FIELD(width, int, 0)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_embed_provider)
-  DESC("name of provider")
+  PP("name of provider")
   COND_WRITE(this->name != NULL)
     FIELD_PTR(name, char, *)
   COND_END
-  DESC("url of provider")
+  PP("url of provider")
   COND_WRITE(this->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_embed_author)
-  DESC("name of author")
+  PP("name of author")
     FIELD_PTR(name, char, *)
-  DESC("url of author")
+  PP("url of author")
   COND_WRITE(this->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
-  DESC("url of author icon (only supports http(s) and attachments)")
+  PP("url of author icon (only supports http(s) and attachments)")
   COND_WRITE(this->icon_url != NULL)
     FIELD_PTR(icon_url, char, *)
   COND_END
-  DESC("a proxied url of author icon")
+  PP("a proxied url of author icon")
   COND_WRITE(this->proxy_icon_url != NULL)
     FIELD_PTR(proxy_icon_url, char, *)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_embed_footer)
-  DESC("footer text")
+  PP("footer text")
     FIELD_PTR(text, char, *)
-  DESC("url of footer icon (only supports http(s) and attachments)")
+  PP("url of footer icon (only supports http(s) and attachments)")
   COND_WRITE(this->icon_url != NULL)
     FIELD_PTR(icon_url, char, *)
   COND_END
-  DESC("a proxied url of footer icon")
+  PP("a proxied url of footer icon")
   COND_WRITE(this->proxy_icon_url != NULL)
     FIELD_PTR(proxy_icon_url, char, *)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_embed_field)
-  DESC("name of the field")
+  PP("name of the field")
     FIELD_PTR(name, char, *)
-  DESC("value of the field")
+  PP("value of the field")
     FIELD_PTR(value, char, *)
-  DESC("whether or not this field should display inline")
+  PP("whether or not this field should display inline")
     FIELD_CUSTOM(Inline, "inline", bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
                  JSON_ENCODER_bool, JSON_DECODER_bool, false)
 STRUCT_END
@@ -546,35 +546,35 @@ PUB_LIST(discord_embed_fields)
 LIST_END
 
 STRUCT(discord_channel_mention)
-  DESC("ID of the channel")
+  PP("ID of the channel")
     FIELD_PRINTF(id, u64snowflake, PRIu64, SCNu64)
-  DESC("ID of the guild containing the channel")
+  PP("ID of the guild containing the channel")
     FIELD_PRINTF(guild_id, u64snowflake, PRIu64, SCNu64)
-  DESC("the type of the channel")
+  PP("the type of the channel")
     FIELD_ENUM(type, discord_channel_types)
-  DESC("the name of the channel")
+  PP("the name of the channel")
     FIELD_PTR(name, char, *)
 STRUCT_END
 
 STRUCT(discord_allowed_mention)
-  DESC("An array of allowed mention tpes to parse from the content")
+  PP("An array of allowed mention tpes to parse from the content")
     FIELD_STRUCT_PTR(parse, json_strings, *)
-  DESC("Array of role_ids to mention (Max size of 100)")
+  PP("Array of role_ids to mention (Max size of 100)")
     FIELD_STRUCT_PTR(roles, snowflakes, *)
-  DESC("Array of user_ids to mention (Max size of 100)")
+  PP("Array of user_ids to mention (Max size of 100)")
     FIELD_STRUCT_PTR(users, snowflakes, *)
-  DESC("For replies, whether to mention the author of the message being"
+  PP("For replies, whether to mention the author of the message being"
        "replied to (default false)")
     FIELD(replied_user, bool, false)
 STRUCT_END
 
 PUB_STRUCT(discord_thread_response_body)
-  DESC("the archived threads")
+  PP("the archived threads")
     FIELD_STRUCT_PTR(threads, discord_channels, *)
-  DESC("a thread member object for each returned thread the current user has"
+  PP("a thread member object for each returned thread the current user has"
        "joined")
     FIELD_STRUCT_PTR(members, discord_thread_members, *)
-  DESC("whether there are potentially additional threads that could be returned"
+  PP("whether there are potentially additional threads that could be returned"
        "on a subsequent call")
     FIELD(has_more, bool, false)
 STRUCT_END
@@ -584,69 +584,69 @@ STRUCT_END
  * **************************************************************************/
 
 PUB_STRUCT(discord_modify_channel)
-  DESC("1-100 character channel name")
+  PP("1-100 character channel name")
     FIELD_PTR(name, char, *)
   /* GROUP DM */
   /* TODO: implement base64 encoder */
 #if 0
-  DESC("base64 encoded icon")
+  PP("base64 encoded icon")
     FIELD_PTR(icon, char, *)
 #endif
   /* GUILD CHANNEL */
-  DESC("the type of channel; only conversion between text and news is"
+  PP("the type of channel; only conversion between text and news is"
        "supported and only in guilds with the `NEWS` feature")
     FIELD_ENUM(type, discord_channel_types)
-  DESC("the position of the channel in the left-hand listing")
+  PP("the position of the channel in the left-hand listing")
   COND_WRITE(this->position != 0)
     FIELD(position, int, 0)
   COND_END
-  DESC("0-1024 character channel topic")
+  PP("0-1024 character channel topic")
     FIELD_PTR(topic, char, *)
-  DESC("whether the channel is nsfw")
+  PP("whether the channel is nsfw")
     FIELD(nsfw, bool, false)
-  DESC("amount of seconds a user has to wait before sending another message"
+  PP("amount of seconds a user has to wait before sending another message"
        "(0-21600); bots, as well as users with the permission"
        "`MANAGE_MESSAGES` or `MANAGE_CHANNEL`, are unaffected")
   COND_WRITE(this->rate_limit_per_user != 0)
     FIELD(rate_limit_per_user, int, 0)
   COND_END
-  DESC("the user limit of the voice channel; 0 refers to no limit, 1 to 99"
+  PP("the user limit of the voice channel; 0 refers to no limit, 1 to 99"
        "refers to a user limit")
   COND_WRITE(this->user_limit != 0)
     FIELD(user_limit, int, 0)
   COND_END
-  DESC("channel or category-specific permissions")
+  PP("channel or category-specific permissions")
   COND_WRITE(this->permission_overwrites != NULL)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   COND_END
-  DESC("ID of the new parent category for a channel")
+  PP("ID of the new parent category for a channel")
   COND_WRITE(this->parent_id != 0)
     FIELD_PRINTF(parent_id, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("channel voice region id, automatic when set to NULL")
+  PP("channel voice region id, automatic when set to NULL")
     FIELD_PTR(rtc_region, char, *)
-  DESC("the camera video quality mode of the voice channel")
+  PP("the camera video quality mode of the voice channel")
   COND_WRITE(this->video_quality_mode != 0)
     FIELD(video_quality_mode, int, 0)
   COND_END
-  DESC("the default duration that the clients use (not the API) for newly"
+  PP("the default duration that the clients use (not the API) for newly"
        "created threads in the channel, in minutes, to automatically archive"
        "the thread after recent activity")
   COND_WRITE(this->default_auto_archive_duration != 0)
     FIELD(default_auto_archive_duration, int, 0)
   COND_END
   /* THREAD */
-  DESC("whether the thread is archived")
+  PP("whether the thread is archived")
     FIELD(archived, bool, false)
-  DESC("duration in minutes to automatically arhived the thread after recent"
+  PP("duration in minutes to automatically arhived the thread after recent"
        "activity, can be set to: 60, 1440, 4320, 10080")
   COND_WRITE(this->auto_archive_duration != 0)
     FIELD(auto_archive_duration, int, 0)
   COND_END
-  DESC("whether the thread is locked; when a thread is locked, only users with"
+  PP("whether the thread is locked; when a thread is locked, only users with"
        "`MANAGE_THREADS` can unarchive it")
     FIELD(locked, bool, false)
-  DESC("whether non-moderators can add other non-moderators to a thread; only"
+  PP("whether non-moderators can add other non-moderators to a thread; only"
        "available on private threads")
     FIELD(invitable, bool, false)
 STRUCT_END
@@ -654,52 +654,52 @@ STRUCT_END
 /* FIXME: shouldn't generate JSON functions */
 /* TODO: to_query encoding */
 PUB_STRUCT(discord_get_channel_messages)
-  DESC("get messages around this message ID")
+  PP("get messages around this message ID")
   COND_WRITE(this->around != 0)
     FIELD_PRINTF(around, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("get messages before this message ID")
+  PP("get messages before this message ID")
   COND_WRITE(this->before != 0)
     FIELD_PRINTF(before, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("get messages after this message ID")
+  PP("get messages after this message ID")
   COND_WRITE(this->after != 0)
     FIELD_PRINTF(after, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("max number of messages to return (1-100)")
+  PP("max number of messages to return (1-100)")
   COND_WRITE(this->limit != 0)
     FIELD(limit, int, 50)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_create_message)
-  DESC("the message contents (up to 2000 characters)")
+  PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
-  DESC("true if this is a TTS message")
+  PP("true if this is a TTS message")
     FIELD(tts, bool, false)
-  DESC("embedded `rich` content (up to 6000 characters)")
+  PP("embedded `rich` content (up to 6000 characters)")
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
-  DESC("allowed mentions for the message")
+  PP("allowed mentions for the message")
   COND_WRITE(this->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
-  DESC("include to make your message a reply")
+  PP("include to make your message a reply")
   COND_WRITE(this->message_reference != NULL)
     FIELD_STRUCT_PTR(message_reference, discord_message_reference, *)
   COND_END
-  DESC("the components to include with the message")
+  PP("the components to include with the message")
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
-  DESC("IDs of up to 3 stickers in the server to send in the message")
+  PP("IDs of up to 3 stickers in the server to send in the message")
   COND_WRITE(this->sticker_ids != NULL)
     FIELD_STRUCT_PTR(sticker_ids, snowflakes, *)
   COND_END
-  DESC("attachment objects with filename and description")
+  PP("attachment objects with filename and description")
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  DESC("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
+  PP("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
        "set")
   COND_WRITE(this->flags != 0)
     FIELD_ENUM(flags, discord_message_flags)
@@ -709,87 +709,87 @@ STRUCT_END
 /* FIXME: shouldn't generate JSON functions */
 /* TODO: to_query encoding */
 PUB_STRUCT(discord_get_reactions)
-  DESC("get users after this user ID")
+  PP("get users after this user ID")
   COND_WRITE(this->after != 0)
     FIELD_PRINTF(after, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("max number of users to return (1-100)")
+  PP("max number of users to return (1-100)")
   COND_WRITE(this->limit != 0)
     FIELD(limit, int, 0)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_edit_message)
-  DESC("the message contents (up to 2000 characters)")
+  PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
-  DESC("embedded `rich` content (up to 6000 characters)")
+  PP("embedded `rich` content (up to 6000 characters)")
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
-  DESC("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
+  PP("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
        "set")
   COND_WRITE(this->flags != 0)
     FIELD_ENUM(flags, discord_message_flags)
   COND_END
-  DESC("allowed mentions for the message")
+  PP("allowed mentions for the message")
   COND_WRITE(this->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
-  DESC("the components to include with the message")
+  PP("the components to include with the message")
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
-  DESC("attachment objects with filename and description")
+  PP("attachment objects with filename and description")
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_bulk_delete_messages)
-  DESC("an array of message ids to delete (2-100)")
+  PP("an array of message ids to delete (2-100)")
     FIELD_STRUCT_PTR(messages, snowflakes, *)
 STRUCT_END
 
 PUB_STRUCT(discord_edit_channel_permissions)
-  DESC("the bitwise value of all allowed permissions (default \"0\")")
+  PP("the bitwise value of all allowed permissions (default \"0\")")
   COND_WRITE(this->allow != NULL)
     FIELD_PTR(allow, char, *)
   COND_END
-  DESC("the bitwise value of all disallowed permissions (default \"0\")")
+  PP("the bitwise value of all disallowed permissions (default \"0\")")
   COND_WRITE(this->deny != NULL)
     FIELD_PTR(deny, char, *)
   COND_END
-  DESC("0 for a role or 1 for a member")
+  PP("0 for a role or 1 for a member")
     FIELD(type, int, 0)
 STRUCT_END
 
 PUB_STRUCT(discord_create_channel_invite)
-  DESC("duration of invite in seconds before expiry, or 0 for never. between"
+  PP("duration of invite in seconds before expiry, or 0 for never. between"
        "0 and 604800 (7 days)")
   COND_WRITE(this->max_age != 0)
     FIELD(max_age, int, 86400)
   COND_END
-  DESC("max number of uses or 0 for unlimited. betwee 0 and 100")
+  PP("max number of uses or 0 for unlimited. betwee 0 and 100")
   COND_WRITE(this->max_uses != 0)
     FIELD(max_uses, int, 0)
   COND_END
-  DESC("whether this invite only grants temporary membership")
+  PP("whether this invite only grants temporary membership")
   COND_WRITE(this->temporary != 0)
     FIELD(temporary, bool, false)
   COND_END
-  DESC("if true, don't true to reuse a similar invite (useful for creating"
+  PP("if true, don't true to reuse a similar invite (useful for creating"
        "many unique one time use invites)")
   COND_WRITE(this->unique != 0)
     FIELD(unique, bool, false)
   COND_END
-  DESC("the type of target for this voice channel invite")
+  PP("the type of target for this voice channel invite")
   COND_WRITE(this->target_type != 0)
     FIELD_ENUM(target_type, discord_invite_target_types)
   COND_END
-  DESC("the id of the user whose stream to display for this invite, required"
+  PP("the id of the user whose stream to display for this invite, required"
        "if `target_type` is 1, the user must be streaming in the channel")
   COND_WRITE(this->target_user_id != 0)
     FIELD_PRINTF(target_user_id, u64snowflake, PRIu64, SCNu64)
   COND_END
-  DESC("the id of the embedded application to open for this invite, required"
+  PP("the id of the embedded application to open for this invite, required"
        "if `target_type` is 2, the application must have the `EMBEDDED` flag")
   COND_WRITE(this->target_application_id != 0)
     FIELD_PRINTF(target_application_id, u64snowflake, PRIu64, SCNu64)
@@ -797,28 +797,28 @@ PUB_STRUCT(discord_create_channel_invite)
 STRUCT_END
 
 PUB_STRUCT(discord_follow_news_channel)
-  DESC("id of target channel")
+  PP("id of target channel")
   COND_WRITE(this->webhook_channel_id != 0)
     FIELD_PRINTF(webhook_channel_id, u64snowflake, PRIu64, SCNu64)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_group_dm_add_recipient)
-  DESC("access token of a user that has granted your app the `gdm.join` scope")
+  PP("access token of a user that has granted your app the `gdm.join` scope")
     FIELD_PTR(access_token, char, *)
-  DESC("nickname of the user being added")
+  PP("nickname of the user being added")
     FIELD_PTR(nick, char, *)
 STRUCT_END
 
 PUB_STRUCT(discord_start_thread_with_message)
-  DESC("1-100 character channel name")
+  PP("1-100 character channel name")
     FIELD_PTR(name, char, *)
-  DESC("duration in minutes to automatically archive the thread after recent"
+  PP("duration in minutes to automatically archive the thread after recent"
        "activity, can be set to: 60, 1440, 4320, 10080")
   COND_WRITE(this->auto_archive_duration != 0)
     FIELD(auto_archive_duration, int, 0)
   COND_END
-  DESC("amount of seconds a user has to wait before sending another message"
+  PP("amount of seconds a user has to wait before sending another message"
        "(0-21600)")
   COND_WRITE(this->rate_limit_per_user >= 0
              && this->rate_limit_per_user <= 21600)
@@ -827,19 +827,19 @@ PUB_STRUCT(discord_start_thread_with_message)
 STRUCT_END
 
 PUB_STRUCT(discord_start_thread_without_message)
-  DESC("1-100 character channel name")
+  PP("1-100 character channel name")
     FIELD_PTR(name, char, *)
-  DESC("duration in minutes to automatically archive the thread after recent"
+  PP("duration in minutes to automatically archive the thread after recent"
        "activity, can be set to: 60, 1440, 4320, 10080")
   COND_WRITE(this->auto_archive_duration != 0)
     FIELD(auto_archive_duration, int, 0)
   COND_END
-  DESC("the type of thread to create")
+  PP("the type of thread to create")
     FIELD_ENUM(type, discord_channel_types)
-  DESC("whether non-moderators can add other non-moderators to a thread; only"
+  PP("whether non-moderators can add other non-moderators to a thread; only"
        "available when creating a private thread")
     FIELD(invitable, bool, false)
-  DESC("amount of seconds a user has to wait before sending another message"
+  PP("amount of seconds a user has to wait before sending another message"
        "(0-21600)")
   COND_WRITE(this->rate_limit_per_user >= 0
              && this->rate_limit_per_user <= 21600)
@@ -848,16 +848,16 @@ PUB_STRUCT(discord_start_thread_without_message)
 STRUCT_END
 
 PUB_STRUCT(discord_list_active_threads)
-  DESC("the active threads")
+  PP("the active threads")
   COND_WRITE(this->threads != NULL)
     FIELD_STRUCT_PTR(threads, discord_channels, *)
   COND_END
-  DESC("a thread member object for each returned thread the current user has"
+  PP("a thread member object for each returned thread the current user has"
        "joined")
   COND_WRITE(this->members != NULL)
     FIELD_STRUCT_PTR(members, discord_thread_members, *)
   COND_END
-  DESC("whether there are potentially additional threads that could be returned"
+  PP("whether there are potentially additional threads that could be returned"
        "on a subsequent call")
     FIELD(has_more, bool, false)
 STRUCT_END
