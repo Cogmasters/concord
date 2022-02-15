@@ -57,7 +57,6 @@
         (req).gnrc.from_json =                                                \
             (size_t(*)(const char *, size_t, void *))type##_from_json;        \
         (req).gnrc.cleanup = (void (*)(void *))type##_cleanup;                \
-        req.ret.is_ntl = true;                                                \
         if (ret) RET_SAFECOPY_TYPED(req.ret, *ret);                           \
     } while (0)
 

@@ -43,8 +43,6 @@ typedef void (*discord_on_generic)(struct discord *client,
 struct discord_ret_generic {
     /** `true` if may receive a datatype from response*/
     bool has_type;
-    /** @todo workaround until NTL is replaced */
-    bool is_ntl;
 
     /** optional callback to be executed on a successful request */
     union {
