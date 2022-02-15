@@ -1,3 +1,6 @@
+/* Modified by Lucas Müller (muller.lucas@hotmail.com), 15 Feb 2022 
+ * - CARRAY_RESIZE() has a fallback value (+1)
+ */
 /* Modified by Lucas Müller (muller.lucas@hotmail.com), 06 Feb 2022 
  * - __carray_init() accept initial length
  */
@@ -25,7 +28,7 @@
 
 #ifndef CARRAY_RESIZE
 #define CARRAY_RESIZE(current_size) \
-    current_size * 2
+    1 + current_size * 2
 #endif
 
 /* carray_init */
