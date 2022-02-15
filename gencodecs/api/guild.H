@@ -75,7 +75,7 @@ ENUM_END
 
 PUB_STRUCT(discord_guild)
   PP("guild id")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("guild name (2-100 characters, excluding trailing and leading"
        "whitespace")
     FIELD_PTR(name, char, *)
@@ -92,20 +92,20 @@ PUB_STRUCT(discord_guild)
   PP("true if the user is the owner of the guild")
     FIELD(owner, bool, false)
   PP("id of owner")
-    FIELD_PRINTF(owner_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(owner_id)
   PP("total permissions for the user in the guild (exclues overwrites)")
   COND_WRITE(this->permissions != NULL)
     FIELD_PTR(permissions, char, *)
   COND_END
   PP("id of afk channel")
-    FIELD_PRINTF(afk_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(afk_channel_id)
   PP("afk timeout in seconds")
     FIELD(afk_timeout, int, 0)
   PP("true if the server widget is enabled")
     FIELD(widget_enabled, bool, false)
   PP("the channel id the widget will generate an invite to, or NULL if set"
        "to no invite")
-    FIELD_PRINTF(widget_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(widget_channel_id)
   PP("verification level required for the guild")
     FIELD_ENUM(verification_level, discord_verification_level)
   PP("default message notifications level")
@@ -117,24 +117,24 @@ PUB_STRUCT(discord_guild)
   PP("custom guild emojis")
     FIELD_STRUCT_PTR(emojis, discord_emojis, *)
   PP("enabled guild features")
-    FIELD_STRUCT_PTR(features, json_strings, *)
+    FIELD_STRUCT_PTR(features, strings, *)
   PP("required MFA level for the guild")
     FIELD_ENUM(mfa_level, discord_mfa_level)
   PP("application id of the guild creator if it is bot-created")
-    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(application_id)
   PP("the id of the channel where guild notices such as welcome messages and"
        "boost events are posted")
-    FIELD_PRINTF(system_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(system_channel_id)
   PP("system channel flags")
     FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
   PP("the id of the channel where Community guilds can display rules and/or"
        "guidelines")
-    FIELD_PRINTF(rules_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(rules_channel_id)
   /* TODO: implement iso8601 conv */
 #if 0
   PP("when this guild was joined at")
   COND_WRITE(this->joined_at != NULL)
-    FIELD_PRINTF(joined_at, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(joined_at)
   COND_END
 #endif
   PP("true if this is considered a large guild")
@@ -189,7 +189,7 @@ PUB_STRUCT(discord_guild)
     FIELD_PTR(preferred_locale, char, *)
   PP("the id of the channel where admins and moderators of Community guilds"
        "receive notices from Discord")
-    FIELD_PRINTF(public_updates_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(public_updates_channel_id)
   PP("the maximum amount of users in a video channel")
   COND_WRITE(this->max_video_channel_users != 0)
     FIELD(max_video_channel_users, int, 0)
@@ -231,7 +231,7 @@ LIST_END
 
 PUB_STRUCT(discord_guild_preview)
   PP("guild id")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("guild name (2-100 characters)")
     FIELD_PTR(name, char, *)
   PP("icon hash")
@@ -243,7 +243,7 @@ PUB_STRUCT(discord_guild_preview)
   PP("custom guild emojis")
     FIELD_STRUCT_PTR(emojis, discord_emojis, *)
   PP("enabled guild features")
-    FIELD_STRUCT_PTR(features, json_strings, *)
+    FIELD_STRUCT_PTR(features, strings, *)
   PP("approximate number of members in this guild")
     FIELD(approximate_member_count, int, 0)
   PP("approximate number of online members in this guild")
@@ -258,12 +258,12 @@ STRUCT(discord_guild_widget_setting)
   PP("whether the widget is enabled")
     FIELD(enabled, bool, false)
   PP("the widget channel ID")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
 
 STRUCT(discord_get_guild_widget)
   PP("guild id")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("guild name (2-100 characters)")
     FIELD_PTR(name, char, *)
   PP("instant invite for the guilds specified widget invite channel")
@@ -294,10 +294,10 @@ PUB_STRUCT(discord_guild_member)
   /* TODO: implement iso8601 conv */
 #if 0
   PP("when the user joined the guild")
-    FIELD_PRINTF(joined_at, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(joined_at)
   PP("when the user started boosting the guild")
   COND_WRITE(this->premium_since != 0)
-    FIELD_PRINTF(premium_since, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(premium_since)
   COND_END
 #endif
   PP("whether the user is deafened in voice channels")
@@ -317,7 +317,7 @@ PUB_STRUCT(discord_guild_member)
   PP("when the user's timeout will expire and the user will be able to"
        "communicate in the guild again, null or a time in the past if the"
        "user is not timed out")
-    FIELD_PRINTF(communication_disabled_until, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(communication_disabled_until)
 #endif
 STRUCT_END
 
@@ -327,7 +327,7 @@ LIST_END
 
 STRUCT(discord_integration)
   PP("integration id")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("integration name")
     FIELD_PTR(name, char, *)
   PP("integration type (twitch, youtube, or discord)")
@@ -337,7 +337,7 @@ STRUCT(discord_integration)
   PP("is this integration syncing")
     FIELD(syncing, bool, false)
   PP("ID that this integration uses for \"subscribers\"")
-    FIELD_PRINTF(role_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(role_id)
   PP("whether emoticons should be synced for this integration (twitch only"
        "currently)")
     FIELD(enable_emoticons, bool, false)
@@ -352,7 +352,7 @@ STRUCT(discord_integration)
   /* TODO: implement iso8601 conv */
 #if 0
   PP("when this integration was last synced")
-    FIELD_PRINTF(synced_at, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(synced_at)
 #endif
   PP("how many subscribers this integration has")
     FIELD(subscriber_count, int, 0)
@@ -375,7 +375,7 @@ STRUCT_END
 
 STRUCT(discord_integration_application)
   PP("the id of the app")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("the name of the app")
     FIELD_PTR(name, char, *)
   PP("the icon hash of the app")
@@ -412,11 +412,11 @@ STRUCT_END
 
 STRUCT(discord_welcome_screen_channel)
   PP("the channel's id")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
   PP("the description shown for the channel")
     FIELD_PTR(description, char, *)
   PP("the emoji id, if the emoji is custom")
-    FIELD_PRINTF(emoji_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(emoji_id)
   PP("the emoji name if custom, the unicode character if standard, or NULL if"
        "no emoji is set")
     FIELD_PTR(emoji_name, char, *)
@@ -458,13 +458,13 @@ PUB_STRUCT(discord_create_guild)
   COND_END
   PP("ID for afk channel")
   COND_WRITE(this->afk_channel_id != 0)
-    FIELD_PRINTF(afk_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(afk_channel_id)
   COND_END
   PP("afk timeout in seconds")
     FIELD(afk_timeout, int, 0)
   PP("the ID of the channel when guild notices such as welcome messages and"
        "boost events are posted")
-    FIELD_PRINTF(system_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(system_channel_id)
   PP("system channel flags")
     FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
 STRUCT_END
@@ -479,14 +479,14 @@ PUB_STRUCT(discord_modify_guild)
   PP("explicit content filter level")
     FIELD_ENUM(explicit_content_filter, discord_explicit_content_filter_level)
   PP("ID for afk channel")
-    FIELD_PRINTF(afk_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(afk_channel_id)
   PP("afk timeout in seconds")
     FIELD(afk_timeout, int, 0)
   PP("base64 1024x1024 png/jpeg/gif image for the guild icon (can be"
        "animated gif when the server has the `ANIMATED_ICON` feature)")
     FIELD_PTR(icon, char, *)
   PP("user ID to transfer guild ownership to (must be owner)")
-    FIELD_PRINTF(owner_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(owner_id)
   PP("base64 1024x1024 png/jpeg/gif image for the guild splash (can be"
        "animated gif when the server has the `INVITE_SPLASH` feature)")
     FIELD_PTR(splash, char, *)
@@ -498,20 +498,20 @@ PUB_STRUCT(discord_modify_guild)
     FIELD_PTR(banner, char, *)
   PP("the ID of the channel when guild notices such as welcome messages and"
        "boost events are posted")
-    FIELD_PRINTF(system_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(system_channel_id)
   PP("system channel flags")
     FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
   PP("the ID of the channel where Community guilds display rules and/or"
        "guidelines")
-    FIELD_PRINTF(rules_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(rules_channel_id)
   PP("the ID of the channel where admins and moderators of Community guild"
        "receive notices from Discord")
-    FIELD_PRINTF(public_updates_channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(public_updates_channel_id)
   PP("the preferred locale of a Community guild used in a server discovery"
        "and notices from Discord; defaults to \"en-US\"")
     FIELD_PTR(preferred_locale, char, *)
   PP("enabled guild features")
-    FIELD_STRUCT_PTR(features, json_strings, *)
+    FIELD_STRUCT_PTR(features, strings, *)
   PP("the description for the guild, if the guild is discoverable")
     FIELD_PTR(description, char, *)
   PP("whether the guild's boost progress bar should be enabled")
@@ -543,7 +543,7 @@ PUB_STRUCT(discord_create_guild_channel)
     FIELD_STRUCT_PTR(permission_overwrites, discord_overwrites, *)
   PP("ID of the parent category for a channel")
   COND_WRITE(this->parent_id != 0)
-    FIELD_PRINTF(parent_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(parent_id)
   COND_END
   PP("whether the channel is nsfw")
     FIELD(nsfw, bool, false)
@@ -551,7 +551,7 @@ STRUCT_END
 
 STRUCT(discord_modify_guild_channel_position)
   PP("channel ID")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("sorting position of the channel")
   COND_WRITE(this->position != 0)
     FIELD(position, int, 0)
@@ -561,7 +561,7 @@ STRUCT(discord_modify_guild_channel_position)
     FIELD(lock_category, bool, false)
   PP("the new parent ID for the channel that is moved")
   COND_WRITE(this->parent_id != 0)
-    FIELD_PRINTF(parent_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(parent_id)
   COND_END
 STRUCT_END
 
@@ -582,7 +582,7 @@ STRUCT(discord_list_guild_members)
   PP("max number of members to return (1-1000)")
     FIELD(limit, int, 0)
   PP("the highest user ID in the previous page")
-    FIELD_PRINTF(after, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(after)
 STRUCT_END
 
 /* TODO: disable json encoding functions */
@@ -619,17 +619,17 @@ PUB_STRUCT(discord_modify_guild_member)
        "@ref CCORD_HTTP_ERROR (400) if the user is not in a voice channel")
     FIELD(deaf, bool, false)
   PP("ID of channel to move user to (if they are connect to voice)")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
   /* TODO: implement iso8601 conversion */
   /* TODO: should be able to write `null` */
 #if 0
-  PP("when the uesr's timeout will expire and the user will be able to"
+  PP("when the user's timeout will expire and the user will be able to"
        "communicate in the guild again (up to 28 days in the future), set"
        "to NULL to remove timeout. WIll throw a @ref CCORD_HTTP_ERROR (403)"
        "error if the user has the `ADMINISTRATOR` permission or is the owner"
        "of the guild")
   COND_WRITE(this->communication_disabled_until != 0)
-    FIELD_PRINTF(communication_disabled_until, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(communication_disabled_until)
   COND_END
 #endif
 STRUCT_END
@@ -663,7 +663,7 @@ PUB_STRUCT(discord_create_guild_role)
   PP("name of the role")
     FIELD_PTR(name, char, *)
   PP("`@everyone` permissions in guild")
-    FIELD_PRINTF(permissions, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(permissions)
   PP("RGB color value")
     FIELD(color, int, 0)
   PP("whether the role should be displayed separately in the sidebar")
@@ -679,7 +679,7 @@ STRUCT_END
 
 STRUCT(discord_modify_guild_role_position)
   PP("role")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("sorting position of the role")
   COND_WRITE(this->position != 0)
     FIELD(position, int, 0)
@@ -694,7 +694,7 @@ PUB_STRUCT(discord_modify_guild_role)
   PP("name of the role")
     FIELD_PTR(name, char, *)
   PP("bitwise value of the enabled/disabled permissions")
-    FIELD_PRINTF(permissions, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(permissions)
   PP("RGB color value")
     FIELD(color, int, 0)
   PP("whether the role should be displayed separately in the sidebar")
@@ -755,7 +755,7 @@ STRUCT_END
 
 PUB_STRUCT(discord_modify_current_user_voice_state)
   PP("the ID of the channel the user is currently in")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
   PP("toggles the user's suppress state")
     FIELD(suppress, bool, false)
   /* TODO: implement iso8601 conversion */
@@ -763,14 +763,14 @@ PUB_STRUCT(discord_modify_current_user_voice_state)
 #if 0
   PP("set the user's request to speak")
   COND_WRITE(this->request_to_speak_timestamp != 0)
-    FIELD_PRINTF(request_to_speak_timestamp, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(request_to_speak_timestamp)
   COND_END
 #endif
 STRUCT_END
 
 PUB_STRUCT(discord_modify_user_voice_state)
   PP("the ID of the channel the user is currently in")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
   PP("toggles the user's suppress state")
     FIELD(suppress, bool, false)
 STRUCT_END

@@ -1,9 +1,6 @@
 #define JSON_DECODER_int(f, buf, _var, _type)                                 \
     if (f && f->val->type == JSMN_PRIMITIVE)                                  \
         _var = (int)strtol(buf + f->val->start, NULL, 10)
-#define JSON_DECODER_ullong(f, buf, _var, _type)                              \
-    if (f && f->val->type == JSMN_PRIMITIVE)                                  \
-        _var = strtoull(buf + f->val->start, NULL, 10)
 #define JSON_DECODER_bool(f, buf, _var, _type)                                \
     if (f && f->val->type == JSMN_PRIMITIVE) _var = ('t' == buf[f->val->start])
 #define JSON_DECODER_PTR_char(f, buf, _var, _type)                            \

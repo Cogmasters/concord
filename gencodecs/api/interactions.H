@@ -31,17 +31,17 @@ ENUM_END
 
 PUB_STRUCT(discord_interaction)
   PP("ID of the interaction")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("ID of the application this interaction is for")
-    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(application_id)
   PP("the type of the interaction")
     FIELD_ENUM(type, discord_interaction_types)
   PP("the command data payload")
     FIELD_STRUCT_PTR(data, discord_interaction_data, *)
   PP("the guild it was sent from")
-    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(guild_id)
   PP("the channel it was sent from")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
   PP("guild member data for the invoking user, including permissions")
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   PP("user object for the invoking user, if invoked in a DM")
@@ -60,7 +60,7 @@ STRUCT_END
 
 STRUCT(discord_interaction_data)
   PP("the ID of the invoked command")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("the name of the invoked command")
     FIELD_PTR(name, char, *)
   PP("the type of the invoked command")
@@ -73,12 +73,10 @@ STRUCT(discord_interaction_data)
     FIELD_PTR(custom_id, char, *)
   PP("the type of the component")
     FIELD_ENUM(component_type, discord_component_types)
-#if 0
   PP("the values the user selected")
     FIELD_STRUCT_PTR(values, json_values, *)
-#endif
   PP("the ID of the user or messaged targetted by a user or message command")
-    FIELD_PRINTF(target_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(target_id)
   PP("the values submitted by the user")
     FIELD_STRUCT_PTR(components, discord_components, *)
 STRUCT_END
@@ -100,7 +98,7 @@ STRUCT_END
 
 STRUCT(discord_message_interaction)
   PP("ID of the interaction")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("the type of interaction")
     FIELD_ENUM(type, discord_interaction_types)
   PP("the name of the application command")
@@ -166,7 +164,7 @@ PUB_STRUCT(discord_edit_original_interaction_response)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("id of the thread the message is in")
-    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(thread_id)
   /* JSON FIELDS */
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
@@ -198,7 +196,7 @@ PUB_STRUCT(discord_create_followup_message)
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("send a message to the specified thread within a webhook's channel; the"
        "thread will automatically be unarchived")
-    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(thread_id)
   /* JSON FIELDS */
   PP("override the default avatar of the webhook")
     FIELD_PTR(avatar_url, char, *)
@@ -223,7 +221,7 @@ PUB_STRUCT(discord_create_followup_message)
   PP("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
        "set)")
   COND_WRITE(this->flags != 0)
-    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(flags)
   COND_END
 STRUCT_END
 
@@ -231,7 +229,7 @@ PUB_STRUCT(discord_edit_followup_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
   PP("id of the thread the message is in")
-    FIELD_PRINTF(thread_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(thread_id)
   /* JSON FIELDS */
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)

@@ -46,7 +46,7 @@
         _type *array;
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         struct _type *array;
-#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                         \
+#define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
         _type * _decor array;
 #define GENCODECS_LIST_END                                                    \
         int realsize;                                                         \

@@ -95,7 +95,7 @@ PP_DEFINE(DISCORD_PERM_MODERATE_MEMBERS 1 << 40)
 
 PUB_STRUCT(discord_role)
   PP("role id")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("role name")
     FIELD_PTR(name, char, *)
   PP("integer representationof hexadecimal color code")
@@ -131,11 +131,11 @@ LIST_END
 STRUCT(discord_role_tag)
   PP("the id of the bot this role belongs to")
   COND_WRITE(this->bot_id != 0)
-    FIELD_PRINTF(bot_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(bot_id)
   COND_END
   PP("the id of the integration this role belongs to")
   COND_WRITE(this->integration_id != 0)
-    FIELD_PRINTF(integration_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(integration_id)
   COND_END
   PP("whether this is the guild's premium subscribe role")
     FIELD(premium_subscribe, bool, false)

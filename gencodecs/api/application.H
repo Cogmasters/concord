@@ -13,7 +13,7 @@ PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED 1 << 19)
 
 PUB_STRUCT(discord_application)
   PP("the ID of the app")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("the name of the app")
     FIELD_PTR(name, char, *)
   PP("the icon hash of the app")
@@ -22,7 +22,7 @@ PUB_STRUCT(discord_application)
     FIELD_PTR(description, char, *)
   PP("an array of rpc origin urls, if rpc is enabled")
   COND_WRITE(this->rpc_origins != NULL)
-    FIELD_STRUCT_PTR(rpc_origins, json_strings, *)
+    FIELD_STRUCT_PTR(rpc_origins, strings, *)
   COND_END
   PP("when false only app owner can join the app's bot to guilds")
     FIELD(bot_public, bool, false)
@@ -50,15 +50,15 @@ PUB_STRUCT(discord_application)
   COND_END
   PP("if this application is a game sold on Discord, this field will be the"
        "guild to which it has been linked")
-    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(guild_id)
   PP("if this application is a game sold on Discord, this field will be the"
        "ID of the \"Game SKU\" that is created, if exists")
-    FIELD_PRINTF(primary_sku_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(primary_sku_id)
   PP("if this application is a game sold on Discord, this field will be the"
        "URL slug that links to the store page")
     FIELD_PTR(slug, char, *)
   PP("the application's default rich presence invite cover image hash")
     FIELD_PTR(cover_image, char, *)
   PP("the application's public flags")
-    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(flags)
 STRUCT_END

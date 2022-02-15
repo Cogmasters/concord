@@ -167,9 +167,9 @@ STRUCT_END
 
 PUB_STRUCT(discord_voice_state_status)
   PP("ID of the guild")
-    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(guild_id)
   PP("ID of the voice channel client wants to join (null if disconnecting)")
-    FIELD_PRINTF(channel_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(channel_id)
   PP("is the client muted")
     FIELD(self_mute, bool, false)
   PP("is the client deafened")
@@ -181,7 +181,7 @@ PUB_STRUCT(discord_presence_update)
 #if 0
   PP("unix time (in milliseconds) of when the client went idle, or null if"
        "the client is not idle")
-    FIELD_PRINTF(since, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(since)
 #endif
   PP("the user's activities")
     FIELD_STRUCT_PTR(activities, discord_activities, *)
@@ -206,12 +206,12 @@ STRUCT(discord_activity)
 #if 0
   PP("unix timestamp (in milliseconds)of when the activity was added to the"
        "user's session")
-    FIELD_PRINTF(created_at, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(created_at)
 #endif
   PP("unix timestamps for start and/or end of the game")
     FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
   PP("application ID for the game")
-    FIELD_PRINTF(application_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(application_id)
   PP("what the player is currently doing")
     FIELD_PTR(details, char, *)
   PP("the user's current party status")
@@ -227,7 +227,7 @@ STRUCT(discord_activity)
   PP("whether or not the activity is an instanced game session")
     FIELD(instance, bool, false)
   PP("activity flags bitwise mask, describes what they payload includes")
-    FIELD_PRINTF(flags, uint64_t, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(flags)
   PP("the custom buttons shown in the Rich Presence (max 2)")
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
 STRUCT_END
@@ -240,9 +240,9 @@ STRUCT(discord_activity_timestamps)
   /* TODO: iso8601 conversion */
 #if 0
   PP("unix timestamp (in milliseconds)of when the activity started")
-    FIELD_PRINTF(start, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(start)
   PP("unix timestamp (in milliseconds)of when the activity ends")
-    FIELD_PRINTF(end, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(end)
 #endif
 STRUCT_END
 
@@ -251,7 +251,7 @@ STRUCT(discord_activity_emoji)
     FIELD_PTR(name, char, *)
   PP("the ID of the emoji")
   COND_WRITE(this->id != 0)
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   COND_END
   PP("whether this emoji is animated")
     FIELD(animated, bool, false)

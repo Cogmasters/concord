@@ -37,6 +37,8 @@ PUB_STRUCT(discord_component)
   COND_WRITE(this->type != 0)
     FIELD_ENUM(type, discord_component_types)
   COND_END
+  PP("a developer-defined identifier for the component, max 100 characters")
+    FIELD_PTR(custom_id, char, *)
   PP("whether the component is disabled, default `false`")
     FIELD(disabled, bool, false)
   PP("one of button or text styles")

@@ -18,10 +18,10 @@ ENUM_END
 
 PUB_STRUCT(discord_sticker)
   PP("ID of the sticker")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("for standard stickers, ID of the pack the sticker is from")
   COND_WRITE(this->pack_id != 0)
-    FIELD_PRINTF(pack_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(pack_id)
   COND_END
   PP("name of the sticker")
     FIELD_PTR(name, char, *)
@@ -42,7 +42,7 @@ PUB_STRUCT(discord_sticker)
     FIELD(available, bool, false)
   PP("ID of the guild that owns this sticker")
   COND_WRITE(this->guild_id != 0)
-    FIELD_PRINTF(guild_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(guild_id)
   COND_END
   PP("the user that uploaded the guild sticker")
   COND_WRITE(this->user != NULL)
@@ -58,7 +58,7 @@ LIST_END
 
 STRUCT(discord_sticker_item)
   PP("ID of the sticker")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("name of the sticker")
     FIELD_PTR(name, char, *)
   PP("type of sticker format")
@@ -73,7 +73,7 @@ LIST_END
 
 STRUCT(discord_sticker_pack)
   PP("ID of the sticker")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("the stickers in the pack")
   COND_WRITE(this->stickers != NULL)
     FIELD_STRUCT_PTR(stickers, discord_stickers, *)
@@ -81,16 +81,16 @@ STRUCT(discord_sticker_pack)
   PP("name of the sticker pack")
     FIELD_PTR(name, char, *)
   PP("ID of the pack's SKU")
-    FIELD_PRINTF(sku_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(sku_id)
   PP("ID of a sticker in the pack which is shown as the pack's icon")
   COND_WRITE(this->cover_sticker_id != 0)
-    FIELD_PRINTF(cover_sticker_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(cover_sticker_id)
   COND_END
   PP("description of the sticker pack")
     FIELD_PTR(description, char, *)
   PP("ID of the sticker pack's banner image")
   COND_WRITE(this->banner_asset_id != 0)
-    FIELD_PRINTF(banner_asset_id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(banner_asset_id)
   COND_END
 STRUCT_END
 

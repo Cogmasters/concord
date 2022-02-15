@@ -4,7 +4,7 @@
 
 PUB_STRUCT(discord_emoji)
   PP("emoji ID")
-    FIELD_PRINTF(id, u64snowflake, "\"%" PRIu64 "\"", "%" SCNu64)
+    FIELD_SNOWFLAKE(id)
   PP("emoji name")
     FIELD_PTR(name, char, *)
   PP("roles allowed to use this emoji")
