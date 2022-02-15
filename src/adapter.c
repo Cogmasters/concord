@@ -425,6 +425,8 @@ _discord_attachments_dup(struct discord_attachments *dest,
 {
     int i;
 
+    if (!dest || !src) return;
+
     for (i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
         if (src->array[i].content) {
@@ -780,34 +782,23 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             }
         }
         else if (cxt->req.ret.done.typed) {
-            if (cxt->req.ret.is_ntl) {
-                ntl_t ret = NULL;
+            void *ret = calloc(1, cxt->req.gnrc.size);
 
-                /* populate ret */
-                if (cxt->req.gnrc.from_json)
-                    cxt->req.gnrc.from_json(body.start, body.size, &ret);
+            /* initialize ret */
+            if (cxt->req.gnrc.init) cxt->req.gnrc.init(ret);
 
+            /* populate ret */
+            if (cxt->req.gnrc.from_json)
+                cxt->req.gnrc.from_json(body.start, body.size, ret);
+
+            if (cxt->req.ret.has_type)
                 cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
+            else
+                cxt->req.ret.done.typeless(client, cxt->req.ret.data);
 
-                /* cleanup ret */
-                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
-            }
-            else {
-                void *ret = malloc(cxt->req.gnrc.size);
-
-                /* populate ret */
-                if (cxt->req.gnrc.from_json)
-                    cxt->req.gnrc.from_json(body.start, body.size, ret);
-
-                if (cxt->req.ret.has_type)
-                    cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
-                else
-                    cxt->req.ret.done.typeless(client, cxt->req.ret.data);
-
-                /* cleanup ret */
-                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
-                free(ret);
-            }
+            /* cleanup ret */
+            if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
+            free(ret);
         }
 
         code = info.code;
