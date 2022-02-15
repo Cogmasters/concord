@@ -14,23 +14,23 @@ print_usage(void)
            "\nTYPE ANY KEY TO START BOT\n");
 }
 
-u64_snowflake_t
+u64snowflake
 select_guild(struct discord *client)
 {
-    struct discord_guild **guilds = NULL;
+    struct discord_guilds guilds = { 0 };
     struct discord_ret_guilds ret = { .sync = &guilds };
     CCORDcode code;
 
     code = discord_get_current_user_guilds(client, &ret);
-    assert(CCORD_OK == code && guilds != NULL && "Couldn't fetch guilds");
+    assert(CCORD_OK == code && guilds.size != 0 && "Couldn't fetch guilds");
 
     printf(
         "\n\nSelect the guild that the user you wish to fetch messages from "
         "is part of");
 
     int i = 0;
-    while (guilds[i]) {
-        printf("\n%d. %s", i + 1, guilds[i]->name);
+    while (i < guilds.size) {
+        printf("\n%d. %s", i + 1, guilds.array[i].name);
         ++i;
     }
 
@@ -42,9 +42,9 @@ select_guild(struct discord *client)
 
         int num = strtol(strnum, NULL, 10);
         if (num > 0 && num <= i) {
-            u64_snowflake_t guild_id = guilds[num - 1]->id;
+            u64snowflake guild_id = guilds.array[num - 1].id;
 
-            discord_guild_list_free(guilds);
+            discord_guilds_cleanup(&guilds);
 
             return guild_id;
         }
@@ -53,17 +53,17 @@ select_guild(struct discord *client)
     }
 }
 
-u64_snowflake_t
-select_member(struct discord *client, u64_snowflake_t guild_id)
+u64snowflake
+select_member(struct discord *client, u64snowflake guild_id)
 {
     // get guilds bot is a part of
-    struct discord_guild_member **members = NULL;
+    struct discord_guild_members members = { 0 };
     struct discord_ret_guild_members ret = { .sync = &members };
     struct discord_list_guild_members params = { .limit = 1000, .after = 0 };
     CCORDcode code;
 
     code = discord_list_guild_members(client, guild_id, &params, &ret);
-    assert(CCORD_OK == code && members != NULL
+    assert(CCORD_OK == code && members.size != 0
            && "Guild is empty or bot needs to activate its privileged "
               "intents.\n\t"
               "See this guide to activate it: "
@@ -72,12 +72,12 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
 
     printf("\n\nSelect the member that will have its messages fetched");
     int i = 0;
-    while (members[i]) {
-        printf("\n%d. %s", i + 1, members[i]->user->username);
+    while (i < members.size) {
+        printf("\n%d. %s", i + 1, members.array[i].user->username);
 
-        if (members[i]->nick && *members[i]->nick)
+        if (members.array[i].nick && *members.array[i].nick)
         { // prints nick if available
-            printf(" (%s)", members[i]->nick);
+            printf(" (%s)", members.array[i].nick);
         }
         ++i;
     }
@@ -90,9 +90,9 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
 
         int num = strtol(strnum, NULL, 10);
         if (num > 0 && num <= i) {
-            u64_snowflake_t user_id = members[num - 1]->user->id;
+            u64snowflake user_id = members.array[num - 1].user->id;
 
-            discord_guild_member_list_free(members);
+            discord_guild_members_cleanup(&members);
 
             return user_id;
         }
@@ -103,10 +103,10 @@ select_member(struct discord *client, u64_snowflake_t guild_id)
 
 void
 fetch_member_msgs(struct discord *client,
-                  u64_snowflake_t guild_id,
-                  u64_snowflake_t user_id)
+                  u64snowflake guild_id,
+                  u64snowflake user_id)
 {
-    struct discord_channel **channels = NULL;
+    struct discord_channels channels = { 0 };
     CCORDcode code;
 
     struct discord_ret_channels ret = { .sync = &channels };
@@ -114,31 +114,32 @@ fetch_member_msgs(struct discord *client,
     assert(CCORD_OK == code && "Couldn't fetch channels from guild");
 
     struct discord_get_channel_messages params = { .limit = 100 };
-    for (int i = 0; channels[i]; ++i) {
+    for (int i = 0; i < channels.size; ++i) {
         params.before = 0;
 
         int n_msg = 0;
-        struct discord_message **msgs = NULL;
-        struct discord_ret_messages ret = { .sync = &msgs };
         while (n_msg != params.limit) {
-            discord_get_channel_messages(client, channels[i]->id, &params,
-                                         &ret);
-            if (!msgs) break;
+            struct discord_messages msgs = { 0 };
+            struct discord_ret_messages ret = { .sync = &msgs };
 
-            for (n_msg = 0; msgs[n_msg]; ++n_msg) {
-                if (user_id == msgs[n_msg]->author->id
-                    && *msgs[n_msg]->content) {
-                    printf("%s\n", msgs[n_msg]->content);
+            discord_get_channel_messages(client, channels.array[i].id, &params,
+                                         &ret);
+            if (!msgs.size) break;
+
+            for (n_msg = 0; n_msg < msgs.size; ++n_msg) {
+                if (user_id == msgs.array[n_msg].author->id
+                    && *msgs.array[n_msg].content) {
+                    printf("%s\n", msgs.array[n_msg].content);
                 }
             }
 
-            if (n_msg) params.before = msgs[n_msg - 1]->id;
+            if (n_msg) params.before = msgs.array[n_msg - 1].id;
 
-            discord_message_list_free(msgs);
+            discord_messages_cleanup(&msgs);
         }
     }
 
-    discord_channel_list_free(channels);
+    discord_channels_cleanup(&channels);
 }
 
 int
@@ -157,8 +158,8 @@ main(int argc, char *argv[])
     print_usage();
     fgetc(stdin); // wait for input
 
-    u64_snowflake_t guild_id = select_guild(client);
-    u64_snowflake_t user_id = select_member(client, guild_id);
+    u64snowflake guild_id = select_guild(client);
+    u64snowflake user_id = select_member(client, guild_id);
 
     fetch_member_msgs(client, guild_id, user_id);
 

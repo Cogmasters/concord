@@ -105,18 +105,17 @@ on_channel_delete_this(struct discord *client,
 void
 done_get_channel_invites(struct discord *client,
                          void *data,
-                         const struct discord_invite **invites)
+                         const struct discord_invites *invites)
 {
-    if (!invites) {
+    if (!invites->size) {
         log_info("No invites found!");
         return;
     }
 
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
 
     char text[DISCORD_MAX_MESSAGE_LEN];
-    snprintf(text, sizeof(text), "%zu invite links created.",
-             ntl_length((ntl_t)invites));
+    snprintf(text, sizeof(text), "%d invite links created.", invites->size);
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, *channel_id, &params, NULL);
@@ -136,7 +135,7 @@ on_channel_get_invites(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_invites ret = {
@@ -153,7 +152,7 @@ done_create_channel_invite(struct discord *client,
                            void *data,
                            const struct discord_invite *invite)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[256];
 
     snprintf(text, sizeof(text), "https://discord.gg/%s", invite->code);
@@ -165,7 +164,7 @@ done_create_channel_invite(struct discord *client,
 void
 fail_create_channel_invite(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
 
     struct discord_create_message params = {
         .content = "Couldn't create invite",
@@ -179,7 +178,7 @@ on_channel_create_invite(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_invite ret = {
@@ -196,7 +195,7 @@ done_start_thread(struct discord *client,
                   void *data,
                   const struct discord_channel *thread)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[1024];
 
     snprintf(text, sizeof(text), "Created thread <#%" PRIu64 ">", *channel_id);
@@ -208,7 +207,7 @@ done_start_thread(struct discord *client,
 void
 fail_start_thread(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[1024];
 
     snprintf(text, sizeof(text), "Couldn't create thread: %s",
@@ -224,7 +223,7 @@ on_channel_start_thread(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_channel ret = {

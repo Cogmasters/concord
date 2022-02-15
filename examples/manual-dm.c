@@ -46,8 +46,8 @@ read_input(void *p_client)
 
     char buf[32 + DISCORD_MAX_MESSAGE_LEN];
     char msg[DISCORD_MAX_MESSAGE_LEN];
-    u64_snowflake_t recipient_id;
-    u64_snowflake_t dm_channel_id;
+    u64snowflake recipient_id;
+    u64snowflake dm_channel_id;
 
     pthread_detach(pthread_self());
 

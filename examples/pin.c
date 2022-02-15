@@ -33,7 +33,7 @@ on_pin(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t msg_id = 0;
+    u64snowflake msg_id = 0;
 
     sscanf(msg->content, "%" SCNu64, &msg_id);
 
@@ -51,7 +51,7 @@ on_unpin(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t msg_id = 0;
+    u64snowflake msg_id = 0;
 
     sscanf(msg->content, "%" SCNu64, &msg_id);
 
@@ -65,12 +65,12 @@ on_unpin(struct discord *client, const struct discord_message *msg)
 }
 
 struct context {
-    u64_snowflake_t channel_id;
-    u64_snowflake_t guild_id;
+    u64snowflake channel_id;
+    u64snowflake guild_id;
 };
 
 void
-done_get_pins(struct discord *client, void *data, const struct discord_message **msgs)
+done_get_pins(struct discord *client, void *data, const struct discord_messages *msgs)
 {
     struct context *cxt = data;
     char text[2000];
@@ -78,11 +78,11 @@ done_get_pins(struct discord *client, void *data, const struct discord_message *
     char *cur = text;
     char *end = &text[sizeof(text) - 1];
 
-    for (size_t i = 0; msgs[i]; ++i) {
+    for (int i = 0; i < msgs->size; ++i) {
         cur += snprintf(cur, end - cur,
                         "https://discord.com/channels/%" PRIu64 "/%" PRIu64
                         "/%" PRIu64 "\n",
-                        cxt->guild_id, cxt->channel_id, msgs[i]->id);
+                        cxt->guild_id, cxt->channel_id, msgs->array[i].id);
 
         if (cur >= end) break;
     }

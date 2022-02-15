@@ -7,8 +7,8 @@
 #include "discord.h"
 
 struct context {
-    u64_snowflake_t channel_id;
-    u64_snowflake_t guild_id;
+    u64snowflake channel_id;
+    u64snowflake guild_id;
 };
 
 void
@@ -46,16 +46,15 @@ on_ready(struct discord *client)
 void
 done_list_voice_regions(struct discord *client,
                         void *data,
-                        const struct discord_voice_region **regions)
+                        const struct discord_voice_regions *regions)
 {
     struct context *cxt = data;
 
-    if (regions)
-        for (size_t i = 0; regions[i]; ++i) {
-            struct discord_create_message params = { .content =
-                                                         regions[i]->name };
-            discord_create_message(client, cxt->channel_id, &params, NULL);
-        }
+    for (int i = 0; i < regions->size; ++i) {
+        struct discord_create_message params = { .content =
+                                                     regions->array[i].name };
+        discord_create_message(client, cxt->channel_id, &params, NULL);
+    }
 }
 
 void
@@ -75,7 +74,7 @@ on_list_voice_regions(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_voice_regions ret = {
@@ -173,7 +172,7 @@ on_voice_kick(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t user_id = 0;
+    u64snowflake user_id = 0;
 
     sscanf(msg->content, "%" SCNu64, &user_id);
 

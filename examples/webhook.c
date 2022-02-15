@@ -16,7 +16,7 @@ print_usage(char *prog)
 int
 main(int argc, char *argv[])
 {
-    u64_snowflake_t webhook_id = 0;
+    u64snowflake webhook_id = 0;
     char *webhook_token = NULL;
     int opt;
 

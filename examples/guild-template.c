@@ -32,7 +32,7 @@ done(struct discord *client,
      void *data,
      const struct discord_guild_template *template)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text),
@@ -47,7 +47,7 @@ done(struct discord *client,
 void
 fail(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text), "Couldn't perform operation: %s",
@@ -61,7 +61,7 @@ void
 on_get_guild_template(struct discord *client,
                       const struct discord_message *msg)
 {
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_guild_template ret = {
@@ -77,7 +77,7 @@ void
 on_create_guild_template(struct discord *client,
                          const struct discord_message *msg)
 {
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_guild_template ret = {
@@ -99,7 +99,7 @@ void
 on_sync_guild_template(struct discord *client,
                        const struct discord_message *msg)
 {
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_guild_template ret = {

@@ -32,7 +32,7 @@ on_ready(struct discord *client)
 
 void
 log_on_guild_member_add(struct discord *client,
-                        u64_snowflake_t guild_id,
+                        u64snowflake guild_id,
                         const struct discord_guild_member *member)
 {
     log_info("%s#%s joined guild %" PRIu64, member->user->username,
@@ -41,7 +41,7 @@ log_on_guild_member_add(struct discord *client,
 
 void
 log_on_guild_member_update(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            const struct discord_guild_member *member)
 {
     char nick[128] = "";
@@ -55,7 +55,7 @@ log_on_guild_member_update(struct discord *client,
 
 void
 log_on_guild_member_remove(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            const struct discord_user *user)
 {
     log_info("%s#%s left guild %" PRIu64, user->username, user->discriminator,
@@ -67,17 +67,17 @@ done(struct discord *client,
      void *data,
      const struct discord_audit_log *audit_log)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
 
     if (!audit_log->audit_log_entries) {
         log_warn("No audit log entries found!");
         return;
     }
 
-    struct discord_audit_log_entry *entry = audit_log->audit_log_entries[0];
+    struct discord_audit_log_entry *entry = &audit_log->audit_log_entries->array[0];
 
     char text[1028];
-    snprintf(text, sizeof(text), "<@!%" PRIu64 "> has created <#%s>!",
+    snprintf(text, sizeof(text), "<@!%" PRIu64 "> has created <#%" PRIu64 ">!",
              entry->user_id, entry->target_id);
 
     struct discord_create_message params = { .content = text };
@@ -99,7 +99,7 @@ on_audit_channel_create(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_audit_log ret = {
