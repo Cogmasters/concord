@@ -3,7 +3,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <stdint.h>
+#include <inttypes.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,29 +20,29 @@ extern "C" {
 /**
  * @brief Unix time in milliseconds
  */
-typedef uint64_t u64_unix_ms_t;
+typedef uint64_t u64unix_ms;
 /**
  * @brief Snowflake datatype
  *
  * Used in APIs such as Twitter and Discord for their unique IDs
  */
-typedef uint64_t u64_snowflake_t;
+typedef uint64_t u64snowflake;
 
 /**
  * @brief Bitmask primitive
  *
  * Used for fields that may store values of, or perform bitwise operations
  */
-typedef uint64_t u64_bitmask_t;
+typedef uint64_t u64bitmask;
 
 /**
  * @brief Raw JSON string
  *
  * Used for fields that have dynamic or unreliable types. A string made out of
- *        `json_char_t` should be used to keep a raw JSON, which can then be
+ *        `json_char` should be used to keep a raw JSON, which can then be
  * parsed with the assistance of a JSON library.
  */
-typedef char json_char_t;
+typedef char json_char;
 
 /** @} ConcordTypes */
 
