@@ -76,7 +76,7 @@
 CCORDcode
 discord_get_global_application_commands(
     struct discord *client,
-    u64_snowflake_t application_id,
+    u64snowflake application_id,
     struct discord_ret_application_commands *ret)
 {
     struct discord_request req;
@@ -93,7 +93,7 @@ discord_get_global_application_commands(
 CCORDcode
 discord_create_global_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
+    u64snowflake application_id,
     struct discord_create_global_application_command *params,
     struct discord_ret_application_command *ret)
 {
@@ -122,8 +122,8 @@ discord_create_global_application_command(
 CCORDcode
 discord_get_global_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t command_id,
+    u64snowflake application_id,
+    u64snowflake command_id,
     struct discord_ret_application_command *ret)
 {
     struct discord_request req = { 0 };
@@ -141,8 +141,8 @@ discord_get_global_application_command(
 CCORDcode
 discord_edit_global_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t command_id,
+    u64snowflake application_id,
+    u64snowflake command_id,
     struct discord_edit_global_application_command *params,
     struct discord_ret_application_command *ret)
 {
@@ -166,8 +166,8 @@ discord_edit_global_application_command(
 
 CCORDcode
 discord_delete_global_application_command(struct discord *client,
-                                          u64_snowflake_t application_id,
-                                          u64_snowflake_t command_id,
+                                          u64snowflake application_id,
+                                          u64snowflake command_id,
                                           struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -185,7 +185,7 @@ discord_delete_global_application_command(struct discord *client,
 CCORDcode
 discord_bulk_overwrite_global_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
+    u64snowflake application_id,
     struct discord_application_commands *params,
     struct discord_ret_application_commands *ret)
 {
@@ -209,8 +209,8 @@ discord_bulk_overwrite_global_application_command(
 CCORDcode
 discord_get_guild_application_commands(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
     struct discord_ret_application_commands *ret)
 {
     struct discord_request req = { 0 };
@@ -229,8 +229,8 @@ discord_get_guild_application_commands(
 CCORDcode
 discord_create_guild_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
     struct discord_create_guild_application_command *params,
     struct discord_ret_application_command *ret)
 {
@@ -261,9 +261,9 @@ discord_create_guild_application_command(
 CCORDcode
 discord_get_guild_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
-    u64_snowflake_t command_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
+    u64snowflake command_id,
     struct discord_ret_application_command *ret)
 {
     struct discord_request req = { 0 };
@@ -283,9 +283,9 @@ discord_get_guild_application_command(
 CCORDcode
 discord_edit_guild_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
-    u64_snowflake_t command_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
+    u64snowflake command_id,
     struct discord_edit_guild_application_command *params,
     struct discord_ret_application_command *ret)
 {
@@ -311,9 +311,9 @@ discord_edit_guild_application_command(
 
 CCORDcode
 discord_delete_guild_application_command(struct discord *client,
-                                         u64_snowflake_t application_id,
-                                         u64_snowflake_t guild_id,
-                                         u64_snowflake_t command_id,
+                                         u64snowflake application_id,
+                                         u64snowflake guild_id,
+                                         u64snowflake command_id,
                                          struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -333,8 +333,8 @@ discord_delete_guild_application_command(struct discord *client,
 CCORDcode
 discord_bulk_overwrite_guild_application_command(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
     struct discord_application_commands *params,
     struct discord_ret_application_commands *ret)
 {
@@ -360,8 +360,8 @@ discord_bulk_overwrite_guild_application_command(
 CCORDcode
 discord_get_guild_application_command_permissions(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
     struct discord_ret_guild_application_command_permissions *ret)
 {
     struct discord_request req = { 0 };
@@ -380,9 +380,9 @@ discord_get_guild_application_command_permissions(
 CCORDcode
 discord_get_application_command_permissions(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
-    u64_snowflake_t command_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
+    u64snowflake command_id,
     struct discord_ret_application_command_permission *ret)
 {
     struct discord_request req = { 0 };
@@ -402,9 +402,9 @@ discord_get_application_command_permissions(
 CCORDcode
 discord_edit_application_command_permissions(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
-    u64_snowflake_t command_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
+    u64snowflake command_id,
     struct discord_edit_application_command_permissions *params,
     struct discord_ret_application_command_permission *ret)
 {
@@ -431,8 +431,8 @@ discord_edit_application_command_permissions(
 CCORDcode
 discord_batch_edit_application_command_permissions(
     struct discord *client,
-    u64_snowflake_t application_id,
-    u64_snowflake_t guild_id,
+    u64snowflake application_id,
+    u64snowflake guild_id,
     struct discord_guild_application_command_permissions *params,
     struct discord_ret_guild_application_command_permissions *ret)
 {
@@ -464,7 +464,7 @@ discord_batch_edit_application_command_permissions(
  * json_extract() is handling the tokens incorrectly. */
 CCORDcode
 discord_get_guild_audit_log(struct discord *client,
-                            u64_snowflake_t guild_id,
+                            u64snowflake guild_id,
                             struct discord_get_guild_audit_log *params,
                             struct discord_ret_audit_log *ret)
 {
@@ -514,7 +514,7 @@ discord_get_guild_audit_log(struct discord *client,
 
 CCORDcode
 discord_get_channel(struct discord *client,
-                    u64_snowflake_t channel_id,
+                    u64snowflake channel_id,
                     struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
@@ -529,7 +529,7 @@ discord_get_channel(struct discord *client,
 
 CCORDcode
 discord_modify_channel(struct discord *client,
-                       u64_snowflake_t channel_id,
+                       u64snowflake channel_id,
                        struct discord_modify_channel *params,
                        struct discord_ret_channel *ret)
 {
@@ -551,7 +551,7 @@ discord_modify_channel(struct discord *client,
 
 CCORDcode
 discord_delete_channel(struct discord *client,
-                       u64_snowflake_t channel_id,
+                       u64snowflake channel_id,
                        struct discord_ret_channel *ret)
 {
     struct discord_request req = { 0 };
@@ -566,7 +566,7 @@ discord_delete_channel(struct discord *client,
 
 CCORDcode
 discord_get_channel_messages(struct discord *client,
-                             u64_snowflake_t channel_id,
+                             u64snowflake channel_id,
                              struct discord_get_channel_messages *params,
                              struct discord_ret_messages *ret)
 {
@@ -611,8 +611,8 @@ discord_get_channel_messages(struct discord *client,
 
 CCORDcode
 discord_get_channel_message(struct discord *client,
-                            u64_snowflake_t channel_id,
-                            u64_snowflake_t message_id,
+                            u64snowflake channel_id,
+                            u64snowflake message_id,
                             struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
@@ -629,7 +629,7 @@ discord_get_channel_message(struct discord *client,
 
 CCORDcode
 discord_create_message(struct discord *client,
-                       u64_snowflake_t channel_id,
+                       u64snowflake channel_id,
                        struct discord_create_message *params,
                        struct discord_ret_message *ret)
 {
@@ -660,8 +660,8 @@ discord_create_message(struct discord *client,
 
 CCORDcode
 discord_crosspost_message(struct discord *client,
-                          u64_snowflake_t channel_id,
-                          u64_snowflake_t message_id,
+                          u64snowflake channel_id,
+                          u64snowflake message_id,
                           struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
@@ -679,9 +679,9 @@ discord_crosspost_message(struct discord *client,
 
 CCORDcode
 discord_create_reaction(struct discord *client,
-                        u64_snowflake_t channel_id,
-                        u64_snowflake_t message_id,
-                        u64_snowflake_t emoji_id,
+                        u64snowflake channel_id,
+                        u64snowflake message_id,
+                        u64snowflake emoji_id,
                         const char emoji_name[],
                         struct discord_ret *ret)
 {
@@ -715,9 +715,9 @@ discord_create_reaction(struct discord *client,
 
 CCORDcode
 discord_delete_own_reaction(struct discord *client,
-                            u64_snowflake_t channel_id,
-                            u64_snowflake_t message_id,
-                            u64_snowflake_t emoji_id,
+                            u64snowflake channel_id,
+                            u64snowflake message_id,
+                            u64snowflake emoji_id,
                             const char emoji_name[],
                             struct discord_ret *ret)
 {
@@ -751,10 +751,10 @@ discord_delete_own_reaction(struct discord *client,
 
 CCORDcode
 discord_delete_user_reaction(struct discord *client,
-                             u64_snowflake_t channel_id,
-                             u64_snowflake_t message_id,
-                             u64_snowflake_t user_id,
-                             u64_snowflake_t emoji_id,
+                             u64snowflake channel_id,
+                             u64snowflake message_id,
+                             u64snowflake user_id,
+                             u64snowflake emoji_id,
                              const char emoji_name[],
                              struct discord_ret *ret)
 {
@@ -789,9 +789,9 @@ discord_delete_user_reaction(struct discord *client,
 
 CCORDcode
 discord_get_reactions(struct discord *client,
-                      u64_snowflake_t channel_id,
-                      u64_snowflake_t message_id,
-                      u64_snowflake_t emoji_id,
+                      u64snowflake channel_id,
+                      u64snowflake message_id,
+                      u64snowflake emoji_id,
                       const char emoji_name[],
                       struct discord_get_reactions *params,
                       struct discord_ret_users *ret)
@@ -848,8 +848,8 @@ discord_get_reactions(struct discord *client,
 
 CCORDcode
 discord_delete_all_reactions(struct discord *client,
-                             u64_snowflake_t channel_id,
-                             u64_snowflake_t message_id,
+                             u64snowflake channel_id,
+                             u64snowflake message_id,
                              struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -867,9 +867,9 @@ discord_delete_all_reactions(struct discord *client,
 
 CCORDcode
 discord_delete_all_reactions_for_emoji(struct discord *client,
-                                       u64_snowflake_t channel_id,
-                                       u64_snowflake_t message_id,
-                                       u64_snowflake_t emoji_id,
+                                       u64snowflake channel_id,
+                                       u64snowflake message_id,
+                                       u64snowflake emoji_id,
                                        const char emoji_name[],
                                        struct discord_ret *ret)
 {
@@ -903,8 +903,8 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
 
 CCORDcode
 discord_edit_message(struct discord *client,
-                     u64_snowflake_t channel_id,
-                     u64_snowflake_t message_id,
+                     u64snowflake channel_id,
+                     u64snowflake message_id,
                      struct discord_edit_message *params,
                      struct discord_ret_message *ret)
 {
@@ -928,8 +928,8 @@ discord_edit_message(struct discord *client,
 
 CCORDcode
 discord_delete_message(struct discord *client,
-                       u64_snowflake_t channel_id,
-                       u64_snowflake_t message_id,
+                       u64snowflake channel_id,
+                       u64snowflake message_id,
                        struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -947,12 +947,12 @@ discord_delete_message(struct discord *client,
 /** @todo add duplicated ID verification */
 CCORDcode
 discord_bulk_delete_messages(struct discord *client,
-                             u64_snowflake_t channel_id,
+                             u64snowflake channel_id,
                              struct snowflakes *messages,
                              struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
-    u64_unix_ms_t now = discord_timestamp(client);
+    u64unix_ms now = discord_timestamp(client);
     struct sized_buffer body;
     char buf[4096] = "";
     int i;
@@ -962,7 +962,7 @@ discord_bulk_delete_messages(struct discord *client,
                  CCORD_BAD_PARAMETER, "");
 
     for (i = 0; i < messages->size; ++i) {
-        u64_unix_ms_t tstamp = (messages->array[i] >> 22) + 1420070400000;
+        u64unix_ms tstamp = (messages->array[i] >> 22) + 1420070400000;
 
         CCORD_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
                      CCORD_BAD_PARAMETER,
@@ -984,8 +984,8 @@ discord_bulk_delete_messages(struct discord *client,
 CCORDcode
 discord_edit_channel_permissions(
     struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_snowflake_t overwrite_id,
+    u64snowflake channel_id,
+    u64snowflake overwrite_id,
     struct discord_edit_channel_permissions *params,
     struct discord_ret *ret)
 {
@@ -1010,7 +1010,7 @@ discord_edit_channel_permissions(
 
 CCORDcode
 discord_get_channel_invites(struct discord *client,
-                            u64_snowflake_t channel_id,
+                            u64snowflake channel_id,
                             struct discord_ret_invites *ret)
 {
     struct discord_request req = { 0 };
@@ -1025,7 +1025,7 @@ discord_get_channel_invites(struct discord *client,
 
 CCORDcode
 discord_create_channel_invite(struct discord *client,
-                              u64_snowflake_t channel_id,
+                              u64snowflake channel_id,
                               struct discord_create_channel_invite *params,
                               struct discord_ret_invite *ret)
 {
@@ -1051,8 +1051,8 @@ discord_create_channel_invite(struct discord *client,
 
 CCORDcode
 discord_delete_channel_permission(struct discord *client,
-                                  u64_snowflake_t channel_id,
-                                  u64_snowflake_t overwrite_id,
+                                  u64snowflake channel_id,
+                                  u64snowflake overwrite_id,
                                   struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1069,7 +1069,7 @@ discord_delete_channel_permission(struct discord *client,
 
 CCORDcode
 discord_follow_news_channel(struct discord *client,
-                            u64_snowflake_t channel_id,
+                            u64snowflake channel_id,
                             struct discord_follow_news_channel *params,
                             struct discord_ret_followed_channel *ret)
 {
@@ -1093,7 +1093,7 @@ discord_follow_news_channel(struct discord *client,
 
 CCORDcode
 discord_trigger_typing_indicator(struct discord *client,
-                                 u64_snowflake_t channel_id,
+                                 u64snowflake channel_id,
                                  struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1108,7 +1108,7 @@ discord_trigger_typing_indicator(struct discord *client,
 
 CCORDcode
 discord_get_pinned_messages(struct discord *client,
-                            u64_snowflake_t channel_id,
+                            u64snowflake channel_id,
                             struct discord_ret_messages *ret)
 {
     struct discord_request req = { 0 };
@@ -1123,8 +1123,8 @@ discord_get_pinned_messages(struct discord *client,
 
 CCORDcode
 discord_pin_message(struct discord *client,
-                    u64_snowflake_t channel_id,
-                    u64_snowflake_t message_id,
+                    u64snowflake channel_id,
+                    u64snowflake message_id,
                     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1141,8 +1141,8 @@ discord_pin_message(struct discord *client,
 
 CCORDcode
 discord_unpin_message(struct discord *client,
-                      u64_snowflake_t channel_id,
-                      u64_snowflake_t message_id,
+                      u64snowflake channel_id,
+                      u64snowflake message_id,
                       struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1159,8 +1159,8 @@ discord_unpin_message(struct discord *client,
 
 CCORDcode
 discord_group_dm_add_recipient(struct discord *client,
-                               u64_snowflake_t channel_id,
-                               u64_snowflake_t user_id,
+                               u64snowflake channel_id,
+                               u64snowflake user_id,
                                struct discord_group_dm_add_recipient *params,
                                struct discord_ret *ret)
 {
@@ -1185,8 +1185,8 @@ discord_group_dm_add_recipient(struct discord *client,
 
 CCORDcode
 discord_group_dm_remove_recipient(struct discord *client,
-                                  u64_snowflake_t channel_id,
-                                  u64_snowflake_t user_id,
+                                  u64snowflake channel_id,
+                                  u64snowflake user_id,
                                   struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1204,8 +1204,8 @@ discord_group_dm_remove_recipient(struct discord *client,
 CCORDcode
 discord_start_thread_with_message(
     struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_snowflake_t message_id,
+    u64snowflake channel_id,
+    u64snowflake message_id,
     struct discord_start_thread_with_message *params,
     struct discord_ret_channel *ret)
 {
@@ -1232,7 +1232,7 @@ discord_start_thread_with_message(
 CCORDcode
 discord_start_thread_without_message(
     struct discord *client,
-    u64_snowflake_t channel_id,
+    u64snowflake channel_id,
     struct discord_start_thread_without_message *params,
     struct discord_ret_channel *ret)
 {
@@ -1255,7 +1255,7 @@ discord_start_thread_without_message(
 
 CCORDcode
 discord_join_thread(struct discord *client,
-                    u64_snowflake_t channel_id,
+                    u64snowflake channel_id,
                     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1271,8 +1271,8 @@ discord_join_thread(struct discord *client,
 
 CCORDcode
 discord_add_thread_member(struct discord *client,
-                          u64_snowflake_t channel_id,
-                          u64_snowflake_t user_id,
+                          u64snowflake channel_id,
+                          u64snowflake user_id,
                           struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1289,7 +1289,7 @@ discord_add_thread_member(struct discord *client,
 
 CCORDcode
 discord_leave_thread(struct discord *client,
-                     u64_snowflake_t channel_id,
+                     u64snowflake channel_id,
                      struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1305,8 +1305,8 @@ discord_leave_thread(struct discord *client,
 
 CCORDcode
 discord_remove_thread_member(struct discord *client,
-                             u64_snowflake_t channel_id,
-                             u64_snowflake_t user_id,
+                             u64snowflake channel_id,
+                             u64snowflake user_id,
                              struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1323,7 +1323,7 @@ discord_remove_thread_member(struct discord *client,
 
 CCORDcode
 discord_list_thread_members(struct discord *client,
-                            u64_snowflake_t channel_id,
+                            u64snowflake channel_id,
                             struct discord_ret_thread_members *ret)
 {
     struct discord_request req = { 0 };
@@ -1339,7 +1339,7 @@ discord_list_thread_members(struct discord *client,
 
 CCORDcode
 discord_list_active_threads(struct discord *client,
-                            u64_snowflake_t channel_id,
+                            u64snowflake channel_id,
                             struct discord_ret_thread_response_body *ret)
 {
     struct discord_request req = { 0 };
@@ -1356,8 +1356,8 @@ discord_list_active_threads(struct discord *client,
 CCORDcode
 discord_list_public_archived_threads(
     struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_unix_ms_t before,
+    u64snowflake channel_id,
+    u64unix_ms before,
     int limit,
     struct discord_ret_thread_response_body *ret)
 {
@@ -1389,8 +1389,8 @@ discord_list_public_archived_threads(
 CCORDcode
 discord_list_private_archived_threads(
     struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_unix_ms_t before,
+    u64snowflake channel_id,
+    u64unix_ms before,
     int limit,
     struct discord_ret_thread_response_body *ret)
 {
@@ -1422,8 +1422,8 @@ discord_list_private_archived_threads(
 CCORDcode
 discord_list_joined_private_archived_threads(
     struct discord *client,
-    u64_snowflake_t channel_id,
-    u64_unix_ms_t before,
+    u64snowflake channel_id,
+    u64unix_ms before,
     int limit,
     struct discord_ret_thread_response_body *ret)
 {
@@ -1458,7 +1458,7 @@ discord_list_joined_private_archived_threads(
 
 CCORDcode
 discord_list_guild_emojis(struct discord *client,
-                          u64_snowflake_t guild_id,
+                          u64snowflake guild_id,
                           struct discord_ret_emojis *ret)
 {
     struct discord_request req = { 0 };
@@ -1473,8 +1473,8 @@ discord_list_guild_emojis(struct discord *client,
 
 CCORDcode
 discord_get_guild_emoji(struct discord *client,
-                        u64_snowflake_t guild_id,
-                        u64_snowflake_t emoji_id,
+                        u64snowflake guild_id,
+                        u64snowflake emoji_id,
                         struct discord_ret_emoji *ret)
 {
     struct discord_request req = { 0 };
@@ -1491,7 +1491,7 @@ discord_get_guild_emoji(struct discord *client,
 
 CCORDcode
 discord_create_guild_emoji(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            struct discord_create_guild_emoji *params,
                            struct discord_ret_emoji *ret)
 {
@@ -1513,8 +1513,8 @@ discord_create_guild_emoji(struct discord *client,
 
 CCORDcode
 discord_modify_guild_emoji(struct discord *client,
-                           u64_snowflake_t guild_id,
-                           u64_snowflake_t emoji_id,
+                           u64snowflake guild_id,
+                           u64snowflake emoji_id,
                            struct discord_modify_guild_emoji *params,
                            struct discord_ret_emoji *ret)
 {
@@ -1538,8 +1538,8 @@ discord_modify_guild_emoji(struct discord *client,
 
 CCORDcode
 discord_delete_guild_emoji(struct discord *client,
-                           u64_snowflake_t guild_id,
-                           u64_snowflake_t emoji_id,
+                           u64snowflake guild_id,
+                           u64snowflake emoji_id,
                            struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1611,7 +1611,7 @@ discord_get_guild_template(struct discord *client,
 
 CCORDcode
 discord_create_guild_template(struct discord *client,
-                              u64_snowflake_t guild_id,
+                              u64snowflake guild_id,
                               struct discord_create_guild_template *params,
                               struct discord_ret_guild_template *ret)
 {
@@ -1633,7 +1633,7 @@ discord_create_guild_template(struct discord *client,
 
 CCORDcode
 discord_sync_guild_template(struct discord *client,
-                            u64_snowflake_t guild_id,
+                            u64snowflake guild_id,
                             char *code,
                             struct discord_ret_guild_template *ret)
 {
@@ -1674,7 +1674,7 @@ discord_create_guild(struct discord *client,
 
 CCORDcode
 discord_get_guild(struct discord *client,
-                  u64_snowflake_t guild_id,
+                  u64snowflake guild_id,
                   struct discord_ret_guild *ret)
 {
     struct discord_request req = { 0 };
@@ -1689,7 +1689,7 @@ discord_get_guild(struct discord *client,
 
 CCORDcode
 discord_get_guild_preview(struct discord *client,
-                          u64_snowflake_t guild_id,
+                          u64snowflake guild_id,
                           struct discord_ret_guild_preview *ret)
 {
     struct discord_request req = { 0 };
@@ -1704,7 +1704,7 @@ discord_get_guild_preview(struct discord *client,
 
 CCORDcode
 discord_modify_guild(struct discord *client,
-                     u64_snowflake_t guild_id,
+                     u64snowflake guild_id,
                      struct discord_modify_guild *params,
                      struct discord_ret_guild *ret)
 {
@@ -1726,7 +1726,7 @@ discord_modify_guild(struct discord *client,
 
 CCORDcode
 discord_delete_guild(struct discord *client,
-                     u64_snowflake_t guild_id,
+                     u64snowflake guild_id,
                      struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -1741,7 +1741,7 @@ discord_delete_guild(struct discord *client,
 
 CCORDcode
 discord_get_guild_channels(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            struct discord_ret_channels *ret)
 {
     struct discord_request req = { 0 };
@@ -1756,7 +1756,7 @@ discord_get_guild_channels(struct discord *client,
 
 CCORDcode
 discord_create_guild_channel(struct discord *client,
-                             u64_snowflake_t guild_id,
+                             u64snowflake guild_id,
                              struct discord_create_guild_channel *params,
                              struct discord_ret_channel *ret)
 {
@@ -1779,7 +1779,7 @@ discord_create_guild_channel(struct discord *client,
 CCORDcode
 discord_modify_guild_channel_positions(
     struct discord *client,
-    u64_snowflake_t guild_id,
+    u64snowflake guild_id,
     struct discord_modify_guild_channel_positions *params,
     struct discord_ret *ret)
 {
@@ -1802,8 +1802,8 @@ discord_modify_guild_channel_positions(
 
 CCORDcode
 discord_get_guild_member(struct discord *client,
-                         u64_snowflake_t guild_id,
-                         u64_snowflake_t user_id,
+                         u64snowflake guild_id,
+                         u64snowflake user_id,
                          struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
@@ -1820,7 +1820,7 @@ discord_get_guild_member(struct discord *client,
 
 CCORDcode
 discord_list_guild_members(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            struct discord_list_guild_members *params,
                            struct discord_ret_guild_members *ret)
 {
@@ -1854,7 +1854,7 @@ discord_list_guild_members(struct discord *client,
 
 CCORDcode
 discord_search_guild_members(struct discord *client,
-                             u64_snowflake_t guild_id,
+                             u64snowflake guild_id,
                              struct discord_search_guild_members *params,
                              struct discord_ret_guild_members *ret)
 {
@@ -1890,8 +1890,8 @@ discord_search_guild_members(struct discord *client,
 
 CCORDcode
 discord_add_guild_member(struct discord *client,
-                         u64_snowflake_t guild_id,
-                         u64_snowflake_t user_id,
+                         u64snowflake guild_id,
+                         u64snowflake user_id,
                          struct discord_add_guild_member *params,
                          struct discord_ret_guild_member *ret)
 {
@@ -1917,8 +1917,8 @@ discord_add_guild_member(struct discord *client,
 
 CCORDcode
 discord_modify_guild_member(struct discord *client,
-                            u64_snowflake_t guild_id,
-                            u64_snowflake_t user_id,
+                            u64snowflake guild_id,
+                            u64snowflake user_id,
                             struct discord_modify_guild_member *params,
                             struct discord_ret_guild_member *ret)
 {
@@ -1941,7 +1941,7 @@ discord_modify_guild_member(struct discord *client,
 }
 CCORDcode
 discord_modify_current_member(struct discord *client,
-                              u64_snowflake_t guild_id,
+                              u64snowflake guild_id,
                               struct discord_modify_current_member *params,
                               struct discord_ret_guild_member *ret)
 {
@@ -1965,7 +1965,7 @@ discord_modify_current_member(struct discord *client,
 CCORDcode
 discord_modify_current_user_nick(
     struct discord *client,
-    u64_snowflake_t guild_id,
+    u64snowflake guild_id,
     struct discord_modify_current_user_nick *params,
     struct discord_ret_guild_member *ret)
 {
@@ -1994,9 +1994,9 @@ discord_modify_current_user_nick(
 
 CCORDcode
 discord_add_guild_member_role(struct discord *client,
-                              u64_snowflake_t guild_id,
-                              u64_snowflake_t user_id,
-                              u64_snowflake_t role_id,
+                              u64snowflake guild_id,
+                              u64snowflake user_id,
+                              u64snowflake role_id,
                               struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2015,9 +2015,9 @@ discord_add_guild_member_role(struct discord *client,
 
 CCORDcode
 discord_remove_guild_member_role(struct discord *client,
-                                 u64_snowflake_t guild_id,
-                                 u64_snowflake_t user_id,
-                                 u64_snowflake_t role_id,
+                                 u64snowflake guild_id,
+                                 u64snowflake user_id,
+                                 u64snowflake role_id,
                                  struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2036,8 +2036,8 @@ discord_remove_guild_member_role(struct discord *client,
 
 CCORDcode
 discord_remove_guild_member(struct discord *client,
-                            u64_snowflake_t guild_id,
-                            u64_snowflake_t user_id,
+                            u64snowflake guild_id,
+                            u64snowflake user_id,
                             struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2054,7 +2054,7 @@ discord_remove_guild_member(struct discord *client,
 
 CCORDcode
 discord_get_guild_bans(struct discord *client,
-                       u64_snowflake_t guild_id,
+                       u64snowflake guild_id,
                        struct discord_ret_bans *ret)
 {
     struct discord_request req = { 0 };
@@ -2069,8 +2069,8 @@ discord_get_guild_bans(struct discord *client,
 
 CCORDcode
 discord_get_guild_ban(struct discord *client,
-                      u64_snowflake_t guild_id,
-                      u64_snowflake_t user_id,
+                      u64snowflake guild_id,
+                      u64snowflake user_id,
                       struct discord_ret_ban *ret)
 {
     struct discord_request req = { 0 };
@@ -2087,8 +2087,8 @@ discord_get_guild_ban(struct discord *client,
 
 CCORDcode
 discord_create_guild_ban(struct discord *client,
-                         u64_snowflake_t guild_id,
-                         u64_snowflake_t user_id,
+                         u64snowflake guild_id,
+                         u64snowflake user_id,
                          struct discord_create_guild_ban *params,
                          struct discord_ret *ret)
 {
@@ -2115,8 +2115,8 @@ discord_create_guild_ban(struct discord *client,
 }
 CCORDcode
 discord_remove_guild_ban(struct discord *client,
-                         u64_snowflake_t guild_id,
-                         u64_snowflake_t user_id,
+                         u64snowflake guild_id,
+                         u64snowflake user_id,
                          struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2133,7 +2133,7 @@ discord_remove_guild_ban(struct discord *client,
 
 CCORDcode
 discord_get_guild_roles(struct discord *client,
-                        u64_snowflake_t guild_id,
+                        u64snowflake guild_id,
                         struct discord_ret_roles *ret)
 {
     struct discord_request req = { 0 };
@@ -2148,7 +2148,7 @@ discord_get_guild_roles(struct discord *client,
 
 CCORDcode
 discord_create_guild_role(struct discord *client,
-                          u64_snowflake_t guild_id,
+                          u64snowflake guild_id,
                           struct discord_create_guild_role *params,
                           struct discord_ret_role *ret)
 {
@@ -2170,7 +2170,7 @@ discord_create_guild_role(struct discord *client,
 CCORDcode
 discord_modify_guild_role_positions(
     struct discord *client,
-    u64_snowflake_t guild_id,
+    u64snowflake guild_id,
     struct discord_modify_guild_role_positions *params,
     struct discord_ret_roles *ret)
 {
@@ -2193,8 +2193,8 @@ discord_modify_guild_role_positions(
 
 CCORDcode
 discord_modify_guild_role(struct discord *client,
-                          u64_snowflake_t guild_id,
-                          u64_snowflake_t role_id,
+                          u64snowflake guild_id,
+                          u64snowflake role_id,
                           struct discord_modify_guild_role *params,
                           struct discord_ret_role *ret)
 {
@@ -2222,8 +2222,8 @@ discord_modify_guild_role(struct discord *client,
 
 CCORDcode
 discord_delete_guild_role(struct discord *client,
-                          u64_snowflake_t guild_id,
-                          u64_snowflake_t role_id,
+                          u64snowflake guild_id,
+                          u64snowflake role_id,
                           struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2240,7 +2240,7 @@ discord_delete_guild_role(struct discord *client,
 
 CCORDcode
 discord_begin_guild_prune(struct discord *client,
-                          u64_snowflake_t guild_id,
+                          u64snowflake guild_id,
                           struct discord_begin_guild_prune *params,
                           struct discord_ret *ret)
 {
@@ -2266,7 +2266,7 @@ discord_begin_guild_prune(struct discord *client,
 
 CCORDcode
 discord_get_guild_invites(struct discord *client,
-                          u64_snowflake_t guild_id,
+                          u64snowflake guild_id,
                           struct discord_ret_invites *ret)
 {
     struct discord_request req = { 0 };
@@ -2281,8 +2281,8 @@ discord_get_guild_invites(struct discord *client,
 
 CCORDcode
 discord_delete_guild_integrations(struct discord *client,
-                                  u64_snowflake_t guild_id,
-                                  u64_snowflake_t integration_id,
+                                  u64snowflake guild_id,
+                                  u64snowflake integration_id,
                                   struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2299,7 +2299,7 @@ discord_delete_guild_integrations(struct discord *client,
 
 CCORDcode
 discord_get_guild_vanity_url(struct discord *client,
-                             u64_snowflake_t guild_id,
+                             u64snowflake guild_id,
                              struct discord_ret_invite *ret)
 {
     struct discord_request req = { 0 };
@@ -2314,7 +2314,7 @@ discord_get_guild_vanity_url(struct discord *client,
 
 CCORDcode
 discord_get_guild_welcome_screen(struct discord *client,
-                                 u64_snowflake_t guild_id,
+                                 u64snowflake guild_id,
                                  struct discord_ret_welcome_screen *ret)
 {
     struct discord_request req = { 0 };
@@ -2334,7 +2334,7 @@ discord_get_guild_welcome_screen(struct discord *client,
 CCORDcode
 discord_create_interaction_response(
     struct discord *client,
-    u64_snowflake_t interaction_id,
+    u64snowflake interaction_id,
     const char interaction_token[],
     struct discord_interaction_response *params,
     struct discord_ret_interaction_response *ret)
@@ -2370,7 +2370,7 @@ discord_create_interaction_response(
 CCORDcode
 discord_get_original_interaction_response(
     struct discord *client,
-    u64_snowflake_t application_id,
+    u64snowflake application_id,
     const char interaction_token[],
     struct discord_ret_interaction_response *ret)
 {
@@ -2390,7 +2390,7 @@ discord_get_original_interaction_response(
 CCORDcode
 discord_edit_original_interaction_response(
     struct discord *client,
-    u64_snowflake_t application_id,
+    u64snowflake application_id,
     const char interaction_token[],
     struct discord_edit_original_interaction_response *params,
     struct discord_ret_interaction_response *ret)
@@ -2426,7 +2426,7 @@ discord_edit_original_interaction_response(
 
 CCORDcode
 discord_delete_original_interaction_response(struct discord *client,
-                                             u64_snowflake_t application_id,
+                                             u64snowflake application_id,
                                              const char interaction_token[],
                                              struct discord_ret *ret)
 {
@@ -2445,7 +2445,7 @@ discord_delete_original_interaction_response(struct discord *client,
 
 CCORDcode
 discord_create_followup_message(struct discord *client,
-                                u64_snowflake_t application_id,
+                                u64snowflake application_id,
                                 const char interaction_token[],
                                 struct discord_create_followup_message *params,
                                 struct discord_ret_webhook *ret)
@@ -2490,9 +2490,9 @@ discord_create_followup_message(struct discord *client,
 
 CCORDcode
 discord_get_followup_message(struct discord *client,
-                             u64_snowflake_t application_id,
+                             u64snowflake application_id,
                              const char interaction_token[],
-                             u64_snowflake_t message_id,
+                             u64snowflake message_id,
                              struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
@@ -2511,9 +2511,9 @@ discord_get_followup_message(struct discord *client,
 
 CCORDcode
 discord_edit_followup_message(struct discord *client,
-                              u64_snowflake_t application_id,
+                              u64snowflake application_id,
                               const char interaction_token[],
-                              u64_snowflake_t message_id,
+                              u64snowflake message_id,
                               struct discord_edit_followup_message *params,
                               struct discord_ret_message *ret)
 {
@@ -2549,9 +2549,9 @@ discord_edit_followup_message(struct discord *client,
 
 CCORDcode
 discord_delete_followup_message(struct discord *client,
-                                u64_snowflake_t application_id,
+                                u64snowflake application_id,
                                 const char interaction_token[],
-                                u64_snowflake_t message_id,
+                                u64snowflake message_id,
                                 struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2628,7 +2628,7 @@ discord_get_current_user(struct discord *client, struct discord_ret_user *ret)
 
 CCORDcode
 discord_get_user(struct discord *client,
-                 u64_snowflake_t user_id,
+                 u64snowflake user_id,
                  struct discord_ret_user *ret)
 {
     struct discord_request req = { 0 };
@@ -2675,7 +2675,7 @@ discord_get_current_user_guilds(struct discord *client,
 
 CCORDcode
 discord_leave_guild(struct discord *client,
-                    u64_snowflake_t guild_id,
+                    u64snowflake guild_id,
                     struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2766,7 +2766,7 @@ discord_list_voice_regions(struct discord *client,
 
 CCORDcode
 discord_create_webhook(struct discord *client,
-                       u64_snowflake_t channel_id,
+                       u64snowflake channel_id,
                        struct discord_create_webhook *params,
                        struct discord_ret_webhook *ret)
 {
@@ -2790,7 +2790,7 @@ discord_create_webhook(struct discord *client,
 
 CCORDcode
 discord_get_channel_webhooks(struct discord *client,
-                             u64_snowflake_t channel_id,
+                             u64snowflake channel_id,
                              struct discord_ret_webhooks *ret)
 {
     struct discord_request req = { 0 };
@@ -2805,7 +2805,7 @@ discord_get_channel_webhooks(struct discord *client,
 
 CCORDcode
 discord_get_guild_webhooks(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            struct discord_ret_webhooks *ret)
 {
     struct discord_request req = { 0 };
@@ -2820,7 +2820,7 @@ discord_get_guild_webhooks(struct discord *client,
 
 CCORDcode
 discord_get_webhook(struct discord *client,
-                    u64_snowflake_t webhook_id,
+                    u64snowflake webhook_id,
                     struct discord_ret_webhook *ret)
 {
     struct discord_request req = { 0 };
@@ -2835,7 +2835,7 @@ discord_get_webhook(struct discord *client,
 
 CCORDcode
 discord_get_webhook_with_token(struct discord *client,
-                               u64_snowflake_t webhook_id,
+                               u64snowflake webhook_id,
                                const char webhook_token[],
                                struct discord_ret_webhook *ret)
 {
@@ -2854,7 +2854,7 @@ discord_get_webhook_with_token(struct discord *client,
 
 CCORDcode
 discord_modify_webhook(struct discord *client,
-                       u64_snowflake_t webhook_id,
+                       u64snowflake webhook_id,
                        struct discord_modify_webhook *params,
                        struct discord_ret_webhook *ret)
 {
@@ -2876,7 +2876,7 @@ discord_modify_webhook(struct discord *client,
 CCORDcode
 discord_modify_webhook_with_token(
     struct discord *client,
-    u64_snowflake_t webhook_id,
+    u64snowflake webhook_id,
     const char webhook_token[],
     struct discord_modify_webhook_with_token *params,
     struct discord_ret_webhook *ret)
@@ -2902,7 +2902,7 @@ discord_modify_webhook_with_token(
 
 CCORDcode
 discord_delete_webhook(struct discord *client,
-                       u64_snowflake_t webhook_id,
+                       u64snowflake webhook_id,
                        struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -2917,7 +2917,7 @@ discord_delete_webhook(struct discord *client,
 
 CCORDcode
 discord_delete_webhook_with_token(struct discord *client,
-                                  u64_snowflake_t webhook_id,
+                                  u64snowflake webhook_id,
                                   const char webhook_token[],
                                   struct discord_ret *ret)
 {
@@ -2936,7 +2936,7 @@ discord_delete_webhook_with_token(struct discord *client,
 
 CCORDcode
 discord_execute_webhook(struct discord *client,
-                        u64_snowflake_t webhook_id,
+                        u64snowflake webhook_id,
                         const char webhook_token[],
                         struct discord_execute_webhook *params,
                         struct discord_ret *ret)
@@ -2984,9 +2984,9 @@ discord_execute_webhook(struct discord *client,
 
 CCORDcode
 discord_get_webhook_message(struct discord *client,
-                            u64_snowflake_t webhook_id,
+                            u64snowflake webhook_id,
                             const char webhook_token[],
-                            u64_snowflake_t message_id,
+                            u64snowflake message_id,
                             struct discord_ret_message *ret)
 {
     struct discord_request req = { 0 };
@@ -3005,9 +3005,9 @@ discord_get_webhook_message(struct discord *client,
 
 CCORDcode
 discord_edit_webhook_message(struct discord *client,
-                             u64_snowflake_t webhook_id,
+                             u64snowflake webhook_id,
                              const char webhook_token[],
-                             u64_snowflake_t message_id,
+                             u64snowflake message_id,
                              struct discord_edit_webhook_message *params,
                              struct discord_ret_message *ret)
 {
@@ -3042,9 +3042,9 @@ discord_edit_webhook_message(struct discord *client,
 
 CCORDcode
 discord_delete_webhook_message(struct discord *client,
-                               u64_snowflake_t webhook_id,
+                               u64snowflake webhook_id,
                                const char webhook_token[],
-                               u64_snowflake_t message_id,
+                               u64snowflake message_id,
                                struct discord_ret *ret)
 {
     struct discord_request req = { 0 };
@@ -3067,8 +3067,8 @@ discord_delete_webhook_message(struct discord *client,
 
 CCORDcode
 discord_disconnect_guild_member(struct discord *client,
-                                u64_snowflake_t guild_id,
-                                u64_snowflake_t user_id,
+                                u64snowflake guild_id,
+                                u64snowflake user_id,
                                 struct discord_ret_guild_member *ret)
 {
     struct discord_request req = { 0 };
@@ -3137,7 +3137,7 @@ _done_get_channels(struct discord *client,
 
 CCORDcode
 discord_get_channel_at_pos(struct discord *client,
-                           u64_snowflake_t guild_id,
+                           u64snowflake guild_id,
                            enum discord_channel_types type,
                            int position,
                            struct discord_ret_channel *ret)

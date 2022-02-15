@@ -61,7 +61,7 @@ discord_bucket_get_route(enum http_method method,
 
     ROUTE_PUSH(route, &routelen, "%d", method);
     do {
-        u64_snowflake_t id_arg = 0ULL;
+        u64snowflake id_arg = 0ULL;
         int i;
 
         curr += 1 + currlen;
@@ -81,7 +81,7 @@ discord_bucket_get_route(enum http_method method,
                               "Internal error: Missing check for '%%%s'",
                               type);
 
-                    id_arg = va_arg(args, u64_snowflake_t);
+                    id_arg = va_arg(args, u64snowflake);
                     break;
                 case 's':
                     (void)va_arg(args, char *);
@@ -211,10 +211,10 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
     return b;
 }
 
-u64_unix_ms_t
+u64unix_ms
 discord_adapter_get_global_wait(struct discord_adapter *adapter)
 {
-    u64_unix_ms_t global;
+    u64unix_ms global;
 
     pthread_rwlock_rdlock(&adapter->global->rwlock);
     global = adapter->global->wait_ms;
@@ -224,12 +224,12 @@ discord_adapter_get_global_wait(struct discord_adapter *adapter)
 }
 
 /* return ratelimit timeout timestamp for this bucket */
-u64_unix_ms_t
+u64unix_ms
 discord_bucket_get_timeout(struct discord_adapter *adapter,
                            struct discord_bucket *b)
 {
-    u64_unix_ms_t global = discord_adapter_get_global_wait(adapter);
-    u64_unix_ms_t reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
+    u64unix_ms global = discord_adapter_get_global_wait(adapter);
+    u64unix_ms reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
 
     return (global > reset) ? global : reset;
 }
@@ -239,8 +239,8 @@ discord_bucket_get_wait(struct discord_adapter *adapter,
                         struct discord_bucket *b)
 {
     struct discord *client = CLIENT(adapter, adapter);
-    u64_unix_ms_t now = discord_timestamp(client);
-    u64_unix_ms_t reset = discord_bucket_get_timeout(adapter, b);
+    u64unix_ms now = discord_timestamp(client);
+    u64unix_ms reset = discord_bucket_get_timeout(adapter, b);
 
     return (int64_t)(reset - now);
 }
@@ -274,7 +274,7 @@ _discord_bucket_populate(struct discord_adapter *adapter,
 {
     struct sized_buffer remaining, reset, reset_after;
     struct discord *client = CLIENT(adapter, adapter);
-    u64_unix_ms_t now = discord_timestamp(client);
+    u64unix_ms now = discord_timestamp(client);
     long _remaining;
 
     remaining = ua_info_get_header(info, "x-ratelimit-remaining");
@@ -292,8 +292,7 @@ _discord_bucket_populate(struct discord_adapter *adapter,
     if (reset_after.size) {
         struct sized_buffer global =
             ua_info_get_header(info, "x-ratelimit-global");
-        u64_unix_ms_t reset_tstamp =
-            now + 1000 * strtod(reset_after.start, NULL);
+        u64unix_ms reset_tstamp = now + 1000 * strtod(reset_after.start, NULL);
 
         if (global.size) {
             /* lock all buckets */
@@ -311,9 +310,9 @@ _discord_bucket_populate(struct discord_adapter *adapter,
         /* get approximate elapsed time since request */
         struct PsnipClockTimespec ts;
         /* the Discord time in milliseconds */
-        u64_unix_ms_t server;
+        u64unix_ms server;
         /* the Discord time + request's elapsed time */
-        u64_unix_ms_t offset;
+        u64unix_ms offset;
 
         server = 1000 * curl_getdate(date.start, NULL);
         psnip_clock_wall_get_time(&ts);

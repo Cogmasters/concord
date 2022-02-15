@@ -202,10 +202,10 @@ discord_embed_add_field(struct discord_embed *embed,
 
 void
 discord_overwrite_append(struct discord_overwrites *permission_overwrites,
-                         u64_snowflake_t id,
+                         u64snowflake id,
                          int type,
-                         u64_bitmask_t allow,
-                         u64_bitmask_t deny)
+                         u64bitmask allow,
+                         u64bitmask deny)
 {
     struct discord_overwrite new_overwrite = { 0 };
 

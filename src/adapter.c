@@ -518,7 +518,7 @@ timer_less_than(const struct heap_node *ha, const struct heap_node *hb)
 
 static void
 _discord_context_set_timeout(struct discord_adapter *adapter,
-                             u64_unix_ms_t timeout,
+                             u64unix_ms timeout,
                              struct discord_context *cxt)
 {
     cxt->bucket->freeze = true;
@@ -533,8 +533,8 @@ static bool
 _discord_context_timeout(struct discord_adapter *adapter,
                          struct discord_context *cxt)
 {
-    u64_unix_ms_t now = NOW(adapter);
-    u64_unix_ms_t timeout = discord_bucket_get_timeout(adapter, cxt->bucket);
+    u64unix_ms now = NOW(adapter);
+    u64unix_ms timeout = discord_bucket_get_timeout(adapter, cxt->bucket);
 
     if (now > timeout) return false;
 
@@ -832,7 +832,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         ua_conn_reset(cxt->conn);
 
         if (wait_ms) {
-            u64_unix_ms_t timeout = NOW(adapter) + wait_ms;
+            u64unix_ms timeout = NOW(adapter) + wait_ms;
 
             _discord_context_set_timeout(adapter, timeout, cxt);
         }

@@ -36,7 +36,7 @@ typedef void (*discord_ev_voice_idle)(struct discord *client,
  */
 typedef void (*discord_ev_voice_speaking)(struct discord *client,
                                           struct discord_voice *vc,
-                                          u64_snowflake_t user_id,
+                                          u64snowflake user_id,
                                           int speaking,
                                           int delay,
                                           int ssrc);
@@ -49,7 +49,7 @@ typedef void (*discord_ev_voice_speaking)(struct discord *client,
  */
 typedef void (*discord_ev_voice_client_disconnect)(struct discord *client,
                                                    struct discord_voice *vc,
-                                                   u64_snowflake_t user_id);
+                                                   u64snowflake user_id);
 
 /**
  * @brief Voice Codec callback
@@ -90,9 +90,9 @@ struct discord_voice {
     /** DISCORD_VOICE logging module */
     struct logconf conf;
     /** the session guild id @note obtained from discord_voice_join() */
-    u64_snowflake_t guild_id;
+    u64snowflake guild_id;
     /** the session channel id @note obtained from discord_voice_join() */
-    u64_snowflake_t channel_id;
+    u64snowflake channel_id;
     /** @note obtained from on_voice_server_update() */
     /** the session token @note obtained from on_voice_server_update() */
     char token[128];
@@ -207,8 +207,8 @@ enum discord_voice_status {
  * @return enum discord_voice_status value
  */
 enum discord_voice_status discord_voice_join(struct discord *client,
-                                             u64_snowflake_t guild_id,
-                                             u64_snowflake_t channel_id,
+                                             u64snowflake guild_id,
+                                             u64snowflake channel_id,
                                              bool self_mute,
                                              bool self_deaf);
 
@@ -247,7 +247,7 @@ void _discord_on_voice_state_update(struct discord *client,
  * @note will prepend with "wss://" and append with "?v=4"
  */
 void _discord_on_voice_server_update(struct discord *client,
-                                     u64_snowflake_t guild_id,
+                                     u64snowflake guild_id,
                                      char token[],
                                      char endpoint[]);
 

@@ -5,9 +5,7 @@
 #include "gencodecs.h"
 
 #ifdef GENCODECS_HEADER
-PP_INCLUDE(<inttypes.h>)
-typedef uint64_t u64snowflake;
-typedef char json_char;
+PP_INCLUDE("common.h")
 #endif
 
 #define JSON_ENCODER_PTR_json_char(b, buf, size, _var, _type)                 \

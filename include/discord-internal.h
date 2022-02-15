@@ -115,7 +115,7 @@ struct discord_context {
     /** the min-heap node (for selecting timeouts) */
     struct heap_node node;
     /** the timeout timestamp */
-    u64_unix_ms_t timeout_ms;
+    u64unix_ms timeout_ms;
 
     /** current retry attempt (stop at adapter->retry_limit) */
     int retry_attempt;
@@ -143,7 +143,7 @@ struct discord_adapter {
     /* client-wide ratelimiting timeout */
     struct {
         /** global ratelimit */
-        u64_unix_ms_t wait_ms;
+        u64unix_ms wait_ms;
         /** global rwlock  */
         pthread_rwlock_t rwlock;
         /** global lock */
@@ -215,7 +215,7 @@ CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
  * @param adapter the handle initialized with discord_adapter_init()
  * @return the most recent global timeout timestamp
  */
-u64_unix_ms_t discord_adapter_get_global_wait(struct discord_adapter *adapter);
+u64unix_ms discord_adapter_get_global_wait(struct discord_adapter *adapter);
 
 /**
  * @brief Stop all on-going, pending and timed-out requests
@@ -272,7 +272,7 @@ struct discord_bucket {
     /** connections this bucket can do before waiting for cooldown */
     long remaining;
     /** timestamp of when cooldown timer resets */
-    u64_unix_ms_t reset_tstamp;
+    u64unix_ms reset_tstamp;
     /** synchronize ratelimiting between threads */
     pthread_mutex_t lock;
     /** pending requests of type 'struct discord_context' */
@@ -310,8 +310,8 @@ void discord_buckets_cleanup(struct discord_adapter *adapter);
  * @param b the bucket to be checked for time out
  * @return the timeout timestamp
  */
-u64_unix_ms_t discord_bucket_get_timeout(struct discord_adapter *adapter,
-                                         struct discord_bucket *b);
+u64unix_ms discord_bucket_get_timeout(struct discord_adapter *adapter,
+                                      struct discord_bucket *b);
 
 /**
  * @brief Get bucket pending cooldown time in milliseconds
@@ -460,16 +460,16 @@ struct discord_gateway {
     /** timers kept for synchronization */
     struct {
         /** fixed interval between heartbeats */
-        u64_unix_ms_t interval;
+        u64unix_ms interval;
         /** last heartbeat pulse timestamp */
-        u64_unix_ms_t hbeat;
+        u64unix_ms hbeat;
         /** Gateway's concept of "now" */
-        u64_unix_ms_t now;
+        u64unix_ms now;
         /** timestamp of last succesful identify request */
-        u64_unix_ms_t identify;
+        u64unix_ms identify;
         /** timestamp of last succesful event timestamp in ms (resets every
          * 60s) */
-        u64_unix_ms_t event;
+        u64unix_ms event;
         /** latency obtained from HEARTBEAT and HEARTBEAT_ACK interval */
         int ping_ms;
         /** ping rwlock  */

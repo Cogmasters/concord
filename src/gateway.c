@@ -57,7 +57,8 @@ discord_gateway_send_presence_update(struct discord_gateway *gw)
         jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
         jsonb_number(&b, buf, sizeof(buf), 3);
         jsonb_key(&b, buf, sizeof(buf), "d", 1);
-        discord_presence_update_to_jsonb(&b, buf, sizeof(buf), gw->id.presence);
+        discord_presence_update_to_jsonb(&b, buf, sizeof(buf),
+                                         gw->id.presence);
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
@@ -568,7 +569,7 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
     jsmnfind *root = jsmnfind_init();
     u64snowflake guild_id = 0, channel_id = 0;
-    u64_unix_ms_t last_pin_timestamp = 0;
+    u64unix_ms last_pin_timestamp = 0;
 
     if (jsmnfind_start(root, data->start, data->size) >= 0) {
         jsmnfind *f;
