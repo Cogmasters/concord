@@ -7,7 +7,7 @@ COGUTILS_DIR := $(TOP)/cog-utils
 CORE_DIR     := $(TOP)/core
 INCLUDE_DIR  := $(TOP)/include
 
-TEST_DISCORD := discord-sync-rest discord-sync-ws discord-async
+TEST_DISCORD := discord-sync-rest discord-sync-ws discord-async discord-events
 TEST_CORE  := user-agent websockets
 
 EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_CORE)

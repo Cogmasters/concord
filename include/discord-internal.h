@@ -364,9 +364,6 @@ struct discord_gateway_cmd_cbs {
 };
 
 struct discord_gateway_cbs {
-    /** triggers on every event loop iteration */
-    discord_ev_idle on_idle;
-
     /** triggers when connection first establishes */
     discord_ev_idle on_ready;
 
@@ -645,6 +642,16 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+    struct {
+        discord_ev_idle cb;
+        int64_t next;
+    } wakeup_timer;
+
+    /** triggers when idle.  */
+    discord_ev_idle on_idle;
+    /** triggers once per loop cycle */
+    discord_ev_idle on_cycle;
+
     /** space for user arbitrary data */
     void *data;
 
