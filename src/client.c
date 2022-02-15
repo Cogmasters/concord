@@ -634,10 +634,7 @@ discord_get_ping(struct discord *client)
 uint64_t
 discord_timestamp(struct discord *client)
 {
-    /* get WebSockets internal timestamp if available */
-    if (ws_is_functional(client->gw.ws)) {
-        return ws_timestamp(client->gw.ws);
-    }
+    (void)client;
     return cog_timestamp_ms();
 }
 
