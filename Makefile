@@ -6,7 +6,7 @@ INCLUDE_DIR   := include
 OBJDIR        := obj
 LIBDIR        := lib
 DOCS_DIR      := docs
-COGUTILS_DIR  := cog-utils
+COGUTILS_DIR  := cog-utils2
 GENCODECS_DIR := gencodecs
 CORE_DIR      := core
 THIRDP_DIR    := $(CORE_DIR)/third-party
@@ -15,12 +15,8 @@ TEST_DIR      := test
 CCORDDOCS_DIR := concord-docs
 
 COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
-                $(COGUTILS_DIR)/json-actor.c       \
-                $(COGUTILS_DIR)/json-actor-boxed.c \
-                $(COGUTILS_DIR)/json-string.c      \
                 $(COGUTILS_DIR)/log.c              \
-                $(COGUTILS_DIR)/logconf.c          \
-                $(COGUTILS_DIR)/ntl.c
+                $(COGUTILS_DIR)/logconf.c
 
 CORE_SRC     := $(CORE_DIR)/common.c     \
                 $(CORE_DIR)/work.c       \
@@ -129,7 +125,7 @@ clean:
 
 purge: clean
 	rm -rf $(LIBDIR)
-	rm -rf $(COGUTILS_DIR)
+	# rm -rf $(COGUTILS_DIR)
 	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: all test examples install echo clean purge docs

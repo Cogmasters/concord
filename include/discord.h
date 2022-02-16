@@ -13,7 +13,6 @@
 
 #include <stdbool.h>
 
-#include "json-actor-boxed.h"
 #include "common.h"
 #include "logconf.h"
 

@@ -221,15 +221,15 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
             curl_mime_data(part, atchs->array[i].content,
                            atchs->array[i].size ? atchs->array[i].size
                                                 : (int)CURL_ZERO_TERMINATED);
-            curl_mime_filename(part, IS_EMPTY_STRING(atchs->array[i].filename)
+            curl_mime_filename(part, !atchs->array[i].filename
                                          ? "a.out"
                                          : atchs->array[i].filename);
-            curl_mime_type(part, IS_EMPTY_STRING(atchs->array[i].content_type)
+            curl_mime_type(part, !atchs->array[i].content_type
                                      ? "application/octet-stream"
                                      : atchs->array[i].content_type);
             curl_mime_name(part, name);
         }
-        else if (!IS_EMPTY_STRING(atchs->array[i].filename)) {
+        else if (atchs->array[i].filename) {
             CURLcode code;
 
             /* fetch local file by the filename */
@@ -241,7 +241,7 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
                          curl_easy_strerror(code), atchs->array[i].filename);
                 perror(errbuf);
             }
-            curl_mime_type(part, IS_EMPTY_STRING(atchs->array[i].content_type)
+            curl_mime_type(part, !atchs->array[i].content_type
                                      ? "application/octet-stream"
                                      : atchs->array[i].content_type);
             curl_mime_name(part, name);
@@ -282,16 +282,29 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
         double retry_after = 1.0;
         bool is_global = false;
         char message[256] = "";
+        jsmnf *root = jsmnf_init();
 
-        json_extract(body.start, body.size,
-                     "(global):b (message):.*s (retry_after):lf", &is_global,
-                     sizeof(message), message, &retry_after);
+        if (jsmnf_start(root, body.start, body.size) >= 0) {
+            jsmnf *f;
+
+            f = jsmnf_find(root, "global", sizeof("global") - 1);
+            if (f) is_global = (body.start[f->val->start] == 't');
+            f = jsmnf_find(root, "message", sizeof("message") - 1);
+            if (f)
+                snprintf(message, sizeof(message), "%.*s",
+                         f->val->end - f->val->start,
+                         body.start + f->val->start);
+            f = jsmnf_find(root, "retry_after", sizeof("retry_after") - 1);
+            if (f) retry_after = strtol(body.start + f->val->start, NULL, 10);
+        }
 
         *wait_ms = (int64_t)(1000 * retry_after);
 
         logconf_warn(&adapter->conf,
                      "429 %s RATELIMITING (wait: %" PRId64 " ms) : %s",
                      is_global ? "GLOBAL" : "", *wait_ms, message);
+
+        jsmnf_cleanup(root);
 
         return true;
     }

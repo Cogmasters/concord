@@ -57,6 +57,7 @@ struct discord *
 discord_config_init(const char config_file[])
 {
     struct discord *new_client;
+    char *path[] = { "discord", "token" };
     FILE *fp;
 
     fp = fopen(config_file, "rb");
@@ -68,9 +69,11 @@ discord_config_init(const char config_file[])
 
     fclose(fp);
 
-    new_client->token = logconf_get_field(&new_client->conf, "discord.token");
-    if (STRNEQ("YOUR-BOT-TOKEN", new_client->token.start,
-               new_client->token.size)) {
+    new_client->token = logconf_get_field(&new_client->conf, path,
+                                          sizeof(path) / sizeof *path);
+    if (!strncmp("YOUR-BOT-TOKEN", new_client->token.start,
+                 new_client->token.size))
+    {
         memset(&new_client->token, 0, sizeof(new_client->token));
     }
 
@@ -163,7 +166,7 @@ discord_remove_intents(struct discord *client, uint64_t code)
 void
 discord_set_prefix(struct discord *client, char *prefix)
 {
-    if (IS_EMPTY_STRING(prefix)) return;
+    if (!prefix || !*prefix) return;
 
     if (client->gw.cmds.prefix.start) free(client->gw.cmds.prefix.start);
 
@@ -186,7 +189,7 @@ discord_set_on_command(struct discord *client,
      * default command callback if prefix is detected, but command isn't
      *  specified
      */
-    if (client->gw.cmds.prefix.size && IS_EMPTY_STRING(command)) {
+    if (client->gw.cmds.prefix.size && (!command || !*command)) {
         client->gw.cmds.on_default.cb = callback;
         return; /* EARLY RETURN */
     }

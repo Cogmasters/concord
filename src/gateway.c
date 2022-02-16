@@ -992,8 +992,7 @@ on_dispatch(struct discord_gateway *gw)
                          f->val->end - f->val->start,
                          data->start + f->val->start);
         }
-        ASSERT_S(!IS_EMPTY_STRING(gw->session->id),
-                 "Missing session_id from READY event");
+        ASSERT_S(*gw->session->id, "Missing session_id from READY event");
 
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
@@ -1436,6 +1435,8 @@ discord_gateway_init(struct discord_gateway *gw,
     /* Bot default presence update */
     struct discord_presence_update presence = { 0 };
     struct sized_buffer buf;
+    /* prefix directive */
+    char *path[] = { "discord", "default_prefix" };
 
     cbs.data = gw;
     cbs.on_connect = &on_connect_cb;
@@ -1481,18 +1482,26 @@ discord_gateway_init(struct discord_gateway *gw,
     gw->cmds.scheduler = default_scheduler_cb;
 
     /* check for default prefix in config file */
-    buf = logconf_get_field(conf, "discord.default_prefix");
+    buf = logconf_get_field(conf, path, sizeof(path) / sizeof *path);
     if (buf.size) {
-        bool enable_prefix = false;
-        json_extract(buf.start, buf.size, "(enable):b", &enable_prefix);
+        jsmnf *root = jsmnf_init();
 
-        if (enable_prefix) {
-            char *prefix = NULL;
-            json_extract(buf.start, buf.size, "(prefix):?s", &prefix);
+        if (jsmnf_start(root, buf.start, buf.size) >= 0) {
+            bool enable_prefix = false;
+            jsmnf *f;
 
-            gw->cmds.prefix.start = prefix;
-            gw->cmds.prefix.size = prefix ? strlen(prefix) : 0;
+            f = jsmnf_find(root, "enable", sizeof("enable") - 1);
+            if (f) enable_prefix = (buf.start[f->val->start] == 't');
+
+            if (enable_prefix) {
+                f = jsmnf_find(root, "prefix", sizeof("prefix") - 1);
+                if (f) {
+                    gw->cmds.prefix.start = buf.start + f->val->start;
+                    gw->cmds.prefix.size = f->val->end - f->val->start;
+                }
+            }
         }
+        jsmnf_cleanup(root);
     }
 }
 

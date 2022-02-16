@@ -69,6 +69,8 @@
 #define REQUEST_BLANK_INIT(req, ret)                                          \
     if (ret) RET_SAFECOPY_TYPELESS(req.ret, *ret)
 
+#define NOT_EMPTY_STR(str) (str && *str)
+
 /******************************************************************************
  * Functions specific to Discord Application Commands
  ******************************************************************************/
@@ -103,9 +105,8 @@ discord_create_global_application_command(
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(params->name), CCORD_BAD_PARAMETER,
-                 "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(params->description),
+    CCORD_EXPECT(client, NOT_EMPTY_STR(params->name), CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(params->description),
                  CCORD_BAD_PARAMETER, "");
 
     REQUEST_INIT(req, discord_application_command, ret);
@@ -241,9 +242,8 @@ discord_create_guild_application_command(
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(params->name), CCORD_BAD_PARAMETER,
-                 "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(params->description),
+    CCORD_EXPECT(client, NOT_EMPTY_STR(params->name), CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(params->description),
                  CCORD_BAD_PARAMETER, "");
 
     body.size = discord_create_guild_application_command_to_json(
@@ -693,7 +693,8 @@ discord_create_reaction(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -708,7 +709,7 @@ discord_create_reaction(struct discord *client,
                                "/reactions/%s/@me",
                                channel_id, message_id, emoji_endpoint);
 
-    free(pct_emoji_name);
+    curl_free(pct_emoji_name);
 
     return code;
 }
@@ -729,7 +730,8 @@ discord_delete_own_reaction(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -744,7 +746,7 @@ discord_delete_own_reaction(struct discord *client,
                                "/reactions/%s/@me",
                                channel_id, message_id, emoji_endpoint);
 
-    free(pct_emoji_name);
+    curl_free(pct_emoji_name);
 
     return code;
 }
@@ -767,7 +769,8 @@ discord_delete_user_reaction(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
-    pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -782,7 +785,7 @@ discord_delete_user_reaction(struct discord *client,
         "/channels/%" PRIu64 "/messages/%" PRIu64 "/reactions/%s/%" PRIu64,
         channel_id, message_id, emoji_endpoint, user_id);
 
-    free(pct_emoji_name);
+    curl_free(pct_emoji_name);
 
     return code;
 }
@@ -826,7 +829,8 @@ discord_get_reactions(struct discord *client,
         }
     }
 
-    pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -841,7 +845,7 @@ discord_get_reactions(struct discord *client,
                                "/reactions/%s%s",
                                channel_id, message_id, emoji_endpoint, query);
 
-    free(pct_emoji_name);
+    curl_free(pct_emoji_name);
 
     return code;
 }
@@ -881,7 +885,8 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
-    pct_emoji_name = emoji_name ? url_encode((char *)emoji_name) : NULL;
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -896,7 +901,7 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
                                "/reactions/%s",
                                channel_id, message_id, emoji_endpoint);
 
-    free(pct_emoji_name);
+    curl_free(pct_emoji_name);
 
     return code;
 }
@@ -1601,7 +1606,7 @@ discord_get_guild_template(struct discord *client,
 {
     struct discord_request req = { 0 };
 
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(code), CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(code), CCORD_BAD_PARAMETER, "");
 
     REQUEST_INIT(req, discord_guild_template, ret);
 
@@ -1866,13 +1871,13 @@ discord_search_guild_members(struct discord *client,
     if (params) {
         size_t offset = 0;
         if (params->query) {
-            char *pe_query = url_encode(params->query);
+            char *pe_query = curl_escape(params->query, strlen(params->query));
 
             offset += snprintf(query + offset, sizeof(query) - offset,
                                "query=%s", pe_query);
             ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
 
-            free(pe_query);
+            curl_free(pe_query);
         }
         if (params->limit) {
             offset += snprintf(query + offset, sizeof(query) - offset,
@@ -2345,8 +2350,8 @@ discord_create_interaction_response(
     char buf[4096];
 
     CCORD_EXPECT(client, interaction_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
     body.size = discord_interaction_response_to_json(buf, sizeof(buf), params);
@@ -2377,8 +2382,8 @@ discord_get_original_interaction_response(
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
 
     REQUEST_INIT(req, discord_interaction_response, ret);
 
@@ -2401,8 +2406,8 @@ discord_edit_original_interaction_response(
     char buf[16384]; /**< @todo dynamic buffer */
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
     body.size = discord_edit_original_interaction_response_to_json(
@@ -2433,8 +2438,8 @@ discord_delete_original_interaction_response(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
 
     REQUEST_BLANK_INIT(req, ret);
 
@@ -2457,8 +2462,8 @@ discord_create_followup_message(struct discord *client,
     char query[4096] = "";
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
     if (params->thread_id) {
@@ -2498,8 +2503,8 @@ discord_get_followup_message(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
     REQUEST_INIT(req, discord_message, ret);
@@ -2523,8 +2528,8 @@ discord_edit_followup_message(struct discord *client,
     char buf[16384]; /**< @todo dynamic buffer */
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
@@ -2557,8 +2562,8 @@ discord_delete_followup_message(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(interaction_token),
-                 CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(interaction_token), CCORD_BAD_PARAMETER,
+                 "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
     REQUEST_BLANK_INIT(req, ret);
@@ -2582,8 +2587,7 @@ discord_get_invite(struct discord *client,
     struct sized_buffer body;
     char buf[1024];
 
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(invite_code), CCORD_BAD_PARAMETER,
-                 "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(invite_code), CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
     body.size = discord_get_invite_to_json(buf, sizeof(buf), params);
@@ -2602,8 +2606,7 @@ discord_delete_invite(struct discord *client,
 {
     struct discord_request req = { 0 };
 
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(invite_code), CCORD_BAD_PARAMETER,
-                 "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(invite_code), CCORD_BAD_PARAMETER, "");
 
     REQUEST_INIT(req, discord_invite, ret);
 
@@ -2776,8 +2779,7 @@ discord_create_webhook(struct discord *client,
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(params->name), CCORD_BAD_PARAMETER,
-                 "");
+    CCORD_EXPECT(client, NOT_EMPTY_STR(params->name), CCORD_BAD_PARAMETER, "");
 
     body.size = discord_create_webhook_to_json(buf, sizeof(buf), params);
     body.start = buf;
@@ -2842,7 +2844,7 @@ discord_get_webhook_with_token(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
 
     REQUEST_INIT(req, discord_webhook, ret);
@@ -2886,7 +2888,7 @@ discord_modify_webhook_with_token(
     char buf[1024];
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
 
     body.size =
@@ -2924,7 +2926,7 @@ discord_delete_webhook_with_token(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
 
     REQUEST_BLANK_INIT(req, ret);
@@ -2949,7 +2951,7 @@ discord_execute_webhook(struct discord *client,
     size_t len = 0;
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
@@ -2992,7 +2994,7 @@ discord_get_webhook_message(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
@@ -3017,7 +3019,7 @@ discord_edit_webhook_message(struct discord *client,
     char buf[16384]; /**< @todo dynamic buffer */
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
@@ -3050,7 +3052,7 @@ discord_delete_webhook_message(struct discord *client,
     struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
-    CCORD_EXPECT(client, !IS_EMPTY_STRING(webhook_token), CCORD_BAD_PARAMETER,
+    CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
                  "");
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 

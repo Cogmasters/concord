@@ -13,7 +13,7 @@ discord_embed_set_footer(struct discord_embed *embed,
                          char icon_url[],
                          char proxy_icon_url[])
 {
-    if (IS_EMPTY_STRING(text)) {
+    if (!text || !*text) {
         log_error("Missing 'text'");
         return;
     }

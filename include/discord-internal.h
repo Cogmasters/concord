@@ -10,8 +10,6 @@
 #include <inttypes.h>
 #include <pthread.h>
 
-#include "json-actor.h"
-
 #define JSONB_HEADER
 #include "json-build.h"
 #define JSMN_STRICT
