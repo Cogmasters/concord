@@ -5,7 +5,7 @@
     if (f && f->val->type == JSMN_PRIMITIVE) _var = ('t' == buf[f->val->start])
 #define JSON_DECODER_PTR_char(f, buf, _var, _type)                            \
     if (f && f->val->type == JSMN_STRING)                                     \
-        ret += jsmnf_unescape(&_var, (char *)buf + f->val->start,             \
+        ret += jsmnf_unescape(&_var, buf + f->val->start,                     \
                               f->val->end - f->val->start)
 #define JSON_DECODER_STRUCT_PTR(f, buf, _var, _type)                          \
     if (f && (f->val->type == JSMN_OBJECT || f->val->type == JSMN_ARRAY)) {   \
