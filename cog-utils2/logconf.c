@@ -314,7 +314,13 @@ logconf_cleanup(struct logconf *conf)
             if (conf->http->f) fclose(conf->http->f);
             free(conf->http);
         }
-        if (conf->disable_modules.ids) free(conf->disable_modules.ids);
+        if (conf->disable_modules.ids) {
+            int i;
+
+            for (i = 0; i < conf->disable_modules.size; ++i)
+                free(conf->disable_modules.ids[i]);
+            free(conf->disable_modules.ids);
+        }
     }
     memset(conf, 0, sizeof *conf);
 }
