@@ -4,10 +4,9 @@
 #define JSON_DECODER_bool(f, buf, _var, _type)                                \
     if (f && f->val->type == JSMN_PRIMITIVE) _var = ('t' == buf[f->val->start])
 #define JSON_DECODER_PTR_char(f, buf, _var, _type)                            \
-    if (f && f->val->type == JSMN_STRING) {                                   \
-        _var = _gc_strndup(buf + f->val->start, f->val->end - f->val->start); \
-        ret += f->val->end - f->val->start;                                   \
-    }
+    if (f && f->val->type == JSMN_STRING)                                     \
+        ret += jsmnf_unescape(&_var, (char *)buf + f->val->start,             \
+                              f->val->end - f->val->start)
 #define JSON_DECODER_STRUCT_PTR(f, buf, _var, _type)                          \
     if (f && (f->val->type == JSMN_OBJECT || f->val->type == JSMN_ARRAY)) {   \
         _var = calloc(1, sizeof *_var);                                       \
