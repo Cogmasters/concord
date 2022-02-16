@@ -26,7 +26,7 @@
 #elif defined(GENCODECS_FORWARD)
 
 #define GENCODECS_STRUCT(_type)                                               \
-    static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
+    static size_t _##_type##_from_json(jsmnf *root, const char buf[],         \
                                        struct _type *this);
 #define GENCODECS_LIST(_type) GENCODECS_STRUCT(_type)
 #define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
@@ -37,27 +37,27 @@
 #else
 
 #define GENCODECS_STRUCT(_type)                                               \
-    static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
+    static size_t _##_type##_from_json(jsmnf *root, const char buf[],         \
                                        struct _type *this)                    \
     {                                                                         \
-        jsmnfind *f;                                                          \
+        jsmnf *f;                                                             \
         size_t ret = 0;
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
-        f = jsmnfind_find(root, _key, sizeof(_key) - 1);                      \
+        f = jsmnf_find(root, _key, sizeof(_key) - 1);                         \
         _decoder(f, buf, this->_name, _type);
 #define GENCODECS_FIELD_PRINTF(_name, _type, _printf_type, _scanf_type)       \
-        f = jsmnfind_find(root, #_name, sizeof(#_name) - 1);                  \
+        f = jsmnf_find(root, #_name, sizeof(#_name) - 1);                     \
         if (f) sscanf(buf + f->val->start, _scanf_type, &this->_name);
 #define GENCODECS_STRUCT_END                                                  \
         return ret;                                                           \
     }
 
 #define GENCODECS_LIST(_type)                                                 \
-    static size_t _##_type##_from_json(jsmnfind *root, const char buf[],      \
+    static size_t _##_type##_from_json(jsmnf *root, const char buf[],         \
                                        struct _type *this)                    \
     {                                                                         \
-        jsmnfind *f, *tmp;                                                    \
+        jsmnf *f, *tmp;                                                       \
         size_t ret, nelems = HASH_COUNT(root->child);                         \
         if (!nelems) return 0;                                                \
         ret = sizeof *this * nelems;
@@ -98,10 +98,10 @@
     size_t _type##_from_json(const char buf[], size_t size,                   \
                              struct _type *this)                              \
     {                                                                         \
-        jsmnfind *root = jsmnfind_init();                                     \
-        int ret = jsmnfind_start(root, buf, size);                            \
+        jsmnf *root = jsmnf_init();                                           \
+        int ret = jsmnf_start(root, buf, size);                               \
         if (ret >= 0) ret = _##_type##_from_json(root, buf, this);            \
-        jsmnfind_cleanup(root);                                               \
+        jsmnf_cleanup(root);                                                  \
         return ret;                                                           \
     }
     
@@ -109,11 +109,11 @@
     size_t _type##_from_json(const char buf[], size_t size,                   \
                              struct _type *this)                              \
     {                                                                         \
-        jsmnfind *root = jsmnfind_init();                                     \
+        jsmnf *root = jsmnf_init();                                           \
         size_t ret = 0;                                                       \
-        if (jsmnfind_start(root, buf, size) > 0)                              \
+        if (jsmnf_start(root, buf, size) > 0)                                 \
             ret = _##_type##_from_json(root, buf, this);                      \
-        jsmnfind_cleanup(root);                                               \
+        jsmnf_cleanup(root);                                                  \
         return ret;                                                           \
     }
 
