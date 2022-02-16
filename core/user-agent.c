@@ -505,9 +505,8 @@ ua_init(struct ua_attr *attr)
 
     if (pthread_mutex_init(&new_ua->connq->lock, NULL)) {
         logconf_fatal(&new_ua->conf, "Couldn't initialize mutex");
-        ABORT();
+        abort();
     }
-
     return new_ua;
 }
 
@@ -616,7 +615,7 @@ _ua_conn_set_method(struct ua_conn *conn,
     default:
         logconf_fatal(&conn->ua->conf, "Unknown http method (code: %d)",
                       method);
-        ABORT();
+        abort();
     }
 
     /* set ptr to payload that will be sent via POST/PUT/PATCH */

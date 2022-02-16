@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #include "discord.h"
-#include "debug.h"
 
 void
 print_usage(void)
