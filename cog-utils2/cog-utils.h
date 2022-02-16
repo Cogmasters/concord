@@ -164,22 +164,6 @@ uint64_t cog_timestamp_ms(void);
  */
 size_t cog_str_bounds_check(const char *str, const size_t threshold_len);
 
-/**
- * @brief Concatenate an array of strings to a buffer
- *
- * @param strings the array of strings
- * @param nmemb amount of elements in the array
- * @param delim arbitrary delimiter for separating strings
- * @param wordlen maximum length supported for each string
- * @param maxlen maximum length supported for resulting buffer
- * @return the buffer of concatenated strings
- */
-char *cog_join_strings(char **strings,
-                       const size_t nmemb,
-                       const char delim[],
-                       const size_t wordlen,
-                       const size_t maxlen);
-
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

@@ -13,7 +13,6 @@
 #include <unistd.h>
 
 #include "cog-utils.h"
-#include "debug.h"
 #include "clock.h"
 
 char *
@@ -37,7 +36,10 @@ char *
 cog_load_whole_file(const char filename[], size_t *len)
 {
   FILE *fp = fopen(filename, "rb");
-  VASSERT_S(NULL != fp, "%s '%s'\n", strerror(errno), filename);
+  if (!fp) {
+      fprintf(stderr, "%s '%s'\n", strerror(errno), filename);
+      return NULL;
+  }
   char *str = cog_load_whole_file_fp(fp, len);
   fclose(fp);
   return str;
@@ -237,26 +239,4 @@ cog_str_bounds_check(const char *str, const size_t threshold_len)
     if ('\0' == str[i]) return i; /* bound check succeeded */
   }
   return 0; /* bound check failed */
-}
-
-char *
-cog_join_strings(char **strings,
-                 const size_t nmemb,
-                 const char delim[],
-                 const size_t wordlen,
-                 const size_t maxlen)
-{
-  char *buf = malloc(maxlen);
-  char *cur = buf, *const end = cur + maxlen;
-  size_t i;
-
-  for (i = 0; i < nmemb; ++i) {
-    VASSERT_S(cog_str_bounds_check(strings[i], wordlen) > 0,
-              "'%s' exceeds threshold of %zu characters", strings[i], wordlen);
-    cur += snprintf(cur, end - cur, "%s%s", strings[i], delim);
-    ASSERT_S(cur < end, "Out of bounds write attempt");
-  }
-  *(cur - strlen(delim)) = '\0';
-
-  return buf;
 }
