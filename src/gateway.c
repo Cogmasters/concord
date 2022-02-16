@@ -214,7 +214,7 @@ static enum discord_gateway_events
 get_dispatch_event(char name[])
 {
 #define RETURN_IF_MATCH(event, str)                                           \
-    if (STREQ(#event, str)) return DISCORD_GATEWAY_EVENTS_##event
+    if (!strcmp(#event, str)) return DISCORD_GATEWAY_EVENTS_##event
 
     RETURN_IF_MATCH(READY, name);
     RETURN_IF_MATCH(RESUMED, name);
@@ -647,16 +647,16 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
     discord_message_from_json(data->start, data->size, &msg);
 
     if (gw->cmds.pool
-        && STRNEQ(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
+        && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
     {
         struct discord_gateway_cmd_cbs *cmd = NULL;
         size_t i;
 
         for (i = 0; i < gw->cmds.amt; ++i) {
             /* check if command from channel matches set command */
-            if (STRNEQ(gw->cmds.pool[i].start,
-                       msg.content + gw->cmds.prefix.size,
-                       gw->cmds.pool[i].size))
+            if (!strncmp(gw->cmds.pool[i].start,
+                         msg.content + gw->cmds.prefix.size,
+                         gw->cmds.pool[i].size))
             {
                 cmd = &gw->cmds.pool[i];
             }
@@ -1298,40 +1298,41 @@ on_close_cb(void *p_gw,
     gw->session->status |= DISCORD_SESSION_SHUTDOWN;
 
     switch (opcode) {
-    case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
+    default: /* websocket/clouflare opcodes */
+        if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
+            gw->session->status |= DISCORD_SESSION_RESUMABLE;
+            gw->session->retry.enable = false;
+            break;
+        }
+        /* fall-through */
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE:
-    case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
-    case DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR:
-    case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
+    case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
+        logconf_warn(
+            &gw->conf,
+            "Gateway will attempt to reconnect and start a new session");
+        gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
+        gw->session->retry.enable = true;
+        break;
     case DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED:
-    case DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
-    case DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED:
     case DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED:
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION:
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS:
     case DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD:
     case DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS:
+        logconf_warn(&gw->conf, "Gateway will not attempt to reconnect");
         gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
         gw->session->retry.enable = false;
         break;
-    default: /*websocket/clouflare opcodes */
-        if (WS_CLOSE_REASON_NORMAL == (enum ws_close_reason)opcode) {
-            gw->session->status |= DISCORD_SESSION_RESUMABLE;
-            gw->session->retry.enable = false;
-        }
-        else {
-            logconf_warn(
-                &gw->conf,
-                "Gateway will attempt to reconnect and start a new session");
-            gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
-            gw->session->retry.enable = true;
-        }
-        break;
-    case DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT:
+    case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR:
+    case DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE:
+    case DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR:
+    case DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED:
+    case DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED:
+    case DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED:
         logconf_warn(
             &gw->conf,
             "Gateway will attempt to reconnect and resume current session");
-        gw->session->status &= ~DISCORD_SESSION_RESUMABLE;
+        gw->session->status |= DISCORD_SESSION_RESUMABLE;
         gw->session->retry.enable = true;
         break;
     }
@@ -1729,11 +1730,6 @@ discord_gateway_perform(struct discord_gateway *gw)
      * minimum heartbeat interval required */
     if (gw->timer->interval < gw->timer->now - gw->timer->hbeat)
         send_heartbeat(gw);
-
-        /* XXX: moved to discord_run() */
-#if 0
-    if (gw->cmds.cbs.on_idle) gw->cmds.cbs.on_idle(CLIENT(gw, gw));
-#endif
 
     return CCORD_OK;
 }
