@@ -69,7 +69,7 @@ done(struct discord *client,
 {
     u64snowflake *channel_id = data;
 
-    if (!audit_log->audit_log_entries) {
+    if (!audit_log->audit_log_entries || !audit_log->audit_log_entries->size) {
         log_warn("No audit log entries found!");
         return;
     }

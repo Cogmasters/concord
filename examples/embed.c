@@ -71,7 +71,7 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot) return;
 
     /* load a embed from the json string */
-    struct discord_embed embed;
+    struct discord_embed embed = { 0 };
     discord_embed_from_json(JSON_STRING, sizeof(JSON_STRING), &embed);
 #if 0
     embed.timestamp = discord_timestamp(client); // get current timestamp

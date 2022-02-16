@@ -179,7 +179,7 @@ on_interaction_create(struct discord *client,
     if (!interaction->data || !interaction->data->values) return;
 
     char values[1024];
-    json_values_to_json(values, sizeof(values), interaction->data->values);
+    strings_to_json(values, sizeof(values), interaction->data->values);
 
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text),

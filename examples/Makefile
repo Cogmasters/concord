@@ -3,7 +3,7 @@
 TOP = ..
 CC ?= gcc
 
-COGUTILS_DIR := $(TOP)/cog-utils
+COGUTILS_DIR := $(TOP)/cog-utils2
 CORE_DIR     := $(TOP)/core
 INCLUDE_DIR  := $(TOP)/include
 GENCODECS_DIR  := $(TOP)/gencodecs

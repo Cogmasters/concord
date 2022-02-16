@@ -70,10 +70,12 @@ struct context {
 };
 
 void
-done_get_pins(struct discord *client, void *data, const struct discord_messages *msgs)
+done_get_pins(struct discord *client,
+              void *data,
+              const struct discord_messages *msgs)
 {
     struct context *cxt = data;
-    char text[2000];
+    char text[2000] = "No pins on channel";
 
     char *cur = text;
     char *end = &text[sizeof(text) - 1];
@@ -95,9 +97,11 @@ void
 fail_get_pins(struct discord *client, CCORDcode code, void *data)
 {
     struct context *cxt = data;
-    char text[2000];
+    char text[2000] = "";
 
-    snprintf(text, sizeof(text), "No pinned messages in <#%" PRIu64 ">", cxt->channel_id);
+    snprintf(text, sizeof(text),
+             "Failed fetching pinned messages at <#%" PRIu64 ">",
+             cxt->channel_id);
 
     struct discord_create_message params = { .content = text };
     discord_create_message(client, cxt->channel_id, &params, NULL);

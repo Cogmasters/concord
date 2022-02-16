@@ -120,7 +120,8 @@ LIST_END
 STRUCT(discord_application_command_option_choice)
   PP("1-100 character choice name")
     FIELD_PTR(name, char, *)
-  PP("value of the choice, up to 100 characters if string")
+  PP("value of the choice, up to 100 characters if string @note in case of a"
+       "string the value must be enclosed with escaped commas, ex: `\"hi\"`")
     FIELD_PTR(value, json_char, *)
 STRUCT_END
 
@@ -133,7 +134,8 @@ STRUCT(discord_application_command_interaction_data_option)
     FIELD_PTR(name, char, *)
   PP("value of the application command option type")
     FIELD_ENUM(type, discord_application_command_option_types)
-  PP("the value of the option resulting from user input")
+  PP("the value of the option resulting from user input @note in case of a"
+       "string the value must be enclosed with escaped commands, ex: `\"hi\"`")
   COND_WRITE(this->value != NULL && *this->value != '\0')
     FIELD_PTR(value, json_char, *)
   COND_END

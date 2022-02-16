@@ -7,7 +7,7 @@
 
 #include "discord.h"
 
-u64_snowflake_t g_app_id;
+u64snowflake g_app_id;
 
 void
 print_usage(void)
@@ -45,15 +45,15 @@ on_slash_command_create(struct discord *client,
     struct discord_application_command_option_choice gender_choices[] = {
         {
             .name = "male",
-            .value = "male",
+            .value = "\"male\"",
         },
         {
             .name = "female",
-            .value = "female",
+            .value = "\"female\"",
         },
         {
             .name = "other",
-            .value = "other",
+            .value = "\"other\"",
         },
     };
     struct discord_application_command_option options[] = {
@@ -122,7 +122,7 @@ on_interaction_create(struct discord *client,
     char *nick = "blank";
     int pets = 0;
     char *gender = "blank";
-    u64_snowflake_t channel_id = 0;
+    u64snowflake channel_id = 0;
 
     for (int i = 0; i < interaction->data->options->size; ++i) {
         char *name = interaction->data->options->array[i].name;
