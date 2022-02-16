@@ -69,7 +69,7 @@ module_is_disabled(struct logconf *conf)
     int i;
 
     for (i = 0; i < conf->disable_modules.size; ++i) {
-        if (0 == strcmp(conf->id, conf->disable_modules.array[i])) {
+        if (0 == strcmp(conf->id, conf->disable_modules.ids[i])) {
             /* reset presets (if any) */
             memset(&conf->L, 0, sizeof conf->L);
             /* silence output */
@@ -195,7 +195,8 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                 jsmnf *f2;
 
                 f2 = jsmnf_find(f1, "enable", sizeof("enable") - 1);
-                if (f2) l.http.enable = (conf->file.start[f2->val->start] == 't');
+                if (f2)
+                    l.http.enable = (conf->file.start[f2->val->start] == 't');
                 f2 = jsmnf_find(f1, "filename", sizeof("filename") - 1);
                 if (f2)
                     snprintf(l.http.filename, sizeof(l.http.filename), "%.*s",
@@ -209,15 +210,14 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                 size_t ret, nelems = HASH_COUNT(root->child);
 
                 if (nelems) {
-                    conf->disable_modules.array =
+                    conf->disable_modules.ids =
                         calloc(1, nelems * sizeof(char *));
                     HASH_ITER(hh, root->child, f2, tmp)
                     {
                         if (f2 && f2->val->type == JSMN_STRING) {
-                            jsmnf_unescape(conf->disable_modules.array
+                            jsmnf_unescape(conf->disable_modules.ids
                                                + conf->disable_modules.size,
-                                           (char *)conf->file.start
-                                               + f2->val->start,
+                                           conf->file.start + f2->val->start,
                                            f2->val->end - f2->val->start);
                             ++conf->disable_modules.size;
                         }
@@ -312,7 +312,7 @@ logconf_cleanup(struct logconf *conf)
             if (conf->http->f) fclose(conf->http->f);
             free(conf->http);
         }
-        if (conf->disable_modules.array) free(conf->disable_modules.array);
+        if (conf->disable_modules.ids) free(conf->disable_modules.ids);
     }
     memset(conf, 0, sizeof *conf);
 }
