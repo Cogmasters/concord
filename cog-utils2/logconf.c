@@ -206,22 +206,24 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
             f1 = jsmnf_find(f, "disable_modules",
                             sizeof("disable_modules") - 1);
             if (f1) {
-                jsmnf *f2, *tmp;
-                size_t ret, nelems = HASH_COUNT(root->child);
+                size_t nelems = HASH_COUNT(root->child);
 
                 if (nelems) {
+                    jsmnf *f2, *tmp;
+                    int i = 0;
+
                     conf->disable_modules.ids =
                         calloc(1, nelems * sizeof(char *));
-                    HASH_ITER(hh, root->child, f2, tmp)
+                    HASH_ITER(hh, f1->child, f2, tmp)
                     {
                         if (f2 && f2->val->type == JSMN_STRING) {
-                            jsmnf_unescape(conf->disable_modules.ids
-                                               + conf->disable_modules.size,
+                            jsmnf_unescape(conf->disable_modules.ids + i,
                                            conf->file.start + f2->val->start,
                                            f2->val->end - f2->val->start);
-                            ++conf->disable_modules.size;
+                            ++i;
                         }
                     }
+                    conf->disable_modules.size = i;
                 }
             }
         }
