@@ -12,7 +12,7 @@ main(int argc, char *argv[])
     struct discord *client;
     CCORDcode code;
 
-    const u64_snowflake_t FAUX_CHANNEL_ID = 123;
+    const u64snowflake FAUX_CHANNEL_ID = 123;
     struct discord_guilds guilds = { 0 };
     struct discord_user bot;
 
