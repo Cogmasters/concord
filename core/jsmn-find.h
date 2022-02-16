@@ -542,7 +542,9 @@ second_iter:
         state = UNESCAPING;
         goto second_iter;
     case TESTING:
-        *p_dest = src_start;
+        *p_dest = calloc(1, size);
+        memcpy(*p_dest, src_start, size);
+        (*p_dest)[size] = '\0';
         return size;
     default:
         break;
