@@ -6,7 +6,7 @@ INCLUDE_DIR   := include
 OBJDIR        := obj
 LIBDIR        := lib
 DOCS_DIR      := docs
-COGUTILS_DIR  := cog-utils2
+COGUTILS_DIR  := cog-utils
 GENCODECS_DIR := gencodecs
 CORE_DIR      := core
 THIRDP_DIR    := $(CORE_DIR)/third-party
@@ -59,7 +59,7 @@ $(OBJDIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all: $(COGUTILS_DIR) $(GENCODECS_HDR)
+all: $(GENCODECS_HDR)
 	@ $(MAKE) discord
 
 discord: $(LIB)
@@ -69,9 +69,6 @@ voice:
 
 debug:
 	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
-
-cog_utils:
-	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -84,8 +81,6 @@ $(LIB): $(OBJS) | $(LIBDIR)
 
 $(LIBDIR):
 	@ mkdir -p $@
-$(COGUTILS_DIR):
-	@ $(MAKE) cog_utils
 
 $(OBJS): | $(OBJDIR)
 
@@ -125,7 +120,6 @@ clean:
 
 purge: clean
 	rm -rf $(LIBDIR)
-	# rm -rf $(COGUTILS_DIR)
 	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: all test examples install echo clean purge docs
