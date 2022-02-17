@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdarg.h>
 
+#include "carray.h"
+
 #include "discord.h"
 #include "discord-internal.h"
 
@@ -195,7 +197,7 @@ static void
 _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
-    struct discord_attachment **atchs = cxt->req.attachments;
+    struct discord_attachments *atchs = cxt->req.attachments;
     struct sized_buffer *body = &cxt->body.buf;
     curl_mimepart *part;
     char name[64];
@@ -210,38 +212,38 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
     }
 
     /* attachment part */
-    for (i = 0; atchs[i]; ++i) {
+    for (i = 0; i < atchs->size; ++i) {
         size_t len = snprintf(name, sizeof(name), "files[%d]", i);
         ASSERT_S(len < sizeof(name), "Out of bounds write attempt");
 
-        if (atchs[i]->content) {
+        if (atchs->array[i].content) {
             part = curl_mime_addpart(mime);
-            curl_mime_data(part, atchs[i]->content,
-                           atchs[i]->size ? atchs[i]->size
-                                          : CURL_ZERO_TERMINATED);
-            curl_mime_filename(part, IS_EMPTY_STRING(atchs[i]->filename)
+            curl_mime_data(part, atchs->array[i].content,
+                           atchs->array[i].size ? atchs->array[i].size
+                                                : (int)CURL_ZERO_TERMINATED);
+            curl_mime_filename(part, !atchs->array[i].filename
                                          ? "a.out"
-                                         : atchs[i]->filename);
-            curl_mime_type(part, IS_EMPTY_STRING(atchs[i]->content_type)
+                                         : atchs->array[i].filename);
+            curl_mime_type(part, !atchs->array[i].content_type
                                      ? "application/octet-stream"
-                                     : atchs[i]->content_type);
+                                     : atchs->array[i].content_type);
             curl_mime_name(part, name);
         }
-        else if (!IS_EMPTY_STRING(atchs[i]->filename)) {
+        else if (atchs->array[i].filename) {
             CURLcode code;
 
             /* fetch local file by the filename */
             part = curl_mime_addpart(mime);
-            code = curl_mime_filedata(part, atchs[i]->filename);
+            code = curl_mime_filedata(part, atchs->array[i].filename);
             if (code != CURLE_OK) {
                 char errbuf[256];
                 snprintf(errbuf, sizeof(errbuf), "%s (file: %s)",
-                         curl_easy_strerror(code), atchs[i]->filename);
+                         curl_easy_strerror(code), atchs->array[i].filename);
                 perror(errbuf);
             }
-            curl_mime_type(part, IS_EMPTY_STRING(atchs[i]->content_type)
+            curl_mime_type(part, !atchs->array[i].content_type
                                      ? "application/octet-stream"
-                                     : atchs[i]->content_type);
+                                     : atchs->array[i].content_type);
             curl_mime_name(part, name);
         }
     }
@@ -280,16 +282,29 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
         double retry_after = 1.0;
         bool is_global = false;
         char message[256] = "";
+        jsmnf *root = jsmnf_init();
 
-        json_extract(body.start, body.size,
-                     "(global):b (message):.*s (retry_after):lf", &is_global,
-                     sizeof(message), message, &retry_after);
+        if (jsmnf_start(root, body.start, body.size) >= 0) {
+            jsmnf *f;
+
+            f = jsmnf_find(root, "global", sizeof("global") - 1);
+            if (f) is_global = (body.start[f->val->start] == 't');
+            f = jsmnf_find(root, "message", sizeof("message") - 1);
+            if (f)
+                snprintf(message, sizeof(message), "%.*s",
+                         f->val->end - f->val->start,
+                         body.start + f->val->start);
+            f = jsmnf_find(root, "retry_after", sizeof("retry_after") - 1);
+            if (f) retry_after = strtol(body.start + f->val->start, NULL, 10);
+        }
 
         *wait_ms = (int64_t)(1000 * retry_after);
 
         logconf_warn(&adapter->conf,
                      "429 %s RATELIMITING (wait: %" PRId64 " ms) : %s",
                      is_global ? "GLOBAL" : "", *wait_ms, message);
+
+        jsmnf_cleanup(root);
 
         return true;
     }
@@ -325,7 +340,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     conn = ua_conn_start(adapter->ua);
 
     if (HTTP_MIMEPOST == method) {
-        cxt.req.attachments = req->attachments;
+        cxt.req.attachments = calloc(1, sizeof(struct discord_attachments));
+        *cxt.req.attachments = *req->attachments;
         cxt.body.buf = *body;
 
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
@@ -412,36 +428,36 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
 /* ASYNCHRONOUS REQUEST LOGIC */
 
-/* TODO: make this kind of function specs generated (optional)
+/* TODO: make this kind of function gencodecs generated (optional)
  *
  * Only the fields that are required at _discord_context_to_mime()
  *        are duplicated*/
-static struct discord_attachment **
-_discord_attachment_list_dup(struct discord_attachment **src)
+static void
+_discord_attachments_dup(struct discord_attachments *dest,
+                         struct discord_attachments *src)
 {
-    size_t i, len = ntl_length((ntl_t)src);
-    struct discord_attachment **dest;
+    int i;
 
-    dest = (struct discord_attachment **)ntl_calloc(len, sizeof **dest);
+    if (!dest || !src) return;
 
-    for (i = 0; src[i]; ++i) {
-        memcpy(dest[i], src[i], sizeof **dest);
-        if (src[i]->content) {
-            dest[i]->size =
-                src[i]->size ? src[i]->size : strlen(src[i]->content) + 1;
+    for (i = 0; i < src->size; ++i) {
+        carray_insert(dest, i, src->array[i]);
+        if (src->array[i].content) {
+            dest->array[i].size = src->array[i].size
+                                      ? src->array[i].size
+                                      : (int)strlen(src->array[i].content) + 1;
 
-            dest[i]->content = malloc(dest[i]->size);
-            memcpy(dest[i]->content, src[i]->content, dest[i]->size);
+            dest->array[i].content = malloc(dest->array[i].size);
+            memcpy(dest->array[i].content, src->array[i].content,
+                   dest->array[i].size);
         }
-        if (src[i]->filename) {
-            dest[i]->filename = strdup(src[i]->filename);
+        if (src->array[i].filename) {
+            dest->array[i].filename = strdup(src->array[i].filename);
         }
-        if (src[i]->content_type) {
-            dest[i]->content_type = strdup(src[i]->content_type);
+        if (src->array[i].content_type) {
+            dest->array[i].content_type = strdup(src->array[i].content_type);
         }
     }
-
-    return dest;
 }
 
 static void
@@ -458,8 +474,8 @@ _discord_context_reset(struct discord_context *cxt)
     cxt->timeout_ms = 0;
     cxt->retry_attempt = 0;
 
-    if (cxt->req.attachments)
-        discord_attachment_list_free(cxt->req.attachments);
+    discord_attachments_cleanup(cxt->req.attachments);
+    free(cxt->req.attachments);
 
     memset(&cxt->req, 0, sizeof(struct discord_request));
 }
@@ -476,9 +492,7 @@ _discord_context_populate(struct discord_context *cxt,
     cxt->method = method;
 
     memcpy(&cxt->req, req, sizeof(struct discord_request));
-    if (req->attachments) {
-        cxt->req.attachments = _discord_attachment_list_dup(req->attachments);
-    }
+    _discord_attachments_dup(cxt->req.attachments, req->attachments);
 
     if (body) {
         /* copy request body */
@@ -517,7 +531,7 @@ timer_less_than(const struct heap_node *ha, const struct heap_node *hb)
 
 static void
 _discord_context_set_timeout(struct discord_adapter *adapter,
-                             u64_unix_ms_t timeout,
+                             u64unix_ms timeout,
                              struct discord_context *cxt)
 {
     cxt->bucket->freeze = true;
@@ -532,8 +546,8 @@ static bool
 _discord_context_timeout(struct discord_adapter *adapter,
                          struct discord_context *cxt)
 {
-    u64_unix_ms_t now = NOW(adapter);
-    u64_unix_ms_t timeout = discord_bucket_get_timeout(adapter, cxt->bucket);
+    u64unix_ms now = NOW(adapter);
+    u64unix_ms timeout = discord_bucket_get_timeout(adapter, cxt->bucket);
 
     if (now > timeout) return false;
 
@@ -783,34 +797,23 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
             }
         }
         else if (cxt->req.ret.done.typed) {
-            if (cxt->req.ret.is_ntl) {
-                ntl_t ret = NULL;
+            void *ret = calloc(1, cxt->req.gnrc.size);
 
-                /* populate ret */
-                if (cxt->req.gnrc.from_json)
-                    cxt->req.gnrc.from_json(body.start, body.size, &ret);
+            /* initialize ret */
+            if (cxt->req.gnrc.init) cxt->req.gnrc.init(ret);
 
+            /* populate ret */
+            if (cxt->req.gnrc.from_json)
+                cxt->req.gnrc.from_json(body.start, body.size, ret);
+
+            if (cxt->req.ret.has_type)
                 cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
+            else
+                cxt->req.ret.done.typeless(client, cxt->req.ret.data);
 
-                /* cleanup ret */
-                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
-            }
-            else {
-                void *ret = malloc(cxt->req.gnrc.size);
-
-                /* populate ret */
-                if (cxt->req.gnrc.from_json)
-                    cxt->req.gnrc.from_json(body.start, body.size, ret);
-
-                if (cxt->req.ret.has_type)
-                    cxt->req.ret.done.typed(client, cxt->req.ret.data, ret);
-                else
-                    cxt->req.ret.done.typeless(client, cxt->req.ret.data);
-
-                /* cleanup ret */
-                if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
-                free(ret);
-            }
+            /* cleanup ret */
+            if (cxt->req.gnrc.cleanup) cxt->req.gnrc.cleanup(ret);
+            free(ret);
         }
 
         code = info.code;
@@ -844,7 +847,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         ua_conn_reset(cxt->conn);
 
         if (wait_ms) {
-            u64_unix_ms_t timeout = NOW(adapter) + wait_ms;
+            u64unix_ms timeout = NOW(adapter) + wait_ms;
 
             _discord_context_set_timeout(adapter, timeout, cxt);
         }

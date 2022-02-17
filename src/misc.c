@@ -5,6 +5,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 #include "cog-utils.h"
+#include "carray.h"
 
 void
 discord_embed_set_footer(struct discord_embed *embed,
@@ -12,7 +13,7 @@ discord_embed_set_footer(struct discord_embed *embed,
                          char icon_url[],
                          char proxy_icon_url[])
 {
-    if (IS_EMPTY_STRING(text)) {
+    if (!text || !*text) {
         log_error("Missing 'text'");
         return;
     }
@@ -196,16 +197,17 @@ discord_embed_add_field(struct discord_embed *embed,
     if (name) cog_strndup(name, strlen(name), &field.name);
     if (value) cog_strndup(value, strlen(value), &field.value);
 
-    ntl_append2((ntl_t *)&embed->fields, sizeof(struct discord_embed_field),
-                &field);
+    if (!embed->fields)
+        embed->fields = calloc(1, sizeof *embed->fields);
+    carray_append(embed->fields, field);
 }
 
 void
-discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
-                         u64_snowflake_t id,
+discord_overwrite_append(struct discord_overwrites *permission_overwrites,
+                         u64snowflake id,
                          int type,
-                         u64_bitmask_t allow,
-                         u64_bitmask_t deny)
+                         u64bitmask allow,
+                         u64bitmask deny)
 {
     struct discord_overwrite new_overwrite = { 0 };
 
@@ -214,14 +216,14 @@ discord_overwrite_append(struct discord_overwrite ***permission_overwrites,
     new_overwrite.allow = allow;
     new_overwrite.deny = deny;
 
-    ntl_append2((ntl_t *)permission_overwrites,
-                sizeof(struct discord_overwrite), &new_overwrite);
+    carray_append(permission_overwrites, new_overwrite);
 }
 
 void
-discord_presence_add_activity(struct discord_presence_status *presence,
+discord_presence_add_activity(struct discord_presence_update *presence,
                               struct discord_activity *activity)
 {
-    ntl_append2((ntl_t *)&presence->activities,
-                sizeof(struct discord_activity), activity);
+    if (!presence->activities)
+        presence->activities = calloc(1, sizeof *presence->activities);
+    carray_append(presence->activities, *activity);
 }

@@ -19,11 +19,6 @@
     typedef void (*discord_on_##type)(struct discord * client, void *data,    \
                                       const struct discord_##type *ret)
 
-#define DISCORDT_RET_CALLBACK_LIST(type)                                      \
-    /** @brief Triggers on a succesful request */                             \
-    typedef void (*discord_on_##type##s)(struct discord * client, void *data, \
-                                         const struct discord_##type **ret)
-
 #define DISCORDT_RET_DEFAULT_FIELDS                                           \
     /** optional callback to be executed on a failed request */               \
     discord_on_fail fail;                                                     \
@@ -50,28 +45,10 @@
         struct discord_##type *sync;                                          \
     }
 
-#define DISCORDT_RET_LIST(type)                                               \
-    /** @brief Request's return context */                                    \
-    struct discord_ret_##type##s {                                            \
-        /** optional callback to be executed on a successful request */       \
-        discord_on_##type##s done;                                            \
-        DISCORDT_RET_DEFAULT_FIELDS;                                          \
-        /** if an address is provided, then request will block the thread and \
-           perform on-spot.                                                   \
-           On success the response object will be written to the address,     \
-           unless enabled with @ref DISCORD_SYNC_FLAG. */                     \
-        struct discord_##type ***sync;                                        \
-    }
-
 #define DISCORDT_RETURN(type)                                                 \
     DISCORDT_RET_CALLBACK(type);                                              \
                                                                               \
     DISCORDT_RET(type)
-
-#define DISCORDT_RETURN_LIST(type)                                            \
-    DISCORDT_RET_CALLBACK_LIST(type);                                         \
-                                                                              \
-    DISCORDT_RET_LIST(type)
 
 /******************************************************************************
  * Public return datatypes declaration
@@ -95,49 +72,49 @@ struct discord_ret {
 };
 
 DISCORDT_RETURN(application_command);
-DISCORDT_RETURN_LIST(application_command);
+DISCORDT_RETURN(application_commands);
+DISCORDT_RETURN(application_command_permission);
 DISCORDT_RETURN(application_command_permissions);
-DISCORDT_RETURN_LIST(application_command_permissions);
-DISCORDT_RETURN_LIST(guild_application_command_permissions);
+DISCORDT_RETURN(guild_application_command_permissions);
 DISCORDT_RETURN(interaction_response);
 
 DISCORDT_RETURN(audit_log);
 
 DISCORDT_RETURN(channel);
-DISCORDT_RETURN_LIST(channel);
+DISCORDT_RETURN(channels);
 DISCORDT_RETURN(message);
-DISCORDT_RETURN_LIST(message);
+DISCORDT_RETURN(messages);
 DISCORDT_RETURN(followed_channel);
 
 DISCORDT_RETURN(user);
-DISCORDT_RETURN_LIST(user);
+DISCORDT_RETURN(users);
 
 DISCORDT_RETURN(invite);
-DISCORDT_RETURN_LIST(invite);
+DISCORDT_RETURN(invites);
 
-DISCORDT_RETURN_LIST(thread_member);
+DISCORDT_RETURN(thread_members);
 DISCORDT_RETURN(thread_response_body);
 
 DISCORDT_RETURN(emoji);
-DISCORDT_RETURN_LIST(emoji);
+DISCORDT_RETURN(emojis);
 
 DISCORDT_RETURN(guild);
-DISCORDT_RETURN_LIST(guild);
+DISCORDT_RETURN(guilds);
 DISCORDT_RETURN(guild_preview);
 DISCORDT_RETURN(guild_member);
-DISCORDT_RETURN_LIST(guild_member);
+DISCORDT_RETURN(guild_members);
 DISCORDT_RETURN(ban);
-DISCORDT_RETURN_LIST(ban);
+DISCORDT_RETURN(bans);
 DISCORDT_RETURN(role);
-DISCORDT_RETURN_LIST(role);
+DISCORDT_RETURN(roles);
 DISCORDT_RETURN(welcome_screen);
 
 DISCORDT_RETURN(guild_template);
 
-DISCORDT_RETURN_LIST(connection);
-DISCORDT_RETURN_LIST(voice_region);
+DISCORDT_RETURN(connections);
+DISCORDT_RETURN(voice_regions);
 
 DISCORDT_RETURN(webhook);
-DISCORDT_RETURN_LIST(webhook);
+DISCORDT_RETURN(webhooks);
 
 #endif /* DISCORD_TEMPLATES_H */

@@ -10,7 +10,7 @@
 struct discord *client;
 
 struct user_cxt {
-    u64_snowflake_t channel_id;
+    u64snowflake channel_id;
     unsigned long long counter;
 };
 
@@ -144,7 +144,7 @@ on_spam_ordered(struct discord *client, const struct discord_message *msg)
 void
 send_err(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t channel_id = *(u64_snowflake_t *)data;
+    u64snowflake channel_id = *(u64snowflake *)data;
 
     discord_create_message(
         client, channel_id,
@@ -157,10 +157,10 @@ send_err(struct discord *client, CCORDcode code, void *data)
 void
 on_force_error(struct discord *client, const struct discord_message *msg)
 {
-    const u64_snowflake_t FAUX_CHANNEL_ID = 123;
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    const u64snowflake FAUX_CHANNEL_ID = 123;
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
 
-    memcpy(channel_id, &msg->channel_id, sizeof(u64_snowflake_t));
+    memcpy(channel_id, &msg->channel_id, sizeof(u64snowflake));
 
     discord_delete_channel(client, FAUX_CHANNEL_ID,
                            &(struct discord_ret_channel){

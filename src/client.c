@@ -57,6 +57,7 @@ struct discord *
 discord_config_init(const char config_file[])
 {
     struct discord *new_client;
+    char *path[] = { "discord", "token" };
     FILE *fp;
 
     fp = fopen(config_file, "rb");
@@ -68,9 +69,11 @@ discord_config_init(const char config_file[])
 
     fclose(fp);
 
-    new_client->token = logconf_get_field(&new_client->conf, "discord.token");
-    if (STRNEQ("YOUR-BOT-TOKEN", new_client->token.start,
-               new_client->token.size)) {
+    new_client->token = logconf_get_field(&new_client->conf, path,
+                                          sizeof(path) / sizeof *path);
+    if (!strncmp("YOUR-BOT-TOKEN", new_client->token.start,
+                 new_client->token.size))
+    {
         memset(&new_client->token, 0, sizeof(new_client->token));
     }
 
@@ -149,7 +152,7 @@ discord_get_data(struct discord *client)
 }
 
 void
-discord_add_intents(struct discord *client, enum discord_gateway_intents code)
+discord_add_intents(struct discord *client, uint64_t code)
 {
     if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
         logconf_error(&client->conf, "Can't set intents to a running client.");
@@ -160,8 +163,7 @@ discord_add_intents(struct discord *client, enum discord_gateway_intents code)
 }
 
 void
-discord_remove_intents(struct discord *client,
-                       enum discord_gateway_intents code)
+discord_remove_intents(struct discord *client, uint64_t code)
 {
     if (WS_CONNECTED == ws_get_status(client->gw.ws)) {
         logconf_error(&client->conf,
@@ -175,7 +177,7 @@ discord_remove_intents(struct discord *client,
 void
 discord_set_prefix(struct discord *client, char *prefix)
 {
-    if (IS_EMPTY_STRING(prefix)) return;
+    if (!prefix || !*prefix) return;
 
     if (client->gw.cmds.prefix.start) free(client->gw.cmds.prefix.start);
 
@@ -198,7 +200,7 @@ discord_set_on_command(struct discord *client,
      * default command callback if prefix is detected, but command isn't
      *  specified
      */
-    if (client->gw.cmds.prefix.size && IS_EMPTY_STRING(command)) {
+    if (client->gw.cmds.prefix.size && (!command || !*command)) {
         client->gw.cmds.on_default.cb = callback;
         return; /* EARLY RETURN */
     }
@@ -613,7 +615,7 @@ discord_set_on_voice_server_update(struct discord *client,
 
 void
 discord_set_presence(struct discord *client,
-                     struct discord_presence_status *presence)
+                     struct discord_presence_update *presence)
 {
     memcpy(client->gw.id.presence, presence, sizeof *presence);
     discord_gateway_send_presence_update(&client->gw);

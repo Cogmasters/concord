@@ -7,7 +7,7 @@
 
 #include "discord.h"
 
-u64_snowflake_t g_app_id;
+u64snowflake g_app_id;
 
 void
 print_usage(void)
@@ -42,60 +42,67 @@ on_slash_command_create(struct discord *client,
 {
     if (msg->author->bot) return;
 
+    struct discord_application_command_option_choice gender_choices[] = {
+        {
+            .name = "male",
+            .value = "\"male\"",
+        },
+        {
+            .name = "female",
+            .value = "\"female\"",
+        },
+        {
+            .name = "other",
+            .value = "\"other\"",
+        },
+    };
+    struct discord_application_command_option options[] = {
+        {
+            .type = DISCORD_APPLICATION_OPTION_STRING,
+            .name = "nick",
+            .description = "Your nick",
+            .required = true,
+        },
+        {
+            .type = DISCORD_APPLICATION_OPTION_INTEGER,
+            .name = "pets",
+            .description = "How many pets you got",
+        },
+        {
+            .type = DISCORD_APPLICATION_OPTION_STRING,
+            .name = "gender",
+            .description = "Your gender",
+            .choices =
+                &(struct discord_application_command_option_choices){
+                    .size = sizeof(gender_choices) / sizeof *gender_choices,
+                    .array = gender_choices,
+                },
+        },
+        {
+            .type = DISCORD_APPLICATION_OPTION_CHANNEL,
+            .name = "favorite",
+            .description = "Favorite channel",
+            .channel_types =
+                &(struct integers){
+                    .size = 1,
+                    .array =
+                        (int[]){
+                            DISCORD_CHANNEL_GUILD_TEXT,
+                        },
+                },
+        },
+    };
+
     struct discord_create_guild_application_command params = {
-        .type = DISCORD_APPLICATION_COMMAND_CHAT_INPUT,
+        .type = DISCORD_APPLICATION_CHAT_INPUT,
         .name = "fill-form",
         .description = "A slash command example for form filling",
         .default_permission = true,
         .options =
-            (struct discord_application_command_option *[]){
-                &(struct discord_application_command_option){
-                    .type = DISCORD_APPLICATION_COMMAND_OPTION_STRING,
-                    .name = "nick",
-                    .description = "Your nick",
-                    .required = true,
-                },
-                &(struct discord_application_command_option){
-                    .type = DISCORD_APPLICATION_COMMAND_OPTION_INTEGER,
-                    .name = "pets",
-                    .description = "How many pets you got",
-                },
-                &(struct discord_application_command_option){
-                    .type = DISCORD_APPLICATION_COMMAND_OPTION_STRING,
-                    .name = "gender",
-                    .description = "Your gender",
-                    .choices =
-                        (struct discord_application_command_option_choice *[]){
-                            &(struct
-                              discord_application_command_option_choice){
-                                .name = "male",
-                                .value = "male",
-                            },
-                            &(struct
-                              discord_application_command_option_choice){
-                                .name = "female",
-                                .value = "female",
-                            },
-                            &(struct
-                              discord_application_command_option_choice){
-                                .name = "other",
-                                .value = "other",
-                            },
-                            NULL // END OF CHOICES
-                        },
-                },
-                &(struct discord_application_command_option){
-                    .type = DISCORD_APPLICATION_COMMAND_OPTION_CHANNEL,
-                    .name = "favorite",
-                    .description = "Favorite channel",
-                    .channel_types =
-                        (ja_u64 *[]){
-                            &(ja_u64){ DISCORD_CHANNEL_GUILD_TEXT },
-                            NULL, // END OF CHANNEL TYPES
-                        },
-                },
-                NULL // END OF OPTIONS
-            }
+            &(struct discord_application_command_options){
+                .size = sizeof(options) / sizeof *options,
+                .array = options,
+            },
     };
 
     /* Create slash command */
@@ -115,24 +122,20 @@ on_interaction_create(struct discord *client,
     char *nick = "blank";
     int pets = 0;
     char *gender = "blank";
-    u64_snowflake_t channel_id = 0;
+    u64snowflake channel_id = 0;
 
-    for (int i = 0; interaction->data->options[i]; ++i) {
-        char *name = interaction->data->options[i]->name;
-        char *value = interaction->data->options[i]->value;
+    for (int i = 0; i < interaction->data->options->size; ++i) {
+        char *name = interaction->data->options->array[i].name;
+        char *value = interaction->data->options->array[i].value;
 
-        if (0 == strcmp("nick", name)) {
+        if (0 == strcmp(name, "nick"))
             nick = value;
-        }
-        else if (0 == strcmp("pets", name)) {
+        else if (0 == strcmp(name, "pets"))
             pets = strtol(value, NULL, 10);
-        }
-        else if (0 == strcmp("gender", name)) {
+        else if (0 == strcmp(name, "gender"))
             gender = value;
-        }
-        else if (0 == strcmp("favorite", name)) {
+        else if (0 == strcmp(name, "favorite"))
             sscanf(value, "%" SCNu64, &channel_id);
-        }
     }
 
     char buf[DISCORD_MAX_MESSAGE_LEN] = "";
@@ -145,7 +148,7 @@ on_interaction_create(struct discord *client,
              interaction->member->user->id, nick, pets, gender, channel_id);
 
     struct discord_interaction_response params = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE,
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,
         .data = &(struct discord_interaction_callback_data){ .content = buf }
     };
 

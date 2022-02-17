@@ -6,67 +6,32 @@ INCLUDE_DIR   := include
 OBJDIR        := obj
 LIBDIR        := lib
 DOCS_DIR      := docs
-SPECS_DIR     := specs
-C_SPECS_DIR   := $(SRC_DIR)/specs-code
-H_SPECS_DIR   := $(DOCS_DIR)/specs-headers
 COGUTILS_DIR  := cog-utils
+GENCODECS_DIR := gencodecs
 CORE_DIR      := core
 THIRDP_DIR    := $(CORE_DIR)/third-party
 EXAMPLES_DIR  := examples
 TEST_DIR      := test
 CCORDDOCS_DIR := concord-docs
 
-H_SPECS := discord-specs.h
-
 COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
-                $(COGUTILS_DIR)/json-actor.c       \
-                $(COGUTILS_DIR)/json-actor-boxed.c \
-                $(COGUTILS_DIR)/json-string.c      \
                 $(COGUTILS_DIR)/log.c              \
-                $(COGUTILS_DIR)/logconf.c          \
-                $(COGUTILS_DIR)/ntl.c
+                $(COGUTILS_DIR)/logconf.c
 
 CORE_SRC     := $(CORE_DIR)/common.c     \
                 $(CORE_DIR)/work.c       \
                 $(CORE_DIR)/user-agent.c \
                 $(CORE_DIR)/websockets.c \
                 $(CORE_DIR)/io_poller.c  \
-                $(CORE_DIR)/json-build.c
+                $(CORE_DIR)/json-build.c \
+                $(CORE_DIR)/jsmn-find.c
 
 THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-C_SPECS_SRC  := $(C_SPECS_DIR)/application.c                 \
-                $(C_SPECS_DIR)/application_commands.c        \
-                $(C_SPECS_DIR)/application_commands.params.c \
-                $(C_SPECS_DIR)/audit_log.c                   \
-                $(C_SPECS_DIR)/audit_log.params.c            \
-                $(C_SPECS_DIR)/channel.c                     \
-                $(C_SPECS_DIR)/channel.params.c              \
-                $(C_SPECS_DIR)/emoji.c                       \
-                $(C_SPECS_DIR)/emoji.params.c                \
-                $(C_SPECS_DIR)/gateway.c                     \
-                $(C_SPECS_DIR)/guild.c                       \
-                $(C_SPECS_DIR)/guild.params.c                \
-                $(C_SPECS_DIR)/guild_template.c              \
-                $(C_SPECS_DIR)/guild_template.params.c       \
-                $(C_SPECS_DIR)/interaction.c                 \
-                $(C_SPECS_DIR)/interaction.params.c          \
-                $(C_SPECS_DIR)/invite.c                      \
-                $(C_SPECS_DIR)/invite.params.c               \
-                $(C_SPECS_DIR)/message_components.c          \
-                $(C_SPECS_DIR)/permissions.c                 \
-                $(C_SPECS_DIR)/stage_instance.c              \
-                $(C_SPECS_DIR)/stage_instance.params.c       \
-                $(C_SPECS_DIR)/sticker.c                     \
-                $(C_SPECS_DIR)/sticker.params.c              \
-                $(C_SPECS_DIR)/user.c                        \
-                $(C_SPECS_DIR)/user.params.c                 \
-                $(C_SPECS_DIR)/voice-connections.c           \
-                $(C_SPECS_DIR)/voice.c                       \
-                $(C_SPECS_DIR)/webhook.c                     \
-                $(C_SPECS_DIR)/webhook.params.c
+GENCODECS_HDR := $(GENCODECS_DIR)/discord-codecs.h
+GENCODECS_SRC := $(GENCODECS_DIR)/discord-codecs.c
 
 DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(SRC_DIR)/adapter-ratelimit.c \
@@ -74,16 +39,17 @@ DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(SRC_DIR)/client.c            \
                 $(SRC_DIR)/gateway.c           \
                 $(SRC_DIR)/misc.c              \
-                $(C_SPECS_SRC)                 \
+                $(GENCODECS_SRC)               \
                 $(XSRC)
 
-SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
+SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC) $(GENCODECS_SRC)
 OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
 
 LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
+          -I$(GENCODECS_DIR)                                               \
           -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
@@ -93,24 +59,16 @@ $(OBJDIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
 $(OBJDIR)/%.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all: | $(C_SPECS_DIR)
-	$(MAKE) discord
+all: $(GENCODECS_HDR)
+	@ $(MAKE) discord
+
+discord: $(LIB)
 
 voice:
-	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
+	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
 
 debug:
-	$(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
-
-specs_gen: | $(COGUTILS_DIR)
-	@ $(MAKE) -C $(SPECS_DIR) clean
-	@ $(MAKE) -C $(SPECS_DIR) gen_source gen_headers_amalgamation
-	@ mkdir -p $(C_SPECS_DIR)
-	mv $(SPECS_DIR)/code/*.c $(C_SPECS_DIR)
-	mv $(SPECS_DIR)/code/$(H_SPECS) $(INCLUDE_DIR)
-
-cog_utils:
-	git clone https://github.com/cogmasters/cog-utils $(COGUTILS_DIR)
+	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -118,24 +76,22 @@ test: all
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
-discord: $(LIB) | $(C_SPECS_DIR)
-
 $(LIB): $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
 $(LIBDIR):
 	@ mkdir -p $@
-$(C_SPECS_DIR):
-	@ $(MAKE) specs_gen
-$(COGUTILS_DIR):
-	@ $(MAKE) cog_utils
 
 $(OBJS): | $(OBJDIR)
+
+$(GENCODECS_HDR):
+	@ $(MAKE) -C $(GENCODECS_DIR)
 
 $(OBJDIR):
 	@ mkdir -p $@/$(THIRDP_DIR)   \
 	           $@/$(COGUTILS_DIR) \
-	           $@/$(C_SPECS_DIR)
+	           $@/$(SRC_DIR)      \
+	           $@/$(GENCODECS_DIR)
 
 install:
 	@ mkdir -p $(PREFIX)/lib/
@@ -154,6 +110,7 @@ echo:
 	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
 	@ echo -e 'CORE_SRC: $(CORE_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
+	@ echo -e 'GENCODECS_SRC: $(GENCODECS_SRC)\n'
 
 clean: 
 	rm -rf $(OBJDIR)
@@ -163,21 +120,6 @@ clean:
 
 purge: clean
 	rm -rf $(LIBDIR)
-	rm -rf $(COGUTILS_DIR)
-	rm -rf $(C_SPECS_DIR)
-	rm -rf $(H_SPECS)
-
-# prepare files for generating documentation at .github/workflows/gh_pages.yml
-docs: | $(CCORDDOCS_DIR)
-	@ $(MAKE) -C $(SPECS_DIR) clean
-	@ $(MAKE) -C $(SPECS_DIR) gen_headers
-	@ mv $(SPECS_DIR)/code/*.h $(H_SPECS_DIR)
-
-$(CCORDDOCS_DIR): | $(H_SPECS_DIR)
-	git clone https://github.com/cogmasters/concord-docs $@
-	cp $@/Doxyfile Doxyfile
-
-$(H_SPECS_DIR): | $(C_SPECS_DIR)
-	@ mkdir -p $@
+	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
 .PHONY: all test examples install echo clean purge docs

@@ -9,7 +9,6 @@ extern "C" {
 
 #include <curl/curl.h>
 
-#include "ntl.h" /* struct sized_buffer */
 #include "common.h" /* CCORDcode */
 #include "logconf.h" /* logging facilities */
 

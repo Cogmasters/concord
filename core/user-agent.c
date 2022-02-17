@@ -13,8 +13,7 @@
 
 #define CURLE_LOG(conn, ecode)                                                \
     logconf_fatal(&conn->ua->conf, "(CURLE code: %d) %s", ecode,              \
-                  IS_EMPTY_STRING(conn->errbuf) ? curl_easy_strerror(ecode)   \
-                                                : conn->errbuf)
+                  !*conn->errbuf ? curl_easy_strerror(ecode) : conn->errbuf)
 
 struct user_agent {
     /**
@@ -193,12 +192,12 @@ http_method_print(enum http_method method)
 enum http_method
 http_method_eval(char method[])
 {
-    if (STREQ(method, "DELETE")) return HTTP_DELETE;
-    if (STREQ(method, "GET")) return HTTP_GET;
-    if (STREQ(method, "POST")) return HTTP_POST;
-    if (STREQ(method, "MIMEPOST")) return HTTP_MIMEPOST;
-    if (STREQ(method, "PATCH")) return HTTP_PATCH;
-    if (STREQ(method, "PUT")) return HTTP_PUT;
+    if (0 == strcmp(method, "DELETE")) return HTTP_DELETE;
+    if (0 == strcmp(method, "GET")) return HTTP_GET;
+    if (0 == strcmp(method, "POST")) return HTTP_POST;
+    if (0 == strcmp(method, "MIMEPOST")) return HTTP_MIMEPOST;
+    if (0 == strcmp(method, "PATCH")) return HTTP_PATCH;
+    if (0 == strcmp(method, "PUT")) return HTTP_PUT;
     return HTTP_INVALID;
 }
 
@@ -225,7 +224,8 @@ ua_conn_add_header(struct ua_conn *conn,
             && 0 == strncasecmp(node->data, field, fieldlen))
         {
             if (strlen(node->data) < buflen) {
-                /* FIXME: For some reason, cygwin builds will abort on this free() */
+                /* FIXME: For some reason, cygwin builds will abort on this
+                 * free() */
 #ifndef __CYGWIN__
                 free(node->data);
 #endif
@@ -505,9 +505,8 @@ ua_init(struct ua_attr *attr)
 
     if (pthread_mutex_init(&new_ua->connq->lock, NULL)) {
         logconf_fatal(&new_ua->conf, "Couldn't initialize mutex");
-        ABORT();
+        abort();
     }
-
     return new_ua;
 }
 
@@ -616,7 +615,7 @@ _ua_conn_set_method(struct ua_conn *conn,
     default:
         logconf_fatal(&conn->ua->conf, "Unknown http method (code: %d)",
                       method);
-        ABORT();
+        abort();
     }
 
     /* set ptr to payload that will be sent via POST/PUT/PATCH */

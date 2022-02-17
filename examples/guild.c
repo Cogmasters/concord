@@ -34,7 +34,7 @@ on_ready(struct discord *client)
 
 void
 log_on_role_create(struct discord *client,
-                   u64_snowflake_t guild_id,
+                   u64snowflake guild_id,
                    const struct discord_role *role)
 {
     log_warn("Role (%" PRIu64 ") created", role->id);
@@ -42,7 +42,7 @@ log_on_role_create(struct discord *client,
 
 void
 log_on_role_update(struct discord *client,
-                   u64_snowflake_t guild_id,
+                   u64snowflake guild_id,
                    const struct discord_role *role)
 {
     log_warn("Role (%" PRIu64 ") updated", role->id);
@@ -50,8 +50,8 @@ log_on_role_update(struct discord *client,
 
 void
 log_on_role_delete(struct discord *client,
-                   u64_snowflake_t guild_id,
-                   u64_snowflake_t role_id)
+                   u64snowflake guild_id,
+                   u64snowflake role_id)
 {
     log_warn("Role (%" PRIu64 ") deleted", role_id);
 }
@@ -78,7 +78,7 @@ on_role_delete(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t role_id = 0;
+    u64snowflake role_id = 0;
 
     sscanf(msg->content, "%" SCNu64, &role_id);
     if (!role_id) {
@@ -94,7 +94,7 @@ on_role_member_add(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t user_id = 0, role_id = 0;
+    u64snowflake user_id = 0, role_id = 0;
 
     sscanf(msg->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
     if (!user_id || !role_id) {
@@ -113,7 +113,7 @@ on_role_member_remove(struct discord *client,
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t user_id = 0, role_id = 0;
+    u64snowflake user_id = 0, role_id = 0;
 
     sscanf(msg->content, "%" SCNu64 " %" SCNu64, &user_id, &role_id);
     if (!user_id || !role_id) {
@@ -129,7 +129,7 @@ on_role_member_remove(struct discord *client,
 void
 done_get_guild_roles(struct discord *client,
                      void *data,
-                     const struct discord_role **roles)
+                     const struct discord_roles *roles)
 {
     char text[DISCORD_MAX_MESSAGE_LEN];
 
@@ -137,10 +137,10 @@ done_get_guild_roles(struct discord *client,
     char *end = &text[sizeof(text) - 1];
     char *prev;
 
-    for (size_t i = 0; roles[i]; ++i) {
+    for (int i = 0; i < roles->size; ++i) {
         prev = cur;
         cur += snprintf(cur, end - cur, "<@&%" PRIu64 ">(%" PRIu64 ")\n",
-                        roles[i]->id, roles[i]->id);
+                        roles->array[i].id, roles->array[i].id);
 
         if (cur >= end) { // to make sure no role is skipped
             *prev = '\0'; // end string before truncation
@@ -195,7 +195,7 @@ on_member_get(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t user_id = 0;
+    u64snowflake user_id = 0;
 
     sscanf(msg->content, "%" SCNu64, &user_id);
     if (!user_id) {

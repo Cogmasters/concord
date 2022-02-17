@@ -4,8 +4,11 @@
 #include <pthread.h>
 #include <assert.h>
 
+#define JSMN_HEADER
+#include "jsmn.h"
+#include "jsmn-find.h"
+
 #include "discord.h"
-#include "json-actor.h" /* json_extract() */
 
 #define THREADPOOL_SIZE "4"
 #define PREFIX          "!"
@@ -153,7 +156,7 @@ on_stop(struct discord *client, const struct discord_message *msg)
 void
 on_force_error(struct discord *client, const struct discord_message *msg)
 {
-    const u64_snowflake_t FAUX_CHANNEL_ID = 123ULL;
+    const u64snowflake FAUX_CHANNEL_ID = 123ULL;
     CCORDcode code;
 
     if (msg->author->bot) return;
@@ -199,9 +202,15 @@ scheduler(struct discord *client,
 {
     if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
         char cmd[1024] = "";
+        jsmnf *root = jsmnf_init();
 
-        json_extract(data->start, data->size, "(content):.*s", sizeof(cmd),
-                     cmd);
+        if (jsmnf_start(root, data->start, data->size) >= 0) {
+            jsmnf *f = jsmnf_find(root, "content", sizeof("content") - 1);
+            if (f)
+                snprintf(cmd, sizeof(cmd), "%.*s", f->val->end - f->val->start,
+                         data->start + f->val->start);
+        }
+        jsmnf_cleanup(root);
 
         if (0 == strcmp(PREFIX "ping", cmd)
             || 0 == strcmp(PREFIX "spam-block", cmd)) {

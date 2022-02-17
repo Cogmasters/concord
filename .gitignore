@@ -13,6 +13,5 @@ concord-docs
 Doxyfile
 *.db
 *.swp
-cog-utils
 src/specs-code
 include/discord-specs.h

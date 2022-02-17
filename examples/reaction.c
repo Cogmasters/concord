@@ -39,21 +39,21 @@ on_ready(struct discord *client)
 void
 done_get_users(struct discord *client,
                void *data,
-               const struct discord_user **users)
+               const struct discord_users *users)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[2000];
 
-    if (!users) {
+    if (!users->size) {
         snprintf(text, sizeof(text), "Nobody reacted with that emoji!");
     }
     else {
         char *cur = text;
         char *end = &text[sizeof(text) - 1];
 
-        for (size_t i = 0; users[i]; ++i) {
+        for (int i = 0; i < users->size; ++i) {
             cur += snprintf(cur, end - cur, "%s (%" PRIu64 ")\n",
-                            users[i]->username, users[i]->id);
+                            users->array[i].username, users->array[i].id);
 
             if (cur >= end) break;
         }
@@ -66,7 +66,7 @@ done_get_users(struct discord *client,
 void
 fail_get_users(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch reactions: %s",
@@ -81,7 +81,7 @@ on_get_users(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot || !msg->referenced_message) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_users ret = {
@@ -140,7 +140,7 @@ on_delete_user(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot || !msg->referenced_message) return;
 
-    u64_snowflake_t user_id = 0;
+    u64snowflake user_id = 0;
     char emoji_name[256] = "";
 
     sscanf(msg->content, "%" SCNu64 " %s", &user_id, emoji_name);

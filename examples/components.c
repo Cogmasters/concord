@@ -20,7 +20,7 @@ print_usage(void)
         "\nTYPE ANY KEY TO START BOT\n");
 }
 
-char JSON_STRING[] =
+char JSON[] =
     "[\n"
     "    {\n"
     "        \"type\": 1,\n"
@@ -80,19 +80,18 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_component **components = NULL;
-    discord_component_list_from_json(JSON_STRING, sizeof(JSON_STRING),
-                                     &components);
+    struct discord_components components = { 0 };
+    discord_components_from_json(JSON, sizeof(JSON), &components);
 
     struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
                    "you play?",
-        .components = components
+        .components = &components
     };
     discord_create_message(client, msg->channel_id, &params, NULL);
 
     /* must cleanup 'components' afterwards */
-    discord_component_list_free(components);
+    discord_components_cleanup(&components);
 }
 
 void
@@ -100,64 +99,73 @@ on_static(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    struct discord_component **components = (struct discord_component *[]){
-        &(struct discord_component){
-            .type = DISCORD_COMPONENT_ACTION_ROW,
-            .components =
-                (struct discord_component *[]){
-                    &(struct discord_component){
-                        .type = DISCORD_COMPONENT_SELECT_MENU,
-                        .custom_id = "class_select_1",
-                        .options =
-                            (struct discord_select_option *[]){
-                                &(struct discord_select_option){
-                                    .label = "Rogue",
-                                    .value = "rogue",
-                                    .description = "Sneak n stab",
-                                    .emoji =
-                                        &(struct discord_emoji){
-                                            .name = "rogue",
-                                            .id = 625891304148303894ULL,
-                                        },
-                                },
-                                &(struct discord_select_option){
-                                    .label = "Mage",
-                                    .value = "mage",
-                                    .description = "Turn 'em into a sheep",
-                                    .emoji =
-                                        &(struct discord_emoji){
-                                            .name = "mage",
-                                            .id = 625891304081063986ULL,
-                                        },
-                                },
-                                &(struct discord_select_option){
-                                    .label = "Priest",
-                                    .value = "priest",
-                                    .description = "You get heals when I'm "
-                                                   "done doing damage",
-                                    .emoji =
-                                        &(struct discord_emoji){
-                                            .name = "priest",
-                                            .id = 625891303795982337ULL,
-                                        },
-                                },
-                                NULL /* ARRAY END */
-                            },
-                        .placeholder = "Choose a class",
-                        .min_values = 1,
-                        .max_values = 3,
-                    },
-                    NULL /* ARRAY END */
+    struct discord_select_option select_options[] = {
+        {
+            .label = "Rogue",
+            .value = "rogue",
+            .description = "Sneak n stab",
+            .emoji =
+                &(struct discord_emoji){
+                    .name = "rogue",
+                    .id = 625891304148303894ULL,
                 },
         },
-        NULL /* ARRAY END */
+        {
+            .label = "Mage",
+            .value = "mage",
+            .description = "Turn 'em into a sheep",
+            .emoji =
+                &(struct discord_emoji){
+                    .name = "mage",
+                    .id = 625891304081063986ULL,
+                },
+        },
+        {
+            .label = "Priest",
+            .value = "priest",
+            .description = "You get heals when I'm "
+                           "done doing damage",
+            .emoji =
+                &(struct discord_emoji){
+                    .name = "priest",
+                    .id = 625891303795982337ULL,
+                },
+        },
     };
-
+    struct discord_component select_menu[] = {
+        {
+            .type = DISCORD_COMPONENT_SELECT_MENU,
+            .custom_id = "class_select_1",
+            .options =
+                &(struct discord_select_options){
+                    .size = sizeof(select_options) / sizeof *select_options,
+                    .array = select_options,
+                },
+            .placeholder = "Choose a class",
+            .min_values = 1,
+            .max_values = 3,
+        },
+    };
+    struct discord_component action_rows[] = {
+        {
+            .type = DISCORD_COMPONENT_ACTION_ROW,
+            .components =
+                &(struct discord_components){
+                    .size = sizeof(select_menu) / sizeof *select_menu,
+                    .array = select_menu,
+                },
+        },
+    };
     struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
                    "you play?",
-        .components = components
+        .components =
+            &(struct discord_components){
+                .size = sizeof(action_rows) / sizeof *action_rows,
+                .array = action_rows,
+            },
     };
+
     discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -170,7 +178,7 @@ on_interaction_create(struct discord *client,
     if (!interaction->data || !interaction->data->values) return;
 
     char values[1024];
-    ja_str_list_to_json(values, sizeof(values), interaction->data->values);
+    strings_to_json(values, sizeof(values), interaction->data->values);
 
     char text[DISCORD_MAX_MESSAGE_LEN];
     snprintf(text, sizeof(text),
@@ -181,11 +189,11 @@ on_interaction_create(struct discord *client,
              values);
 
     struct discord_interaction_response params = {
-        .type = DISCORD_INTERACTION_CALLBACK_CHANNEL_MESSAGE_WITH_SOURCE, // 4
+        .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE, // 4
         .data =
             &(struct discord_interaction_callback_data){
                 .content = text,
-                .flags = DISCORD_INTERACTION_CALLBACK_DATA_EPHEMERAL // 1 << 6
+                .flags = DISCORD_MESSAGE_EPHEMERAL // 1 << 6
             }
     };
     discord_create_interaction_response(client, interaction->id,

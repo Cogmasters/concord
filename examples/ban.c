@@ -26,7 +26,7 @@ on_ready(struct discord *client)
 
 void
 log_on_guild_ban_add(struct discord *client,
-                     u64_snowflake_t guild_id,
+                     u64snowflake guild_id,
                      const struct discord_user *user)
 {
     log_info("User `%s#%s` has been banned.", user->username,
@@ -35,7 +35,7 @@ log_on_guild_ban_add(struct discord *client,
 
 void
 log_on_guild_ban_remove(struct discord *client,
-                        u64_snowflake_t guild_id,
+                        u64snowflake guild_id,
                         const struct discord_user *user)
 {
     log_info("User `%s#%s` has been unbanned.", user->username,
@@ -45,7 +45,7 @@ log_on_guild_ban_remove(struct discord *client,
 void
 on_ban(struct discord *client, const struct discord_message *msg)
 {
-    u64_snowflake_t target_id = 0ULL;
+    u64snowflake target_id = 0ULL;
     sscanf(msg->content, "%" SCNu64, &target_id);
 
     struct discord_create_guild_ban params = {
@@ -58,7 +58,7 @@ on_ban(struct discord *client, const struct discord_message *msg)
 void
 on_unban(struct discord *client, const struct discord_message *msg)
 {
-    u64_snowflake_t target_id = 0ULL;
+    u64snowflake target_id = 0ULL;
     sscanf(msg->content, "%" SCNu64, &target_id);
 
     discord_remove_guild_ban(client, msg->guild_id, target_id, NULL);

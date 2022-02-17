@@ -9,7 +9,7 @@
 
 #include "discord.h"
 
-u64_snowflake_t g_sudo_id;
+u64snowflake g_sudo_id;
 
 void
 print_usage(void)
@@ -65,9 +65,16 @@ on_less_like(struct discord *client, const struct discord_message *msg)
 
         struct discord_create_message params = {
             .content = text,
-            .embeds = (struct discord_embed *[]){ &embed, NULL },
+            .embeds =
+                &(struct discord_embeds){
+                    .size = 1,
+                    .array = &embed,
+                },
             .attachments =
-                (struct discord_attachment *[]){ &attachment, NULL },
+                &(struct discord_attachments){
+                    .size = 1,
+                    .array = &attachment,
+                },
         };
 
         discord_create_message(client, msg->channel_id, &params, NULL);
@@ -107,7 +114,11 @@ on_fallback(struct discord *client, const struct discord_message *msg)
         };
 
         struct discord_create_message params = {
-            .attachments = (struct discord_attachment *[]){ &attachment, NULL }
+            .attachments =
+                &(struct discord_attachments){
+                    .size = 1,
+                    .array = &attachment,
+                }
         };
         discord_create_message(client, msg->channel_id, &params, NULL);
     }

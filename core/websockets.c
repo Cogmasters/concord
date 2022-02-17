@@ -11,6 +11,9 @@
 #define CURLM_LOG(ws, mcode)                                                  \
     logconf_fatal(&ws->conf, "(CURLM code: %d) %s", mcode,                    \
                   curl_multi_strerror(mcode))
+#define CASE_RETURN_STR(code)                                                 \
+    case code:                                                                \
+        return #code
 
 struct websockets {
     /** the logconf structure for logging @see logconf_setup() */
@@ -508,7 +511,7 @@ ws_set_url(struct websockets *ws,
 
     pthread_mutex_lock(&ws->lock);
 
-    if (IS_EMPTY_STRING(ws->base_url))
+    if (!ws->base_url || !*ws->base_url)
         logconf_debug(&ws->conf, "Websockets new URL: %s", base_url);
     else
         logconf_debug(&ws->conf,
@@ -519,7 +522,7 @@ ws_set_url(struct websockets *ws,
     VASSERT_S(len < sizeof(ws->base_url), "[%s] Out of bounds write attempt",
               ws->conf.id);
 
-    if (!IS_EMPTY_STRING(ws_protocols)) {
+    if (!ws_protocols || !*ws_protocols) {
         len =
             snprintf(ws->protocols, sizeof(ws->protocols), "%s", ws_protocols);
         VASSERT_S(len < sizeof(ws->protocols),
@@ -695,7 +698,7 @@ ws_pong(struct websockets *ws,
     return true;
 }
 
-CURL*
+CURL *
 ws_start(struct websockets *ws)
 {
     memset(&ws->pending_close, 0, sizeof ws->pending_close);
@@ -741,9 +744,8 @@ ws_end(struct websockets *ws)
         case CURLE_READ_ERROR:
         default:
             logconf_error(&ws->conf, "(CURLE code: %d) %s", ecode,
-                          IS_EMPTY_STRING(ws->errbuf)
-                              ? curl_easy_strerror(ecode)
-                              : ws->errbuf);
+                          !*ws->errbuf ? curl_easy_strerror(ecode)
+                                       : ws->errbuf);
             logconf_error(&ws->conf, "Disconnected abruptly");
             break;
         }

@@ -29,7 +29,7 @@ on_ready(struct discord *client)
 void
 done(struct discord *client, void *data, const struct discord_invite *invite)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Success: https://discord.gg/%s",
@@ -42,7 +42,7 @@ done(struct discord *client, void *data, const struct discord_invite *invite)
 void
 fail(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
 
     struct discord_create_message params = {
         .content = "Couldn't perform operation."
@@ -55,7 +55,7 @@ on_invite_get(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_invite ret = {
@@ -77,7 +77,7 @@ on_invite_delete(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_invite ret = {

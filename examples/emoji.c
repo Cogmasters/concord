@@ -28,12 +28,12 @@ on_ready(struct discord *client)
 void
 done_list_guild_emojis(struct discord *client,
                        void *data,
-                       const struct discord_emoji **emojis)
+                       const struct discord_emojis *emojis)
 {
-    u64_snowflake_t *channel_id = data;
-    char text[2000];
+    u64snowflake *channel_id = data;
+    char text[2000] = "";
 
-    if (!emojis) {
+    if (!emojis->size) {
         log_info("No emojis in guild");
         return;
     }
@@ -42,12 +42,13 @@ done_list_guild_emojis(struct discord *client,
     char *end = &text[sizeof(text) - 1];
     char *prev;
 
-    for (size_t i = 0; emojis[i]; ++i) {
+    for (int i = 0; i < emojis->size; ++i) {
         prev = cur;
 
         cur += snprintf(cur, end - cur, "<%s:%s:%" PRIu64 ">(%" PRIu64 ")\n",
-                        emojis[i]->animated ? "a" : "", emojis[i]->name,
-                        emojis[i]->id, emojis[i]->id);
+                        emojis->array[i].animated ? "a" : "",
+                        emojis->array[i].name, emojis->array[i].id,
+                        emojis->array[i].id);
 
         if (cur >= end) { // to make sure no emoji is skipped
             *prev = '\0'; // end string before truncation
@@ -70,7 +71,7 @@ done_list_guild_emojis(struct discord *client,
 void
 fail_list_guild_emojis(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Couldn't fetch guild emojis: %s",
@@ -85,7 +86,7 @@ on_list_guild_emojis(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_emojis ret = {
@@ -102,7 +103,7 @@ done_get_guild_emoji(struct discord *client,
                      void *data,
                      const struct discord_emoji *emoji)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[DISCORD_MAX_MESSAGE_LEN];
 
     snprintf(text, sizeof(text), "Here you go: <%s:%s:%" PRIu64 ">",
@@ -115,7 +116,7 @@ done_get_guild_emoji(struct discord *client,
 void
 fail_get_guild_emoji(struct discord *client, CCORDcode code, void *data)
 {
-    u64_snowflake_t *channel_id = data;
+    u64snowflake *channel_id = data;
     char text[256];
 
     snprintf(text, sizeof(text), "Unknown emoji: %s",
@@ -130,12 +131,12 @@ on_get_guild_emoji(struct discord *client, const struct discord_message *msg)
 {
     if (msg->author->bot) return;
 
-    u64_snowflake_t emoji_id = 0ULL;
+    u64snowflake emoji_id = 0ULL;
 
     sscanf(msg->content, "%" SCNu64, &emoji_id);
     if (!emoji_id) return;
 
-    u64_snowflake_t *channel_id = malloc(sizeof(u64_snowflake_t));
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
     *channel_id = msg->channel_id;
 
     struct discord_ret_emoji ret = {
