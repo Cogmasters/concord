@@ -15,13 +15,10 @@ PUB_STRUCT(discord_guild_template)
     FIELD_SNOWFLAKE(creator_id)
   PP("the user who created the template")
     FIELD_STRUCT_PTR(creator, discord_user, *)
-  /* TODO: implement iso8601 conversion */
-#if 0
   PP("when this template was created")
-    FIELD_SNOWFLAKE(created_at)
+    FIELD_TIMESTAMP(created_at)
   PP("when this template was last synced to the source guild")
-    FIELD_SNOWFLAKE(updated_at)
-#endif
+    FIELD_TIMESTAMP(updated_at)
   PP("the ID of the guild this template is based on")
     FIELD_SNOWFLAKE(source_guild_id)
   PP("the guild snapshot this template contains")

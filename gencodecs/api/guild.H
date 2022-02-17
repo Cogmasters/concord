@@ -130,13 +130,10 @@ PUB_STRUCT(discord_guild)
   PP("the id of the channel where Community guilds can display rules and/or"
        "guidelines")
     FIELD_SNOWFLAKE(rules_channel_id)
-  /* TODO: implement iso8601 conv */
-#if 0
   PP("when this guild was joined at")
-  COND_WRITE(this->joined_at != NULL)
-    FIELD_SNOWFLAKE(joined_at)
+  COND_WRITE(this->joined_at != 0)
+    FIELD_TIMESTAMP(joined_at)
   COND_END
-#endif
   PP("true if this is considered a large guild")
     FIELD(large, bool, false)
   PP("true if this guild is unavailable due to an outage")
@@ -291,15 +288,12 @@ PUB_STRUCT(discord_guild_member)
   COND_END
   PP("array of role object IDs")
     FIELD_STRUCT_PTR(roles, snowflakes, *)
-  /* TODO: implement iso8601 conv */
-#if 0
   PP("when the user joined the guild")
-    FIELD_SNOWFLAKE(joined_at)
+    FIELD_TIMESTAMP(joined_at)
   PP("when the user started boosting the guild")
   COND_WRITE(this->premium_since != 0)
-    FIELD_SNOWFLAKE(premium_since)
+    FIELD_TIMESTAMP(premium_since)
   COND_END
-#endif
   PP("whether the user is deafened in voice channels")
     FIELD(deaf, bool, false)
   PP("whether the user is muted in voice channels")
@@ -312,13 +306,10 @@ PUB_STRUCT(discord_guild_member)
   COND_WRITE(this->permissions != NULL)
     FIELD_PTR(permissions, char, *)
   COND_END
-  /* TODO: implement iso8601 conv */
-#if 0
   PP("when the user's timeout will expire and the user will be able to"
        "communicate in the guild again, null or a time in the past if the"
        "user is not timed out")
-    FIELD_SNOWFLAKE(communication_disabled_until)
-#endif
+    FIELD_TIMESTAMP(communication_disabled_until)
 STRUCT_END
 
 PUB_LIST(discord_guild_members)
@@ -349,11 +340,8 @@ STRUCT(discord_integration)
     FIELD_STRUCT_PTR(user, discord_user, *)
   PP("integration account information")
     FIELD_STRUCT_PTR(account, discord_integration_account, *)
-  /* TODO: implement iso8601 conv */
-#if 0
   PP("when this integration was last synced")
-    FIELD_SNOWFLAKE(synced_at)
-#endif
+    FIELD_TIMESTAMP(synced_at)
   PP("how many subscribers this integration has")
     FIELD(subscriber_count, int, 0)
   PP("has this integration been revoked")
@@ -620,18 +608,15 @@ PUB_STRUCT(discord_modify_guild_member)
     FIELD(deaf, bool, false)
   PP("ID of channel to move user to (if they are connect to voice)")
     FIELD_SNOWFLAKE(channel_id)
-  /* TODO: implement iso8601 conversion */
   /* TODO: should be able to write `null` */
-#if 0
   PP("when the user's timeout will expire and the user will be able to"
        "communicate in the guild again (up to 28 days in the future), set"
        "to NULL to remove timeout. WIll throw a @ref CCORD_HTTP_ERROR (403)"
        "error if the user has the `ADMINISTRATOR` permission or is the owner"
        "of the guild")
   COND_WRITE(this->communication_disabled_until != 0)
-    FIELD_SNOWFLAKE(communication_disabled_until)
+    FIELD_TIMESTAMP(communication_disabled_until)
   COND_END
-#endif
 STRUCT_END
 
 PUB_STRUCT(discord_modify_current_member)
@@ -758,14 +743,11 @@ PUB_STRUCT(discord_modify_current_user_voice_state)
     FIELD_SNOWFLAKE(channel_id)
   PP("toggles the user's suppress state")
     FIELD(suppress, bool, false)
-  /* TODO: implement iso8601 conversion */
   /* TODO: should be able to write `null` */
-#if 0
   PP("set the user's request to speak")
   COND_WRITE(this->request_to_speak_timestamp != 0)
-    FIELD_SNOWFLAKE(request_to_speak_timestamp)
+    FIELD_TIMESTAMP(request_to_speak_timestamp)
   COND_END
-#endif
 STRUCT_END
 
 PUB_STRUCT(discord_modify_user_voice_state)

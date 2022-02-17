@@ -142,10 +142,9 @@ PUB_STRUCT(discord_identify)
   PP("value between 50 and 250, total number of members where the gateway"
        "will stop sending offline members in the guild member list")
     FIELD(large_threshold, int, 50)
-  /* TODO: array of two integers */
 #if 0
   PP("array of two integers (shard_id, num_shards)")
-    FIELD_STRUCT_PTR(shard, shards, *)
+    FIELD_STRUCT_PTR(shard, integers, *)
 #endif
   PP("presence structure for initial presence information")
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
@@ -177,12 +176,9 @@ PUB_STRUCT(discord_voice_state_status)
 STRUCT_END
 
 PUB_STRUCT(discord_presence_update)
-  /* TODO: iso8601 conversion */
-#if 0
   PP("unix time (in milliseconds) of when the client went idle, or null if"
        "the client is not idle")
-    FIELD_SNOWFLAKE(since)
-#endif
+    FIELD_TIMESTAMP(since)
   PP("the user's activities")
     FIELD_STRUCT_PTR(activities, discord_activities, *)
   PP("the user's new status")
@@ -202,12 +198,9 @@ STRUCT(discord_activity)
     FIELD_ENUM(type, discord_activity_types)
   PP("stream url, is validated when type is 1")
     FIELD_PTR(url, char, *)
-  /* TODO: iso8601 conversion */
-#if 0
   PP("unix timestamp (in milliseconds)of when the activity was added to the"
        "user's session")
-    FIELD_SNOWFLAKE(created_at)
-#endif
+    FIELD_TIMESTAMP(created_at)
   PP("unix timestamps for start and/or end of the game")
     FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
   PP("application ID for the game")
@@ -237,13 +230,10 @@ LIST(discord_activities)
 LIST_END
 
 STRUCT(discord_activity_timestamps)
-  /* TODO: iso8601 conversion */
-#if 0
   PP("unix timestamp (in milliseconds)of when the activity started")
-    FIELD_SNOWFLAKE(start)
+    FIELD_TIMESTAMP(start)
   PP("unix timestamp (in milliseconds)of when the activity ends")
-    FIELD_SNOWFLAKE(end)
-#endif
+    FIELD_TIMESTAMP(end)
 STRUCT_END
 
 STRUCT(discord_activity_emoji)
@@ -260,11 +250,9 @@ STRUCT_END
 STRUCT(discord_activity_party)
   PP("the ID of the party")
     FIELD_PTR(id, char, *)
-  /* TODO: array of two integers (current_size, max_size) */
-#if 0
-  PP("used to show the party's current and maximum size")
-    FIELD_STRUCT_PTR(size, sizes, *)
-#endif
+  PP("used to show the party's current and maximum size @note array of two"
+       "integers (current_size, max_size)")
+    FIELD_STRUCT_PTR(size, integers, *)
 STRUCT_END
 
 STRUCT(discord_activity_assets)

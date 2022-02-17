@@ -37,14 +37,11 @@ PUB_STRUCT(discord_invite)
     FIELD(approximate_presence_count, int, 0)
   PP("approximate count of total members")
     FIELD(approximate_member_count, int, 0)
-  /* TODO: implement iso8601 conversion */
   /* TODO: nullable */
-#if 0
   PP("the expiration date of this invite")
   COND_WRITE(this->expires_at != 0)
-    FIELD_SNOWFLAKE(expires_at)
+    FIELD_TIMESTAMP(expires_at)
   COND_END
-#endif
   PP("stage instance data if there is a public stage instance in the stage"
        "channel this invite is for")
   COND_WRITE(this->stage_instance != NULL)
@@ -70,13 +67,10 @@ STRUCT(discord_invite_metadata)
     FIELD(max_age, int, 0)
   PP("whether this invite only grants temporary membership")
     FIELD(temporary, bool, false)
-  /* TODO: implement iso8601 conversion */
-#if 0
   PP("when this invite was created")
   COND_WRITE(this->created_at != 0)
-    FIELD_SNOWFLAKE(created_at)
+    FIELD_TIMESTAMP(created_at)
   COND_END
-#endif
 STRUCT_END
 
 STRUCT(discord_invite_stage_instance)

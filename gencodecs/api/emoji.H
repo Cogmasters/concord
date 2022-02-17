@@ -38,10 +38,8 @@ PUB_STRUCT(discord_create_guild_emoji)
   PP("name of the emoji")
     FIELD_PTR(name, char, *)
   /* TODO: implement base64 encoding */
-#if 0
   PP("the 128x128 emoji image")
     FIELD_PTR(image, char, *)
-#endif
   PP("roles allowed to use this emoji")
   COND_WRITE(this->roles != NULL)
     FIELD_STRUCT_PTR(roles, snowflakes, *)
@@ -52,10 +50,8 @@ PUB_STRUCT(discord_modify_guild_emoji)
   PP("name of the emoji")
     FIELD_PTR(name, char, *)
   /* TODO: implement base64 encoding */
-#if 0
   PP("the 128x128 emoji image")
     FIELD_PTR(image, char, *)
-#endif
   PP("roles allowed to use this emoji")
   COND_WRITE(this->roles != NULL)
     FIELD_STRUCT_PTR(roles, snowflakes, *)

@@ -27,14 +27,11 @@ PUB_STRUCT(discord_voice_state)
     FIELD(self_video, bool, false)
   PP("whether this user is muted by the current user")
     FIELD(suppress, bool, false)
-  /* TODO: iso8601 support */
   /* TODO: nullable */
-#if 0
   PP("the time at which the user requested to speak")
   COND_WRITE(this->request_to_speak_timestamp)
-    FIELD_SNOWFLAKE(request_to_speak_timestamp)
+    FIELD_TIMESTAMP(request_to_speak_timestamp)
   COND_END
-#endif
 STRUCT_END
 
 PUB_LIST(discord_voice_states)

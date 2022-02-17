@@ -34,14 +34,11 @@ PUB_STRUCT(discord_guild_scheduled_event)
     FIELD_PTR(name, char, *)
   PP("the description of the scheduled event (1-1000 characters)")
     FIELD_PTR(description, char, *)
-  /* TODO: iso8601 conversion */
-#if 0
   PP("the time the scheduled event will start")
-    FIELD_SNOWFLAKE(scheduled_start_time)
+    FIELD_TIMESTAMP(scheduled_start_time)
   PP("the time the scheduled event will end, required if `entity_type` is"
        "@ref DISCORD_SCHEDULED_ENTITY_EXTERNAL")
-    FIELD_SNOWFLAKE(scheduled_end_time)
-#endif
+    FIELD_TIMESTAMP(scheduled_end_time)
   PP("the privacy level of the scheduled event")
   COND_WRITE(this->privacy_level != 0)
     FIELD_ENUM(privacy_level, discord_guild_scheduled_event_privacy_level)
@@ -115,17 +112,14 @@ PUB_STRUCT(discord_create_guild_scheduled_event)
   COND_END
   PP("the name of the scheduled event")
     FIELD_PTR(name, char, *)
-  /* TODO: iso8601 conversion */
-#if 0
   PP("the time the scheduled event will start")
   COND_WRITE(this->scheduled_start_time != 0)
-    FIELD_SNOWFLAKE(scheduled_start_time)
+    FIELD_TIMESTAMP(scheduled_start_time)
   COND_END
   PP("the time the scheduled event will end")
   COND_WRITE(this->scheduled_end_time != 0)
-    FIELD_SNOWFLAKE(scheduled_end_time)
+    FIELD_TIMESTAMP(scheduled_end_time)
   COND_END
-#endif
   PP("the description of the scheduled event")
   COND_WRITE(this->description != NULL)
     FIELD_PTR(description, char, *)
@@ -156,17 +150,14 @@ PUB_STRUCT(discord_modify_guild_scheduled_event)
   COND_END
   PP("the name of the scheduled event")
     FIELD_PTR(name, char, *)
-  /* TODO: iso8601 conversion */
-#if 0
   PP("the time the scheduled event will start")
   COND_WRITE(this->scheduled_start_time != 0)
-    FIELD_SNOWFLAKE(scheduled_start_time)
+    FIELD_TIMESTAMP(scheduled_start_time)
   COND_END
   PP("the time the scheduled event will end")
   COND_WRITE(this->scheduled_end_time != 0)
-    FIELD_SNOWFLAKE(scheduled_end_time)
+    FIELD_TIMESTAMP(scheduled_end_time)
   COND_END
-#endif
   PP("the description of the scheduled event")
   COND_WRITE(this->description != NULL)
     FIELD_PTR(description, char, *)

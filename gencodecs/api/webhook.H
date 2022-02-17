@@ -56,24 +56,20 @@ PUB_STRUCT(discord_create_webhook)
   PP("name of the webhook (1-80 characters)")
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
-#if 0
   PP("image for the default webhook avatar")
   COND_WRITE(this->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
-#endif
 STRUCT_END
 
 PUB_STRUCT(discord_modify_webhook)
   PP("the default name of the webhook")
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
-#if 0
   PP("image for the default webhook avatar")
   COND_WRITE(this->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
-#endif
   PP("the new channel ID for this webhook should be moved to")
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
@@ -82,12 +78,10 @@ PUB_STRUCT(discord_modify_webhook_with_token)
   PP("the default name of the webhook")
     FIELD_PTR(name, char, *)
   /* TODO: base64 conv */
-#if 0
   PP("image for the default webhook avatar")
   COND_WRITE(this->avatar != NULL)
     FIELD_PTR(avatar, char, *)
   COND_END
-#endif
 STRUCT_END
 
 PUB_STRUCT(discord_execute_webhook)

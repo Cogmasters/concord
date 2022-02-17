@@ -140,12 +140,9 @@ PUB_STRUCT(discord_channel)
        "parent category can contain up to 50 channels), for threads: id of"
        "the text channel this thread was created")
     FIELD_SNOWFLAKE(parent_id)
-  /* TODO: iso8601 support */
-#if 0
   PP("when the last pinned message was pinned. This may be `NULL` in events"
        "such as `GUILD_CREATE` when a message is not pinned")
-    FIELD_SNOWFLAKE(last_pin_timestamp)
-#endif
+    FIELD_TIMESTAMP(last_pin_timestamp)
   PP("voice region ID for the voice channel, automatic when set to null")
     FIELD_PTR(rtc_region, char, *)
   PP("the camera video quality mode of the voice channel, 1 when not present")
@@ -186,13 +183,10 @@ PUB_STRUCT(discord_message)
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
   PP("contents of the message")
     FIELD_PTR(content, char, *)
-  /* TODO: iso8601 support */
-#if 0
   PP("when this message was sent")
-    FIELD_SNOWFLAKE(timestamp)
+    FIELD_TIMESTAMP(timestamp)
   PP("when this message was edited (or null if never)")
-    FIELD_SNOWFLAKE(edited_timestamp)
-#endif
+    FIELD_TIMESTAMP(edited_timestamp)
   PP("whether this was a TTS message")
     FIELD(tts, bool, false)
   PP("whether this message mentions everyone")
@@ -309,24 +303,18 @@ STRUCT(discord_thread_metadata)
   PP("duration in minutes to automatically archive the thread after recent"
        "activity, can be set to: 60, 1440, 3320, 10080")
     FIELD(auto_archive_duration, int, 0)
-  /* TODO: iso8601 support */
-#if 0
   PP("timestamp when the thread's archive status was last changed, used for"
        "calculating recent activity")
-    FIELD_SNOWFLAKE(archive_timestamp)
-#endif
+    FIELD_TIMESTAMP(archive_timestamp)
   PP("whether the thread is locked; when a thread is locked only users with"
        "`MANAGE_THREADS` can unarchive it")
     FIELD(locked, bool, false)
   PP("whether non-moderators cana dd other non-moderators to a thread; only"
        "available on private threads")
     FIELD(invitable, bool, false)
-  /* TODO: iso8601 support */
-#if 0
   PP("timestamp when the thread was created; only populated for threads"
        "created after 2022-01-09")
-    FIELD_SNOWFLAKE(create_timestamp)
-#endif
+    FIELD_TIMESTAMP(create_timestamp)
 STRUCT_END
 
 STRUCT(discord_thread_member)
@@ -334,12 +322,9 @@ STRUCT(discord_thread_member)
     FIELD_SNOWFLAKE(id)
   PP("the id of the user")
     FIELD_SNOWFLAKE(user_id)
-  /* TODO: iso8601 support */
-#if 0
   PP("the time the current user last joined the thread")
-    FIELD_SNOWFLAKE(join_timestamp)
-#endif
-  PP("anyuser-thread settings, currently only used for notifications")
+    FIELD_TIMESTAMP(join_timestamp)
+  PP("any user-thread settings, currently only used for notifications")
     FIELD(flags, int, 0)
 STRUCT_END
 
@@ -397,11 +382,8 @@ PUB_STRUCT(discord_embed)
     FIELD_PTR(description, char, *)
   PP("url of embed")
     FIELD_PTR(url, char, *)
-  /* TODO: iso8601 support */
-#if 0
   PP("timestamp of embed content")
-    FIELD_SNOWFLAKE(timestamp)
-#endif
+    FIELD_TIMESTAMP(timestamp)
   PP("color code of the embed")
   COND_WRITE(this->color != 0)
     FIELD(color, int, 0)
