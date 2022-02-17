@@ -35,8 +35,7 @@ PP_INCLUDE("cog-utils.h")
         ret += f->val->end - f->val->start;                                   \
     }
 #define JSON_DECODER_u64snowflake(f, buf, _var, _type)                        \
-    if (f && f->val->type == JSMN_PRIMITIVE)                                  \
-        _var = strtoull(buf + f->val->start, NULL, 10)
+    if (f) sscanf(buf + f->val->start, "%" SCNu64, &_var)
 #define JSON_DECODER_u64unix_ms(f, buf, _var, _type)                          \
     if (f && f->val->type == JSMN_PRIMITIVE)                                  \
         cog_iso8601_to_unix_ms(buf + f->val->start,                           \
