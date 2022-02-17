@@ -45,10 +45,10 @@ cog_load_whole_file(const char filename[], size_t *len)
   return str;
 }
 
-void
-cog_sized_buffer_from_json(char *str, size_t len, struct sized_buffer *buf)
+size_t
+cog_sized_buffer_from_json(const char str[], size_t len, struct sized_buffer *buf)
 {
-  buf->size = cog_strndup(str, len, &buf->start);
+  return buf->size = cog_strndup(str, len, &buf->start);
 }
 
 long
@@ -79,7 +79,7 @@ cog_timezone(void)
 }
 
 int
-cog_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
+cog_iso8601_to_unix_ms(const char str[], size_t len, uint64_t *p_value)
 {
   double seconds = 0.0;
   int tz_operator = 'Z';
@@ -114,10 +114,10 @@ cog_iso8601_to_unix_ms(char *str, size_t len, uint64_t *p_value)
 }
 
 int
-cog_unix_ms_to_iso8601(char *str, size_t len, uint64_t *p_value)
+cog_unix_ms_to_iso8601(char *str, size_t len, uint64_t value)
 {
-  time_t seconds = (*p_value / 1000) - cog_timezone();
-  int millis = *p_value % 1000;
+  time_t seconds = (value / 1000) - cog_timezone();
+  int millis = value % 1000;
   struct tm *tm = localtime(&seconds);
 
   return snprintf(
@@ -144,7 +144,7 @@ cog_u64tostr(char *str, size_t len, uint64_t *p_value)
 }
 
 size_t
-cog_strndup(const char *src, size_t len, char **p_dest)
+cog_strndup(const char src[], size_t len, char **p_dest)
 {
   *p_dest = malloc(len + 1);
 

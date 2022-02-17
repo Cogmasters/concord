@@ -16,10 +16,10 @@ extern "C" {
  * http request/response body
  */
 struct sized_buffer {
-  /** the buffer's start */
-  char *start;
-  /** the buffer's size in bytes */
-  size_t size;
+    /** the buffer's start */
+    char *start;
+    /** the buffer's size in bytes */
+    size_t size;
 };
 
 /**
@@ -62,10 +62,11 @@ int cog_dati_from_fjson(char filename[],
  * @param str the JSON string
  * @param len the JSON string length
  * @param buf the sized buffer
+ * @return amount of bytes written to buf
  */
-void cog_sized_buffer_from_json(char *str,
-                                size_t len,
-                                struct sized_buffer *buf);
+size_t cog_sized_buffer_from_json(const char str[],
+                                  size_t len,
+                                  struct sized_buffer *buf);
 
 /**
  * @brief Get the difference between UTC and the latest local standard time, in
@@ -78,23 +79,23 @@ long cog_timezone(void);
  * @brief Convert a iso8601 string to a unix timestamp (milliseconds)
  *
  * Can be matched to the json_extract() and json_inject() %F specifier
- * @param timestamp the iso8601 string timestamp
+ * @param str the iso8601 string timestamp
  * @param len the string length
  * @param p_value pointer to the `uint64_t` variable to receive the converted
  * timestamp
  * @return 1 on success, 0 on failure
  */
-int cog_iso8601_to_unix_ms(char *timestamp, size_t len, uint64_t *p_value);
+int cog_iso8601_to_unix_ms(const char str[], size_t len, uint64_t *p_value);
 
 /**
  * @brief Convert a unix timestamp (milliseconds) to a iso8601 string
  *
- * @param str the buffer to receive the converted timestamp
+ * @param timestamp the buffer to receive the converted timestamp
  * @param len the size of the buffer
- * @param p_value the unix timestamp to be converted to iso8601
+ * @param value the unix timestamp to be converted to iso8601
  * @return the amount of characters (in bytes) written to the buffer
  */
-int cog_unix_ms_to_iso8601(char *str, size_t len, uint64_t *p_value);
+int cog_unix_ms_to_iso8601(char str[], size_t len, const uint64_t value);
 
 /**
  * @brief Convert a numerical string to `uint64_t`
@@ -126,7 +127,7 @@ int cog_u64tostr(char *str, size_t len, uint64_t *p_value);
  * @param p_dest a pointer to the new `src` copy
  * @return length of copied string on success, 0 on failure
  */
-size_t cog_strndup(const char *src, size_t len, char **p_dest);
+size_t cog_strndup(const char src[], size_t len, char **p_dest);
 
 /**
  * @brief Copies at most `len` bytes of `src` to `*p_dest`.
