@@ -126,6 +126,7 @@ struct discord *discord_config_init(const char config_file[]);
  * @param orig_client the original client created with discord_init()
  * @return the original client clone
  */
+
 struct discord *discord_clone(const struct discord *orig_client);
 
 /**
@@ -133,7 +134,18 @@ struct discord *discord_clone(const struct discord *orig_client);
  *
  * @param client the client created with discord_init()
  */
+
 void discord_cleanup(struct discord *client);
+
+/*
+* @brief return an error from concord
+* @note used to log an error and to return an error
+*
+* @return an error code for your error
+*/
+
+int concord_return_error(const char *error, 
+                         int32_t error_code);
 
 /**
  * @brief Get the client's cached user
@@ -141,6 +153,7 @@ void discord_cleanup(struct discord *client);
  * @param client the client created with discord_init()
  * @warning the returned structure should NOT be modified
  */
+
 const struct discord_user *discord_get_self(struct discord *client);
 
 /**
@@ -2444,9 +2457,17 @@ void discord_set_on_commands(struct discord *client,
  * @note the functions will automatically set the necessary intent(s) to make
  *        the callback triggerable
  *  @{ */
-
-/** @brief Triggers at every event-loop iteration.  */
+/** @brief Set the time for wakeup function to be called
+ *  @see discord_set_on_wakeup
+ *  @param delay time to delay in milliseconds, or -1 to disable
+ */
+void discord_set_next_wakeup(struct discord *client, int64_t delay);
+/** @brief Triggers when wakeup timeout reached and disables any active timer */
+void discord_set_on_wakeup(struct discord *client, discord_ev_idle callback);
+/** @brief Triggers when idle.  */
 void discord_set_on_idle(struct discord *client, discord_ev_idle callback);
+/** @brief Triggers once per loop cycle.  */
+void discord_set_on_cycle(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when the client is ready */
 void discord_set_on_ready(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when a application command is created */

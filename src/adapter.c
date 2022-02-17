@@ -29,11 +29,11 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 #endif
 }
 
-static void
+static int
 on_io_poller_curl(CURLM *mhandle, void *user_data)
 {
     (void)mhandle;
-    discord_adapter_perform(user_data);
+    return discord_adapter_perform(user_data);
 }
 
 void
@@ -627,6 +627,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
 
     if (req->ret.data)
         discord_refcount_incr(adapter, req->ret.data, req->ret.cleanup);
+
+    io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller, adapter->mhandle);
 
     return CCORD_OK;
 }

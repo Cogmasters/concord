@@ -128,6 +128,17 @@ discord_strerror(CCORDcode code, struct discord *client)
     }
 }
 
+int
+concord_return_error(const char *error, int32_t error_code)
+{
+  if (error_code < 0 || error_code > 2) {
+    return 1;
+  }
+  
+  log_info("%s", error);
+  
+  return error_code;
+}
 void *
 discord_set_data(struct discord *client, void *data)
 {
@@ -233,10 +244,34 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
+
+void
+discord_set_next_wakeup(struct discord *client, int64_t delay)
+{
+    if (delay == -1) {
+        client->wakeup_timer.next = -1;
+    } else if (delay >= 0) {
+        client->wakeup_timer.next = cog_timestamp_ms() + delay;
+    }
+}
+
+void
+discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
+{
+    client->wakeup_timer.cb = callback;
+    client->wakeup_timer.next = -1;
+}
+
 void
 discord_set_on_idle(struct discord *client, discord_ev_idle callback)
 {
-    client->gw.cmds.cbs.on_idle = callback;
+    client->on_idle = callback;
+}
+
+void
+discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
+{
+    client->on_cycle = callback;
 }
 
 void
@@ -248,31 +283,51 @@ discord_set_on_ready(struct discord *client, discord_ev_idle callback)
 CCORDcode
 discord_run(struct discord *client)
 {
-    time_t last, now;
+    int64_t next_gateway_run, now;
     CCORDcode code;
 
     while (1) {
         if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
 
-        last = 0;
+        next_gateway_run = cog_timestamp_ms();
         while (1) {
-            io_poller_poll(client->io_poller,
-                           client->gw.cmds.cbs.on_idle ? 1 : 1000);
-            io_poller_perform(client->io_poller);
+            now = cog_timestamp_ms();
+            int poll_time = 0;
+            if (!client->on_idle) {
+                poll_time = now < next_gateway_run ? next_gateway_run - now : 0;
+                if (-1 != client->wakeup_timer.next)
+                    if (client->wakeup_timer.next <= now + poll_time)
+                        poll_time = client->wakeup_timer.next - now;
+            }
+            
+            int poll_result = io_poller_poll(client->io_poller, poll_time);
+            if (-1 == poll_result) {
+                //TODO: handle poll error here
+            } else if (0 == poll_result) {
+                if (client->on_idle)
+                    client->on_idle(client);
+            }
+            
+            if (client->on_cycle)
+                client->on_cycle(client);
+            
+            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
+                break;
 
-            now = time(NULL);
-            if (last != now) {
+            now = cog_timestamp_ms();
+            if (client->wakeup_timer.next != -1) {
+                if (now >= client->wakeup_timer.next) {
+                    client->wakeup_timer.next = -1;
+                    if (client->wakeup_timer.cb)
+                        client->wakeup_timer.cb(client);
+                }
+            }
+            if (next_gateway_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
                     break;
 
-                last = now;
+                next_gateway_run = now + 1000;
             }
-
-            if (CCORD_OK != (code = discord_adapter_perform(&client->adapter)))
-                break;
-
-            if (client->gw.cmds.cbs.on_idle)
-                client->gw.cmds.cbs.on_idle(client);
         }
 
         if (true == discord_gateway_end(&client->gw)) {
@@ -581,10 +636,7 @@ discord_get_ping(struct discord *client)
 uint64_t
 discord_timestamp(struct discord *client)
 {
-    /* get WebSockets internal timestamp if available */
-    if (ws_is_functional(client->gw.ws)) {
-        return ws_timestamp(client->gw.ws);
-    }
+    (void)client;
     return cog_timestamp_ms();
 }
 
