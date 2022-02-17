@@ -732,12 +732,12 @@ STRUCT_END
 
 PUB_STRUCT(discord_edit_channel_permissions)
   PP("the bitwise value of all allowed permissions (default \"0\")")
-  COND_WRITE(this->allow != NULL)
-    FIELD_PTR(allow, char, *)
+  COND_WRITE(this->allow != 0)
+    FIELD_PRINTF(allow, u64bitmask, "%" PRIu64, "%" SCNu64)
   COND_END
   PP("the bitwise value of all disallowed permissions (default \"0\")")
-  COND_WRITE(this->deny != NULL)
-    FIELD_PTR(deny, char, *)
+  COND_WRITE(this->deny != 0)
+    FIELD_PRINTF(deny, u64bitmask, "%" PRIu64, "%" SCNu64)
   COND_END
   PP("0 for a role or 1 for a member")
     FIELD(type, int, 0)
