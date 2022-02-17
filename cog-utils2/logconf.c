@@ -111,7 +111,7 @@ logconf_http(struct logconf *conf,
     ASSERT_S(ret < sizeof(label), "Out of bounds write attempt");
     va_end(label_args);
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), &tstamp_ms);
+    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), tstamp_ms);
 
     /* Print to output */
     fprintf(conf->http->f,
