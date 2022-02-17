@@ -6,34 +6,60 @@
 #include "discord-internal.h"
 #include "cog-utils.h"
 
+/* return enumerator as string in case of a match */
+#define CASE_RETURN_STR(code)                                                 \
+    case code:                                                                \
+        return #code
+
 /* TODO: use a per-client lock instead */
 static pthread_mutex_t client_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static const char *
 opcode_print(enum discord_voice_opcodes opcode)
 {
-    const char *str;
-
-    str = discord_voice_opcodes_print(opcode);
-    if (NULL == str) {
-        log_warn("Invalid Voice opcode (code: %d)", opcode);
-        str = "Invalid Voice opcode";
+    switch (opcode) {
+        CASE_RETURN_STR(DISCORD_VOICE_IDENTIFY);
+        CASE_RETURN_STR(DISCORD_VOICE_SELECT_PROTOCOL);
+        CASE_RETURN_STR(DISCORD_VOICE_READY);
+        CASE_RETURN_STR(DISCORD_VOICE_HEARTBEAT);
+        CASE_RETURN_STR(DISCORD_VOICE_SESSION_DESCRIPTION);
+        CASE_RETURN_STR(DISCORD_VOICE_SPEAKING);
+        CASE_RETURN_STR(DISCORD_VOICE_RESUME);
+        CASE_RETURN_STR(DISCORD_VOICE_HELLO);
+        CASE_RETURN_STR(DISCORD_VOICE_RESUMED);
+        CASE_RETURN_STR(DISCORD_VOICE_CLIENT_DISCONNECT);
+        CASE_RETURN_STR(DISCORD_VOICE_CODEC);
+    default:
+        return "INVALID_GATEWAY_OPCODE";
     }
-    return str;
 }
 
 static const char *
-close_opcode_print(enum discord_voice_close_event_codes opcode)
+close_opcode_print(enum discord_voice_close_opcodes opcode)
 {
-    const char *str;
+    switch (opcode) {
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_NOT_AUTHENTICATED);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_ALREADY_AUTHENTICATED);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_AUTHENTICATION_FAILED);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_INVALID_SESSION);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_SESSION_TIMED_OUT);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_SERVER_NOT_FOUND);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_UNKNOWN_PROTOCOL);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_DISCONNECTED);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH);
+        CASE_RETURN_STR(DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE);
+    default: {
+        const char *str;
 
-    str = discord_voice_close_event_codes_print(opcode);
-    if (str) return str;
+        str = ws_close_opcode_print((enum ws_close_reason)opcode);
+        if (str) return str;
 
-    str = ws_close_opcode_print((enum ws_close_reason)opcode);
-    if (str) return str;
-
-    return "Unknown WebSockets close opcode";
+        log_warn("Unknown WebSockets close opcode (code: %d)", opcode);
+    }
+        return "UNKNOWN_WEBSOCKETS_CLOSE_OPCODE";
+    }
 }
 
 static void
@@ -123,14 +149,17 @@ send_identify(struct discord_voice *vc)
 static void
 on_hello(struct discord_voice *vc)
 {
+    const struct sized_buffer *data = &vc->payload.event_data;
     float hbeat_interval = 0.0f;
+    jsmnf *root = jsmnf_init();
 
     vc->hbeat.tstamp = cog_timestamp_ms();
 
-    json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
-                 "(heartbeat_interval):f", &hbeat_interval);
-    ASSERT_S(hbeat_interval > 0.0f, "Invalid heartbeat_ms");
-
+    if (jsmnf_start(root, data->start, data->size) >= 0) {
+        jsmnf *f = jsmnf_find(root, "heartbeat_interval",
+                              sizeof("heartbeat_interval") - 1);
+        if (f) hbeat_interval = strtof(data->start + f->val->start, NULL);
+    }
     vc->hbeat.interval_ms =
         (hbeat_interval < 5000.0f) ? hbeat_interval : 5000.0f;
 
@@ -138,6 +167,8 @@ on_hello(struct discord_voice *vc)
         send_resume(vc);
     else
         send_identify(vc);
+
+    jsmnf_cleanup(root);
 }
 
 static void
@@ -165,19 +196,32 @@ static void
 on_speaking(struct discord_voice *vc)
 {
     struct discord *client = vc->p_client;
-    u64_snowflake_t user_id;
+    struct sized_buffer *data = &vc->payload.event_data;
+
     int speaking = 0, delay = 0, ssrc = 0;
+    u64snowflake user_id = 0;
+    jsmnf *root;
 
     if (!client->voice_cbs.on_speaking) return;
 
-    json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
-                 "(user_id):s_as_u64"
-                 "(speaking):d"
-                 "(delay):d"
-                 "(ssrc):d",
-                 &user_id, &speaking, &delay, &ssrc);
+    root = jsmnf_init();
+
+    if (jsmnf_start(root, data->start, data->size) >= 0) {
+        jsmnf *f;
+
+        f = jsmnf_find(root, "user_id", sizeof("user_id") - 1);
+        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &user_id);
+        f = jsmnf_find(root, "speaking", sizeof("speaking") - 1);
+        if (f) speaking = (int)strtol(data->start + f->val->start, NULL, 10);
+        f = jsmnf_find(root, "delay", sizeof("delay") - 1);
+        if (f) delay = (int)strtol(data->start + f->val->start, NULL, 10);
+        f = jsmnf_find(root, "ssrc", sizeof("ssrc") - 1);
+        if (f) ssrc = (int)strtol(data->start + f->val->start, NULL, 10);
+    }
 
     client->voice_cbs.on_speaking(client, vc, user_id, speaking, delay, ssrc);
+
+    jsmnf_cleanup(root);
 }
 
 static void
@@ -192,29 +236,54 @@ static void
 on_client_disconnect(struct discord_voice *vc)
 {
     struct discord *client = vc->p_client;
+    struct sized_buffer *data = &vc->payload.event_data;
+
+    u64snowflake user_id = 0;
+    jsmnf *root;
 
     if (!client->voice_cbs.on_client_disconnect) return;
 
-    u64_snowflake_t user_id = 0;
-    json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
-                 "(user_id):s_as_u64", &user_id);
+    root = jsmnf_init();
+
+    if (jsmnf_start(root, data->start, data->size) >= 0) {
+        jsmnf *f = jsmnf_find(root, "user_id", sizeof("user_id") - 1);
+        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &user_id);
+    }
 
     client->voice_cbs.on_client_disconnect(client, vc, user_id);
+
+    jsmnf_cleanup(root);
 }
 
 static void
 on_codec(struct discord_voice *vc)
 {
     struct discord *client = vc->p_client;
+    struct sized_buffer *data = &vc->payload.event_data;
+
     char audio_codec[64] = { 0 }, video_codec[64] = { 0 };
+    jsmnf *root;
 
     if (!client->voice_cbs.on_codec) return;
 
-    json_extract(vc->payload.event_data.start, vc->payload.event_data.size,
-                 "(audio_codec):s, (video_codec):s", &audio_codec,
-                 &video_codec);
+    root = jsmnf_init();
+
+    if (jsmnf_start(root, data->start, data->size) >= 0) {
+        jsmnf *f;
+
+        f = jsmnf_find(root, "audio_codec", sizeof("audio_codec") - 1);
+        if (f)
+            snprintf(audio_codec, sizeof(audio_codec), "%.*s",
+                     f->val->end - f->val->start, data->start + f->val->start);
+        f = jsmnf_find(root, "video_codec", sizeof("video_codec") - 1);
+        if (f)
+            snprintf(video_codec, sizeof(video_codec), "%.*s",
+                     f->val->end - f->val->start, data->start + f->val->start);
+    }
 
     client->voice_cbs.on_codec(client, vc, audio_codec, video_codec);
+
+    jsmnf_cleanup(root);
 }
 
 static void
@@ -247,8 +316,8 @@ on_close_cb(void *p_vc,
             size_t len)
 {
     struct discord_voice *vc = p_vc;
-    enum discord_voice_close_event_codes opcode =
-        (enum discord_voice_close_event_codes)wscode;
+    enum discord_voice_close_opcodes opcode =
+        (enum discord_voice_close_opcodes)wscode;
     (void)ws;
     (void)info;
 
@@ -261,22 +330,22 @@ on_close_cb(void *p_vc,
     if (vc->shutdown) return;
 
     switch (opcode) {
-    case DISCORD_VOICE_CLOSE_EVENT_SERVER_CRASH:
+    case DISCORD_VOICE_CLOSE_REASON_SERVER_CRASH:
         vc->is_resumable = true;
         vc->reconnect.enable = true;
         break;
-    case DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_OPCODE:
-    case DISCORD_VOICE_CLOSE_EVENT_DECODE_ERROR:
-    case DISCORD_VOICE_CLOSE_EVENT_NOT_AUTHENTICATED:
-    case DISCORD_VOICE_CLOSE_EVENT_AUTHENTICATION_FAILED:
-    case DISCORD_VOICE_CLOSE_EVENT_ALREADY_AUTHENTICATED:
-    case DISCORD_VOICE_CLOSE_EVENT_SERVER_NOT_FOUND:
-    case DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_PROTOCOL:
-    case DISCORD_VOICE_CLOSE_EVENT_UNKNOWN_ENCRYPTION_MODE:
+    case DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE:
+    case DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR:
+    case DISCORD_VOICE_CLOSE_REASON_NOT_AUTHENTICATED:
+    case DISCORD_VOICE_CLOSE_REASON_AUTHENTICATION_FAILED:
+    case DISCORD_VOICE_CLOSE_REASON_ALREADY_AUTHENTICATED:
+    case DISCORD_VOICE_CLOSE_REASON_SERVER_NOT_FOUND:
+    case DISCORD_VOICE_CLOSE_REASON_UNKNOWN_PROTOCOL:
+    case DISCORD_VOICE_CLOSE_REASON_UNKNOWN_ENCRYPTION_MODE:
         vc->is_resumable = false;
         vc->reconnect.enable = false;
         break;
-    case DISCORD_VOICE_CLOSE_EVENT_DISCONNECTED:
+    case DISCORD_VOICE_CLOSE_REASON_DISCONNECTED:
         vc->is_resumable = false;
         vc->reconnect.enable = true;
         break;
@@ -290,8 +359,8 @@ on_close_cb(void *p_vc,
             vc->reconnect.enable = false;
         }
         break;
-    case DISCORD_VOICE_CLOSE_EVENT_SESSION_TIMED_OUT:
-    case DISCORD_VOICE_CLOSE_EVENT_INVALID_SESSION:
+    case DISCORD_VOICE_CLOSE_REASON_SESSION_TIMED_OUT:
+    case DISCORD_VOICE_CLOSE_REASON_INVALID_SESSION:
         vc->is_resumable = false;
         vc->reconnect.enable = true;
         break;
@@ -306,11 +375,22 @@ on_text_cb(void *p_vc,
            size_t len)
 {
     struct discord_voice *vc = p_vc;
+    jsmnf *root = jsmnf_init();
     (void)ws;
     (void)info;
 
-    json_extract((char *)text, len, "(op):d (d):T", &vc->payload.opcode,
-                 &vc->payload.event_data);
+    if (jsmnf_start(root, text, len) >= 0) {
+        jsmnf *f;
+
+        f = jsmnf_find(root, "op", 2);
+        if (f)
+            vc->payload.opcode = (int)strtol(text + f->val->start, NULL, 10);
+        f = jsmnf_find(root, "d", 1);
+        if (f) {
+            vc->payload.event_data.start = (char *)text + f->val->start;
+            vc->payload.event_data.size = f->val->end - f->val->start;
+        }
+    }
 
     logconf_trace(
         &vc->conf,
@@ -347,6 +427,8 @@ on_text_cb(void *p_vc,
                       vc->payload.opcode);
         break;
     }
+
+    jsmnf_cleanup(root);
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -385,8 +467,8 @@ reset_vc(struct discord_voice *vc)
 static void
 _discord_voice_init(struct discord_voice *new_vc,
                     struct discord *client,
-                    u64_snowflake_t guild_id,
-                    u64_snowflake_t channel_id)
+                    u64snowflake guild_id,
+                    u64snowflake channel_id)
 {
     new_vc->p_client = client;
     new_vc->guild_id = guild_id;
@@ -456,8 +538,8 @@ discord_send_speaking(struct discord_voice *vc,
 
 static void
 recycle_active_vc(struct discord_voice *vc,
-                  u64_snowflake_t guild_id,
-                  u64_snowflake_t channel_id)
+                  u64snowflake guild_id,
+                  u64snowflake channel_id)
 {
     if (ws_is_alive(vc->ws)) {
         discord_voice_shutdown(vc);
@@ -469,8 +551,8 @@ recycle_active_vc(struct discord_voice *vc,
 
 static void
 send_voice_state_update(struct discord_voice *vc,
-                        u64_snowflake_t guild_id,
-                        u64_snowflake_t channel_id,
+                        u64snowflake guild_id,
+                        u64snowflake channel_id,
                         bool self_mute,
                         bool self_deaf)
 {
@@ -523,8 +605,8 @@ send_voice_state_update(struct discord_voice *vc,
 
 enum discord_voice_status
 discord_voice_join(struct discord *client,
-                   u64_snowflake_t guild_id,
-                   u64_snowflake_t vchannel_id,
+                   u64snowflake guild_id,
+                   u64snowflake vchannel_id,
                    bool self_mute,
                    bool self_deaf)
 {
@@ -698,7 +780,7 @@ _end:
  */
 void
 _discord_on_voice_server_update(struct discord *client,
-                                u64_snowflake_t guild_id,
+                                u64snowflake guild_id,
                                 char *token,
                                 char *endpoint)
 {

@@ -142,9 +142,9 @@ struct discord_voice {
     /* HEARTBEAT STRUCTURE */
     struct {
         /** fixed interval between heartbeats */
-        u64_unix_ms_t interval_ms;
+        u64unix_ms interval_ms;
         /** start pulse timestamp in milliseconds */
-        u64_unix_ms_t tstamp;
+        u64unix_ms tstamp;
     } hbeat;
 
     /** latency between client and websockets server, calculated by the
