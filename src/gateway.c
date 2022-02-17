@@ -10,36 +10,60 @@
 /* shorten event callback for maintainability purposes */
 #define ON(event, ...) gw->cmds.cbs.on_##event(CLIENT(gw, gw), __VA_ARGS__)
 
+/* return enumerator as string in case of a match */
+#define CASE_RETURN_STR(code)                                                 \
+    case code:                                                                \
+        return #code
+
 static const char *
 opcode_print(enum discord_gateway_opcodes opcode)
 {
-#if 0
-    const char *str = discord_gateway_opcodes_print(opcode);
-#else
-    (void)opcode;
-    const char *str = NULL;
-#endif
-    if (!str) str = "Invalid Gateway opcode";
-    return str;
+    switch (opcode) {
+        CASE_RETURN_STR(DISCORD_GATEWAY_DISPATCH);
+        CASE_RETURN_STR(DISCORD_GATEWAY_HEARTBEAT);
+        CASE_RETURN_STR(DISCORD_GATEWAY_IDENTIFY);
+        CASE_RETURN_STR(DISCORD_GATEWAY_PRESENCE_UPDATE);
+        CASE_RETURN_STR(DISCORD_GATEWAY_VOICE_STATE_UPDATE);
+        CASE_RETURN_STR(DISCORD_GATEWAY_RESUME);
+        CASE_RETURN_STR(DISCORD_GATEWAY_RECONNECT);
+        CASE_RETURN_STR(DISCORD_GATEWAY_REQUEST_GUILD_MEMBERS);
+        CASE_RETURN_STR(DISCORD_GATEWAY_INVALID_SESSION);
+        CASE_RETURN_STR(DISCORD_GATEWAY_HELLO);
+        CASE_RETURN_STR(DISCORD_GATEWAY_HEARTBEAT_ACK);
+    default:
+        return "INVALID_GATEWAY_OPCODE";
+    }
 }
 
 static const char *
 close_opcode_print(enum discord_gateway_close_opcodes opcode)
 {
-    const char *str;
+    switch (opcode) {
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_OPCODE);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DECODE_ERROR);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_NOT_AUTHENTICATED);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_AUTHENTICATION_FAILED);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_ALREADY_AUTHENTICATED);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_SEQUENCE);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_RATE_LIMITED);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_SESSION_TIMED_OUT);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_SHARD);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_SHARDING_REQUIRED);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_API_VERSION);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_INVALID_INTENTS);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_DISALLOWED_INTENTS);
+        CASE_RETURN_STR(DISCORD_GATEWAY_CLOSE_REASON_RECONNECT);
+    default: {
+        const char *str;
 
-#if 0
-    str = discord_gateway_close_opcodes_print(opcode);
-#else
-    str = NULL;
-#endif
-    if (str) return str;
+        str = ws_close_opcode_print((enum ws_close_reason)opcode);
+        if (str) return str;
 
-    str = ws_close_opcode_print((enum ws_close_reason)opcode);
-    if (str) return str;
-
-    log_warn("Unknown WebSockets close opcode (code: %d)", opcode);
-    return "Unknown WebSockets close opcode";
+        log_warn("Unknown WebSockets close opcode (code: %d)", opcode);
+    }
+        return "UNKNOWN_WEBSOCKETS_CLOSE_OPCODE";
+    }
 }
 
 void
@@ -963,7 +987,7 @@ on_dispatch(struct discord_gateway *gw)
     enum discord_gateway_events event;
     enum discord_event_scheduler mode;
 
-    /* TODO: this should only apply for user dispatched payloads? */
+    /* XXX: this should only apply for user dispatched payloads? */
 #if 0
   /* Ratelimit check */
   if (gw->timer->now - gw->timer->event < 60000) {
@@ -1472,10 +1496,7 @@ discord_gateway_init(struct discord_gateway *gw,
     /* the bot initial presence */
     gw->id.presence = calloc(1, sizeof *gw->id.presence);
     presence.status = "online";
-    /* TODO: enable once iso8601 conv is implemented to gencodecs */
-#if 0
     presence.since = cog_timestamp_ms();
-#endif
     discord_set_presence(client, &presence);
 
     /* default callbacks */
