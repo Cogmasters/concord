@@ -21,7 +21,7 @@ print_usage(void)
            "\nTYPE ANY KEY TO START BOT\n");
 }
 
-char JSON_STRING[] =
+char JSON[] =
     "{\n"
     "  \"title\": \"Concord\",\n"
     "  \"description\": \"Discord API library\",\n"
@@ -72,10 +72,8 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
 
     /* load a embed from the json string */
     struct discord_embed embed = { 0 };
-    discord_embed_from_json(JSON_STRING, sizeof(JSON_STRING), &embed);
-#if 0
+    discord_embed_from_json(JSON, sizeof(JSON), &embed);
     embed.timestamp = discord_timestamp(client); // get current timestamp
-#endif
 
     struct discord_create_message params = {
         .content = "This is an embed",
@@ -116,9 +114,7 @@ on_static(struct discord *client, const struct discord_message *msg)
             .description = "Discord API library",
             .url = "https://github.com/Cogmasters/concord",
             .color = 3447003,
-#if 0
             .timestamp = discord_timestamp(client),
-#endif
             .footer =
                 &(struct discord_embed_footer){
                     .text = "github.com/Cogmasters/concord",
@@ -161,9 +157,7 @@ on_builder(struct discord *client, const struct discord_message *msg)
 
     struct discord_embed embed = {
         .color = 3447003,
-#if 0
         .timestamp = discord_timestamp(client),
-#endif
     };
 
     discord_embed_set_title(&embed, "Concord");

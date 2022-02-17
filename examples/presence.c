@@ -39,9 +39,7 @@ on_ready(struct discord *client)
             },
         .status = "idle",
         .afk = false,
-#if 0
         .since = discord_timestamp(client),
-#endif
     };
 
     discord_set_presence(client, &status);

@@ -20,7 +20,7 @@ print_usage(void)
         "\nTYPE ANY KEY TO START BOT\n");
 }
 
-char JSON_STRING[] =
+char JSON[] =
     "[\n"
     "    {\n"
     "        \"type\": 1,\n"
@@ -81,8 +81,7 @@ on_dynamic(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot) return;
 
     struct discord_components components = { 0 };
-    discord_components_from_json(JSON_STRING, sizeof(JSON_STRING),
-                                 &components);
+    discord_components_from_json(JSON, sizeof(JSON), &components);
 
     struct discord_create_message params = {
         .content = "Mason is looking for new arena partners. What classes do "
