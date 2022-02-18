@@ -45,12 +45,7 @@ GENCODECS_PP_INCLUDE(<stdlib.h>)
 #       ifdef GENCODECS_INIT
 GENCODECS_PP_INCLUDE("carray.h")
 #       endif
-#       ifdef GENCODECS_JSON_DECODER
-GENCODECS_PP_DEFINE(JSMN_STRICT)
-GENCODECS_PP_DEFINE(JSMN_HEADER)
-GENCODECS_PP_INCLUDE("jsmn.h")
-GENCODECS_PP_INCLUDE("jsmn-find.h")
-#           ifdef GENCODECS_FORWARD
+#       if defined(GENCODECS_JSON_DECODER) && defined(GENCODECS_FORWARD)
 static char *
 _gc_strndup(const char *src, size_t len)
 {
@@ -59,12 +54,17 @@ _gc_strndup(const char *src, size_t len)
     dest[len] = '\0';
     return dest;
 }
-#           endif /* GENCODECS_FORWARD */
-#       endif /* GENCODECS_JSON_DECODER */
+#       endif /* GENCODECS_JSON_DECODER && GENCODECS_FORWARD */
 #   endif /* GENCODECS_DATA */
 #else
 GENCODECS_PP_INCLUDE(<stddef.h>)
 GENCODECS_PP_INCLUDE(<stdbool.h>)
+#       ifdef GENCODECS_JSON_DECODER
+GENCODECS_PP_DEFINE(JSMN_STRICT)
+GENCODECS_PP_DEFINE(JSMN_HEADER)
+GENCODECS_PP_INCLUDE("jsmn.h")
+GENCODECS_PP_INCLUDE("jsmn-find.h")
+#       endif
 #       ifdef GENCODECS_JSON_ENCODER
 GENCODECS_PP_DEFINE(JSONB_HEADER)
 GENCODECS_PP_INCLUDE("json-build.h")

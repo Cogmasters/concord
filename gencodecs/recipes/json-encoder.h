@@ -7,7 +7,7 @@
 #define JSON_ENCODER_bool(b, buf, size, _var, _type)                          \
     if (0 > (code = jsonb_bool(b, buf, size, _var))) return code
 #define JSON_ENCODER_STRUCT_PTR(b, buf, size, _var, _type)                    \
-    if (0 > (code = _##_type##_to_jsonb(b, buf, size, _var))) return code
+    if (0 > (code = _type##_to_jsonb(b, buf, size, _var))) return code
 
 #ifdef GENCODECS_JSON_ENCODER
 #ifdef GENCODECS_HEADER
@@ -23,11 +23,9 @@
 #elif defined(GENCODECS_FORWARD)
 
 #define GENCODECS_STRUCT(_type)                                               \
-    static jsonbcode _##_type##_to_jsonb(jsonb *b, char buf[], size_t size,   \
+    static jsonbcode _type##_to_jsonb(jsonb *b, char buf[], size_t size,      \
                                          const struct _type *this);
 #define GENCODECS_LIST(_type) GENCODECS_STRUCT(_type)
-#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
-#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
 
 #include "gencodecs-gen.H"
 
@@ -38,13 +36,15 @@
 #define GENCODECS_COND_END                                                    \
     }
 
-#define GENCODECS_STRUCT(_type)                                               \
-    static jsonbcode _##_type##_to_jsonb(jsonb *b, char buf[], size_t size,   \
+#define GENCODECS_PUB_STRUCT(_type)                                           \
+    jsonbcode _type##_to_jsonb(jsonb *b, char buf[], size_t size,             \
                                          const struct _type *this)            \
     {                                                                         \
         jsonbcode code;                                                       \
         if (0 > (code = jsonb_object(b, buf, size))) return code;             \
         if (this != NULL) {
+#define GENCODECS_STRUCT(_type)                                               \
+    static GENCODECS_PUB_STRUCT(_type)
 #define GENCODECS_FIELD_CUSTOM(_name, _key, _type, _decor, _init, _cleanup,   \
                                _encoder, _decoder, _default_value)            \
         if (0 > (code = jsonb_key(b, buf, size, _key, sizeof(_key) - 1)))     \
@@ -66,21 +66,23 @@
         return code;                                                          \
     }
 
-#define GENCODECS_LIST(_type)                                                 \
-    static jsonbcode _##_type##_to_jsonb(jsonb *b, char buf[], size_t size,   \
+#define GENCODECS_PUB_LIST(_type)                                             \
+    jsonbcode _type##_to_jsonb(jsonb *b, char buf[], size_t size,             \
                                          const struct _type *this)            \
     {                                                                         \
         jsonbcode code;                                                       \
         if (0 > (code = jsonb_array(b, buf, size))) return code;              \
         if (this != NULL) {                                                   \
             int i;
+#define GENCODECS_LIST(_type)                                                 \
+    static GENCODECS_PUB_LIST(_type)
 #define GENCODECS_LISTTYPE(_type)                                             \
         for (i = 0; i < this->size; ++i) {                                    \
             JSON_ENCODER_##_type(b, buf, size, this->array[i], _type);        \
         }
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         for (i = 0; i < this->size; ++i)                                      \
-            if (0 > (code = _##_type##_to_jsonb(b, buf, size,                 \
+            if (0 > (code = _type##_to_jsonb(b, buf, size,                    \
                                                 &this->array[i])))            \
                 return code;
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
@@ -93,24 +95,16 @@
         return code;                                                          \
     }
 
-#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
-#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
-
 #include "gencodecs-gen.H"
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
-    jsonbcode _type##_to_jsonb(jsonb *b, char buf[], size_t size,             \
-                              const struct _type *this)                       \
-    {                                                                         \
-        return _##_type##_to_jsonb(b, buf, size, this);                       \
-    }                                                                         \
     size_t _type##_to_json(char buf[], size_t size,                           \
                               const struct _type *this)                       \
     {                                                                         \
         jsonb b;                                                              \
         jsonbcode code;                                                       \
         jsonb_init(&b);                                                       \
-        code = _##_type##_to_jsonb(&b, buf, size, this);                      \
+        code = _type##_to_jsonb(&b, buf, size, this);                         \
         return code < 0 ? 0 : b.pos;                                          \
     }
 #define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
