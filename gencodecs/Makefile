@@ -13,7 +13,7 @@ TEMPLATES_OUT_H := $(TEMPLATES_IN:%.H=%.h)
 OBJS := $(OBJ_DIR)/jsmn-find.o $(OBJ_DIR)/json-build.o \
         $(TEMPLATES_OUT_C:%.c=$(OBJ_DIR)/%.o)
 
-CFLAGS += -std=c89 -Wall -Wextra -Wpedantic -g -I. -I$(API_DIR) -I$(INCLUDE_DIR)
+CFLAGS += -Wall -Wextra -Wpedantic -g -I. -I$(API_DIR) -I$(INCLUDE_DIR)
 
 HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.H/\U\1/' | sed -e 's/-/_/')_H"
 
@@ -26,16 +26,16 @@ $(TEMPLATES_OUT_H): %.h: %.H $(PP)
 	# Generating header
 	@ echo "#ifndef $(HEADER_TAG)" > $@
 	@ echo "#define $(HEADER_TAG)" >> $@
-	cpp $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P $< | $(PP) >> $@
+	gcc -E $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P $< | $(PP) >> $@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
 	# Formatting output with clang-format
 	- clang-format -i $@
 $(TEMPLATES_OUT_C): %.c: %.H $(PP)
 	# Generating forward definitions
 	@ echo "#include \"$*.h\"" > $@
-	cpp $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $< | $(PP) >> $@
+	gcc -E $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $< | $(PP) >> $@
 	# Generating source
-	cpp $(CFLAGS) -nostdinc -P $< | $(PP) >> $@
+	gcc -E $(CFLAGS) -nostdinc -P $< | $(PP) >> $@
 	# Formatting output with clang-format
 	- clang-format -i $@
 

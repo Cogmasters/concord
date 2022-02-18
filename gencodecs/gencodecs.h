@@ -1,10 +1,6 @@
 #ifndef GENCODECS_H
 #define GENCODECS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Allow symbols usage without GENCODECS_ prefix */
 #ifndef GENCODECS_USE_PREFIX
 #   define PP_INCLUDE GENCODECS_PP_INCLUDE
@@ -73,9 +69,5 @@ GENCODECS_PP_INCLUDE("json-build.h")
 
 #define GENCODECS_PP(_description)
 #define GENCODECS_PP_DEFINE(_description)
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* GENCODECS_H */
