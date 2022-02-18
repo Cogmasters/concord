@@ -29,7 +29,7 @@ $(TEMPLATES_OUT_H): %.h: %.H $(PP)
 	gcc -E $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P $< | $(PP) >> $@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
 	# Formatting output with clang-format
-	- clang-format -i $@
+	- clang-format-10 -i $@
 $(TEMPLATES_OUT_C): %.c: %.H $(PP)
 	# Generating forward definitions
 	@ echo "#include \"$*.h\"" > $@
@@ -37,7 +37,7 @@ $(TEMPLATES_OUT_C): %.c: %.H $(PP)
 	# Generating source
 	gcc -E $(CFLAGS) -nostdinc -P $< | $(PP) >> $@
 	# Formatting output with clang-format
-	- clang-format -i $@
+	- clang-format-10 -i $@
 
 echo:
 	@ echo 'TEMPLATES_OUT_H: $(TEMPLATES_OUT_H)'
