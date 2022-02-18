@@ -7,6 +7,8 @@
 #ifndef DISCORD_TEMPLATES_H
 #define DISCORD_TEMPLATES_H
 
+#include "discord-codecs.h"
+
 /** @brief flag for enabling `sync` mode without expecting a datatype return */
 #define DISCORD_SYNC_FLAG ((void *)-1)
 
