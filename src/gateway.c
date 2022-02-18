@@ -353,9 +353,7 @@ on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
         f = jsmnf_find(root, "role", sizeof("role") - 1);
-        if (f)
-            discord_role_from_json(data->start + f->val->start,
-                                   f->val->end - f->val->start, &role);
+        if (f) discord_role_from_jsmnf(f, data->start, &role);
     }
 
     ON(guild_role_create, guild_id, &role);
@@ -377,9 +375,7 @@ on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
         f = jsmnf_find(root, "role", sizeof("role") - 1);
-        if (f)
-            discord_role_from_json(data->start + f->val->start,
-                                   f->val->end - f->val->start, &role);
+        if (f) discord_role_from_jsmnf(f, data->start, &role);
     }
 
     ON(guild_role_update, guild_id, &role);
@@ -459,9 +455,7 @@ on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
         f = jsmnf_find(root, "user", sizeof("user") - 1);
-        if (f)
-            discord_user_from_json(data->start + f->val->start,
-                                   f->val->end - f->val->start, &user);
+        if (f) discord_user_from_jsmnf(f, data->start, &user);
     }
 
     ON(guild_member_remove, guild_id, &user);
@@ -483,9 +477,7 @@ on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
         f = jsmnf_find(root, "user", sizeof("user") - 1);
-        if (f)
-            discord_user_from_json(data->start + f->val->start,
-                                   f->val->end - f->val->start, &user);
+        if (f) discord_user_from_jsmnf(f, data->start, &user);
     }
 
     ON(guild_ban_add, guild_id, &user);
@@ -507,9 +499,7 @@ on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
         f = jsmnf_find(root, "user", sizeof("user") - 1);
-        if (f)
-            discord_user_from_json(data->start + f->val->start,
-                                   f->val->end - f->val->start, &user);
+        if (f) discord_user_from_jsmnf(f, data->start, &user);
     }
 
     ON(guild_ban_remove, guild_id, &user);
@@ -760,9 +750,7 @@ on_message_delete_bulk(struct discord_gateway *gw, struct sized_buffer *data)
         jsmnf *f;
 
         f = jsmnf_find(root, "ids", sizeof("ids") - 1);
-        if (f)
-            snowflakes_from_json(data->start + f->val->start,
-                                 f->val->end - f->val->start, &ids);
+        if (f) snowflakes_from_jsmnf(f, data->start, &ids);
         f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
@@ -791,14 +779,9 @@ on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
         f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
         f = jsmnf_find(root, "member", sizeof("member") - 1);
-        if (f)
-            discord_guild_member_from_json(data->start + f->val->start,
-                                           f->val->end - f->val->start,
-                                           &member);
+        if (f) discord_guild_member_from_jsmnf(f, data->start, &member);
         f = jsmnf_find(root, "emoji", sizeof("emoji") - 1);
-        if (f)
-            discord_emoji_from_json(data->start + f->val->start,
-                                    f->val->end - f->val->start, &emoji);
+        if (f) discord_emoji_from_jsmnf(f, data->start, &emoji);
         f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
@@ -829,9 +812,7 @@ on_message_reaction_remove(struct discord_gateway *gw,
         f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
         f = jsmnf_find(root, "emoji", sizeof("emoji") - 1);
-        if (f)
-            discord_emoji_from_json(data->start + f->val->start,
-                                    f->val->end - f->val->start, &emoji);
+        if (f) discord_emoji_from_jsmnf(f, data->start, &emoji);
         f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
         f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
@@ -886,9 +867,7 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw,
         f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
         if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
         f = jsmnf_find(root, "emoji", sizeof("emoji") - 1);
-        if (f)
-            discord_emoji_from_json(data->start + f->val->start,
-                                    f->val->end - f->val->start, &emoji);
+        if (f) discord_emoji_from_jsmnf(f, data->start, &emoji);
     }
 
     ON(message_reaction_remove_emoji, channel_id, guild_id, message_id,
@@ -1679,11 +1658,9 @@ discord_gateway_start(struct discord_gateway *gw)
             f = jsmnf_find(root, "session_start_limit",
                            sizeof("session_start_limit") - 1);
             if (f)
-                discord_session_start_limit_from_json(
-                    json.start + f->val->start, f->val->end - f->val->start,
-                    &gw->session->start_limit);
+                discord_session_start_limit_from_jsmnf(
+                    f, json.start, &gw->session->start_limit);
         }
-
         jsmnf_cleanup(root);
     }
 
