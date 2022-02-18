@@ -474,8 +474,10 @@ _discord_context_reset(struct discord_context *cxt)
     cxt->timeout_ms = 0;
     cxt->retry_attempt = 0;
 
-    discord_attachments_cleanup(cxt->req.attachments);
-    free(cxt->req.attachments);
+    if (cxt->req.attachments) {
+        discord_attachments_cleanup(cxt->req.attachments);
+        free(cxt->req.attachments);
+    }
 
     memset(&cxt->req, 0, sizeof(struct discord_request));
 }
