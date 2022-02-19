@@ -18,7 +18,7 @@
     size_t _type##_to_json(char buf[], size_t size, const struct _type *this);
 #define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
 
-#include "gencodecs-gen.H"
+#include "gencodecs-gen.pre.h"
 
 #elif defined(GENCODECS_FORWARD)
 
@@ -27,7 +27,7 @@
                                          const struct _type *this);
 #define GENCODECS_LIST(_type) GENCODECS_STRUCT(_type)
 
-#include "gencodecs-gen.H"
+#include "gencodecs-gen.pre.h"
 
 #else
 
@@ -95,7 +95,7 @@
         return code;                                                          \
     }
 
-#include "gencodecs-gen.H"
+#include "gencodecs-gen.pre.h"
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
     size_t _type##_to_json(char buf[], size_t size,                           \
@@ -110,7 +110,7 @@
 #define GENCODECS_PUB_LIST(_type) GENCODECS_PUB_STRUCT(_type)
 
 
-#include "gencodecs-gen.H"
+#include "gencodecs-gen.pre.h"
 
 #endif /* GENCODECS_HEADER */
 #endif /* GENCODECS_JSON_ENCODER */

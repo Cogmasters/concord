@@ -4,9 +4,9 @@
 # The above will handle all files NOT found below
 *.sh            eol=lf
 # Ignore generated files from showing up in code reviews
-gencodecs/discord-codecs.c   linguist-generated=true
-gencodecs/discord-codecs.h   linguist-generated=true
+## gencodecs/discord-codecs.c   linguist-generated=true
+## gencodecs/discord-codecs.h   linguist-generated=true
 # -diff Treat generated files like a binary
 # -merge Treat generated files merging like a binary
-gencodecs/discord-codecs.c   -diff -merge
-gencodecs/discord-codecs.h   -diff -merge
+## gencodecs/discord-codecs.c   -diff -merge
+## gencodecs/discord-codecs.h   -diff -merge

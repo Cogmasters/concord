@@ -6,23 +6,23 @@ INCLUDE_DIR := $(TOP)/include
 API_DIR     := api
 OBJ_DIR     := $(TOP)/obj
 
-TEMPLATES_IN    := discord-codecs.H
-TEMPLATES_OUT_C := $(TEMPLATES_IN:%.H=%.c)
-TEMPLATES_OUT_H := $(TEMPLATES_IN:%.H=%.h)
+TEMPLATES_IN    := discord-codecs.pre.h
+TEMPLATES_OUT_C := $(TEMPLATES_IN:%.pre.h=%.c)
+TEMPLATES_OUT_H := $(TEMPLATES_IN:%.pre.h=%.h)
 
 OBJS := $(OBJ_DIR)/jsmn-find.o $(OBJ_DIR)/json-build.o \
         $(TEMPLATES_OUT_C:%.c=$(OBJ_DIR)/%.o)
 
 CFLAGS += -Wall -Wextra -Wpedantic -g -I. -I$(API_DIR) -I$(INCLUDE_DIR)
 
-HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.H/\U\1/' | sed -e 's/-/_/')_H"
+HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.pre.h/\U\1/' | sed -e 's/-/_/')_H"
 
 all: $(TEMPLATES_OUT_H) $(TEMPLATES_OUT_C)
 
 $(PP): %: %.c
 	$(CC) $(CFLAGS) -o $@ $<
 
-$(TEMPLATES_OUT_H): %.h: %.H $(PP)
+$(TEMPLATES_OUT_H): %.h: %.pre.h $(PP)
 	# Generating header
 	@ echo "#ifndef $(HEADER_TAG)" > $@
 	@ echo "#define $(HEADER_TAG)" >> $@
@@ -30,7 +30,7 @@ $(TEMPLATES_OUT_H): %.h: %.H $(PP)
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
 	# Formatting output with clang-format
 	- clang-format-10 -i $@
-$(TEMPLATES_OUT_C): %.c: %.H $(PP)
+$(TEMPLATES_OUT_C): %.c: %.pre.h $(PP)
 	# Generating forward definitions
 	@ echo "#include \"$*.h\"" > $@
 	gcc -E $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $< | $(PP) >> $@

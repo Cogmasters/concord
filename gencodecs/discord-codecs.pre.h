@@ -49,7 +49,7 @@ PP_INCLUDE("cog-utils.h")
                  JSON_DECODER_u64unix_ms, (u64unix_ms)0)
 
 #ifndef GENCODECS_READ
-#   define GENCODECS_READ "all.H"
+#   define GENCODECS_READ "all.pre.h"
 #endif
 
-#include "gencodecs-process.H"
+#include "gencodecs-process.pre.h"

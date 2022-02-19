@@ -1,1 +1,9 @@
-gencodecs-pp
+# Ignore all
+*
+# But these
+!api
+!recipes
+!*.pre.h
+!gencodecs.h
+!gencodecs-pp.c
+!Makefile
