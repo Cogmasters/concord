@@ -689,7 +689,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 
             /* skip blank characters */
             msg.content += (ptrdiff_t)(gw->cmds.prefix.size + cmd->size);
-            while (isspace(*msg.content)) {
+            while (isspace((int) msg.content[0])) {
                 ++msg.content;
             }
 

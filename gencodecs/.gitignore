@@ -1,3 +1,9 @@
-gencodecs-pp
-discord-codecs.c
-discord-codecs.h
+# Ignore all
+*
+# But these
+!api
+!recipes
+!*.pre.h
+!gencodecs.h
+!gencodecs-pp.c
+!Makefile
