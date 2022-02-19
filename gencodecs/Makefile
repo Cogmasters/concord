@@ -26,16 +26,16 @@ $(TEMPLATES_OUT_H): %.h: %.pre.h $(PP)
 	# Generating header
 	@ echo "#ifndef $(HEADER_TAG)" > $@
 	@ echo "#define $(HEADER_TAG)" >> $@
-	gcc -E $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P $< | $(PP) >> $@
+	$(CC) -E $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P $< | $(PP) >> $@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $@
 	# Formatting output with clang-format
 	- clang-format-10 -i $@
 $(TEMPLATES_OUT_C): %.c: %.pre.h $(PP)
 	# Generating forward definitions
 	@ echo "#include \"$*.h\"" > $@
-	gcc -E $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $< | $(PP) >> $@
+	$(CC) -E $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $< | $(PP) >> $@
 	# Generating source
-	gcc -E $(CFLAGS) -nostdinc -P $< | $(PP) >> $@
+	$(CC) -E $(CFLAGS) -nostdinc -P $< | $(PP) >> $@
 	# Formatting output with clang-format
 	- clang-format-10 -i $@
 
