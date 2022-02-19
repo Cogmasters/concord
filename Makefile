@@ -49,8 +49,7 @@ LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
-          -I$(GENCODECS_DIR)                                               \
-          -DLOG_USE_COLOR
+          -I$(GENCODECS_DIR) -I/usr/local/include -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
 
