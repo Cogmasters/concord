@@ -99,17 +99,15 @@ io_poller_perform(struct io_poller *io)
         }
     }
     for (int i = 0; i < io->curlm_cnt; i++) {
-        if (io->curlm[i]->should_perform || now >= io->curlm[i]->timeout) {
-            io->curlm[i]->should_perform = false;
-            if (io->curlm[i]->cb) {
-                int result = io->curlm[i]->cb(io->curlm[i]->multi, io->curlm[i]->user_data);
-                if (result != 0)
-                    return result;
-            }
-            else {
-                curl_multi_socket_all(io->curlm[i]->multi,
-                                      &io->curlm[i]->running);
-            }
+        struct io_curlm *curlm = io->curlm[i];
+        if (curlm->should_perform || now >= curlm->timeout) {
+            curlm->should_perform = false;
+            int result = curlm->cb ?
+                curlm->cb(curlm->multi, curlm->user_data) :
+                curl_multi_socket_all(curlm->multi, &curlm->running);
+            
+            if (result != 0)
+                return result;
         }
     }
     return 0;
