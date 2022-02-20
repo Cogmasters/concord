@@ -75,6 +75,9 @@ test: all
 examples: all
 	@ $(MAKE) -C $(EXAMPLES_DIR)
 
+gencodecs:
+	@ $(MAKE) -C $(GENCODECS_DIR)
+
 $(LIB): $(OBJS) | $(LIBDIR)
 	$(AR) -cqsv $@ $?
 
@@ -83,8 +86,7 @@ $(LIBDIR):
 
 $(OBJS): | $(OBJDIR)
 
-$(GENCODECS_HDR):
-	@ $(MAKE) -C $(GENCODECS_DIR)
+$(GENCODECS_HDR): gencodecs
 
 $(OBJDIR):
 	@ mkdir -p $@/$(THIRDP_DIR)   \
@@ -121,4 +123,4 @@ purge: clean
 	rm -rf $(LIBDIR)
 	@ $(MAKE) -C $(GENCODECS_DIR) clean
 
-.PHONY: all test examples install echo clean purge docs
+.PHONY: test examples install echo clean purge docs gencodecs
