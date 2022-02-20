@@ -91,8 +91,12 @@ io_poller_perform(struct io_poller *io)
 {
     const int64_t now = cog_timestamp_ms();
     for (int i = 0; i < io->cnt; i++) {
-        int events;
-        if ((events = io->pollfds[i].revents)) {
+        if (io->pollfds[i].revents) {
+            int events = 0;
+            if (io->pollfds[i].revents & POLLIN)
+                events |= IO_POLLER_IN;
+            if (io->pollfds[i].revents & POLLOUT)
+                events |= IO_POLLER_OUT;
             io->pollfds[i].revents = 0;
             struct io_poller_element *element = &io->elements[i];
             element->cb(element->user_data, events);
@@ -115,7 +119,7 @@ io_poller_perform(struct io_poller *io)
 
 bool
 io_poller_fd_add(
-    struct io_poller *io, int fd, int events, io_poller_cb cb, void *user_data)
+    struct io_poller *io, int fd, enum io_poller_events events, io_poller_cb cb, void *user_data)
 {
     int index = 0;
     for (; index < io->cnt; index++)
@@ -144,7 +148,11 @@ io_poller_fd_add(
     io->pollfds[index].fd = fd;
 
 modify:
-    io->pollfds[index].events = events;
+    io->pollfds[index].events = 0;
+    if (events & IO_POLLER_IN)
+        io->pollfds[index].events |= POLLIN;
+    if (events & IO_POLLER_OUT)
+        io->pollfds[index].events |= POLLOUT;
     io->elements[index].cb = cb;
     io->elements[index].user_data = user_data;
     return true;
@@ -171,7 +179,7 @@ modify:
 }
 
 static void
-io_curl_cb(void *user_data, int events)
+io_curl_cb(void *user_data, enum io_poller_events events)
 {
     (void)events;
     struct io_curlm *io_curlm = user_data;
@@ -193,16 +201,16 @@ curl_socket_cb(
         }
     }
 
-    int events = 0;
+    enum io_poller_events events = 0;
     switch (what) {
     case CURL_POLL_IN:
-        events = POLLIN;
+        events = IO_POLLER_IN;
         break;
     case CURL_POLL_OUT:
-        events = POLLOUT;
+        events = IO_POLLER_OUT;
         break;
     case CURL_POLL_INOUT:
-        events = POLLIN | POLLOUT;
+        events = IO_POLLER_IN | IO_POLLER_OUT;
         break;
     case CURL_POLL_REMOVE:
         io_poller_fd_del(io_curlm->io_poller, fd);
