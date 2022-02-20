@@ -1,53 +1,62 @@
-TOP = ../..
-CC = cc
-PP := ./gencodecs-pp
+TOP = ..
+CC  = cc
+
+PP    := ./gencodecs-pp
 PPOBJ := gencodecs-pp.o
 
 # On some systems, "cpp" is the C++ compiler.
 CPP = cc -E
 
-INCLUDE_DIR = $(TOP)/include
-API_DIR = api
-OBJ_DIR = $(TOP)/obj
+API_DIR      = api
+INCLUDE_DIR  = $(TOP)/include
+COGUTILS_DIR = $(TOP)/cog-utils
+CORE_DIR     = $(TOP)/core
+THIRDP_DIR   = $(TOP)/core/third-party
 
-TEMPLATES_IN    := discord-codecs.pre.h
-TEMPLATES_OUT_C := discord-codecs.c
-TEMPLATES_OUT_H := discord-codecs.h
+INP_PRE := discord-codecs.pre.h
+OUT_C   := discord-codecs.c
+OUT_H   := discord-codecs.h
+OUT_O   := discord-codecs.o
 
-CFLAGS += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR)
+CFLAGS += -g -I. -I$(API_DIR) -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR)
 
 HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.pre.h/\U\1/' | sed -e 's/-/_/')_H"
 
-all: $(TEMPLATES_OUT_H) $(TEMPLATES_OUT_C)
+all: $(OUT_O)
+
+$(OUT_O): $(OUT_C) $(OUT_H)
+	$(CC) -c $(CFLAGS) $< -o $@
 
 .SUFFIXES: .c .o
 .c.o:
 	$(CC) -c $(CFLAGS) $< -o $@
 
-all: $(TEMPLATES_OUT_H) $(TEMPLATES_OUT_C)
+all: $(OUT_H) $(OUT_C)
 
 $(PP): $(PPOBJ)
 	$(CC) -o $(PP) $(PPOBJ)
 
-$(TEMPLATES_OUT_H): $(TEMPLATES_IN) $(PP)
+$(OUT_H): $(INP_PRE) $(PP)
 	@ echo "Generating headers"
-	@ echo "#ifndef $(HEADER_TAG)" > discord-codecs.h
-	@ echo "#define $(HEADER_TAG)" >> discord-codecs.h
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P discord-codecs.pre.h | $(PP) >> discord-codecs.h
-	@ echo "#endif /* $(HEADER_TAG) */" >> discord-codecs.h
+	@ echo "#ifndef $(HEADER_TAG)" > $(OUT_H)
+	@ echo "#define $(HEADER_TAG)" >> $(OUT_H)
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_H)
+	@ echo "#endif /* $(HEADER_TAG) */" >> $(OUT_H)
 
-$(TEMPLATES_OUT_C): $(TEMPLATES_IN) $(PP)
+$(OUT_C): $(INP_PRE) $(PP)
 	@ echo "Generating forward definitions"
-	@ echo "#include \"discord-codecs.h\"" > discord-codecs.c
-	$(CPP) $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P discord-codecs.pre.h | $(PP) >> discord-codecs.c
+	@ echo "#include \"discord-codecs.h\"" > $(OUT_C)
+	$(CPP) $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
 	# Generating source
-	$(CPP) $(CFLAGS) -nostdinc -P discord-codecs.pre.h | $(PP) >> discord-codecs.c
+	$(CPP) $(CFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
 
 echo:
-	@ echo 'TEMPLATES_OUT_H: $(TEMPLATES_OUT_H)'
-	@ echo 'TEMPLATES_OUT_C: $(TEMPLATES_OUT_C)'
+	@ echo 'INP_PRE: $(INP_PRE)'
+	@ echo 'OUT_H: $(OUT_H)'
+	@ echo 'OUT_C: $(OUT_C)'
+	@ echo 'OUT_O: $(OUT_O)'
 
 .PHONY: clean
 
 clean:
-	rm -rf $(TEMPLATES_OUT_H) $(TEMPLATES_OUT_C) $(PP) $(PPOBJ) *.dSYM
+	rm -rf $(OUT_H) $(OUT_C) $(OUT_O) $(PP) $(PPOBJ) *.dSYM
