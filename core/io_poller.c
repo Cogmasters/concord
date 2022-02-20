@@ -41,10 +41,17 @@ struct io_poller *
 io_poller_create(void)
 {
     struct io_poller *io = calloc(1, sizeof *io);
-    io->cap = 0x2000;
-    io->elements = calloc(io->cap, sizeof *io->elements);
-    io->pollfds = calloc(io->cap, sizeof *io->pollfds);
-    return io;
+    if (io) {
+        io->cap = 0x10;
+        io->elements = calloc(io->cap, sizeof *io->elements);
+        io->pollfds = calloc(io->cap, sizeof *io->pollfds);
+        if (io->elements && io->pollfds)
+            return io;
+        free(io->elements);
+        free(io->pollfds);
+        free(io);
+    }
+    return NULL;
 }
 
 void
