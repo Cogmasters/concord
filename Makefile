@@ -30,20 +30,19 @@ THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
                 $(THIRDP_DIR)/curl-websocket.c \
                 $(THIRDP_DIR)/threadpool.c
 
-GENCODECS_HDR := $(GENCODECS_DIR)/discord-codecs.h
-GENCODECS_SRC := $(GENCODECS_DIR)/discord-codecs.c
-
 DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
                 $(SRC_DIR)/adapter-ratelimit.c \
                 $(SRC_DIR)/adapter.c           \
                 $(SRC_DIR)/client.c            \
                 $(SRC_DIR)/gateway.c           \
                 $(SRC_DIR)/misc.c              \
-                $(GENCODECS_SRC)               \
                 $(XSRC)
 
-SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC) $(GENCODECS_SRC)
-OBJS := $(SRC:%.c=$(OBJDIR)/%.o)
+GENCODECS_OBJ := $(GENCODECS_DIR)/discord-codecs.o
+
+SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
+
+OBJS := $(SRC:%.c=$(OBJDIR)/%.o) $(GENCODECS_OBJ)
 
 LIB := $(LIBDIR)/libdiscord.a
 
@@ -53,15 +52,12 @@ CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
 
 WFLAGS += -Wall -Wextra -pedantic
 
-$(OBJDIR)/$(SRC_DIR)/%.o : $(SRC_DIR)/%.c
+$(OBJDIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(WFLAGS) $(XFLAGS) -c -o $@ $<
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-all: $(GENCODECS_HDR)
-	@ $(MAKE) discord
-
-discord: $(LIB)
+all: $(LIB)
 
 voice:
 	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
@@ -84,9 +80,9 @@ $(LIB): $(OBJS) | $(LIBDIR)
 $(LIBDIR):
 	@ mkdir -p $@
 
-$(OBJS): | $(OBJDIR)
+$(OBJS): $(GENCODECS_OBJ) | $(OBJDIR)
 
-$(GENCODECS_HDR): gencodecs
+$(GENCODECS_OBJ): gencodecs
 
 $(OBJDIR):
 	@ mkdir -p $@/$(THIRDP_DIR)   \
@@ -111,7 +107,6 @@ echo:
 	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
 	@ echo -e 'CORE_SRC: $(CORE_SRC)\n'
 	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
-	@ echo -e 'GENCODECS_SRC: $(GENCODECS_SRC)\n'
 
 clean: 
 	rm -rf $(OBJDIR)
