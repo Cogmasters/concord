@@ -138,14 +138,8 @@ Type a message in any channel the bot is part of and the bot should send an exac
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
-### Create your first bot
-
-* Head to `myBot/`, a special folder set-up for your convenience that may be modified freely.
-* Read our guide for [building your first bot](docs/BUILDING_A_BOT.md).
-
 ## Installing Concord
 
-Concord can be installed in case developing inside of `myBot/` doesn't suit your needs:
 ```bash
 sudo make install
 ```
@@ -157,7 +151,7 @@ Included headers must be `concord/` prefixed:
 
 ### Standalone executable
 
-#### GCC (Recommended)
+#### GCC 
 
 ```bash
 $ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
