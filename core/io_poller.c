@@ -141,11 +141,10 @@ io_poller_fd_add(
     }
 
     io->cnt++;
+    io->pollfds[index].fd = fd;
 
 modify:
-    io->pollfds[index].fd = fd;
     io->pollfds[index].events = events;
-    io->pollfds[index].revents = 0;
     io->elements[index].cb = cb;
     io->elements[index].user_data = user_data;
     return true;
