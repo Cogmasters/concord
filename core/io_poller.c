@@ -104,7 +104,8 @@ io_poller_perform(struct io_poller *io)
     }
     for (int i = 0; i < io->curlm_cnt; i++) {
         struct io_curlm *curlm = io->curlm[i];
-        if (curlm->should_perform || now >= curlm->timeout) {
+        if (curlm->should_perform || 
+            (-1 != curlm->timeout && now >= curlm->timeout)) {
             curlm->should_perform = false;
             int result = curlm->cb ?
                 curlm->cb(curlm->multi, curlm->user_data) :
