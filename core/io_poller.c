@@ -308,10 +308,8 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
 bool
 io_poller_curlm_enable_perform(struct io_poller *io, CURLM *multi)
 {
-    for (int i = 0; i < io->curlm_cnt; i++) {
-        if (io->curlm[i]->multi == multi) {
-            io->curlm[i]->should_perform = true;
-            break;
-        }
-    }
+    for (int i = 0; i < io->curlm_cnt; i++)
+        if (io->curlm[i]->multi == multi)
+            return (io->curlm[i]->should_perform = true);
+    return false;
 }
