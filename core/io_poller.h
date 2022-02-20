@@ -9,6 +9,8 @@ enum io_poller_events {
   IO_POLLER_OUT = 2,
 };
 
+typedef int io_poller_socket;
+
 struct io_poller;
 typedef void (*io_poller_cb)(void *user_data, enum io_poller_events events);
 
@@ -17,12 +19,12 @@ void io_poller_destroy(struct io_poller *io);
 int io_poller_poll(struct io_poller *io, int milliseconds);
 int io_poller_perform(struct io_poller *io);
 
-bool io_poller_fd_add(struct io_poller *io,
-                      int fd,
+bool io_poller_socket_add(struct io_poller *io,
+                      io_poller_socket sock,
                       enum io_poller_events events,
                       io_poller_cb cb,
                       void *user_data);
-bool io_poller_fd_del(struct io_poller *io, int fd);
+bool io_poller_socket_del(struct io_poller *io, io_poller_socket sock);
 
 typedef int (*io_poller_curl_cb)(CURLM *multi, void *user_data);
 bool io_poller_curlm_add(struct io_poller *io,

@@ -118,8 +118,8 @@ io_poller_perform(struct io_poller *io)
 }
 
 bool
-io_poller_fd_add(
-    struct io_poller *io, int fd, enum io_poller_events events, io_poller_cb cb, void *user_data)
+io_poller_socket_add(
+    struct io_poller *io, io_poller_socket fd, enum io_poller_events events, io_poller_cb cb, void *user_data)
 {
     int index = 0;
     for (; index < io->cnt; index++)
@@ -159,7 +159,7 @@ modify:
 }
 
 bool
-io_poller_fd_del(struct io_poller *io, int fd)
+io_poller_socket_del(struct io_poller *io, io_poller_socket fd)
 {
     int index = 0;
     for (; index < io->cnt; index++)
@@ -213,7 +213,7 @@ curl_socket_cb(
         events = IO_POLLER_IN | IO_POLLER_OUT;
         break;
     case CURL_POLL_REMOVE:
-        io_poller_fd_del(io_curlm->io_poller, fd);
+        io_poller_socket_del(io_curlm->io_poller, fd);
         if (index != -1)
             memmove(&io_curlm->fds[index], &io_curlm->fds[index + 1],
                     (--io_curlm->fds_cnt - index) * sizeof *io_curlm->fds);
@@ -233,7 +233,7 @@ curl_socket_cb(
         }
         io_curlm->fds[io_curlm->fds_cnt++] = fd;
     }
-    io_poller_fd_add(io_curlm->io_poller, fd, events, io_curl_cb, io_curlm);
+    io_poller_socket_add(io_curlm->io_poller, fd, events, io_curl_cb, io_curlm);
     return CURLM_OK;
 }
 
@@ -289,7 +289,7 @@ io_poller_curlm_del(struct io_poller *io, CURLM *multi)
             int *fds = io->curlm[i]->fds;
             int fds_cnt = io->curlm[i]->fds_cnt;
             for (int i = 0; i < fds_cnt; i++)
-                io_poller_fd_del(io, fds[i]);
+                io_poller_socket_del(io, fds[i]);
             free(fds);
             curl_multi_setopt(multi, CURLMOPT_TIMERFUNCTION, NULL);
             curl_multi_setopt(multi, CURLMOPT_TIMERDATA, NULL);
