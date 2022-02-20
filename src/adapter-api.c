@@ -646,7 +646,7 @@ discord_create_message(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->attachments;
+        req.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
@@ -2359,7 +2359,7 @@ discord_create_interaction_response(
 
     if (params->data && params->data->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->data->attachments;
+        req.attachments = *params->data->attachments;
     }
     else {
         method = HTTP_POST;
@@ -2416,7 +2416,7 @@ discord_edit_original_interaction_response(
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->attachments;
+        req.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
@@ -2480,7 +2480,7 @@ discord_create_followup_message(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->attachments;
+        req.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
@@ -2539,7 +2539,7 @@ discord_edit_followup_message(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->attachments;
+        req.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;
@@ -2971,7 +2971,7 @@ discord_execute_webhook(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->attachments;
+        req.attachments = *params->attachments;
     }
     else {
         method = HTTP_POST;
@@ -3029,7 +3029,7 @@ discord_edit_webhook_message(struct discord *client,
 
     if (params->attachments) {
         method = HTTP_MIMEPOST;
-        req.attachments = params->attachments;
+        req.attachments = *params->attachments;
     }
     else {
         method = HTTP_PATCH;

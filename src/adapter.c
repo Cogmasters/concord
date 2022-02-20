@@ -197,7 +197,7 @@ static void
 _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
-    struct discord_attachments *atchs = cxt->req.attachments;
+    struct discord_attachments *atchs = &cxt->req.attachments;
     struct sized_buffer *body = &cxt->body.buf;
     curl_mimepart *part;
     char name[64];
@@ -340,8 +340,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
     conn = ua_conn_start(adapter->ua);
 
     if (HTTP_MIMEPOST == method) {
-        cxt.req.attachments = calloc(1, sizeof(struct discord_attachments));
-        *cxt.req.attachments = *req->attachments;
+        cxt.req.attachments = req->attachments;
         cxt.body.buf = *body;
 
         ua_conn_add_header(conn, "Content-Type", "multipart/form-data");
@@ -438,8 +437,7 @@ _discord_attachments_dup(struct discord_attachments *dest,
 {
     int i;
 
-    if (!dest || !src) return;
-
+    __carray_init(dest, src->size, struct discord_attachment, , );
     for (i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
         if (src->array[i].content) {
@@ -474,10 +472,7 @@ _discord_context_reset(struct discord_context *cxt)
     cxt->timeout_ms = 0;
     cxt->retry_attempt = 0;
 
-    if (cxt->req.attachments) {
-        discord_attachments_cleanup(cxt->req.attachments);
-        free(cxt->req.attachments);
-    }
+    discord_attachments_cleanup(&cxt->req.attachments);
 
     memset(&cxt->req, 0, sizeof(struct discord_request));
 }
@@ -494,7 +489,7 @@ _discord_context_populate(struct discord_context *cxt,
     cxt->method = method;
 
     memcpy(&cxt->req, req, sizeof(struct discord_request));
-    _discord_attachments_dup(cxt->req.attachments, req->attachments);
+    _discord_attachments_dup(&cxt->req.attachments, &req->attachments);
 
     if (body) {
         /* copy request body */
@@ -630,7 +625,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
     if (req->ret.data)
         discord_refcount_incr(adapter, req->ret.data, req->ret.cleanup);
 
-    io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller, adapter->mhandle);
+    io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller,
+                                   adapter->mhandle);
 
     return CCORD_OK;
 }
