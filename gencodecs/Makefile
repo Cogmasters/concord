@@ -45,7 +45,7 @@ $(OUT_H): $(INP_PRE) $(PP)
 
 $(OUT_C): $(INP_PRE) $(PP)
 	@ echo "Generating forward definitions"
-	@ echo "#include \"discord-codecs.h\"" > $(OUT_C)
+	@ echo "#include \"$(OUT_H)\"" > $(OUT_C)
 	$(CPP) $(CFLAGS) -DGENCODECS_FORWARD -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
 	# Generating source
 	$(CPP) $(CFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
