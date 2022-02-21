@@ -193,36 +193,60 @@ LIST_END
 
 STRUCT(discord_activity)
   PP("the activity's name")
+  COND_WRITE(this->name != NULL)
     FIELD_PTR(name, char, *)
+  COND_END
   PP("activity type")
     FIELD_ENUM(type, discord_activity_types)
   PP("stream url, is validated when type is 1")
+  COND_WRITE(this->url != NULL)
     FIELD_PTR(url, char, *)
+  COND_END
   PP("unix timestamp (in milliseconds)of when the activity was added to the"
        "user's session")
+  COND_WRITE(this->created_at != 0)
     FIELD_TIMESTAMP(created_at)
+  COND_END
   PP("unix timestamps for start and/or end of the game")
+  COND_WRITE(this->timestamps != NULL)
     FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
+  COND_END
   PP("application ID for the game")
+  COND_WRITE(this->application_id != 0)
     FIELD_SNOWFLAKE(application_id)
+  COND_END
   PP("what the player is currently doing")
+  COND_WRITE(this->details != NULL)
     FIELD_PTR(details, char, *)
+  COND_END
   PP("the user's current party status")
+  COND_WRITE(this->state != NULL)
     FIELD_PTR(state, char, *)
+  COND_END
   PP("the emoji used for a custom status")
+  COND_WRITE(this->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_activity_emoji, *)
+  COND_END
   PP("information for the current party of the player")
+  COND_WRITE(this->party != NULL)
     FIELD_STRUCT_PTR(party, discord_activity_party, *)
+  COND_END
   PP("images for the presence and their hover texts")
+  COND_WRITE(this->assets != NULL)
     FIELD_STRUCT_PTR(assets, discord_activity_assets, *)
+  COND_END
   PP("secrets for Rich Presence joining and spectating")
+  COND_WRITE(this->secrets != NULL)
     FIELD_STRUCT_PTR(secrets, discord_activity_secrets, *)
+  COND_END
   PP("whether or not the activity is an instanced game session")
     FIELD(instance, bool, false)
   PP("activity flags bitwise mask, describes what they payload includes")
     FIELD_SNOWFLAKE(flags)
   PP("the custom buttons shown in the Rich Presence (max 2)")
+  COND_WRITE(this->buttons != NULL)
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
+  COND_END
 STRUCT_END
 
 LIST(discord_activities)
