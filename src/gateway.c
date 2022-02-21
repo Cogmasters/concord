@@ -86,15 +86,21 @@ discord_gateway_send_presence_update(struct discord_gateway *gw)
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
-    ws_send_text(gw->ws, &info, buf, b.pos);
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-
-    logconf_info(
-        &gw->conf,
-        ANSICOLOR(
-            "SEND",
-            ANSI_FG_BRIGHT_GREEN) " PRESENCE UPDATE (%d bytes) [@@@_%zu_@@@]",
-        b.pos, info.loginfo.counter + 1);
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " PRESENCE UPDATE (%d "
+                                                    "bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+    else {
+        logconf_error(
+            &gw->conf,
+            ANSICOLOR("FAIL SEND", ANSI_FG_RED) " PRESENCE UPDATE (%d "
+                                                "bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
 }
 
 static void
@@ -129,14 +135,20 @@ send_resume(struct discord_gateway *gw)
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
-    ws_send_text(gw->ws, &info, buf, b.pos);
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-
-    logconf_info(
-        &gw->conf,
-        ANSICOLOR("SEND",
-                  ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
-        b.pos, info.loginfo.counter + 1);
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("SEND",
+                      ANSI_FG_BRIGHT_GREEN) " RESUME (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
+    else {
+        logconf_info(&gw->conf,
+                     ANSICOLOR("FAIL SEND",
+                               ANSI_FG_RED) " RESUME (%d bytes) [@@@_%zu_@@@]",
+                     b.pos, info.loginfo.counter + 1);
+    }
 }
 
 static void
@@ -168,17 +180,24 @@ send_identify(struct discord_gateway *gw)
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
-    ws_send_text(gw->ws, &info, buf, b.pos);
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-
-    logconf_info(
-        &gw->conf,
-        ANSICOLOR("SEND",
-                  ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
-        b.pos, info.loginfo.counter + 1);
-
-    /* get timestamp for this identify */
-    gw->timer->identify = gw->timer->now;
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "SEND",
+                ANSI_FG_BRIGHT_GREEN) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+        /* get timestamp for this identify */
+        gw->timer->identify = gw->timer->now;
+    }
+    else {
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("FAIL SEND",
+                      ANSI_FG_RED) " IDENTIFY (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -200,17 +219,24 @@ send_heartbeat(struct discord_gateway *gw)
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
-    ws_send_text(gw->ws, &info, buf, b.pos);
-    io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
-
-    logconf_info(
-        &gw->conf,
-        ANSICOLOR("SEND",
-                  ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
-        b.pos, info.loginfo.counter + 1);
-
-    /* update heartbeat timestamp */
-    gw->timer->hbeat = gw->timer->now;
+    if (ws_send_text(gw->ws, &info, buf, b.pos)) {
+        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR(
+                "SEND",
+                ANSI_FG_BRIGHT_GREEN) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+        /* update heartbeat timestamp */
+        gw->timer->hbeat = gw->timer->now;
+    }
+    else {
+        logconf_info(
+            &gw->conf,
+            ANSICOLOR("FAIL SEND",
+                      ANSI_FG_RED) " HEARTBEAT (%d bytes) [@@@_%zu_@@@]",
+            b.pos, info.loginfo.counter + 1);
+    }
 }
 
 static void
@@ -689,7 +715,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 
             /* skip blank characters */
             msg.content += (ptrdiff_t)(gw->cmds.prefix.size + cmd->size);
-            while (isspace((int) msg.content[0])) {
+            while (isspace((int)msg.content[0])) {
                 ++msg.content;
             }
 

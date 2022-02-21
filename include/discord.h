@@ -232,7 +232,7 @@ void *discord_get_data(struct discord *client);
  * @see discord_presence_add_activity()
  *
  * @param client the client created with discord_init()
- * @param presence overwrite client's presence with it
+ * @param presence change the client's status to it
  */
 void discord_set_presence(struct discord *client,
                           struct discord_presence_update *presence);
