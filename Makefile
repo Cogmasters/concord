@@ -1,54 +1,51 @@
 PREFIX ?= /usr/local
 CC     ?= gcc
 
-SRC_DIR       := src
-INCLUDE_DIR   := include
-OBJDIR        := obj
-LIBDIR        := lib
-DOCS_DIR      := docs
-COGUTILS_DIR  := cog-utils
-GENCODECS_DIR := gencodecs
-CORE_DIR      := core
-THIRDP_DIR    := $(CORE_DIR)/third-party
-EXAMPLES_DIR  := examples
-TEST_DIR      := test
-CCORDDOCS_DIR := concord-docs
+SRC_DIR       = src
+INCLUDE_DIR   = include
+OBJDIR        = obj
+LIBDIR        = lib
+DOCS_DIR      = docs
+COGUTILS_DIR  = cog-utils
+GENCODECS_DIR = gencodecs
+CORE_DIR      = core
+THIRDP_DIR    = $(CORE_DIR)/third-party
+EXAMPLES_DIR  = examples
+TEST_DIR      = test
+CCORDDOCS_DIR = concord-docs
 
-COGUTILS_SRC := $(COGUTILS_DIR)/cog-utils.c        \
-                $(COGUTILS_DIR)/log.c              \
-                $(COGUTILS_DIR)/logconf.c
+GENCODECS_HDR = $(GENCODECS_DIR)/discord-codecs.h
+GENCODECS_OBJ = $(GENCODECS_DIR)/discord-codecs.o
 
-CORE_SRC     := $(CORE_DIR)/common.c     \
-                $(CORE_DIR)/work.c       \
-                $(CORE_DIR)/user-agent.c \
-                $(CORE_DIR)/websockets.c \
-                $(CORE_DIR)/io_poller.c  \
-                $(CORE_DIR)/json-build.c \
-                $(CORE_DIR)/jsmn-find.c
+COGUTILS_OBJS = $(OBJDIR)/$(COGUTILS_DIR)/cog-utils.o \
+                $(OBJDIR)/$(COGUTILS_DIR)/log.o       \
+                $(OBJDIR)/$(COGUTILS_DIR)/logconf.o
+CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/common.o     \
+                $(OBJDIR)/$(CORE_DIR)/work.o       \
+                $(OBJDIR)/$(CORE_DIR)/user-agent.o \
+                $(OBJDIR)/$(CORE_DIR)/websockets.o \
+                $(OBJDIR)/$(CORE_DIR)/io_poller.o  \
+                $(OBJDIR)/$(CORE_DIR)/json-build.o \
+                $(OBJDIR)/$(CORE_DIR)/jsmn-find.o
+THIRDP_OBJS   = $(OBJDIR)/$(THIRDP_DIR)/sha1.o           \
+                $(OBJDIR)/$(THIRDP_DIR)/curl-websocket.o \
+                $(OBJDIR)/$(THIRDP_DIR)/threadpool.o
+DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/adapter-api.o       \
+                $(OBJDIR)/$(SRC_DIR)/adapter-ratelimit.o \
+                $(OBJDIR)/$(SRC_DIR)/adapter.o           \
+                $(OBJDIR)/$(SRC_DIR)/client.o            \
+                $(OBJDIR)/$(SRC_DIR)/gateway.o           \
+                $(OBJDIR)/$(SRC_DIR)/misc.o              \
+                $(XOBJ)
 
-THIRDP_SRC   := $(THIRDP_DIR)/sha1.c           \
-                $(THIRDP_DIR)/curl-websocket.c \
-                $(THIRDP_DIR)/threadpool.c
-
-DISCORD_SRC  := $(SRC_DIR)/adapter-api.c       \
-                $(SRC_DIR)/adapter-ratelimit.c \
-                $(SRC_DIR)/adapter.c           \
-                $(SRC_DIR)/client.c            \
-                $(SRC_DIR)/gateway.c           \
-                $(SRC_DIR)/misc.c              \
-                $(XSRC)
-
-GENCODECS_OBJ := $(GENCODECS_DIR)/discord-codecs.o
-
-SRC  := $(COGUTILS_SRC) $(CORE_SRC) $(THIRDP_SRC) $(DISCORD_SRC)
-
-OBJS := $(SRC:%.c=$(OBJDIR)/%.o) $(GENCODECS_OBJ)
+OBJS := $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
+        $(GENCODECS_OBJ)
 
 LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
-          -I$(GENCODECS_DIR) -I/usr/local/include -DLOG_USE_COLOR
+          -I$(GENCODECS_DIR) -I$(PREFIX)/include -DLOG_USE_COLOR
 
 WFLAGS += -Wall -Wextra -pedantic
 
@@ -60,7 +57,7 @@ $(OBJDIR)/%.o: %.c
 all: $(LIB)
 
 voice:
-	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=$(SRC_DIR)/voice.c all
+	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XOBJ=$(OBJDIR)/$(SRC_DIR)/voice.o all
 
 debug:
 	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
@@ -80,9 +77,9 @@ $(LIB): $(OBJS) | $(LIBDIR)
 $(LIBDIR):
 	@ mkdir -p $@
 
-$(OBJS): $(GENCODECS_OBJ) | $(OBJDIR)
+$(OBJS): $(GENCODECS_HDR) | $(OBJDIR)
 
-$(GENCODECS_OBJ): gencodecs
+$(GENCODECS_HDR): gencodecs
 
 $(OBJDIR):
 	@ mkdir -p $@/$(THIRDP_DIR)   \
@@ -103,10 +100,10 @@ echo:
 	@ echo -e 'CC: $(CC)\n'
 	@ echo -e 'PREFIX: $(PREFIX)\n'
 	@ echo -e 'CFLAGS: $(CFLAGS)\n'
+	@ echo -e 'COGUTILS_OBJS: $(COGUTILS_OBJS)\n'
+	@ echo -e 'CORE_OBJS: $(CORE_OBJS)\n'
+	@ echo -e 'DISCORD_OBJS: $(DISCORD_OBJS)\n'
 	@ echo -e 'OBJS: $(OBJS)\n'
-	@ echo -e 'COGUTILS_SRC: $(COGUTILS_SRC)\n'
-	@ echo -e 'CORE_SRC: $(CORE_SRC)\n'
-	@ echo -e 'DISCORD_SRC: $(DISCORD_SRC)\n'
 
 clean: 
 	rm -rf $(OBJDIR)
