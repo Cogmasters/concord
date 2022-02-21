@@ -663,6 +663,9 @@ _discord_adapter_send(struct discord_adapter *adapter,
     /* initiate libcurl transfer */
     mcode = curl_multi_add_handle(adapter->mhandle, ehandle);
 
+    io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller,
+                                   adapter->mhandle);
+
     QUEUE_INSERT_TAIL(&cxt->bucket->busyq, &cxt->entry);
 
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;

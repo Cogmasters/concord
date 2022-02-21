@@ -325,7 +325,8 @@ discord_run(struct discord *client)
             if (next_gateway_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
                     break;
-
+                if (CCORD_OK != (code = discord_adapter_perform(&client->adapter)))
+                    break;
                 next_gateway_run = now + 1000;
             }
         }
