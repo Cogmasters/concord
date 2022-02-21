@@ -185,18 +185,18 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                          f1->val->end - f1->val->start,
                          conf->file.start + f1->val->start);
             f1 = jsmnf_find(f, "quiet", sizeof("quiet") - 1);
-            if (f1) l.quiet = (conf->file.start[f1->val->start] == 't');
+            if (f1) l.quiet = ('t' == conf->file.start[f1->val->start]);
             f1 = jsmnf_find(f, "use_color", sizeof("use_color") - 1);
-            if (f1) l.use_color = (conf->file.start[f1->val->start] == 't');
+            if (f1) l.use_color = ('t' == conf->file.start[f1->val->start]);
             f1 = jsmnf_find(f, "overwrite", sizeof("overwrite") - 1);
-            if (f1) l.overwrite = (conf->file.start[f1->val->start] == 't');
-            f1 = jsmnf_find(f, "http_dump", sizeof("http_dump") - 1);
+            if (f1) l.overwrite = ('t' == conf->file.start[f1->val->start]);
+            f1 = jsmnf_find(f, "http", sizeof("http") - 1);
             if (f1) {
                 jsmnf *f2;
 
                 f2 = jsmnf_find(f1, "enable", sizeof("enable") - 1);
                 if (f2)
-                    l.http.enable = (conf->file.start[f2->val->start] == 't');
+                    l.http.enable = ('t' == conf->file.start[f2->val->start]);
                 f2 = jsmnf_find(f1, "filename", sizeof("filename") - 1);
                 if (f2)
                     snprintf(l.http.filename, sizeof(l.http.filename), "%.*s",
@@ -234,7 +234,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     if (module_is_disabled(conf)) return;
 
     /* SET LOGGER CONFIGS */
-    if (!l.filename || !*l.filename) {
+    if (*l.filename) {
         memcpy(conf->logger->fname, l.filename, LOGCONF_PATH_MAX);
         conf->logger->f =
             fopen(conf->logger->fname, l.overwrite ? "w+" : "a+");
@@ -246,7 +246,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     }
 
     /* SET HTTP DUMP CONFIGS */
-    if (l.http.enable && (!l.http.filename || !*l.http.filename)) {
+    if (l.http.enable && *l.http.filename) {
         memcpy(conf->http->fname, l.http.filename, LOGCONF_PATH_MAX);
         conf->http->f = fopen(conf->http->fname, l.overwrite ? "w+" : "a+");
         ASSERT_S(NULL != conf->http->f, "Could not create http logger file");
