@@ -23,7 +23,7 @@
 struct discord;
 /**/
 
-#include "discord-templates.h"
+#include "discord-codecs.h"
 
 #ifdef HAS_DISCORD_VOICE
 #include "discord-voice.h"
@@ -85,6 +85,103 @@ struct discord;
 /** @} ConcordDiscordCodes */
 
 /******************************************************************************
+ * Public return datatypes declaration
+ ******************************************************************************/
+
+#include "discord-templates.h"
+
+/** @brief Request's return context */
+struct discord_ret {
+    /** optional callback to be executed on a successful request */
+    void (*done)(struct discord *client, void *data);
+    DISCORDT_RET_DEFAULT_FIELDS;
+    /** if `true`, request will block the thread and perform on-spot */
+    bool sync;
+};
+
+/** @brief flag for enabling `sync` mode without expecting a datatype return */
+#define DISCORD_SYNC_FLAG ((void *)-1)
+
+/** @defgroup DiscordRetApplicationCommand
+ *  @{ */
+DISCORDT_RETURN(application_command);
+DISCORDT_RETURN(application_commands);
+DISCORDT_RETURN(application_command_permission);
+DISCORDT_RETURN(application_command_permissions);
+DISCORDT_RETURN(guild_application_command_permissions);
+/** @} DiscordRetApplicationCommand */
+
+/** @defgroup DiscordRetInteraction
+ *  @{ */
+DISCORDT_RETURN(interaction_response);
+/** @} DiscordRetInteraction */
+
+/** @defgroup DiscordRetAuditLog
+ *  @{ */
+DISCORDT_RETURN(audit_log);
+/** @} DiscordRetAuditLog */
+
+/** @defgroup DiscordRetChannel
+ *  @{ */
+DISCORDT_RETURN(channel);
+DISCORDT_RETURN(channels);
+DISCORDT_RETURN(message);
+DISCORDT_RETURN(messages);
+DISCORDT_RETURN(followed_channel);
+DISCORDT_RETURN(thread_members);
+DISCORDT_RETURN(thread_response_body);
+/** @} DiscordRetChannel */
+
+/** @defgroup DiscordRetUser
+ *  @{ */
+DISCORDT_RETURN(user);
+DISCORDT_RETURN(users);
+/** @} DiscordRetUser */
+
+/** @defgroup DiscordRetInvite
+ *  @{ */
+DISCORDT_RETURN(invite);
+DISCORDT_RETURN(invites);
+/** @} DiscordRetInvite */
+
+/** @defgroup DiscordRetEmoji
+ *  @{ */
+DISCORDT_RETURN(emoji);
+DISCORDT_RETURN(emojis);
+/** @} DiscordRetEmoji */
+
+/** @defgroup DiscordRetGuild
+ *  @{ */
+DISCORDT_RETURN(guild);
+DISCORDT_RETURN(guilds);
+DISCORDT_RETURN(guild_preview);
+DISCORDT_RETURN(guild_member);
+DISCORDT_RETURN(guild_members);
+DISCORDT_RETURN(ban);
+DISCORDT_RETURN(bans);
+DISCORDT_RETURN(role);
+DISCORDT_RETURN(roles);
+DISCORDT_RETURN(welcome_screen);
+/** @} DiscordRetGuild */
+
+/** @defgroup DiscordRetGuildTemplate
+ *  @{ */
+DISCORDT_RETURN(guild_template);
+/** @} DiscordRetGuildTemplate */
+
+/** @defgroup DiscordRetVoice
+ *  @{ */
+DISCORDT_RETURN(connections);
+DISCORDT_RETURN(voice_regions);
+/** @} DiscordRetVoice */
+
+/** @defgroup DiscordRetWebhook
+ *  @{ */
+DISCORDT_RETURN(webhook);
+DISCORDT_RETURN(webhooks);
+/** @} DiscordRetWebhook */
+
+/******************************************************************************
  * Functions specific to the Discord client
  ******************************************************************************/
 
@@ -137,14 +234,13 @@ struct discord *discord_clone(const struct discord *orig_client);
 void discord_cleanup(struct discord *client);
 
 /*
-* @brief return an error from concord
-* @note used to log an error and to return an error
-*
-* @return an error code for your error
-*/
+ * @brief return an error from concord
+ * @note used to log an error and to return an error
+ *
+ * @return an error code for your error
+ */
 
-int concord_return_error(const char *error, 
-                         int32_t error_code);
+int concord_return_error(const char *error, int32_t error_code);
 
 /**
  * @brief Get the client's cached user
@@ -272,7 +368,7 @@ struct logconf *discord_get_logconf(struct discord *client);
  *
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
- * @CCORD_ret_list{ret, application_command}
+ * @CCORD_ret_obj{ret,application_commands}
  * @CCORD_return
  */
 CCORDcode discord_get_global_application_commands(
@@ -287,7 +383,7 @@ CCORDcode discord_get_global_application_commands(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param params request parameters
- * @CCORD_ret_obj{ret, application_command}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_create_global_application_command(
@@ -302,7 +398,7 @@ CCORDcode discord_create_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
- * @CCORD_ret_obj{ret, application_command}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_get_global_application_command(
@@ -319,7 +415,7 @@ CCORDcode discord_get_global_application_command(
  * @param application_id the unique id of the parent application
  * @param command_id the registered command id
  * @param params request parameters
- * @CCORD_ret_obj{ret, application_command}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_edit_global_application_command(
@@ -353,7 +449,7 @@ CCORDcode discord_delete_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param params the request parameters, a list of application commands
- * @CCORD_ret_list{ret, application_command}
+ * @CCORD_ret_obj{ret,application_commands}
  * @CCORD_return
  */
 CCORDcode discord_bulk_overwrite_global_application_command(
@@ -368,7 +464,7 @@ CCORDcode discord_bulk_overwrite_global_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @CCORD_ret_list{ret, application_command}
+ * @CCORD_ret_obj{ret,application_commands}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_application_commands(
@@ -386,7 +482,7 @@ CCORDcode discord_get_guild_application_commands(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param params request parameters
- * @CCORD_ret_obj{ret, application_command}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_create_guild_application_command(
@@ -403,7 +499,7 @@ CCORDcode discord_create_guild_application_command(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @CCORD_ret_obj{ret, application_command}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_application_command(
@@ -422,7 +518,7 @@ CCORDcode discord_get_guild_application_command(
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
  * @param params request parameters
- * @CCORD_ret_obj{ret, application_command}
+ * @CCORD_ret_obj{ret,application_command}
  * @CCORD_return
  */
 CCORDcode discord_edit_guild_application_command(
@@ -458,7 +554,7 @@ CCORDcode discord_delete_guild_application_command(struct discord *client,
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of application commands
- * @CCORD_ret_list{ret, application_command}
+ * @CCORD_ret_obj{ret,application_commands}
  * @CCORD_return
  */
 CCORDcode discord_bulk_overwrite_guild_application_command(
@@ -474,7 +570,7 @@ CCORDcode discord_bulk_overwrite_guild_application_command(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the commands are located
- * @CCORD_ret_list{ret, guild_application_command_permissions}
+ * @CCORD_ret_obj{ret,guild_application_command_permissions}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_application_command_permissions(
@@ -490,7 +586,7 @@ CCORDcode discord_get_guild_application_command_permissions(
  * @param application_id the unique id of the parent application
  * @param guild_id the guild where the command is located
  * @param command_id the registered command id
- * @CCORD_ret_obj{ret, application_command_permissions}
+ * @CCORD_ret_obj{ret,application_command_permissions}
  * @CCORD_return
  */
 CCORDcode discord_get_application_command_permissions(
@@ -509,7 +605,7 @@ CCORDcode discord_get_application_command_permissions(
  * @param guild_id the guild where the commands are located
  * @param command_id the registered command id
  * @param params the request parameters
- * @CCORD_ret_obj{ret, application_command_permissions}
+ * @CCORD_ret_obj{ret,application_command_permissions}
  * @CCORD_return
  */
 CCORDcode discord_edit_application_command_permissions(
@@ -531,7 +627,7 @@ CCORDcode discord_edit_application_command_permissions(
  * @param guild_id the guild where the commands are located
  * @param params the request parameters, a list of guild application commands
  *       permissions
- * @CCORD_ret_list{ret, guild_application_command_permissions}
+ * @CCORD_ret_obj{ret,guild_application_command_permissions}
  * @CCORD_return
  */
 CCORDcode discord_batch_edit_application_command_permissions(
@@ -548,7 +644,7 @@ CCORDcode discord_batch_edit_application_command_permissions(
  * @param interaction_id the unique id of the interaction
  * @param interaction_token the unique token of the interaction
  * @param params the request parameters
- * @CCORD_ret_obj{ret, interaction_response}
+ * @CCORD_ret_obj{ret,interaction_response}
  * @CCORD_return
  */
 CCORDcode discord_create_interaction_response(
@@ -564,7 +660,7 @@ CCORDcode discord_create_interaction_response(
  * @param client the client created with discord_init()
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
- * @CCORD_ret_obj{ret, interaction_response}
+ * @CCORD_ret_obj{ret,interaction_response}
  * @CCORD_return
  */
 CCORDcode discord_get_original_interaction_response(
@@ -580,7 +676,7 @@ CCORDcode discord_get_original_interaction_response(
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
- * @CCORD_ret_obj{ret, interaction_response}
+ * @CCORD_ret_obj{ret,interaction_response}
  * @CCORD_return
  */
 CCORDcode discord_edit_original_interaction_response(
@@ -612,7 +708,7 @@ CCORDcode discord_delete_original_interaction_response(
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param params request parameters
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
  */
 CCORDcode discord_create_followup_message(
@@ -629,7 +725,7 @@ CCORDcode discord_create_followup_message(
  * @param application_id the unique id of the application
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_get_followup_message(struct discord *client,
@@ -646,7 +742,7 @@ CCORDcode discord_get_followup_message(struct discord *client,
  * @param interaction_token the unique token of the interaction
  * @param message_id the unique id of the message
  * @param params request parameters
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_edit_followup_message(
@@ -680,7 +776,7 @@ CCORDcode discord_delete_followup_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to retrieve the audit log from
  * @param params request parameters
- * @CCORD_ret_obj{ret, audit_log}
+ * @CCORD_ret_obj{ret,audit_log}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_audit_log(
@@ -696,7 +792,7 @@ CCORDcode discord_get_guild_audit_log(
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be retrieved
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_get_channel(struct discord *client,
@@ -709,7 +805,7 @@ CCORDcode discord_get_channel(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel to be modified
  * @param params request parameters
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_modify_channel(struct discord *client,
@@ -729,7 +825,7 @@ CCORDcode discord_modify_channel(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be deleted
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_delete_channel(struct discord *client,
@@ -749,7 +845,7 @@ CCORDcode discord_delete_channel(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel to get messages from
  * @param params request parameters
- * @CCORD_ret_list{ret, message}
+ * @CCORD_ret_obj{ret,messages}
  * @CCORD_return
  */
 CCORDcode discord_get_channel_messages(
@@ -765,7 +861,7 @@ CCORDcode discord_get_channel_messages(
  * @param client the client created with discord_init()
  * @param channel_id the channel where the message resides
  * @param message_id the message itself
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_get_channel_message(struct discord *client,
@@ -780,7 +876,7 @@ CCORDcode discord_get_channel_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel to send the message at
  * @param params request parameters
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_create_message(struct discord *client,
@@ -798,7 +894,7 @@ CCORDcode discord_create_message(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the news channel that will crosspost
  * @param message_id the message that will crospost
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_crosspost_message(struct discord *client,
@@ -871,7 +967,7 @@ CCORDcode discord_delete_user_reaction(struct discord *client,
  * @param emoji_id the emoji id (leave as 0 if not a custom emoji)
  * @param emoji_name the emoji name
  * @param params request parameters
- * @CCORD_ret_list{ret, user}
+ * @CCORD_ret_obj{ret,users}
  * @CCORD_return
  */
 CCORDcode discord_get_reactions(struct discord *client,
@@ -923,7 +1019,7 @@ CCORDcode discord_delete_all_reactions_for_emoji(struct discord *client,
  * @param message_id the message that will be purged of reactions from
  *       particular emoji
  * @param params request parameters
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_edit_message(struct discord *client,
@@ -983,7 +1079,7 @@ CCORDcode discord_edit_channel_permissions(
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
- * @CCORD_ret_list{ret, invite}
+ * @CCORD_ret_obj{ret,invites}
  * @CCORD_return
  */
 CCORDcode discord_get_channel_invites(struct discord *client,
@@ -996,7 +1092,7 @@ CCORDcode discord_get_channel_invites(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel that the message belongs to
  * @param params request parameters
- * @CCORD_ret_obj{ret, invite}
+ * @CCORD_ret_obj{ret,invite}
  * @CCORD_return
  */
 CCORDcode discord_create_channel_invite(
@@ -1039,7 +1135,7 @@ CCORDcode discord_trigger_typing_indicator(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be followed
- * @CCORD_ret_obj{ret, followed_channel}
+ * @CCORD_ret_obj{ret,followed_channel}
  * @CCORD_return
  */
 CCORDcode discord_follow_news_channel(
@@ -1053,7 +1149,7 @@ CCORDcode discord_follow_news_channel(
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel where the get pinned messages from
- * @CCORD_ret_list{ret, message}
+ * @CCORD_ret_obj{ret,messages}
  * @CCORD_return
  */
 CCORDcode discord_get_pinned_messages(struct discord *client,
@@ -1127,7 +1223,7 @@ CCORDcode discord_group_dm_remove_recipient(struct discord *client,
  * @param channel_id channel to start a thread on
  * @param message_id message to start a thread from
  * @param params request parameters
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_start_thread_with_message(
@@ -1144,7 +1240,7 @@ CCORDcode discord_start_thread_with_message(
  * @param client the client created with discord_init()
  * @param channel_id channel to start a thread on
  * @param params request parameters
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_start_thread_without_message(
@@ -1217,7 +1313,7 @@ CCORDcode discord_remove_thread_member(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the thread to be joined
- * @CCORD_ret_list{ret, thread_member}
+ * @CCORD_ret_obj{ret,thread_members}
  * @CCORD_return
  */
 CCORDcode discord_list_thread_members(struct discord *client,
@@ -1232,7 +1328,7 @@ CCORDcode discord_list_thread_members(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel to be searched for threads
- * @CCORD_ret_obj{ret, thread_response_body}
+ * @CCORD_ret_obj{ret,thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_active_threads(
@@ -1247,7 +1343,7 @@ CCORDcode discord_list_active_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @CCORD_ret_obj{ret, thread_response_body}
+ * @CCORD_ret_obj{ret,thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_public_archived_threads(
@@ -1264,7 +1360,7 @@ CCORDcode discord_list_public_archived_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @CCORD_ret_obj{ret, thread_response_body}
+ * @CCORD_ret_obj{ret,thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_private_archived_threads(
@@ -1281,7 +1377,7 @@ CCORDcode discord_list_private_archived_threads(
  * @param channel_id the channel to be searched for threads
  * @param before return threads before this timestamp
  * @param limit maximum number of threads to return
- * @CCORD_ret_obj{ret, thread_response_body}
+ * @CCORD_ret_obj{ret,thread_response_body}
  * @CCORD_return
  */
 CCORDcode discord_list_joined_private_archived_threads(
@@ -1296,7 +1392,7 @@ CCORDcode discord_list_joined_private_archived_threads(
  *
  * @param client the client created with discord_init()
  * @param guild_id guild to get emojis from
- * @CCORD_ret_list{ret, emoji}
+ * @CCORD_ret_obj{ret,emojis}
  * @CCORD_return
  */
 CCORDcode discord_list_guild_emojis(struct discord *client,
@@ -1309,7 +1405,7 @@ CCORDcode discord_list_guild_emojis(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild the emoji belongs to
  * @param emoji_id the emoji to be fetched
- * @CCORD_ret_obj{ret, emoji}
+ * @CCORD_ret_obj{ret,emoji}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_emoji(struct discord *client,
@@ -1324,7 +1420,7 @@ CCORDcode discord_get_guild_emoji(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild to add the new emoji to
  * @param params request parameters
- * @CCORD_ret_obj{ret, emoji}
+ * @CCORD_ret_obj{ret,emoji}
  * @CCORD_return
  */
 CCORDcode discord_create_guild_emoji(struct discord *client,
@@ -1340,7 +1436,7 @@ CCORDcode discord_create_guild_emoji(struct discord *client,
  * @param guild_id guild the emoji belongs to
  * @param emoji_id the emoji to be modified
  * @param params request parameters
- * @CCORD_ret_obj{ret, emoji}
+ * @CCORD_ret_obj{ret,emoji}
  * @CCORD_return
  */
 CCORDcode discord_modify_guild_emoji(struct discord *client,
@@ -1370,7 +1466,7 @@ CCORDcode discord_delete_guild_emoji(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param params request parameters
- * @CCORD_ret_obj{ret, guild}
+ * @CCORD_ret_obj{ret,guild}
  * @CCORD_return
  */
 CCORDcode discord_create_guild(struct discord *client,
@@ -1386,7 +1482,7 @@ CCORDcode discord_create_guild(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to retrieve
- * @CCORD_ret_obj{ret, guild}
+ * @CCORD_ret_obj{ret,guild}
  * @CCORD_return
  */
 CCORDcode discord_get_guild(struct discord *client,
@@ -1399,7 +1495,7 @@ CCORDcode discord_get_guild(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id guild to get preview from
- * @CCORD_ret_obj{ret, guild_preview}
+ * @CCORD_ret_obj{ret,guild_preview}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_preview(struct discord *client,
@@ -1414,7 +1510,7 @@ CCORDcode discord_get_guild_preview(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to modify
  * @param params request parameters
- * @CCORD_ret_obj{ret, guild}
+ * @CCORD_ret_obj{ret,guild}
  * @CCORD_return
  */
 CCORDcode discord_modify_guild(struct discord *client,
@@ -1440,7 +1536,7 @@ CCORDcode discord_delete_guild(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id id of guild to fetch channels from
- * @CCORD_ret_list{ret, channel}
+ * @CCORD_ret_obj{ret,channels}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_channels(struct discord *client,
@@ -1458,7 +1554,7 @@ CCORDcode discord_get_guild_channels(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id id of the guild to create a channel at
  * @param params request parameters
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_create_guild_channel(
@@ -1490,7 +1586,7 @@ CCORDcode discord_modify_guild_channel_positions(
  * @param client the client created with discord_init()
  * @param guild_id guild the member belongs to
  * @param user_id unique user id of member
- * @CCORD_ret_obj{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_member(struct discord *client,
@@ -1504,7 +1600,7 @@ CCORDcode discord_get_guild_member(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild the members belongs to
  * @param request parameters
- * @CCORD_ret_list{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_members}
  * @CCORD_return
  */
 CCORDcode discord_list_guild_members(struct discord *client,
@@ -1519,7 +1615,7 @@ CCORDcode discord_list_guild_members(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild the members belongs to
  * @param request parameters
- * @CCORD_ret_list{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_members}
  * @CCORD_return
  */
 CCORDcode discord_search_guild_members(
@@ -1540,7 +1636,7 @@ CCORDcode discord_search_guild_members(
  * @param guild_id guild to add the member to
  * @param user_id the user to be added
  * @param request parameters
- * @CCORD_ret_obj{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
 CCORDcode discord_add_guild_member(struct discord *client,
@@ -1558,7 +1654,7 @@ CCORDcode discord_add_guild_member(struct discord *client,
  * @param guild_id guild the member belongs to
  * @param user_id the user id of member
  * @param request parameters
- * @CCORD_ret_obj{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
 CCORDcode discord_modify_guild_member(
@@ -1575,7 +1671,7 @@ CCORDcode discord_modify_guild_member(
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild where the member exists
  * @param params request parameters
- * @CCORD_ret_obj{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
 CCORDcode discord_modify_current_member(
@@ -1592,7 +1688,7 @@ CCORDcode discord_modify_current_member(
  * @param client the client created with discord_init()
  * @param guild_id guild the member belongs to
  * @param params request parameters
- * @CCORD_ret_obj{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
 CCORDcode discord_modify_current_user_nick(
@@ -1658,7 +1754,7 @@ CCORDcode discord_remove_guild_member(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id the guild to get the list from
- * @CCORD_ret_list{ret, ban}
+ * @CCORD_ret_obj{ret,bans}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_bans(struct discord *client,
@@ -1672,7 +1768,7 @@ CCORDcode discord_get_guild_bans(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to return the ban from
  * @param user_id the user that is banned
- * @CCORD_ret_obj{ret, ban}
+ * @CCORD_ret_obj{ret,ban}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_ban(struct discord *client,
@@ -1719,7 +1815,7 @@ CCORDcode discord_remove_guild_ban(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id guild to get roles from
- * @CCORD_ret_list{ret, role}
+ * @CCORD_ret_obj{ret,roles}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_roles(struct discord *client,
@@ -1734,7 +1830,7 @@ CCORDcode discord_get_guild_roles(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id guild to add a role to
  * @param params request parameters
- * @CCORD_ret_obj{ret, role}
+ * @CCORD_ret_obj{ret,role}
  * @CCORD_return
  */
 CCORDcode discord_create_guild_role(struct discord *client,
@@ -1765,7 +1861,7 @@ CCORDcode discord_begin_guild_prune(struct discord *client,
  * @note requires the MANAGE_GUILD permission
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get invites from
- * @CCORD_ret_list{ret, invite}
+ * @CCORD_ret_obj{ret,invites}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_invites(struct discord *client,
@@ -1795,7 +1891,7 @@ CCORDcode discord_delete_guild_integrations(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get vanity url from
- * @CCORD_ret_obj{ret, invite}
+ * @CCORD_ret_obj{ret,invite}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_vanity_url(struct discord *client,
@@ -1807,7 +1903,7 @@ CCORDcode discord_get_guild_vanity_url(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get welcome screen of
- * @CCORD_ret_obj{ret, welcome_screen}
+ * @CCORD_ret_obj{ret,welcome_screen}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_welcome_screen(
@@ -1823,7 +1919,7 @@ CCORDcode discord_get_guild_welcome_screen(
  * @param client the client created with discord_init()
  * @param guild_id the unique id of the guild to get welcome screen of
  * @param params request parameters
- * @CCORD_ret_list{ret, role}
+ * @CCORD_ret_obj{ret,roles}
  * @CCORD_return
  */
 CCORDcode discord_modify_guild_role_positions(
@@ -1841,7 +1937,7 @@ CCORDcode discord_modify_guild_role_positions(
  * @param guild_id the unique id of the guild that the role belongs to
  * @param role_id the unique id of the role to modify
  * @param params request parameters
- * @CCORD_ret_obj{ret, role}
+ * @CCORD_ret_obj{ret,role}
  * @CCORD_return
  */
 CCORDcode discord_modify_guild_role(struct discord *client,
@@ -1871,7 +1967,7 @@ CCORDcode discord_delete_guild_role(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param code the guild template code
- * @CCORD_ret_obj{ret, guild_template}
+ * @CCORD_ret_obj{ret,guild_template}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_template(struct discord *client,
@@ -1885,7 +1981,7 @@ CCORDcode discord_get_guild_template(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild to create a template from
  * @param params the request parameters
- * @CCORD_ret_obj{ret, guild_template}
+ * @CCORD_ret_obj{ret,guild_template}
  * @CCORD_return
  */
 CCORDcode discord_create_guild_template(
@@ -1901,7 +1997,7 @@ CCORDcode discord_create_guild_template(
  * @param client the client created with discord_init()
  * @param guild_id the guild to sync the template from
  * @param code the guild template code
- * @CCORD_ret_obj{ret, guild_template}
+ * @CCORD_ret_obj{ret,guild_template}
  * @CCORD_return
  */
 CCORDcode discord_sync_guild_template(struct discord *client,
@@ -1915,7 +2011,7 @@ CCORDcode discord_sync_guild_template(struct discord *client,
  * @param client the client created with discord_init()
  * @param invite_code the invite code
  * @param params request parameters
- * @CCORD_ret_obj{ret, invite}
+ * @CCORD_ret_obj{ret,invite}
  * @CCORD_return
  */
 CCORDcode discord_get_invite(struct discord *client,
@@ -1931,7 +2027,7 @@ CCORDcode discord_get_invite(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param invite_code the invite code
- * @CCORD_ret_obj{ret, invite}
+ * @CCORD_ret_obj{ret,invite}
  * @CCORD_return
  */
 CCORDcode discord_delete_invite(struct discord *client,
@@ -1942,7 +2038,7 @@ CCORDcode discord_delete_invite(struct discord *client,
  * @brief Get client's user
  *
  * @param client the client created with discord_init()
- * @CCORD_ret_obj{ret, user}
+ * @CCORD_ret_obj{ret,user}
  * @CCORD_return
  */
 CCORDcode discord_get_current_user(struct discord *client,
@@ -1953,7 +2049,7 @@ CCORDcode discord_get_current_user(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param user_id user to be fetched
- * @CCORD_ret_obj{ret, user}
+ * @CCORD_ret_obj{ret,user}
  * @CCORD_return
  */
 CCORDcode discord_get_user(struct discord *client,
@@ -1965,7 +2061,7 @@ CCORDcode discord_get_user(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param params request parameters
- * @CCORD_ret_obj{ret, user}
+ * @CCORD_ret_obj{ret,user}
  * @CCORD_return
  */
 CCORDcode discord_modify_current_user(
@@ -1978,7 +2074,7 @@ CCORDcode discord_modify_current_user(
  * @note Requires the `guilds` oauth2 scope
  *
  * @param client the client created with discord_init()
- * @CCORD_ret_list{ret, guild}
+ * @CCORD_ret_obj{ret,guilds}
  * @CCORD_return
  */
 CCORDcode discord_get_current_user_guilds(struct discord *client,
@@ -2004,7 +2100,7 @@ CCORDcode discord_leave_guild(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param params the request parameters
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_create_dm(struct discord *client,
@@ -2018,7 +2114,7 @@ CCORDcode discord_create_dm(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param params the request parameters
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_create_group_dm(struct discord *client,
@@ -2030,7 +2126,7 @@ CCORDcode discord_create_group_dm(struct discord *client,
  * @note Requires the `connections` oauth2 scope
  *
  * @param client the client created with discord_init()
- * @CCORD_ret_list{ret, connection}
+ * @CCORD_ret_obj{ret,connections}
  * @CCORD_return
  */
 CCORDcode discord_get_user_connections(struct discord *client,
@@ -2041,7 +2137,7 @@ CCORDcode discord_get_user_connections(struct discord *client,
  *        voice or stage channel's `rtc_region`
  *
  * @param client the client created with discord_init()
- * @CCORD_ret_list{ret, voice_region}
+ * @CCORD_ret_obj{ret,voice_regions}
  * @CCORD_return
  */
 CCORDcode discord_list_voice_regions(struct discord *client,
@@ -2054,7 +2150,7 @@ CCORDcode discord_list_voice_regions(struct discord *client,
  * @param client the client created with discord_init()
  * @param channel_id the channel that the webhook belongs to
  * @param params request parameters
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
  */
 CCORDcode discord_create_webhook(struct discord *client,
@@ -2068,7 +2164,7 @@ CCORDcode discord_create_webhook(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param channel_id the channel that the webhooks belongs to
- * @CCORD_ret_list{ret, webhook}
+ * @CCORD_ret_obj{ret,webhooks}
  * @CCORD_return
  */
 CCORDcode discord_get_channel_webhooks(struct discord *client,
@@ -2081,7 +2177,7 @@ CCORDcode discord_get_channel_webhooks(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param guild_id the guild that the webhooks belongs to
- * @CCORD_ret_list{ret, webhook}
+ * @CCORD_ret_obj{ret,webhooks}
  * @CCORD_return
  */
 CCORDcode discord_get_guild_webhooks(struct discord *client,
@@ -2093,7 +2189,7 @@ CCORDcode discord_get_guild_webhooks(struct discord *client,
  *
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
  */
 CCORDcode discord_get_webhook(struct discord *client,
@@ -2106,7 +2202,7 @@ CCORDcode discord_get_webhook(struct discord *client,
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
  */
 CCORDcode discord_get_webhook_with_token(struct discord *client,
@@ -2121,7 +2217,7 @@ CCORDcode discord_get_webhook_with_token(struct discord *client,
  * @param client the client created with discord_init()
  * @param webhook_id the webhook itself
  * @param params request parameters
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
  */
 CCORDcode discord_modify_webhook(struct discord *client,
@@ -2136,7 +2232,7 @@ CCORDcode discord_modify_webhook(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param params request parameters
- * @CCORD_ret_obj{ret, webhook}
+ * @CCORD_ret_obj{ret,webhook}
  * @CCORD_return
  */
 CCORDcode discord_modify_webhook_with_token(
@@ -2192,7 +2288,7 @@ CCORDcode discord_execute_webhook(struct discord *client,
  * @param webhook_id the webhook itself
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_get_webhook_message(struct discord *client,
@@ -2209,7 +2305,7 @@ CCORDcode discord_get_webhook_message(struct discord *client,
  * @param webhook_token the webhook token
  * @param message_id the message the webhook belongs to
  * @param params request parameters
- * @CCORD_ret_obj{ret, message}
+ * @CCORD_ret_obj{ret,message}
  * @CCORD_return
  */
 CCORDcode discord_edit_webhook_message(
@@ -2272,7 +2368,7 @@ CCORDcode discord_get_gateway_bot(struct discord *client,
  * @param client the client created with discord_init()
  * @param guild_id the guild the member belongs to
  * @param user_id the user to be disconnected
- * @CCORD_ret_obj{ret, guild_member}
+ * @CCORD_ret_obj{ret,guild_member}
  * @CCORD_return
  */
 CCORDcode discord_disconnect_guild_member(
@@ -2287,7 +2383,7 @@ CCORDcode discord_disconnect_guild_member(
  * @param client the client created with discord_init()
  * @param guild_id guild the channel belongs to
  * @param type the channel type where to take position reference from
- * @CCORD_ret_obj{ret, channel}
+ * @CCORD_ret_obj{ret,channel}
  * @CCORD_return
  */
 CCORDcode discord_get_channel_at_pos(struct discord *client,
@@ -2449,7 +2545,7 @@ void discord_set_on_commands(struct discord *client,
                              discord_ev_message callback,
                              ...);
 
-/** 
+/**
  * @brief Set the time for wakeup function to be called
  * @see discord_set_on_wakeup
  *
@@ -2464,7 +2560,8 @@ void discord_set_next_wakeup(struct discord *client, int64_t delay);
  * @note the functions will automatically set the necessary intent(s) to make
  *        the callback triggerable
  *  @{ */
-/** @brief Triggers when wakeup timeout reached and disables any active timer */
+/** @brief Triggers when wakeup timeout reached and disables any active timer
+ */
 void discord_set_on_wakeup(struct discord *client, discord_ev_idle callback);
 /** @brief Triggers when idle.  */
 void discord_set_on_idle(struct discord *client, discord_ev_idle callback);

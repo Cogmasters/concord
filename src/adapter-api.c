@@ -8,7 +8,9 @@
 #define RET_SAFECOPY_TYPED(dest, src)                                         \
     do {                                                                      \
         (dest).has_type = true;                                               \
-        (dest).done.typed = (discord_on_generic)(src).done;                   \
+        (dest).done.typed = (void (*)(struct discord * client, void *data,    \
+                                      const void *ret))(src)                  \
+                                .done;                                        \
         (dest).fail = (src).fail;                                             \
         (dest).data = (src).data;                                             \
         (dest).cleanup = (src).cleanup;                                       \
