@@ -14,7 +14,10 @@ CORE_DIR     = $(TOP)/core
 THIRDP_DIR   = $(TOP)/core/third-party
 DOCS_DIR     = $(TOP)/docs
 
+# Main preprocessor input file
 INP_PRE := discord-codecs.pre.h
+
+# Single-files to be generated
 OUT_C   := discord-codecs.c
 OUT_H   := discord-codecs.h
 OUT_O   := discord-codecs.o
@@ -71,11 +74,12 @@ $(OUT_C): $(INP_PRE) $(PP)
 	@ echo "Generating source"	
 	$(CPP) $(CFLAGS) -nostdinc -P $(INP_PRE) | $(PP) >> $(OUT_C)
 
-docs: $(PP) $(HEADERS)
+docs: $(HEADERS)
+
+$(HEADERS): $(PP)
 
 .SUFFIXES: .pre.h .h
 .pre.h.h:
-	@ echo "Generating headers for documentation"
 	@ echo "#ifndef $(HEADER_TAG)" > $(DOCS_DIR)/$@
 	@ echo "#define $(HEADER_TAG)" >> $(DOCS_DIR)/$@
 	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" -nostdinc -P $(INP_PRE) | $(PP) >> $(DOCS_DIR)/$@
