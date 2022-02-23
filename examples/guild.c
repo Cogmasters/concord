@@ -20,6 +20,7 @@ print_usage(void)
         "role from user\n"
         "5. Type 'guild.role_list' to get a list of this guild roles\n"
         "6. Type 'guild.member_get <id>' to fetch a member by their ID\n"
+        "7. Type 'guild.channels_get' to list channels in a guild\n"
         "\nTYPE ANY KEY TO START BOT\n");
 }
 
@@ -210,6 +211,67 @@ on_member_get(struct discord *client, const struct discord_message *msg)
     discord_get_guild_member(client, msg->guild_id, user_id, &ret);
 }
 
+void
+done_get_guild_channels(struct discord *client,
+                        void *data,
+                        const struct discord_channels *channels)
+{
+    u64snowflake *channel_id = data;
+    char text[DISCORD_MAX_MESSAGE_LEN];
+
+    char *cur = text;
+    char *end = &text[sizeof(text) - 1];
+    char *prev;
+
+    for (int i = 0; i < channels->size; ++i) {
+        prev = cur;
+        cur += snprintf(cur, end - cur, "<#%" PRIu64 ">\n",
+                        channels->array[i].id);
+
+        if (cur >= end) { // to make sure no role is skipped
+            *prev = '\0'; // end string before truncation
+            cur = text; // reset
+
+            --i; // retry current iteration
+
+            continue;
+        }
+    }
+
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, *channel_id, &params, NULL);
+}
+
+void
+fail_get_guild_channels(struct discord *client, CCORDcode code, void *data)
+{
+    u64snowflake *channel_id = data;
+    char text[256];
+
+    snprintf(text, sizeof(text), "Couldn't fetch guild channels: %s",
+              discord_strerror(code, client));
+
+    struct discord_create_message params = { .content = text };
+    discord_create_message(client, *channel_id, &params, NULL);
+}
+
+void
+on_channels_get(struct discord *client, const struct discord_message *msg)
+{
+    if (msg->author->bot) return;
+
+    u64snowflake *channel_id = malloc(sizeof(u64snowflake));
+    *channel_id = msg->channel_id;
+
+    struct discord_ret_channels ret = {
+        .done = &done_get_guild_channels,
+        .fail = &fail_get_guild_channels,
+        .data = channel_id,
+        .cleanup = &free,
+    };
+    discord_get_guild_channels(client, msg->guild_id, &ret);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -236,6 +298,7 @@ main(int argc, char *argv[])
                            &on_role_member_remove);
     discord_set_on_command(client, "role_list", &on_role_list);
     discord_set_on_command(client, "member_get", &on_member_get);
+    discord_set_on_command(client, "channels_get", &on_channels_get);
 
     print_usage();
     fgetc(stdin); // wait for input
