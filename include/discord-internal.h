@@ -525,6 +525,8 @@ struct discord_gateway {
         struct discord_gateway_cmd_cbs *pool;
         /** amount of command/callback pairs in pool */
         size_t amt;
+        /** actual size of command/callback pairs in pool */
+        size_t cap;
         /** fallback function incase prefix matches but command doesn't */
         struct discord_gateway_cmd_cbs on_default;
         /** user's callbacks */

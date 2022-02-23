@@ -204,18 +204,32 @@ discord_set_on_command(struct discord *client,
         client->gw.cmds.on_default.cb = callback;
         return; /* EARLY RETURN */
     }
-
+    size_t index = 0;
+    const size_t command_len = strlen(command);
+    for (; index < client->gw.cmds.amt; index++)
+        if (command_len == client->gw.cmds.pool[index].size
+            && 0 == strcmp(command, client->gw.cmds.pool[index].start))
+                goto modify;
+    if (index == client->gw.cmds.cap) {
+        size_t cap = 8;
+        while (cap <= index) cap <<= 1;
+        
+        void *tmp =
+            realloc(client->gw.cmds.pool, cap * sizeof(*client->gw.cmds.pool));
+        if (tmp) {
+            client->gw.cmds.pool = tmp;
+            client->gw.cmds.cap = cap;
+        } else
+            return;
+    }
     ++client->gw.cmds.amt;
-    client->gw.cmds.pool =
-        realloc(client->gw.cmds.pool,
-                client->gw.cmds.amt * sizeof(*client->gw.cmds.pool));
-
-    client->gw.cmds.pool[client->gw.cmds.amt - 1].start = command;
-    client->gw.cmds.pool[client->gw.cmds.amt - 1].size = strlen(command);
-    client->gw.cmds.pool[client->gw.cmds.amt - 1].cb = callback;
+    client->gw.cmds.pool[index].start = strdup(command);
+    client->gw.cmds.pool[index].size = command_len;
+modify:
+    client->gw.cmds.pool[index].cb = callback;
 
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
-                                    | DISCORD_GATEWAY_DIRECT_MESSAGES);
+                              | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void

@@ -693,16 +693,24 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
     if (gw->cmds.pool
         && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
     {
+        char *command_start = msg.content + gw->cmds.prefix.size;
+        size_t command_len = strcspn(command_start, " \n\t\r");
+
         struct discord_gateway_cmd_cbs *cmd = NULL;
         size_t i;
 
         for (i = 0; i < gw->cmds.amt; ++i) {
-            /* check if command from channel matches set command */
-            if (!strncmp(gw->cmds.pool[i].start,
-                         msg.content + gw->cmds.prefix.size,
-                         gw->cmds.pool[i].size))
-            {
-                cmd = &gw->cmds.pool[i];
+            if (command_len == gw->cmds.pool[i].size) {
+                /* check if command from channel matches set command */
+                if (!strncmp(gw->cmds.pool[i].start,
+                             command_start,
+                             command_len))
+                {
+                    cmd = &gw->cmds.pool[i];
+                    if (!cmd->cb)
+                        cmd = NULL;
+                    break;
+                }
             }
         }
         if (!cmd && gw->cmds.prefix.size) {
@@ -714,11 +722,10 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
             char *tmp = msg.content; /* hold original ptr */
 
             /* skip blank characters */
-            msg.content += (ptrdiff_t)(gw->cmds.prefix.size + cmd->size);
-            while (isspace((int)msg.content[0])) {
+            msg.content = command_start + command_len;
+            while (*msg.content && isspace((int)msg.content[0]))
                 ++msg.content;
-            }
-
+            
             cmd->cb(client, &msg);
 
             msg.content = tmp; /* retrieve original ptr */
@@ -1552,7 +1559,11 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     /* cleanup client session */
     free(gw->session);
     /* cleanup user commands */
-    if (gw->cmds.pool) free(gw->cmds.pool);
+    if (gw->cmds.pool) {
+        for (size_t i = 0; i < gw->cmds.amt; i++)
+            free(gw->cmds.pool[i].start);
+        free(gw->cmds.pool);
+    }
     if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
 }
 
