@@ -694,10 +694,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
         && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
     {
         char *command_start = msg.content + gw->cmds.prefix.size;
-        char *command_end = command_start;
-        while (*command_end && !isspace(*command_end))
-            ++command_end;
-        size_t command_len = command_end - command_start;
+        size_t command_len = strcspn(command_start, " \n\t\r");
 
         struct discord_gateway_cmd_cbs *cmd = NULL;
         size_t i;
@@ -725,7 +722,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
             char *tmp = msg.content; /* hold original ptr */
 
             /* skip blank characters */
-            msg.content = command_end;
+            msg.content = command_start + command_len;
             while (*msg.content && isspace((int)msg.content[0]))
                 ++msg.content;
             

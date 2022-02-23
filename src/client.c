@@ -207,8 +207,8 @@ discord_set_on_command(struct discord *client,
     size_t index = 0;
     const size_t command_len = strlen(command);
     for (; index < client->gw.cmds.amt; index++)
-        if (command_len == client->gw.cmds.pool[index].size)
-            if (0 == strcmp(command, client->gw.cmds.pool[index].start))
+        if (command_len == client->gw.cmds.pool[index].size
+            && 0 == strcmp(command, client->gw.cmds.pool[index].start))
                 goto modify;
     if (index == client->gw.cmds.cap) {
         size_t cap = 8;
