@@ -17,6 +17,8 @@ jobs:
         run: |
           echo "Preparing files for documentation"
           make docs
+          echo "Install Jinja2"
+          pip install -U jinja2
           echo "Install Sphinx"
           pip install sphinx
           pip install pydata_sphinx_theme
