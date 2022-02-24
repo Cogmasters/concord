@@ -16,7 +16,7 @@ _discord_init(struct discord *new_client)
     new_client->io_poller = io_poller_create();
     discord_adapter_init(&new_client->adapter, &new_client->conf,
                          &new_client->token);
-    discord_gateway_init(&new_client->gw, &new_client->conf,
+    discord_gateway_init(new_client, &new_client->gw, &new_client->conf,
                          &new_client->token);
 #ifdef HAS_DISCORD_VOICE
     discord_voice_connections_init(new_client);

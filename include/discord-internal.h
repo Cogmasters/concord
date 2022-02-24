@@ -442,6 +442,8 @@ struct discord_gateway_cbs {
 struct discord_gateway {
     /** DISCORD_GATEWAY logging module */
     struct logconf conf;
+    /** the discord client using this gateway */
+    struct discord *client;
     /** the websockets handle that connects to Discord */
     struct websockets *ws;
     /** curl_multi handle for non-blocking transfer over websockets */
@@ -560,7 +562,8 @@ struct discord_event {
  * @param conf optional pointer to a initialized logconf
  * @param token the bot token
  */
-void discord_gateway_init(struct discord_gateway *gw,
+void discord_gateway_init(struct discord *client,
+                          struct discord_gateway *gw,
                           struct logconf *conf,
                           struct sized_buffer *token);
 

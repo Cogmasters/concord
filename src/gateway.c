@@ -1463,11 +1463,12 @@ on_io_poller_curl(CURLM *mhandle, void *user_data)
 }
 
 void
-discord_gateway_init(struct discord_gateway *gw,
+discord_gateway_init(struct discord *client,
+                     struct discord_gateway *gw,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
-    struct discord *client = CLIENT(gw, gw);
+    gw->client = client;
     /* Web-Sockets callbacks */
     struct ws_callbacks cbs = { 0 };
     /* Web-Sockets custom attributes */
