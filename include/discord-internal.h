@@ -518,24 +518,6 @@ struct discord_gateway {
         /** field 'd' */
         struct sized_buffer data;
     } payload;
-
-    /** user-commands structure */
-    struct {
-        /** the prefix expected for every command */
-        struct sized_buffer prefix;
-        /** user's command/callback pair @see discord_set_on_command() */
-        struct discord_gateway_cmd_cbs *pool;
-        /** amount of command/callback pairs in pool */
-        size_t amt;
-        /** actual size of command/callback pairs in pool */
-        size_t cap;
-        /** fallback function incase prefix matches but command doesn't */
-        struct discord_gateway_cmd_cbs on_default;
-        /** user's callbacks */
-        struct discord_gateway_cbs cbs;
-        /** event execution flow callback */
-        discord_ev_scheduler scheduler;
-    } cmds;
 };
 
 /**
@@ -652,6 +634,24 @@ struct discord {
     discord_ev_idle on_idle;
     /** triggers once per loop cycle */
     discord_ev_idle on_cycle;
+
+    /** user-commands structure */
+    struct {
+        /** the prefix expected for every command */
+        struct sized_buffer prefix;
+        /** user's command/callback pair @see discord_set_on_command() */
+        struct discord_gateway_cmd_cbs *pool;
+        /** amount of command/callback pairs in pool */
+        size_t amt;
+        /** actual size of command/callback pairs in pool */
+        size_t cap;
+        /** fallback function incase prefix matches but command doesn't */
+        struct discord_gateway_cmd_cbs on_default;
+        /** user's callbacks */
+        struct discord_gateway_cbs cbs;
+        /** event execution flow callback */
+        discord_ev_scheduler scheduler;
+    } cmds;
 
     /** space for user arbitrary data */
     void *data;

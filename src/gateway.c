@@ -8,7 +8,7 @@
 #include "discord-internal.h"
 
 /* shorten event callback for maintainability purposes */
-#define ON(event, ...) gw->cmds.cbs.on_##event(CLIENT(gw, gw), __VA_ARGS__)
+#define ON(event, ...) gw->client->cmds.cbs.on_##event(gw->client, __VA_ARGS__)
 
 /* return enumerator as string in case of a match */
 #define CASE_RETURN_STR(code)                                                 \
@@ -87,7 +87,7 @@ discord_gateway_send_presence_update(struct discord_gateway *gw)
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_enable_perform(gw->client->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR("SEND", ANSI_FG_BRIGHT_GREEN) " PRESENCE UPDATE (%d "
@@ -136,7 +136,7 @@ send_resume(struct discord_gateway *gw)
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_enable_perform(gw->client->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR("SEND",
@@ -181,7 +181,7 @@ send_identify(struct discord_gateway *gw)
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_enable_perform(gw->client->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR(
@@ -220,7 +220,7 @@ send_heartbeat(struct discord_gateway *gw)
     }
 
     if (ws_send_text(gw->ws, &info, buf, b.pos)) {
-        io_poller_curlm_enable_perform(CLIENT(gw, gw)->io_poller, gw->mhandle);
+        io_poller_curlm_enable_perform(gw->client->io_poller, gw->mhandle);
         logconf_info(
             &gw->conf,
             ANSICOLOR(
@@ -690,35 +690,35 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
 
     discord_message_from_json(data->start, data->size, &msg);
 
-    if (gw->cmds.pool
-        && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
+    if (gw->client->cmds.pool
+        && !strncmp(gw->client->cmds.prefix.start, msg.content, gw->client->cmds.prefix.size))
     {
-        char *command_start = msg.content + gw->cmds.prefix.size;
+        char *command_start = msg.content + gw->client->cmds.prefix.size;
         size_t command_len = strcspn(command_start, " \n\t\r");
 
         struct discord_gateway_cmd_cbs *cmd = NULL;
         size_t i;
 
-        for (i = 0; i < gw->cmds.amt; ++i) {
-            if (command_len == gw->cmds.pool[i].size) {
+        for (i = 0; i < gw->client->cmds.amt; ++i) {
+            if (command_len == gw->client->cmds.pool[i].size) {
                 /* check if command from channel matches set command */
-                if (!strncmp(gw->cmds.pool[i].start,
+                if (!strncmp(gw->client->cmds.pool[i].start,
                              command_start,
                              command_len))
                 {
-                    cmd = &gw->cmds.pool[i];
+                    cmd = &gw->client->cmds.pool[i];
                     if (!cmd->cb)
                         cmd = NULL;
                     break;
                 }
             }
         }
-        if (!cmd && gw->cmds.prefix.size) {
-            cmd = &gw->cmds.on_default;
+        if (!cmd && gw->client->cmds.prefix.size) {
+            cmd = &gw->client->cmds.on_default;
         }
 
         if (cmd && cmd->cb) {
-            struct discord *client = CLIENT(gw, gw);
+            struct discord *client = gw->client;
             char *tmp = msg.content; /* hold original ptr */
 
             /* skip blank characters */
@@ -731,7 +731,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
             msg.content = tmp; /* retrieve original ptr */
         }
     }
-    else if (gw->cmds.cbs.on_message_create) {
+    else if (gw->client->cmds.cbs.on_message_create) {
         ON(message_create, &msg);
     }
 
@@ -918,13 +918,13 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
     discord_voice_state_from_json(data->start, data->size, &vs);
 
 #ifdef HAS_DISCORD_VOICE
-    if (vs.user_id == CLIENT(gw, gw)->self.id) {
+    if (vs.user_id == gw->client->self.id) {
         /* we only care about the voice_state_update of bot */
-        _discord_on_voice_state_update(CLIENT(gw, gw), &vs);
+        _discord_on_voice_state_update(gw->client, &vs);
     }
 #endif /* HAS_DISCORD_VOICE */
 
-    if (gw->cmds.cbs.on_voice_state_update) ON(voice_state_update, &vs);
+    if (gw->client->cmds.cbs.on_voice_state_update) ON(voice_state_update, &vs);
 
     discord_voice_state_cleanup(&vs);
 }
@@ -953,10 +953,10 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 
 #ifdef HAS_DISCORD_VOICE
     /* this happens for everyone */
-    _discord_on_voice_server_update(CLIENT(gw, gw), guild_id, token, endpoint);
+    _discord_on_voice_server_update(gw->client, guild_id, token, endpoint);
 #endif /* HAS_DISCORD_VOICE */
 
-    if (gw->cmds.cbs.on_voice_server_update)
+    if (gw->client->cmds.cbs.on_voice_server_update)
         ON(voice_server_update, token, guild_id, endpoint);
 
     jsmnf_cleanup(root);
@@ -966,14 +966,14 @@ static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
     (void)data;
-    gw->cmds.cbs.on_ready(CLIENT(gw, gw));
+    gw->client->cmds.cbs.on_ready(gw->client);
 }
 
 static void
 dispatch_run(void *p_cxt)
 {
     struct discord_event *cxt = p_cxt;
-    struct discord *client = CLIENT(cxt->gw, gw);
+    struct discord *client = cxt->gw->client;
 
     logconf_info(&cxt->gw->conf,
                  "Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
@@ -995,7 +995,7 @@ dispatch_run(void *p_cxt)
 static void
 on_dispatch(struct discord_gateway *gw)
 {
-    struct discord *client = CLIENT(gw, gw);
+    struct discord *client = gw->client;
 
     /* event-callback selector */
     void (*on_event)(struct discord_gateway *, struct sized_buffer *) = NULL;
@@ -1037,7 +1037,7 @@ on_dispatch(struct discord_gateway *gw)
         gw->session->is_ready = true;
         gw->session->retry.attempt = 0;
 
-        if (gw->cmds.cbs.on_ready) on_event = &on_ready;
+        if (gw->client->cmds.cbs.on_ready) on_event = &on_ready;
 
         send_heartbeat(gw);
 
@@ -1053,38 +1053,38 @@ on_dispatch(struct discord_gateway *gw)
 
         break;
     case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_CREATE:
-        if (gw->cmds.cbs.on_application_command_create)
+        if (gw->client->cmds.cbs.on_application_command_create)
             on_event = on_application_command_create;
         break;
     case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_UPDATE:
-        if (gw->cmds.cbs.on_application_command_update)
+        if (gw->client->cmds.cbs.on_application_command_update)
             on_event = on_application_command_update;
         break;
     case DISCORD_GATEWAY_EVENTS_APPLICATION_COMMAND_DELETE:
-        if (gw->cmds.cbs.on_application_command_delete)
+        if (gw->client->cmds.cbs.on_application_command_delete)
             on_event = on_application_command_delete;
         break;
     case DISCORD_GATEWAY_EVENTS_CHANNEL_CREATE:
-        if (gw->cmds.cbs.on_channel_create) on_event = on_channel_create;
+        if (gw->client->cmds.cbs.on_channel_create) on_event = on_channel_create;
         break;
     case DISCORD_GATEWAY_EVENTS_CHANNEL_UPDATE:
-        if (gw->cmds.cbs.on_channel_update) on_event = on_channel_update;
+        if (gw->client->cmds.cbs.on_channel_update) on_event = on_channel_update;
         break;
     case DISCORD_GATEWAY_EVENTS_CHANNEL_DELETE:
-        if (gw->cmds.cbs.on_channel_delete) on_event = on_channel_delete;
+        if (gw->client->cmds.cbs.on_channel_delete) on_event = on_channel_delete;
         break;
     case DISCORD_GATEWAY_EVENTS_CHANNEL_PINS_UPDATE:
-        if (gw->cmds.cbs.on_channel_pins_update)
+        if (gw->client->cmds.cbs.on_channel_pins_update)
             on_event = on_channel_pins_update;
         break;
     case DISCORD_GATEWAY_EVENTS_THREAD_CREATE:
-        if (gw->cmds.cbs.on_thread_create) on_event = on_thread_create;
+        if (gw->client->cmds.cbs.on_thread_create) on_event = on_thread_create;
         break;
     case DISCORD_GATEWAY_EVENTS_THREAD_UPDATE:
-        if (gw->cmds.cbs.on_thread_update) on_event = on_thread_update;
+        if (gw->client->cmds.cbs.on_thread_update) on_event = on_thread_update;
         break;
     case DISCORD_GATEWAY_EVENTS_THREAD_DELETE:
-        if (gw->cmds.cbs.on_thread_delete) on_event = on_thread_delete;
+        if (gw->client->cmds.cbs.on_thread_delete) on_event = on_thread_delete;
         break;
     case DISCORD_GATEWAY_EVENTS_THREAD_LIST_SYNC:
         /** @todo implement */
@@ -1096,19 +1096,19 @@ on_dispatch(struct discord_gateway *gw)
         /** @todo implement */
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_CREATE:
-        if (gw->cmds.cbs.on_guild_create) on_event = on_guild_create;
+        if (gw->client->cmds.cbs.on_guild_create) on_event = on_guild_create;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_UPDATE:
-        if (gw->cmds.cbs.on_guild_update) on_event = on_guild_update;
+        if (gw->client->cmds.cbs.on_guild_update) on_event = on_guild_update;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_DELETE:
-        if (gw->cmds.cbs.on_guild_delete) on_event = on_guild_delete;
+        if (gw->client->cmds.cbs.on_guild_delete) on_event = on_guild_delete;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_BAN_ADD:
-        if (gw->cmds.cbs.on_guild_ban_add) on_event = on_guild_ban_add;
+        if (gw->client->cmds.cbs.on_guild_ban_add) on_event = on_guild_ban_add;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_BAN_REMOVE:
-        if (gw->cmds.cbs.on_guild_ban_remove) on_event = on_guild_ban_remove;
+        if (gw->client->cmds.cbs.on_guild_ban_remove) on_event = on_guild_ban_remove;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_EMOJIS_UPDATE:
         /** @todo implement */
@@ -1120,24 +1120,24 @@ on_dispatch(struct discord_gateway *gw)
         /** @todo implement */
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_ADD:
-        if (gw->cmds.cbs.on_guild_member_add) on_event = on_guild_member_add;
+        if (gw->client->cmds.cbs.on_guild_member_add) on_event = on_guild_member_add;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_UPDATE:
-        if (gw->cmds.cbs.on_guild_member_update)
+        if (gw->client->cmds.cbs.on_guild_member_update)
             on_event = on_guild_member_update;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_MEMBER_REMOVE:
-        if (gw->cmds.cbs.on_guild_member_remove)
+        if (gw->client->cmds.cbs.on_guild_member_remove)
             on_event = on_guild_member_remove;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_CREATE:
-        if (gw->cmds.cbs.on_guild_role_create) on_event = on_guild_role_create;
+        if (gw->client->cmds.cbs.on_guild_role_create) on_event = on_guild_role_create;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_UPDATE:
-        if (gw->cmds.cbs.on_guild_role_update) on_event = on_guild_role_update;
+        if (gw->client->cmds.cbs.on_guild_role_update) on_event = on_guild_role_update;
         break;
     case DISCORD_GATEWAY_EVENTS_GUILD_ROLE_DELETE:
-        if (gw->cmds.cbs.on_guild_role_delete) on_event = on_guild_role_delete;
+        if (gw->client->cmds.cbs.on_guild_role_delete) on_event = on_guild_role_delete;
         break;
     case DISCORD_GATEWAY_EVENTS_INTEGRATION_CREATE:
         /** @todo implement */
@@ -1149,7 +1149,7 @@ on_dispatch(struct discord_gateway *gw)
         /** @todo implement */
         break;
     case DISCORD_GATEWAY_EVENTS_INTERACTION_CREATE:
-        if (gw->cmds.cbs.on_interaction_create)
+        if (gw->client->cmds.cbs.on_interaction_create)
             on_event = on_interaction_create;
         break;
     case DISCORD_GATEWAY_EVENTS_INVITE_CREATE:
@@ -1159,33 +1159,33 @@ on_dispatch(struct discord_gateway *gw)
         /** @todo implement */
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE:
-        if (gw->cmds.pool || gw->cmds.cbs.on_message_create)
+        if (gw->client->cmds.pool || gw->client->cmds.cbs.on_message_create)
             on_event = &on_message_create;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_UPDATE:
-        if (gw->cmds.cbs.on_message_update) on_event = on_message_update;
+        if (gw->client->cmds.cbs.on_message_update) on_event = on_message_update;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE:
-        if (gw->cmds.cbs.on_message_delete) on_event = on_message_delete;
+        if (gw->client->cmds.cbs.on_message_delete) on_event = on_message_delete;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_DELETE_BULK:
-        if (gw->cmds.cbs.on_message_delete_bulk)
+        if (gw->client->cmds.cbs.on_message_delete_bulk)
             on_event = on_message_delete_bulk;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_ADD:
-        if (gw->cmds.cbs.on_message_reaction_add)
+        if (gw->client->cmds.cbs.on_message_reaction_add)
             on_event = on_message_reaction_add;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE:
-        if (gw->cmds.cbs.on_message_reaction_remove)
+        if (gw->client->cmds.cbs.on_message_reaction_remove)
             on_event = on_message_reaction_remove;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_ALL:
-        if (gw->cmds.cbs.on_message_reaction_remove_all)
+        if (gw->client->cmds.cbs.on_message_reaction_remove_all)
             on_event = on_message_reaction_remove_all;
         break;
     case DISCORD_GATEWAY_EVENTS_MESSAGE_REACTION_REMOVE_EMOJI:
-        if (gw->cmds.cbs.on_message_reaction_remove_emoji)
+        if (gw->client->cmds.cbs.on_message_reaction_remove_emoji)
             on_event = on_message_reaction_remove_emoji;
         break;
     case DISCORD_GATEWAY_EVENTS_PRESENCE_UPDATE:
@@ -1207,11 +1207,11 @@ on_dispatch(struct discord_gateway *gw)
         /** @todo implement */
         break;
     case DISCORD_GATEWAY_EVENTS_VOICE_STATE_UPDATE:
-        if (gw->cmds.cbs.on_voice_state_update)
+        if (gw->client->cmds.cbs.on_voice_state_update)
             on_event = on_voice_state_update;
         break;
     case DISCORD_GATEWAY_EVENTS_VOICE_SERVER_UPDATE:
-        if (gw->cmds.cbs.on_voice_server_update)
+        if (gw->client->cmds.cbs.on_voice_server_update)
             on_event = on_voice_server_update;
         break;
     case DISCORD_GATEWAY_EVENTS_WEBHOOKS_UPDATE:
@@ -1224,7 +1224,7 @@ on_dispatch(struct discord_gateway *gw)
         break;
     }
 
-    mode = gw->cmds.scheduler(client, &gw->payload.data, event);
+    mode = gw->client->cmds.scheduler(client, &gw->payload.data, event);
     if (!on_event) return;
 
     /* user subscribed to event */
@@ -1517,7 +1517,7 @@ discord_gateway_init(struct discord *client,
     discord_set_presence(client, &presence);
 
     /* default callbacks */
-    gw->cmds.scheduler = default_scheduler_cb;
+    gw->client->cmds.scheduler = default_scheduler_cb;
 
     /* check for default prefix in config file */
     buf = logconf_get_field(conf, path, sizeof(path) / sizeof *path);
@@ -1534,8 +1534,8 @@ discord_gateway_init(struct discord *client,
             if (enable_prefix) {
                 f = jsmnf_find(root, "prefix", sizeof("prefix") - 1);
                 if (f) {
-                    gw->cmds.prefix.start = buf.start + f->val->start;
-                    gw->cmds.prefix.size = f->val->end - f->val->start;
+                    gw->client->cmds.prefix.start = buf.start + f->val->start;
+                    gw->client->cmds.prefix.size = f->val->end - f->val->start;
                 }
             }
         }
@@ -1547,7 +1547,7 @@ void
 discord_gateway_cleanup(struct discord_gateway *gw)
 {
     /* cleanup WebSockets handle */
-    io_poller_curlm_del(CLIENT(gw, gw)->io_poller, gw->mhandle);
+    io_poller_curlm_del(gw->client->io_poller, gw->mhandle);
     curl_multi_cleanup(gw->mhandle);
     ws_cleanup(gw->ws);
     /* cleanup timers */
@@ -1560,12 +1560,12 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     /* cleanup client session */
     free(gw->session);
     /* cleanup user commands */
-    if (gw->cmds.pool) {
-        for (size_t i = 0; i < gw->cmds.amt; i++)
-            free(gw->cmds.pool[i].start);
-        free(gw->cmds.pool);
+    if (gw->client->cmds.pool) {
+        for (size_t i = 0; i < gw->client->cmds.amt; i++)
+            free(gw->client->cmds.pool[i].start);
+        free(gw->client->cmds.pool);
     }
-    if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
+    if (gw->client->cmds.prefix.start) free(gw->client->cmds.prefix.start);
 }
 
 #ifdef _CCORD_DEBUG_WEBSOCKETS
@@ -1658,7 +1658,7 @@ _ws_curl_debug_trace(
 CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
 {
-    struct discord *client = CLIENT(gw, gw);
+    struct discord *client = gw->client;
     /* get gateway bot info */
     struct sized_buffer json = { 0 };
     /* build URL that will be used to connect to Discord */
