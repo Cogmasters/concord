@@ -623,6 +623,8 @@ struct discord {
     struct discord_adapter adapter;
     /** the WebSockets handle for establishing a connection to Discord */
     struct discord_gateway gw;
+    /** the intents to be used by new gateway connections */
+    int intents;
     /** the client's user structure */
     struct discord_user self;
     struct {

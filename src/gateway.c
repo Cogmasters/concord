@@ -1659,6 +1659,7 @@ CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
 {
     struct discord *client = gw->client;
+    gw->id.intents = client->intents;
     /* get gateway bot info */
     struct sized_buffer json = { 0 };
     /* build URL that will be used to connect to Discord */
