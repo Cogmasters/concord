@@ -1,4 +1,3 @@
-#define BLANK
 #define INIT_BLANK(_var, _type)
 #define CLEANUP_BLANK(_var, _type)
 
@@ -12,14 +11,6 @@
 
 #ifdef GENCODECS_DATA
 #ifdef GENCODECS_HEADER
-
-#define GENCODECS_STRUCT(_type) struct _type;
-#define GENCODECS_LIST(_type)   struct _type;
-
-#define GENCODECS_PUB_STRUCT(_type) GENCODECS_STRUCT(_type)
-#define GENCODECS_PUB_LIST(_type) GENCODECS_LIST(_type)
-
-#include "gencodecs-gen.pre.h"
 
 #define GENCODECS_STRUCT(_type)                                               \
     struct _type {
