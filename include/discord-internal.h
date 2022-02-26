@@ -359,6 +359,8 @@ struct discord_gateway_cmd_cbs {
     discord_ev_message cb;
 };
 
+struct discord_shard;
+
 struct discord_gateway_cbs {
     /** triggers when connection first establishes */
     discord_ev_idle on_ready;
@@ -444,6 +446,8 @@ struct discord_gateway {
     struct logconf conf;
     /** the discord client using this gateway */
     struct discord *client;
+    /** the discord shard */
+    struct discord_shard *shard;
     /** the websockets handle that connects to Discord */
     struct websockets *ws;
     /** curl_multi handle for non-blocking transfer over websockets */
@@ -537,6 +541,50 @@ struct discord_event {
     void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
 };
 
+struct discord_shard_cbs {
+    /** @brief called when shard is ready */
+    void (*on_shard_ready)(struct discord *client, int shard);
+    /** @brief called when shard is enabled or disabled for the client */
+    void (*on_shard_enabled)(struct discord *client, int shard, bool enabled);
+};
+
+struct discord_shard_controller {
+    /** @brief run when the shard is ready to be init */
+    CCORDcode (*init)(struct discord *client);
+    /** @brief shutdown all gateways */
+    CCORDcode (*shutdown)(struct discord *client);
+    /** @brief clean up memory */
+    CCORDcode (*destroy)(struct discord *client);
+    /** @brief run one cycle of main loop
+     * @return CCORD_OK to continue, error to shutdown
+     */
+    CCORDcode (*perform)(struct discord *client);
+
+    /** @brief reconnect all gateways */
+    void (*reconnect)(struct discord *client, bool resume);
+    /** @brief get gateway ping */
+    int (*get_ping)(struct discord *client);
+
+    /** @brief set the presence of all shards */
+    void (*set_presence)(struct discord *client,
+                         struct discord_presence_update *presence);
+
+    /** internal data used by shard implementation */
+    void *internal;
+};
+
+/**
+ * @brief the structure managed by the sharding method
+ */
+struct discord_shard {
+    struct discord *client;
+    struct discord_gateway *gw;
+    int shard;
+};
+
+/** @brief default sharding method which does not use sharding */
+void discord_sharding_use_none(struct discord *client);
+
 /**
  * @brief Initialize the fields of Discord Gateway handle
  *
@@ -544,7 +592,7 @@ struct discord_event {
  * @param conf optional pointer to a initialized logconf
  * @param token the bot token
  */
-void discord_gateway_init(struct discord *client,
+void discord_gateway_init(struct discord_shard *shard,
                           struct discord_gateway *gw,
                           struct logconf *conf,
                           struct sized_buffer *token);
@@ -621,8 +669,22 @@ struct discord {
     struct io_poller *io_poller;
     /** the HTTP adapter for performing requests */
     struct discord_adapter adapter;
-    /** the WebSockets handle for establishing a connection to Discord */
-    struct discord_gateway gw;
+    struct {
+        /** total shards being used by this client */
+        int total;
+        struct {
+            /** number of shards currently being used by this instance */
+            int count;
+            /** max shards allowed to be used by this intance */
+            int max;
+        } active;
+        /** array of shards */
+        struct discord_shard *array;
+        /** interface for controlling the shard manager */
+        struct discord_shard_controller controller;
+        /** callbacks for shard events */
+        struct discord_shard_cbs cbs;
+    } shards;
     /** the intents to be used by new gateway connections */
     int intents;
     /** the client's user structure */

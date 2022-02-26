@@ -966,7 +966,13 @@ static void
 on_ready(struct discord_gateway *gw, struct sized_buffer *data)
 {
     (void)data;
-    gw->client->cmds.cbs.on_ready(gw->client);
+    if (gw->shard->shard == 1) {
+        if (gw->client->cmds.cbs.on_ready)
+            gw->client->cmds.cbs.on_ready(gw->client);
+    } else {
+        if (gw->client->shards.cbs.on_shard_ready)
+            gw->client->shards.cbs.on_shard_ready(gw->client, gw->shard->shard);
+    }
 }
 
 static void
@@ -1239,7 +1245,9 @@ on_dispatch(struct discord_gateway *gw)
         int ret;
 
         cxt->name = strdup(gw->payload.name);
+#if 0
         cxt->gw = &(discord_clone(client)->gw);
+#endif
         cxt->data.size = cog_strndup(gw->payload.data.start,
                                      gw->payload.data.size, &cxt->data.start);
         cxt->event = event;
@@ -1459,16 +1467,19 @@ static int
 on_io_poller_curl(CURLM *mhandle, void *user_data)
 {
     (void)mhandle;
-    return discord_gateway_perform(user_data);
+    discord_gateway_perform(user_data);
+    return CCORD_OK;
 }
 
 void
-discord_gateway_init(struct discord *client,
+discord_gateway_init(struct discord_shard *shard,
                      struct discord_gateway *gw,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
-    gw->client = client;
+    struct discord *client = gw->client = shard->client;
+    gw->shard = shard;
+
     /* Web-Sockets callbacks */
     struct ws_callbacks cbs = { 0 };
     /* Web-Sockets custom attributes */

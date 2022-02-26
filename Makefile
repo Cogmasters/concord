@@ -35,6 +35,7 @@ DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/adapter-api.o       \
                 $(OBJDIR)/$(SRC_DIR)/adapter.o           \
                 $(OBJDIR)/$(SRC_DIR)/client.o            \
                 $(OBJDIR)/$(SRC_DIR)/gateway.o           \
+                $(OBJDIR)/$(SRC_DIR)/sharding-none.o     \
                 $(OBJDIR)/$(SRC_DIR)/misc.o              \
                 $(XOBJ)
 
