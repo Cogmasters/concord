@@ -14,6 +14,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Install Doxygen-1.9.3
+        run: |
           echo "Install wget"
           sudo apt install wget
           echo "Fetching binary distribution"
