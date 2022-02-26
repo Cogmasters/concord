@@ -97,6 +97,7 @@ ENUM(discord_message_flags)
                     = 1 << 8)
 ENUM_END
 
+/** @CCORD_pub_methods{discord_channel} */
 PUB_STRUCT(discord_channel)
   PP("the ID of this channel")
     FIELD_SNOWFLAKE(id)

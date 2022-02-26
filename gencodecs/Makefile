@@ -82,7 +82,7 @@ $(HEADERS): $(PP)
 .pre.h.h:
 	@ echo "#ifndef $(HEADER_TAG)" > $(DOCS_DIR)/$@
 	@ echo "#define $(HEADER_TAG)" >> $(DOCS_DIR)/$@
-	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" -nostdinc -P $(INP_PRE) | $(PP) >> $(DOCS_DIR)/$@
+	$(CPP) $(CFLAGS) -DGENCODECS_HEADER -DGENCODECS_READ=\"$<\" -nostdinc -P -CC $(INP_PRE) | $(PP) >> $(DOCS_DIR)/$@
 	@ echo "#endif /* $(HEADER_TAG) */" >> $(DOCS_DIR)/$@
 
 echo:
