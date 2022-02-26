@@ -29,6 +29,7 @@ ENUM(discord_interaction_callback_types)
     ENUMERATOR_LAST(DISCORD_INTERACTION_MODAL, = 9)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_interaction} */
 PUB_STRUCT(discord_interaction)
   PP("ID of the interaction")
     FIELD_SNOWFLAKE(id)
@@ -109,6 +110,7 @@ STRUCT(discord_message_interaction)
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_interaction_response} */
 PUB_STRUCT(discord_interaction_response)
   PP("interaction callback type")
     FIELD_ENUM(type, discord_interaction_callback_types)
@@ -160,6 +162,7 @@ STRUCT_END
  * Interactions REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_edit_original_interaction_response} */
 PUB_STRUCT(discord_edit_original_interaction_response)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
@@ -186,6 +189,7 @@ PUB_STRUCT(discord_edit_original_interaction_response)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_followup_message} */
 PUB_STRUCT(discord_create_followup_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
@@ -225,6 +229,7 @@ PUB_STRUCT(discord_create_followup_message)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_edit_followup_message} */
 PUB_STRUCT(discord_edit_followup_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */

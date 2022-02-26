@@ -73,6 +73,7 @@ ENUM(discord_integration_expire_behaviors)
     ENUMERATOR_LAST(DISCORD_INTEGRATION_KICK, = 1)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_guild} */
 PUB_STRUCT(discord_guild)
   PP("guild id")
     FIELD_SNOWFLAKE(id)
@@ -222,10 +223,12 @@ PUB_STRUCT(discord_guild)
     FIELD(premium_progress_bar_enabled, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_guilds} */
 PUB_LIST(discord_guilds)
     LISTTYPE_STRUCT(discord_guild)
 LIST_END
 
+/** @CCORD_pub_struct{discord_guild_preview} */
 PUB_STRUCT(discord_guild_preview)
   PP("guild id")
     FIELD_SNOWFLAKE(id)
@@ -273,6 +276,7 @@ STRUCT(discord_get_guild_widget)
     FIELD(presence_count, int, 0)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_guild_member} */
 PUB_STRUCT(discord_guild_member)
   PP("the user this guild member represents")
   COND_WRITE(this->user != NULL)
@@ -312,6 +316,7 @@ PUB_STRUCT(discord_guild_member)
     FIELD_TIMESTAMP(communication_disabled_until)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_guild_members} */
 PUB_LIST(discord_guild_members)
     LISTTYPE_STRUCT(discord_guild_member)
 LIST_END
@@ -378,6 +383,7 @@ STRUCT(discord_integration_application)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_ban} */
 PUB_STRUCT(discord_ban)
   PP("the reason for the ban")
     FIELD_PTR(reason, char, *)
@@ -385,10 +391,12 @@ PUB_STRUCT(discord_ban)
     FIELD_STRUCT_PTR(user, discord_user, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_bans} */
 PUB_LIST(discord_bans)
     LISTTYPE_STRUCT(discord_ban)
 LIST_END
 
+/** @CCORD_pub_struct{discord_welcome_screen} */
 PUB_STRUCT(discord_welcome_screen)
   PP("the server description shown in the welcome screen")
     FIELD_PTR(description, char, *)
@@ -418,6 +426,7 @@ LIST_END
  * Guild REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_create_guild} */
 PUB_STRUCT(discord_create_guild)
   PP("name of the guild (2-100 charaters)")
     FIELD_PTR(name, char, *)
@@ -457,6 +466,7 @@ PUB_STRUCT(discord_create_guild)
     FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild} */
 PUB_STRUCT(discord_modify_guild)
   PP("guild name")
     FIELD_PTR(name, char, *)
@@ -506,6 +516,7 @@ PUB_STRUCT(discord_modify_guild)
     FIELD(premium_progress_bar_enabled, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_guild_channel} */
 PUB_STRUCT(discord_create_guild_channel)
   PP("channel name (1-100 characters)")
     FIELD_PTR(name, char, *)
@@ -553,10 +564,12 @@ STRUCT(discord_modify_guild_channel_position)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_modify_guild_channel_positions} */
 PUB_LIST(discord_modify_guild_channel_positions)
     LISTTYPE_STRUCT(discord_modify_guild_channel_position)
 LIST_END
 
+/** @CCORD_pub_struct{discord_list_active_guild_threads} */
 PUB_STRUCT(discord_list_active_guild_threads)
   PP("the active threads")
     FIELD_STRUCT_PTR(threads, discord_channels, *)
@@ -581,6 +594,7 @@ STRUCT(discord_search_guild_members)
     FIELD(limit, int, 0)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_add_guild_member} */
 PUB_STRUCT(discord_add_guild_member)
   PP("an oauth2 access token granted with the `guild.join` to the bot's"
        "application for the user you want to add in the guild")
@@ -595,6 +609,7 @@ PUB_STRUCT(discord_add_guild_member)
     FIELD(deaf, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild_member} */
 PUB_STRUCT(discord_modify_guild_member)
   PP("value to set user's nickname to")
     FIELD_PTR(nick, char, *)
@@ -619,6 +634,7 @@ PUB_STRUCT(discord_modify_guild_member)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_current_member} */
 PUB_STRUCT(discord_modify_current_member)
   PP("value to set user's nickname to")
   COND_WRITE(this->nick != NULL)
@@ -626,6 +642,7 @@ PUB_STRUCT(discord_modify_current_member)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_current_user_nick} */
 PUB_STRUCT(discord_modify_current_user_nick)
   PP("value to set user's nickname to")
   COND_WRITE(this->nick != NULL)
@@ -633,6 +650,7 @@ PUB_STRUCT(discord_modify_current_user_nick)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_guild_ban} */
 PUB_STRUCT(discord_create_guild_ban)
   PP("number of days to delete messages for (0-7)")
   COND_WRITE(this->delete_message_days >= 0 && this->delete_message_days <= 7)
@@ -644,6 +662,7 @@ PUB_STRUCT(discord_create_guild_ban)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_guild_role} */
 PUB_STRUCT(discord_create_guild_role)
   PP("name of the role")
     FIELD_PTR(name, char, *)
@@ -671,10 +690,12 @@ STRUCT(discord_modify_guild_role_position)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_modify_guild_role_positions} */
 PUB_LIST(discord_modify_guild_role_positions)
     LISTTYPE_STRUCT(discord_modify_guild_role_position)
 LIST_END
 
+/** @CCORD_pub_struct{discord_modify_guild_role} */
 PUB_STRUCT(discord_modify_guild_role)
   PP("name of the role")
     FIELD_PTR(name, char, *)
@@ -703,6 +724,7 @@ STRUCT(discord_get_guild_prune_count)
     FIELD_STRUCT_PTR(include_roles, snowflakes, *)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_begin_guild_prune} */
 PUB_STRUCT(discord_begin_guild_prune)
   PP("number of days to prune")
   COND_WRITE(this->days != 0)
@@ -727,6 +749,7 @@ STRUCT(discord_get_guild_widget_image)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild_welcome_screen} */
 PUB_STRUCT(discord_modify_guild_welcome_screen)
   PP("whether the welcome screen is enabled")
     FIELD(enabled, bool, false)
@@ -738,6 +761,7 @@ PUB_STRUCT(discord_modify_guild_welcome_screen)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_current_user_voice_state} */
 PUB_STRUCT(discord_modify_current_user_voice_state)
   PP("the ID of the channel the user is currently in")
     FIELD_SNOWFLAKE(channel_id)
@@ -750,6 +774,7 @@ PUB_STRUCT(discord_modify_current_user_voice_state)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_user_voice_state} */
 PUB_STRUCT(discord_modify_user_voice_state)
   PP("the ID of the channel the user is currently in")
     FIELD_SNOWFLAKE(channel_id)

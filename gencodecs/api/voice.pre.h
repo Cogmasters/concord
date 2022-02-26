@@ -2,6 +2,7 @@
  * Voice Datatypes
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_voice_state} */
 PUB_STRUCT(discord_voice_state)
   PP("the guild ID this voice state is for")
     FIELD_SNOWFLAKE(guild_id)
@@ -34,6 +35,7 @@ PUB_STRUCT(discord_voice_state)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_voice_states} */
 PUB_LIST(discord_voice_states)
     LISTTYPE_STRUCT(discord_voice_state)
 LIST_END
@@ -51,6 +53,7 @@ STRUCT(discord_voice_region)
     FIELD(custom, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_voice_regions} */
 PUB_LIST(discord_voice_regions)
     LISTTYPE_STRUCT(discord_voice_region)
 LIST_END

@@ -46,6 +46,7 @@ ENUM(discord_visibility_types)
     ENUMERATOR_LAST(DISCORD_VISIBILITY_EVERYONE, = 1)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_user} */
 PUB_STRUCT(discord_user)
   PP("the user's ID")
     FIELD_SNOWFLAKE(id)
@@ -82,6 +83,7 @@ PUB_STRUCT(discord_user)
     FIELD_SNOWFLAKE(public_flags)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_users} */
 PUB_LIST(discord_users)
     LISTTYPE_STRUCT(discord_user)
 LIST_END
@@ -110,6 +112,7 @@ STRUCT(discord_connection)
     FIELD_ENUM(visibility, discord_visibility_types)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_connections} */
 PUB_LIST(discord_connections)
     LISTTYPE_STRUCT(discord_connection)
 LIST_END
@@ -118,6 +121,7 @@ LIST_END
  * User REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_modify_current_user} */
 PUB_STRUCT(discord_modify_current_user)
   PP("user's username, if changed may cause the user's discriminator to be"
        "randomized")
@@ -146,6 +150,7 @@ STRUCT(discord_get_current_user_guilds)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_dm} */
 PUB_STRUCT(discord_create_dm)
   PP("the recipient to open a DM channel with")
   COND_WRITE(this->recipient_id != 0)
@@ -153,6 +158,7 @@ PUB_STRUCT(discord_create_dm)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_group_dm} */
 PUB_STRUCT(discord_create_group_dm)
   PP("access tokens of users that have grantes your app `gdm.join` scope")
   COND_WRITE(this->access_tokens != NULL)

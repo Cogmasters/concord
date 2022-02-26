@@ -132,6 +132,7 @@ ENUM(discord_activity_types)
     ENUMERATOR_LAST(DISCORD_ACTIVITY_COMPETING, = 5)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_identify} */
 PUB_STRUCT(discord_identify)
   PP("authentication token")
     FIELD_PTR(token, char, *)
@@ -164,6 +165,7 @@ STRUCT(discord_identify_connection)
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_voice_state_status} */
 PUB_STRUCT(discord_voice_state_status)
   PP("ID of the guild")
     FIELD_SNOWFLAKE(guild_id)
@@ -175,6 +177,7 @@ PUB_STRUCT(discord_voice_state_status)
     FIELD(self_deaf, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_presence_update} */
 PUB_STRUCT(discord_presence_update)
   PP("unix time (in milliseconds) of when the client went idle, or null if"
        "the client is not idle")
@@ -310,6 +313,7 @@ LIST(discord_activity_buttons)
     LISTTYPE_STRUCT(discord_activity_button)
 LIST_END
 
+/** @CCORD_pub_struct{discord_session_start_limit} */
 PUB_STRUCT(discord_session_start_limit)
   PP("the total number of session starts the current user is allowed")
     FIELD(total, int, 0)

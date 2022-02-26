@@ -2,6 +2,7 @@
  * Emoji Datatypes
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_emoji} */
 PUB_STRUCT(discord_emoji)
   PP("emoji ID")
     FIELD_SNOWFLAKE(id)
@@ -26,6 +27,7 @@ PUB_STRUCT(discord_emoji)
     FIELD(available, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_emojis} */
 PUB_LIST(discord_emojis)
     LISTTYPE_STRUCT(discord_emoji)
 LIST_END
@@ -34,6 +36,7 @@ LIST_END
  * Emoji REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_create_guild_emoji} */
 PUB_STRUCT(discord_create_guild_emoji)
   PP("name of the emoji")
     FIELD_PTR(name, char, *)
@@ -46,6 +49,7 @@ PUB_STRUCT(discord_create_guild_emoji)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild_emoji} */
 PUB_STRUCT(discord_modify_guild_emoji)
   PP("name of the emoji")
     FIELD_PTR(name, char, *)

@@ -7,6 +7,7 @@ ENUM(discord_invite_target_types)
     ENUMERATOR_LAST(DISCORD_INVITE_TARGET_EMBEDDED_APPLICATION, = 2)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_invite} */
 PUB_STRUCT(discord_invite)
   PP("the invite code (unique ID)")
     FIELD_PTR(code, char, *)
@@ -54,6 +55,7 @@ PUB_STRUCT(discord_invite)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_invites} */
 PUB_LIST(discord_invites)
     LISTTYPE_STRUCT(discord_invite)
 LIST_END
@@ -90,6 +92,7 @@ STRUCT_END
  * Invite REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_get_invite} */
 PUB_STRUCT(discord_get_invite)
   PP("whether the invite should contain approximate member counts")
     FIELD(with_counts, bool, false)

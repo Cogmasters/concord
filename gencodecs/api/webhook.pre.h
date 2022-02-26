@@ -12,6 +12,7 @@ ENUM(discord_webhook_types)
     ENUMERATOR_LAST(DISCORD_WEBHOOK_APPLICATION, = 3)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_webhook} */
 PUB_STRUCT(discord_webhook)
   PP("the ID of the webhook")
     FIELD_SNOWFLAKE(id)
@@ -44,6 +45,7 @@ PUB_STRUCT(discord_webhook)
     FIELD_PTR(url, char, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_webhooks} */
 PUB_LIST(discord_webhooks)
     LISTTYPE_STRUCT(discord_webhook)
 LIST_END
@@ -52,6 +54,7 @@ LIST_END
  * Webhook REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_create_webhook} */
 PUB_STRUCT(discord_create_webhook)
   PP("name of the webhook (1-80 characters)")
     FIELD_PTR(name, char, *)
@@ -62,6 +65,7 @@ PUB_STRUCT(discord_create_webhook)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_webhook} */
 PUB_STRUCT(discord_modify_webhook)
   PP("the default name of the webhook")
     FIELD_PTR(name, char, *)
@@ -74,6 +78,7 @@ PUB_STRUCT(discord_modify_webhook)
     FIELD_SNOWFLAKE(channel_id)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_webhook_with_token} */
 PUB_STRUCT(discord_modify_webhook_with_token)
   PP("the default name of the webhook")
     FIELD_PTR(name, char, *)
@@ -84,6 +89,7 @@ PUB_STRUCT(discord_modify_webhook_with_token)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_execute_webhook} */
 PUB_STRUCT(discord_execute_webhook)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
@@ -135,6 +141,7 @@ STRUCT(discord_get_webhook_message)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_edit_webhook_message} */
 PUB_STRUCT(discord_edit_webhook_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */

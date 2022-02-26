@@ -20,6 +20,7 @@ ENUM(discord_guild_scheduled_event_status)
     ENUMERATOR_LAST(DISCORD_GUILD_SCHEDULED_EVENT_CANCELED, = 4)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_guild_scheduled_event} */
 PUB_STRUCT(discord_guild_scheduled_event)
   PP("the ID of the scheduled event")
     FIELD_SNOWFLAKE(id)
@@ -67,6 +68,7 @@ PUB_STRUCT(discord_guild_scheduled_event)
     FIELD_PTR(image, char, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_guild_scheduled_events} */
 PUB_LIST(discord_guild_scheduled_events)
     LISTTYPE_STRUCT(discord_guild_scheduled_event)
 LIST_END
@@ -96,11 +98,13 @@ STRUCT_END
  * Guild Scheduled Event REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_list_scheduled_events_for_guild} */
 PUB_STRUCT(discord_list_scheduled_events_for_guild)
   PP("include number of users subscribed to each event")
     FIELD(with_user_count, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_guild_scheduled_event} */
 PUB_STRUCT(discord_create_guild_scheduled_event)
   PP("the channel ID of the scheduled event")
   COND_WRITE(this->channel_id != 0)
@@ -134,11 +138,13 @@ PUB_STRUCT(discord_create_guild_scheduled_event)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_get_guild_scheduled_event} */
 PUB_STRUCT(discord_get_guild_scheduled_event)
   PP("include number of users subscribed to each event")
     FIELD(with_user_count, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild_scheduled_event} */
 PUB_STRUCT(discord_modify_guild_scheduled_event)
   PP("the channel ID of the scheduled event")
   COND_WRITE(this->channel_id != 0)
@@ -176,6 +182,7 @@ PUB_STRUCT(discord_modify_guild_scheduled_event)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_get_guild_scheduled_event_users} */
 PUB_STRUCT(discord_get_guild_scheduled_event_users)
   PP("number of users to return (up to maximum of 100)")
     FIELD(limit, int, 0)

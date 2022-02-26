@@ -16,6 +16,7 @@ ENUM(discord_sticker_format_types)
     ENUMERATOR_LAST(DISCORD_STICKER_FORMAT_LOTTIE, = 3)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_sticker} */
 PUB_STRUCT(discord_sticker)
   PP("ID of the sticker")
     FIELD_SNOWFLAKE(id)
@@ -111,6 +112,7 @@ STRUCT(discord_create_guild_sticker)
     FIELD_STRUCT_PTR(file, discord_attachment, *)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild_sticker} */
 PUB_STRUCT(discord_modify_guild_sticker)
   PP("name of the sticker (2-30 characters)")
     FIELD_PTR(name, char, *)

@@ -9,6 +9,7 @@ ENUM(discord_privacy_level)
     ENUMERATOR_LAST(DISCORD_PRIVACY_GUILD_ONLY, = 2)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_stage_instance} */
 PUB_STRUCT(discord_stage_instance)
   PP("the ID of this stage instance")
     FIELD_SNOWFLAKE(id)
@@ -34,6 +35,7 @@ LIST_END
  * Stage Instance REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_create_stage_instance} */
 PUB_STRUCT(discord_create_stage_instance)
   PP("the ID of the stage channel")
     FIELD_SNOWFLAKE(channel_id)
@@ -45,6 +47,7 @@ PUB_STRUCT(discord_create_stage_instance)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_stage_instance} */
 PUB_STRUCT(discord_modify_stage_instance)
   PP("the topic of the Stage instance (1-120 characters)")
     FIELD_PTR(topic, char, *)

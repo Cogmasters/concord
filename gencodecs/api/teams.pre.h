@@ -7,6 +7,7 @@ ENUM(discord_membership_state)
     ENUMERATOR_LAST(DISCORD_MEMBERSHIP_ACCEPTED, = 2)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_team} */
 PUB_STRUCT(discord_team)
   PP("a hash image of the team's icon")
     FIELD_PTR(icon, char, *)

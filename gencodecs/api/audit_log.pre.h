@@ -52,6 +52,7 @@ ENUM(discord_audit_log_events)
     ENUMERATOR_LAST(DISCORD_AUDIT_LOG_THREAD_DELETE, = 112)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_audit_log} */
 PUB_STRUCT(discord_audit_log)
   PP("list of audit log entries")
   COND_WRITE(this->audit_log_entries != NULL)

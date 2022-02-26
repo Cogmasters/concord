@@ -97,7 +97,7 @@ ENUM(discord_message_flags)
                     = 1 << 8)
 ENUM_END
 
-/** @CCORD_pub_methods{discord_channel} */
+/** @CCORD_pub_struct{discord_channel} */
 PUB_STRUCT(discord_channel)
   PP("the ID of this channel")
     FIELD_SNOWFLAKE(id)
@@ -167,10 +167,12 @@ PUB_STRUCT(discord_channel)
     FIELD_PTR(permissions, char, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_channels} */
 PUB_LIST(discord_channels)
     LISTTYPE_STRUCT(discord_channel)
 LIST_END
 
+/** @CCORD_pub_struct{discord_message} */
 PUB_STRUCT(discord_message)
   PP("ID of the message")
     FIELD_SNOWFLAKE(id)
@@ -242,6 +244,7 @@ PUB_STRUCT(discord_message)
     FIELD_STRUCT_PTR(sticker_items, discord_sticker_items, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_messages} */
 PUB_LIST(discord_messages)
     LISTTYPE_STRUCT(discord_message)
 LIST_END
@@ -265,6 +268,7 @@ STRUCT(discord_message_reference)
     FIELD(fail_if_not_exists, bool, true)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_followed_channel} */
 PUB_STRUCT(discord_followed_channel)
   PP("source channel id")
     FIELD_SNOWFLAKE(channel_id)
@@ -331,6 +335,7 @@ STRUCT(discord_thread_member)
     FIELD(flags, int, 0)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_thread_members} */
 PUB_LIST(discord_thread_members)
     LISTTYPE_STRUCT(discord_thread_member)
 LIST_END
@@ -372,10 +377,12 @@ STRUCT(discord_attachment)
     FIELD(ephemeral, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_attachments} */
 PUB_LIST(discord_attachments)
     LISTTYPE_STRUCT(discord_attachment)
 LIST_END
 
+/** @CCORD_pub_struct{discord_embed} */
 PUB_STRUCT(discord_embed)
   PP("title of embed")
     FIELD_PTR(title, char, *)
@@ -420,10 +427,12 @@ PUB_STRUCT(discord_embed)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_embeds} */
 PUB_LIST(discord_embeds)
     LISTTYPE_STRUCT(discord_embed)
 LIST_END
 
+/** @CCORD_pub_struct{discord_embed_thumbnail} */
 PUB_STRUCT(discord_embed_thumbnail)
   PP("source url of thumbnail (only supports http(s) and attachments)")
     FIELD_PTR(url, char, *)
@@ -441,6 +450,7 @@ PUB_STRUCT(discord_embed_thumbnail)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_embed_video} */
 PUB_STRUCT(discord_embed_video)
   PP("source url of video")
   COND_WRITE(this->url != NULL)
@@ -460,6 +470,7 @@ PUB_STRUCT(discord_embed_video)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_embed_image} */
 PUB_STRUCT(discord_embed_image)
   PP("source url of image (only supports http(s) and attachments)")
     FIELD_PTR(url, char, *)
@@ -477,6 +488,7 @@ PUB_STRUCT(discord_embed_image)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_embed_provider} */
 PUB_STRUCT(discord_embed_provider)
   PP("name of provider")
   COND_WRITE(this->name != NULL)
@@ -488,6 +500,7 @@ PUB_STRUCT(discord_embed_provider)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_embed_author} */
 PUB_STRUCT(discord_embed_author)
   PP("name of author")
     FIELD_PTR(name, char, *)
@@ -505,6 +518,7 @@ PUB_STRUCT(discord_embed_author)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_embed_footer} */
 PUB_STRUCT(discord_embed_footer)
   PP("footer text")
     FIELD_PTR(text, char, *)
@@ -518,6 +532,7 @@ PUB_STRUCT(discord_embed_footer)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_embed_field} */
 PUB_STRUCT(discord_embed_field)
   PP("name of the field")
     FIELD_PTR(name, char, *)
@@ -528,6 +543,7 @@ PUB_STRUCT(discord_embed_field)
                  JSON_ENCODER_bool, JSON_DECODER_bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_embed_fields} */
 PUB_LIST(discord_embed_fields)
     LISTTYPE_STRUCT(discord_embed_field)
 LIST_END
@@ -555,6 +571,7 @@ STRUCT(discord_allowed_mention)
     FIELD(replied_user, bool, false)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_thread_response_body} */
 PUB_STRUCT(discord_thread_response_body)
   PP("the archived threads")
     FIELD_STRUCT_PTR(threads, discord_channels, *)
@@ -570,6 +587,7 @@ STRUCT_END
  * Channel REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_modify_channel} */
 PUB_STRUCT(discord_modify_channel)
   PP("1-100 character channel name")
     FIELD_PTR(name, char, *)
@@ -640,6 +658,7 @@ STRUCT_END
 
 /* FIXME: shouldn't generate JSON functions */
 /* TODO: to_query encoding */
+/** @CCORD_pub_struct{discord_get_channel_messages} */
 PUB_STRUCT(discord_get_channel_messages)
   PP("get messages around this message ID")
   COND_WRITE(this->around != 0)
@@ -659,6 +678,7 @@ PUB_STRUCT(discord_get_channel_messages)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_message} */
 PUB_STRUCT(discord_create_message)
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
@@ -695,6 +715,7 @@ STRUCT_END
 
 /* FIXME: shouldn't generate JSON functions */
 /* TODO: to_query encoding */
+/** @CCORD_pub_struct{discord_get_reactions} */
 PUB_STRUCT(discord_get_reactions)
   PP("get users after this user ID")
   COND_WRITE(this->after != 0)
@@ -706,6 +727,7 @@ PUB_STRUCT(discord_get_reactions)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_edit_message} */
 PUB_STRUCT(discord_edit_message)
   PP("the message contents (up to 2000 characters)")
     FIELD_PTR(content, char, *)
@@ -730,11 +752,13 @@ PUB_STRUCT(discord_edit_message)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_bulk_delete_messages} */
 PUB_STRUCT(discord_bulk_delete_messages)
   PP("an array of message ids to delete (2-100)")
     FIELD_STRUCT_PTR(messages, snowflakes, *)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_edit_channel_permissions} */
 PUB_STRUCT(discord_edit_channel_permissions)
   PP("the bitwise value of all allowed permissions (default \"0\")")
   COND_WRITE(this->allow != 0)
@@ -748,6 +772,7 @@ PUB_STRUCT(discord_edit_channel_permissions)
     FIELD(type, int, 0)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_channel_invite} */
 PUB_STRUCT(discord_create_channel_invite)
   PP("duration of invite in seconds before expiry, or 0 for never. between"
        "0 and 604800 (7 days)")
@@ -783,6 +808,7 @@ PUB_STRUCT(discord_create_channel_invite)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_follow_news_channel} */
 PUB_STRUCT(discord_follow_news_channel)
   PP("id of target channel")
   COND_WRITE(this->webhook_channel_id != 0)
@@ -790,6 +816,7 @@ PUB_STRUCT(discord_follow_news_channel)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_group_dm_add_recipient} */
 PUB_STRUCT(discord_group_dm_add_recipient)
   PP("access token of a user that has granted your app the `gdm.join` scope")
     FIELD_PTR(access_token, char, *)
@@ -797,6 +824,7 @@ PUB_STRUCT(discord_group_dm_add_recipient)
     FIELD_PTR(nick, char, *)
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_start_thread_with_message} */
 PUB_STRUCT(discord_start_thread_with_message)
   PP("1-100 character channel name")
     FIELD_PTR(name, char, *)
@@ -813,6 +841,7 @@ PUB_STRUCT(discord_start_thread_with_message)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_start_thread_without_message} */
 PUB_STRUCT(discord_start_thread_without_message)
   PP("1-100 character channel name")
     FIELD_PTR(name, char, *)
@@ -834,6 +863,7 @@ PUB_STRUCT(discord_start_thread_without_message)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_list_active_threads} */
 PUB_STRUCT(discord_list_active_threads)
   PP("the active threads")
   COND_WRITE(this->threads != NULL)

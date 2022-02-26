@@ -93,6 +93,7 @@ PP("Allows for timing out users to prevent them from sending or reacting to"
      "channels")
 PP_DEFINE(DISCORD_PERM_MODERATE_MEMBERS 1 << 40)
 
+/** @CCORD_pub_struct{discord_role} */
 PUB_STRUCT(discord_role)
   PP("role id")
     FIELD_SNOWFLAKE(id)
@@ -124,6 +125,7 @@ PUB_STRUCT(discord_role)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_list{discord_roles} */
 PUB_LIST(discord_roles)
     LISTTYPE_STRUCT(discord_role)
 LIST_END

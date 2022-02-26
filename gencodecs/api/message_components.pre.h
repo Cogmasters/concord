@@ -32,6 +32,7 @@ ENUM(discord_component_styles)
     ENUMERATOR_LAST(DISCORD_TEXT_PARAGRAPH, = 2)
 ENUM_END
 
+/** @CCORD_pub_struct{discord_component} */
 PUB_STRUCT(discord_component)
   PP("component type")
   COND_WRITE(this->type != 0)
@@ -82,6 +83,7 @@ PUB_STRUCT(discord_component)
     FIELD_PTR(value, char, *)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_components} */
 PUB_LIST(discord_components)
     LISTTYPE_STRUCT(discord_component)
 LIST_END
@@ -102,6 +104,7 @@ STRUCT(discord_select_option)
                  CLEANUP_BLANK, JSON_ENCODER_bool, JSON_DECODER_bool, false)
 STRUCT_END
 
+/** @CCORD_pub_list{discord_select_options} */
 PUB_LIST(discord_select_options)
     LISTTYPE_STRUCT(discord_select_option)
 LIST_END

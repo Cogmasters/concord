@@ -2,6 +2,7 @@
  * Guild Template Datatypes
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_guild_template} */
 PUB_STRUCT(discord_guild_template)
   PP("the template code (unique ID)")
     FIELD_PTR(code, char, *)
@@ -31,6 +32,7 @@ STRUCT_END
  * Guild Template REST parameters
  * **************************************************************************/
 
+/** @CCORD_pub_struct{discord_create_guild_from_guild_template} */
 PUB_STRUCT(discord_create_guild_from_guild_template)
   PP("name of the guild (2-100 characters)")
     FIELD_PTR(name, char, *)
@@ -40,6 +42,7 @@ PUB_STRUCT(discord_create_guild_from_guild_template)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_create_guild_template} */
 PUB_STRUCT(discord_create_guild_template)
   PP("name of the template (1-100 characters)")
     FIELD_PTR(name, char, *)
@@ -49,6 +52,7 @@ PUB_STRUCT(discord_create_guild_template)
   COND_END
 STRUCT_END
 
+/** @CCORD_pub_struct{discord_modify_guild_template} */
 PUB_STRUCT(discord_modify_guild_template)
   PP("name of the template (1-100 characters)")
   COND_WRITE(this->name != NULL)
