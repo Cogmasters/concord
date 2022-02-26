@@ -118,75 +118,75 @@ ENUM(discord_gateway_events)
 ENUM_END
 
 ENUM(discord_activity_types)
-  PP("Format: \"Playing {name}\"")
+  /** Format: \"Playing {name}\" */
     ENUMERATOR(DISCORD_ACTIVITY_GAME, = 0)
-  PP("Format: \"Streaming {details}\"")
+  /** Format: \"Streaming {details}\" */
     ENUMERATOR(DISCORD_ACTIVITY_STREAMING, = 1)
-  PP("Format: \"Listening to {name}\"")
+  /** Format: \"Listening to {name}\" */
     ENUMERATOR(DISCORD_ACTIVITY_LISTENING, = 2)
-  PP("Format: \"Watching {name}\"")
+  /** Format: \"Watching {name}\" */
     ENUMERATOR(DISCORD_ACTIVITY_WATCHING, = 3)
-  PP("Format: \"{emoji} {name}\"")
+  /** Format: \"{emoji} {name}\" */
     ENUMERATOR(DISCORD_ACTIVITY_CUSTOM, = 4)
-  PP("Format: \"Competing in {name}\"")
+  /** Format: \"Competing in {name}\" */
     ENUMERATOR_LAST(DISCORD_ACTIVITY_COMPETING, = 5)
 ENUM_END
 
 /** @CCORD_pub_struct{discord_identify} */
 PUB_STRUCT(discord_identify)
-  PP("authentication token")
+  /** authentication token */
     FIELD_PTR(token, char, *)
-  PP("connection properties")
+  /** connection properties */
     FIELD_STRUCT_PTR(properties, discord_identify_connection, *)
-  PP("whether this connection supports compression packets")
+  /** whether this connection supports compression packets */
     FIELD(compress, bool, false)
-  PP("value between 50 and 250, total number of members where the gateway"
-       "will stop sending offline members in the guild member list")
+  /** value between 50 and 250, total number of members where the gateway
+       will stop sending offline members in the guild member list */
     FIELD(large_threshold, int, 50)
 #if 0
-  PP("array of two integers (shard_id, num_shards)")
+  /** array of two integers (shard_id, num_shards) */
     FIELD_STRUCT_PTR(shard, integers, *)
 #endif
-  PP("presence structure for initial presence information")
+  /** presence structure for initial presence information */
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
-  PP("the gateway intents you wish to receive")
+  /** the gateway intents you wish to receive */
     FIELD(intents, int, 0)
 STRUCT_END
 
 STRUCT(discord_identify_connection)
-  PP("your operating system")
+  /** your operating system */
     FIELD_CUSTOM(os, "$os", char, *, INIT_BLANK, CLEANUP_PTR,
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
-  PP("your library name")
+  /** your library name */
     FIELD_CUSTOM(browser, "$browser", char, *, INIT_BLANK, CLEANUP_PTR,
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
-  PP("your library name")
+  /** your library name */
     FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
                  JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_voice_state_status} */
 PUB_STRUCT(discord_voice_state_status)
-  PP("ID of the guild")
+  /** ID of the guild */
     FIELD_SNOWFLAKE(guild_id)
-  PP("ID of the voice channel client wants to join (null if disconnecting)")
+  /** ID of the voice channel client wants to join (null if disconnecting) */
     FIELD_SNOWFLAKE(channel_id)
-  PP("is the client muted")
+  /** is the client muted */
     FIELD(self_mute, bool, false)
-  PP("is the client deafened")
+  /** is the client deafened */
     FIELD(self_deaf, bool, false)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_presence_update} */
 PUB_STRUCT(discord_presence_update)
-  PP("unix time (in milliseconds) of when the client went idle, or null if"
-       "the client is not idle")
+  /** unix time (in milliseconds) of when the client went idle, or null if
+       the client is not idle */
     FIELD_TIMESTAMP(since)
-  PP("the user's activities")
+  /** the user's activities */
     FIELD_STRUCT_PTR(activities, discord_activities, *)
-  PP("the user's new status")
+  /** the user's new status */
     FIELD_PTR(status, char, *)
-  PP("whether or not the client is afk")
+  /** whether or not the client is afk */
     FIELD(afk, bool, false)
 STRUCT_END
 
@@ -195,58 +195,58 @@ LIST(discord_presence_updates)
 LIST_END
 
 STRUCT(discord_activity)
-  PP("the activity's name")
+  /** the activity's name */
   COND_WRITE(this->name != NULL)
     FIELD_PTR(name, char, *)
   COND_END
-  PP("activity type")
+  /** activity type */
     FIELD_ENUM(type, discord_activity_types)
-  PP("stream url, is validated when type is 1")
+  /** stream url, is validated when type is 1 */
   COND_WRITE(this->url != NULL)
     FIELD_PTR(url, char, *)
   COND_END
-  PP("unix timestamp (in milliseconds)of when the activity was added to the"
-       "user's session")
+  /** unix timestamp (in milliseconds)of when the activity was added to the
+       user's session */
   COND_WRITE(this->created_at != 0)
     FIELD_TIMESTAMP(created_at)
   COND_END
-  PP("unix timestamps for start and/or end of the game")
+  /** unix timestamps for start and/or end of the game */
   COND_WRITE(this->timestamps != NULL)
     FIELD_STRUCT_PTR(timestamps, discord_activity_timestamps, *)
   COND_END
-  PP("application ID for the game")
+  /** application ID for the game */
   COND_WRITE(this->application_id != 0)
     FIELD_SNOWFLAKE(application_id)
   COND_END
-  PP("what the player is currently doing")
+  /** what the player is currently doing */
   COND_WRITE(this->details != NULL)
     FIELD_PTR(details, char, *)
   COND_END
-  PP("the user's current party status")
+  /** the user's current party status */
   COND_WRITE(this->state != NULL)
     FIELD_PTR(state, char, *)
   COND_END
-  PP("the emoji used for a custom status")
+  /** the emoji used for a custom status */
   COND_WRITE(this->emoji != NULL)
     FIELD_STRUCT_PTR(emoji, discord_activity_emoji, *)
   COND_END
-  PP("information for the current party of the player")
+  /** information for the current party of the player */
   COND_WRITE(this->party != NULL)
     FIELD_STRUCT_PTR(party, discord_activity_party, *)
   COND_END
-  PP("images for the presence and their hover texts")
+  /** images for the presence and their hover texts */
   COND_WRITE(this->assets != NULL)
     FIELD_STRUCT_PTR(assets, discord_activity_assets, *)
   COND_END
-  PP("secrets for Rich Presence joining and spectating")
+  /** secrets for Rich Presence joining and spectating */
   COND_WRITE(this->secrets != NULL)
     FIELD_STRUCT_PTR(secrets, discord_activity_secrets, *)
   COND_END
-  PP("whether or not the activity is an instanced game session")
+  /** whether or not the activity is an instanced game session */
     FIELD(instance, bool, false)
-  PP("activity flags bitwise mask, describes what they payload includes")
+  /** activity flags bitwise mask, describes what they payload includes */
     FIELD_SNOWFLAKE(flags)
-  PP("the custom buttons shown in the Rich Presence (max 2)")
+  /** the custom buttons shown in the Rich Presence (max 2) */
   COND_WRITE(this->buttons != NULL)
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)
   COND_END
@@ -257,55 +257,55 @@ LIST(discord_activities)
 LIST_END
 
 STRUCT(discord_activity_timestamps)
-  PP("unix timestamp (in milliseconds)of when the activity started")
+  /** unix timestamp (in milliseconds)of when the activity started */
     FIELD_TIMESTAMP(start)
-  PP("unix timestamp (in milliseconds)of when the activity ends")
+  /** unix timestamp (in milliseconds)of when the activity ends */
     FIELD_TIMESTAMP(end)
 STRUCT_END
 
 STRUCT(discord_activity_emoji)
-  PP("the name of the emoji")
+  /** the name of the emoji */
     FIELD_PTR(name, char, *)
-  PP("the ID of the emoji")
+  /** the ID of the emoji */
   COND_WRITE(this->id != 0)
     FIELD_SNOWFLAKE(id)
   COND_END
-  PP("whether this emoji is animated")
+  /** whether this emoji is animated */
     FIELD(animated, bool, false)
 STRUCT_END
 
 STRUCT(discord_activity_party)
-  PP("the ID of the party")
+  /** the ID of the party */
     FIELD_PTR(id, char, *)
-  PP("used to show the party's current and maximum size @note array of two"
-       "integers (current_size, max_size)")
+  /** used to show the party's current and maximum size @note array of two
+       integers (current_size, max_size) */
     FIELD_STRUCT_PTR(size, integers, *)
 STRUCT_END
 
 STRUCT(discord_activity_assets)
-  PP("activity large asset image")
+  /** activity large asset image */
     FIELD_PTR(large_image, char, *)
-  PP("text displayed when hovering over the large image of the activity")
+  /** text displayed when hovering over the large image of the activity */
     FIELD_PTR(large_text, char, *)
-  PP("activity small asset image")
+  /** activity small asset image */
     FIELD_PTR(small_image, char, *)
-  PP("text displayed when hovering over the small image of the activity")
+  /** text displayed when hovering over the small image of the activity */
     FIELD_PTR(small_text, char, *)
 STRUCT_END
 
 STRUCT(discord_activity_secrets)
-  PP("the secret for joining a party")
+  /** the secret for joining a party */
     FIELD_PTR(join, char, *)
-  PP("the secret for spectating a game")
+  /** the secret for spectating a game */
     FIELD_PTR(spectate, char, *)
-  PP("the secret for a specific instanced match")
+  /** the secret for a specific instanced match */
     FIELD_PTR(match, char, *)
 STRUCT_END
 
 STRUCT(discord_activity_button)
-  PP("the text shown on the button (1-32 characters)")
+  /** the text shown on the button (1-32 characters) */
     FIELD_PTR(label, char, *)
-  PP("the url opened when clicking the button (1-512 characters)")
+  /** the url opened when clicking the button (1-512 characters) */
     FIELD_PTR(url, char, *)
 STRUCT_END
 
@@ -315,12 +315,12 @@ LIST_END
 
 /** @CCORD_pub_struct{discord_session_start_limit} */
 PUB_STRUCT(discord_session_start_limit)
-  PP("the total number of session starts the current user is allowed")
+  /** the total number of session starts the current user is allowed */
     FIELD(total, int, 0)
-  PP("the remaining number of session starts the current user is allowed")
+  /** the remaining number of session starts the current user is allowed */
     FIELD(remaining, int, 0)
-  PP("the number of milliseconds after which the limit resets")
+  /** the number of milliseconds after which the limit resets */
     FIELD(reset_after, int, 0)
-  PP("the number of identify requests allowed per 5 seconds")
+  /** the number of identify requests allowed per 5 seconds */
     FIELD(max_concurrency, int, 0)
 STRUCT_END

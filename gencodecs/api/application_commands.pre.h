@@ -3,14 +3,14 @@
  * **************************************************************************/
 
 ENUM(discord_application_command_types)
-  PP("Slash commands: a text-based command that shows up when a user" 
-       "types `/`")
+  /** Slash commands: a text-based command that shows up when a user 
+       types `/` */
     ENUMERATOR(DISCORD_APPLICATION_CHAT_INPUT, = 1)
-  PP("A UI-based command that shows up when a user"
-       "right clicks or taps on another user")
+  /** A UI-based command that shows up when a user
+       right clicks or taps on another user */
     ENUMERATOR(DISCORD_APPLICATION_USER, = 2)
-  PP("A UI-based command that shows up when a user"
-       "right clicks or tap on a message")
+  /** A UI-based command that shows up when a user
+       right clicks or tap on a message */
     ENUMERATOR_LAST(DISCORD_APPLICATION_MESSAGE, = 3)
 ENUM_END
 
@@ -18,18 +18,18 @@ ENUM(discord_application_command_option_types)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_SUB_COMMAND, = 1)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_SUB_COMMAND_GROUP, = 2)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_STRING, = 3)
-  PP("Any integer between `-2^53` and `2^53`")
+  /** Any integer between `-2^53` and `2^53` */
     ENUMERATOR(DISCORD_APPLICATION_OPTION_INTEGER, = 4)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_BOOLEAN, = 5)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_USER, = 6)
-  PP("Includes all channel types + categories")
+  /** Includes all channel types + categories */
     ENUMERATOR(DISCORD_APPLICATION_OPTION_CHANNEL, = 7)
     ENUMERATOR(DISCORD_APPLICATION_OPTION_ROLE, = 8)
-  PP("Includes users and roles")
+  /** Includes users and roles */
     ENUMERATOR(DISCORD_APPLICATION_OPTION_MENTIONABLE, = 9)
-  PP("Any double between `-2^53` and `2^53`")
+  /** Any double between `-2^53` and `2^53` */
     ENUMERATOR(DISCORD_APPLICATION_OPTION_NUMBER, = 10)
-  PP("@ref discord_attachment object")
+  /** @ref discord_attachment object */
     ENUMERATOR_LAST(DISCORD_APPLICATION_OPTION_ATTACHMENT, = 11)
 ENUM_END
 
@@ -39,34 +39,34 @@ ENUM(discord_application_command_permission_types)
 ENUM_END
 
 PUB_STRUCT(discord_application_command)
-  PP("unique ID of the command")
+  /** unique ID of the command */
     FIELD_SNOWFLAKE(id)
-  PP("one of application command types")
+  /** one of application command types */
   COND_WRITE(this->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
-  PP("unique ID of the parent application")
+  /** unique ID of the parent application */
     FIELD_SNOWFLAKE(application_id)
   COND_WRITE(this->guild_id != 0)
-  PP("guild ID of the command, if not global")
+  /** guild ID of the command, if not global */
     FIELD_SNOWFLAKE(guild_id)
   COND_END
-  PP("1-32 character name")
+  /** 1-32 character name */
     FIELD_PTR(name, char, *)
-  PP("1-100 character description for `CHAT_INPUT` commands, empty string"
-       "for `USER` and `MESSAGE` commands")
+  /** 1-100 character description for `CHAT_INPUT` commands, empty string
+       for `USER` and `MESSAGE` commands */
     FIELD_PTR(description, char, *)
-  PP("the parameters for the command, max 25")
+  /** the parameters for the command, max 25 */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  PP("whether the command is enabled by default when the app is added to a"
-       "guild")
+  /** whether the command is enabled by default when the app is added to a
+       guild */
   COND_WRITE(this->default_permission != true)
     FIELD(default_permission, bool, true)
   COND_END
-  PP("autoincrementing version identifier updated during substantial"
-       "record changes")
+  /** autoincrementing version identifier updated during substantial
+       record changes */
     FIELD_SNOWFLAKE(version)
 STRUCT_END
 
@@ -75,39 +75,39 @@ PUB_LIST(discord_application_commands)
 LIST_END
 
 STRUCT(discord_application_command_option)
-  PP("value of application command option type")
+  /** value of application command option type */
     FIELD_ENUM(type, discord_application_command_option_types)
-  PP("1-32 character name")
+  /** 1-32 character name */
     FIELD_PTR(name, char, *)
-  PP("1-100 character description")
+  /** 1-100 character description */
     FIELD_PTR(description, char, *)
-  PP("if the parameter is required or optional -- default `false`")
+  /** if the parameter is required or optional -- default `false` */
   COND_WRITE(this->required != false)
     FIELD(required, bool, false)
   COND_END
-  PP("choices for string and int types for the user to pick from")
+  /** choices for string and int types for the user to pick from */
   COND_WRITE(this->choices != NULL)
     FIELD_STRUCT_PTR(choices, discord_application_command_option_choices, *)
   COND_END
-  PP("if the option is a subcommand or subcommand group type, this nested"
-       "options will be the parameters")
+  /** if the option is a subcommand or subcommand group type, this nested
+       options will be the parameters */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  PP("if the option is a channel type, the channels shown will be restricted"
-       "to these types")
+  /** if the option is a channel type, the channels shown will be restricted
+       to these types */
   COND_WRITE(this->channel_types != NULL)
     FIELD_STRUCT_PTR(channel_types, integers, *)
   COND_END
-  PP("if the option is an INTEGER or NUMBER type, the minimum value permitted")
+  /** if the option is an INTEGER or NUMBER type, the minimum value permitted */
   COND_WRITE(this->min_value != NULL)
     FIELD_PTR(min_value, char, *)
   COND_END
-  PP("if the option is an INTEGER or NUMBER type, the maximum value permitted")
+  /** if the option is an INTEGER or NUMBER type, the maximum value permitted */
   COND_WRITE(this->max_value != NULL)
     FIELD_PTR(max_value, char, *)
   COND_END
-  PP("enable autocomplete interactions for this option")
+  /** enable autocomplete interactions for this option */
   COND_WRITE(this->choices == NULL)
     FIELD(autocomplete, bool, false)
   COND_END
@@ -118,10 +118,10 @@ LIST(discord_application_command_options)
 LIST_END
 
 STRUCT(discord_application_command_option_choice)
-  PP("1-100 character choice name")
+  /** 1-100 character choice name */
     FIELD_PTR(name, char, *)
-  PP("value of the choice, up to 100 characters if string @note in case of a"
-       "string the value must be enclosed with escaped commas, ex: `\"hi\"`")
+  /** value of the choice, up to 100 characters if string @note in case of a
+       string the value must be enclosed with escaped commas, ex: `\"hi\"` */
     FIELD_PTR(value, json_char, *)
 STRUCT_END
 
@@ -130,20 +130,20 @@ LIST(discord_application_command_option_choices)
 LIST_END
 
 STRUCT(discord_application_command_interaction_data_option)
-  PP("the name of the parameter")
+  /** the name of the parameter */
     FIELD_PTR(name, char, *)
-  PP("value of the application command option type")
+  /** value of the application command option type */
     FIELD_ENUM(type, discord_application_command_option_types)
-  PP("the value of the option resulting from user input @note in case of a"
-       "string the value must be enclosed with escaped commands, ex: `\"hi\"`")
+  /** the value of the option resulting from user input @note in case of a
+       string the value must be enclosed with escaped commands, ex: `\"hi\"` */
   COND_WRITE(this->value != NULL && *this->value != '\0')
     FIELD_PTR(value, json_char, *)
   COND_END
-  PP("present if this option is a group or subcommand")
+  /** present if this option is a group or subcommand */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_interaction_data_options, *)
   COND_END
-  PP("true if this option is the currently focused option for autocomplete")
+  /** true if this option is the currently focused option for autocomplete */
     FIELD(focused, bool, false)
 STRUCT_END
 
@@ -152,13 +152,13 @@ LIST(discord_application_command_interaction_data_options)
 LIST_END
 
 STRUCT(discord_guild_application_command_permission)
-  PP("the ID of the command")
+  /** the ID of the command */
     FIELD_SNOWFLAKE(id)
-  PP("the ID of the application the command belongs to")
+  /** the ID of the application the command belongs to */
     FIELD_SNOWFLAKE(application_id)
-  PP("the ID of the guild")
+  /** the ID of the guild */
     FIELD_SNOWFLAKE(guild_id)
-  PP("the permissions for the command in the guild")
+  /** the permissions for the command in the guild */
     FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
 STRUCT_END
 
@@ -167,11 +167,11 @@ PUB_LIST(discord_guild_application_command_permissions)
 LIST_END
 
 PUB_STRUCT(discord_application_command_permission)
-  PP("the ID of the role or user")
+  /** the ID of the role or user */
     FIELD_SNOWFLAKE(id)
-  PP("role or user")
+  /** role or user */
     FIELD_ENUM(type, discord_application_command_permission_types)
-  PP("`true` to allow, `false` to disallow")
+  /** `true` to allow, `false` to disallow */
     FIELD(permission, bool, false)
 STRUCT_END
 
@@ -184,71 +184,71 @@ LIST_END
  * **************************************************************************/
 
 PUB_STRUCT(discord_create_global_application_command)
-  PP("1-32 lowercase character name")
+  /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
-  PP("1-100 character description")
+  /** 1-100 character description */
     FIELD_PTR(description, char, *)
-  PP("the parameters for the command")
+  /** the parameters for the command */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  PP("whether the command is enabled by default when the app is added to a"
-       "guild")
+  /** whether the command is enabled by default when the app is added to a
+       guild */
     FIELD(default_permission, bool, true)
-  PP("the type of command, default `1` if not set")
+  /** the type of command, default `1` if not set */
   COND_WRITE(this->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_edit_global_application_command)
-  PP("1-32 lowercase character name")
+  /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
-  PP("1-100 character description")
+  /** 1-100 character description */
     FIELD_PTR(description, char, *)
-  PP("the parameters for the command")
+  /** the parameters for the command */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  PP("whether the command is enabled by default when the app is added to a"
-       "guild")
+  /** whether the command is enabled by default when the app is added to a
+       guild */
     FIELD(default_permission, bool, true)
 STRUCT_END
 
 PUB_STRUCT(discord_create_guild_application_command)
-  PP("1-32 lowercase character name")
+  /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
-  PP("1-100 character description")
+  /** 1-100 character description */
     FIELD_PTR(description, char, *)
-  PP("the parameters for the command")
+  /** the parameters for the command */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  PP("whether the command is enabled by default when the app is added to a"
-       "guild")
+  /** whether the command is enabled by default when the app is added to a
+       guild */
     FIELD(default_permission, bool, true)
-  PP("the type of command, default `1` if not set")
+  /** the type of command, default `1` if not set */
   COND_WRITE(this->type != 0)
     FIELD_ENUM(type, discord_application_command_types)
   COND_END
 STRUCT_END
 
 PUB_STRUCT(discord_edit_guild_application_command)
-  PP("1-32 lowercase character name")
+  /** 1-32 lowercase character name */
     FIELD_PTR(name, char, *)
-  PP("1-100 character description")
+  /** 1-100 character description */
     FIELD_PTR(description, char, *)
-  PP("the parameters for the command")
+  /** the parameters for the command */
   COND_WRITE(this->options != NULL)
     FIELD_STRUCT_PTR(options, discord_application_command_options, *)
   COND_END
-  PP("whether the command is enabled by default when the app is added to a"
-       "guild")
+  /** whether the command is enabled by default when the app is added to a
+       guild */
     FIELD(default_permission, bool, true)
 STRUCT_END
 
 PUB_STRUCT(discord_edit_application_command_permissions)
-  PP("the permissions for the command in the guild")
+  /** the permissions for the command in the guild */
   COND_WRITE(this->permissions != NULL)
     FIELD_STRUCT_PTR(permissions, discord_application_command_permissions, *)
   COND_END

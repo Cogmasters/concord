@@ -11,150 +11,150 @@ ENUM(discord_interaction_types)
 ENUM_END
 
 ENUM(discord_interaction_callback_types)
-  PP("ACK a @ref DISCORD_INTERACTION_PING")
+  /** ACK a @ref DISCORD_INTERACTION_PING */
     ENUMERATOR(DISCORD_INTERACTION_PONG, = 1)
-  PP("respond to an interaction with a message")
+  /** respond to an interaction with a message */
     ENUMERATOR(DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE, = 4)
-  PP("ACK an interaction and edit a response later, the user sees a loading"
-       "state")
+  /** ACK an interaction and edit a response later, the user sees a loading
+       state */
     ENUMERATOR(DISCORD_INTERACTION_DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE, = 5)
-  PP("for components, ACK an interaction and edit the original message later"
-       "the user does not see a loading state")
+  /** for components, ACK an interaction and edit the original message later
+       the user does not see a loading state */
     ENUMERATOR(DISCORD_INTERACTION_DEFERRED_UPDATE_MESSAGE, = 6)
-  PP("for components, edit the message the component was attached to")
+  /** for components, edit the message the component was attached to */
     ENUMERATOR(DISCORD_INTERACTION_UPDATE_MESSAGE, = 7)
-  PP("respond to an autocomplete interaction with suggested choices")
+  /** respond to an autocomplete interaction with suggested choices */
     ENUMERATOR(DISCORD_INTERACTION_APPLICATION_COMMAND_AUTOCOMPLETE_RESULT, = 8)
-  PP("respond to an interaction with a popup modal")
+  /** respond to an interaction with a popup modal */
     ENUMERATOR_LAST(DISCORD_INTERACTION_MODAL, = 9)
 ENUM_END
 
 /** @CCORD_pub_struct{discord_interaction} */
 PUB_STRUCT(discord_interaction)
-  PP("ID of the interaction")
+  /** ID of the interaction */
     FIELD_SNOWFLAKE(id)
-  PP("ID of the application this interaction is for")
+  /** ID of the application this interaction is for */
     FIELD_SNOWFLAKE(application_id)
-  PP("the type of the interaction")
+  /** the type of the interaction */
     FIELD_ENUM(type, discord_interaction_types)
-  PP("the command data payload")
+  /** the command data payload */
     FIELD_STRUCT_PTR(data, discord_interaction_data, *)
-  PP("the guild it was sent from")
+  /** the guild it was sent from */
     FIELD_SNOWFLAKE(guild_id)
-  PP("the channel it was sent from")
+  /** the channel it was sent from */
     FIELD_SNOWFLAKE(channel_id)
-  PP("guild member data for the invoking user, including permissions")
+  /** guild member data for the invoking user, including permissions */
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
-  PP("user object for the invoking user, if invoked in a DM")
+  /** user object for the invoking user, if invoked in a DM */
     FIELD_STRUCT_PTR(user, discord_user, *)
-  PP("a continuation token for responding to the interaction")
+  /** a continuation token for responding to the interaction */
     FIELD_PTR(token, char, *)
-  PP("read-only property, always `1`")
+  /** read-only property, always `1` */
     FIELD(version, int, 1)
-  PP("for components, the message they were attached to")
+  /** for components, the message they were attached to */
     FIELD_STRUCT_PTR(message, discord_message, *)
-  PP("the selected language of the invoking user")
+  /** the selected language of the invoking user */
     FIELD_PTR(locale, char, *)
-  PP("the guild preferred locale, if invoked in a guild")
+  /** the guild preferred locale, if invoked in a guild */
     FIELD_PTR(guild_locale, char, *)
 STRUCT_END
 
 STRUCT(discord_interaction_data)
-  PP("the ID of the invoked command")
+  /** the ID of the invoked command */
     FIELD_SNOWFLAKE(id)
-  PP("the name of the invoked command")
+  /** the name of the invoked command */
     FIELD_PTR(name, char, *)
-  PP("the type of the invoked command")
+  /** the type of the invoked command */
     FIELD_ENUM(type, discord_application_command_types)
-  PP("converted users + roles + channels + attachments")
+  /** converted users + roles + channels + attachments */
     FIELD_STRUCT_PTR(resolved, discord_resolved_data, *)
-  PP("the params + values from the user")
+  /** the params + values from the user */
     FIELD_STRUCT_PTR(options, discord_application_command_interaction_data_options, *)
-  PP("the custom_id of the component")
+  /** the custom_id of the component */
     FIELD_PTR(custom_id, char, *)
-  PP("the type of the component")
+  /** the type of the component */
     FIELD_ENUM(component_type, discord_component_types)
-  PP("the values the user selected")
+  /** the values the user selected */
     FIELD_STRUCT_PTR(values, strings, *)
-  PP("the ID of the user or messaged targetted by a user or message command")
+  /** the ID of the user or messaged targetted by a user or message command */
     FIELD_SNOWFLAKE(target_id)
-  PP("the values submitted by the user")
+  /** the values submitted by the user */
     FIELD_STRUCT_PTR(components, discord_components, *)
 STRUCT_END
 
 STRUCT(discord_resolved_data)
-  PP("the IDs and @ref discord_user datatypes")
+  /** the IDs and @ref discord_user datatypes */
     FIELD_STRUCT_PTR(users, snowflakes, *)
-  PP("the IDs and partial @ref discord_guild_member datatypes")
+  /** the IDs and partial @ref discord_guild_member datatypes */
     FIELD_STRUCT_PTR(members, snowflakes, *)
-  PP("the IDs and @ref discord_role datatypes")
+  /** the IDs and @ref discord_role datatypes */
     FIELD_STRUCT_PTR(roles, snowflakes, *)
-  PP("the IDs and partial @ref discord_channel datatypes")
+  /** the IDs and partial @ref discord_channel datatypes */
     FIELD_STRUCT_PTR(channels, snowflakes, *)
-  PP("the IDs and partial @ref discord_message datatypes")
+  /** the IDs and partial @ref discord_message datatypes */
     FIELD_STRUCT_PTR(messages, snowflakes, *)
-  PP("the IDs and partial @ref discord_attachment datatypes")
+  /** the IDs and partial @ref discord_attachment datatypes */
     FIELD_STRUCT_PTR(attachments, snowflakes, *)
 STRUCT_END
 
 STRUCT(discord_message_interaction)
-  PP("ID of the interaction")
+  /** ID of the interaction */
     FIELD_SNOWFLAKE(id)
-  PP("the type of interaction")
+  /** the type of interaction */
     FIELD_ENUM(type, discord_interaction_types)
-  PP("the name of the application command")
+  /** the name of the application command */
     FIELD_PTR(name, char, *)
-  PP("the user who invoked the interaction")
+  /** the user who invoked the interaction */
     FIELD_STRUCT_PTR(user, discord_user, *)
-  PP("the member who invoked the interaction in the guild")
+  /** the member who invoked the interaction in the guild */
     FIELD_STRUCT_PTR(member, discord_guild_member, *)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_interaction_response} */
 PUB_STRUCT(discord_interaction_response)
-  PP("interaction callback type")
+  /** interaction callback type */
     FIELD_ENUM(type, discord_interaction_callback_types)
-  PP("an optional response message")
+  /** an optional response message */
   COND_WRITE(this->data != NULL)
     FIELD_STRUCT_PTR(data, discord_interaction_callback_data, *)
   COND_END
 STRUCT_END
 
 STRUCT(discord_interaction_callback_data)
-  PP("message components")
+  /** message components */
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
   /* MESSAGES */
-  PP("is the response TTS")
+  /** is the response TTS */
   COND_WRITE(this->tts != false)
     FIELD(tts, bool, false)
   COND_END
-  PP("message content")
+  /** message content */
   COND_WRITE(this->content != NULL)
     FIELD_PTR(content, char, *)
   COND_END
-  PP("supports up to 10 embeds")
+  /** supports up to 10 embeds */
   COND_WRITE(this->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
-  PP("message flags combined as a bitfield (only"
-       "@ref DISCORD_MESSAGE_SUPRESS_EMBEDS and @ref DISCORD_MESSAGE_EPHEMERAL"
-       "can be set)")
+  /** message flags combined as a bitfield (only
+       @ref DISCORD_MESSAGE_SUPRESS_EMBEDS and @ref DISCORD_MESSAGE_EPHEMERAL
+       can be set) */
   COND_WRITE(this->flags != 0)
     FIELD_ENUM(flags, discord_message_flags)
   COND_END
-  PP("attachment objects with filename and description")
+  /** attachment objects with filename and description */
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
   /* AUTOCOMPLETE */
-  PP("autocomplete choices (max of 25 choices)")
+  /** autocomplete choices (max of 25 choices) */
     FIELD_STRUCT_PTR(choices, discord_application_command_option_choices, *)
   /* MODAL */
-  PP("a developer defined identifier for the component, max 100 characters")
+  /** a developer defined identifier for the component, max 100 characters */
     FIELD_PTR(custom_id, char, *)
-  PP("the title of the popup modal")
+  /** the title of the popup modal */
     FIELD_PTR(title, char, *)
 STRUCT_END
 
@@ -166,24 +166,24 @@ STRUCT_END
 PUB_STRUCT(discord_edit_original_interaction_response)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
-  PP("id of the thread the message is in")
+  /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
   /* JSON FIELDS */
-  PP("the message contents (up to 2000 characters)")
+  /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
-  PP("embedded `rich` content")
+  /** embedded `rich` content */
   COND_WRITE(this->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
-  PP("allowed mentions for the message")
+  /** allowed mentions for the message */
   COND_WRITE(this->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
-  PP("the components to include with the message")
+  /** the components to include with the message */
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
-  PP("attached files to keep and possible descriptions for new files")
+  /** attached files to keep and possible descriptions for new files */
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
@@ -193,37 +193,37 @@ STRUCT_END
 PUB_STRUCT(discord_create_followup_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
-  PP("waits for server confirmation of message send before response, and"
-       "returns the created message body (defaults to `false`; when `false` a"
-       "message that is not saved does not return an error)")
+  /** waits for server confirmation of message send before response, and
+       returns the created message body (defaults to `false`; when `false` a
+       message that is not saved does not return an error) */
     FIELD(wait, bool, true)
   /* TODO: ignored by JSON encoding, is a query parameter */
-  PP("send a message to the specified thread within a webhook's channel; the"
-       "thread will automatically be unarchived")
+  /** send a message to the specified thread within a webhook's channel; the
+       thread will automatically be unarchived */
     FIELD_SNOWFLAKE(thread_id)
   /* JSON FIELDS */
-  PP("override the default avatar of the webhook")
+  /** override the default avatar of the webhook */
     FIELD_PTR(avatar_url, char, *)
-  PP("true if this is a TTS message")
+  /** true if this is a TTS message */
     FIELD(tts, bool, false)
-  PP("embedded `rich` content")
+  /** embedded `rich` content */
   COND_WRITE(this->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
-  PP("allowed mentions for the message")
+  /** allowed mentions for the message */
   COND_WRITE(this->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
-  PP("the components to include with the message")
+  /** the components to include with the message */
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
-  PP("attachment objects with filename and description")
+  /** attachment objects with filename and description */
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  PP("message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be"
-       "set)")
+  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
+       set) */
   COND_WRITE(this->flags != 0)
     FIELD_SNOWFLAKE(flags)
   COND_END
@@ -233,24 +233,24 @@ STRUCT_END
 PUB_STRUCT(discord_edit_followup_message)
   /* QUERY FIELDS */
   /* TODO: ignored by JSON encoding, is a query parameter */
-  PP("id of the thread the message is in")
+  /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
   /* JSON FIELDS */
-  PP("the message contents (up to 2000 characters)")
+  /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
-  PP("embedded `rich` content")
+  /** embedded `rich` content */
   COND_WRITE(this->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
-  PP("allowed mentions for the message")
+  /** allowed mentions for the message */
   COND_WRITE(this->allowed_mentions != NULL)
     FIELD_STRUCT_PTR(allowed_mentions, discord_allowed_mention, *)
   COND_END
-  PP("the components to include with the message")
+  /** the components to include with the message */
   COND_WRITE(this->components != NULL)
     FIELD_STRUCT_PTR(components, discord_components, *)
   COND_END
-  PP("attached files to keep and possible descriptions for new files")
+  /** attached files to keep and possible descriptions for new files */
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
