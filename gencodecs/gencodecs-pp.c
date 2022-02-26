@@ -67,11 +67,18 @@ main(void)
         while (*p) {
             switch (*p) {
             case '"':
-                if (state & STRING)
+                if (state & STRING) {
+                    if (state & DESC) 
+                        fputc('\n', stdout);
+                    else
+                        fputc(*p, stdout);
                     state &= ~STRING;
-                else
+                }
+                else {
+                    if (!(state & DESC)) 
+                        fputc(*p, stdout);
                     state |= STRING;
-                if (!(state & DESC)) fputc(*p, stdout);
+                }
                 ++p;
                 break;
             case '(':
