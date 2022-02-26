@@ -13,23 +13,33 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Dependencies
+      - name: Install Doxygen-1.9.3
+          echo "Install wget"
+          sudo apt install wget
+          echo "Fetching binary distribution"
+          wget https://www.doxygen.nl/files/doxygen-1.9.3.linux.bin.tar.gz
+          echo "Extract files from tar file"
+          tar -xvf doxygen-1.9.3.linux.bin.tar.gz
+
+      - name: Install Jinja2
+        run: pip install -U jinja2
+
+      - name: Install Sphinx
+        run: |
+          pip install sphinx
+          pip install pydata_sphinx_theme
+
+      - name: Install Breathe
+        run: pip install breathe
+
+      - name: Doxygen Action
         run: |
           echo "Preparing files for documentation"
           make docs
-          echo "Install Jinja2"
-          pip install -U jinja2
-          echo "Install Sphinx"
-          pip install sphinx
-          pip install pydata_sphinx_theme
-          echo "Install Breathe"
-          pip install breathe
-
-      - name: Doxygen Action
-        uses: mattnotmitt/doxygen-action@v1.3.1
-
-      - name: Move XML to Concord-Docs
-        run: sudo mv docs/xml concord-docs/docs
+          mv doxygen-1.9.3/bin/doxygen .
+          echo "Generating XML output"
+          ./doxygen
+          sudo mv docs/xml concord-docs/docs
 
       - name: Breathe Action
         run: make -C concord-docs/docs html
