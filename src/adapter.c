@@ -8,8 +8,7 @@
 #include "discord.h"
 #include "discord-internal.h"
 
-/* No-lock alternative to discord_timestamp() */
-#define NOW(p_adapter) (CLIENT(p_adapter, adapter)->gw.timer->now)
+#define NOW(p_adapter) discord_timestamp(CLIENT(p_adapter, adapter))
 
 static void
 setopt_cb(struct ua_conn *conn, void *p_token)
@@ -369,7 +368,9 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
         /* perform blocking request, and check results */
         switch (code = ua_conn_easy_perform(conn)) {
         case CCORD_OK: {
+#if 0
             struct discord *client = CLIENT(adapter, adapter);
+#endif
             struct ua_info info = { 0 };
             struct sized_buffer body;
 
@@ -395,7 +396,10 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
              *        timestamp used for ratelimiting
              * TODO: redundant for REST-only clients
              * TODO: create discord_timestamp_update() */
+
+#if 0
             ws_timestamp_update(client->gw.ws);
+#endif
 
             discord_bucket_build(adapter, b, route, &info);
 
