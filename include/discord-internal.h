@@ -583,7 +583,8 @@ CCORDcode discord_gateway_start(struct discord_gateway *gw);
  * @brief Cleanup and reset `gw` session primitives
  *
  * @param ws the WebSockets handle created with ws_init()
- * @return `true` if session can be retried, `false` otherwise
+ * @return `true` if session is over, `false` if session can be retried for
+ *      reconnection
  */
 bool discord_gateway_end(struct discord_gateway *gw);
 
