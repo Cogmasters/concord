@@ -1510,6 +1510,16 @@ discord_gateway_init(struct discord *client,
     gw->id.properties->browser = "concord";
     gw->id.properties->device = "concord";
 
+    /* add shard to gw identification if needed */
+    if (client->shards.total > 1) {
+        gw->id.shard = calloc(1, sizeof *gw->id.shard);
+        gw->id.shard->realsize = gw->id.shard->size = 2;
+        gw->id.shard->array =
+            calloc(gw->id.shard->size, sizeof *gw->id.shard->array);
+        gw->id.shard->array[0] = shard->shard;
+        gw->id.shard->array[1] = client->shards.total;
+    }
+
     /* the bot initial presence */
     gw->id.presence = calloc(1, sizeof *gw->id.presence);
     presence.status = "online";
@@ -1556,6 +1566,9 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     /* cleanup bot identification */
     if (gw->id.token) free(gw->id.token);
     free(gw->id.properties);
+    /* cleanup shard identification */
+    if (gw->id.shard) free(gw->id.shard->array);
+    free(gw->id.shard);
     free(gw->id.presence);
     /* cleanup client session */
     free(gw->session);

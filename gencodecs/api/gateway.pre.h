@@ -143,10 +143,10 @@ PUB_STRUCT(discord_identify)
   /** value between 50 and 250, total number of members where the gateway
        will stop sending offline members in the guild member list */
     FIELD(large_threshold, int, 50)
-#if 0
-  /** array of two integers (shard_id, num_shards) */
-    FIELD_STRUCT_PTR(shard, integers, *)
-#endif
+  COND_WRITE(this->shard)
+    /** array of two integers (shard_id, num_shards) */
+      FIELD_STRUCT_PTR(shard, integers, *)
+  COND_END
   /** presence structure for initial presence information */
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
   /** the gateway intents you wish to receive */
