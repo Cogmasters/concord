@@ -975,6 +975,7 @@ on_ready(struct discord_gateway *gw, struct sized_buffer *data)
     }
 }
 
+#if 0
 static void
 dispatch_run(void *p_cxt)
 {
@@ -997,6 +998,7 @@ dispatch_run(void *p_cxt)
     discord_cleanup(client);
     free(cxt);
 }
+#endif
 
 static void
 on_dispatch(struct discord_gateway *gw)
@@ -1240,6 +1242,7 @@ on_dispatch(struct discord_gateway *gw)
     case DISCORD_EVENT_MAIN_THREAD:
         on_event(gw, &gw->payload.data);
         break;
+#if 0
     case DISCORD_EVENT_WORKER_THREAD: {
         struct discord_event *cxt = malloc(sizeof *cxt);
         int ret;
@@ -1256,6 +1259,7 @@ on_dispatch(struct discord_gateway *gw)
         ret = work_run(&dispatch_run, cxt);
         VASSERT_S(0 == ret, "Couldn't create task (code %d)", ret);
     } break;
+#endif
     default:
         ERR("Unknown event handling mode (code: %d)", mode);
     }

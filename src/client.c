@@ -80,6 +80,7 @@ discord_config_init(const char config_file[])
     return new_client;
 }
 
+#if 0
 struct discord *
 discord_clone(const struct discord *orig_client)
 {
@@ -90,6 +91,7 @@ discord_clone(const struct discord *orig_client)
 
     return clone_client;
 }
+#endif
 
 void
 discord_cleanup(struct discord *client)

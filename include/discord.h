@@ -214,6 +214,7 @@ struct discord *discord_init(const char token[]);
  */
 struct discord *discord_config_init(const char config_file[]);
 
+#if 0
 /**
  * @brief Clone a discord client
  *
@@ -222,8 +223,8 @@ struct discord *discord_config_init(const char config_file[]);
  * @param orig_client the original client created with discord_init()
  * @return the original client clone
  */
-
 struct discord *discord_clone(const struct discord *orig_client);
+#endif
 
 /**
  * @brief Free a Discord Client handle
@@ -2405,8 +2406,10 @@ typedef enum discord_event_scheduler {
     DISCORD_EVENT_IGNORE,
     /** handle this event in main thread */
     DISCORD_EVENT_MAIN_THREAD,
+#if 0
     /** handle this event in a worker thread */
     DISCORD_EVENT_WORKER_THREAD
+#endif
 } discord_event_scheduler_t;
 
 /**
