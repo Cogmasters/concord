@@ -1,5 +1,6 @@
 /**
  * @file discord-internal.h
+ * @ingroup DiscordInternal
  * @author Cogmasters
  * @brief Internal functions and datatypes
  */
@@ -29,10 +30,44 @@
 #include "heap-inl.h"
 #include "banned.h"
 
-/** @brief Get client from its nested field */
-#define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
+/**
+ * @brief Get container `type` from a field `ptr`
+ *
+ * @param ptr the field contained in `type`
+ * @param type the container datatype
+ * @param path the path to the field from the container POV
+ */
+#define CONTAINEROF(ptr, type, path)                                          \
+    ((type *)((char *)(ptr)-offsetof(type, path)))
+
+/** @defgroup DiscordInternal Internal implementation details
+ *   @brief Documentation useful when developing or debugging Concord itself
+ *  @{ */
+
+/** @brief Get client from its nested field */
+#define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
+
+/**
+ * @brief log and return `code` if `expect` condition is false
+ *
+ * @param expect the expected outcome
+ * @param client the discord client
+ * @param error return CCORDcode error
+ * @param reason for return
+ */
+#define CCORD_EXPECT(client, expect, code, reason)                            \
+    do {                                                                      \
+        if (!(expect)) {                                                      \
+            logconf_error(&(client)->conf, "Expected: " #expect ": " reason); \
+            return code;                                                      \
+        }                                                                     \
+    } while (0)
+
+/** @defgroup DiscordInternalAdapter REST API
+ *   @brief Wrapper to the Discord REST API
+ *  @{ */
 
 /** @brief Request's return context */
 struct discord_ret_generic {
@@ -77,7 +112,9 @@ struct discord_request {
     struct discord_attachments attachments;
 };
 
+/** URL endpoint threshold length */
 #define DISCORD_ENDPT_LEN 2048
+/** Bucket's route threshold length */
 #define DISCORD_ROUTE_LEN 256
 
 /**
@@ -91,9 +128,11 @@ struct discord_context {
     /** the request's bucket */
     struct discord_bucket *bucket;
 
-    /** the request's body @note buffer is kept and recycled */
+    /** request body handle @note buffer is kept and recycled */
     struct {
+        /** the request body contents */
         struct sized_buffer buf;
+        /** the real size occupied in memory by `buf.start` */
         size_t memsize;
     } body;
 
@@ -258,6 +297,10 @@ void discord_refcount_incr(struct discord_adapter *adapter,
  */
 void discord_refcount_decr(struct discord_adapter *adapter, void *data);
 
+/** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
+ *   @brief Enforce ratelimiting per the official Discord Documentation
+ *  @{ */
+
 /** @brief The bucket struct for handling ratelimiting */
 struct discord_bucket {
     /** the hash associated with this bucket */
@@ -354,6 +397,14 @@ void discord_bucket_build(struct discord_adapter *adapter,
                           struct discord_bucket *bucket,
                           const char route[DISCORD_ROUTE_LEN],
                           struct ua_info *info);
+
+/** @} DIscordInternalAdapterRatelimit */
+
+/** @} DiscordInternalAdapter */
+
+/** @defgroup DiscordInternalGateway WebSockets API
+ *   @brief Wrapper to the Discord Gateway API
+ *  @{ */
 
 struct discord_gateway_cmd_cbs {
     char *start;
@@ -621,6 +672,8 @@ void discord_gateway_reconnect(struct discord_gateway *gw, bool resume);
  */
 void discord_gateway_send_presence_update(struct discord_gateway *gw);
 
+/** @} DiscordInternalGateway */
+
 /**
  * @brief The Discord client handler
  *
@@ -628,10 +681,10 @@ void discord_gateway_send_presence_update(struct discord_gateway *gw);
  * @see discord_init(), discord_config_init(), discord_cleanup()
  */
 struct discord {
-    /** @privatesection */
     /** DISCORD logging module */
     struct logconf conf;
-    /** whether this is the original client or a clone */
+    /** whether this is the original client or a clone @deprecated unnecessary
+     *      once discord_clone() is removed*/
     bool is_original;
     /** the bot token */
     struct sized_buffer token;
@@ -643,8 +696,11 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+    /** wakeup timer handle */
     struct {
+        /** callback to be triggered on timer's timeout */
         discord_ev_idle cb;
+        /** when `cb` should be called in milliseconds */
         int64_t next;
     } wakeup_timer;
 
@@ -661,5 +717,7 @@ struct discord {
     struct discord_voice_cbs voice_cbs;
 #endif /* HAS_DISCORD_VOICE */
 };
+
+/** @} DiscordInternal */
 
 #endif /* DISCORD_INTERNAL_H */
