@@ -19,7 +19,7 @@
 #define DISCORD_API_BASE_URL       "https://discord.com/api/v9"
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
 
-/* forward declarations */
+/* forward declaration */
 struct discord;
 /**/
 
@@ -128,15 +128,6 @@ struct discord *discord_clone(const struct discord *orig_client);
  */
 
 void discord_cleanup(struct discord *client);
-
-/*
- * @brief return an error from concord
- * @note used to log an error and to return an error
- *
- * @return an error code for your error
- */
-
-int concord_return_error(const char *error, int32_t error_code);
 
 /**
  * @brief Get the client's cached user

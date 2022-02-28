@@ -124,6 +124,16 @@ CCORDcode ccord_global_init();
 /** @brief Cleanup global shared-resources */
 void ccord_global_cleanup();
 
+/**
+ * @brief return a Concord's error
+ * @note used to log and return an error
+ *
+ * @param error the error string to be logged
+ * @param code the error code
+ * @return the error code
+ */
+CCORDcode ccord_return_error(struct discord *client, const char error[], CCORDcode code);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

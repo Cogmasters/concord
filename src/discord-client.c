@@ -128,17 +128,6 @@ discord_strerror(CCORDcode code, struct discord *client)
     }
 }
 
-int
-concord_return_error(const char *error, int32_t error_code)
-{
-  if (error_code < 0 || error_code > 2) {
-    return 1;
-  }
-  
-  log_info("%s", error);
-  
-  return error_code;
-}
 void *
 discord_set_data(struct discord *client, void *data)
 {
@@ -209,17 +198,19 @@ discord_set_on_command(struct discord *client,
     for (; index < client->gw.cmds.amt; index++)
         if (command_len == client->gw.cmds.pool[index].size
             && 0 == strcmp(command, client->gw.cmds.pool[index].start))
-                goto modify;
+            goto modify;
     if (index == client->gw.cmds.cap) {
         size_t cap = 8;
-        while (cap <= index) cap <<= 1;
-        
+        while (cap <= index)
+            cap <<= 1;
+
         void *tmp =
             realloc(client->gw.cmds.pool, cap * sizeof(*client->gw.cmds.pool));
         if (tmp) {
             client->gw.cmds.pool = tmp;
             client->gw.cmds.cap = cap;
-        } else
+        }
+        else
             return;
     }
     ++client->gw.cmds.amt;
@@ -229,7 +220,7 @@ modify:
     client->gw.cmds.pool[index].cb = callback;
 
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
-                              | DISCORD_GATEWAY_DIRECT_MESSAGES);
+                                    | DISCORD_GATEWAY_DIRECT_MESSAGES);
 }
 
 void
@@ -258,13 +249,13 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
-
 void
 discord_set_next_wakeup(struct discord *client, int64_t delay)
 {
     if (delay == -1) {
         client->wakeup_timer.next = -1;
-    } else if (delay >= 0) {
+    }
+    else if (delay >= 0) {
         client->wakeup_timer.next = cog_timestamp_ms() + delay;
     }
 }
@@ -308,23 +299,23 @@ discord_run(struct discord *client)
             now = cog_timestamp_ms();
             int poll_time = 0;
             if (!client->on_idle) {
-                poll_time = now < next_gateway_run ? next_gateway_run - now : 0;
+                poll_time =
+                    now < next_gateway_run ? next_gateway_run - now : 0;
                 if (-1 != client->wakeup_timer.next)
                     if (client->wakeup_timer.next <= now + poll_time)
                         poll_time = client->wakeup_timer.next - now;
             }
-            
+
             int poll_result = io_poller_poll(client->io_poller, poll_time);
             if (-1 == poll_result) {
-                //TODO: handle poll error here
-            } else if (0 == poll_result) {
-                if (client->on_idle)
-                    client->on_idle(client);
+                // TODO: handle poll error here
             }
-            
-            if (client->on_cycle)
-                client->on_cycle(client);
-            
+            else if (0 == poll_result) {
+                if (client->on_idle) client->on_idle(client);
+            }
+
+            if (client->on_cycle) client->on_cycle(client);
+
             if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
                 break;
 
@@ -339,7 +330,8 @@ discord_run(struct discord *client)
             if (next_gateway_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
                     break;
-                if (CCORD_OK != (code = discord_adapter_perform(&client->adapter)))
+                if (CCORD_OK
+                    != (code = discord_adapter_perform(&client->adapter)))
                     break;
                 next_gateway_run = now + 1000;
             }

@@ -55,3 +55,10 @@ ccord_global_cleanup()
     work_global_cleanup();
     once = 0;
 }
+
+CCORDcode
+ccord_return_error(struct discord *client, const char error[], CCORDcode code)
+{
+    logconf_info(&client->conf, "(%d) %s", code, error);
+    return code;
+}
