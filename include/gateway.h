@@ -86,7 +86,10 @@ typedef enum discord_event_scheduler {
     DISCORD_EVENT_IGNORE,
     /** handle this event in main thread */
     DISCORD_EVENT_MAIN_THREAD,
-    /** handle this event in a worker thread */
+    /**
+     * handle this event in a worker thread
+     * @deprecated functionality will be removed in the future
+     */
     DISCORD_EVENT_WORKER_THREAD
 } discord_event_scheduler_t;
 
@@ -103,24 +106,21 @@ typedef enum discord_event_scheduler (*discord_ev_scheduler)(
     enum discord_gateway_events event);
 
 /**
- * @brief Provides the user with a fine-grained control of the Discord's
- *       event-loop
+ * @brief Provides control over Discord event's callback scheduler
+ * @see @ref discord_event_scheduler, @ref discord_gateway_events
  *
- * Allows the user to specify which events should be executed from the
- *       main-thread, in parallel from a worker-thread, or completely ignored
- *
+ * Allows the user to scan the preliminary raw JSON event payload, and control
+ *      whether it should trigger callbacks
  * @param client the client created_with discord_init()
  * @param fn the function that will be executed
  * @warning The user is responsible for providing his own locking mechanism to
  *       avoid race-condition on sensitive data
- * @see @ref discord_event_scheduler, @ref discord_gateway_events
  */
 void discord_set_event_scheduler(struct discord *client,
                                  discord_ev_scheduler callback);
 
 /** @defgroup DiscordCallbackTypes
  *  @{ */
-
 typedef void (*discord_ev_idle)(struct discord *client);
 typedef void (*discord_ev_application_command)(
     struct discord *client, const struct discord_application_command *app_cmd);
