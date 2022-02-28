@@ -3,7 +3,7 @@
 #ifndef CONCORD_TYPES_H
 #define CONCORD_TYPES_H
 
-/** @defgroup ConcordTypes
+/** @defgroup ConcordTypes Primitives
  *  @brief Commonly used datatypes across various APIs
  *
  *  @note these datatypes are typedefs of C primitives,

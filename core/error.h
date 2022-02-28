@@ -3,8 +3,8 @@
 #ifndef CONCORD_ERROR_H
 #define CONCORD_ERROR_H
 
-/** @defgroup ConcordError
- *  @brief Concord error handling
+/** @defgroup ConcordError Error handling
+ *  @brief Concord error codes and meaning
  *  @{ */
 
 /** the error code datatype */

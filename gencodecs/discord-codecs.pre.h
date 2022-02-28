@@ -5,8 +5,10 @@
 #include "gencodecs.h"
 
 #ifdef GENCODECS_HEADER
-PP_INCLUDE("common.h")
+PP_INCLUDE(<inttypes.h>)
+PP_INCLUDE("carray.h")
 PP_INCLUDE("cog-utils.h")
+PP_INCLUDE("types.h")
 #endif
 
 #define RST_PUB_STRUCT(_type) \
