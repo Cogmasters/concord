@@ -40,6 +40,7 @@ DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/discord-adapter.o     \
                 $(OBJDIR)/$(SRC_DIR)/audit_log.o           \
                 $(OBJDIR)/$(SRC_DIR)/channel.o             \
                 $(OBJDIR)/$(SRC_DIR)/emoji.o               \
+                $(OBJDIR)/$(SRC_DIR)/gateway.o             \
                 $(OBJDIR)/$(SRC_DIR)/guild.o               \
                 $(OBJDIR)/$(SRC_DIR)/guild_template.o      \
                 $(OBJDIR)/$(SRC_DIR)/invite.o              \
