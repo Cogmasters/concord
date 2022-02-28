@@ -11,10 +11,13 @@
 #ifndef DISCORD_H
 #define DISCORD_H
 
+#include <inttypes.h>
 #include <stdbool.h>
 
-#include "common.h"
 #include "logconf.h"
+#include "error.h"
+#include "types.h"
+#include "concord-once.h"
 
 #define DISCORD_API_BASE_URL       "https://discord.com/api/v9"
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
@@ -47,9 +50,9 @@ struct discord;
 /** @} DiscordLimitsGeneral */
 /** @} DiscordLimits */
 
-/** @defgroup DiscordErrorCodes Discord error codes
- * @see @ref ConcordCodes for non-Discord errors
+/** @addtogroup ConcordError 
  *  @{ */
+
 /** Received a JSON error message */
 #define CCORD_DISCORD_JSON_CODE 1
 /** Bad authentication token */
@@ -58,28 +61,19 @@ struct discord;
 #define CCORD_DISCORD_RATELIMIT 3
 /** Couldn't establish connection to Discord */
 #define CCORD_DISCORD_CONNECTION 4
-/** @} */
 
-/** @defgroup Discord Discord REST API
- *   @brief The Discord public REST API supported by Concord
- *  @{ */
-
-#include "audit_log.h"
-#include "invite.h"
-#include "channel.h"
-#include "emoji.h"
-#include "guild.h"
-#include "guild_template.h"
-#include "user.h"
-#include "voice.h"
-#include "webhook.h"
-#include "application_command.h"
-#include "interaction.h"
-#include "gateway.h"
-
-/******************************************************************************
- * Functions specific to the Discord client
- ******************************************************************************/
+/**
+ * @brief Return a Concord's error
+ * @note used to log and return an error
+ *
+ * @param client the client created with discord_init(), NULL for generic error
+ * @param error the error string to be logged
+ * @param code the error code
+ * @return the error code
+ */
+CCORDcode discord_return_error(struct discord *client,
+                               const char error[],
+                               CCORDcode code);
 
 /**
  * @brief Return the meaning of CCORDcode
@@ -92,6 +86,39 @@ struct discord;
  * @return a string containing the code meaning
  */
 const char *discord_strerror(CCORDcode code, struct discord *client);
+
+/** @} ConcordError */
+
+/** @defgroup DiscordAPI API
+ *   @brief The Discord public API supported by Concord
+ *  @{ */
+
+#include "audit_log.h"
+#include "invite.h"
+#include "channel.h"
+#include "emoji.h"
+#include "guild.h"
+#include "guild_template.h"
+#include "user.h"
+#include "voice.h"
+#include "webhook.h"
+#include "gateway.h"
+/** @defgroup DiscordAPIInteractions Interactions API
+ *   @brief Interactions public API supported by Concord
+ *  @{ */
+#include "application_command.h"
+#include "interaction.h"
+/** @} DiscordAPIInteractions */
+
+/** @} DiscordAPI */
+
+/** @defgroup Discord Client
+ *   @brief Functions and datatypes for the client
+ *  @{ */
+
+/** @struct discord */
+
+#include "discord-events.h"
 
 /**
  * @brief Create a Discord Client handle by its token
@@ -138,35 +165,6 @@ void discord_cleanup(struct discord *client);
  */
 
 const struct discord_user *discord_get_self(struct discord *client);
-
-/**
- * @brief Subscribe to Discord Events
- *
- * @param client the client created with discord_init()
- * @param code the intents opcode, can be set as a bitmask operation
- */
-void discord_add_intents(struct discord *client, uint64_t code);
-
-/**
- * @brief Unsubscribe from Discord Events
- *
- * @param client the client created with discord_init()
- * @param code the intents opcode, can be set as bitmask operation
- *        Ex: 1 << 0 | 1 << 1 | 1 << 4
- *
- */
-void discord_remove_intents(struct discord *client, uint64_t code);
-
-/**
- * @brief Set a mandatory prefix before commands
- * @see discord_set_on_command()
- *
- * Example: If @a 'help' is a command and @a '!' prefix is set, the command
- *       will only be validated if @a '!help' is sent
- * @param client the client created with discord_init()
- * @param prefix the prefix that should accompany any command
- */
-void discord_set_prefix(struct discord *client, char *prefix);
 
 /**
  * @brief Start a connection to the Discord Gateway

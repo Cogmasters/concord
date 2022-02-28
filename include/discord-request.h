@@ -1,5 +1,6 @@
 /**
  * @file discord-request.h
+ * @ingroup DiscordInternal
  * @author Cogmasters
  * @brief Generic macros for initializing a @ref discord_request
  */
