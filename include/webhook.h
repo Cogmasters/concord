@@ -7,6 +7,8 @@
 #ifndef DISCORD_WEBHOOK_H
 #define DISCORD_WEBHOOK_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(webhook);
 DISCORDT_RETURN(webhooks);
 

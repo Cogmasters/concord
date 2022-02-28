@@ -7,6 +7,8 @@
 #ifndef DISCORD_AUDIT_LOG
 #define DISCORD_AUDIT_LOG
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(audit_log);
 
 /**

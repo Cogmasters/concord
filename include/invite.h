@@ -7,6 +7,8 @@
 #ifndef DISCORD_INVITE_H
 #define DISCORD_INVITE_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(invite);
 DISCORDT_RETURN(invites);
 

@@ -7,6 +7,8 @@
 #ifndef DISCORD_INTERACTION_H
 #define DISCORD_INTERACTION_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(interaction_response);
 
 /**

@@ -27,19 +27,6 @@ struct discord;
 #ifdef HAS_DISCORD_VOICE
 #include "discord-voice.h"
 #endif /* HAS_DISCORD_VOICE */
-#include "discord-templates.h"
-
-/** @brief Request's return context */
-struct discord_ret {
-    /** optional callback to be executed on a successful request */
-    void (*done)(struct discord *client, void *data);
-    DISCORDT_RET_DEFAULT_FIELDS;
-    /** if `true`, request will block the thread and perform on-spot */
-    bool sync;
-};
-
-/** @brief flag for enabling `sync` mode without expecting a datatype return */
-#define DISCORD_SYNC_FLAG ((void *)-1)
 
 #include "audit_log.h"
 #include "invite.h"

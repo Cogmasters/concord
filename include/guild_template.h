@@ -7,6 +7,8 @@
 #ifndef DISCORD_GUILD_TEMPLATE_H
 #define DISCORD_GUILD_TEMPLATE_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(guild_template);
 
 /**

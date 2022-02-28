@@ -7,6 +7,8 @@
 #ifndef DISCORD_APPLICATION_COMMAND_H
 #define DISCORD_APPLICATION_COMMAND_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(application_command);
 DISCORDT_RETURN(application_commands);
 DISCORDT_RETURN(application_command_permission);

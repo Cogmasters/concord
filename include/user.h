@@ -7,6 +7,8 @@
 #ifndef DISCORD_USER_H
 #define DISCORD_USER_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(user);
 DISCORDT_RETURN(users);
 DISCORDT_RETURN(connections);

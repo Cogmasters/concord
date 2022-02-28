@@ -7,6 +7,8 @@
 #ifndef DISCORD_VOICE_H
 #define DISCORD_VOICE_H
 
+#include "discord-templates.h"
+
 DISCORDT_RETURN(voice_regions);
 
 /**
