@@ -31,6 +31,8 @@
 
 /** @brief Get client from its nested field */
 #define CLIENT(ptr, path) CONTAINEROF(ptr, struct discord, path)
+/** @brief Return 1 if string isn't considered empty */
+#define NOT_EMPTY_STR(str) ((str) && *(str))
 
 /** @brief Request's return context */
 struct discord_ret_generic {

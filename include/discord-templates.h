@@ -39,4 +39,95 @@
         struct discord_##_type *sync;                                         \
     }
 
+/** @brief Request's return context */
+struct discord_ret {
+    /** optional callback to be executed on a successful request */
+    void (*done)(struct discord *client, void *data);
+    DISCORDT_RET_DEFAULT_FIELDS;
+    /** if `true`, request will block the thread and perform on-spot */
+    bool sync;
+};
+
+/** @brief flag for enabling `sync` mode without expecting a datatype return */
+#define DISCORD_SYNC_FLAG ((void *)-1)
+
+/** @defgroup DiscordRetApplicationCommand
+ *  @{ */
+DISCORDT_RETURN(application_command);
+DISCORDT_RETURN(application_commands);
+DISCORDT_RETURN(application_command_permission);
+DISCORDT_RETURN(application_command_permissions);
+DISCORDT_RETURN(guild_application_command_permissions);
+/** @} DiscordRetApplicationCommand */
+
+/** @defgroup DiscordRetInteraction
+ *  @{ */
+DISCORDT_RETURN(interaction_response);
+/** @} DiscordRetInteraction */
+
+/** @defgroup DiscordRetAuditLog
+ *  @{ */
+DISCORDT_RETURN(audit_log);
+/** @} DiscordRetAuditLog */
+
+/** @defgroup DiscordRetChannel
+ *  @{ */
+DISCORDT_RETURN(channel);
+DISCORDT_RETURN(channels);
+DISCORDT_RETURN(message);
+DISCORDT_RETURN(messages);
+DISCORDT_RETURN(followed_channel);
+DISCORDT_RETURN(thread_members);
+DISCORDT_RETURN(thread_response_body);
+/** @} DiscordRetChannel */
+
+/** @defgroup DiscordRetEmoji
+ *  @{ */
+DISCORDT_RETURN(emoji);
+DISCORDT_RETURN(emojis);
+/** @} DiscordRetEmoji */
+
+/** @defgroup DiscordRetGuild
+ *  @{ */
+DISCORDT_RETURN(guild);
+DISCORDT_RETURN(guilds);
+DISCORDT_RETURN(guild_preview);
+DISCORDT_RETURN(guild_member);
+DISCORDT_RETURN(guild_members);
+DISCORDT_RETURN(ban);
+DISCORDT_RETURN(bans);
+DISCORDT_RETURN(role);
+DISCORDT_RETURN(roles);
+DISCORDT_RETURN(welcome_screen);
+/** @} DiscordRetGuild */
+
+/** @defgroup DiscordRetGuildTemplate
+ *  @{ */
+DISCORDT_RETURN(guild_template);
+/** @} DiscordRetGuildTemplate */
+
+/** @defgroup DiscordRetInvite
+ *  @{ */
+DISCORDT_RETURN(invite);
+DISCORDT_RETURN(invites);
+/** @} DiscordRetInvite */
+
+/** @defgroup DiscordRetUser
+ *  @{ */
+DISCORDT_RETURN(user);
+DISCORDT_RETURN(users);
+DISCORDT_RETURN(connections);
+/** @} DiscordRetUser */
+
+/** @defgroup DiscordRetWebhook
+ *  @{ */
+DISCORDT_RETURN(webhook);
+DISCORDT_RETURN(webhooks);
+/** @} DiscordRetWebhook */
+
+/** @defgroup DiscordRetVoice
+ *  @{ */
+DISCORDT_RETURN(voice_regions);
+/** @} DiscordRetVoice */
+
 #endif /* DISCORD_TEMPLATES_H */
