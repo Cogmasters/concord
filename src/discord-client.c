@@ -109,12 +109,43 @@ discord_cleanup(struct discord *client)
     free(client);
 }
 
+CCORDcode
+discord_return_error(struct discord *client,
+                     const char error[],
+                     CCORDcode code)
+{
+    logconf_info(&client->conf, "(%d) %s", code, error);
+    return code;
+}
+
+static const char *
+_ccord_strerror(CCORDcode code)
+{
+    switch (code) {
+    case CCORD_OK:
+        return "Success: The request was a success";
+    case CCORD_HTTP_CODE:
+        return "Failure: The request was a failure";
+    case CCORD_UNUSUAL_HTTP_CODE:
+        return "Failure: The request was a failure";
+    case CCORD_BAD_PARAMETER:
+        return "Failure: Bad value for parameter";
+    case CCORD_BAD_JSON:
+        return "Failure: Internal failure when encoding or decoding JSON";
+    case CCORD_CURLE_INTERNAL:
+    case CCORD_CURLM_INTERNAL:
+        return "Failure: Libcurl's internal error";
+    default:
+        return "Unknown: Code received doesn't match any description";
+    }
+}
+
 const char *
 discord_strerror(CCORDcode code, struct discord *client)
 {
     switch (code) {
     default:
-        return ccord_strerror(code);
+        return _ccord_strerror(code);
     case CCORD_DISCORD_JSON_CODE:
         return client ? client->adapter.errbuf
                       : "Discord JSON Error Code: Failed request";

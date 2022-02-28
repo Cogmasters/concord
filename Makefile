@@ -20,8 +20,7 @@ GENCODECS_OBJ = $(GENCODECS_DIR)/discord-codecs.o
 COGUTILS_OBJS = $(OBJDIR)/$(COGUTILS_DIR)/cog-utils.o \
                 $(OBJDIR)/$(COGUTILS_DIR)/log.o       \
                 $(OBJDIR)/$(COGUTILS_DIR)/logconf.o
-CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/common.o     \
-                $(OBJDIR)/$(CORE_DIR)/work.o       \
+CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/work.o       \
                 $(OBJDIR)/$(CORE_DIR)/user-agent.o \
                 $(OBJDIR)/$(CORE_DIR)/websockets.o \
                 $(OBJDIR)/$(CORE_DIR)/io_poller.o  \
@@ -30,7 +29,8 @@ CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/common.o     \
 THIRDP_OBJS   = $(OBJDIR)/$(THIRDP_DIR)/sha1.o           \
                 $(OBJDIR)/$(THIRDP_DIR)/curl-websocket.o \
                 $(OBJDIR)/$(THIRDP_DIR)/threadpool.o
-DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/discord-adapter.o     \
+DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/concord-once.o        \
+                $(OBJDIR)/$(SRC_DIR)/discord-adapter.o     \
                 $(OBJDIR)/$(SRC_DIR)/discord-ratelimit.o   \
                 $(OBJDIR)/$(SRC_DIR)/discord-client.o      \
                 $(OBJDIR)/$(SRC_DIR)/discord-gateway.o     \
