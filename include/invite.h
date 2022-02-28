@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordInvite Invite API
+ *   @ingroup Discord
+ *   @brief Invite's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(invite);
 DISCORDT_RETURN(invites);
 
@@ -40,5 +45,7 @@ CCORDcode discord_get_invite(struct discord *client,
 CCORDcode discord_delete_invite(struct discord *client,
                                 char *invite_code,
                                 struct discord_ret_invite *ret);
+
+/** @} DiscordInvite */
 
 #endif /* DISCORD_INVITE_H */

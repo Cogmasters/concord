@@ -28,6 +28,42 @@ struct discord;
 #include "discord-voice.h"
 #endif /* HAS_DISCORD_VOICE */
 
+/** @defgroup DiscordLimits Discord macros for size limits
+ * @brief Macros for threshold size limits expected by Discord in some of its
+ *      fields
+ * @note macros assume the worst-case scenario for strings, where each
+ *      character is 4 bytes long (UTF8)
+ *  @{ */
+/** @defgroup DiscordLimitsGeneral Threshold length for string fields
+ *  @{ */
+#define DISCORD_MAX_NAME_LEN          4 * 100 + 1
+#define DISCORD_MAX_TOPIC_LEN         4 * 1024 + 1
+#define DISCORD_MAX_DESCRIPTION_LEN   4 * 2048 + 1
+#define DISCORD_MAX_USERNAME_LEN      4 * 32 + 1
+#define DISCORD_MAX_DISCRIMINATOR_LEN 4 + 1
+#define DISCORD_MAX_REASON_LEN        4 * 512 + 1
+#define DISCORD_MAX_MESSAGE_LEN       4 * 2000 + 1
+#define DISCORD_MAX_PAYLOAD_LEN       4 * 4096 + 1
+/** @} DiscordLimitsGeneral */
+/** @} DiscordLimits */
+
+/** @defgroup DiscordErrorCodes Discord error codes
+ * @see @ref ConcordCodes for non-Discord errors
+ *  @{ */
+/** Received a JSON error message */
+#define CCORD_DISCORD_JSON_CODE 1
+/** Bad authentication token */
+#define CCORD_DISCORD_BAD_AUTH 2
+/** Being ratelimited */
+#define CCORD_DISCORD_RATELIMIT 3
+/** Couldn't establish connection to Discord */
+#define CCORD_DISCORD_CONNECTION 4
+/** @} */
+
+/** @defgroup Discord Discord REST API
+ *   @brief The Discord public REST API supported by Concord
+ *  @{ */
+
 #include "audit_log.h"
 #include "invite.h"
 #include "channel.h"
@@ -40,41 +76,6 @@ struct discord;
 #include "application_command.h"
 #include "interaction.h"
 #include "gateway.h"
-
-/** @defgroup DiscordLimitsSnowflake
- *  @{ */
-#define DISCORD_SNOWFLAKE_INCREMENT          12
-#define DISCORD_SNOWFLAKE_PROCESS_ID         17
-#define DISCORD_SNOWFLAKE_INTERNAL_WORKER_ID 22
-#define DISCORD_SNOWFLAKE_TIMESTAMP          64
-/** @} */
-
-/** @defgroup DiscordLimitsGeneral
- * @note assume the worst-case scenario for strings, where each character is 4
- *        bytes long (UTF8)
- *  @{ */
-#define DISCORD_MAX_NAME_LEN          4 * 100 + 1
-#define DISCORD_MAX_TOPIC_LEN         4 * 1024 + 1
-#define DISCORD_MAX_DESCRIPTION_LEN   4 * 2048 + 1
-#define DISCORD_MAX_USERNAME_LEN      4 * 32 + 1
-#define DISCORD_MAX_DISCRIMINATOR_LEN 4 + 1
-#define DISCORD_MAX_REASON_LEN        4 * 512 + 1
-#define DISCORD_MAX_MESSAGE_LEN       4 * 2000 + 1
-#define DISCORD_MAX_PAYLOAD_LEN       4 * 4096 + 1
-/** @} */
-
-/** @defgroup ConcordDiscordCodes
- * @see @ref ConcordCodes for non-Discord errors
- *  @{ */
-/** Received a JSON error message */
-#define CCORD_DISCORD_JSON_CODE 1
-/** Bad authentication token */
-#define CCORD_DISCORD_BAD_AUTH 2
-/** Being ratelimited */
-#define CCORD_DISCORD_RATELIMIT 3
-/** Couldn't establish connection to Discord */
-#define CCORD_DISCORD_CONNECTION 4
-/** @} ConcordDiscordCodes */
 
 /******************************************************************************
  * Functions specific to the Discord client
@@ -145,6 +146,7 @@ const struct discord_user *discord_get_self(struct discord *client);
  * @param code the intents opcode, can be set as a bitmask operation
  */
 void discord_add_intents(struct discord *client, uint64_t code);
+
 /**
  * @brief Unsubscribe from Discord Events
  *
@@ -154,6 +156,7 @@ void discord_add_intents(struct discord *client, uint64_t code);
  *
  */
 void discord_remove_intents(struct discord *client, uint64_t code);
+
 /**
  * @brief Set a mandatory prefix before commands
  * @see discord_set_on_command()
@@ -245,5 +248,7 @@ uint64_t discord_timestamp(struct discord *client);
  * @return the client's logging module
  */
 struct logconf *discord_get_logconf(struct discord *client);
+
+/** @} Discord */
 
 #endif /* DISCORD_H */

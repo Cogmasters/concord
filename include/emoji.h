@@ -12,6 +12,11 @@
 DISCORDT_RETURN(emoji);
 DISCORDT_RETURN(emojis);
 
+/** @defgroup DiscordEmoji Emoji API
+ *   @ingroup Discord
+ *   @brief Emoji's public API supported by Concord
+ *  @{ */
+
 /**
  * @brief Get emojis of a given guild
  *
@@ -84,5 +89,7 @@ CCORDcode discord_delete_guild_emoji(struct discord *client,
                                      u64snowflake guild_id,
                                      u64snowflake emoji_id,
                                      struct discord_ret *ret);
+
+/** @} DiscordEmoji */
 
 #endif /* DISCORD_EMOJI_H */

@@ -13,17 +13,8 @@
 struct discord_ret_users;
 /**/
 
-DISCORDT_RETURN(channel);
-DISCORDT_RETURN(channels);
-DISCORDT_RETURN(message);
-DISCORDT_RETURN(messages);
-DISCORDT_RETURN(followed_channel);
-DISCORDT_RETURN(thread_members);
-DISCORDT_RETURN(thread_response_body);
-
-/** @defgroup DiscordLimitsEmbed
- * @note assume the worst-case scenario for strings, where each character is 4
- *        bytes long (UTF8)
+/** @defgroup DiscordLimitsEmbed Threshold length for embed string fields
+ * @ingroup DiscordLimits
  *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       4 * 256 + 1
 #define DISCORD_EMBED_DESCRIPTION_LEN 4 * 2048 + 1
@@ -33,6 +24,19 @@ DISCORDT_RETURN(thread_response_body);
 #define DISCORD_EMBED_FOOTER_TEXT_LEN 4 * 2048 + 1
 #define DISCORD_EMBED_AUTHOR_NAME_LEN 4 * 256 + 1
 /** @} */
+
+/** @defgroup DiscordChannel Channel API
+ *   @ingroup Discord
+ *   @brief Channel's public API supported by Concord
+ *  @{ */
+
+DISCORDT_RETURN(channel);
+DISCORDT_RETURN(channels);
+DISCORDT_RETURN(message);
+DISCORDT_RETURN(messages);
+DISCORDT_RETURN(followed_channel);
+DISCORDT_RETURN(thread_members);
+DISCORDT_RETURN(thread_response_body);
 
 /******************************************************************************
  * Custom functions
@@ -824,5 +828,7 @@ CCORDcode discord_list_joined_private_archived_threads(
     u64unix_ms before,
     int limit,
     struct discord_ret_thread_response_body *ret);
+
+/** @} DiscordChannel */
 
 #endif /* DISCORD_CHANNEL_H */

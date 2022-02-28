@@ -7,6 +7,11 @@
 #ifndef DISCORD_GATEWAY_H
 #define DISCORD_GATEWAY_H
 
+/** @defgroup DiscordGateway Gateway API
+ *   @ingroup Discord
+ *   @brief Gateway's public API supported by Concord
+ *  @{ */
+
 /******************************************************************************
  * Custom functions
  ******************************************************************************/
@@ -234,7 +239,7 @@ void discord_set_on_commands(struct discord *client,
  */
 void discord_set_next_wakeup(struct discord *client, int64_t delay);
 
-/** @defgroup DiscordCallbackSet
+/** @defgroup DiscordGatewaySetCallback
  * @brief Set callbacks to be triggered on event detection
  * @param client the client created with discord_init()
  * @param callback the callback to be triggered on event
@@ -349,6 +354,8 @@ void discord_set_on_voice_state_update(struct discord *client,
 void discord_set_on_voice_server_update(
     struct discord *client, discord_ev_voice_server_update callback);
 
-/** @} */
+/** @} DiscordGatewayCallbackSet */
+
+/** @} DiscordGateway */
 
 #endif /* DISCORD_GATEWAY_H */

@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordGuildTemplate Guild Template API
+ *   @ingroup Discord
+ *   @brief Guild Template's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(guild_template);
 
 /**
@@ -53,5 +58,7 @@ CCORDcode discord_sync_guild_template(struct discord *client,
                                       u64snowflake guild_id,
                                       char *code,
                                       struct discord_ret_guild_template *ret);
+
+/** @} DiscordGuildTemplate */
 
 #endif /* DISCORD_GUILD_TEMPLATE_H */

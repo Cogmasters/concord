@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordGuild Guild API
+ *   @ingroup Discord
+ *   @brief Guild's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(guild);
 DISCORDT_RETURN(guilds);
 DISCORDT_RETURN(guild_preview);
@@ -521,5 +526,7 @@ CCORDcode discord_delete_guild_role(struct discord *client,
                                     u64snowflake guild_id,
                                     u64snowflake role_id,
                                     struct discord_ret *ret);
+
+/** @} DiscordGuild */
 
 #endif /* DISCORD_GUILD_H */

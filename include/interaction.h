@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordInteraction Interaction API
+ *   @ingroup Discord
+ *   @brief Interaction's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(interaction_response);
 
 /**
@@ -142,5 +147,7 @@ CCORDcode discord_delete_followup_message(struct discord *client,
                                           const char interaction_token[],
                                           u64snowflake message_id,
                                           struct discord_ret *ret);
+
+/** @} DiscordInteraction */
 
 #endif /* DISCORD_INTERACTION_H */

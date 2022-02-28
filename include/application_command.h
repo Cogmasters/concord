@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordApplicationCommand Application Command API
+ *   @ingroup Discord
+ *   @brief Application Command's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(application_command);
 DISCORDT_RETURN(application_commands);
 DISCORDT_RETURN(application_command_permission);
@@ -288,5 +293,7 @@ CCORDcode discord_batch_edit_application_command_permissions(
     u64snowflake guild_id,
     struct discord_guild_application_command_permissions *params,
     struct discord_ret_guild_application_command_permissions *ret);
+
+/** @} DiscordApplicationCommand */
 
 #endif /* DISCORD_APPLICATION_COMMAND_H */

@@ -9,15 +9,19 @@
 
 #include "discord-templates.h"
 
-DISCORDT_RETURN(webhook);
-DISCORDT_RETURN(webhooks);
-
-/** @defgroup DiscordLimitsWebhook
- * @note assume the worst-case scenario for strings, where each character is 4
- *        bytes long (UTF8)
+/** @defgroup DiscordLimitsWebhook Threshold length for webhook string fields
+ * @ingroup DiscordLimits
  *  @{ */
 #define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
-/** @} */
+/** @} DiscordLimitsWebhook */
+
+/** @defgroup DiscordWebhook Webhook API
+ *   @ingroup Discord
+ *   @brief Webhook's public API supported by Concord
+ *  @{ */
+
+DISCORDT_RETURN(webhook);
+DISCORDT_RETURN(webhooks);
 
 /**
  * @brief Create a new webhook
@@ -207,5 +211,7 @@ CCORDcode discord_delete_webhook_message(struct discord *client,
                                          const char webhook_token[],
                                          u64snowflake message_id,
                                          struct discord_ret *ret);
+
+/** @} DiscordWebhook */
 
 #endif /* DISCORD_WEBHOOK_H */

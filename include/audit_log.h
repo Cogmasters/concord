@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordAuditLog Audit Log API
+ *   @ingroup Discord
+ *   @brief Audit Log's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(audit_log);
 
 /**
@@ -26,5 +31,7 @@ CCORDcode discord_get_guild_audit_log(
     u64snowflake guild_id,
     struct discord_get_guild_audit_log *params,
     struct discord_ret_audit_log *ret);
+
+/** @} DiscordAuditLog */
 
 #endif /* DISCORD_AUDIT_LOG */

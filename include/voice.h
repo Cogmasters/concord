@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordVoice Voice API
+ *   @ingroup Discord
+ *   @brief Voice's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(voice_regions);
 
 /**
@@ -21,5 +26,7 @@ DISCORDT_RETURN(voice_regions);
  */
 CCORDcode discord_list_voice_regions(struct discord *client,
                                      struct discord_ret_voice_regions *ret);
+
+/** @} DiscordVoice */
 
 #endif /* DISCORD_VOICE_H */

@@ -9,6 +9,11 @@
 
 #include "discord-templates.h"
 
+/** @defgroup DiscordUser User API
+ *   @ingroup Discord
+ *   @brief User's public API supported by Concord
+ *  @{ */
+
 DISCORDT_RETURN(user);
 DISCORDT_RETURN(users);
 DISCORDT_RETURN(connections);
@@ -110,5 +115,7 @@ CCORDcode discord_create_group_dm(struct discord *client,
  */
 CCORDcode discord_get_user_connections(struct discord *client,
                                        struct discord_ret_connections *ret);
+
+/** @} DiscordUser */
 
 #endif /* DISCORD_USER_H */
