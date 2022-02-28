@@ -9,8 +9,8 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordGuildTemplate Guild Template API
- *   @ingroup Discord
+/** @defgroup DiscordAPIGuildTemplate Guild Template API
+ *   @ingroup DiscordAPI
  *   @brief Guild Template's public API supported by Concord
  *  @{ */
 
@@ -59,6 +59,9 @@ CCORDcode discord_sync_guild_template(struct discord *client,
                                       char *code,
                                       struct discord_ret_guild_template *ret);
 
-/** @} DiscordGuildTemplate */
+/** @example guild-template.c
+ * Demonstrates a couple use cases of the Guild Template API */
+
+/** @} DiscordAPIGuildTemplate */
 
 #endif /* DISCORD_GUILD_TEMPLATE_H */

@@ -9,8 +9,8 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordAuditLog Audit Log API
- *   @ingroup Discord
+/** @defgroup DiscordAPIAuditLog Audit Log API
+ *   @ingroup DiscordAPI
  *   @brief Audit Log's public API supported by Concord
  *  @{ */
 
@@ -32,6 +32,10 @@ CCORDcode discord_get_guild_audit_log(
     struct discord_get_guild_audit_log *params,
     struct discord_ret_audit_log *ret);
 
-/** @} DiscordAuditLog */
+/** @example audit-log.c
+ * Demonstrates listening to audit-log events and fetching a specific audit-log
+ */
+
+/** @} DiscordAPIAuditLog */
 
 #endif /* DISCORD_AUDIT_LOG */

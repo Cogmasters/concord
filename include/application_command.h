@@ -9,9 +9,9 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordApplicationCommand Application Command API
- *   @ingroup Discord
- *   @brief Application Command's public API supported by Concord
+/** @defgroup DiscordAPIInteractionsApplicationCommand Slash commands
+ *   @ingroup DiscordAPIInteractions
+ *   @brief Receiving and registering slash commands
  *  @{ */
 
 DISCORDT_RETURN(application_command);
@@ -294,6 +294,11 @@ CCORDcode discord_batch_edit_application_command_permissions(
     struct discord_guild_application_command_permissions *params,
     struct discord_ret_guild_application_command_permissions *ret);
 
-/** @} DiscordApplicationCommand */
+/** @example slash-commands.c
+ * Demonstrates registering and reacting to slash commands */
+/** @example slash-commands2.c
+ * Demonstrates registering and reacting to slash commands from the console */
+
+/** @} DiscordAPIInteractionsApplicationCommand */
 
 #endif /* DISCORD_APPLICATION_COMMAND_H */

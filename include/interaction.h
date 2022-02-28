@@ -9,9 +9,9 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordInteraction Interaction API
- *   @ingroup Discord
- *   @brief Interaction's public API supported by Concord
+/** @defgroup DiscordAPIInteractionsReact Receiving and sending
+ *   @ingroup DiscordAPIInteractions
+ *   @brief Receiving and sending interactions
  *  @{ */
 
 DISCORDT_RETURN(interaction_response);
@@ -148,6 +148,9 @@ CCORDcode discord_delete_followup_message(struct discord *client,
                                           u64snowflake message_id,
                                           struct discord_ret *ret);
 
-/** @} DiscordInteraction */
+/** @example components.c
+ * Demonstrates a couple use cases of the Message Components API */
+
+/** @} DiscordAPIInteractionsReact */
 
 #endif /* DISCORD_INTERACTION_H */

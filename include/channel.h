@@ -25,8 +25,8 @@ struct discord_ret_users;
 #define DISCORD_EMBED_AUTHOR_NAME_LEN 4 * 256 + 1
 /** @} */
 
-/** @defgroup DiscordChannel Channel API
- *   @ingroup Discord
+/** @defgroup DiscordAPIChannel Channel API
+ *   @ingroup DiscordAPI
  *   @brief Channel's public API supported by Concord
  *  @{ */
 
@@ -829,6 +829,19 @@ CCORDcode discord_list_joined_private_archived_threads(
     int limit,
     struct discord_ret_thread_response_body *ret);
 
-/** @} DiscordChannel */
+/** @example channel.c
+ * Demonstrates a couple use cases of the Channel API */
+/** @example embed.c
+ * Demonstrates embed manipulation */
+/** @example fetch-messages.c
+ * Demonstrates fetching user messages */
+/** @example manual-dm.c
+ * Demonstrates sending DMs with your client */
+/** @example pin.c
+ * Demonstrates pinning messages */
+/** @example reaction.c
+ * Demonstrates a couple use cases of the Channel reactions API */
+
+/** @} DiscordAPIChannel */
 
 #endif /* DISCORD_CHANNEL_H */

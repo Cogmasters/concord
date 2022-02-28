@@ -15,8 +15,8 @@
 #define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
 /** @} DiscordLimitsWebhook */
 
-/** @defgroup DiscordWebhook Webhook API
- *   @ingroup Discord
+/** @defgroup DiscordAPIWebhook Webhook API
+ *   @ingroup DiscordAPI
  *   @brief Webhook's public API supported by Concord
  *  @{ */
 
@@ -212,6 +212,9 @@ CCORDcode discord_delete_webhook_message(struct discord *client,
                                          u64snowflake message_id,
                                          struct discord_ret *ret);
 
-/** @} DiscordWebhook */
+/** @example webhook.c
+ * Demonstrates a couple use cases of the Webhook API */
+
+/** @} DiscordAPIWebhook */
 
 #endif /* DISCORD_WEBHOOK_H */

@@ -12,8 +12,8 @@
 DISCORDT_RETURN(emoji);
 DISCORDT_RETURN(emojis);
 
-/** @defgroup DiscordEmoji Emoji API
- *   @ingroup Discord
+/** @defgroup DiscordAPIEmoji Emoji API
+ *   @ingroup DiscordAPI
  *   @brief Emoji's public API supported by Concord
  *  @{ */
 
@@ -90,6 +90,9 @@ CCORDcode discord_delete_guild_emoji(struct discord *client,
                                      u64snowflake emoji_id,
                                      struct discord_ret *ret);
 
-/** @} DiscordEmoji */
+/** @example emoji.c
+ * Demonstrates a couple use cases of the Emoji API */
+
+/** @} DiscordAPIEmoji */
 
 #endif /* DISCORD_EMOJI_H */

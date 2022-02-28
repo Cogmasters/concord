@@ -9,8 +9,8 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordInvite Invite API
- *   @ingroup Discord
+/** @defgroup DiscordAPIInvite Invite API
+ *   @ingroup DiscordAPI
  *   @brief Invite's public API supported by Concord
  *  @{ */
 
@@ -46,6 +46,9 @@ CCORDcode discord_delete_invite(struct discord *client,
                                 char *invite_code,
                                 struct discord_ret_invite *ret);
 
-/** @} DiscordInvite */
+/** @example invite.c
+ * Demonstrates a couple use cases of the Invite API */
+
+/** @} DiscordAPIInvite */
 
 #endif /* DISCORD_INVITE_H */

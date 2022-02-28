@@ -9,8 +9,8 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordGuild Guild API
- *   @ingroup Discord
+/** @defgroup DiscordAPIGuild Guild API
+ *   @ingroup DiscordAPI
  *   @brief Guild's public API supported by Concord
  *  @{ */
 
@@ -527,6 +527,11 @@ CCORDcode discord_delete_guild_role(struct discord *client,
                                     u64snowflake role_id,
                                     struct discord_ret *ret);
 
-/** @} DiscordGuild */
+/** @example guild.c
+ * Demonstrates a couple use cases of the Guild API */
+/** @example ban.c
+ * Demonstrates banning and unbanning members */
+
+/** @} DiscordAPIGuild */
 
 #endif /* DISCORD_GUILD_H */
