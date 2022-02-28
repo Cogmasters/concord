@@ -1,8 +1,8 @@
-# Work in Progress
+# Internals (WIP)
 
 **This guide is currently incomplete**
 
-# Introduction
+## Introduction
 
 If you are interested in contributing with more than just coding, you found the 
 right place! The ultimate goal is to help you understand how Concord works internally, 

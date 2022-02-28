@@ -1,4 +1,4 @@
-# CODING GUIDELINES
+# Coding Guidelines
 
 In order to keep the code concise and easy to read, there are a few rules to follow.
 
