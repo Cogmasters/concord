@@ -30,12 +30,22 @@ CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/common.o     \
 THIRDP_OBJS   = $(OBJDIR)/$(THIRDP_DIR)/sha1.o           \
                 $(OBJDIR)/$(THIRDP_DIR)/curl-websocket.o \
                 $(OBJDIR)/$(THIRDP_DIR)/threadpool.o
-DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/adapter-api.o       \
-                $(OBJDIR)/$(SRC_DIR)/adapter-ratelimit.o \
-                $(OBJDIR)/$(SRC_DIR)/adapter.o           \
-                $(OBJDIR)/$(SRC_DIR)/client.o            \
-                $(OBJDIR)/$(SRC_DIR)/gateway.o           \
-                $(OBJDIR)/$(SRC_DIR)/misc.o              \
+DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/discord-adapter.o     \
+                $(OBJDIR)/$(SRC_DIR)/discord-ratelimit.o   \
+                $(OBJDIR)/$(SRC_DIR)/discord-client.o      \
+                $(OBJDIR)/$(SRC_DIR)/discord-gateway.o     \
+                $(OBJDIR)/$(SRC_DIR)/discord-misc.o        \
+                $(OBJDIR)/$(SRC_DIR)/application_command.o \
+                $(OBJDIR)/$(SRC_DIR)/interaction.o         \
+                $(OBJDIR)/$(SRC_DIR)/audit_log.o           \
+                $(OBJDIR)/$(SRC_DIR)/channel.o             \
+                $(OBJDIR)/$(SRC_DIR)/emoji.o               \
+                $(OBJDIR)/$(SRC_DIR)/guild.o               \
+                $(OBJDIR)/$(SRC_DIR)/guild_template.o      \
+                $(OBJDIR)/$(SRC_DIR)/invite.o              \
+                $(OBJDIR)/$(SRC_DIR)/user.o                \
+                $(OBJDIR)/$(SRC_DIR)/voice.o               \
+                $(OBJDIR)/$(SRC_DIR)/webhook.o             \
                 $(XOBJ)
 
 OBJS := $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
@@ -57,7 +67,7 @@ $(OBJDIR)/%.o: %.c
 all: $(LIB)
 
 voice:
-	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XOBJ=$(OBJDIR)/$(SRC_DIR)/voice.o all
+	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XOBJ=$(OBJDIR)/$(SRC_DIR)/discord-voice.o all
 
 debug:
 	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all

@@ -1,0 +1,952 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "discord.h"
+#include "discord-internal.h"
+#include "discord-request.h"
+
+CCORDcode
+discord_get_channel(struct discord *client,
+                    u64snowflake channel_id,
+                    struct discord_ret_channel *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_INIT(req, discord_channel, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64, channel_id);
+}
+
+CCORDcode
+discord_modify_channel(struct discord *client,
+                       u64snowflake channel_id,
+                       struct discord_modify_channel *params,
+                       struct discord_ret_channel *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[1024];
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size = discord_modify_channel_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_INIT(req, discord_channel, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
+                               "/channels/%" PRIu64, channel_id);
+}
+
+CCORDcode
+discord_delete_channel(struct discord *client,
+                       u64snowflake channel_id,
+                       struct discord_ret_channel *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_INIT(req, discord_channel, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64, channel_id);
+}
+
+CCORDcode
+discord_get_channel_messages(struct discord *client,
+                             u64snowflake channel_id,
+                             struct discord_get_channel_messages *params,
+                             struct discord_ret_messages *ret)
+{
+    struct discord_request req = { 0 };
+    char query[1024] = "";
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (params) {
+        size_t offset = 0;
+        if (params->limit) {
+            offset += snprintf(query + offset, sizeof(query) - offset,
+                               "limit=%d", params->limit);
+            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        }
+        if (params->around) {
+            offset += snprintf(query + offset, sizeof(query) - offset,
+                               "%saround=%" PRIu64, *query ? "&" : "",
+                               params->around);
+            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        }
+        if (params->before) {
+            offset += snprintf(query + offset, sizeof(query) - offset,
+                               "%sbefore=%" PRIu64, *query ? "&" : "",
+                               params->before);
+            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        }
+        if (params->after) {
+            offset +=
+                snprintf(query + offset, sizeof(query) - offset,
+                         "%safter=%" PRIu64, *query ? "&" : "", params->after);
+            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        }
+    }
+
+    DISCORD_REQ_LIST_INIT(req, discord_messages, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/messages%s%s",
+                               channel_id, *query ? "?" : "", query);
+}
+
+CCORDcode
+discord_get_channel_message(struct discord *client,
+                            u64snowflake channel_id,
+                            u64snowflake message_id,
+                            struct discord_ret_message *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_INIT(req, discord_message, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64,
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_create_message(struct discord *client,
+                       u64snowflake channel_id,
+                       struct discord_create_message *params,
+                       struct discord_ret_message *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    enum http_method method;
+    char buf[16384]; /**< @todo dynamic buffer */
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size = discord_create_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    if (params->attachments) {
+        method = HTTP_MIMEPOST;
+        req.attachments = *params->attachments;
+    }
+    else {
+        method = HTTP_POST;
+    }
+
+    DISCORD_REQ_INIT(req, discord_message, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, method,
+                               "/channels/%" PRIu64 "/messages", channel_id);
+}
+
+CCORDcode
+discord_crosspost_message(struct discord *client,
+                          u64snowflake channel_id,
+                          u64snowflake message_id,
+                          struct discord_ret_message *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_INIT(req, discord_message, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_POST,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/crosspost",
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_create_reaction(struct discord *client,
+                        u64snowflake channel_id,
+                        u64snowflake message_id,
+                        u64snowflake emoji_id,
+                        const char emoji_name[],
+                        struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    char *pct_emoji_name;
+    char emoji_endpoint[256];
+    CCORDcode code;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+
+    if (emoji_id)
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
+                 pct_emoji_name, emoji_id);
+    else
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/reactions/%s/@me",
+                               channel_id, message_id, emoji_endpoint);
+
+    curl_free(pct_emoji_name);
+
+    return code;
+}
+
+CCORDcode
+discord_delete_own_reaction(struct discord *client,
+                            u64snowflake channel_id,
+                            u64snowflake message_id,
+                            u64snowflake emoji_id,
+                            const char emoji_name[],
+                            struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    char *pct_emoji_name;
+    char emoji_endpoint[256];
+    CCORDcode code;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+
+    if (emoji_id)
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
+                 pct_emoji_name, emoji_id);
+    else
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/reactions/%s/@me",
+                               channel_id, message_id, emoji_endpoint);
+
+    curl_free(pct_emoji_name);
+
+    return code;
+}
+
+CCORDcode
+discord_delete_user_reaction(struct discord *client,
+                             u64snowflake channel_id,
+                             u64snowflake message_id,
+                             u64snowflake user_id,
+                             u64snowflake emoji_id,
+                             const char emoji_name[],
+                             struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    char *pct_emoji_name;
+    char emoji_endpoint[256];
+    CCORDcode code;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+
+    if (emoji_id)
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
+                 pct_emoji_name, emoji_id);
+    else
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    code = discord_adapter_run(
+        &client->adapter, &req, NULL, HTTP_DELETE,
+        "/channels/%" PRIu64 "/messages/%" PRIu64 "/reactions/%s/%" PRIu64,
+        channel_id, message_id, emoji_endpoint, user_id);
+
+    curl_free(pct_emoji_name);
+
+    return code;
+}
+
+CCORDcode
+discord_get_reactions(struct discord *client,
+                      u64snowflake channel_id,
+                      u64snowflake message_id,
+                      u64snowflake emoji_id,
+                      const char emoji_name[],
+                      struct discord_get_reactions *params,
+                      struct discord_ret_users *ret)
+{
+    struct discord_request req = { 0 };
+    char emoji_endpoint[256];
+    char query[1024] = "";
+    char *pct_emoji_name;
+    CCORDcode code;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (params) {
+        size_t offset = 0;
+
+        if (params->after) {
+            CCORD_EXPECT(client, params->after != 0, CCORD_BAD_PARAMETER, "");
+
+            offset += snprintf(query + offset, sizeof(query) - offset,
+                               "?after=%" PRIu64, params->after);
+            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        }
+        if (params->limit) {
+            CCORD_EXPECT(client, params->limit > 0 && params->limit <= 100,
+                         CCORD_BAD_PARAMETER, "");
+
+            offset +=
+                snprintf(query + offset, sizeof(query) - offset, "%slimit=%d",
+                         *query ? "&" : "?", params->limit);
+            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        }
+    }
+
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+
+    if (emoji_id)
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
+                 pct_emoji_name, emoji_id);
+    else
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+    DISCORD_REQ_LIST_INIT(req, discord_users, ret);
+
+    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/reactions/%s%s",
+                               channel_id, message_id, emoji_endpoint, query);
+
+    curl_free(pct_emoji_name);
+
+    return code;
+}
+
+CCORDcode
+discord_delete_all_reactions(struct discord *client,
+                             u64snowflake channel_id,
+                             u64snowflake message_id,
+                             struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/reactions",
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_delete_all_reactions_for_emoji(struct discord *client,
+                                       u64snowflake channel_id,
+                                       u64snowflake message_id,
+                                       u64snowflake emoji_id,
+                                       const char emoji_name[],
+                                       struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    char *pct_emoji_name;
+    char emoji_endpoint[256];
+    CCORDcode code;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    pct_emoji_name =
+        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+
+    if (emoji_id)
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
+                 pct_emoji_name, emoji_id);
+    else
+        snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s", pct_emoji_name);
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    code = discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/reactions/%s",
+                               channel_id, message_id, emoji_endpoint);
+
+    curl_free(pct_emoji_name);
+
+    return code;
+}
+
+CCORDcode
+discord_edit_message(struct discord *client,
+                     u64snowflake channel_id,
+                     u64snowflake message_id,
+                     struct discord_edit_message *params,
+                     struct discord_ret_message *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[16384]; /**< @todo dynamic buffer */
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size = discord_edit_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_INIT(req, discord_message, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PATCH,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64,
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_delete_message(struct discord *client,
+                       u64snowflake channel_id,
+                       u64snowflake message_id,
+                       struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64,
+                               channel_id, message_id);
+}
+
+/** @todo add duplicated ID verification */
+CCORDcode
+discord_bulk_delete_messages(struct discord *client,
+                             u64snowflake channel_id,
+                             struct snowflakes *messages,
+                             struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    u64unix_ms now = discord_timestamp(client);
+    struct sized_buffer body;
+    char buf[4096] = "";
+    int i;
+
+    CCORD_EXPECT(client, messages != NULL, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, messages->size >= 2 && messages->size <= 100,
+                 CCORD_BAD_PARAMETER, "");
+
+    for (i = 0; i < messages->size; ++i) {
+        u64unix_ms tstamp = (messages->array[i] >> 22) + 1420070400000;
+
+        CCORD_EXPECT(client, now <= tstamp || now - tstamp <= 1209600000,
+                     CCORD_BAD_PARAMETER,
+                     "Messages should not be older than 2 weeks.");
+    }
+
+    body.size = snowflakes_to_json(buf, sizeof(buf), messages);
+    body.start = buf;
+
+    CCORD_EXPECT(client, buf != NULL, CCORD_BAD_JSON, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+                               "/channels/%" PRIu64 "/messages/bulk-delete",
+                               channel_id);
+}
+
+CCORDcode
+discord_edit_channel_permissions(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64snowflake overwrite_id,
+    struct discord_edit_channel_permissions *params,
+    struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[1024];
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, overwrite_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_edit_channel_permissions_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
+                               "/channels/%" PRIu64 "/permissions/%" PRIu64,
+                               channel_id, overwrite_id);
+}
+
+CCORDcode
+discord_get_channel_invites(struct discord *client,
+                            u64snowflake channel_id,
+                            struct discord_ret_invites *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_LIST_INIT(req, discord_invites, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/invites", channel_id);
+}
+
+CCORDcode
+discord_create_channel_invite(struct discord *client,
+                              u64snowflake channel_id,
+                              struct discord_create_channel_invite *params,
+                              struct discord_ret_invite *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[1024];
+    size_t len;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (params)
+        len = discord_create_channel_invite_to_json(buf, sizeof(buf), params);
+    else
+        len = snprintf(buf, sizeof(buf), "{}");
+    body.start = buf;
+    body.size = len;
+
+    DISCORD_REQ_INIT(req, discord_invite, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+                               "/channels/%" PRIu64 "/invites", channel_id);
+}
+
+CCORDcode
+discord_delete_channel_permission(struct discord *client,
+                                  u64snowflake channel_id,
+                                  u64snowflake overwrite_id,
+                                  struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, overwrite_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/permissions/%" PRIu64,
+                               channel_id, overwrite_id);
+}
+
+CCORDcode
+discord_follow_news_channel(struct discord *client,
+                            u64snowflake channel_id,
+                            struct discord_follow_news_channel *params,
+                            struct discord_ret_followed_channel *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[256]; /* should be more than enough for this */
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params->webhook_channel_id != 0, CCORD_BAD_PARAMETER,
+                 "");
+
+    body.size = discord_follow_news_channel_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_INIT(req, discord_channel, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+                               "/channels/%" PRIu64 "/followers", channel_id);
+}
+
+CCORDcode
+discord_trigger_typing_indicator(struct discord *client,
+                                 u64snowflake channel_id,
+                                 struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_POST,
+                               "/channels/%" PRIu64 "/typing", channel_id);
+}
+
+CCORDcode
+discord_get_pinned_messages(struct discord *client,
+                            u64snowflake channel_id,
+                            struct discord_ret_messages *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_LIST_INIT(req, discord_messages, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/pins", channel_id);
+}
+
+CCORDcode
+discord_pin_message(struct discord *client,
+                    u64snowflake channel_id,
+                    u64snowflake message_id,
+                    struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
+                               "/channels/%" PRIu64 "/pins/%" PRIu64,
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_unpin_message(struct discord *client,
+                      u64snowflake channel_id,
+                      u64snowflake message_id,
+                      struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/pins/%" PRIu64,
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_group_dm_add_recipient(struct discord *client,
+                               u64snowflake channel_id,
+                               u64snowflake user_id,
+                               struct discord_group_dm_add_recipient *params,
+                               struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[1024];
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_group_dm_add_recipient_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_PUT,
+                               "/channels/%" PRIu64 "/recipients/%" PRIu64,
+                               channel_id, user_id);
+}
+
+CCORDcode
+discord_group_dm_remove_recipient(struct discord *client,
+                                  u64snowflake channel_id,
+                                  u64snowflake user_id,
+                                  struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/recipients/%" PRIu64,
+                               channel_id, user_id);
+}
+
+CCORDcode
+discord_start_thread_with_message(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64snowflake message_id,
+    struct discord_start_thread_with_message *params,
+    struct discord_ret_channel *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[1024];
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_start_thread_with_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_INIT(req, discord_channel, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+                               "/channels/%" PRIu64 "/messages/%" PRIu64
+                               "/threads",
+                               channel_id, message_id);
+}
+
+CCORDcode
+discord_start_thread_without_message(
+    struct discord *client,
+    u64snowflake channel_id,
+    struct discord_start_thread_without_message *params,
+    struct discord_ret_channel *ret)
+{
+    struct discord_request req = { 0 };
+    struct sized_buffer body;
+    char buf[1024];
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
+
+    body.size =
+        discord_start_thread_without_message_to_json(buf, sizeof(buf), params);
+    body.start = buf;
+
+    DISCORD_REQ_INIT(req, discord_channel, ret);
+
+    return discord_adapter_run(&client->adapter, &req, &body, HTTP_POST,
+                               "/channels/%" PRIu64 "/threads", channel_id);
+}
+
+CCORDcode
+discord_join_thread(struct discord *client,
+                    u64snowflake channel_id,
+                    struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
+                               "/channels/%" PRIu64 "/thread-members/@me",
+                               channel_id);
+}
+
+CCORDcode
+discord_add_thread_member(struct discord *client,
+                          u64snowflake channel_id,
+                          u64snowflake user_id,
+                          struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_PUT,
+                               "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                               channel_id, user_id);
+}
+
+CCORDcode
+discord_leave_thread(struct discord *client,
+                     u64snowflake channel_id,
+                     struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/thread-members/@me",
+                               channel_id);
+}
+
+CCORDcode
+discord_remove_thread_member(struct discord *client,
+                             u64snowflake channel_id,
+                             u64snowflake user_id,
+                             struct discord_ret *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+    CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_BLANK_INIT(req, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_DELETE,
+                               "/channels/%" PRIu64 "/thread-members/" PRIu64,
+                               channel_id, user_id);
+}
+
+CCORDcode
+discord_list_thread_members(struct discord *client,
+                            u64snowflake channel_id,
+                            struct discord_ret_thread_members *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_LIST_INIT(req, discord_thread_members, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/thread-members",
+                               channel_id);
+}
+
+CCORDcode
+discord_list_active_threads(struct discord *client,
+                            u64snowflake channel_id,
+                            struct discord_ret_thread_response_body *ret)
+{
+    struct discord_request req = { 0 };
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64 "/threads/active",
+                               channel_id);
+}
+
+CCORDcode
+discord_list_public_archived_threads(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64unix_ms before,
+    int limit,
+    struct discord_ret_thread_response_body *ret)
+{
+    struct discord_request req = { 0 };
+    char query[1024] = "";
+    size_t offset = 0;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (before) {
+        offset += snprintf(query + offset, sizeof(query) - offset,
+                           "before=%" PRIu64, before);
+        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (limit) {
+        offset += snprintf(query + offset, sizeof(query) - offset,
+                           "%slimit=%d", *query ? "&" : "", limit);
+        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+
+    DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64
+                               "/threads/archived/public%s%s",
+                               channel_id, *query ? "?" : "", query);
+}
+
+CCORDcode
+discord_list_private_archived_threads(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64unix_ms before,
+    int limit,
+    struct discord_ret_thread_response_body *ret)
+{
+    struct discord_request req = { 0 };
+    char query[1024] = "";
+    size_t offset = 0;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (before) {
+        offset += snprintf(query + offset, sizeof(query) - offset,
+                           "before=%" PRIu64, before);
+        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (limit) {
+        offset += snprintf(query + offset, sizeof(query) - offset,
+                           "%slimit=%d", *query ? "&" : "", limit);
+        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+
+    DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64
+                               "/threads/archived/private%s%s",
+                               channel_id, *query ? "?" : "", query);
+}
+
+CCORDcode
+discord_list_joined_private_archived_threads(
+    struct discord *client,
+    u64snowflake channel_id,
+    u64unix_ms before,
+    int limit,
+    struct discord_ret_thread_response_body *ret)
+{
+    struct discord_request req = { 0 };
+    char query[1024] = "";
+    size_t offset = 0;
+
+    CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
+
+    if (before) {
+        offset += snprintf(query + offset, sizeof(query) - offset,
+                           "before=%" PRIu64, before);
+        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+    if (limit) {
+        offset += snprintf(query + offset, sizeof(query) - offset,
+                           "%slimit=%d", *query ? "&" : "", limit);
+        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+    }
+
+    DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
+
+    return discord_adapter_run(&client->adapter, &req, NULL, HTTP_GET,
+                               "/channels/%" PRIu64
+                               "/users/@me/threads/archived/private%s%s",
+                               channel_id, *query ? "?" : "", query);
+}
