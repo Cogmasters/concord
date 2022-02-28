@@ -1,3 +1,9 @@
+/**
+ * @file interaction.h
+ * @author Cogmasters
+ * @brief Interaciton public functions and datatypes
+ */
+
 #ifndef DISCORD_INTERACTION_H
 #define DISCORD_INTERACTION_H
 

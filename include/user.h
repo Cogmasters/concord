@@ -1,3 +1,9 @@
+/**
+ * @file user.h
+ * @author Cogmasters
+ * @brief User public functions and datatypes
+ */
+
 #ifndef DISCORD_USER_H
 #define DISCORD_USER_H
 

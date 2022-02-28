@@ -1,3 +1,9 @@
+/**
+ * @file invite.h
+ * @author Cogmasters
+ * @brief Invite public functions and datatypes
+ */
+
 #ifndef DISCORD_INVITE_H
 #define DISCORD_INVITE_H
 

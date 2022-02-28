@@ -1,3 +1,9 @@
+/**
+ * @file channel.h
+ * @author Cogmasters
+ * @brief Channel public functions and datatypes
+ */
+
 #ifndef DISCORD_CHANNEL_H
 #define DISCORD_CHANNEL_H
 

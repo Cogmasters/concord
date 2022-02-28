@@ -1,7 +1,8 @@
 /**
  * @file discord-templates.h
  * @author Cogmasters
- * @brief File containing datatypes generated via macro templates
+ * @brief Macro template for generating type-safe return handles for async
+ *      requests
  */
 
 #ifndef DISCORD_TEMPLATES_H

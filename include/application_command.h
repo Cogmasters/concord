@@ -1,3 +1,9 @@
+/**
+ * @file application_command.h
+ * @author Cogmasters
+ * @brief Application Command public functions and datatypes
+ */
+
 #ifndef DISCORD_APPLICATION_COMMAND_H
 #define DISCORD_APPLICATION_COMMAND_H
 

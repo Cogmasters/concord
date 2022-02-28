@@ -1,3 +1,9 @@
+/**
+ * @file discord-request.h
+ * @author Cogmasters
+ * @brief Generic macros for initializing a @ref discord_request
+ */
+
 #ifndef DISCORD_REQUEST_H
 #define DISCORD_REQUEST_H
 

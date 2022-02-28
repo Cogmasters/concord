@@ -1,7 +1,7 @@
 /**
  * @file discord.h
  * @author Cogmasters
- * @brief File containing public functions and datatypes
+ * @brief Public functions and datatypes
  *
  * These symbols are organized in a intuitive fashion to be easily
  *        matched to the official Discord API docs
@@ -204,8 +204,8 @@ void discord_reconnect(struct discord *client, bool resume);
  * @param client the client created with discord_init()
  * @param data user arbitrary data
  * @return pointer to user data
- * @warning the user should provide his own locking mechanism to protect
- *        his data from race conditions
+ * @warning the user should provide their own locking mechanism to protect
+ *        its data from race conditions
  */
 void *discord_set_data(struct discord *client, void *data);
 
@@ -214,8 +214,8 @@ void *discord_set_data(struct discord *client, void *data);
  *
  * @param client the client created with discord_init()
  * @return pointer to user data
- * @warning the user should provide his own locking mechanism to protect
- *        his data from race conditions
+ * @warning the user should provide their own locking mechanism to protect
+ *        its data from race conditions
  */
 void *discord_get_data(struct discord *client);
 

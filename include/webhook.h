@@ -1,3 +1,9 @@
+/**
+ * @file webhook.h
+ * @author Cogmasters
+ * @brief Webhook public functions and datatypes
+ */
+
 #ifndef DISCORD_WEBHOOK_H
 #define DISCORD_WEBHOOK_H
 

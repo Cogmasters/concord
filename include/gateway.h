@@ -1,3 +1,9 @@
+/**
+ * @file gateway.h
+ * @author Cogmasters
+ * @brief Gateway public functions and datatypes
+ */
+
 #ifndef DISCORD_GATEWAY_H
 #define DISCORD_GATEWAY_H
 

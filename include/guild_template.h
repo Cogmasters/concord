@@ -1,3 +1,9 @@
+/**
+ * @file guild_template.h
+ * @author Cogmasters
+ * @brief Guild Template public functions and datatypes
+ */
+
 #ifndef DISCORD_GUILD_TEMPLATE_H
 #define DISCORD_GUILD_TEMPLATE_H
 

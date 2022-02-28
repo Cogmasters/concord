@@ -1,3 +1,9 @@
+/**
+ * @file guild.h
+ * @author Cogmasters
+ * @brief Guild public functions and datatypes
+ */
+
 #ifndef DISCORD_GUILD_H
 #define DISCORD_GUILD_H
 

@@ -1,3 +1,9 @@
+/**
+ * @file audit_log.h
+ * @author Cogmasters
+ * @brief Audit Log public functions and datatypes
+ */
+
 #ifndef DISCORD_AUDIT_LOG
 #define DISCORD_AUDIT_LOG
 

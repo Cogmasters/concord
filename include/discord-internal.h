@@ -1,7 +1,7 @@
 /**
  * @file discord-internal.h
  * @author Cogmasters
- * @brief File containing internal functions and datatypes
+ * @brief Internal functions and datatypes
  */
 
 #ifndef DISCORD_INTERNAL_H

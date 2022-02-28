@@ -1,3 +1,9 @@
+/**
+ * @file emoji.h
+ * @author Cogmasters
+ * @brief Emoji public functions and datatypes
+ */
+
 #ifndef DISCORD_EMOJI_H
 #define DISCORD_EMOJI_H
 

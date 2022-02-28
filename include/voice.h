@@ -1,3 +1,9 @@
+/**
+ * @file voice.h
+ * @author Cogmasters
+ * @brief Voice public functions and datatypes
+ */
+
 #ifndef DISCORD_VOICE_H
 #define DISCORD_VOICE_H
 
