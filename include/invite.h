@@ -7,6 +7,9 @@
 #ifndef DISCORD_INVITE_H
 #define DISCORD_INVITE_H
 
+DISCORDT_RETURN(invite);
+DISCORDT_RETURN(invites);
+
 /**
  * @brief Get an invite for the given code
  *

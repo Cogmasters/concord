@@ -7,6 +7,17 @@
 #ifndef DISCORD_GUILD_H
 #define DISCORD_GUILD_H
 
+DISCORDT_RETURN(guild);
+DISCORDT_RETURN(guilds);
+DISCORDT_RETURN(guild_preview);
+DISCORDT_RETURN(guild_member);
+DISCORDT_RETURN(guild_members);
+DISCORDT_RETURN(ban);
+DISCORDT_RETURN(bans);
+DISCORDT_RETURN(role);
+DISCORDT_RETURN(roles);
+DISCORDT_RETURN(welcome_screen);
+
 /**
  * @brief Create a new guild
  * @note Fires a `Guild Create` event

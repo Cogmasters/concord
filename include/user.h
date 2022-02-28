@@ -7,6 +7,10 @@
 #ifndef DISCORD_USER_H
 #define DISCORD_USER_H
 
+DISCORDT_RETURN(user);
+DISCORDT_RETURN(users);
+DISCORDT_RETURN(connections);
+
 /**
  * @brief Get client's user
  *

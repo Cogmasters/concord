@@ -7,6 +7,9 @@
 #ifndef DISCORD_WEBHOOK_H
 #define DISCORD_WEBHOOK_H
 
+DISCORDT_RETURN(webhook);
+DISCORDT_RETURN(webhooks);
+
 /** @defgroup DiscordLimitsWebhook
  * @note assume the worst-case scenario for strings, where each character is 4
  *        bytes long (UTF8)

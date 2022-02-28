@@ -7,6 +7,8 @@
 #ifndef DISCORD_VOICE_H
 #define DISCORD_VOICE_H
 
+DISCORDT_RETURN(voice_regions);
+
 /**
  * @brief Get voice regions that can be used when setting a
  *        voice or stage channel's `rtc_region`

@@ -7,6 +7,18 @@
 #ifndef DISCORD_CHANNEL_H
 #define DISCORD_CHANNEL_H
 
+/* forward declaration */
+struct discord_ret_users;
+/**/
+
+DISCORDT_RETURN(channel);
+DISCORDT_RETURN(channels);
+DISCORDT_RETURN(message);
+DISCORDT_RETURN(messages);
+DISCORDT_RETURN(followed_channel);
+DISCORDT_RETURN(thread_members);
+DISCORDT_RETURN(thread_response_body);
+
 /** @defgroup DiscordLimitsEmbed
  * @note assume the worst-case scenario for strings, where each character is 4
  *        bytes long (UTF8)

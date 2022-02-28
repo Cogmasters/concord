@@ -7,6 +7,12 @@
 #ifndef DISCORD_APPLICATION_COMMAND_H
 #define DISCORD_APPLICATION_COMMAND_H
 
+DISCORDT_RETURN(application_command);
+DISCORDT_RETURN(application_commands);
+DISCORDT_RETURN(application_command_permission);
+DISCORDT_RETURN(application_command_permissions);
+DISCORDT_RETURN(guild_application_command_permissions);
+
 /**
  * @brief Fetch all of the global commands for your application
  *

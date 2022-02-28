@@ -7,6 +7,8 @@
 #ifndef DISCORD_GUILD_TEMPLATE_H
 #define DISCORD_GUILD_TEMPLATE_H
 
+DISCORDT_RETURN(guild_template);
+
 /**
  * @brief Get a guild template for the given code
  *

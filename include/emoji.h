@@ -7,6 +7,9 @@
 #ifndef DISCORD_EMOJI_H
 #define DISCORD_EMOJI_H
 
+DISCORDT_RETURN(emoji);
+DISCORDT_RETURN(emojis);
+
 /**
  * @brief Get emojis of a given guild
  *

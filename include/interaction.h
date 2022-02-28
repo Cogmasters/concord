@@ -7,6 +7,8 @@
 #ifndef DISCORD_INTERACTION_H
 #define DISCORD_INTERACTION_H
 
+DISCORDT_RETURN(interaction_response);
+
 /**
  * @brief Create a response to an Interaction from the gateway
  *

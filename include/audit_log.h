@@ -7,6 +7,8 @@
 #ifndef DISCORD_AUDIT_LOG
 #define DISCORD_AUDIT_LOG
 
+DISCORDT_RETURN(audit_log);
+
 /**
  * @brief Get audit log for a given guild
  *

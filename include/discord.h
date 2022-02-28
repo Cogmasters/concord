@@ -29,18 +29,30 @@ struct discord;
 #endif /* HAS_DISCORD_VOICE */
 #include "discord-templates.h"
 
-#include "application_command.h"
-#include "interaction.h"
+/** @brief Request's return context */
+struct discord_ret {
+    /** optional callback to be executed on a successful request */
+    void (*done)(struct discord *client, void *data);
+    DISCORDT_RET_DEFAULT_FIELDS;
+    /** if `true`, request will block the thread and perform on-spot */
+    bool sync;
+};
+
+/** @brief flag for enabling `sync` mode without expecting a datatype return */
+#define DISCORD_SYNC_FLAG ((void *)-1)
+
 #include "audit_log.h"
+#include "invite.h"
 #include "channel.h"
 #include "emoji.h"
-#include "gateway.h"
 #include "guild.h"
 #include "guild_template.h"
-#include "invite.h"
 #include "user.h"
 #include "voice.h"
 #include "webhook.h"
+#include "application_command.h"
+#include "interaction.h"
+#include "gateway.h"
 
 /** @defgroup DiscordLimitsSnowflake
  *  @{ */
