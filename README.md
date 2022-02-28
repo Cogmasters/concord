@@ -202,13 +202,8 @@ Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
 
 All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
 
-## Links
+## Getting Started
 
 - [Documentation](https://cogmasters.github.io/concord/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
-- [Contributing Guidelines](docs/CONTRIBUTING.md)
-- [Internals](docs/INTERNALS.md)
-- [Project Outline](docs/PROJECT_OUTLINE.md)
-
-**Give us a star if you like this project!**
