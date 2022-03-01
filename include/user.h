@@ -7,8 +7,6 @@
 #ifndef DISCORD_USER_H
 #define DISCORD_USER_H
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordAPIUser User API
  *   @ingroup DiscordAPI
  *   @brief User's public API supported by Concord

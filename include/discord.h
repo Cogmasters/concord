@@ -30,6 +30,7 @@ struct discord;
 #ifdef HAS_DISCORD_VOICE
 #include "discord-voice.h"
 #endif /* HAS_DISCORD_VOICE */
+#include "discord-templates.h"
 
 /** @defgroup DiscordConstants Constants
  * @brief Macros for constants defined by Discord

@@ -7,8 +7,6 @@
 #ifndef DISCORD_INTERACTION_H
 #define DISCORD_INTERACTION_H
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordAPIInteractionsReact Receiving and sending
  *   @ingroup DiscordAPIInteractions
  *   @brief Receiving and sending interactions

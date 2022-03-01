@@ -7,8 +7,6 @@
 #ifndef DISCORD_WEBHOOK_H
 #define DISCORD_WEBHOOK_H
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordConstantsWebhook Webhook lengths
  * @ingroup DiscordConstants
  * @brief Max length for embed fields

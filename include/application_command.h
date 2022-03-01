@@ -7,8 +7,6 @@
 #ifndef DISCORD_APPLICATION_COMMAND_H
 #define DISCORD_APPLICATION_COMMAND_H
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordAPIInteractionsApplicationCommand Slash commands
  *   @ingroup DiscordAPIInteractions
  *   @brief Receiving and registering slash commands

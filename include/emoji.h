@@ -7,8 +7,6 @@
 #ifndef DISCORD_EMOJI_H
 #define DISCORD_EMOJI_H
 
-#include "discord-templates.h"
-
 DISCORDT_RETURN(emoji);
 DISCORDT_RETURN(emojis);
 

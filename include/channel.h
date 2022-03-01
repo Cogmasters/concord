@@ -7,8 +7,6 @@
 #ifndef DISCORD_CHANNEL_H
 #define DISCORD_CHANNEL_H
 
-#include "discord-templates.h"
-
 /* forward declaration */
 struct discord_ret_users;
 /**/

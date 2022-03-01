@@ -7,8 +7,6 @@
 #ifndef DISCORD_AUDIT_LOG
 #define DISCORD_AUDIT_LOG
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordAPIAuditLog Audit Log API
  *   @ingroup DiscordAPI
  *   @brief Audit Log's public API supported by Concord

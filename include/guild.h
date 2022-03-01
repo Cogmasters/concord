@@ -7,8 +7,6 @@
 #ifndef DISCORD_GUILD_H
 #define DISCORD_GUILD_H
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordAPIGuild Guild API
  *   @ingroup DiscordAPI
  *   @brief Guild's public API supported by Concord

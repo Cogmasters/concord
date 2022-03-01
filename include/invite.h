@@ -7,8 +7,6 @@
 #ifndef DISCORD_INVITE_H
 #define DISCORD_INVITE_H
 
-#include "discord-templates.h"
-
 /** @defgroup DiscordAPIInvite Invite API
  *   @ingroup DiscordAPI
  *   @brief Invite's public API supported by Concord
