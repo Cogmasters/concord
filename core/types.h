@@ -4,7 +4,7 @@
 #define CONCORD_TYPES_H
 
 /** @defgroup ConcordTypes Primitives
- *  @brief Commonly used datatypes across various APIs
+ *  @brief Commonly used datatypes
  *
  *  @note these datatypes are typedefs of C primitives,
  *          its purpose is to facilitate identification
@@ -13,6 +13,8 @@
 
 /**
  * @brief Unix time in milliseconds
+ *
+ * Commonly used for fields that may store timestamps
  */
 typedef uint64_t u64unix_ms;
 /**
