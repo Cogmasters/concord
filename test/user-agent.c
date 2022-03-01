@@ -20,8 +20,6 @@ commit(char *base_url, struct logconf *conf)
     struct ua_conn_attr conn_attr = { 0 };
     struct ua_info info = { 0 };
 
-    ccord_global_init();
-
     /* base url */
     ua_attr.conf = conf;
     ua = ua_init(&ua_attr);
@@ -48,8 +46,6 @@ commit(char *base_url, struct logconf *conf)
     conn_attr.method = HTTP_DELETE;
     conn_attr.endpoint = "/echo?m=DELETE";
     ua_easy_run(ua, &info, &handle, &conn_attr);
-
-    ccord_global_cleanup();
 
     return 0;
 }
