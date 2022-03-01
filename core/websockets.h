@@ -11,7 +11,7 @@ extern "C" {
 
 #include <curl/curl.h>
 
-#include "common.h" /* CCORDcode */
+#include "error.h" /* CCORDcode */
 #include "logconf.h" /* logging facilities */
 
 /**

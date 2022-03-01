@@ -1,7 +1,8 @@
 /**
  * @file discord-templates.h
  * @author Cogmasters
- * @brief File containing datatypes generated via macro templates
+ * @brief Macro template for generating type-safe return handles for async
+ *      requests
  */
 
 #ifndef DISCORD_TEMPLATES_H
@@ -38,5 +39,17 @@
            unless enabled with @ref DISCORD_SYNC_FLAG */                      \
         struct discord_##_type *sync;                                         \
     }
+
+/** @brief Request's return context */
+struct discord_ret {
+    /** optional callback to be executed on a successful request */
+    void (*done)(struct discord *client, void *data);
+    DISCORDT_RET_DEFAULT_FIELDS;
+    /** if `true`, request will block the thread and perform on-spot */
+    bool sync;
+};
+
+/** @brief flag for enabling `sync` mode without expecting a datatype return */
+#define DISCORD_SYNC_FLAG ((void *)-1)
 
 #endif /* DISCORD_TEMPLATES_H */

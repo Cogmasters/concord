@@ -1,8 +1,7 @@
 /**
  * @file discord-voice.h
  * @author Cogmasters
- * @brief File containing internal functions and datatypes for Voice
- *        Connections
+ * @brief Internal functions and datatypes for Voice Connections
  */
 
 #ifndef DISCORD_VOICE_H
