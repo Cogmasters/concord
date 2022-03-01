@@ -511,7 +511,7 @@ ws_set_url(struct websockets *ws,
 
     pthread_mutex_lock(&ws->lock);
 
-    if (!ws->base_url || !*ws->base_url)
+    if (!*ws->base_url)
         logconf_debug(&ws->conf, "Websockets new URL: %s", base_url);
     else
         logconf_debug(&ws->conf,
