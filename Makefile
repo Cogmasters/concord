@@ -112,7 +112,8 @@ docs: | $(CCORDDOCS_DIR)
 
 $(CCORDDOCS_DIR):
 	git clone https://github.com/cogmasters/concord-docs $@
-	@ cp $@/Doxyfile Doxyfile
+	@ cp $@/Doxyfile .
+	@ mv $@/doxygen-awesome-css .
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
