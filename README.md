@@ -207,3 +207,7 @@ All kinds of contributions are welcome, all we ask is to abide to our [guideline
 - [Documentation](https://cogmasters.github.io/concord/)
 - [Building your first bot](docs/BUILDING_A_BOT.md)
 - [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
+
+## Useful links
+
+- [Migrating from Orca](https://gist.github.com/lcsmuller/a5f2b205c3871888656b86825db90187)
