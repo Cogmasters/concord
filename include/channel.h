@@ -13,8 +13,9 @@
 struct discord_ret_users;
 /**/
 
-/** @defgroup DiscordLimitsEmbed Threshold length for embed string fields
- * @ingroup DiscordLimits
+/** @defgroup DiscordConstantsEmbed Embed lengths
+ * @ingroup DiscordConstants
+ * @brief Max length for embed fields
  *  @{ */
 #define DISCORD_EMBED_TITLE_LEN       4 * 256 + 1
 #define DISCORD_EMBED_DESCRIPTION_LEN 4 * 2048 + 1
@@ -23,7 +24,7 @@ struct discord_ret_users;
 #define DISCORD_EMBED_FIELD_VALUE_LEN 4 * 1024 + 1
 #define DISCORD_EMBED_FOOTER_TEXT_LEN 4 * 2048 + 1
 #define DISCORD_EMBED_AUTHOR_NAME_LEN 4 * 256 + 1
-/** @} */
+/** @} DiscordConstantsEmbed */
 
 /** @defgroup DiscordAPIChannel Channel API
  *   @ingroup DiscordAPI

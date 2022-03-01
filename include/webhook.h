@@ -9,11 +9,12 @@
 
 #include "discord-templates.h"
 
-/** @defgroup DiscordLimitsWebhook Threshold length for webhook string fields
- * @ingroup DiscordLimits
+/** @defgroup DiscordConstantsWebhook Webhook lengths
+ * @ingroup DiscordConstants
+ * @brief Max length for embed fields
  *  @{ */
 #define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
-/** @} DiscordLimitsWebhook */
+/** @} DiscordConstantsWebhook */
 
 /** @defgroup DiscordAPIWebhook Webhook API
  *   @ingroup DiscordAPI

@@ -31,13 +31,13 @@ struct discord;
 #include "discord-voice.h"
 #endif /* HAS_DISCORD_VOICE */
 
-/** @defgroup DiscordLimits Discord macros for size limits
- * @brief Macros for threshold size limits expected by Discord in some of its
- *      fields
+/** @defgroup DiscordConstants Constants
+ * @brief Macros for constants defined by Discord
  * @note macros assume the worst-case scenario for strings, where each
  *      character is 4 bytes long (UTF8)
  *  @{ */
-/** @defgroup DiscordLimitsGeneral Threshold length for string fields
+/** @defgroup DiscordConstantsGeneral General lengths
+ * @brief Max length for general fields
  *  @{ */
 #define DISCORD_MAX_NAME_LEN          4 * 100 + 1
 #define DISCORD_MAX_TOPIC_LEN         4 * 1024 + 1
@@ -47,8 +47,8 @@ struct discord;
 #define DISCORD_MAX_REASON_LEN        4 * 512 + 1
 #define DISCORD_MAX_MESSAGE_LEN       4 * 2000 + 1
 #define DISCORD_MAX_PAYLOAD_LEN       4 * 4096 + 1
-/** @} DiscordLimitsGeneral */
-/** @} DiscordLimits */
+/** @} DiscordConstantsGeneral */
+/** @} DiscordConstants */
 
 /** @addtogroup ConcordError 
  *  @{ */
