@@ -1,13 +1,15 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="536" alt="Concord" /></a>
+    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="250" alt="Concord" /></a>
   </p>
   <br />
   <p>
     <br> <a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&logo=discord&logoColor=white" alt="Discord server" /></a> </br>
   </p>
 </div>
+
+## Concord 1.0.0
 
 ## About
 
@@ -17,26 +19,23 @@ Concord's implementation has minimum external dependencies to make bot deploymen
 ### Minimal example
 
 ```c
-#include <string.h> // strcmp()
+#include <string.h>
 #include <concord/discord.h>
 
-void on_ready(struct discord *client) 
-{
+void on_ready(struct discord *client) {
   const struct discord_user *bot = discord_get_self(client);
   log_info("Logged in as %s!", bot->username);
 }
 
-void on_message(struct discord *client, const struct discord_message *msg)
-{
+void on_message(struct discord *client, const struct discord_message *msg) {
   if (strcmp(msg->content, "ping") != 0)
-    return; // ignore messages that aren't 'ping'
+    return; /* ignore messages that aren't 'ping' */
 
   struct discord_create_message params = { .content = "pong" };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-int main(void)
-{
+int main(void) {
   struct discord *client = discord_init(BOT_TOKEN);
   discord_set_on_ready(client, &on_ready);
   discord_set_on_message_create(client, &on_message);
@@ -51,27 +50,40 @@ int main(void)
 
 * Install **Cygwin**
 * **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
+* You will want to check the Windows tutorial in the `docs` folder here!
 
-### On Linux
+### On Linux, BSD, and Mac OS X
 
-The only dependency is `curl-7.4.1` or higher
+The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl from source, you will need to build it with SSL support.
 
 #### Ubuntu and Debian
 
 ```bash
-sudo apt install -y build-essential libcurl4-openssl-dev
+$ sudo apt install -y build-essential libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```bash
-sudo xbps-install -S libcurl-devel
+$ sudo xbps-install -S libcurl-devel
 ```
 
 #### Alpine
 
 ```bash
-sudo apk add curl-dev
+$ sudo apk add curl-dev
+```
+
+#### FreeBSD
+
+```bash
+$ pkg install curl
+```
+
+#### OS X
+```bash
+$ brew install curl (Homebrew)
+$ port install curl (MacPorts)
 ```
 ### Setting up your environment
 
@@ -85,6 +97,21 @@ $ git clone https://github.com/cogmasters/concord.git && cd concord
 
 ```bash
 $ make
+```
+
+#### Special notes for non-Linux systems
+You might run into trouble with the compiler and linker not finding your Curl headers. You can do something like this:
+```bash
+$ CFLAGS=-I<some_path> LDFLAGS=-L<some_path> make
+```
+For instance, on a FreeBSD system:
+```bash
+$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make
+```
+
+On OS X using MacPorts:
+```bash
+$ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make
 ```
 
 ### Configuring Concord
@@ -136,17 +163,23 @@ Type a message in any channel the bot is part of and the bot should send an exac
 
 #### Terminate Copycat-Bot
 
-With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
+With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Control</kbd>+<kbd>|</kbd>
 
 ## Installing Concord
 
 ```bash
-sudo make install
+# make install
 ```
+(note -- `#` means that you should be running as root)
 
 Included headers must be `concord/` prefixed:
 ```c
 #include <concord/discord.h>
+```
+
+This will install the headers and libary files into $PREFIX. You can override this as such:
+```bash
+# PREFIX=/opt/concord make install
 ```
 
 ### Standalone executable
@@ -162,6 +195,17 @@ $ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
 ```bash
 $ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
+
+#### UNIX C compiler
+```bash
+$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread
+```
+
+Note: some systems such as **Cygwin** require you to do this:
+```bash
+$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl
+```
+(this links against libpthread.a in `/usr/lib`)
 
 ## Recommended debuggers
 

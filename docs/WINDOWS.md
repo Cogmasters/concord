@@ -8,12 +8,12 @@ Concord does not have very many dependencies. When you run the Cygwin installer,
 - gcc-core
 - make
 - libcurl-devel
-You might also want to install git and vim. Please note that because Cygwin stores its files on your Windows machine's filesystem, you can run `explorer.exe .` anytime to open a Windows Explorer window in your current directory. You can use any IDE you would like to use, but you will most likely still have to enter `make` to recompile your changes from the Cygwin terminal.
+You might also want to install git and vim. Please note that because Cygwin stores its files on your Windows machine's filesystem, you can run `explorer.exe .` anytime to open a Windows Explorer window in your current directory. You can use any IDE you would like to use, but you will still have to enter `make` to recompile your changes from the Cygwin terminal.
 
-It is also possible to use a clang-based compiler, but there is little reason to do so.
+It is also possible to use a clang-based compiler, but there is little reason to do so. Simply pass `CC=clang make` to your Cygwin shell and Clang will be used in lieu of GNU C.
 
 ## Microsoft Visual C/C++
-As it stands right now, MSVC is not supported at all. 
+As it stands right now, MSVC is not supported at all. At the current instant, Concord's Makefiles require a GNU Make. This will change in the near future.
 
 ## Other compilers
 The following compilers are **not** supported:
@@ -22,6 +22,6 @@ The following compilers are **not** supported:
 - Pelles C
 - Digital Mars
 - Intel C++
-- AMD Optimizing C++ (Clang-based, but untested)
+- AMD Optimizing C++ (Clang-based, untested)
 
-Generally speaking, the compiler that you use must implement the GNU extensions. This is likely to change in the future, however.
+Generally speaking, your compiler must implement C99 features. The compilers listed above don't support C99 completely.
