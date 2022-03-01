@@ -11,7 +11,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Install Doxygen-1.9.3
         run: |
@@ -23,12 +26,12 @@ jobs:
           wget https://www.doxygen.nl/files/doxygen-1.9.3.linux.bin.tar.gz
           echo "Extract files from tar file"
           tar -xvf doxygen-1.9.3.linux.bin.tar.gz
+          sudo mv doxygen-1.9.3/bin/doxygen .
 
       - name: Doxygen Action
         run: |
-          echo "Preparing files for documentation"
+          echo "Preparing gencodecs files for documentation"
           make docs
-          sudo mv doxygen-1.9.3/bin/doxygen .
           echo "Generating HTML output"
           ./doxygen
 
