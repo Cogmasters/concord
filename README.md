@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord-docs/master/docs/source/images/logo.svg" width="536" alt="Concord" style="background-color:red;" /></a>
+    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" width="536" alt="Concord" /></a>
   </p>
   <br />
   <p>
@@ -31,8 +31,7 @@ void on_message(struct discord *client, const struct discord_message *msg)
   if (strcmp(msg->content, "ping") != 0)
     return; // ignore messages that aren't 'ping'
 
-  discord_async_next(client, NULL); // make next request non-blocking (OPTIONAL)
-  struct discord_create_message_params params = { .content = "pong" };
+  struct discord_create_message params = { .content = "pong" };
   discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
@@ -60,13 +59,19 @@ The only dependency is `curl-7.4.1` or higher
 #### Ubuntu and Debian
 
 ```bash
-$ sudo apt install -y build-essential libcurl4-openssl-dev
+sudo apt install -y build-essential libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
 ```bash
-$ sudo xbps-install -S libcurl-devel
+sudo xbps-install -S libcurl-devel
+```
+
+#### Alpine
+
+```bash
+sudo apk add curl-dev
 ```
 ### Setting up your environment
 
@@ -89,21 +94,21 @@ The following outlines the default fields of `config.json`
 {
   "logging": { // logging directives
     "level": "trace",        // trace, debug, info, warn, error, fatal
-    "filename": "bot.log",   // the output file
+    "filename": "bot.log",   // the log output file
     "quiet": false,          // change to true to disable logs in console
-    "overwrite": false,      // overwrite existing file with "filename"
-    "use_color": true,       // log with color
+    "overwrite": true,       // overwrite file if already exists, append otherwise
+    "use_color": true,       // display color for log entries
     "http": {
       "enable": true,        // generate http specific logging
-      "filename": "http.log" // the output file
+      "filename": "http.log" // the HTTP log output file
     },
     "disable_modules": ["WEBSOCKETS", "USER_AGENT"] // disable logging for these modules
   },
   "discord": { // discord directives
-    "token": "YOUR-BOT-TOKEN",          // replace with your bot token
+    "token": "YOUR-BOT-TOKEN",         // replace with your bot token
     "default_prefix": {                 
-      "enable": false,                  // enable default command prefix
-      "prefix": "YOUR-COMMANDS-PREFIX"  // replace with your prefix
+      "enable": false,                 // enable default command prefix
+      "prefix": "YOUR-COMMANDS-PREFIX" // replace with your prefix
     }
   }
 }
@@ -133,16 +138,10 @@ Type a message in any channel the bot is part of and the bot should send an exac
 
 With <kbd>Ctrl</kbd>+<kbd>c</kbd> or by closing the Terminal.
 
-### Create your first bot
-
-* Head to `my_bot/`, a special folder set-up for your convenience that may be modified freely.
-* Read our guide for [building your first bot](docs/BUILDING_A_BOT.md).
-
 ## Installing Concord
 
-Concord can be installed in case developing inside of `my_bot/` doesn't suit your needs:
 ```bash
-$ sudo make install
+sudo make install
 ```
 
 Included headers must be `concord/` prefixed:
@@ -152,7 +151,7 @@ Included headers must be `concord/` prefixed:
 
 ### Standalone executable
 
-#### GCC (Recommended)
+#### GCC 
 
 ```bash
 $ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
@@ -173,7 +172,7 @@ First, make sure your executable is compiled with the `-g` flag to ensure human-
 Using valgrind to check for memory leaks:
 
 ```bash
-$ valgrind --leak-check=full ./myBot
+valgrind --leak-check=full ./myBot
 ```
 For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
 
@@ -199,13 +198,16 @@ For a more comprehensive guide check [Beej's Quick Guide to GDB](https://beej.us
 
 Problems? Check out our [Discord Server](https://discord.gg/Y7Xa6MA82v).
 
-## Links
-
-- [Building your first bot](docs/BUILDING_A_BOT.md)
-- [Contributing](docs/CONTRIBUTING.md)
-- [Internals](docs/INTERNALS.md)
-
 ## Contributing
-Check our [Contributing Guidelines](docs/CONTRIBUTING.md) to get started! If you are here for the Discord API, please check our [Discord API Roadmap](docs/DISCORD_ROADMAP.md).
 
-**Give us a star if you like this project!**
+All kinds of contributions are welcome, all we ask is to abide to our [guidelines](docs/CONTRIBUTING.md)! If you want to help but is unsure where to get started then our [Discord API Roadmap](docs/DISCORD_ROADMAP.md) is a good starting point. Check our [links](#links) for more helpful information.
+
+## Getting Started
+
+- [Documentation](https://cogmasters.github.io/concord/)
+- [Building your first bot](docs/BUILDING_A_BOT.md)
+- [Discord API Roadmap](docs/DISCORD_ROADMAP.md)
+
+## Useful links
+
+- [Migrating from Orca](https://gist.github.com/lcsmuller/a5f2b205c3871888656b86825db90187)

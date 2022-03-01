@@ -11,26 +11,29 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-      - name: Dependencies
+      - name: Install Doxygen-1.9.3
         run: |
-          echo "Preparing files for documentation"
-          make docs
-          echo "Install Sphinx"
-          pip install sphinx
-          pip install pydata_sphinx_theme
-          echo "Install Breathe"
-          pip install breathe
+          echo "Install wget"
+          sudo apt install wget
+          echo "Install graphviz"
+          sudo apt install graphviz
+          echo "Fetching binary distribution"
+          wget https://www.doxygen.nl/files/doxygen-1.9.3.linux.bin.tar.gz
+          echo "Extract files from tar file"
+          tar -xvf doxygen-1.9.3.linux.bin.tar.gz
+          sudo mv doxygen-1.9.3/bin/doxygen .
 
       - name: Doxygen Action
-        uses: mattnotmitt/doxygen-action@v1.3.1
-
-      - name: Move XML to Concord-Docs
-        run: sudo mv docs/xml concord-docs/docs
-
-      - name: Breathe Action
-        run: make -C concord-docs/docs html
+        run: |
+          echo "Preparing gencodecs files for documentation"
+          make docs
+          echo "Generating HTML output"
+          ./doxygen
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3.7.3
@@ -38,4 +41,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: ./concord-docs/docs/build/html
+          publish_dir: ./docs/html

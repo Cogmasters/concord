@@ -4,14 +4,14 @@ TOP = ..
 CC ?= gcc
 
 COGUTILS_DIR := $(TOP)/cog-utils
-COMMON_DIR   := $(TOP)/common
+CORE_DIR     := $(TOP)/core
 INCLUDE_DIR  := $(TOP)/include
+GENCODECS_DIR  := $(TOP)/gencodecs
 
 BOTS := audit-log \
         ban \
         channel \
         components \
-        delete-messages \
         copycat \
         embed \
         emoji \
@@ -27,15 +27,19 @@ BOTS := audit-log \
         shell \
         slash-commands \
         slash-commands2 \
-        voice \
-        webhook
+        spam \
+        webhook \
+        $(XSRC)
 
-CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                        \
-           -O0 -g -pthread -Wall
+CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
+           -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
+           -O0 -g -pthread -Wall $(XFLAGS)
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 
 all: $(BOTS)
+
+voice:
+	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=voice all
 
 $(BOTS): %: %.c
 	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)

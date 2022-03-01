@@ -10,9 +10,7 @@ obj
 lib
 *.log
 concord-docs
-Doxyfile
 *.db
 *.swp
-cog-utils
 src/specs-code
-include/one-specs.h
+include/discord-specs.h

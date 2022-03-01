@@ -1,8 +1,8 @@
-# Work in Progress
+# Internals (WIP)
 
 **This guide is currently incomplete**
 
-# Introduction
+## Introduction
 
 If you are interested in contributing with more than just coding, you found the 
 right place! The ultimate goal is to help you understand how Concord works internally, 
@@ -21,16 +21,17 @@ documentation may be confusing to new potential contributors when searching for
 certain things. This section aims to assist you with understanding each of the 
 major folders and files.
 
-## Concord Specs
+## Gencodecs
 
 Wrapping an API object in C can quickly get overwhelming and repetitive, considering 
 one have to address many things modern languages would take for granted, such as the 
-encoding or decoding of an object with JSON. For this purpose we created our own specs
+encoding or decoding of an object with JSON. For this purpose we created our own tool
 for wrapping and generating API objects.
 
-- `specs/`: This is the folder we write our specs for code-generation, it contains multiple
-  JSON templates that are parsed by `specs/main.c`. To generate code from scratch simply
-  run `make specs_gen`, the code will be placed inside of `src/specs-code/`.
+- `gencodecs/`: This is the folder we write our definitions for code-generation, it 
+    contains gencodecs macros that are fed to `gencodecs/Makefile`. To generate code
+    from scratch simply run `make gencodecs`, the code will be located at
+    `gencodecs/discord-codecs.h` and `gencodecs/discord-codecs.c`.
 
 ## Examples
 
@@ -45,10 +46,10 @@ The `src/` folder is where we place all of our Discord API wrapping logic.
 
 ## Common source-code
 
-The `common/` folder is where we place all of our generic logic, such as handling of the
+The `core/` folder is where we place all of Concord core's logic, such as handling of the
 WebSockets and REST protocols, threadpool management, etc.
 
-<!-- REWRITE FOR DISCORD
+<!-- REWRITE FOR DISCORD (outdated, should refer to gencodecs rather than specs for code generation)
 # Choosing an Endpoint
 
 Now that the boring reading stuff is out of the way, we can get to the fun
@@ -103,7 +104,7 @@ Next, we verify that the ``owner`` and ``repository`` strings are provided. Thes
 for extracting topics from the correct repository, and so we must not allow the function to
 run unless both are provided. Depending on the nature of the error, it may be desirable to
 return something other than ``CCORD_MISSING_PARAMETER``. However, for most purposes, this is
-fine. If there is a need for another error code, they can be found or added at ``common/types.h``.
+fine. If there is a need for another error code, they can be found or added at ``core/types.h``.
 
 When the function ends, we return ``CCORD_OK`` to signal that 'everything went well'.
 

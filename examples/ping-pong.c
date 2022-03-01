@@ -3,53 +3,63 @@
 
 #include "discord.h"
 
-void on_ready(struct discord *client)
+void
+print_usage(void)
 {
-  const struct discord_user *bot = discord_get_self(client);
-
-  log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
-           bot->username, bot->discriminator);
+    printf("\n\nThis bot demonstrates a simple ping-pong response.\n"
+           "1. Type 'pong' in chat\n"
+           "2. Type 'ping' in chat\n"
+           "\nTYPE ANY KEY TO START BOT\n");
 }
 
-void on_ping(struct discord *client, const struct discord_message *msg)
+void
+on_ready(struct discord *client)
 {
-  if (msg->author->bot) return;
+    const struct discord_user *bot = discord_get_self(client);
 
-  struct discord_create_message_params params = { .content = "pong" };
-  discord_create_message(client, msg->channel_id, &params, NULL);
+    log_info("PingPong-Bot succesfully connected to Discord as %s#%s!",
+             bot->username, bot->discriminator);
 }
 
-void on_pong(struct discord *client, const struct discord_message *msg)
+void
+on_ping(struct discord *client, const struct discord_message *msg)
 {
-  if (msg->author->bot) return;
+    if (msg->author->bot) return;
 
-  struct discord_create_message_params params = { .content = "ping" };
-  discord_create_message(client, msg->channel_id, &params, NULL);
+    struct discord_create_message params = { .content = "pong" };
+    discord_create_message(client, msg->channel_id, &params, NULL);
 }
 
-int main(int argc, char *argv[])
+void
+on_pong(struct discord *client, const struct discord_message *msg)
 {
-  const char *config_file;
-  if (argc > 1)
-    config_file = argv[1];
-  else
-    config_file = "../config.json";
+    if (msg->author->bot) return;
 
-  ccord_global_init();
-  struct discord *client = discord_config_init(config_file);
+    struct discord_create_message params = { .content = "ping" };
+    discord_create_message(client, msg->channel_id, &params, NULL);
+}
 
-  discord_set_on_ready(client, &on_ready);
-  discord_set_on_command(client, "ping", &on_ping);
-  discord_set_on_command(client, "pong", &on_pong);
+int
+main(int argc, char *argv[])
+{
+    const char *config_file;
+    if (argc > 1)
+        config_file = argv[1];
+    else
+        config_file = "../config.json";
 
-  printf("\n\nThis bot demonstrates a simple ping-pong response.\n"
-         "1. Type 'pong' in chat\n"
-         "2. Type 'ping' in chat\n"
-         "\nTYPE ANY KEY TO START BOT\n");
-  fgetc(stdin); // wait for input
+    ccord_global_init();
+    struct discord *client = discord_config_init(config_file);
 
-  discord_run(client);
+    discord_set_on_ready(client, &on_ready);
+    discord_set_on_command(client, "ping", &on_ping);
+    discord_set_on_command(client, "pong", &on_pong);
 
-  discord_cleanup(client);
-  ccord_global_cleanup();
+    print_usage();
+    fgetc(stdin); // wait for input
+
+    discord_run(client);
+
+    discord_cleanup(client);
+    ccord_global_cleanup();
 }

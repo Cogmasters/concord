@@ -1,12 +1,13 @@
 # Discord API Roadmap
+This document outlines the Discord API currently supported by Concord.
 
 ## Reference
-### [Authentication](https://discord.com/developers/docs/reference#authentication)
+### Authentication
 - [x] [Bot Token Authentication](https://discord.com/developers/docs/reference#authentication-example-bot-token-authorization-header)
 - [ ] [Bearer Token Authentication](https://discord.com/developers/docs/reference#authentication-example-bearer-token-authorization-header)
 
 ## Interactions
-### [Application Commands](https://discord.com/developers/docs/interactions/application-commands#application-commands)
+### Application Commands
 - [x] [Application Command Structure](https://discord.com/developers/docs/interactions/application-commands#application-command-object)
 - [x] [Application Command Types](https://discord.com/developers/docs/interactions/application-commands#application-command-types)
 - [x] [Application Command Option](https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure)
@@ -31,14 +32,14 @@
 - [x] [Get Application Command Permissions](https://discord.com/developers/docs/interactions/application-commands#get-application-command-permissions)
 - [x] [Edit Application Command Permissions](https://discord.com/developers/docs/interactions/application-commands#edit-application-command-permissions)
 - [x] [Batch Edit Application Command Permissions](https://discord.com/developers/docs/interactions/application-commands#batch-edit-application-command-permissions)
-### [Message Components](https://discord.com/developers/docs/interactions/message-components)
+### Message Components
 - [x] [Component Structure](https://discord.com/developers/docs/interactions/message-components#component-object-component-structure)
 - [x] [Component Types](https://discord.com/developers/docs/interactions/message-components#component-object-component-types)
 - [x] [Button Structure](https://discord.com/developers/docs/interactions/message-components#button-object-button-structure)
 - [x] [Button Styles](https://discord.com/developers/docs/interactions/message-components#button-object-button-styles)
 - [x] [Select Menu Structure](https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-menu-structure)
 - [x] [Select Option Structure](https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure)
-### [Receiving and Responding](https://discord.com/developers/docs/interactions/receiving-and-responding)
+### Receiving and Responding
 - [x] [Interaction Structure](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-structure)
 - [x] [Interaction Type](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type)
 - [x] [Interaction Data Structure](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-data-structure)
@@ -57,10 +58,10 @@
 - [x] [Delete Followup Message](https://discord.com/developers/docs/interactions/receiving-and-responding#delete-followup-message)
 
 ## Resources
-### [Application](https://discord.com/developers/docs/resources/application)
+### Application
 - [x] [Application Structure](https://discord.com/developers/docs/resources/application#application-object-application-structure)
 - [x] [Application Flags](https://discord.com/developers/docs/resources/application#application-object-application-flags)
-### [Audit Log](https://discord.com/developers/docs/resources/audit-log#audit-logs-resource)
+### Audit Log
 - [x] [Audit Log Structure](https://discord.com/developers/docs/resources/audit-log#audit-log-object)
 - [x] [Audit Log Entry Structure](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object)
 - [x] [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
@@ -68,7 +69,7 @@
 - [x] [Audit Log Change Structure](https://discord.com/developers/docs/resources/audit-log#audit-log-change-object)
 - [x] [Audit Log Change Key](https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key)
 - [x] [Get Guild Audit Log](https://discord.com/developers/docs/resources/audit-log#get-guild-audit-log)
-### [Channels](https://discord.com/developers/docs/resources/channel#channels-resource)
+### Channels
 - [x] [Channel Structure](https://discord.com/developers/docs/resources/channel#channel-object)
 - [x] [Channel Types](https://discord.com/developers/docs/resources/channel#channel-object-channel-types)
 - [x] [Message Structure](https://discord.com/developers/docs/resources/channel#message-object)
@@ -134,14 +135,14 @@
 - [x] [List Public Archived Threads](https://discord.com/developers/docs/resources/channel#list-public-archived-threads)
 - [x] [List Private Archived Threads](https://discord.com/developers/docs/resources/channel#list-private-archived-threads)
 - [x] [List Joined Private Arhived Threads](https://discord.com/developers/docs/resources/channel#list-joined-private-archived-threads)
-### [Emoji](https://discord.com/developers/docs/resources/emoji#emoji-resource)
+### Emoji
 - [x] [Emoji Structure](https://discord.com/developers/docs/resources/emoji#emoji-object)
 - [x] [List Guild Emojis](https://discord.com/developers/docs/resources/emoji#list-guild-emojis)
 - [x] [Get Guild Emoji](https://discord.com/developers/docs/resources/emoji#get-guild-emoji)
 - [x] [Create Guild Emoji](https://discord.com/developers/docs/resources/emoji#create-guild-emoji)
 - [x] [Modify Guild Emoji](https://discord.com/developers/docs/resources/emoji#modify-guild-emoji)
 - [x] [Delete Guild Emoji](https://discord.com/developers/docs/resources/emoji#delete-guild-emoji)
-### [Guild](https://discord.com/developers/docs/resources/guild#guild-resource)
+### Guild
 - [x] [Guild Structure](https://discord.com/developers/docs/resources/guild#guild-object)
 - [x] [Default Message Notification Level](https://discord.com/developers/docs/resources/guild#guild-object-default-message-notification-level)
 - [x] [Explicit Content Filter Level](https://discord.com/developers/docs/resources/guild#guild-object-explicit-content-filter-level)
@@ -195,7 +196,7 @@
 - [ ] [Get Guild Widget](https://discord.com/developers/docs/resources/guild#get-guild-widget)
 - [x] [Get Guild Vanity URL](https://discord.com/developers/docs/resources/guild#get-guild-vanity-url)
 - [ ] [Get Guild Widget Image](https://discord.com/developers/docs/resources/guild#get-guild-widget-image)
-### [Guild Template](https://discord.com/developers/docs/resources/guild-template#guild-template-resource)
+### Guild Template
 - [X] [Guild Template Structure](https://discord.com/developers/docs/resources/guild-template#guild-template-object)
 - [ ] [Get Guild Template](https://discord.com/developers/docs/resources/guild-template#get-guild-template)
 - [ ] [Create Guild from Guild Template](https://discord.com/developers/docs/resources/guild-template#create-guild-from-guild-template)
@@ -204,20 +205,20 @@
 - [ ] [Sync Guild Template](https://discord.com/developers/docs/resources/guild-template#sync-guild-template)
 - [ ] [Modify Guild Template](https://discord.com/developers/docs/resources/guild-template#modify-guild-template)
 - [ ] [Delete Guild Template](https://discord.com/developers/docs/resources/guild-template#delete-guild-template)
-### [Invite](https://discord.com/developers/docs/resources/invite#invite-resource)
+### Invite
 - [x] [Invite Structure](https://discord.com/developers/docs/resources/invite#invite-object)
 - [x] [Target User Types](https://discord.com/developers/docs/resources/invite#invite-object-target-user-types)
 - [x] [Invite Metadata Structure](https://discord.com/developers/docs/resources/invite#invite-metadata-object)
 - [x] [Get Invite](https://discord.com/developers/docs/resources/invite#get-invite)
 - [x] [Delete Invite](https://discord.com/developers/docs/resources/invite#delete-invite)
-### [Stage Instance](https://discord.com/developers/docs/resources/stage-instance)
+### Stage Instance
 - [ ] [Stage Instance Structure](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object-stage-instance-structure)
 - [ ] [Privacy Level](https://discord.com/developers/docs/resources/stage-instance#stage-instance-object-privacy-level)
 - [ ] [Create Stage Instance](https://discord.com/developers/docs/resources/stage-instance#create-stage-instance)
 - [ ] [Get Stage Instance](https://discord.com/developers/docs/resources/stage-instance#get-stage-instance)
 - [ ] [Modify Stage Instance](https://discord.com/developers/docs/resources/stage-instance#modify-stage-instance)
 - [ ] [Delete Stage Instance](https://discord.com/developers/docs/resources/stage-instance#delete-stage-instance)
-### [Sticker](https://discord.com/developers/docs/resources/sticker)
+### Sticker
 - [ ] [Sticker Structure](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-structure)
 - [ ] [Sticker Types](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types)
 - [ ] [Sticker Format Types](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types)
@@ -230,7 +231,7 @@
 - [ ] [Create Guild Sticker](https://discord.com/developers/docs/resources/sticker#create-guild-sticker)
 - [ ] [Modify Guild Sticker](https://discord.com/developers/docs/resources/sticker#modify-guild-sticker)
 - [ ] [Delete Guild Sticker](https://discord.com/developers/docs/resources/sticker#delete-guild-sticker)
-### [User](https://discord.com/developers/docs/resources/user#users-resource)
+### User
 - [x] [User Structure](https://discord.com/developers/docs/resources/user#user-object)
 - [x] [User Flags](https://discord.com/developers/docs/resources/user#user-object-user-flags)
 - [x] [Premium Types](https://discord.com/developers/docs/resources/user#user-object-premium-types)
@@ -244,11 +245,11 @@
 - [x] [Create DM](https://discord.com/developers/docs/resources/user#create-dm)
 - [x] [Create Group DM](https://discord.com/developers/docs/resources/user#create-group-dm)
 - [x] [Get User Connections](https://discord.com/developers/docs/resources/user#get-user-connections)
-### [Voice Resouce](https://discord.com/developers/docs/resources/voice#voice-resource)
+### Voice Resouce
 - [x] [Voice State Structure](https://discord.com/developers/docs/resources/voice#voice-state-object)
 - [x] [Voice Region Structure](https://discord.com/developers/docs/resources/voice#voice-region-object)
 - [x] [List Voice Regions](https://discord.com/developers/docs/resources/voice#list-voice-regions)
-### [Webhook](https://discord.com/developers/docs/resources/webhook#webhook-resource)
+### Webhook
 - [x] [Webhook Structure](https://discord.com/developers/docs/resources/webhook#webhook-object)
 - [x] [Webhook Types](https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types)
 - [x] [Create Webhook](https://discord.com/developers/docs/resources/webhook#create-webhook)
@@ -267,8 +268,8 @@
 - [x] [Delete Webhook Message](https://discord.com/developers/docs/resources/webhook#delete-webhook-message)
 
 ## Topics
-### [Certified Devices](https://discord.com/developers/docs/topics/certified-devices#certified-devices)
-### [Gateway](https://discord.com/developers/docs/topics/gateway)
+### Certified Devices
+### Gateway
 - [x] [Payloads](https://discord.com/developers/docs/topics/gateway#payloads)
 - [ ] [Encoding and Compression](https://discord.com/developers/docs/topics/gateway#encoding-and-compression)
 - [x] [Connecting to the Gateway](https://discord.com/developers/docs/topics/gateway#connecting-to-the-gateway)
@@ -305,20 +306,20 @@
 - [x] [Interactions](https://discord.com/developers/docs/topics/gateway#interactions)
 - [x] [Get Gateway](https://discord.com/developers/docs/topics/gateway#get-gateway)
 - [x] [Get Gateway Bot](https://discord.com/developers/docs/topics/gateway#get-gateway-bot)
-### [OAuth2](https://discord.com/developers/docs/topics/oauth2)
-### [Opcodes and Status Codes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#opcodes-and-status-codes)
+### OAuth2
+### Opcodes and Status Codes
 - [x] [Gateway Opcodes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-opcodes)
 - [x] [Gateway Close Event Codes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#gateway-gateway-close-event-codes)
 - [x] [Voice Opcodes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-opcodes)
 - [x] [Voice Close Event Codes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#voice-voice-close-event-codes)
 - [x] [HTTP Response Codes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#http-http-response-codes)
 - [x] [JSON Error Codes](https://discord.com/developers/docs/topics/opcodes-and-status-codes#json-json-error-codes)
-### [Permissions](https://discord.com/developers/docs/topics/permissions#permissions)
+### Permissions
 - [x] [Bitwise Permission Flags](https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags)
 - [x] [Role Structure](https://discord.com/developers/docs/topics/permissions#role-object)
 - [x] [Role Tags Structure](https://discord.com/developers/docs/topics/permissions#role-object-role-tags-structure)
-### [RPC](https://discord.com/developers/docs/topics/rpc#rpc)
-### [RateLimits](https://discord.com/developers/docs/topics/rate-limits)
+### RPC
+### RateLimits
 - [x] [Exceeding A Rate Limit](https://discord.com/developers/docs/topics/rate-limits#exceeding-a-rate-limit)
 - [x] [Invalid Request Limit](https://discord.com/developers/docs/topics/rate-limits#invalid-request-limit)
-### [Voice Connections](https://discord.com/developers/docs/topics/voice-connections#voice)
+### Voice Connections

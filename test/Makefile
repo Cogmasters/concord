@@ -3,17 +3,18 @@
 TOP = ..
 CC ?= gcc
 
-COGUTILS_DIR := $(TOP)/cog-utils
-COMMON_DIR   := $(TOP)/common
-INCLUDE_DIR  := $(TOP)/include
+COGUTILS_DIR  := $(TOP)/cog-utils
+CORE_DIR      := $(TOP)/core
+GENCODECS_DIR := $(TOP)/gencodecs
+INCLUDE_DIR   := $(TOP)/include
 
-TEST_DISCORD := discord-api discord-async discord-ws
-TEST_COMMON  := user-agent websockets
+TEST_DISCORD := discord-sync-rest discord-sync-ws discord-async discord-events
+TEST_CORE  := user-agent websockets
 
-EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_COMMON)
+EXES := $(TEST_DISCORD) $(TEST_GITHUB) $(TEST_CORE)
 
-CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(COMMON_DIR) \
-           -I$(COMMON_DIR)/third-party                        \
+CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
+           -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
            -O0 -g -pthread -Wall
 LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 
@@ -21,7 +22,7 @@ all: $(EXES)
 
 $(TEST_DISCORD): %: %.c
 	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)
-$(TEST_COMMON): %: %.c
+$(TEST_CORE): %: %.c
 	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)
 
 echo:
