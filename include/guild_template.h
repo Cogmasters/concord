@@ -7,12 +7,10 @@
 #ifndef DISCORD_GUILD_TEMPLATE_H
 #define DISCORD_GUILD_TEMPLATE_H
 
-/** @defgroup DiscordAPIGuildTemplate Guild Template API
- *   @ingroup DiscordAPI
- *   @brief Guild Template's public API supported by Concord
+/** @defgroup DiscordAPIGuildTemplate Guild Template
+ * @ingroup DiscordAPI
+ * @brief Guild Template's public API supported by Concord
  *  @{ */
-
-DISCORDT_RETURN(guild_template);
 
 /**
  * @brief Get a guild template for the given code

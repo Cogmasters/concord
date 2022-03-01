@@ -37,6 +37,7 @@ struct discord;
  * @note macros assume the worst-case scenario for strings, where each
  *      character is 4 bytes long (UTF8)
  *  @{ */
+
 /** @defgroup DiscordConstantsGeneral General lengths
  * @brief Max length for general fields
  *  @{ */
@@ -49,9 +50,28 @@ struct discord;
 #define DISCORD_MAX_MESSAGE_LEN       4 * 2000 + 1
 #define DISCORD_MAX_PAYLOAD_LEN       4 * 4096 + 1
 /** @} DiscordConstantsGeneral */
+
+/** @defgroup DiscordConstantsEmbed Embed lengths
+ * @brief Max length for embed fields
+ *  @{ */
+#define DISCORD_EMBED_TITLE_LEN       4 * 256 + 1
+#define DISCORD_EMBED_DESCRIPTION_LEN 4 * 2048 + 1
+#define DISCORD_EMBED_MAX_FIELDS      25
+#define DISCORD_EMBED_FIELD_NAME_LEN  4 * 256 + 1
+#define DISCORD_EMBED_FIELD_VALUE_LEN 4 * 1024 + 1
+#define DISCORD_EMBED_FOOTER_TEXT_LEN 4 * 2048 + 1
+#define DISCORD_EMBED_AUTHOR_NAME_LEN 4 * 256 + 1
+/** @} DiscordConstantsEmbed */
+
+/** @defgroup DiscordConstantsWebhook Webhook lengths
+ * @brief Max length for embed fields
+ *  @{ */
+#define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
+/** @} DiscordConstantsWebhook */
+
 /** @} DiscordConstants */
 
-/** @addtogroup ConcordError 
+/** @addtogroup ConcordError
  *  @{ */
 
 /** Received a JSON error message */

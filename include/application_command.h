@@ -8,15 +8,9 @@
 #define DISCORD_APPLICATION_COMMAND_H
 
 /** @defgroup DiscordAPIInteractionsApplicationCommand Slash commands
- *   @ingroup DiscordAPIInteractions
- *   @brief Receiving and registering slash commands
+ * @ingroup DiscordAPIInteractions
+ * @brief Receiving and registering slash commands
  *  @{ */
-
-DISCORDT_RETURN(application_command);
-DISCORDT_RETURN(application_commands);
-DISCORDT_RETURN(application_command_permission);
-DISCORDT_RETURN(application_command_permissions);
-DISCORDT_RETURN(guild_application_command_permissions);
 
 /**
  * @brief Fetch all of the global commands for your application

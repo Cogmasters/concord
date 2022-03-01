@@ -8,11 +8,9 @@
 #define DISCORD_INTERACTION_H
 
 /** @defgroup DiscordAPIInteractionsReact Receiving and sending
- *   @ingroup DiscordAPIInteractions
- *   @brief Receiving and sending interactions
+ * @ingroup DiscordAPIInteractions
+ * @brief Receiving and sending interactions
  *  @{ */
-
-DISCORDT_RETURN(interaction_response);
 
 /**
  * @brief Create a response to an Interaction from the gateway

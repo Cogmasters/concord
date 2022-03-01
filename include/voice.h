@@ -7,12 +7,10 @@
 #ifndef DISCORD_VOICE_H
 #define DISCORD_VOICE_H
 
-/** @defgroup DiscordAPIVoice Voice API
- *   @ingroup DiscordAPI
- *   @brief Voice's public API supported by Concord
+/** @defgroup DiscordAPIVoice Voice
+ * @ingroup DiscordAPI
+ * @brief Voice's public API supported by Concord
  *  @{ */
-
-DISCORDT_RETURN(voice_regions);
 
 /**
  * @brief Get voice regions that can be used when setting a

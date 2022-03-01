@@ -7,13 +7,10 @@
 #ifndef DISCORD_INVITE_H
 #define DISCORD_INVITE_H
 
-/** @defgroup DiscordAPIInvite Invite API
- *   @ingroup DiscordAPI
- *   @brief Invite's public API supported by Concord
+/** @defgroup DiscordAPIInvite Invite
+ * @ingroup DiscordAPI
+ * @brief Invite's public API supported by Concord
  *  @{ */
-
-DISCORDT_RETURN(invite);
-DISCORDT_RETURN(invites);
 
 /**
  * @brief Get an invite for the given code

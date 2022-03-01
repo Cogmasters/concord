@@ -7,14 +7,10 @@
 #ifndef DISCORD_USER_H
 #define DISCORD_USER_H
 
-/** @defgroup DiscordAPIUser User API
- *   @ingroup DiscordAPI
- *   @brief User's public API supported by Concord
+/** @defgroup DiscordAPIUser User
+ * @ingroup DiscordAPI
+ * @brief User's public API supported by Concord
  *  @{ */
-
-DISCORDT_RETURN(user);
-DISCORDT_RETURN(users);
-DISCORDT_RETURN(connections);
 
 /**
  * @brief Get client's user

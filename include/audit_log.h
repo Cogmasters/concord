@@ -7,12 +7,10 @@
 #ifndef DISCORD_AUDIT_LOG
 #define DISCORD_AUDIT_LOG
 
-/** @defgroup DiscordAPIAuditLog Audit Log API
- *   @ingroup DiscordAPI
- *   @brief Audit Log's public API supported by Concord
+/** @defgroup DiscordAPIAuditLog Audit Log
+ * @ingroup DiscordAPI
+ * @brief Audit Log's public API supported by Concord
  *  @{ */
-
-DISCORDT_RETURN(audit_log);
 
 /**
  * @brief Get audit log for a given guild

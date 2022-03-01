@@ -11,31 +11,10 @@
 struct discord_ret_users;
 /**/
 
-/** @defgroup DiscordConstantsEmbed Embed lengths
- * @ingroup DiscordConstants
- * @brief Max length for embed fields
+/** @defgroup DiscordAPIChannel Channel
+ * @ingroup DiscordAPI
+ * @brief Channel's public API supported by Concord
  *  @{ */
-#define DISCORD_EMBED_TITLE_LEN       4 * 256 + 1
-#define DISCORD_EMBED_DESCRIPTION_LEN 4 * 2048 + 1
-#define DISCORD_EMBED_MAX_FIELDS      25
-#define DISCORD_EMBED_FIELD_NAME_LEN  4 * 256 + 1
-#define DISCORD_EMBED_FIELD_VALUE_LEN 4 * 1024 + 1
-#define DISCORD_EMBED_FOOTER_TEXT_LEN 4 * 2048 + 1
-#define DISCORD_EMBED_AUTHOR_NAME_LEN 4 * 256 + 1
-/** @} DiscordConstantsEmbed */
-
-/** @defgroup DiscordAPIChannel Channel API
- *   @ingroup DiscordAPI
- *   @brief Channel's public API supported by Concord
- *  @{ */
-
-DISCORDT_RETURN(channel);
-DISCORDT_RETURN(channels);
-DISCORDT_RETURN(message);
-DISCORDT_RETURN(messages);
-DISCORDT_RETURN(followed_channel);
-DISCORDT_RETURN(thread_members);
-DISCORDT_RETURN(thread_response_body);
 
 /******************************************************************************
  * Custom functions

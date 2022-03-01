@@ -7,9 +7,9 @@
 #ifndef DISCORD_GATEWAY_H
 #define DISCORD_GATEWAY_H
 
-/** @defgroup DiscordAPIGateway Gateway API
- *   @ingroup DiscordAPI
- *   @brief Gateway's public API supported by Concord
+/** @defgroup DiscordAPIGateway Gateway
+ * @ingroup DiscordAPI
+ * @brief Gateway's public API supported by Concord
  *  @{ */
 
 /******************************************************************************

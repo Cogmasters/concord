@@ -7,20 +7,10 @@
 #ifndef DISCORD_WEBHOOK_H
 #define DISCORD_WEBHOOK_H
 
-/** @defgroup DiscordConstantsWebhook Webhook lengths
- * @ingroup DiscordConstants
- * @brief Max length for embed fields
+/** @defgroup DiscordAPIWebhook Webhook
+ * @ingroup DiscordAPI
+ * @brief Webhook's public API supported by Concord
  *  @{ */
-#define DISCORD_WEBHOOK_NAME_LEN 4 * 80 + 1
-/** @} DiscordConstantsWebhook */
-
-/** @defgroup DiscordAPIWebhook Webhook API
- *   @ingroup DiscordAPI
- *   @brief Webhook's public API supported by Concord
- *  @{ */
-
-DISCORDT_RETURN(webhook);
-DISCORDT_RETURN(webhooks);
 
 /**
  * @brief Create a new webhook
