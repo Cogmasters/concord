@@ -1,9 +1,15 @@
+/**
+ * @file discord-events.h
+ * @author Cogmasters
+ * @brief Listen and react to Discord events
+ */
+
 #ifndef DISCORD_EVENTS_H
 #define DISCORD_EVENTS_H
 
 /** @defgroup DiscordEvent Events
  *  @ingroup Discord
- *   @brief The Discord public Events API supported by Concord
+ * @brief The Discord public Events API supported by Concord
  *  @{ */
 
 /**
@@ -78,6 +84,7 @@ void discord_remove_intents(struct discord *client, uint64_t code);
 void discord_set_prefix(struct discord *client, char *prefix);
 
 /** @defgroup DiscordEventCallbackTypes Callback types
+ * @brief Callback types for Discord events
  *  @{ */
 
 /** @brief Idle callback */
