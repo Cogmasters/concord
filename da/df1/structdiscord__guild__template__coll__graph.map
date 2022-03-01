@@ -1,0 +1,5 @@
+<map id="discord_guild_template" name="discord_guild_template">
+<area shape="rect" id="node1" title=" " alt="" coords="35,95,210,121"/>
+<area shape="rect" id="node2" href="$db/de3/structdiscord__user.html" title=" " alt="" coords="5,5,109,32"/>
+<area shape="rect" id="node3" href="$d6/d50/structdiscord__guild.html" title=" " alt="" coords="134,5,242,32"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Constants" name="Constants">
+<area shape="rect" id="node1" title="Macros for constants defined by Discord." alt="" coords="5,55,92,80"/>
+<area shape="rect" id="node2" href="$db/def/group__DiscordConstantsEmbed.html" title="Max length for embed fields." alt="" coords="148,5,267,31"/>
+<area shape="rect" id="node3" href="$df/dcb/group__DiscordConstantsGeneral.html" title="Max length for general fields." alt="" coords="145,55,270,80"/>
+<area shape="rect" id="node4" href="$d6/d1a/group__DiscordConstantsWebhook.html" title="Max length for embed fields." alt="" coords="140,104,275,129"/>
+</map>

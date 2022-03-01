@@ -1,0 +1,9 @@
+<map id="discord_audit_log" name="discord_audit_log">
+<area shape="rect" id="node1" title=" " alt="" coords="403,148,539,175"/>
+<area shape="rect" id="node2" href="$d7/d14/structdiscord__audit__log__entries.html" title=" " alt="" coords="5,5,193,32"/>
+<area shape="rect" id="node3" href="$d3/d7d/structdiscord__guild__scheduled__events.html" title=" " alt="" coords="9,57,190,98"/>
+<area shape="rect" id="node4" href="$d7/dd4/structdiscord__integrations.html" title=" " alt="" coords="22,123,177,149"/>
+<area shape="rect" id="node5" href="$d9/d43/structdiscord__channels.html" title=" " alt="" coords="32,173,167,200"/>
+<area shape="rect" id="node6" href="$d7/d99/structdiscord__users.html" title=" " alt="" coords="44,224,155,251"/>
+<area shape="rect" id="node7" href="$d3/d6e/structdiscord__webhooks.html" title=" " alt="" coords="28,275,171,301"/>
+</map>

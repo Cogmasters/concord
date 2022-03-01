@@ -1,0 +1,5 @@
+<map id="discord_adapter" name="discord_adapter">
+<area shape="rect" id="node1" title="The handle used for performing HTTP Requests." alt="" coords="82,124,209,151"/>
+<area shape="rect" id="node2" href="$df/d86/structdiscord__refcount.html" title="Naive garbage collector to cleanup user arbitrary data." alt="" coords="5,5,136,32"/>
+<area shape="rect" id="node3" href="$db/da2/structdiscord__bucket.html" title="The bucket struct for handling ratelimiting." alt="" coords="161,5,279,32"/>
+</map>
