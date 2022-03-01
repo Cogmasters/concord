@@ -1,7 +1,7 @@
 <div align="center">
   <br />
   <p>
-    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord-docs/master/docs/source/images/logo.svg" width="536" alt="Concord" style="background-color:red;" /></a>
+    <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord-docs/master/docs/source/images/logo.svg" width="536" alt="Concord" /></a>
   </p>
   <br />
   <p>
