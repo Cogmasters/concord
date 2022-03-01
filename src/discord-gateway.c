@@ -702,13 +702,10 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
         for (i = 0; i < gw->cmds.amt; ++i) {
             if (command_len == gw->cmds.pool[i].size) {
                 /* check if command from channel matches set command */
-                if (!strncmp(gw->cmds.pool[i].start,
-                             command_start,
-                             command_len))
-                {
+                if (!strncmp(gw->cmds.pool[i].start, command_start,
+                             command_len)) {
                     cmd = &gw->cmds.pool[i];
-                    if (!cmd->cb)
-                        cmd = NULL;
+                    if (!cmd->cb) cmd = NULL;
                     break;
                 }
             }
@@ -725,7 +722,7 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
             msg.content = command_start + command_len;
             while (*msg.content && isspace((int)msg.content[0]))
                 ++msg.content;
-            
+
             cmd->cb(client, &msg);
 
             msg.content = tmp; /* retrieve original ptr */
@@ -1658,13 +1655,9 @@ CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
 {
     struct discord *client = CLIENT(gw, gw);
-    /* get gateway bot info */
     struct sized_buffer json = { 0 };
-    /* build URL that will be used to connect to Discord */
-    char *base_url, url[1024];
+    char url[1024];
     CURL *ehandle;
-    /* snprintf() OOB check */
-    size_t len;
 
     if (gw->session->retry.attempt >= gw->session->retry.limit) {
         logconf_fatal(&gw->conf,
@@ -1685,9 +1678,16 @@ discord_gateway_start(struct discord_gateway *gw)
             jsmnf *f;
 
             f = jsmnf_find(root, "url", sizeof("url") - 1);
-            if (f)
-                cog_strndup(json.start + f->val->start,
-                            f->val->end - f->val->start, &base_url);
+            if (f) {
+                struct sized_buffer base_url = { json.start + f->val->start,
+                                                 f->val->end - f->val->start };
+                size_t len = snprintf(
+                    url, sizeof(url), "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX,
+                    (int)base_url.size, base_url.start,
+                    ('/' == base_url.start[base_url.size - 1]) ? "" : "/");
+
+                ASSERT_S(len < sizeof(url), "Out of bounds write attempt");
+            }
             f = jsmnf_find(root, "shards", sizeof("shards") - 1);
             if (f)
                 gw->session->shards =
@@ -1701,13 +1701,7 @@ discord_gateway_start(struct discord_gateway *gw)
         jsmnf_cleanup(root);
     }
 
-    len =
-        snprintf(url, sizeof(url), "%s%s" DISCORD_GATEWAY_URL_SUFFIX, base_url,
-                 ('/' == base_url[strlen(base_url) - 1]) ? "" : "/");
-    ASSERT_S(len < sizeof(url), "Out of bounds write attempt");
-
     free(json.start);
-    free(base_url);
 
     if (!gw->session->start_limit.remaining) {
         logconf_fatal(&gw->conf,
