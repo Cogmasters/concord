@@ -10,7 +10,6 @@ obj
 lib
 *.log
 concord-docs
-Doxyfile
 *.db
 *.swp
 src/specs-code

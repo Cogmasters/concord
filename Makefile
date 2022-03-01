@@ -107,13 +107,8 @@ install:
 	install -m 644 $(INCLUDE_DIR)/*.h $(COGUTILS_DIR)/*.h $(CORE_DIR)/*.h  \
 	               $(THIRDP_DIR)/*.h $(GENCODECS_DIR)/*.h $(PREFIX)/include/concord/
 
-docs: | $(CCORDDOCS_DIR)
+docs:
 	@ $(MAKE) -C $(GENCODECS_DIR) docs
-
-$(CCORDDOCS_DIR):
-	git clone https://github.com/cogmasters/concord-docs $@
-	@ cp $@/Doxyfile .
-	@ mv $@/doxygen-awesome-css .
 
 echo:
 	@ echo -e 'CC: $(CC)\n'
