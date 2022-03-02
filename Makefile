@@ -17,15 +17,15 @@ CCORDDOCS_DIR = concord-docs
 GENCODECS_HDR = $(GENCODECS_DIR)/discord-codecs.h
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord-codecs.o
 
-COGUTILS_OBJS = $(OBJDIR)/$(COGUTILS_DIR)/cog-utils.o \
-                $(OBJDIR)/$(COGUTILS_DIR)/log.o       \
-                $(OBJDIR)/$(COGUTILS_DIR)/logconf.o
+COGUTILS_OBJS = $(OBJDIR)/$(COGUTILS_DIR)/cog-utils.o  \
+                $(OBJDIR)/$(COGUTILS_DIR)/log.o        \
+                $(OBJDIR)/$(COGUTILS_DIR)/logconf.o    \
+                $(OBJDIR)/$(COGUTILS_DIR)/json-build.o \
+                $(OBJDIR)/$(COGUTILS_DIR)/jsmn-find.o
 CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/work.o       \
                 $(OBJDIR)/$(CORE_DIR)/user-agent.o \
                 $(OBJDIR)/$(CORE_DIR)/websockets.o \
-                $(OBJDIR)/$(CORE_DIR)/io_poller.o  \
-                $(OBJDIR)/$(CORE_DIR)/json-build.o \
-                $(OBJDIR)/$(CORE_DIR)/jsmn-find.o
+                $(OBJDIR)/$(CORE_DIR)/io_poller.o
 THIRDP_OBJS   = $(OBJDIR)/$(THIRDP_DIR)/sha1.o           \
                 $(OBJDIR)/$(THIRDP_DIR)/curl-websocket.o \
                 $(OBJDIR)/$(THIRDP_DIR)/threadpool.o
