@@ -20,20 +20,21 @@
 #ifndef GENCODECS_FIELD
 #   define GENCODECS_FIELD(_name, _type, _default_value)                      \
         GENCODECS_FIELD_CUSTOM(_name, #_name, _type, , , CLEANUP_BLANK,       \
-                               JSON_ENCODER_##_type, JSON_DECODER_##_type,    \
-                               _default_value)
+                               GENCODECS_JSON_ENCODER_##_type,                \
+                               GENCODECS_JSON_DECODER_##_type, _default_value)
 #endif
 #ifndef GENCODECS_FIELD_STRUCT_PTR
 #   define GENCODECS_FIELD_STRUCT_PTR(_name, _type, _decor)                   \
         GENCODECS_FIELD_CUSTOM(_name, #_name, _type, _decor, ,                \
-                               CLEANUP_STRUCT_PTR, JSON_ENCODER_STRUCT_PTR,   \
-                               JSON_DECODER_STRUCT_PTR,  NULL)
+                               CLEANUP_STRUCT_PTR,                            \
+                               GENCODECS_JSON_ENCODER_STRUCT_PTR,             \
+                               GENCODECS_JSON_DECODER_STRUCT_PTR,  NULL)
 #endif
 #ifndef GENCODECS_FIELD_PTR
 #   define GENCODECS_FIELD_PTR(_name, _type, _decor)                          \
         GENCODECS_FIELD_CUSTOM(_name, #_name, _type, _decor, , CLEANUP_PTR,   \
-                               JSON_ENCODER_PTR_##_type,                      \
-                               JSON_DECODER_PTR_##_type, NULL)
+                               GENCODECS_JSON_ENCODER_PTR_##_type,            \
+                               GENCODECS_JSON_DECODER_PTR_##_type, NULL)
 #endif
 #ifndef GENCODECS_FIELD_PRINTF
 #   define GENCODECS_FIELD_PRINTF(_name, _type, _printf_type, _scanf_type)

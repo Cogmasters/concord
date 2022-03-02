@@ -1,12 +1,12 @@
-#define JSON_ENCODER_int(b, buf, size, _var, _type)                           \
+#define GENCODECS_JSON_ENCODER_int(b, buf, size, _var, _type)                 \
     if (0 > (code = jsonb_number(b, buf, size, _var))) return code
-#define JSON_ENCODER_PTR_char(b, buf, size, _var, _type)                      \
+#define GENCODECS_JSON_ENCODER_PTR_char(b, buf, size, _var, _type)            \
     if (0 > (code = jsonb_string(b, buf, size, _var,                          \
                                  _var ? strlen(_var) : 0)))                   \
         return code
-#define JSON_ENCODER_bool(b, buf, size, _var, _type)                          \
+#define GENCODECS_JSON_ENCODER_bool(b, buf, size, _var, _type)                \
     if (0 > (code = jsonb_bool(b, buf, size, _var))) return code
-#define JSON_ENCODER_STRUCT_PTR(b, buf, size, _var, _type)                    \
+#define GENCODECS_JSON_ENCODER_STRUCT_PTR(b, buf, size, _var, _type)          \
     if (0 > (code = _type##_to_jsonb(b, buf, size, _var))) return code
 
 #ifdef GENCODECS_JSON_ENCODER
@@ -77,18 +77,18 @@
 #define GENCODECS_LIST(_type)                                                 \
     static GENCODECS_PUB_LIST(_type)
 #define GENCODECS_LISTTYPE(_type)                                             \
-        for (i = 0; i < this->size; ++i) {                                    \
-            JSON_ENCODER_##_type(b, buf, size, this->array[i], _type);        \
-        }
+        for (i = 0; i < this->size; ++i)                                      \
+            GENCODECS_JSON_ENCODER_##_type(b, buf, size, this->array[i],      \
+                                           _type);
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
         for (i = 0; i < this->size; ++i)                                      \
             if (0 > (code = _type##_to_jsonb(b, buf, size,                    \
                                                 &this->array[i])))            \
                 return code;
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
-        for (i = 0; i < this->size; ++i) {                                    \
-            JSON_ENCODER_PTR_##_type(b, buf, size, this->array[i], _type);    \
-        }
+        for (i = 0; i < this->size; ++i)                                      \
+            GENCODECS_JSON_ENCODER_PTR_##_type(b, buf, size, this->array[i],  \
+                                               _type);
 #define GENCODECS_LIST_END                                                    \
         }                                                                     \
         if (0 > (code = jsonb_array_pop(b, buf, size))) return code;          \

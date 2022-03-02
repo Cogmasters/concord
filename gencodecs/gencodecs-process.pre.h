@@ -1,7 +1,15 @@
 #ifndef GENCODECS_READ
 #   error "Missing GENCODECS_READ definition"
 #else
-#   include "recipes/struct.h"
-#   include "recipes/json-decoder.h"
-#   include "recipes/json-encoder.h"
+#   define GENCODECS_ON_STRUCT
+#       include "recipes/struct.h"
+#   undef GENCODECS_ON_STRUCT
+
+#   define GENCODECS_ON_JSON_DECODER
+#       include "recipes/json-decoder.h"
+#   undef GENCODECS_ON_JSON_DECODER
+
+#   define GENCODECS_ON_JSON_ENCODER
+#       include "recipes/json-encoder.h"
+#   undef GENCODECS_ON_JSON_ENCODER
 #endif /* GENCODECS_READ */

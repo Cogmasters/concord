@@ -156,13 +156,16 @@ STRUCT_END
 STRUCT(discord_identify_connection)
   /** your operating system */
     FIELD_CUSTOM(os, "$os", char, *, INIT_BLANK, CLEANUP_PTR,
-                 JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
+                 GENCODECS_JSON_ENCODER_PTR_char, 
+                 GENCODECS_JSON_DECODER_PTR_char, NULL)
   /** your library name */
     FIELD_CUSTOM(browser, "$browser", char, *, INIT_BLANK, CLEANUP_PTR,
-                 JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
+                 GENCODECS_JSON_ENCODER_PTR_char,
+                 GENCODECS_JSON_DECODER_PTR_char, NULL)
   /** your library name */
     FIELD_CUSTOM(device, "$device", char, *, INIT_BLANK, CLEANUP_PTR,
-                 JSON_ENCODER_PTR_char, JSON_DECODER_PTR_char, NULL)
+                 GENCODECS_JSON_ENCODER_PTR_char,
+                 GENCODECS_JSON_DECODER_PTR_char, NULL)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_voice_state_status} */

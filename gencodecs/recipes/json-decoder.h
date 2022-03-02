@@ -1,13 +1,13 @@
-#define JSON_DECODER_int(f, buf, _var, _type)                                 \
+#define GENCODECS_JSON_DECODER_int(f, buf, _var, _type)                       \
     if (f && f->val->type == JSMN_PRIMITIVE)                                  \
         _var = (int)strtol(buf + f->val->start, NULL, 10)
-#define JSON_DECODER_bool(f, buf, _var, _type)                                \
+#define GENCODECS_JSON_DECODER_bool(f, buf, _var, _type)                      \
     if (f && f->val->type == JSMN_PRIMITIVE) _var = ('t' == buf[f->val->start])
-#define JSON_DECODER_PTR_char(f, buf, _var, _type)                            \
+#define GENCODECS_JSON_DECODER_PTR_char(f, buf, _var, _type)                  \
     if (f && f->val->type == JSMN_STRING)                                     \
         ret += jsmnf_unescape(&_var, buf + f->val->start,                     \
                               f->val->end - f->val->start)
-#define JSON_DECODER_STRUCT_PTR(f, buf, _var, _type)                          \
+#define GENCODECS_JSON_DECODER_STRUCT_PTR(f, buf, _var, _type)                \
     if (f && (f->val->type == JSMN_OBJECT || f->val->type == JSMN_ARRAY)) {   \
         _var = calloc(1, sizeof *_var);                                       \
         ret += sizeof *_var + _type##_from_jsmnf(f, buf, _var);               \
@@ -68,7 +68,7 @@
         __carray_init(this, nelems, _type, , );                               \
         HASH_ITER(hh, root->child, f, tmp) {                                  \
             _type o;                                                          \
-            JSON_DECODER_##_type(f, buf, o, _type);                           \
+            GENCODECS_JSON_DECODER_##_type(f, buf, o, _type);                 \
             carray_insert(this, f->idx, o);                                   \
         }
 #define GENCODECS_LISTTYPE_STRUCT(_type)                                      \
@@ -82,7 +82,7 @@
         __carray_init(this, nelems, _type _decor, , );                        \
         HASH_ITER(hh, root->child, f, tmp) {                                  \
             _type *o;                                                         \
-            JSON_DECODER_PTR_##_type(f, buf, o, _type);                       \
+            GENCODECS_JSON_DECODER_PTR_##_type(f, buf, o, _type);             \
             carray_insert(this, f->idx, o);                                   \
         }
 #define GENCODECS_LIST_END                                                    \
