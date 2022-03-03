@@ -9,7 +9,7 @@
   </p>
 </div>
 
-## Concord 1.0.0
+## Concord
 
 ## About
 
