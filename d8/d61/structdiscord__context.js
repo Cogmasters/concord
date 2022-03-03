@@ -4,7 +4,7 @@ var structdiscord__context =
     [ "bucket", "d8/d61/structdiscord__context.html#a78e6d79264c72dfabd7151c8834dbb25", null ],
     [ "buf", "d8/d61/structdiscord__context.html#a7065c633fca31ba5097384b48da6fb54", null ],
     [ "conn", "d8/d61/structdiscord__context.html#a5253717956ff5b1773e26791d9369937", null ],
-    [ "endpoint", "d8/d61/structdiscord__context.html#ac4ba079c6bafbfc168a5a945bb7d161f", null ],
+    [ "endpoint", "d8/d61/structdiscord__context.html#a40f83d5e94f5961411c368c7d9592ff8", null ],
     [ "entry", "d8/d61/structdiscord__context.html#ac5c78dbeace47f85d5b056cca5c8ed82", null ],
     [ "memsize", "d8/d61/structdiscord__context.html#a53f3cd2d41497e3bebe39cb627ea777f", null ],
     [ "method", "d8/d61/structdiscord__context.html#ac9bbd52c4f221b7835587b4349d76ba4", null ],

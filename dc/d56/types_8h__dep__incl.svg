@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="../../db/d32/application_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node2"><a xlink:href="../../db/d32/application_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="0,-6 0,-25 123,-25 123,-6 0,-6"/>
 <text text-anchor="middle" x="61.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/application.h</text>
 </a>
@@ -35,7 +35,7 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="../../d4/d15/application__commands_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node3"><a xlink:href="../../d4/d15/application__commands_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="141.5,-0.5 141.5,-30.5 255.5,-30.5 255.5,-0.5 141.5,-0.5"/>
 <text text-anchor="start" x="149.5" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/application</text>
 <text text-anchor="middle" x="198.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">_commands.h</text>
@@ -51,7 +51,7 @@
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="../../dc/de8/docs_2api_2audit__log_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node4"><a xlink:href="../../dc/de8/docs_2api_2audit__log_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="273.5,-6 273.5,-25 387.5,-25 387.5,-6 273.5,-6"/>
 <text text-anchor="middle" x="330.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/audit_log.h</text>
 </a>
@@ -66,7 +66,7 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="../../d0/d8b/docs_2api_2channel_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node5"><a xlink:href="../../d0/d8b/docs_2api_2channel_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="406,-6 406,-25 513,-25 513,-6 406,-6"/>
 <text text-anchor="middle" x="459.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/channel.h</text>
 </a>
@@ -81,7 +81,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="../../d9/d23/custom_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node6"><a xlink:href="../../d9/d23/custom_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="531,-6 531,-25 636,-25 636,-6 531,-6"/>
 <text text-anchor="middle" x="583.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/custom.h</text>
 </a>
@@ -96,7 +96,7 @@
 <!-- Node7 -->
 <g id="node7" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="../../d1/dfd/docs_2api_2emoji_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node7"><a xlink:href="../../d1/dfd/docs_2api_2emoji_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="654,-6 654,-25 751,-25 751,-6 654,-6"/>
 <text text-anchor="middle" x="702.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/emoji.h</text>
 </a>
@@ -111,7 +111,7 @@
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="../../d5/d7c/docs_2api_2gateway_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node8"><a xlink:href="../../d5/d7c/docs_2api_2gateway_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="769.5,-6 769.5,-25 879.5,-25 879.5,-6 769.5,-6"/>
 <text text-anchor="middle" x="824.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/gateway.h</text>
 </a>
@@ -126,7 +126,7 @@
 <!-- Node9 -->
 <g id="node9" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="../../d9/d83/docs_2api_2guild_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node9"><a xlink:href="../../d9/d83/docs_2api_2guild_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="898,-6 898,-25 991,-25 991,-6 898,-6"/>
 <text text-anchor="middle" x="944.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/guild.h</text>
 </a>
@@ -141,7 +141,7 @@
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="../../d6/d05/guild__scheduled__event_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node10"><a xlink:href="../../d6/d05/guild__scheduled__event_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1009,-0.5 1009,-30.5 1148,-30.5 1148,-0.5 1009,-0.5"/>
 <text text-anchor="start" x="1017" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/guild_scheduled</text>
 <text text-anchor="middle" x="1078.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">_event.h</text>
@@ -157,7 +157,7 @@
 <!-- Node11 -->
 <g id="node11" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="../../d9/d7a/docs_2api_2guild__template_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node11"><a xlink:href="../../d9/d7a/docs_2api_2guild__template_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1166,-6 1166,-25 1309,-25 1309,-6 1166,-6"/>
 <text text-anchor="middle" x="1237.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/guild_template.h</text>
 </a>
@@ -172,7 +172,7 @@
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="../../db/d5c/interactions_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node12"><a xlink:href="../../db/d5c/interactions_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1327,-6 1327,-25 1454,-25 1454,-6 1327,-6"/>
 <text text-anchor="middle" x="1390.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/interactions.h</text>
 </a>
@@ -187,7 +187,7 @@
 <!-- Node13 -->
 <g id="node13" class="node">
 <title>Node13</title>
-<g id="a_node13"><a xlink:href="../../d4/d5d/docs_2api_2invite_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node13"><a xlink:href="../../d4/d5d/docs_2api_2invite_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1472,-6 1472,-25 1569,-25 1569,-6 1472,-6"/>
 <text text-anchor="middle" x="1520.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/invite.h</text>
 </a>
@@ -202,7 +202,7 @@
 <!-- Node14 -->
 <g id="node14" class="node">
 <title>Node14</title>
-<g id="a_node14"><a xlink:href="../../df/d93/message__components_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node14"><a xlink:href="../../df/d93/message__components_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1587,-6 1587,-25 1766,-25 1766,-6 1587,-6"/>
 <text text-anchor="middle" x="1676.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/message_components.h</text>
 </a>
@@ -217,7 +217,7 @@
 <!-- Node15 -->
 <g id="node15" class="node">
 <title>Node15</title>
-<g id="a_node15"><a xlink:href="../../db/da3/permissions_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node15"><a xlink:href="../../db/da3/permissions_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1784.5,-6 1784.5,-25 1912.5,-25 1912.5,-6 1784.5,-6"/>
 <text text-anchor="middle" x="1848.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/permissions.h</text>
 </a>
@@ -232,7 +232,7 @@
 <!-- Node16 -->
 <g id="node16" class="node">
 <title>Node16</title>
-<g id="a_node16"><a xlink:href="../../dd/d2a/stage__instance_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node16"><a xlink:href="../../dd/d2a/stage__instance_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="1931,-6 1931,-25 2074,-25 2074,-6 1931,-6"/>
 <text text-anchor="middle" x="2002.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/stage_instance.h</text>
 </a>
@@ -247,7 +247,7 @@
 <!-- Node17 -->
 <g id="node17" class="node">
 <title>Node17</title>
-<g id="a_node17"><a xlink:href="../../d8/d5a/sticker_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node17"><a xlink:href="../../d8/d5a/sticker_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="2092,-6 2092,-25 2193,-25 2193,-6 2092,-6"/>
 <text text-anchor="middle" x="2142.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/sticker.h</text>
 </a>
@@ -262,7 +262,7 @@
 <!-- Node18 -->
 <g id="node18" class="node">
 <title>Node18</title>
-<g id="a_node18"><a xlink:href="../../d0/dc0/teams_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node18"><a xlink:href="../../d0/dc0/teams_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="2211.5,-6 2211.5,-25 2311.5,-25 2311.5,-6 2211.5,-6"/>
 <text text-anchor="middle" x="2261.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/teams.h</text>
 </a>
@@ -277,7 +277,7 @@
 <!-- Node19 -->
 <g id="node19" class="node">
 <title>Node19</title>
-<g id="a_node19"><a xlink:href="../../dd/dbc/docs_2api_2user_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node19"><a xlink:href="../../dd/dbc/docs_2api_2user_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="2330,-6 2330,-25 2419,-25 2419,-6 2330,-6"/>
 <text text-anchor="middle" x="2374.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/user.h</text>
 </a>
@@ -292,7 +292,7 @@
 <!-- Node20 -->
 <g id="node20" class="node">
 <title>Node20</title>
-<g id="a_node20"><a xlink:href="../../dc/de8/docs_2api_2voice_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node20"><a xlink:href="../../dc/de8/docs_2api_2voice_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="2437,-6 2437,-25 2532,-25 2532,-6 2437,-6"/>
 <text text-anchor="middle" x="2484.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/voice.h</text>
 </a>
@@ -307,7 +307,7 @@
 <!-- Node21 -->
 <g id="node21" class="node">
 <title>Node21</title>
-<g id="a_node21"><a xlink:href="../../d1/dd0/voice__connections_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node21"><a xlink:href="../../d1/dd0/voice__connections_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="2550,-6 2550,-25 2709,-25 2709,-6 2550,-6"/>
 <text text-anchor="middle" x="2629.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/voice_connections.h</text>
 </a>
@@ -322,7 +322,7 @@
 <!-- Node22 -->
 <g id="node22" class="node">
 <title>Node22</title>
-<g id="a_node22"><a xlink:href="../../d6/dbb/docs_2api_2webhook_8h_source.html" target="_top" xlink:title=" ">
+<g id="a_node22"><a xlink:href="../../d6/dbb/docs_2api_2webhook_8h.html" target="_top" xlink:title="Generated code.">
 <polygon fill="none" stroke="black" points="2727,-6 2727,-25 2840,-25 2840,-6 2727,-6"/>
 <text text-anchor="middle" x="2783.5" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00">docs/api/webhook.h</text>
 </a>

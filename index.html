@@ -89,33 +89,32 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p ><a class="anchor" id="md_README"></a> </p><div align="center"> <br  />
- </div><div align="center"> <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" alt="Concord" style="pointer-events: none;" width="536" class="inline"/></a> </div><div align="center"> <br  />
+ </div><div align="center"> <a href="https://github.com/cogmasters/concord.git"><img src="https://raw.githubusercontent.com/Cogmasters/concord/bd1436a84af21384d93d92aed32b4c7828d0d793/docs/static/logo.svg" alt="Concord" style="pointer-events: none;" width="250" class="inline"/></a> </div><div align="center"> <br  />
  </div><div align="center"> <br  />
  <a href="https://discord.gg/Y7Xa6MA82v"><img src="https://img.shields.io/discord/928763123362578552?color=5865F2&amp;logo=discord&amp;logoColor=white" alt="Discord server" class="inline"/></a>  </div><div align="center"> </div><h2><a class="anchor" id="autotoc_md0"></a>
+Concord</h2>
+<h2><a class="anchor" id="autotoc_md1"></a>
 About</h2>
-<p >Concord is implemented in plain C99, its symbols are organized to be easily matched to the documentation of the API being covered. Concord's implementation has minimum external dependencies to make bot deployment deadly simple.</p>
-<h3><a class="anchor" id="autotoc_md1"></a>
+<p >Concord is an asynchronous C99 Discord API wrapper library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.</p>
+<h3><a class="anchor" id="autotoc_md2"></a>
 Minimal example</h3>
-<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span> <span class="comment">// strcmp()</span></div>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client) </div>
-<div class="line">{</div>
+<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client) {</div>
 <div class="line">  <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="db/de3/structdiscord__user.html">discord_user</a> *<a class="code hl_variable" href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a> = <a class="code hl_function" href="d2/de5/group__Discord.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a>(client);</div>
 <div class="line">  log_info(<span class="stringliteral">&quot;Logged in as %s!&quot;</span>, <a class="code hl_variable" href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>-&gt;username);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_message(<span class="keyword">struct</span> <a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="d6/d66/structdiscord__message.html">discord_message</a> *msg)</div>
-<div class="line">{</div>
+<div class="line"><span class="keywordtype">void</span> on_message(<span class="keyword">struct</span> <a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="d6/d66/structdiscord__message.html">discord_message</a> *msg) {</div>
 <div class="line">  <span class="keywordflow">if</span> (strcmp(msg-&gt;<a class="code hl_variable" href="d6/d66/structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">content</a>, <span class="stringliteral">&quot;ping&quot;</span>) != 0)</div>
-<div class="line">    <span class="keywordflow">return</span>; <span class="comment">// ignore messages that aren&#39;t &#39;ping&#39;</span></div>
+<div class="line">    <span class="keywordflow">return</span>; <span class="comment">/* ignore messages that aren&#39;t &#39;ping&#39; */</span></div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="df/dfa/structdiscord__create__message.html">discord_create_message</a> params = { .<a class="code hl_variable" href="df/dfa/structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = <span class="stringliteral">&quot;pong&quot;</span> };</div>
 <div class="line">  <a class="code hl_function" href="df/d2c/group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, msg-&gt;<a class="code hl_variable" href="d6/d66/structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>)</div>
-<div class="line">{</div>
+<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
 <div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client = <a class="code hl_function" href="d2/de5/group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a>(BOT_TOKEN);</div>
 <div class="line">  <a class="code hl_function" href="d4/d48/group__DiscordEvent.html#ga0887300c5c057ed2444ceec56a4a0fa9">discord_set_on_ready</a>(client, &amp;on_ready);</div>
 <div class="line">  <a class="code hl_function" href="d4/d48/group__DiscordEvent.html#gac5b2d764218baac6ec709234eab8cd2b">discord_set_on_message_create</a>(client, &amp;on_message);</div>
@@ -127,44 +126,57 @@ Minimal example</h3>
 <div class="ttc" id="agroup__Discord_html_ga10b7d422776acf4fb67877f8f1d28af4"><div class="ttname"><a href="d2/de5/group__Discord.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a></div><div class="ttdeci">CCORDcode discord_run(struct discord *client)</div><div class="ttdoc">Start a connection to the Discord Gateway.</div></div>
 <div class="ttc" id="agroup__Discord_html_ga164add107d145df966be36cef1b9b4a9"><div class="ttname"><a href="d2/de5/group__Discord.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a></div><div class="ttdeci">const struct discord_user * discord_get_self(struct discord *client)</div><div class="ttdoc">Get the client's cached user.</div></div>
 <div class="ttc" id="agroup__Discord_html_gacd52a9fc58a1fcb9b4719a5cedd70f5d"><div class="ttname"><a href="d2/de5/group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a></div><div class="ttdeci">struct discord * discord_init(const char token[])</div><div class="ttdoc">Create a Discord Client handle by its token.</div></div>
-<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="df/dfa/structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:657</div></div>
-<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="df/dfa/structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:659</div></div>
-<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="d6/d66/structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:186</div></div>
-<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="d6/d66/structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:198</div></div>
-<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="d6/d66/structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:190</div></div>
-<div class="ttc" id="astructdiscord__user_html"><div class="ttname"><a href="db/de3/structdiscord__user.html">discord_user</a></div><div class="ttdef"><b>Definition:</b> user.h:65</div></div>
-<div class="ttc" id="astructdiscord__user_html_a5490343b03395b90c31987fae992b0c7"><div class="ttname"><a href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">discord_user::bot</a></div><div class="ttdeci">bool bot</div><div class="ttdef"><b>Definition:</b> user.h:75</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="d5/daf/structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:683</div></div>
+<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="df/dfa/structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:691</div></div>
+<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="df/dfa/structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:693</div></div>
+<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="d6/d66/structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:220</div></div>
+<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="d6/d66/structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:232</div></div>
+<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="d6/d66/structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:224</div></div>
+<div class="ttc" id="astructdiscord__user_html"><div class="ttname"><a href="db/de3/structdiscord__user.html">discord_user</a></div><div class="ttdef"><b>Definition:</b> user.h:99</div></div>
+<div class="ttc" id="astructdiscord__user_html_a5490343b03395b90c31987fae992b0c7"><div class="ttname"><a href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">discord_user::bot</a></div><div class="ttdeci">bool bot</div><div class="ttdef"><b>Definition:</b> user.h:109</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="d5/daf/structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:681</div></div>
 </div><!-- fragment --><p> *This is a minimalistic example, refer to <a href="examples/"><code>examples/</code></a> for a better overview.*</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Build Instructions</h2>
-<h3><a class="anchor" id="autotoc_md3"></a>
+<h3><a class="anchor" id="autotoc_md4"></a>
 On Windows</h3>
 <ul>
 <li>Install <b>Cygwin</b></li>
 <li><b>Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!</b></li>
+<li>You will want to check the Windows tutorial here!</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md4"></a>
-On Linux</h3>
-<p >The only dependency is <code>curl-7.4.1</code> or higher</p>
-<h4><a class="anchor" id="autotoc_md5"></a>
+<h3><a class="anchor" id="autotoc_md5"></a>
+On Linux, BSD, and Mac OS X</h3>
+<p >The only dependency is <code>curl-7.56.1</code> or higher. If you are compiling libcurl from source, you will need to build it with SSL support.</p>
+<h4><a class="anchor" id="autotoc_md6"></a>
 Ubuntu and Debian</h4>
-<div class="fragment"><div class="line">sudo apt install -y build-essential libcurl4-openssl-dev</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md6"></a>
-Void Linux</h4>
-<div class="fragment"><div class="line">sudo xbps-install -S libcurl-devel</div>
+<div class="fragment"><div class="line">$ sudo apt install -y build-essential libcurl4-openssl-dev</div>
 </div><!-- fragment --><h4><a class="anchor" id="autotoc_md7"></a>
+Void Linux</h4>
+<div class="fragment"><div class="line">$ sudo xbps-install -S libcurl-devel</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md8"></a>
 Alpine</h4>
-<div class="fragment"><div class="line">sudo apk add curl-dev</div>
-</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md8"></a>
+<div class="fragment"><div class="line">$ sudo apk add curl-dev</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md9"></a>
+FreeBSD</h4>
+<div class="fragment"><div class="line">$ pkg install curl</div>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md10"></a>
+OS X</h4>
+<div class="fragment"><div class="line">$ brew install curl (Homebrew)</div>
+<div class="line">$ port install curl (MacPorts)</div>
+</div><!-- fragment --> <h3><a class="anchor" id="autotoc_md11"></a>
 Setting up your environment</h3>
-<h4><a class="anchor" id="autotoc_md9"></a>
+<h4><a class="anchor" id="autotoc_md12"></a>
 Clone Concord into your workspace</h4>
 <div class="fragment"><div class="line">$ git clone https://github.com/cogmasters/concord.git &amp;&amp; cd concord</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md13"></a>
 Compile Concord</h4>
 <div class="fragment"><div class="line">$ make</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md14"></a>
+Special notes for non-Linux systems</h4>
+<p >You might run into trouble with the compiler and linker not finding your Curl headers. You can do something like this: </p><div class="fragment"><div class="line">$ CFLAGS=-I&lt;some_path&gt; LDFLAGS=-L&lt;some_path&gt; make</div>
+</div><!-- fragment --><p> For instance, on a FreeBSD system: </p><div class="fragment"><div class="line">$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make</div>
+</div><!-- fragment --><p >On OS X using MacPorts: </p><div class="fragment"><div class="line">$ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md15"></a>
 Configuring Concord</h3>
 <p >The following outlines the default fields of <code>config.json</code> </p><div class="fragment"><div class="line">{</div>
 <div class="line">  &quot;logging&quot;: { // logging directives</div>
@@ -187,7 +199,7 @@ Configuring Concord</h3>
 <div class="line">    }</div>
 <div class="line">  }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md16"></a>
 Test Copycat-Bot</h3>
 <ol type="1">
 <li>Get your bot token and add it to <code>config.json</code>, by assigning it to discord's "token" field. There are well written instructions from <a href="https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&amp;-getting-a-token">discord-irc</a> explaining how to get your bot token and adding it to a server.</li>
@@ -196,53 +208,60 @@ Test Copycat-Bot</h3>
 <li>Run Copycat-Bot: <div class="fragment"><div class="line">$ cd examples &amp;&amp; ./copycat</div>
 </div><!-- fragment --></li>
 </ol>
-<h4><a class="anchor" id="autotoc_md13"></a>
+<h4><a class="anchor" id="autotoc_md17"></a>
 Get Copycat-Bot Response</h4>
 <p >Type a message in any channel the bot is part of and the bot should send an exact copy of it in return.</p>
-<h4><a class="anchor" id="autotoc_md14"></a>
+<h4><a class="anchor" id="autotoc_md18"></a>
 Terminate Copycat-Bot</h4>
-<p >With <code>Ctrl</code>+<code>c</code> or by closing the Terminal.</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<p >With <code>Ctrl</code>+<code>c</code> or with <code>Control</code>+<code>|</code></p>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Installing Concord</h2>
-<div class="fragment"><div class="line">sudo make install</div>
+<p >*(note &ndash; <code>#</code> means that you should be running as root)*</p>
+<div class="fragment"><div class="line"># make install</div>
 </div><!-- fragment --><p >Included headers must be <code>concord/</code> prefixed: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md16"></a>
+</div><!-- fragment --><p >This will install the headers and libary files into $PREFIX. You can override this as such: </p><div class="fragment"><div class="line"># PREFIX=/opt/concord make install</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md20"></a>
 Standalone executable</h3>
-<h4><a class="anchor" id="autotoc_md17"></a>
+<h4><a class="anchor" id="autotoc_md21"></a>
 GCC</h4>
 <div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h4><a class="anchor" id="autotoc_md18"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md22"></a>
 Clang</h4>
 <div class="fragment"><div class="line">$ clang myBot.c -o myBot -pthread -ldiscord -lcurl</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md19"></a>
+</div><!-- fragment --><h4><a class="anchor" id="autotoc_md23"></a>
+UNIX C compiler</h4>
+<div class="fragment"><div class="line">$ cc myBot.c -o myBot -ldiscord -lcurl -lpthread</div>
+</div><!-- fragment --><p >Note: some systems such as <b>Cygwin</b> require you to do this: </p><div class="fragment"><div class="line">$ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl</div>
+</div><!-- fragment --><p> (this links against libpthread.a in <code>/usr/lib</code>)</p>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Recommended debuggers</h2>
 <p >First, make sure your executable is compiled with the <code>-g</code> flag to ensure human-readable debugger messages.</p>
-<h3><a class="anchor" id="autotoc_md20"></a>
+<h3><a class="anchor" id="autotoc_md25"></a>
 Valgrind</h3>
 <p >Using valgrind to check for memory leaks:</p>
 <div class="fragment"><div class="line">valgrind --leak-check=full ./myBot</div>
 </div><!-- fragment --><p> For a more comprehensive guide check <a href="https://valgrind.org/docs/manual/quick-start.html">Valgrind's Quick Start</a>.</p>
-<h3><a class="anchor" id="autotoc_md21"></a>
+<h3><a class="anchor" id="autotoc_md26"></a>
 GDB</h3>
 <p >Using GDB to check for runtime errors, such as segmentation faults:</p>
 <div class="fragment"><div class="line">$ gdb ./myBot</div>
 </div><!-- fragment --><p> And then execute your bot from the gdb environment: </p><div class="fragment"><div class="line">(gdb) run</div>
 </div><!-- fragment --><p> If the program has crashed, get a backtrace of the function calls leading to it: </p><div class="fragment"><div class="line">(gdb) bt</div>
 </div><!-- fragment --><p >For a more comprehensive guide check <a href="https://beej.us/guide/bggdb/">Beej's Quick Guide to GDB</a></p>
-<h2><a class="anchor" id="autotoc_md22"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Support</h2>
 <p >Problems? Check out our <a href="https://discord.gg/Y7Xa6MA82v">Discord Server</a>.</p>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Contributing</h2>
 <p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="d5/d74/md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Getting Started</h2>
 <ul>
 <li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
-<li><a class="el" href="d3/dfc/md_docs_BUILDING_A_BOT.html">Building your first bot</a></li>
+<li>Building your first bot</li>
 <li><a class="el" href="d5/d74/md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md25"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Useful links</h2>
 <ul>
 <li><a href="https://gist.github.com/lcsmuller/a5f2b205c3871888656b86825db90187">Migrating from Orca</a> </li>

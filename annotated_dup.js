@@ -1,6 +1,5 @@
 var annotated_dup =
 [
-    [ "_jsmnroot", "d0/dda/struct__jsmnroot.html", "d0/dda/struct__jsmnroot" ],
     [ "discord", "d5/daf/structdiscord.html", "d5/daf/structdiscord" ],
     [ "discord_activities", "d4/dad/structdiscord__activities.html", null ],
     [ "discord_activity", "dc/d66/structdiscord__activity.html", "dc/d66/structdiscord__activity" ],
@@ -245,9 +244,7 @@ var annotated_dup =
     [ "discord_welcome_screen_channel", "d4/d2e/structdiscord__welcome__screen__channel.html", "d4/d2e/structdiscord__welcome__screen__channel" ],
     [ "discord_welcome_screen_channels", "da/d6e/structdiscord__welcome__screen__channels.html", null ],
     [ "integers", "dc/d92/structintegers.html", null ],
-    [ "jsmnf", "d0/d8e/structjsmnf.html", "d0/d8e/structjsmnf" ],
     [ "json_values", "d1/d96/structjson__values.html", null ],
-    [ "jsonb", "df/d89/structjsonb.html", "df/d89/structjsonb" ],
     [ "snowflakes", "d6/dea/structsnowflakes.html", null ],
     [ "strings", "d0/dbd/structstrings.html", null ],
     [ "websockets", "d1/df9/structwebsockets.html", null ],
