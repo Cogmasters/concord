@@ -14,8 +14,8 @@ EXAMPLES_DIR  = examples
 TEST_DIR      = test
 CCORDDOCS_DIR = concord-docs
 
-GENCODECS_HDR = $(GENCODECS_DIR)/discord-codecs.h
-GENCODECS_OBJ = $(GENCODECS_DIR)/discord-codecs.o
+GENCODECS_HDR = $(GENCODECS_DIR)/discord_codecs.h
+GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 
 COGUTILS_OBJS = $(OBJDIR)/$(COGUTILS_DIR)/cog-utils.o  \
                 $(OBJDIR)/$(COGUTILS_DIR)/log.o        \

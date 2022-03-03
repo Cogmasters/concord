@@ -26,7 +26,7 @@
 struct discord;
 /**/
 
-#include "discord-codecs.h"
+#include "discord_codecs.h"
 #ifdef HAS_DISCORD_VOICE
 #include "discord-voice.h"
 #endif /* HAS_DISCORD_VOICE */
