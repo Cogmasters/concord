@@ -13,8 +13,7 @@
 
 ## About
 
-Concord is implemented in plain C99, its symbols are organized to be easily matched to the documentation of the API being covered.
-Concord's implementation has minimum external dependencies to make bot deployment deadly simple.
+Concord is an asynchronous C99 Discord API wrapper library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
 ### Minimal example
 
@@ -50,7 +49,7 @@ int main(void) {
 
 * Install **Cygwin**
 * **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
-* You will want to check the Windows tutorial in the `docs` folder here!
+* You will want to check the Windows tutorial [here](docs/WINDOWS.md)!
 
 ### On Linux, BSD, and Mac OS X
 
@@ -58,30 +57,30 @@ The only dependency is `curl-7.56.1` or higher. If you are compiling libcurl fro
 
 #### Ubuntu and Debian
 
-```bash
+```console
 $ sudo apt install -y build-essential libcurl4-openssl-dev
 ```
 
 #### Void Linux
 
-```bash
+```console
 $ sudo xbps-install -S libcurl-devel
 ```
 
 #### Alpine
 
-```bash
+```console
 $ sudo apk add curl-dev
 ```
 
 #### FreeBSD
 
-```bash
+```console
 $ pkg install curl
 ```
 
 #### OS X
-```bash
+```console
 $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
@@ -89,28 +88,28 @@ $ port install curl (MacPorts)
 
 #### Clone Concord into your workspace
 
-```bash
+```console
 $ git clone https://github.com/cogmasters/concord.git && cd concord
 ```
 
 #### Compile Concord 
 
-```bash
+```console
 $ make
 ```
 
 #### Special notes for non-Linux systems
 You might run into trouble with the compiler and linker not finding your Curl headers. You can do something like this:
-```bash
+```console
 $ CFLAGS=-I<some_path> LDFLAGS=-L<some_path> make
 ```
 For instance, on a FreeBSD system:
-```bash
+```console
 $ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make
 ```
 
 On OS X using MacPorts:
-```bash
+```console
 $ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make
 ```
 
@@ -149,11 +148,11 @@ The following outlines the default fields of `config.json`
    [discord-irc](https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token)
    explaining how to get your bot token and adding it to a server.
 2. Build example executables:
-   ```bash
+   ```console
    $ make examples
    ```
 3. Run Copycat-Bot:
-   ```bash
+   ```console
    $ cd examples && ./copycat
    ```
 
@@ -167,10 +166,11 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Control</kbd>+<kbd>|</kbd>
 
 ## Installing Concord
 
-```bash
+*(note -- `#` means that you should be running as root)*
+
+```console
 # make install
 ```
-(note -- `#` means that you should be running as root)
 
 Included headers must be `concord/` prefixed:
 ```c
@@ -178,7 +178,7 @@ Included headers must be `concord/` prefixed:
 ```
 
 This will install the headers and libary files into $PREFIX. You can override this as such:
-```bash
+```console
 # PREFIX=/opt/concord make install
 ```
 
@@ -186,23 +186,23 @@ This will install the headers and libary files into $PREFIX. You can override th
 
 #### GCC 
 
-```bash
+```console
 $ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 #### Clang
 
-```bash
+```console
 $ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
 #### UNIX C compiler
-```bash
+```console
 $ cc myBot.c -o myBot -ldiscord -lcurl -lpthread
 ```
 
 Note: some systems such as **Cygwin** require you to do this:
-```bash
+```console
 $ gcc myBot.c -o myBot -pthread -lpthread -ldiscord -lcurl
 ```
 (this links against libpthread.a in `/usr/lib`)
@@ -215,7 +215,7 @@ First, make sure your executable is compiled with the `-g` flag to ensure human-
 
 Using valgrind to check for memory leaks:
 
-```bash
+```console
 valgrind --leak-check=full ./myBot
 ```
 For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.org/docs/manual/quick-start.html).
@@ -224,15 +224,15 @@ For a more comprehensive guide check [Valgrind's Quick Start](https://valgrind.o
 
 Using GDB to check for runtime errors, such as segmentation faults:
 
-```bash
+```console
 $ gdb ./myBot
 ```
 And then execute your bot from the gdb environment:
-```bash
+```console
 (gdb) run
 ```
 If the program has crashed, get a backtrace of the function calls leading to it:
-```bash
+```console
 (gdb) bt
 ```
 
