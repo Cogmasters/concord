@@ -98,12 +98,9 @@ CCORDcode discord_return_error(struct discord *client,
 
 /**
  * @brief Return the meaning of CCORDcode
- * @note in case of a @ref CCORD_DISCORD_JSON_CODE and if `client` is provided,
- *        a much more descriptive JSON message will be returned instead.
  *
- * @param code the CCORDcode to be explained
- * @param client the client created with discord_init(), NULL for generic error
- *        descriptions
+ * @param code the CCORDcode value
+ * @param client @note unused parameter
  * @return a string containing the code meaning
  */
 const char *discord_strerror(CCORDcode code, struct discord *client);

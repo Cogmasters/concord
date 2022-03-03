@@ -142,11 +142,11 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 {
     struct {
         char level[16];
-        char filename[LOGCONF_PATH_MAX];
+        char filename[1028];
         bool quiet, use_color, overwrite;
         struct {
             bool enable;
-            char filename[LOGCONF_PATH_MAX];
+            char filename[1028];
         } http;
     } l = { 0 };
 
@@ -235,7 +235,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     /* SET LOGGER CONFIGS */
     if (*l.filename) {
-        memcpy(conf->logger->fname, l.filename, LOGCONF_PATH_MAX);
+        conf->logger->fname = strdup(l.filename);
         conf->logger->f =
             fopen(conf->logger->fname, l.overwrite ? "w+" : "a+");
         ASSERT_S(NULL != conf->logger->f, "Could not create logger file");
@@ -247,7 +247,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     /* SET HTTP DUMP CONFIGS */
     if (l.http.enable && *l.http.filename) {
-        memcpy(conf->http->fname, l.http.filename, LOGCONF_PATH_MAX);
+        conf->http->fname = strdup(l.http.filename);
         conf->http->f = fopen(conf->http->fname, l.overwrite ? "w+" : "a+");
         ASSERT_S(NULL != conf->http->f, "Could not create http logger file");
     }
@@ -307,10 +307,12 @@ logconf_cleanup(struct logconf *conf)
             free(conf->file.start);
         }
         if (conf->logger) {
+            if (conf->logger->fname) free(conf->logger->fname);
             if (conf->logger->f) fclose(conf->logger->f);
             free(conf->logger);
         }
         if (conf->http) {
+            if (conf->http->fname) free(conf->http->fname);
             if (conf->http->f) fclose(conf->http->f);
             free(conf->http);
         }

@@ -12,7 +12,7 @@ extern "C" {
 
 #define __ERR(fmt, ...) log_fatal(fmt "%s", __VA_ARGS__)
 
-# define ERR(...)                                                             \
+#define ERR(...)                                                              \
   do {                                                                        \
     __ERR(__VA_ARGS__, "");                                                   \
     abort();                                                                  \
@@ -159,8 +159,6 @@ extern "C" {
 
 /** Maximum length for module id */
 #define LOGCONF_ID_LEN 64 + 1
-/** Maximum length for the output file path */
-#define LOGCONF_PATH_MAX 4096
 
 /**
  * @brief A stackful and modularized wrapper over the popular 'log.c'
@@ -183,7 +181,7 @@ struct logconf {
     struct sized_buffer file;
     struct {
         /** name of logging output file */
-        char fname[LOGCONF_PATH_MAX];
+        char *fname;
         /** pointer to logging output file */
         FILE *f;
     } * logger, *http;
