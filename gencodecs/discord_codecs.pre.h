@@ -1,7 +1,3 @@
-#define GENCODECS_DATA
-#define GENCODECS_INIT
-#define GENCODECS_JSON_ENCODER
-#define GENCODECS_JSON_DECODER
 #include "gencodecs.h"
 
 #ifdef GENCODECS_HEADER
