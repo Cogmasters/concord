@@ -143,12 +143,13 @@ _ccord_strerror(CCORDcode code)
 const char *
 discord_strerror(CCORDcode code, struct discord *client)
 {
+    (void)client;
+
     switch (code) {
     default:
         return _ccord_strerror(code);
     case CCORD_DISCORD_JSON_CODE:
-        return client ? client->adapter.errbuf
-                      : "Discord JSON Error Code: Failed request";
+        return "Discord JSON Error Code: Failed request";
     case CCORD_DISCORD_BAD_AUTH:
         return "Discord Bad Authentication: Bad authentication token";
     case CCORD_DISCORD_RATELIMIT:

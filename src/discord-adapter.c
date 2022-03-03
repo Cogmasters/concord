@@ -183,17 +183,6 @@ discord_adapter_run(struct discord_adapter *adapter,
 }
 
 static void
-_discord_adapter_set_errbuf(struct discord_adapter *adapter,
-                            struct sized_buffer *body)
-{
-    size_t len;
-
-    len = snprintf(adapter->errbuf, sizeof(adapter->errbuf), "%.*s",
-                   (int)body->size, body->start);
-    ASSERT_S(len < sizeof(adapter->errbuf), "Out of bounds write attempt");
-}
-
-static void
 _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 {
     struct discord_context *cxt = p_cxt;
@@ -378,7 +367,8 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
 
             body = ua_info_get_body(&info);
             if (info.code != CCORD_OK) {
-                _discord_adapter_set_errbuf(adapter, &body);
+                logconf_error(&client->conf, "%.*s", (int)body.size,
+                              body.start);
             }
             else if (req->gnrc.data) {
                 /* initialize ret */
@@ -791,11 +781,10 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
 
         body = ua_info_get_body(&info);
         if (info.code != CCORD_OK) {
-            _discord_adapter_set_errbuf(adapter, &body);
+            logconf_error(&client->conf, "%.*s", (int)body.size, body.start);
 
-            if (cxt->req.ret.fail) {
+            if (cxt->req.ret.fail)
                 cxt->req.ret.fail(client, info.code, cxt->req.ret.data);
-            }
         }
         else if (cxt->req.ret.done.typed) {
             void *ret = calloc(1, cxt->req.gnrc.size);

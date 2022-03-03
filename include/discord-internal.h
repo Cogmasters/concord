@@ -113,7 +113,7 @@ struct discord_request {
 };
 
 /** URL endpoint threshold length */
-#define DISCORD_ENDPT_LEN 2048
+#define DISCORD_ENDPT_LEN 512
 /** Bucket's route threshold length */
 #define DISCORD_ROUTE_LEN 256
 
@@ -189,8 +189,6 @@ struct discord_adapter {
     /* request timeouts */
     struct heap timeouts;
 
-    /** error storage */
-    char errbuf[2048];
     /** max amount of retries before a failed request gives up */
     int retry_limit;
 };
@@ -527,7 +525,7 @@ struct discord_gateway {
         /** whether client is ready to start sending/receiving events */
         bool is_ready;
         /** session id for resuming lost connections */
-        char id[512];
+        char id[64];
         /** amount of shards being used by this session */
         int shards;
         /** session limits */
@@ -565,7 +563,7 @@ struct discord_gateway {
         /** field 's' */
         int seq;
         /** field 't' */
-        char name[64];
+        char name[32];
         /** field 'd' */
         struct sized_buffer data;
     } payload;

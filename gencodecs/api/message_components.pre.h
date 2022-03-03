@@ -101,7 +101,8 @@ STRUCT(discord_select_option)
   COND_END
   /** will render this option as selected by default */
     FIELD_CUSTOM(Default, "default", bool, DECOR_BLANK, INIT_BLANK,
-                 CLEANUP_BLANK, JSON_ENCODER_bool, JSON_DECODER_bool, false)
+                 CLEANUP_BLANK, GENCODECS_JSON_ENCODER_bool, 
+                 GENCODECS_JSON_DECODER_bool, false)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_select_options} */

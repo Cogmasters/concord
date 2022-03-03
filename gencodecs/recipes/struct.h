@@ -61,7 +61,11 @@
 #define GENCODECS_PP(_description)
 #define GENCODECS_PP_DEFINE(_description)
 
+#endif /* GENCODECS_HEADER */
+#endif /* GENCODECS_DATA */
+
 #ifdef GENCODECS_INIT
+#ifdef GENCODECS_HEADER
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
     void _type##_init(struct _type *this);                                    \
@@ -71,11 +75,7 @@
 
 #include "gencodecs-gen.pre.h"
 
-#endif /* GENCODECS_INIT */
-
 #elif defined(GENCODECS_FORWARD)
-
-#ifdef GENCODECS_INIT
 
 #define GENCODECS_STRUCT(_type)                                               \
     static void _type##_init(struct _type *this);                             \
@@ -85,11 +85,7 @@
 
 #include "gencodecs-gen.pre.h"
 
-#endif /* GENCODECS_INIT */
-
 #else
-
-#ifdef GENCODECS_INIT
 
 #define GENCODECS_PUB_STRUCT(_type)                                           \
     void _type##_init(struct _type *this)                                     \
@@ -136,6 +132,5 @@
 
 #include "gencodecs-gen.pre.h"
 
-#endif /* GENCODECS_INIT */
 #endif /* GENCODECS_HEADER */
-#endif /* GENCODECS_DATA */
+#endif /* GENCODECS_INIT */

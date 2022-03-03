@@ -61,7 +61,8 @@ PUB_STRUCT(discord_user)
   /** whether the user is an Official Discord System user (part of the
        urgent message system) */
     FIELD_CUSTOM(System, "system", bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
-                 JSON_ENCODER_bool, JSON_DECODER_bool, false)
+                 GENCODECS_JSON_ENCODER_bool, GENCODECS_JSON_DECODER_bool,
+                 false)
   /** whether the user has two factor enabled on their account */
     FIELD(mfa_enabled, bool, false)
   /** the user's banner hash */

@@ -540,7 +540,8 @@ PUB_STRUCT(discord_embed_field)
     FIELD_PTR(value, char, *)
   /** whether or not this field should display inline */
     FIELD_CUSTOM(Inline, "inline", bool, DECOR_BLANK, INIT_BLANK, CLEANUP_BLANK,
-                 JSON_ENCODER_bool, JSON_DECODER_bool, false)
+                 GENCODECS_JSON_ENCODER_bool, GENCODECS_JSON_DECODER_bool,
+                 false)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_embed_fields} */
