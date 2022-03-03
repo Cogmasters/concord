@@ -15,12 +15,12 @@ THIRDP_DIR   = $(TOP)/core/third-party
 DOCS_DIR     = $(TOP)/docs
 
 # Main preprocessor input file
-INP_PRE := discord-codecs.pre.h
+INP_PRE := discord_codecs.pre.h
 
 # Single-files to be generated
-OUT_C   := discord-codecs.c
-OUT_H   := discord-codecs.h
-OUT_O   := discord-codecs.o
+OUT_C   := discord_codecs.c
+OUT_H   := discord_codecs.h
+OUT_O   := discord_codecs.o
 
 # Generate individual headers, useful for docs generation
 HEADERS = $(API_DIR)/application.h \
@@ -59,7 +59,7 @@ $(OUT_O): $(OUT_C) $(OUT_H)
 $(PP): $(PPOBJ)
 	$(CC) -o $(PP) $(PPOBJ)
 
-HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.pre.h/\U\1/' | sed -e 's/-\|\//_/')_H"
+HEADER_TAG = "$$(echo '$<' | sed -e 's/\(.*\)\.pre.h/\1/' | tr '[:lower:]' '[:upper:]' | sed -e 's/\//_/')_H"
 $(OUT_H): $(INP_PRE) $(PP)
 	@ echo "Generating headers"
 	@ echo "#ifndef $(HEADER_TAG)" > $@
