@@ -361,9 +361,8 @@ STRUCT(discord_attachment)
   COND_WRITE(this->content_type != NULL)
     FIELD_PTR(content_type, char, *)
   COND_END
-  /* TODO: make it size_t */
   /** size of file in bytes */
-    FIELD(size, int, 0)
+    FIELD(size, size_t, 0)
   /** source url of file */
     FIELD_PTR(url, char, *)
   /** proxied url of file */

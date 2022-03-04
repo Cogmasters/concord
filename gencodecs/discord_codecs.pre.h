@@ -11,6 +11,14 @@ PP_INCLUDE("types.h")
 #define GENCODECS_JSON_ENCODER_PTR_json_char(b, buf, size, _var, _type)       \
     if (0 > (code = jsonb_token(b, buf, size, _var, strlen(_var))))           \
         return code
+#define GENCODECS_JSON_ENCODER_size_t(b, buf, size, _var, _type)              \
+        {                                                                     \
+            char tok[64];                                                     \
+            int toklen;                                                       \
+            toklen = sprintf(tok, "%zu", _var);                               \
+            if (0 > (code = jsonb_token(b, buf, size, tok, toklen)))          \
+                return code;                                                  \
+        }
 #define GENCODECS_JSON_ENCODER_uint64_t(b, buf, size, _var, _type)            \
         {                                                                     \
             char tok[64];                                                     \
@@ -36,6 +44,9 @@ PP_INCLUDE("types.h")
         _var = _gc_strndup(buf + f->val->start, f->val->end - f->val->start); \
         ret += f->val->end - f->val->start;                                   \
     }
+#define GENCODECS_JSON_DECODER_size_t(f, buf, _var, _type)                    \
+    if (f && f->val->type == JSMN_PRIMITIVE)                                  \
+        _var = (size_t)strtoull(buf + f->val->start, NULL, 10)
 #define GENCODECS_JSON_DECODER_uint64_t(f, buf, _var, _type)                  \
     if (f) sscanf(buf + f->val->start, "%" SCNu64, &_var)
 #define GENCODECS_JSON_DECODER_u64snowflake GENCODECS_JSON_DECODER_uint64_t
