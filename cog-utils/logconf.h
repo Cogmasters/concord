@@ -12,12 +12,23 @@ extern "C" {
 
 #define __ERR(fmt, ...) log_fatal(fmt "%s", __VA_ARGS__)
 
+/**
+ * @brief Print error message and abort
+ *
+ * @param ... printf-like `format` and variadic arguments (if any)
+ */
 #define ERR(...)                                                              \
   do {                                                                        \
     __ERR(__VA_ARGS__, "");                                                   \
     abort();                                                                  \
   } while (0)
 
+/**
+ * @brief Assert that allows printing a error message
+ *
+ * @param expr conditional expression that's expected to be true
+ * @param msg error message
+ */
 #define ASSERT_S(expr, msg)                                                   \
   do {                                                                        \
     if (!(expr)) {                                                            \
@@ -26,7 +37,15 @@ extern "C" {
     }                                                                         \
   } while (0)
 
-/* THIS WILL ONLY WORK IF __VA_ARGS__ IS SET */
+/**
+ * @brief Assert that allows printing a error message in a printf-like fashion
+ * @warning if no variadic arguments are specified there will be errors, in 
+ *      that case use @ref ASSERT_S.
+ *
+ * @param expr conditional expression that's expected to be true
+ * @param fmt printf-like formatting string for the error message
+ * @param ... printf-like variadic arguments to be matched to `fmt`
+ */
 # define VASSERT_S(expr, fmt, ...)                                            \
   do {                                                                        \
     if (!(expr)) {                                                            \
