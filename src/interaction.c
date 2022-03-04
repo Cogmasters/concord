@@ -137,11 +137,9 @@ discord_create_followup_message(struct discord *client,
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
     if (params->thread_id) {
-        size_t ret;
-
-        ret = snprintf(query, sizeof(query), "thread_id=%" PRIu64,
-                       params->thread_id);
-        ASSERT_S(ret < sizeof(query), "Out of bounds write attempt");
+        size_t len = snprintf(query, sizeof(query), "thread_id=%" PRIu64,
+                              params->thread_id);
+        ASSERT_S(len < sizeof(query), "Out of bounds write attempt");
     }
 
     body.size =

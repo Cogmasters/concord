@@ -337,22 +337,22 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
 {
     struct discord_context *cxt;
     QUEUE queue;
-    QUEUE *q;
+    QUEUE *qelem;
 
     QUEUE_MOVE(&adapter->b_null->waitq, &queue);
     QUEUE_INIT(&adapter->b_null->waitq);
 
     while (!QUEUE_EMPTY(&queue)) {
-        q = QUEUE_HEAD(&queue);
-        QUEUE_REMOVE(q);
+        qelem = QUEUE_HEAD(&queue);
+        QUEUE_REMOVE(qelem);
 
-        cxt = QUEUE_DATA(q, struct discord_context, entry);
+        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
         if (0 == strcmp(cxt->route, route)) {
-            QUEUE_INSERT_TAIL(&b->waitq, q);
+            QUEUE_INSERT_TAIL(&b->waitq, qelem);
             cxt->bucket = b;
         }
         else {
-            QUEUE_INSERT_TAIL(&adapter->b_null->waitq, q);
+            QUEUE_INSERT_TAIL(&adapter->b_null->waitq, qelem);
         }
     }
 }
