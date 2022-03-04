@@ -2,6 +2,19 @@
  * Voice Connections Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordVoiceSpeakingFlags Voice speaking flags
+ * @ingroup DiscordConstants
+ *  @{ */
+
+/** Normal transmission of voice audio */
+PP_DEFINE(DISCORD_VOICE_MICROPHONE 1 << 0)
+/** Transmission of context audio for video, no speaking indicators */
+PP_DEFINE(DISCORD_VOICE_SOUNDSHARE 1 << 1)
+/** Priority speaker, lowering audio of other speakers */
+PP_DEFINE(DISCORD_VOICE_PRIORITY 1 << 2)
+
+/** @} DiscordVoiceSpeakingFlags */
+
 ENUM(discord_voice_close_opcodes)
   /** You sent an invalid opcode */
     ENUMERATOR(DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE, = 4001)
@@ -54,13 +67,4 @@ ENUM(discord_voice_opcodes)
   /** A client has disconnected from the voice channel */
     ENUMERATOR(DISCORD_VOICE_CLIENT_DISCONNECT, = 13)
     ENUMERATOR_LAST(DISCORD_VOICE_CODEC, = 14)
-ENUM_END
-
-ENUM(discord_voice_speaking_flags)
-  /** Normal transmission of voice audio */
-    ENUMERATOR(DISCORD_VOICE_MICROPHONE, = 1 << 0)
-  /** Transmission of context audio for video, no speaking indicators */
-    ENUMERATOR(DISCORD_VOICE_SOUNDSHARE, = 1 << 1)
-  /** Priority speaker, lowering audio of other speakers */
-    ENUMERATOR_LAST(DISCORD_VOICE_PRIORITY, = 1 << 2)
 ENUM_END

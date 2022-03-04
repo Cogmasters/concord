@@ -138,11 +138,11 @@ STRUCT(discord_interaction_callback_data)
   COND_WRITE(this->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
-  /** message flags combined as a bitfield (only
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        @ref DISCORD_MESSAGE_SUPRESS_EMBEDS and @ref DISCORD_MESSAGE_EPHEMERAL
        can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_ENUM(flags, discord_message_flags)
+    FIELD_BITMASK(flags)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(this->attachments != NULL)
@@ -222,10 +222,10 @@ PUB_STRUCT(discord_create_followup_message)
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
-       set) */
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
+       `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_SNOWFLAKE(flags)
+    FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
 

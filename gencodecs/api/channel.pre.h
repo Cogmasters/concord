@@ -2,6 +2,35 @@
  * Channel Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordAPIChannelMessageFlags Message flags
+ * @ingroup DiscordAPIChannel
+ *  @{ */
+
+/** this message has been published to subscribed channels (via Channel
+   Following) */
+PP_DEFINE(DISCORD_MESSAGE_CROSSPOSTED 1 << 0)
+/** this message originated from a message in another channel (via Channel
+   Following) */
+PP_DEFINE(DISCORD_MESSAGE_IS_CROSSPOST 1 << 1)
+/** do not include any embed when serializing this message */
+PP_DEFINE(DISCORD_MESSAGE_SUPRPRESS_EMBEDS 1 << 2)
+/** the source message for this crosspost has been deleted (via Channel
+   Following) */
+PP_DEFINE(DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED 1 << 3)
+/** this message came from the urgent message system */
+PP_DEFINE(DISCORD_MESSAGE_URGENT 1 << 4)
+/** this message has an associated thread, with the same ID as the message */
+PP_DEFINE(DISCORD_MESSAGE_HAS_THREAD 1 << 5)
+/** this message is only visible to the user who invoked the interaction */
+PP_DEFINE(DISCORD_MESSAGE_EPHEMERAL 1 << 6)
+/** this message is an interaction response and the bot is thinking */
+PP_DEFINE(DISCORD_MESSAGE_LOADING 1 << 7)
+/** this message failed to mention some roles and add the members to the
+   thread */
+PP_DEFINE(DISCORD_MESSAGE_FAILED_TO_MENTION_SOME_ROLES_IN_THREAD 1 << 8)
+
+/** @} DiscordAPIChannelMessageFlags */
+
 ENUM(discord_channel_types)
   /** a text channel within a server */
     ENUMERATOR(DISCORD_CHANNEL_GUILD_TEXT, = 0)
@@ -69,32 +98,6 @@ ENUM(discord_message_activity_types)
     ENUMERATOR(DISCORD_MESSAGE_ACTIVITY_SPECTATE, = 2)
     ENUMERATOR(DISCORD_MESSAGE_ACTIVITY_LISTEN, = 3)
     ENUMERATOR_LAST(DISCORD_MESSAGE_ACTIVITY_JOIN_REQUEST, = 5)
-ENUM_END
-
-ENUM(discord_message_flags)
-  /** this message has been published to subscribed channels (via Channel
-       Following) */
-    ENUMERATOR(DISCORD_MESSAGE_CROSSPOSTED, = 1 << 0)
-  /** this message originated from a message in another channel (via Channel
-       Following) */
-    ENUMERATOR(DISCORD_MESSAGE_IS_CROSSPOST, = 1 << 1)
-  /** do not include any embed when serializing this message */
-    ENUMERATOR(DISCORD_MESSAGE_SUPRPRESS_EMBEDS, = 1 << 2)
-  /** the source message for this crosspost has been deleted (via Channel
-       Following) */
-    ENUMERATOR(DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED, = 1 << 3)
-  /** this message came from the urgent message system */
-    ENUMERATOR(DISCORD_MESSAGE_URGENT, = 1 << 4)
-  /** this message has an associated thread, with the same ID as the message */
-    ENUMERATOR(DISCORD_MESSAGE_HAS_THREAD, = 1 << 5)
-  /** this message is only visible to the user who invoked the interaction */
-    ENUMERATOR(DISCORD_MESSAGE_EPHEMERAL, = 1 << 6)
-  /** this message is an interaction response and the bot is thinking */
-    ENUMERATOR(DISCORD_MESSAGE_LOADING, = 1 << 7)
-  /** this message failed to mention some roles and add the members to the
-       thread */
-    ENUMERATOR_LAST(DISCORD_MESSAGE_FAILED_TO_MENTION_SOME_ROLES_IN_THREAD,
-                    = 1 << 8)
 ENUM_END
 
 /** @CCORD_pub_struct{discord_channel} */
@@ -228,8 +231,8 @@ PUB_STRUCT(discord_message)
   /** data showing the source of a crosspost, channel follow add, pin, or
        reply message */
     FIELD_STRUCT_PTR(message_reference, discord_message_reference, *)
-  /** message flags combined as a bitfield */
-    FIELD_ENUM(flags, discord_message_flags)
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield */
+    FIELD_BITMASK(flags)
   /** the message associated with the message_reference */
     FIELD_STRUCT_PTR(referenced_message, discord_message, *)
   /** sent if the message is a response to an interaction */
@@ -294,9 +297,9 @@ STRUCT(discord_overwrite)
     FIELD_SNOWFLAKE(id)
   /** either 0 (role) or 1 (member) */
     FIELD(type, int, 0)
-  /** permission bit set */
+  /** @ref DiscordPermissions bit set */
     FIELD_SNOWFLAKE(allow)
-  /** permission bit set */
+  /** @ref DiscordPermissions bit set */
     FIELD_SNOWFLAKE(deny)
 STRUCT_END
 
@@ -332,7 +335,7 @@ STRUCT(discord_thread_member)
   /** the time the current user last joined the thread */
     FIELD_TIMESTAMP(join_timestamp)
   /** any user-thread settings, currently only used for notifications */
-    FIELD(flags, int, 0)
+    FIELD_BITMASK(flags)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_thread_members} */
@@ -707,10 +710,10 @@ PUB_STRUCT(discord_create_message)
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
-       set */
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
+       `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_ENUM(flags, discord_message_flags)
+    FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
 
@@ -734,10 +737,10 @@ PUB_STRUCT(discord_edit_message)
     FIELD_PTR(content, char, *)
   /** embedded `rich` content (up to 6000 characters) */
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
-  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
-       set */
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
+       `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_ENUM(flags, discord_message_flags)
+    FIELD_BITMASK(flags)
   COND_END
   /** allowed mentions for the message */
   COND_WRITE(this->allowed_mentions != NULL)
@@ -761,13 +764,15 @@ STRUCT_END
 
 /** @CCORD_pub_struct{discord_edit_channel_permissions} */
 PUB_STRUCT(discord_edit_channel_permissions)
-  /** the bitwise value of all allowed permissions (default \"0\") */
+  /** the bitwise value of all allowed permissions (default \"0\")
+        @see @ref DiscordPermissions */
   COND_WRITE(this->allow != 0)
-    FIELD_PRINTF(allow, u64bitmask, "%" PRIu64, "%" SCNu64)
+    FIELD_BITMASK(allow)
   COND_END
-  /** the bitwise value of all disallowed permissions (default \"0\") */
+  /** the bitwise value of all disallowed permissions (default \"0\") 
+        @see @ref DiscordPermissions */
   COND_WRITE(this->deny != 0)
-    FIELD_PRINTF(deny, u64bitmask, "%" PRIu64, "%" SCNu64)
+    FIELD_BITMASK(deny)
   COND_END
   /** 0 for a role or 1 for a member */
     FIELD(type, int, 0)

@@ -126,10 +126,10 @@ PUB_STRUCT(discord_execute_webhook)
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
-       set) */
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
+       `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_SNOWFLAKE(flags)
+    FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
 

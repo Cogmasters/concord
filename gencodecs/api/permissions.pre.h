@@ -2,6 +2,11 @@
  * Permissions Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordPermissions Discord permissions
+ * @see https://discord.com/developers/docs/topics/permissions#permissions
+ * @ingroup DiscordConstants
+ *  @{ */
+
 /** Allows creation of instant invites */
 PP_DEFINE(DISCORD_PERM_CREATE_INSTANT_INVITE 1 << 0)
 /** Allows kicking members */
@@ -93,6 +98,8 @@ PP_DEFINE(DISCORD_PERM_START_EMBEDDED_ACTIVITIES 1 << 39)
      channels */
 PP_DEFINE(DISCORD_PERM_MODERATE_MEMBERS 1 << 40)
 
+/** @} DiscordPermissions */
+
 /** @CCORD_pub_struct{discord_role} */
 PUB_STRUCT(discord_role)
   /** role id */
@@ -114,7 +121,7 @@ PUB_STRUCT(discord_role)
   /** position of this role */
     FIELD(position, int, 0)
   /** permission bit set */
-    FIELD_PTR(permissions, char, *)
+    FIELD_BITMASK(permissions)
   /** whether this role is managed by an integration */
     FIELD(managed, bool, false)
   /** whether this roleis mentionable */

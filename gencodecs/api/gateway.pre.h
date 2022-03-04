@@ -2,6 +2,10 @@
  * Gateway Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordInternalGatewayIntents Gateway intents
+ * @brief Events user is interested on listening to
+ * @ingroup DiscordInternalGateway
+ *  @{ */
 PP_DEFINE(DISCORD_GATEWAY_GUILDS 1 << 0)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_MEMBERS 1 << 1)
 PP_DEFINE(DISCORD_GATEWAY_GUILD_BANS 1 << 2)
@@ -17,7 +21,12 @@ PP_DEFINE(DISCORD_GATEWAY_GUILD_MESSAGE_TYPING 1 << 11)
 PP_DEFINE(DISCORD_GATEWAY_DIRECT_MESSAGES 1 << 12)
 PP_DEFINE(DISCORD_GATEWAY_DIRECT_MESSAGE_REACTIONS 1 << 13)
 PP_DEFINE(DISCORD_GATEWAY_DIRECT_MESSAGE_TYPING 1 << 14)
+/** @} DiscordInternalGatewayIntents */
 
+/** @defgroup DiscordActivityFlags Gateway activity flags
+ * @brief Describe user activities
+ * @ingroup DiscordConstants
+ *  @{ */
 PP_DEFINE(DISCORD_ACTIVITY_INSTANCE 1 << 0)
 PP_DEFINE(DISCORD_ACTIVITY_JOIN 1 << 1)
 PP_DEFINE(DISCORD_ACTIVITY_SPECTATE 1 << 2)
@@ -27,6 +36,7 @@ PP_DEFINE(DISCORD_ACTIVITY_PLAY 1 << 5)
 PP_DEFINE(DISCORD_ACTIVITY_PARTY_PRIVACY_FRIENDS 1 << 6)
 PP_DEFINE(DISCORD_ACTIVITY_PARTY_PRIVACY_VOICE_CHANNEL 1 << 7)
 PP_DEFINE(DISCORD_ACTIVITY_EMBEDDED 1 << 8)
+/** @} DiscordActivityFlags */
 
 ENUM(discord_gateway_close_opcodes)
     ENUMERATOR(DISCORD_GATEWAY_CLOSE_REASON_UNKNOWN_ERROR, = 4000)
@@ -149,7 +159,8 @@ PUB_STRUCT(discord_identify)
 #endif
   /** presence structure for initial presence information */
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
-  /** the gateway intents you wish to receive */
+  /** the gateway intents you wish to receive
+       @see @ref DiscordInternalGatewayIntents */
     FIELD_BITMASK(intents)
 STRUCT_END
 
@@ -247,8 +258,9 @@ STRUCT(discord_activity)
   COND_END
   /** whether or not the activity is an instanced game session */
     FIELD(instance, bool, false)
-  /** activity flags bitwise mask, describes what they payload includes */
-    FIELD_SNOWFLAKE(flags)
+  /** activity flags bitwise mask, describes what they payload includes
+        @see @ref DiscordActivityFlags */
+    FIELD_BITMASK(flags)
   /** the custom buttons shown in the Rich Presence (max 2) */
   COND_WRITE(this->buttons != NULL)
     FIELD_STRUCT_PTR(buttons, discord_activity_buttons, *)

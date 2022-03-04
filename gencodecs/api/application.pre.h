@@ -2,6 +2,8 @@
  * Application Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordApplicationFlags Application flags
+ *  @{ */
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_PRESENCE 1 << 12)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_PRESENCE_LIMITED 1 << 13)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_GUILD_MEMBERS 1 << 14)
@@ -10,6 +12,7 @@ PP_DEFINE(DISCORD_APPLICATION_VERIFICATION_PENDING_GUILD_LIMIT 1 << 16)
 PP_DEFINE(DISCORD_APPLICATION_EMBEDDED 1 << 17)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT 1 << 18)
 PP_DEFINE(DISCORD_APPLICATION_GATEWAY_MESSAGE_CONTENT_LIMITED 1 << 19)
+/** @} DiscordApplicationFlags */
 
 /** @CCORD_pub_struct{discord_application} */
 PUB_STRUCT(discord_application)
@@ -60,6 +63,6 @@ PUB_STRUCT(discord_application)
     FIELD_PTR(slug, char, *)
   /** the application's default rich presence invite cover image hash */
     FIELD_PTR(cover_image, char, *)
-  /** the application's public flags */
-    FIELD_SNOWFLAKE(flags)
+  /** the application's public flags @see DiscordApplicationFlags */
+    FIELD_BITMASK(flags)
 STRUCT_END

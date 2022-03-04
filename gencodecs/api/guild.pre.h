@@ -2,6 +2,21 @@
  * Guild Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordAPIGuildSystemChannelFlags System channel flags
+ * @ingroup DiscordAPIGuild
+ *  @{ */
+
+/** suppress member join notifications */
+PP_DEFINE(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATIONS 1 << 0)
+/** suppress server boost notifications */
+PP_DEFINE(DISCORD_SYSTEM_SUPPRESS_PREMIUM_NOTIFICATIONS 1 << 1)
+/** suppress server setup tips */
+PP_DEFINE(DISCORD_SYSTEM_SUPPRESS_GUILD_REMINDER_NOTIFICATIONS 1 << 2)
+/** hide member join sticker reply buttons */
+PP_DEFINE(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATION_REPLIES 1 << 3)
+
+/** @} DiscordAPIGuildSystemChannelFlags */
+
 ENUM(discord_message_notification_level)
   /** members will receive notifications for all messages by default */
     ENUMERATOR(DISCORD_MESSAGE_NOTIFICATION_ALL_MESSAGES, = 0)
@@ -57,17 +72,6 @@ ENUM(discord_premium_tier)
     ENUMERATOR_LAST(DISCORD_PREMIUM_TIER_3, = 3)
 ENUM_END
 
-ENUM(discord_system_channel_flags)
-  /** suppress member join notifications */
-    ENUMERATOR(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATIONS, = 1 << 0)
-  /** suppress server boost notifications */
-    ENUMERATOR(DISCORD_SYSTEM_SUPPRESS_PREMIUM_NOTIFICATIONS, = 1 << 1)
-  /** suppress server setup tips */
-    ENUMERATOR(DISCORD_SYSTEM_SUPPRESS_GUILD_REMINDER_NOTIFICATIONS, = 1 << 2)
-  /** hide member join sticker reply buttons */
-    ENUMERATOR_LAST(DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATION_REPLIES, = 1 << 3)
-ENUM_END
-
 ENUM(discord_integration_expire_behaviors)
     ENUMERATOR(DISCORD_INTEGRATION_REMOVE_ROLE, = 0)
     ENUMERATOR_LAST(DISCORD_INTEGRATION_KICK, = 1)
@@ -94,7 +98,7 @@ PUB_STRUCT(discord_guild)
     FIELD(owner, bool, false)
   /** id of owner */
     FIELD_SNOWFLAKE(owner_id)
-  /** total permissions for the user in the guild (exclues overwrites) */
+  /** total permissions for the user in the guild (excludes overwrites) */
   COND_WRITE(this->permissions != NULL)
     FIELD_PTR(permissions, char, *)
   COND_END
@@ -126,8 +130,8 @@ PUB_STRUCT(discord_guild)
   /** the id of the channel where guild notices such as welcome messages and
        boost events are posted */
     FIELD_SNOWFLAKE(system_channel_id)
-  /** system channel flags */
-    FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
+  /** @ref DiscordAPIGuildSystemChannelFlags */
+    FIELD_BITMASK(system_channel_flags)
   /** the id of the channel where Community guilds can display rules and/or
        guidelines */
     FIELD_SNOWFLAKE(rules_channel_id)
@@ -462,8 +466,8 @@ PUB_STRUCT(discord_create_guild)
   /** the ID of the channel when guild notices such as welcome messages and
        boost events are posted */
     FIELD_SNOWFLAKE(system_channel_id)
-  /** system channel flags */
-    FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
+  /** @ref DiscordAPIGuildSystemChannelFlags */
+    FIELD_BITMASK(system_channel_flags)
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_modify_guild} */
@@ -497,8 +501,8 @@ PUB_STRUCT(discord_modify_guild)
   /** the ID of the channel when guild notices such as welcome messages and
        boost events are posted */
     FIELD_SNOWFLAKE(system_channel_id)
-  /** system channel flags */
-    FIELD_ENUM(system_channel_flags, discord_system_channel_flags)
+  /** @ref DiscordAPIGuildSystemChannelFlags */
+    FIELD_BITMASK(system_channel_flags)
   /** the ID of the channel where Community guilds display rules and/or
        guidelines */
     FIELD_SNOWFLAKE(rules_channel_id)
