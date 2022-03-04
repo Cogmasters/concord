@@ -40,6 +40,7 @@
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
         _type * _decor array;
 #define GENCODECS_LIST_END                                                    \
+        /** @private */                                                       \
         int realsize;                                                         \
     };
 
