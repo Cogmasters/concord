@@ -99,7 +99,7 @@ STRUCT_END
  * Sticker REST parameters
  * **************************************************************************/
 
-/* TODO: do not generate JSON encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_create_guild_sticker)
   /** name of the sticker (2-30 characters) */
     FIELD_PTR(name, char, *)
@@ -111,6 +111,7 @@ STRUCT(discord_create_guild_sticker)
        max 500 KB */
     FIELD_STRUCT_PTR(file, discord_attachment, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_sticker} */
 PUB_STRUCT(discord_modify_guild_sticker)

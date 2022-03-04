@@ -582,21 +582,23 @@ PUB_STRUCT(discord_list_active_guild_threads)
     FIELD_STRUCT_PTR(members, discord_thread_members, *)
 STRUCT_END
 
-/* TODO: disable json encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_list_guild_members)
   /** max number of members to return (1-1000) */
     FIELD(limit, int, 0)
   /** the highest user ID in the previous page */
     FIELD_SNOWFLAKE(after)
 STRUCT_END
+#endif
 
-/* TODO: disable json encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_search_guild_members)
   /** query string to match username(s) and nickname(s) against */
     FIELD_PTR(query, char, *)
   /** max number of members to return (1-1000) */
     FIELD(limit, int, 0)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_add_guild_member} */
 PUB_STRUCT(discord_add_guild_member)
@@ -718,7 +720,7 @@ PUB_STRUCT(discord_modify_guild_role)
     FIELD(mentionable, bool, false)
 STRUCT_END
 
-/* TODO: disable json encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_guild_prune_count)
   /** number of days to count prune for (1-30) */
   COND_WRITE(this->count != 0)
@@ -727,6 +729,7 @@ STRUCT(discord_get_guild_prune_count)
   /** role(s) to include */
     FIELD_STRUCT_PTR(include_roles, snowflakes, *)
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_begin_guild_prune} */
 PUB_STRUCT(discord_begin_guild_prune)
@@ -744,7 +747,7 @@ PUB_STRUCT(discord_begin_guild_prune)
   COND_END
 STRUCT_END
 
-/* TODO: disable json encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_guild_widget_image)
   /** style of the widget image returned
        @see https://discord.com/developers/docs/resources/guild#membership-screening-object-widget-style-options */
@@ -752,6 +755,7 @@ STRUCT(discord_get_guild_widget_image)
     FIELD_PTR(style, char, *)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_modify_guild_welcome_screen} */
 PUB_STRUCT(discord_modify_guild_welcome_screen)

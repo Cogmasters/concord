@@ -142,7 +142,7 @@ PUB_STRUCT(discord_modify_current_user)
   COND_END
 STRUCT_END
 
-/* TODO: disable generating JSON encoding function */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_current_user_guilds)
   /** get guilds before this guild ID */
   COND_WRITE(this->before != 0)
@@ -157,6 +157,7 @@ STRUCT(discord_get_current_user_guilds)
     FIELD(limit, int, 200)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_dm} */
 PUB_STRUCT(discord_create_dm)
