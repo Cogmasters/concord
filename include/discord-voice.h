@@ -4,8 +4,8 @@
  * @brief Internal functions and datatypes for Voice Connections
  */
 
-#ifndef DISCORD_VOICE_H
-#define DISCORD_VOICE_H
+#ifndef DISCORD_VOICE_CONNECTIONS_H
+#define DISCORD_VOICE_CONNECTIONS_H
 
 #include <time.h>
 #include <pthread.h>
@@ -213,16 +213,16 @@ enum discord_voice_status discord_voice_join(struct discord *client,
 
 /**
  * @brief Notify clients that you are speaking or have stopped speaking.
- *
- * @param vc the voice connection obtained with discord_voice_join()
- * @param flag
- * @param delay Should be set to 0.
  * @see https://discord.com/developers/docs/topics/voice-connections#speaking
  * @see
  * https://github.com/discord/discord-api-docs/issues/859#issuecomment-466602485
+ *
+ * @param vc the voice client created at discord_voice_join()
+ * @param flags @ref DiscordVoiceSpeakingFlags
+ * @param delay should be set to 0.
  */
 void discord_send_speaking(struct discord_voice *vc,
-                           enum discord_voice_speaking_flags flag,
+                           u64bitmask flags,
                            int delay);
 
 /**
@@ -302,4 +302,4 @@ void discord_voice_connections_init(struct discord *client);
  */
 void discord_voice_connections_cleanup(struct discord *client);
 
-#endif /* DISCORD_VOICE_H */
+#endif /* DISCORD_VOICE_CONNECTIONS_H */
