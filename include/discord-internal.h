@@ -28,7 +28,6 @@
 #include "uthash.h"
 #include "queue.h"
 #include "heap-inl.h"
-#include "banned.h"
 
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
