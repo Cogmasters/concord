@@ -1,6 +1,7 @@
 # Ignore all
 *
 # But these
+!greatest.h
 !.gitignore
 !*.c
 !Makefile
