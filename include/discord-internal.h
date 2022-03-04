@@ -64,6 +64,16 @@
         }                                                                     \
     } while (0)
 
+/**
+ * @brief Shortcut for checking OOB-write attempts
+ * @note unsigned values are expected
+ *
+ * @param nbytes amount of bytes to be written
+ * @param destsz size of dest in bytes
+ */
+#define ASSERT_NOT_OOB(nbytes, destsz) \
+    ASSERT_S((size_t)nbytes < (size_t)destsz, "Out of bounds write attempt");
+
 /** @defgroup DiscordInternalAdapter REST API
  *   @brief Wrapper to the Discord REST API
  *  @{ */

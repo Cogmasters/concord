@@ -150,7 +150,7 @@ PUB_STRUCT(discord_identify)
   /** presence structure for initial presence information */
     FIELD_STRUCT_PTR(presence, discord_presence_update, *)
   /** the gateway intents you wish to receive */
-    FIELD(intents, int, 0)
+    FIELD_BITMASK(intents)
 STRUCT_END
 
 STRUCT(discord_identify_connection)
