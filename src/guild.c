@@ -184,18 +184,18 @@ discord_list_guild_members(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params) {
-        size_t offset = 0;
+        int offset = 0;
 
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "limit=%d", params->limit);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->after) {
             offset +=
-                snprintf(query + offset, sizeof(query) - offset,
+                snprintf(query + offset, sizeof(query) - (size_t)offset,
                          "%safter=%" PRIu64, *query ? "&" : "", params->after);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
     }
 
@@ -218,20 +218,21 @@ discord_search_guild_members(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params) {
-        size_t offset = 0;
-        if (params->query) {
-            char *pe_query = curl_escape(params->query, strlen(params->query));
+        int offset = 0;
 
-            offset += snprintf(query + offset, sizeof(query) - offset,
+        if (params->query) {
+            char *pe_query = curl_escape(params->query, (int)strlen(params->query));
+
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "query=%s", pe_query);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
 
             curl_free(pe_query);
         }
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "%slimit=%d", *query ? "&" : "", params->limit);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
     }
 
@@ -555,15 +556,14 @@ discord_modify_guild_role(struct discord *client,
     struct discord_request req = { 0 };
     struct sized_buffer body;
     char buf[2048] = "{}";
-    size_t len;
+    size_t len = 2;
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, role_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params)
         len = discord_modify_guild_role_to_json(buf, sizeof(buf), params);
-    else
-        len = snprintf(buf, sizeof(buf), "{}");
+
     body.size = len;
     body.start = buf;
 
@@ -600,15 +600,14 @@ discord_begin_guild_prune(struct discord *client,
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
-    char buf[4096];
-    size_t len;
+    char buf[4096] = "{}";
+    size_t len = 2;
 
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params)
         len = discord_begin_guild_prune_to_json(buf, sizeof(buf), params);
-    else
-        len = snprintf(buf, sizeof(buf), "{}");
+
     body.size = len;
     body.start = buf;
 

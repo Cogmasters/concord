@@ -73,22 +73,22 @@ send_resume(struct discord_voice *vc)
     jsonb_init(&b);
     jsonb_object(&b, buf, sizeof(buf));
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
         jsonb_number(&b, buf, sizeof(buf), 7);
-        jsonb_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
         jsonb_object(&b, buf, sizeof(buf));
         {
             char tok[32];
-            size_t toklen =
-                snprintf(tok, sizeof(tok), "%" PRIu64, vc->guild_id);
-            jsonb_key(&b, buf, sizeof(buf), "server_id",
-                      sizeof("server_id") - 1);
-            jsonb_token(&b, buf, sizeof(buf), tok, toklen);
-            jsonb_key(&b, buf, sizeof(buf), "session_id",
-                      sizeof("session_id") - 1);
+            int toklen = snprintf(tok, sizeof(tok), "%" PRIu64, vc->guild_id);
+
+            if (toklen > 0) {
+                jsonb_key(&b, buf, sizeof(buf), "server_id", 9);
+                jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
+            }
+            jsonb_key(&b, buf, sizeof(buf), "session_id", 10);
             jsonb_string(&b, buf, sizeof(buf), vc->session_id,
                          strlen(vc->session_id));
-            jsonb_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
+            jsonb_key(&b, buf, sizeof(buf), "token", 5);
             jsonb_string(&b, buf, sizeof(buf), vc->token, strlen(vc->token));
             jsonb_object_pop(&b, buf, sizeof(buf));
         }
@@ -113,25 +113,27 @@ send_identify(struct discord_voice *vc)
     jsonb_init(&b);
     jsonb_object(&b, buf, sizeof(buf));
     {
-        jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
+        jsonb_key(&b, buf, sizeof(buf), "op", 2);
         jsonb_number(&b, buf, sizeof(buf), 0);
-        jsonb_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
+        jsonb_key(&b, buf, sizeof(buf), "d", 1);
         jsonb_object(&b, buf, sizeof(buf));
         {
             char tok[32];
-            size_t toklen =
-                snprintf(tok, sizeof(tok), "%" PRIu64, vc->guild_id);
-            jsonb_key(&b, buf, sizeof(buf), "server_id",
-                      sizeof("server_id") - 1);
-            jsonb_token(&b, buf, sizeof(buf), tok, toklen);
+            int toklen = snprintf(tok, sizeof(tok), "%" PRIu64, vc->guild_id);
+
+            if (toklen > 0) {
+                jsonb_key(&b, buf, sizeof(buf), "server_id", 9);
+                jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
+            }
             toklen = snprintf(tok, sizeof(tok), "%" PRIu64, self->id);
-            jsonb_key(&b, buf, sizeof(buf), "user_id", sizeof("user_id") - 1);
-            jsonb_token(&b, buf, sizeof(buf), tok, toklen);
-            jsonb_key(&b, buf, sizeof(buf), "session_id",
-                      sizeof("session_id") - 1);
+            if (toklen > 0) {
+                jsonb_key(&b, buf, sizeof(buf), "user_id", 7);
+                jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
+            }
+            jsonb_key(&b, buf, sizeof(buf), "session_id", 10);
             jsonb_string(&b, buf, sizeof(buf), vc->session_id,
                          strlen(vc->session_id));
-            jsonb_key(&b, buf, sizeof(buf), "token", sizeof("token") - 1);
+            jsonb_key(&b, buf, sizeof(buf), "token", 5);
             jsonb_string(&b, buf, sizeof(buf), vc->token, strlen(vc->token));
             jsonb_object_pop(&b, buf, sizeof(buf));
         }
@@ -161,7 +163,7 @@ on_hello(struct discord_voice *vc)
         if (f) hbeat_interval = strtof(data->start + f->val->start, NULL);
     }
     vc->hbeat.interval_ms =
-        (hbeat_interval < 5000.0f) ? hbeat_interval : 5000.0f;
+        (hbeat_interval < 5000.0f) ? (u64unix_ms)hbeat_interval : 5000;
 
     if (vc->is_resumable)
         send_resume(vc);
@@ -290,7 +292,7 @@ static void
 on_heartbeat_ack(struct discord_voice *vc)
 {
     /* get request / response interval in milliseconds */
-    vc->ping_ms = cog_timestamp_ms() - vc->hbeat.tstamp;
+    vc->ping_ms = (int)(cog_timestamp_ms() - vc->hbeat.tstamp);
     logconf_trace(&vc->conf, "PING: %d ms", vc->ping_ms);
 }
 
@@ -388,7 +390,8 @@ on_text_cb(void *p_vc,
         f = jsmnf_find(root, "d", 1);
         if (f) {
             vc->payload.event_data.start = (char *)text + f->val->start;
-            vc->payload.event_data.size = f->val->end - f->val->start;
+            vc->payload.event_data.size =
+                (size_t)(f->val->end - f->val->start);
         }
     }
 
@@ -445,7 +448,7 @@ send_heartbeat(struct discord_voice *vc)
         jsonb_key(&b, buf, sizeof(buf), "op", sizeof("op") - 1);
         jsonb_number(&b, buf, sizeof(buf), 3);
         jsonb_key(&b, buf, sizeof(buf), "d", sizeof("d") - 1);
-        jsonb_number(&b, buf, sizeof(buf), vc->hbeat.interval_ms);
+        jsonb_number(&b, buf, sizeof(buf), (double)vc->hbeat.interval_ms);
         jsonb_object_pop(&b, buf, sizeof(buf));
     }
 
@@ -498,9 +501,7 @@ _discord_voice_init(struct discord_voice *new_vc,
 }
 
 void
-discord_send_speaking(struct discord_voice *vc,
-                      enum discord_voice_speaking_flags flag,
-                      int delay)
+discord_send_speaking(struct discord_voice *vc, u64bitmask flags, int delay)
 {
     char buf[128];
     jsonb b;
@@ -518,7 +519,7 @@ discord_send_speaking(struct discord_voice *vc,
         {
             jsonb_key(&b, buf, sizeof(buf), "speaking",
                       sizeof("speaking") - 1);
-            jsonb_number(&b, buf, sizeof(buf), flag);
+            jsonb_number(&b, buf, sizeof(buf), (int)flags);
             jsonb_key(&b, buf, sizeof(buf), "delay", sizeof("delay") - 1);
             jsonb_number(&b, buf, sizeof(buf), delay);
             jsonb_key(&b, buf, sizeof(buf), "ssrc", sizeof("ssrc") - 1);
@@ -569,25 +570,21 @@ send_voice_state_update(struct discord_voice *vc,
         jsonb_object(&b, buf, sizeof(buf));
         {
             char tok[32];
-            size_t toklen = snprintf(tok, sizeof(tok), "%" PRIu64, guild_id);
+            int toklen = snprintf(tok, sizeof(tok), "%" PRIu64, guild_id);
 
-            jsonb_key(&b, buf, sizeof(buf), "guild_id",
-                      sizeof("guild_id") - 1);
-            jsonb_token(&b, buf, sizeof(buf), tok, toklen);
-            jsonb_key(&b, buf, sizeof(buf), "channel_id",
-                      sizeof("channel_id") - 1);
+            jsonb_key(&b, buf, sizeof(buf), "guild_id", 8);
+            jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
+            jsonb_key(&b, buf, sizeof(buf), "channel_id", 10);
             if (channel_id) {
                 toklen = snprintf(tok, sizeof(tok), "%" PRIu64, channel_id);
-                jsonb_token(&b, buf, sizeof(buf), tok, toklen);
+                jsonb_token(&b, buf, sizeof(buf), tok, (size_t)toklen);
             }
             else {
                 jsonb_null(&b, buf, sizeof(buf));
             }
-            jsonb_key(&b, buf, sizeof(buf), "self_mute",
-                      sizeof("self_mute") - 1);
+            jsonb_key(&b, buf, sizeof(buf), "self_mute", 9);
             jsonb_bool(&b, buf, sizeof(buf), self_mute);
-            jsonb_key(&b, buf, sizeof(buf), "self_deaf",
-                      sizeof("self_deaf") - 1);
+            jsonb_key(&b, buf, sizeof(buf), "self_deaf", 9);
             jsonb_bool(&b, buf, sizeof(buf), self_deaf);
             jsonb_object_pop(&b, buf, sizeof(buf));
         }
@@ -666,10 +663,10 @@ _discord_on_voice_state_update(struct discord *client,
         if (vs->guild_id == client->vcs[i].guild_id) {
             vc = client->vcs + i;
             if (vs->channel_id) {
-                size_t len = snprintf(vc->session_id, sizeof(vc->session_id),
-                                      "%s", vs->session_id);
-                ASSERT_S(len < sizeof(vc->session_id),
-                         "Out of bounds write attempt");
+                int len = snprintf(vc->session_id, sizeof(vc->session_id),
+                                   "%s", vs->session_id);
+                ASSERT_NOT_OOB(len, sizeof(vc->session_id));
+
                 logconf_info(&vc->conf,
                              "Starting a new voice session (id: " ANSICOLOR(
                                  "%s", ANSI_FG_YELLOW) ")",
@@ -785,7 +782,7 @@ _discord_on_voice_server_update(struct discord *client,
                                 char *endpoint)
 {
     struct discord_voice *vc = NULL;
-    size_t len;
+    int len;
     int i;
 
     pthread_mutex_lock(&client_lock);
@@ -803,10 +800,11 @@ _discord_on_voice_server_update(struct discord *client,
     }
 
     len = snprintf(vc->new_token, sizeof(vc->new_token), "%s", token);
-    ASSERT_S(len < sizeof(vc->new_token), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(vc->new_token));
+
     len = snprintf(vc->new_url, sizeof(vc->new_url),
                    "wss://%s" DISCORD_VCS_URL_SUFFIX, endpoint);
-    ASSERT_S(len < sizeof(vc->new_url), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(vc->new_url));
 
     /* TODO: replace with the more reliable thread alive check */
     if (ws_is_alive(vc->ws)) {

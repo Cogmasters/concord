@@ -36,16 +36,16 @@ void
 discord_embed_set_title(struct discord_embed *embed, char format[], ...)
 {
     char buf[2048];
-    size_t len;
     va_list args;
+    int len;
 
     va_start(args, format);
 
     len = vsnprintf(buf, sizeof(buf), format, args);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(buf));
 
     if (embed->title) free(embed->title);
-    cog_strndup(buf, len, &embed->title);
+    cog_strndup(buf, (size_t)len, &embed->title);
 
     va_end(args);
 }
@@ -54,16 +54,16 @@ void
 discord_embed_set_description(struct discord_embed *embed, char format[], ...)
 {
     char buf[2048];
-    size_t len;
     va_list args;
+    int len;
 
     va_start(args, format);
 
     len = vsnprintf(buf, sizeof(buf), format, args);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(buf));
 
     if (embed->description) free(embed->description);
-    cog_strndup(buf, len, &embed->description);
+    cog_strndup(buf, (size_t)len, &embed->description);
 
     va_end(args);
 }
@@ -72,16 +72,16 @@ void
 discord_embed_set_url(struct discord_embed *embed, char format[], ...)
 {
     char buf[2048];
-    size_t len;
     va_list args;
+    int len;
 
     va_start(args, format);
 
     len = vsnprintf(buf, sizeof(buf), format, args);
-    ASSERT_S(len < sizeof(buf), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(buf));
 
     if (embed->url) free(embed->url);
-    cog_strndup(buf, len, &embed->url);
+    cog_strndup(buf, (size_t)len, &embed->url);
 
     va_end(args);
 }

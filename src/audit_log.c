@@ -20,30 +20,30 @@ discord_get_guild_audit_log(struct discord *client,
     CCORD_EXPECT(client, guild_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params) {
-        size_t offset = 0;
+        int offset = 0;
 
         if (params->user_id) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "?user_id=%" PRIu64, params->user_id);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->action_type) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "%saction_type=%d", *query ? "&" : "?",
                                params->action_type);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->before) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "%sbefore=%" PRIu64, *query ? "&" : "?",
                                params->before);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->limit) {
             offset +=
-                snprintf(query + offset, sizeof(query) - offset, "%slimit=%d",
-                         *query ? "&" : "?", params->limit);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+                snprintf(query + offset, sizeof(query) - (size_t)offset,
+                         "%slimit=%d", *query ? "&" : "?", params->limit);
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
     }
 

@@ -16,11 +16,11 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 {
     struct sized_buffer *token = p_token;
     char auth[128];
-    size_t len;
+    int len;
 
     len = snprintf(auth, sizeof(auth), "Bot %.*s", (int)token->size,
                    token->start);
-    ASSERT_S(len < sizeof(auth), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(auth));
 
     ua_conn_add_header(conn, "Authorization", auth);
 
@@ -153,7 +153,7 @@ discord_adapter_run(struct discord_adapter *adapter,
     char endpoint[DISCORD_ENDPT_LEN];
     char route[DISCORD_ROUTE_LEN];
     va_list args;
-    size_t len;
+    int len;
 
     /* have it point somewhere */
     if (!req) req = &blank_req;
@@ -161,7 +161,7 @@ discord_adapter_run(struct discord_adapter *adapter,
     /* build the endpoint string */
     va_start(args, endpoint_fmt);
     len = vsnprintf(endpoint, sizeof(endpoint), endpoint_fmt, args);
-    ASSERT_S(len < sizeof(endpoint), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(endpoint));
     va_end(args);
 
     /* build the ratelimiting route */
@@ -202,14 +202,14 @@ _discord_context_to_mime(curl_mime *mime, void *p_cxt)
 
     /* attachment part */
     for (i = 0; i < atchs->size; ++i) {
-        size_t len = snprintf(name, sizeof(name), "files[%d]", i);
-        ASSERT_S(len < sizeof(name), "Out of bounds write attempt");
+        int len = snprintf(name, sizeof(name), "files[%d]", i);
+        ASSERT_NOT_OOB(len, sizeof(name));
 
         if (atchs->array[i].content) {
             part = curl_mime_addpart(mime);
             curl_mime_data(part, atchs->array[i].content,
                            atchs->array[i].size ? atchs->array[i].size
-                                                : (int)CURL_ZERO_TERMINATED);
+                                                : CURL_ZERO_TERMINATED);
             curl_mime_filename(part, !atchs->array[i].filename
                                          ? "a.out"
                                          : atchs->array[i].filename);
@@ -284,7 +284,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
                          f->val->end - f->val->start,
                          body.start + f->val->start);
             f = jsmnf_find(root, "retry_after", sizeof("retry_after") - 1);
-            if (f) retry_after = strtol(body.start + f->val->start, NULL, 10);
+            if (f) retry_after = strtod(body.start + f->val->start, NULL);
         }
 
         *wait_ms = (int64_t)(1000 * retry_after);
@@ -427,24 +427,22 @@ _discord_attachments_dup(struct discord_attachments *dest,
 {
     int i;
 
-    __carray_init(dest, src->size, struct discord_attachment, , );
+    __carray_init(dest, (size_t)src->size, struct discord_attachment, , );
     for (i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
         if (src->array[i].content) {
             dest->array[i].size = src->array[i].size
                                       ? src->array[i].size
-                                      : (int)strlen(src->array[i].content) + 1;
+                                      : strlen(src->array[i].content) + 1;
 
             dest->array[i].content = malloc(dest->array[i].size);
             memcpy(dest->array[i].content, src->array[i].content,
                    dest->array[i].size);
         }
-        if (src->array[i].filename) {
+        if (src->array[i].filename)
             dest->array[i].filename = strdup(src->array[i].filename);
-        }
-        if (src->array[i].content_type) {
+        if (src->array[i].content_type)
             dest->array[i].content_type = strdup(src->array[i].content_type);
-        }
     }
 }
 
@@ -836,9 +834,8 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     if (retry && cxt->retry_attempt++ < adapter->retry_limit) {
         ua_conn_reset(cxt->conn);
 
-        if (wait_ms) {
-            u64unix_ms timeout = NOW(adapter) + wait_ms;
-
+        if (wait_ms > 0) {
+            u64unix_ms timeout = NOW(adapter) + (u64unix_ms)wait_ms;
             _discord_context_set_timeout(adapter, timeout, cxt);
         }
         else {
@@ -848,7 +845,6 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     else {
         discord_refcount_decr(adapter, cxt->req.ret.data);
         _discord_context_reset(cxt);
-
         QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
 
