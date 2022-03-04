@@ -49,6 +49,6 @@ echo:
 	@ echo -e 'BOTS: $(BOTS)\n'
 
 clean:
-	rm -rf $(BOTS)
+	rm -rf $(BOTS) voice
 
 .PHONY: all echo clean
