@@ -196,14 +196,18 @@ struct logconf {
     unsigned pid;
     /** if true then logconf_cleanup() won't cleanup shared resources */
     _Bool is_branch;
-    /** config file conents */
+    /** config file contents */
     struct sized_buffer file;
+
+    int *counter;
+
     struct {
         /** name of logging output file */
         char *fname;
         /** pointer to logging output file */
         FILE *f;
     } * logger, *http;
+
     /** list of 'id' that should be ignored */
     struct {
         size_t size;
