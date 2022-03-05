@@ -329,6 +329,7 @@ discord_run(struct discord *client)
             int poll_time = 0, poll_result;
 
             now = (int64_t)cog_timestamp_ms();
+
             if (!client->on_idle) {
                 poll_time = now < next_run ? (int)(next_run - now) : 0;
 
@@ -353,6 +354,8 @@ discord_run(struct discord *client)
                 break;
 
             now = (int64_t)cog_timestamp_ms();
+
+            /* check for pending wakeup timers */
             if (client->wakeup_timer.next != -1
                 && now >= client->wakeup_timer.next) {
                 client->wakeup_timer.next = -1;
@@ -365,10 +368,13 @@ discord_run(struct discord *client)
                 if (CCORD_OK
                     != (code = discord_adapter_perform(&client->adapter)))
                     break;
+
+                /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000;
             }
         }
 
+        /* stop all pending requests in case of connection shutdown */
         if (true == discord_gateway_end(&client->gw)) {
             discord_adapter_stop_all(&client->adapter);
             break;
