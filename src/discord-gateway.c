@@ -1530,9 +1530,12 @@ discord_gateway_init(struct discord_gateway *gw,
             if (enable_prefix) {
                 f = jsmnf_find(root, "prefix", sizeof("prefix") - 1);
                 if (f) {
-                    gw->cmds.prefix.start = buf.start + f->val->start;
-                    gw->cmds.prefix.size =
-                        (size_t)(f->val->end - f->val->start);
+                    char prefix[64] = "";
+
+                    snprintf(prefix, sizeof(prefix), "%.*s",
+                             f->val->end - f->val->start,
+                             buf.start + f->val->start);
+                    discord_set_prefix(CLIENT(gw, gw), prefix);
                 }
             }
         }
