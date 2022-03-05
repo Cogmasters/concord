@@ -1391,14 +1391,21 @@ on_text_cb(void *p_gw,
         jsmnf *f;
 
         f = jsmnf_find(root, "t", 1);
-        if (f)
-            snprintf(gw->payload.name, sizeof(gw->payload.name), "%.*s",
-                     f->val->end - f->val->start, text + f->val->start);
+        if (f) {
+            if (JSMN_STRING == f->val->type)
+                snprintf(gw->payload.name, sizeof(gw->payload.name), "%.*s",
+                         f->val->end - f->val->start, text + f->val->start);
+            else
+                *gw->payload.name = '\0';
+        }
         f = jsmnf_find(root, "s", 1);
-        if (f) seq = (int)strtol(text + f->val->start, NULL, 10);
+        if (f) {
+            seq = (int)strtol(text + f->val->start, NULL, 10);
+        }
         f = jsmnf_find(root, "op", 2);
-        if (f)
+        if (f) {
             gw->payload.opcode = (int)strtol(text + f->val->start, NULL, 10);
+        }
         f = jsmnf_find(root, "d", 1);
         if (f) {
             gw->payload.data.start = (char *)text + f->val->start;
