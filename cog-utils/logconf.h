@@ -162,7 +162,7 @@ extern "C" {
 
 /* helper function for logconf_log() */
 #define __logconf_log(conf, level, file, line, fmt, ...)                      \
-    _log_log(&(conf)->L, level, file, line, "[%s] " fmt "%s", (conf)->id,     \
+    _log_log((conf)->L, level, file, line, "[%s] " fmt "%s", (conf)->id,      \
              __VA_ARGS__)
 /**
  * @brief Run-time configurable log level
@@ -190,8 +190,6 @@ extern "C" {
 struct logconf {
     /** logging module id */
     char id[LOGCONF_ID_LEN];
-    /** log.c main structure */
-    log_Logger L;
     /** the id of the process where this module was created */
     unsigned pid;
     /** if true then logconf_cleanup() won't cleanup shared resources */
@@ -199,7 +197,10 @@ struct logconf {
     /** config file contents */
     struct sized_buffer file;
 
+    /** http logging counter */
     int *counter;
+    /** log.c main structure (shared with branches) */
+    log_Logger *L;
 
     struct {
         /** name of logging output file */

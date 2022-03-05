@@ -694,7 +694,7 @@ struct discord {
     /** DISCORD logging module */
     struct logconf conf;
     /** whether this is the original client or a clone @deprecated unnecessary
-     *      once discord_clone() is removed*/
+     *      once discord_clone() is removed */
     bool is_original;
     /** the bot token */
     struct sized_buffer token;

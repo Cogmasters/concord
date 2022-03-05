@@ -65,7 +65,7 @@ module_is_disabled(struct logconf *conf)
 
     for (i = 0; i < conf->disable_modules.size; ++i) {
         if (0 == strcmp(conf->id, conf->disable_modules.ids[i])) {
-            memset(&conf->L, 0, sizeof conf->L);
+            memset(conf->L, 0, sizeof *conf->L);
             /* silence output for all levels but fatal*/
             logconf_set_quiet(conf, true);
             logconf_add_callback(conf, &log_nocolor_cb, stderr, LOG_FATAL);
@@ -78,13 +78,13 @@ module_is_disabled(struct logconf *conf)
 static void
 lock(struct logconf *conf)
 {
-    if (conf->L.lock) conf->L.lock(true, conf->L.udata);
+    if (conf->L->lock) conf->L->lock(true, conf->L->udata);
 }
 
 static void
 unlock(struct logconf *conf)
 {
-    if (conf->L.lock) conf->L.lock(false, conf->L.udata);
+    if (conf->L->lock) conf->L->lock(false, conf->L->udata);
 }
 
 void
@@ -165,6 +165,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     conf->pid = getpid();
     conf->counter = calloc(1, sizeof *conf->counter);
+    conf->L = calloc(1, sizeof *conf->L);
 
     if (!fp) return;
 
@@ -312,6 +313,7 @@ logconf_cleanup(struct logconf *conf)
             free(conf->disable_modules.ids);
         }
         free(conf->counter);
+        free(conf->L);
     }
     memset(conf, 0, sizeof *conf);
 }
@@ -341,19 +343,19 @@ logconf_get_field(struct logconf *conf, char *const path[], int depth)
 void
 logconf_set_lock(struct logconf *conf, log_LockFn fn, void *udata)
 {
-    _log_set_lock(&conf->L, fn, udata);
+    _log_set_lock(conf->L, fn, udata);
 }
 
 void
 logconf_set_level(struct logconf *conf, int level)
 {
-    _log_set_level(&conf->L, level);
+    _log_set_level(conf->L, level);
 }
 
 void
 logconf_set_quiet(struct logconf *conf, bool enable)
 {
-    _log_set_quiet(&conf->L, enable);
+    _log_set_quiet(conf->L, enable);
 }
 
 void
@@ -362,11 +364,11 @@ logconf_add_callback(struct logconf *conf,
                      void *udata,
                      int level)
 {
-    _log_add_callback(&conf->L, fn, udata, level);
+    _log_add_callback(conf->L, fn, udata, level);
 }
 
 int
 logconf_add_fp(struct logconf *conf, FILE *fp, int level)
 {
-    return _log_add_fp(&conf->L, fp, level);
+    return _log_add_fp(conf->L, fp, level);
 }
