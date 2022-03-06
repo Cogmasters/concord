@@ -8,7 +8,7 @@ var structdiscord__attachment =
     [ "height", "d4/d17/structdiscord__attachment.html#ae5e6a0ef0ba141619cd98530ce238d65", null ],
     [ "id", "d4/d17/structdiscord__attachment.html#aa721c63fa7521ff5d94006e7a92ed684", null ],
     [ "proxy_url", "d4/d17/structdiscord__attachment.html#a867533948e8935208eaa684e27be76d7", null ],
-    [ "size", "d4/d17/structdiscord__attachment.html#a6980c12836eff4a0afa1958e0ac7db6e", null ],
+    [ "size", "d4/d17/structdiscord__attachment.html#a5ddda05d74fc075db5de58bc04866570", null ],
     [ "url", "d4/d17/structdiscord__attachment.html#a43df4bd77de38da3cf20638aa77ed4d4", null ],
     [ "width", "d4/d17/structdiscord__attachment.html#a660081fc4e27f558f0052c644a9f0615", null ]
 ];

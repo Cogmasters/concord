@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['gateway_0',['Gateway',['../d4/d2b/group__DiscordAPIGateway.html',1,'']]],
-  ['general_20lengths_1',['General lengths',['../df/dcb/group__DiscordConstantsGeneral.html',1,'']]],
-  ['guild_2',['Guild',['../d3/d9f/group__DiscordAPIGuild.html',1,'']]],
-  ['guild_20template_3',['Guild Template',['../d0/d17/group__DiscordAPIGuildTemplate.html',1,'']]]
+  ['embed_20lengths_0',['Embed lengths',['../db/def/group__DiscordConstantsEmbed.html',1,'']]],
+  ['emoji_1',['Emoji',['../d2/d6a/group__DiscordAPIEmoji.html',1,'']]],
+  ['error_20handling_2',['Error handling',['../dc/d51/group__ConcordError.html',1,'']]],
+  ['events_3',['Events',['../d4/d48/group__DiscordEvent.html',1,'']]]
 ];

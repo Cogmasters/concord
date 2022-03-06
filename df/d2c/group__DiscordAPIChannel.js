@@ -1,5 +1,6 @@
 var group__DiscordAPIChannel =
 [
+    [ "Message flags", "dd/d42/group__DiscordAPIChannelMessageFlags.html", "dd/d42/group__DiscordAPIChannelMessageFlags" ],
     [ "discord_ret_channel", "de/dee/structdiscord__ret__channel.html", [
       [ "cleanup", "de/dee/structdiscord__ret__channel.html#af59464d59e422a22c8a0f177aad27c4f", null ],
       [ "data", "de/dee/structdiscord__ret__channel.html#a0d6b4df0e2dc6950ed4a6cc3f1922bcb", null ],

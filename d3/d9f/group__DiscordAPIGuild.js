@@ -1,5 +1,6 @@
 var group__DiscordAPIGuild =
 [
+    [ "System channel flags", "d8/da6/group__DiscordAPIGuildSystemChannelFlags.html", "d8/da6/group__DiscordAPIGuildSystemChannelFlags" ],
     [ "discord_ret_guild", "dc/d16/structdiscord__ret__guild.html", [
       [ "cleanup", "dc/d16/structdiscord__ret__guild.html#aefdbbbde680dc598c8a213359eb8b505", null ],
       [ "data", "dc/d16/structdiscord__ret__guild.html#ad75b20a398d6b7817b18b2a7457234c9", null ],

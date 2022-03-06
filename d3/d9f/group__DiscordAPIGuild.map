@@ -1,4 +1,5 @@
 <map id="Guild" name="Guild">
 <area shape="rect" id="node1" href="$d3/de3/group__DiscordAPI.html" title="The Discord public API supported by Concord." alt="" coords="5,5,48,31"/>
 <area shape="rect" id="node2" title="Guild&#39;s public API supported by Concord." alt="" coords="96,5,152,31"/>
+<area shape="rect" id="node3" href="$d8/da6/group__DiscordAPIGuildSystemChannelFlags.html" title=" " alt="" coords="200,5,361,31"/>
 </map>

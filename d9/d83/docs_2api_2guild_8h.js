@@ -39,6 +39,10 @@ var docs_2api_2guild_8h =
     [ "discord_modify_guild_welcome_screen", "d4/da8/structdiscord__modify__guild__welcome__screen.html", "d4/da8/structdiscord__modify__guild__welcome__screen" ],
     [ "discord_modify_current_user_voice_state", "da/dc5/structdiscord__modify__current__user__voice__state.html", "da/dc5/structdiscord__modify__current__user__voice__state" ],
     [ "discord_modify_user_voice_state", "d3/df7/structdiscord__modify__user__voice__state.html", "d3/df7/structdiscord__modify__user__voice__state" ],
+    [ "DISCORD_SYSTEM_SUPPRESS_GUILD_REMINDER_NOTIFICATIONS", "d8/da6/group__DiscordAPIGuildSystemChannelFlags.html#ga9da620ca120fd60b8a7da2f3e36a82bb", null ],
+    [ "DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATION_REPLIES", "d8/da6/group__DiscordAPIGuildSystemChannelFlags.html#gaea72523075a7cd2f6e856580df079efb", null ],
+    [ "DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATIONS", "d8/da6/group__DiscordAPIGuildSystemChannelFlags.html#ga3c7c612a992fcce7a5c774c1cbad9c6b", null ],
+    [ "DISCORD_SYSTEM_SUPPRESS_PREMIUM_NOTIFICATIONS", "d8/da6/group__DiscordAPIGuildSystemChannelFlags.html#ga2d16e94a34e91938d8a5160304aa6cc2", null ],
     [ "discord_explicit_content_filter_level", "d9/d83/docs_2api_2guild_8h.html#a742601ce2eabffef6addf1067b6b5c98", [
       [ "DISCORD_EXPLICIT_CONTENT_DISABLED", "d9/d83/docs_2api_2guild_8h.html#a742601ce2eabffef6addf1067b6b5c98aa0c137bd9342f43bce0f599e20c9ccbc", null ],
       [ "DISCORD_EXPLICIT_CONTENT_MEMBERS_WITHOUT_ROLES", "d9/d83/docs_2api_2guild_8h.html#a742601ce2eabffef6addf1067b6b5c98aba657deccaa4adb183d635ce666e7b27", null ],
@@ -57,12 +61,6 @@ var docs_2api_2guild_8h =
       [ "DISCORD_PREMIUM_TIER_1", "d9/d83/docs_2api_2guild_8h.html#a0288a93351544abc90e98d8ef7f28864a6f98fbde450362bc0bd320b76ac8e0af", null ],
       [ "DISCORD_PREMIUM_TIER_2", "d9/d83/docs_2api_2guild_8h.html#a0288a93351544abc90e98d8ef7f28864acec1588a742846ba5402bb041278ab6f", null ],
       [ "DISCORD_PREMIUM_TIER_3", "d9/d83/docs_2api_2guild_8h.html#a0288a93351544abc90e98d8ef7f28864ae16c9fbc30572a9535ef28f198829924", null ]
-    ] ],
-    [ "discord_system_channel_flags", "d9/d83/docs_2api_2guild_8h.html#a893144d5967881594e10616d64ce3c9a", [
-      [ "DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATIONS", "d9/d83/docs_2api_2guild_8h.html#a893144d5967881594e10616d64ce3c9aa4aeae75ffa56d15bbc86051290434365", null ],
-      [ "DISCORD_SYSTEM_SUPPRESS_PREMIUM_NOTIFICATIONS", "d9/d83/docs_2api_2guild_8h.html#a893144d5967881594e10616d64ce3c9aa4338e7e7b352d1d61a2a7f3214c80787", null ],
-      [ "DISCORD_SYSTEM_SUPPRESS_GUILD_REMINDER_NOTIFICATIONS", "d9/d83/docs_2api_2guild_8h.html#a893144d5967881594e10616d64ce3c9aacca034e0dd041fe2a03fec20fb831335", null ],
-      [ "DISCORD_SYSTEM_SUPPRESS_JOIN_NOTIFICATION_REPLIES", "d9/d83/docs_2api_2guild_8h.html#a893144d5967881594e10616d64ce3c9aa164b01c0bb058ef222427f6bcf295972", null ]
     ] ],
     [ "discord_verification_level", "d9/d83/docs_2api_2guild_8h.html#a46364f5acd98c9a69cecfdd4300192e1", [
       [ "DISCORD_VERIFICATION_NONE", "d9/d83/docs_2api_2guild_8h.html#a46364f5acd98c9a69cecfdd4300192e1abd4898f9111335eebf01f122fffd3a92", null ],

@@ -98,6 +98,11 @@ var NAVTREE =
         [ "Voice Connections", "d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md59", null ]
       ] ]
     ] ],
+    [ "Compiling on Windows (Detailed instructions)", "db/dbe/md_docs_WINDOWS.html", [
+      [ "Cygwin and Dependencies", "db/dbe/md_docs_WINDOWS.html#autotoc_md61", null ],
+      [ "Microsoft Visual C/C++", "db/dbe/md_docs_WINDOWS.html#autotoc_md62", null ],
+      [ "Other compilers", "db/dbe/md_docs_WINDOWS.html#autotoc_md63", null ]
+    ] ],
     [ "Todo List", "dd/da0/todo.html", null ],
     [ "Deprecated List", "da/d58/deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
@@ -127,15 +132,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d1/dd0/voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56a90c99d631803590b48d48b3fe4326fff",
-"d3/dbb/structdiscord__voice__state.html#a6f7f3aaccd5b7f5171ba3fb98c6f30be",
-"d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md55",
-"d6/db1/structdiscord__ret__followed__channel.html",
-"d9/d83/docs_2api_2guild_8h.html#a742601ce2eabffef6addf1067b6b5c98aa0c137bd9342f43bce0f599e20c9ccbc",
-"db/d5c/interactions_8h.html#af7a2bdc22799b9d1ac556a6ba7206c83a9bcbfe69a431084ab2a611464cc47fc3",
-"dc/dc4/structdiscord__modify__guild__channel__position.html#a2b2bcb1828556cb2652eecb0d45d1fc0",
-"de/de8/structdiscord__guild__scheduled__event.html",
-"functions_vars_p.html"
+"d1/dd0/voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8a81e6f7ac04d50531fb37ac458a24ddad",
+"d3/ddc/emoji_8c-example.html",
+"d5/d7c/docs_2api_2gateway_8h.html",
+"d6/d66/structdiscord__message.html#ad78515ac01b381ea3b653a5bd99695a9",
+"d9/d03/structdiscord__voice__states.html",
+"db/d35/structdiscord__webhook.html#adf324efc32012c6816056015de671032",
+"dc/d82/structdiscord__presence__update.html#a312462d3eb85ed62fc21253e64ef7560",
+"de/d78/structdiscord__create__guild__sticker.html#aff550f949c14d25dc351955a68467c89",
+"functions_vars_b.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

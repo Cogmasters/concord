@@ -1,0 +1,4 @@
+<map id="Gateway intents" name="Gateway intents">
+<area shape="rect" id="node1" href="$d4/df3/group__DiscordInternalGateway.html" title="Wrapper to the Discord Gateway API." alt="" coords="5,5,131,31"/>
+<area shape="rect" id="node2" title="Events user is interested on listening to." alt="" coords="179,5,308,31"/>
+</map>

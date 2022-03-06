@@ -109,11 +109,10 @@ $(document).ready(function(){initNavTree('dc/ddf/discord-internal_8h.html','../.
 <code>#include &quot;uthash.h&quot;</code><br />
 <code>#include &quot;queue.h&quot;</code><br />
 <code>#include &quot;heap-inl.h&quot;</code><br />
-<code>#include &quot;banned.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for discord-internal.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="../../d6/d6a/discord-internal_8h__incl.svg" width="1595" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="../../d6/d6a/discord-internal_8h__incl.svg" width="1487" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -181,10 +180,19 @@ Macros</h2></td></tr>
 <tr class="memitem:gad26258eaeb38eaff2fc8367705ff357b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d81/group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">CCORD_EXPECT</a>(client,  expect,  code,  reason)</td></tr>
 <tr class="memdesc:gad26258eaeb38eaff2fc8367705ff357b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log and return <code>code</code> if <code>expect</code> condition is false  <a href="../../d1/d81/group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">More...</a><br /></td></tr>
 <tr class="separator:gad26258eaeb38eaff2fc8367705ff357b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga69f4288287a2a9df3630d10e3e208f09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d81/group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">ASSERT_NOT_OOB</a>(nbytes,  destsz)&#160;&#160;&#160;    ASSERT_S((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td></tr>
+<tr class="memdesc:ga69f4288287a2a9df3630d10e3e208f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut for checking OOB-write attempts.  <a href="../../d1/d81/group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">More...</a><br /></td></tr>
+<tr class="separator:ga69f4288287a2a9df3630d10e3e208f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/deb/group__DiscordInternalAdapter.html#ga6f54459e4a3ef7fae49a92fd6dee7103">DISCORD_ENDPT_LEN</a>&#160;&#160;&#160;512</td></tr>
 <tr class="separator:ga6f54459e4a3ef7fae49a92fd6dee7103"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/deb/group__DiscordInternalAdapter.html#ga576294a6f05bf60dbf54a275d3c61f8b">DISCORD_ROUTE_LEN</a>&#160;&#160;&#160;256</td></tr>
 <tr class="separator:ga576294a6f05bf60dbf54a275d3c61f8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1b3d45be4b922910c16c347266268709"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/df4/group__DiscordInternalGatewaySessionStatus.html#ga1b3d45be4b922910c16c347266268709">DISCORD_SESSION_OFFLINE</a>&#160;&#160;&#160;0u</td></tr>
+<tr class="separator:ga1b3d45be4b922910c16c347266268709"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6c8b4794db8c4342c739cf8d26f0a443"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/df4/group__DiscordInternalGatewaySessionStatus.html#ga6c8b4794db8c4342c739cf8d26f0a443">DISCORD_SESSION_RESUMABLE</a>&#160;&#160;&#160;1u &lt;&lt; 0</td></tr>
+<tr class="separator:ga6c8b4794db8c4342c739cf8d26f0a443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac420091888fcf49cc95dd5f3bbcd18ed"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/df4/group__DiscordInternalGatewaySessionStatus.html#gac420091888fcf49cc95dd5f3bbcd18ed">DISCORD_SESSION_SHUTDOWN</a>&#160;&#160;&#160;1u &lt;&lt; 1</td></tr>
+<tr class="separator:gac420091888fcf49cc95dd5f3bbcd18ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>

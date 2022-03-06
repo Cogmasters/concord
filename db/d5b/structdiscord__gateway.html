@@ -130,11 +130,6 @@ Data Fields</h2></td></tr>
 <tr class="memitem:add6cd3f50c50094ad169844597e123ab"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="../../d9/d96/structdiscord__identify.html">discord_identify</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d5b/structdiscord__gateway.html#add6cd3f50c50094ad169844597e123ab">id</a></td></tr>
 <tr class="separator:add6cd3f50c50094ad169844597e123ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5de10fc0f2047d8ceb1c68ccce71c22e"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a3464e90c34cbe0c73bca2ba30807e452"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="../../d5/d77/structdiscord__gateway_1_1_0d4.html#a3464e90c34cbe0c73bca2ba30807e452a4565ab65d37318048bba8997374c1c18">DISCORD_SESSION_OFFLINE</a> = 0
-, <a class="el" href="../../d5/d77/structdiscord__gateway_1_1_0d4.html#a3464e90c34cbe0c73bca2ba30807e452a8ee6cb606c85cdca81536d80e8a0af9d">DISCORD_SESSION_RESUMABLE</a> = 1 &lt;&lt; 0
-, <a class="el" href="../../d5/d77/structdiscord__gateway_1_1_0d4.html#a3464e90c34cbe0c73bca2ba30807e452a4e24e83d12453a1bce9f13744e8a3cea">DISCORD_SESSION_SHUTDOWN</a> = 1 &lt;&lt; 1
- }</td></tr>
-<tr class="separator:a3464e90c34cbe0c73bca2ba30807e452"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55b3a59df601052f89575318e53f8dd6"><td class="memItemLeft" >&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a3a758f591a57c3bc1e48993da6bcaabb">is_ready</a></td></tr>
 <tr class="separator:a55b3a59df601052f89575318e53f8dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb96a2f8ece1829a59e37032dcb36744"><td class="memItemLeft" >&#160;&#160;&#160;char&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a0335d2e943de3ae0db1b7cf1a19aa7c2">id</a> [64]</td></tr>
@@ -147,17 +142,17 @@ Data Fields</h2></td></tr>
 <tr class="separator:af535f5952b22ebeef1db43ec704b9070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31fa143b0c1cb56f0baa6b5508d2aa5c"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#adab98dde11f525e604b326824595c21d">event_count</a></td></tr>
 <tr class="separator:a31fa143b0c1cb56f0baa6b5508d2aa5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6fe52544b030ac5024711d355e88e29"><td class="memItemLeft" >&#160;&#160;&#160;enum discord_gateway:: { ... } &#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#af4ef007a0ee79521908d41e050f7eba8">status</a></td></tr>
-<tr class="separator:aa6fe52544b030ac5024711d355e88e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3017aa8af28c4c6568ad6a7943c3b74"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
-<tr class="memitem:a7832b8053b175399f5b406bb1782c1e2"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#ae1bca7721ed89ea3f64bdc28f63bcba7">enable</a></td></tr>
-<tr class="separator:a7832b8053b175399f5b406bb1782c1e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b247cc635a4199d4f0817537a84b012"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a0c1cf462499400d561f776f98f3226d7">attempt</a></td></tr>
-<tr class="separator:a3b247cc635a4199d4f0817537a84b012"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7da8f801cefd224ccf699f3cace503ac"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a2c73d65b2490525a2fdd0e42551d3b1d">limit</a></td></tr>
-<tr class="separator:a7da8f801cefd224ccf699f3cace503ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3017aa8af28c4c6568ad6a7943c3b74"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#ad4252b05cdb1e7a1927ebba810c0668d">retry</a></td></tr>
-<tr class="separator:ae3017aa8af28c4c6568ad6a7943c3b74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e80db387e4db21bc949fde52e8ca06e"><td class="memItemLeft" >&#160;&#160;&#160;unsigned&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a5d2404bb7cdaf45ea971142e1202d718">status</a></td></tr>
+<tr class="separator:a0e80db387e4db21bc949fde52e8ca06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5948c228a5aaa76cbcf03673bf489963"><td class="memItemLeft" >&#160;&#160;&#160;struct {</td></tr>
+<tr class="memitem:a7654f22ec57a95088dd7e299d1968b61"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;bool&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#ae1bca7721ed89ea3f64bdc28f63bcba7">enable</a></td></tr>
+<tr class="separator:a7654f22ec57a95088dd7e299d1968b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf808815ebeb3d4a0dae5f7205c74331"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a0c1cf462499400d561f776f98f3226d7">attempt</a></td></tr>
+<tr class="separator:aaf808815ebeb3d4a0dae5f7205c74331"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192f88c8cba56a1efe864a3df6da1b06"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#a2c73d65b2490525a2fdd0e42551d3b1d">limit</a></td></tr>
+<tr class="separator:a192f88c8cba56a1efe864a3df6da1b06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5948c228a5aaa76cbcf03673bf489963"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="../../db/d5b/structdiscord__gateway.html#ab39f971ff11c4ca215950d206822ba2f">retry</a></td></tr>
+<tr class="separator:a5948c228a5aaa76cbcf03673bf489963"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5de10fc0f2047d8ceb1c68ccce71c22e"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d5b/structdiscord__gateway.html#a5de10fc0f2047d8ceb1c68ccce71c22e">session</a></td></tr>
 <tr class="separator:a5de10fc0f2047d8ceb1c68ccce71c22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f467eefa8b7ed3ae62112016ef1cb4d"><td class="memItemLeft" >struct {</td></tr>
@@ -597,8 +592,8 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="ad4252b05cdb1e7a1927ebba810c0668d" name="ad4252b05cdb1e7a1927ebba810c0668d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad4252b05cdb1e7a1927ebba810c0668d">&#9670;&nbsp;</a></span></h2>
+<a id="ab39f971ff11c4ca215950d206822ba2f" name="ab39f971ff11c4ca215950d206822ba2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab39f971ff11c4ca215950d206822ba2f">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -703,18 +698,18 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="af4ef007a0ee79521908d41e050f7eba8" name="af4ef007a0ee79521908d41e050f7eba8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4ef007a0ee79521908d41e050f7eba8">&#9670;&nbsp;</a></span></h2>
+<a id="a5d2404bb7cdaf45ea971142e1202d718" name="a5d2404bb7cdaf45ea971142e1202d718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d2404bb7cdaf45ea971142e1202d718">&#9670;&nbsp;</a></span>status</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum  { ... }  discord_gateway::status</td>
+          <td class="memname">unsigned discord_gateway::status</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >session status </p>
+<p ><a class="el" href="../../d3/df4/group__DiscordInternalGatewaySessionStatus.html">DiscordInternalGatewaySessionStatus</a> </p>
 
 </div>
 </div>

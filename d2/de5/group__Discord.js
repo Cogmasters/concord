@@ -14,7 +14,7 @@ var group__Discord =
       [ "on_idle", "d5/daf/structdiscord.html#a8b6ddc9583333027193256369e5600e5", null ],
       [ "self", "d5/daf/structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
       [ "token", "d5/daf/structdiscord.html#af3d2fe931cc6c487fb42ce7fe8db71a5", null ],
-      [ "wakeup_timer", "d5/daf/structdiscord.html#a8b03f600d16941cbab47a18c17cd4f33", null ]
+      [ "wakeup_timer", "d5/daf/structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f", null ]
     ] ],
     [ "discord_cleanup", "d2/de5/group__Discord.html#ga009d0e352a30c00f8b4765712fcfa5a9", null ],
     [ "discord_clone", "d2/de5/group__Discord.html#gaf8dce62a982ad40031ec5e772e2a076a", null ],

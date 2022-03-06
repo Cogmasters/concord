@@ -27,14 +27,14 @@ var structdiscord__gateway =
     [ "ping_ms", "db/d5b/structdiscord__gateway.html#aa69001076c00c9267f759d6d69eec050", null ],
     [ "pool", "db/d5b/structdiscord__gateway.html#adc75e05c4320e2000fc7a788d2f8f919", null ],
     [ "prefix", "db/d5b/structdiscord__gateway.html#a75e0773822f26760ac47acb62ee93139", null ],
-    [ "retry", "db/d5b/structdiscord__gateway.html#ad4252b05cdb1e7a1927ebba810c0668d", null ],
+    [ "retry", "db/d5b/structdiscord__gateway.html#ab39f971ff11c4ca215950d206822ba2f", null ],
     [ "rwlock", "db/d5b/structdiscord__gateway.html#a86a693dff385bbf55e34f7c254463fd7", null ],
     [ "scheduler", "db/d5b/structdiscord__gateway.html#a38fe47e02a4b9b8bd50390e708bfcabd", null ],
     [ "seq", "db/d5b/structdiscord__gateway.html#a82f4ea01c1c1ef97c1d5822f2df195cc", null ],
     [ "session", "db/d5b/structdiscord__gateway.html#a5de10fc0f2047d8ceb1c68ccce71c22e", null ],
     [ "shards", "db/d5b/structdiscord__gateway.html#a438976bf2fb1a6c0dd83d11de5be94d2", null ],
     [ "start_limit", "db/d5b/structdiscord__gateway.html#add84bafb16142a86da119a37720ede68", null ],
-    [ "status", "db/d5b/structdiscord__gateway.html#af4ef007a0ee79521908d41e050f7eba8", null ],
+    [ "status", "db/d5b/structdiscord__gateway.html#a5d2404bb7cdaf45ea971142e1202d718", null ],
     [ "timer", "db/d5b/structdiscord__gateway.html#ab8c96adbf1bc99f84864b5dd29463fa9", null ],
     [ "ws", "db/d5b/structdiscord__gateway.html#a14f4f4117925f91a02e3b9a47cb50475", null ]
 ];

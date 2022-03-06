@@ -42,6 +42,15 @@ var docs_2api_2channel_8h =
     [ "discord_start_thread_with_message", "dd/de7/structdiscord__start__thread__with__message.html", "dd/de7/structdiscord__start__thread__with__message" ],
     [ "discord_start_thread_without_message", "d0/d5e/structdiscord__start__thread__without__message.html", "d0/d5e/structdiscord__start__thread__without__message" ],
     [ "discord_list_active_threads", "dc/d3b/structdiscord__list__active__threads.html", "dc/d3b/structdiscord__list__active__threads" ],
+    [ "DISCORD_MESSAGE_CROSSPOSTED", "dd/d42/group__DiscordAPIChannelMessageFlags.html#ga4038bbab5400ade611b1a29ee4a343aa", null ],
+    [ "DISCORD_MESSAGE_EPHEMERAL", "dd/d42/group__DiscordAPIChannelMessageFlags.html#gad1f4cd21aa8f6673cb814c262b1685a1", null ],
+    [ "DISCORD_MESSAGE_FAILED_TO_MENTION_SOME_ROLES_IN_THREAD", "dd/d42/group__DiscordAPIChannelMessageFlags.html#ga51cbcc58df8d9ef8f4e65d0ad7d71112", null ],
+    [ "DISCORD_MESSAGE_HAS_THREAD", "dd/d42/group__DiscordAPIChannelMessageFlags.html#ga66805d1d4894efde5a633fc49871b02f", null ],
+    [ "DISCORD_MESSAGE_IS_CROSSPOST", "dd/d42/group__DiscordAPIChannelMessageFlags.html#ga1b88060d8f9e2dbc05b48fa6d6c6f612", null ],
+    [ "DISCORD_MESSAGE_LOADING", "dd/d42/group__DiscordAPIChannelMessageFlags.html#gad3823b2056ce6038c1b6add7a805ba20", null ],
+    [ "DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED", "dd/d42/group__DiscordAPIChannelMessageFlags.html#ga9662d09e0aa4d43cea75cfd78832a770", null ],
+    [ "DISCORD_MESSAGE_SUPRPRESS_EMBEDS", "dd/d42/group__DiscordAPIChannelMessageFlags.html#gad202992b9ced98a3843d262c0db4fd0a", null ],
+    [ "DISCORD_MESSAGE_URGENT", "dd/d42/group__DiscordAPIChannelMessageFlags.html#ga6043436febcd1a0eff0822eb5c0cab49", null ],
     [ "discord_channel_types", "d0/d8b/docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fe", [
       [ "DISCORD_CHANNEL_GUILD_TEXT", "d0/d8b/docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea5617b22701a4d93550f62c4c9dc224b5", null ],
       [ "DISCORD_CHANNEL_DM", "d0/d8b/docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12feaa5f2046bd53938a464b15da748abca04", null ],
@@ -54,17 +63,6 @@ var docs_2api_2channel_8h =
       [ "DISCORD_CHANNEL_GUILD_PUBLIC_THREAD", "d0/d8b/docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fead17ab895e52d4bff206d30047b5f1dcb", null ],
       [ "DISCORD_CHANNEL_GUILD_PRIVATE_THREAD", "d0/d8b/docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea0226d4c910a2df5130af32890843ad55", null ],
       [ "DISCORD_CHANNEL_GUILD_STAGE_VOICE", "d0/d8b/docs_2api_2channel_8h.html#a8da5a4e81d57a68dc380394ef40a12fea2683d254ac8e952800d5c621e151db79", null ]
-    ] ],
-    [ "discord_message_flags", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89", [
-      [ "DISCORD_MESSAGE_CROSSPOSTED", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a4a42f331a32f339cfcdda714dfc12289", null ],
-      [ "DISCORD_MESSAGE_IS_CROSSPOST", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a29e9ff39ebe01cc2281ac0c9fb8ce101", null ],
-      [ "DISCORD_MESSAGE_SUPRPRESS_EMBEDS", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a852e799de9fa4adada81e61774c12f6c", null ],
-      [ "DISCORD_MESSAGE_SOURCE_MESSAGE_DELETED", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a3d705b0ddc3e0536b1f09b7024dc3a1c", null ],
-      [ "DISCORD_MESSAGE_URGENT", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a8e4e9592b4e0b4a89a78ef827ef46479", null ],
-      [ "DISCORD_MESSAGE_HAS_THREAD", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89ab7f8b717275f32771d8b8ed277002b88", null ],
-      [ "DISCORD_MESSAGE_EPHEMERAL", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a9f48dc732ed4e9c0fbe4bc662112f186", null ],
-      [ "DISCORD_MESSAGE_LOADING", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89a75a052a296e89c2ca496f06adb0a0d0c", null ],
-      [ "DISCORD_MESSAGE_FAILED_TO_MENTION_SOME_ROLES_IN_THREAD", "d0/d8b/docs_2api_2channel_8h.html#aa5abd5ed2af1f624314dd0bba31a2d89ace80e0a2163d7ee3e4eeb9bc8fff0edf", null ]
     ] ],
     [ "discord_video_quality_modes", "d0/d8b/docs_2api_2channel_8h.html#a998f1864bc9a0b922f6fef690255695f", [
       [ "DISCORD_VIDEO_QUALITY_AUTO", "d0/d8b/docs_2api_2channel_8h.html#a998f1864bc9a0b922f6fef690255695faa94022876bdc00f8181e4fa1ca0a1a8f", null ],

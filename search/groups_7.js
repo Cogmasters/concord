@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['slash_20commands_0',['Slash commands',['../de/d05/group__DiscordAPIInteractionsApplicationCommand.html',1,'']]]
+  ['primitives_0',['Primitives',['../da/d86/group__ConcordTypes.html',1,'']]]
 ];

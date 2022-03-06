@@ -112,6 +112,24 @@ Include dependency graph for voice_connections.h:</div>
 </div>
 <p><a href="../../d1/dd0/voice__connections_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga4ecc1a7bd7edeb9fd463a33db483dbb3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d4a/group__DiscordVoiceSpeakingFlags.html#ga4ecc1a7bd7edeb9fd463a33db483dbb3">DISCORD_VOICE_MICROPHONE</a>&#160;&#160;&#160;1 &lt;&lt; 0</td></tr>
+<tr class="separator:ga4ecc1a7bd7edeb9fd463a33db483dbb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad4b69ab68988c7c90ae44ae8a22d7765"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d4a/group__DiscordVoiceSpeakingFlags.html#gad4b69ab68988c7c90ae44ae8a22d7765">DISCORD_VOICE_SOUNDSHARE</a>&#160;&#160;&#160;1 &lt;&lt; 1</td></tr>
+<tr class="separator:gad4b69ab68988c7c90ae44ae8a22d7765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga18a3b5be0979b1ac54dd0c4dc2a2d2b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d4a/group__DiscordVoiceSpeakingFlags.html#ga18a3b5be0979b1ac54dd0c4dc2a2d2b6">DISCORD_VOICE_PRIORITY</a>&#160;&#160;&#160;1 &lt;&lt; 2</td></tr>
+<tr class="separator:ga18a3b5be0979b1ac54dd0c4dc2a2d2b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memItemLeft" align="right" valign="top"><a id="ae9493ed0020a5a9595eb8d0b6870f947" name="ae9493ed0020a5a9595eb8d0b6870f947"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSMN_STRICT</b></td></tr>
+<tr class="separator:ae9493ed0020a5a9595eb8d0b6870f947"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memItemLeft" align="right" valign="top"><a id="aeef9c3539ffb9ed912a2976b67b43d68" name="aeef9c3539ffb9ed912a2976b67b43d68"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSMN_HEADER</b></td></tr>
+<tr class="separator:aeef9c3539ffb9ed912a2976b67b43d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cbcbd7c48827141af941f316122fad4"><td class="memItemLeft" align="right" valign="top"><a id="a3cbcbd7c48827141af941f316122fad4" name="a3cbcbd7c48827141af941f316122fad4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>JSONB_HEADER</b></td></tr>
+<tr class="separator:a3cbcbd7c48827141af941f316122fad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:a9fb07bddcf342bdcc0802763af33caa8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd0/voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8">discord_voice_close_opcodes</a> { <br />
@@ -150,11 +168,6 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a141794a0c70ac7b43ee4f6aca4fb8b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39b5d74ab992187189ba893f8aa74195"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195">discord_voice_speaking_flags</a> { <a class="el" href="../../d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195a2e4fff186ebd083aaddc130fe1f5b11b">DISCORD_VOICE_MICROPHONE</a> = 1 &lt;&lt; 0
-, <a class="el" href="../../d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195aed210884d188b410cadfe864f76f355f">DISCORD_VOICE_SOUNDSHARE</a> = 1 &lt;&lt; 1
-, <a class="el" href="../../d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195a71469b14fed75e01e8b525636fdf9300">DISCORD_VOICE_PRIORITY</a> = 1 &lt;&lt; 2
- }</td></tr>
-<tr class="separator:a39b5d74ab992187189ba893f8aa74195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Generated code. </p>
@@ -233,28 +246,6 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a141794a0c70ac7b43ee4f6aca4fb8b56a90c99d631803590b48d48b3fe4326fff" name="a141794a0c70ac7b43ee4f6aca4fb8b56a90c99d631803590b48d48b3fe4326fff"></a>DISCORD_VOICE_RESUMED&#160;</td><td class="fielddoc"><p >Acknowledge a successful session resume </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a141794a0c70ac7b43ee4f6aca4fb8b56a241e938ceb4e44680b813c1c1587335e" name="a141794a0c70ac7b43ee4f6aca4fb8b56a241e938ceb4e44680b813c1c1587335e"></a>DISCORD_VOICE_CLIENT_DISCONNECT&#160;</td><td class="fielddoc"><p >A client has disconnected from the voice channel </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a id="a39b5d74ab992187189ba893f8aa74195" name="a39b5d74ab992187189ba893f8aa74195"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39b5d74ab992187189ba893f8aa74195">&#9670;&nbsp;</a></span>discord_voice_speaking_flags</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="../../d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195">discord_voice_speaking_flags</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a39b5d74ab992187189ba893f8aa74195a2e4fff186ebd083aaddc130fe1f5b11b" name="a39b5d74ab992187189ba893f8aa74195a2e4fff186ebd083aaddc130fe1f5b11b"></a>DISCORD_VOICE_MICROPHONE&#160;</td><td class="fielddoc"><p >Normal transmission of voice audio </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a39b5d74ab992187189ba893f8aa74195aed210884d188b410cadfe864f76f355f" name="a39b5d74ab992187189ba893f8aa74195aed210884d188b410cadfe864f76f355f"></a>DISCORD_VOICE_SOUNDSHARE&#160;</td><td class="fielddoc"><p >Transmission of context audio for video, no speaking indicators </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a39b5d74ab992187189ba893f8aa74195a71469b14fed75e01e8b525636fdf9300" name="a39b5d74ab992187189ba893f8aa74195a71469b14fed75e01e8b525636fdf9300"></a>DISCORD_VOICE_PRIORITY&#160;</td><td class="fielddoc"><p >Priority speaker, lowering audio of other speakers </p>
 </td></tr>
 </table>
 

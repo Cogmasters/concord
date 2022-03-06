@@ -41,7 +41,7 @@ var structdiscord__guild =
     [ "splash", "d6/d50/structdiscord__guild.html#a87acb755605972c5f9b56c5d78396751", null ],
     [ "stage_instances", "d6/d50/structdiscord__guild.html#a1c19401fa619a2ab78c6fe3a348d3ad0", null ],
     [ "stickers", "d6/d50/structdiscord__guild.html#abcad29a121f0e9e8f87c25c9a970e39e", null ],
-    [ "system_channel_flags", "d6/d50/structdiscord__guild.html#a233274857c9457b6d64f8018ea7112ca", null ],
+    [ "system_channel_flags", "d6/d50/structdiscord__guild.html#a293f465bb825c6fbac4f64e7c27f5949", null ],
     [ "system_channel_id", "d6/d50/structdiscord__guild.html#a9c4550d9cc2bd424bb529098e63a6c53", null ],
     [ "threads", "d6/d50/structdiscord__guild.html#ac428a4458d09916d0e81be23e721287d", null ],
     [ "unavailable", "d6/d50/structdiscord__guild.html#a823213bf1f792f370b8b04354c387f17", null ],

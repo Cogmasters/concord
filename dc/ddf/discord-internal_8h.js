@@ -1,10 +1,14 @@
 var discord_internal_8h =
 [
+    [ "ASSERT_NOT_OOB", "d1/d81/group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09", null ],
     [ "CCORD_EXPECT", "d1/d81/group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b", null ],
     [ "CLIENT", "d1/d81/group__DiscordInternal.html#ga6b7716aa8750442be45120d1467c8926", null ],
     [ "CONTAINEROF", "dc/ddf/discord-internal_8h.html#a3487a7238142eb3990c8afeece102d7f", null ],
     [ "DISCORD_ENDPT_LEN", "d2/deb/group__DiscordInternalAdapter.html#ga6f54459e4a3ef7fae49a92fd6dee7103", null ],
     [ "DISCORD_ROUTE_LEN", "d2/deb/group__DiscordInternalAdapter.html#ga576294a6f05bf60dbf54a275d3c61f8b", null ],
+    [ "DISCORD_SESSION_OFFLINE", "d3/df4/group__DiscordInternalGatewaySessionStatus.html#ga1b3d45be4b922910c16c347266268709", null ],
+    [ "DISCORD_SESSION_RESUMABLE", "d3/df4/group__DiscordInternalGatewaySessionStatus.html#ga6c8b4794db8c4342c739cf8d26f0a443", null ],
+    [ "DISCORD_SESSION_SHUTDOWN", "d3/df4/group__DiscordInternalGatewaySessionStatus.html#gac420091888fcf49cc95dd5f3bbcd18ed", null ],
     [ "NOT_EMPTY_STR", "dc/ddf/discord-internal_8h.html#aa6b4b8efb1b2769e6868edcf22b2d818", null ],
     [ "discord_adapter_cleanup", "d2/deb/group__DiscordInternalAdapter.html#ga38db97551a3760ca678f6d765ff37f98", null ],
     [ "discord_adapter_get_global_wait", "d2/deb/group__DiscordInternalAdapter.html#ga941a462b5ff1a97bfe5e8424c4ff261b", null ],

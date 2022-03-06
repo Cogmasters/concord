@@ -18,7 +18,7 @@ var searchData=
   ['reset_5ftstamp_15',['reset_tstamp',['../db/da2/structdiscord__bucket.html#a0966c2079f2043878d948aacd3208007',1,'discord_bucket']]],
   ['resolved_16',['resolved',['../dc/d19/structdiscord__interaction__data.html#ac267cad7cbf9558b3ab8431ec478e789',1,'discord_interaction_data']]],
   ['ret_17',['ret',['../d6/dc3/structdiscord__request.html#a6f326145e13a927896bde641478e879f',1,'discord_request']]],
-  ['retry_18',['retry',['../db/d5b/structdiscord__gateway.html#ad4252b05cdb1e7a1927ebba810c0668d',1,'discord_gateway']]],
+  ['retry_18',['retry',['../db/d5b/structdiscord__gateway.html#ab39f971ff11c4ca215950d206822ba2f',1,'discord_gateway']]],
   ['retry_5fattempt_19',['retry_attempt',['../d8/d61/structdiscord__context.html#ab51ae05deb02a235ec771c3c86716291',1,'discord_context']]],
   ['retry_5flimit_20',['retry_limit',['../d1/d0a/structdiscord__adapter.html#ace28dd1a98e5f37c331df51e6557775d',1,'discord_adapter']]],
   ['revoked_21',['revoked',['../dd/df2/structdiscord__integration.html#a3d6ea0c0e7e93b2d341b1a4c8a958a00',1,'discord_integration::revoked()'],['../df/d38/structdiscord__connection.html#ad480e8b7d4f0e8ed1ed7a2340e4b916b',1,'discord_connection::revoked()']]],

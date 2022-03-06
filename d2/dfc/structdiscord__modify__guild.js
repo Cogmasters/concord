@@ -16,7 +16,7 @@ var structdiscord__modify__guild =
     [ "public_updates_channel_id", "d2/dfc/structdiscord__modify__guild.html#a38b6122ec64628a5bfefe2ca1c92d7f2", null ],
     [ "rules_channel_id", "d2/dfc/structdiscord__modify__guild.html#adab114c434a29df3663327926d266203", null ],
     [ "splash", "d2/dfc/structdiscord__modify__guild.html#abedf850796fab8d45b58c20af323a4c0", null ],
-    [ "system_channel_flags", "d2/dfc/structdiscord__modify__guild.html#af9f4891bb8a5d3b5751b4d54b7f713ef", null ],
+    [ "system_channel_flags", "d2/dfc/structdiscord__modify__guild.html#ac64dda5a467f592e70fa02828a052131", null ],
     [ "system_channel_id", "d2/dfc/structdiscord__modify__guild.html#abf60b73425c4c937dce024103d4a5cc4", null ],
     [ "verification_level", "d2/dfc/structdiscord__modify__guild.html#aa5156d83187d9080164721468d8762d5", null ]
 ];

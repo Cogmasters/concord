@@ -1,5 +1,8 @@
 var voice__connections_8h =
 [
+    [ "DISCORD_VOICE_MICROPHONE", "d5/d4a/group__DiscordVoiceSpeakingFlags.html#ga4ecc1a7bd7edeb9fd463a33db483dbb3", null ],
+    [ "DISCORD_VOICE_PRIORITY", "d5/d4a/group__DiscordVoiceSpeakingFlags.html#ga18a3b5be0979b1ac54dd0c4dc2a2d2b6", null ],
+    [ "DISCORD_VOICE_SOUNDSHARE", "d5/d4a/group__DiscordVoiceSpeakingFlags.html#gad4b69ab68988c7c90ae44ae8a22d7765", null ],
     [ "discord_voice_close_opcodes", "d1/dd0/voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8", [
       [ "DISCORD_VOICE_CLOSE_REASON_UNKNOWN_OPCODE", "d1/dd0/voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8a5aa77d629b32fbdfcecc9e932beb9500", null ],
       [ "DISCORD_VOICE_CLOSE_REASON_DECODE_ERROR", "d1/dd0/voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8a81e6f7ac04d50531fb37ac458a24ddad", null ],
@@ -27,10 +30,5 @@ var voice__connections_8h =
       [ "DISCORD_VOICE_RESUMED", "d1/dd0/voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56a90c99d631803590b48d48b3fe4326fff", null ],
       [ "DISCORD_VOICE_CLIENT_DISCONNECT", "d1/dd0/voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56a241e938ceb4e44680b813c1c1587335e", null ],
       [ "DISCORD_VOICE_CODEC", "d1/dd0/voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56a7d87640d07fc0dceb728a017c7ef5bd6", null ]
-    ] ],
-    [ "discord_voice_speaking_flags", "d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195", [
-      [ "DISCORD_VOICE_MICROPHONE", "d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195a2e4fff186ebd083aaddc130fe1f5b11b", null ],
-      [ "DISCORD_VOICE_SOUNDSHARE", "d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195aed210884d188b410cadfe864f76f355f", null ],
-      [ "DISCORD_VOICE_PRIORITY", "d1/dd0/voice__connections_8h.html#a39b5d74ab992187189ba893f8aa74195a71469b14fed75e01e8b525636fdf9300", null ]
     ] ]
 ];

@@ -4,7 +4,7 @@ var structdiscord__application =
     [ "bot_require_code_grant", "dc/dd9/structdiscord__application.html#acf132a3db4ae1727ee9882e359dd2f71", null ],
     [ "cover_image", "dc/dd9/structdiscord__application.html#a6a1980d7025aa672ab9b582f1cb02cfe", null ],
     [ "description", "dc/dd9/structdiscord__application.html#a514b86af56b576f8cec4c73ab1d22eeb", null ],
-    [ "flags", "dc/dd9/structdiscord__application.html#aa7bf98f40b2faaa0366772b01abf166c", null ],
+    [ "flags", "dc/dd9/structdiscord__application.html#abcf67be639d30ce3419a6584247541f4", null ],
     [ "guild_id", "dc/dd9/structdiscord__application.html#aed8d2cf98a09c5464bec6070488c9566", null ],
     [ "icon", "dc/dd9/structdiscord__application.html#ab4df7149ba054654ac030dd30ef578ae", null ],
     [ "id", "dc/dd9/structdiscord__application.html#a6eb2278fffac7a78310c0cae49dc5c97", null ],

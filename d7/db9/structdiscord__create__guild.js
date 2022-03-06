@@ -9,7 +9,7 @@ var structdiscord__create__guild =
     [ "name", "d7/db9/structdiscord__create__guild.html#ad7cd7ea1908ca91e1658a0f02eca2e1f", null ],
     [ "region", "d7/db9/structdiscord__create__guild.html#aa5714ce3fc68328c5a75fca5b6e59471", null ],
     [ "roles", "d7/db9/structdiscord__create__guild.html#a7ea8595c23b6ed281039c56ccba6fc11", null ],
-    [ "system_channel_flags", "d7/db9/structdiscord__create__guild.html#ad0dc632565e15fc2ffb6430d48d00771", null ],
+    [ "system_channel_flags", "d7/db9/structdiscord__create__guild.html#a8cffa1e41a3db9cd6fb35f98b31eaf04", null ],
     [ "system_channel_id", "d7/db9/structdiscord__create__guild.html#aefcaacbf5339e1bb740afef6cca387fe", null ],
     [ "verification_level", "d7/db9/structdiscord__create__guild.html#a625fd199104fe476cbb64508359ff50e", null ]
 ];

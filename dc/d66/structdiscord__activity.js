@@ -6,7 +6,7 @@ var structdiscord__activity =
     [ "created_at", "dc/d66/structdiscord__activity.html#a3c24e542b747d7ef23d623ebcf67abdc", null ],
     [ "details", "dc/d66/structdiscord__activity.html#ac900dfea5a9920af1dad8400b5643e50", null ],
     [ "emoji", "dc/d66/structdiscord__activity.html#a310058f49eca1d0fa0600e3a3030fda3", null ],
-    [ "flags", "dc/d66/structdiscord__activity.html#a3f41583cb320238483c8fd0985420f29", null ],
+    [ "flags", "dc/d66/structdiscord__activity.html#ac8155a823f2765199cfd19cc38904d8d", null ],
     [ "instance", "dc/d66/structdiscord__activity.html#a699cd318858193870ca9efeccaedf8e7", null ],
     [ "name", "dc/d66/structdiscord__activity.html#a28524b8e2a64fba63a12e3547b0c1575", null ],
     [ "party", "dc/d66/structdiscord__activity.html#a922e602ea7a6663c79a33ef494147bf4", null ],

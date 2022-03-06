@@ -3,7 +3,7 @@ var searchData=
   ['wait_0',['wait',['../d0/dd9/structdiscord__execute__webhook.html#a76b5f2ef3f98a989dd5d117ffe4b6edd',1,'discord_execute_webhook::wait()'],['../dc/d0b/structdiscord__create__followup__message.html#a4851d137903e7f9a78224d3c2ac9b588',1,'discord_create_followup_message::wait()']]],
   ['wait_5fms_1',['wait_ms',['../d1/d0a/structdiscord__adapter.html#ac8553135740a099439be90e391be7035',1,'discord_adapter']]],
   ['waitq_2',['waitq',['../db/da2/structdiscord__bucket.html#a100116c70ee43ec1a75fcc35308fa2c5',1,'discord_bucket']]],
-  ['wakeup_5ftimer_3',['wakeup_timer',['../d5/daf/structdiscord.html#a8b03f600d16941cbab47a18c17cd4f33',1,'discord']]],
+  ['wakeup_5ftimer_3',['wakeup_timer',['../d5/daf/structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f',1,'discord']]],
   ['webhook_4',['Webhook',['../d9/d55/group__DiscordAPIWebhook.html',1,'']]],
   ['webhook_20lengths_5',['Webhook lengths',['../d6/d1a/group__DiscordConstantsWebhook.html',1,'']]],
   ['webhook_2eh_6',['webhook.h',['../d6/dbb/docs_2api_2webhook_8h.html',1,'(Global Namespace)'],['../d5/d89/include_2webhook_8h.html',1,'(Global Namespace)']]],

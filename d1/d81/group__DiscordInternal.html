@@ -136,10 +136,51 @@ Macros</h2></td></tr>
 <tr class="memitem:gad26258eaeb38eaff2fc8367705ff357b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d81/group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">CCORD_EXPECT</a>(client,  expect,  code,  reason)</td></tr>
 <tr class="memdesc:gad26258eaeb38eaff2fc8367705ff357b"><td class="mdescLeft">&#160;</td><td class="mdescRight">log and return <code>code</code> if <code>expect</code> condition is false  <a href="../../d1/d81/group__DiscordInternal.html#gad26258eaeb38eaff2fc8367705ff357b">More...</a><br /></td></tr>
 <tr class="separator:gad26258eaeb38eaff2fc8367705ff357b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga69f4288287a2a9df3630d10e3e208f09"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d81/group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">ASSERT_NOT_OOB</a>(nbytes,  destsz)&#160;&#160;&#160;    ASSERT_S((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td></tr>
+<tr class="memdesc:ga69f4288287a2a9df3630d10e3e208f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shortcut for checking OOB-write attempts.  <a href="../../d1/d81/group__DiscordInternal.html#ga69f4288287a2a9df3630d10e3e208f09">More...</a><br /></td></tr>
+<tr class="separator:ga69f4288287a2a9df3630d10e3e208f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Documentation useful when developing or debugging Concord itself. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga69f4288287a2a9df3630d10e3e208f09" name="ga69f4288287a2a9df3630d10e3e208f09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga69f4288287a2a9df3630d10e3e208f09">&#9670;&nbsp;</a></span>ASSERT_NOT_OOB</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ASSERT_NOT_OOB</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">nbytes, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">destsz&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;    ASSERT_S((size_t)nbytes &lt; (size_t)destsz, &quot;Out of bounds write attempt&quot;);</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Shortcut for checking OOB-write attempts. </p>
+<dl class="section note"><dt>Note</dt><dd>unsigned values are expected</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nbytes</td><td>amount of bytes to be written </td></tr>
+    <tr><td class="paramname">destsz</td><td>size of dest in bytes </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="gad26258eaeb38eaff2fc8367705ff357b" name="gad26258eaeb38eaff2fc8367705ff357b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gad26258eaeb38eaff2fc8367705ff357b">&#9670;&nbsp;</a></span>CCORD_EXPECT</h2>
 
