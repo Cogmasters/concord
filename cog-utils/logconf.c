@@ -4,7 +4,6 @@
 #include <string.h>
 #include <strings.h> /* strcasecmp() */
 #include <stdarg.h>
-#include <pthread.h> /* pthread_self() */
 #include <unistd.h> /* getpid() */
 
 #include "logconf.h"
@@ -13,9 +12,6 @@
 #define JSMN_HEADER
 #include "jsmn.h"
 #include "jsmn-find.h"
-
-static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
-static size_t g_counter;
 
 static int
 get_log_level(char level[])
@@ -37,8 +33,8 @@ log_nocolor_cb(log_Event *ev)
 
     buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
 
-    fprintf(ev->udata, "%s|%010u %-5s %s:%d: ", buf, (unsigned)pthread_self(),
-            level_strings[ev->level], ev->file, ev->line);
+    fprintf(ev->udata, "%s %-5s %s:%d: ", buf, level_strings[ev->level],
+            ev->file, ev->line);
 
     vfprintf(ev->udata, ev->fmt, ev->ap);
     fprintf(ev->udata, "\n");
@@ -52,10 +48,9 @@ log_color_cb(log_Event *ev)
 
     buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
 
-    fprintf(ev->udata,
-            "%s|\x1b[90m%010u\x1b[0m %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
-            buf, (unsigned)pthread_self(), level_colors[ev->level],
-            level_strings[ev->level], ev->file, ev->line);
+    fprintf(ev->udata, "%s %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ", buf,
+            level_colors[ev->level], level_strings[ev->level], ev->file,
+            ev->line);
 
     vfprintf(ev->udata, ev->fmt, ev->ap);
     fprintf(ev->udata, "\n");
@@ -70,16 +65,26 @@ module_is_disabled(struct logconf *conf)
 
     for (i = 0; i < conf->disable_modules.size; ++i) {
         if (0 == strcmp(conf->id, conf->disable_modules.ids[i])) {
-            /* reset presets (if any) */
-            memset(&conf->L, 0, sizeof conf->L);
-            /* silence output */
+            memset(conf->L, 0, sizeof *conf->L);
+            /* silence output for all levels but fatal*/
             logconf_set_quiet(conf, true);
-            /* make sure fatal still prints to stderr */
             logconf_add_callback(conf, &log_nocolor_cb, stderr, LOG_FATAL);
             return true;
         }
     }
     return false;
+}
+
+static void
+lock(struct logconf *conf)
+{
+    if (conf->L->lock) conf->L->lock(true, conf->L->udata);
+}
+
+static void
+unlock(struct logconf *conf)
+{
+    if (conf->L->lock) conf->L->lock(false, conf->L->udata);
 }
 
 void
@@ -91,45 +96,45 @@ logconf_http(struct logconf *conf,
              char label_fmt[],
              ...)
 {
-    uint64_t tstamp_ms = cog_timestamp_ms();
-    size_t counter;
-    /* Build 'label' string */
-    char label[512];
-    va_list label_args;
-    size_t ret;
-    /* Get timestamp string */
-    char timestr[64];
+    uint64_t tstamp_ms;
+    int counter;
 
-    pthread_mutex_lock(&g_lock);
-    counter = ++g_counter;
-    pthread_mutex_unlock(&g_lock);
+    if (!conf) return;
 
-    if (!conf || !conf->http || !conf->http->f) goto _end;
+    tstamp_ms = cog_timestamp_ms();
 
-    va_start(label_args, label_fmt);
-    ret = vsnprintf(label, sizeof(label), label_fmt, label_args);
-    ASSERT_S(ret < sizeof(label), "Out of bounds write attempt");
-    va_end(label_args);
+    lock(conf);
+    counter = ++*conf->counter;
+    unlock(conf);
 
-    cog_unix_ms_to_iso8601(timestr, sizeof(timestr), tstamp_ms);
+    if (conf->http && conf->http->f) {
+        char timestr[64], label[512];
+        va_list label_args;
+        int len;
 
-    /* Print to output */
-    fprintf(conf->http->f,
-            "%s [%s #TID%u] - %s - %s\n"
-            "%.*s%s%.*s\n"
-            "@@@_%zu_@@@\n",
-            /* 1st LINE ARGS */
-            label, conf->id, (unsigned)pthread_self(), timestr, url,
-            /* 2nd LINE ARGS */
-            (int)header.size, header.start, header.size ? "\n" : "",
-            (int)body.size, body.start,
-            /* 3rd LINE ARGS */
-            counter);
+        va_start(label_args, label_fmt);
+        len = vsnprintf(label, sizeof(label), label_fmt, label_args);
+        ASSERT_S((size_t)len < sizeof(label), "Out of bounds write attempt");
+        va_end(label_args);
 
-    fflush(conf->http->f);
+        cog_unix_ms_to_iso8601(timestr, sizeof(timestr), tstamp_ms);
 
-_end:
-    /* extract logging info if requested */
+        /* Print to output */
+        fprintf(conf->http->f,
+                "%s [%s] - %s - %s\n"
+                "%.*s%s%.*s\n"
+                "@@@_%d_@@@\n",
+                /* 1st LINE ARGS */
+                label, conf->id, timestr, url,
+                /* 2nd LINE ARGS */
+                (int)header.size, header.start, header.size ? "\n" : "",
+                (int)body.size, body.start,
+                /* 3rd LINE ARGS */
+                counter);
+
+        fflush(conf->http->f);
+    }
+
     if (p_info) {
         memset(p_info, 0, sizeof *p_info);
         p_info->counter = counter;
@@ -155,10 +160,12 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     memset(conf, 0, sizeof *conf);
 
-    ret = snprintf(conf->id, LOGCONF_ID_LEN, "%s", id);
-    ASSERT_S(ret < LOGCONF_ID_LEN, "Out of bounds write attempt");
+    ret = snprintf(conf->id, sizeof(conf->id), "%s", id);
+    ASSERT_S((size_t)ret < sizeof(conf->id), "Out of bounds write attempt");
 
     conf->pid = getpid();
+    conf->counter = calloc(1, sizeof *conf->counter);
+    conf->L = calloc(1, sizeof *conf->L);
 
     if (!fp) return;
 
@@ -268,35 +275,17 @@ logconf_branch(struct logconf *branch, struct logconf *orig, const char id[])
         return;
     }
 
-    pthread_mutex_lock(&g_lock);
+    lock(orig);
     memcpy(branch, orig, sizeof(struct logconf));
-    pthread_mutex_unlock(&g_lock);
+    unlock(orig);
 
     branch->is_branch = true;
     if (id) {
-        int ret = snprintf(branch->id, LOGCONF_ID_LEN, "%s", id);
-        ASSERT_S(ret < LOGCONF_ID_LEN, "Out of bounds write attempt");
+        int len = snprintf(branch->id, sizeof(branch->id), "%s", id);
+        ASSERT_S((size_t)len < sizeof(branch->id),
+                 "Out of bounds write attempt");
     }
     branch->pid = getpid();
-
-    if (module_is_disabled(branch)) return;
-
-    /* To avoid overwritting, child processes files must be unique,
-     *    this will append the unique PID to the end of file names */
-    /** @todo this actually doesn't do anything, it creates the filename
-     * but never create the files */
-    if (branch->pid != orig->pid) {
-        size_t len;
-
-        len = strlen(orig->logger->fname);
-        snprintf(branch->logger->fname + len,
-                 sizeof(branch->logger->fname) - len, "%ld",
-                 (long)branch->pid);
-
-        len = strlen(orig->http->fname);
-        snprintf(branch->http->fname + len, sizeof(branch->http->fname) - len,
-                 "%ld", (long)branch->pid);
-    }
 }
 
 void
@@ -323,6 +312,8 @@ logconf_cleanup(struct logconf *conf)
                 free(conf->disable_modules.ids[i]);
             free(conf->disable_modules.ids);
         }
+        free(conf->counter);
+        free(conf->L);
     }
     memset(conf, 0, sizeof *conf);
 }
@@ -352,19 +343,19 @@ logconf_get_field(struct logconf *conf, char *const path[], int depth)
 void
 logconf_set_lock(struct logconf *conf, log_LockFn fn, void *udata)
 {
-    _log_set_lock(&conf->L, fn, udata);
+    _log_set_lock(conf->L, fn, udata);
 }
 
 void
 logconf_set_level(struct logconf *conf, int level)
 {
-    _log_set_level(&conf->L, level);
+    _log_set_level(conf->L, level);
 }
 
 void
 logconf_set_quiet(struct logconf *conf, bool enable)
 {
-    _log_set_quiet(&conf->L, enable);
+    _log_set_quiet(conf->L, enable);
 }
 
 void
@@ -373,11 +364,11 @@ logconf_add_callback(struct logconf *conf,
                      void *udata,
                      int level)
 {
-    _log_add_callback(&conf->L, fn, udata, level);
+    _log_add_callback(conf->L, fn, udata, level);
 }
 
 int
 logconf_add_fp(struct logconf *conf, FILE *fp, int level)
 {
-    return _log_add_fp(&conf->L, fp, level);
+    return _log_add_fp(conf->L, fp, level);
 }

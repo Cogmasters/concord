@@ -92,15 +92,16 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_execute_webhook} */
 PUB_STRUCT(discord_execute_webhook)
   /* QUERY FIELDS */
-  /* TODO: ignored by JSON encoding, is a query parameter */
+#if !defined(GENCODECS_ON_JSON)
   /** waits for server confirmation of message send before response, and
        returns the created message body (defaults to `false`; when `false` a
        message that is not saved does not return an error) */
     FIELD(wait, bool, false)
-  /* TODO: ignored by JSON encoding, is a query parameter */
   /** send a message to the specified thread within a webhook's channel; the
        thread will automatically be unarchived */
     FIELD_SNOWFLAKE(thread_id)
+#endif
+
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -126,27 +127,30 @@ PUB_STRUCT(discord_execute_webhook)
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
-       set) */
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
+       `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_SNOWFLAKE(flags)
+    FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
 
-/* TODO: disable JSON encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_webhook_message)
   /** ID of the thread the message is in */
   COND_WRITE(this->thread_id != 0)
     FIELD_SNOWFLAKE(thread_id)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_edit_webhook_message} */
 PUB_STRUCT(discord_edit_webhook_message)
   /* QUERY FIELDS */
-  /* TODO: ignored by JSON encoding, is a query parameter */
+#if !defined(GENCODECS_ON_JSON)
   /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
+#endif
+
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -168,10 +172,11 @@ PUB_STRUCT(discord_edit_webhook_message)
   COND_END
 STRUCT_END
 
-/* TODO: disable JSON encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_delete_webhook_message)
   /** ID of the thread the message is in */
   COND_WRITE(this->thread_id != 0)
     FIELD_SNOWFLAKE(thread_id)
   COND_END
 STRUCT_END
+#endif

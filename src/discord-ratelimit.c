@@ -23,14 +23,14 @@ _discord_route_init(struct discord_adapter *adapter,
                     struct discord_bucket *b)
 {
     struct _discord_route *r;
-    size_t len;
+    int len;
 
     r = calloc(1, sizeof(struct _discord_route));
 
     r->bucket = b;
 
     len = snprintf(r->route, sizeof(r->route), "%s", route);
-    ASSERT_S(len < sizeof(r->route), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(b->hash));
 
     pthread_mutex_lock(&adapter->global->lock);
     HASH_ADD(hh, adapter->routes, route, len, r);
@@ -39,9 +39,9 @@ _discord_route_init(struct discord_adapter *adapter,
 
 #define ROUTE_PUSH(route, len, ...)                                           \
     do {                                                                      \
-        *len += snprintf(route + *len, DISCORD_ROUTE_LEN - *len,              \
+        *len += snprintf(route + *len, DISCORD_ROUTE_LEN - (size_t)*len,      \
                          ":" __VA_ARGS__);                                    \
-        ASSERT_S(*len < DISCORD_ROUTE_LEN, "Out of bounds write attempt");    \
+        ASSERT_NOT_OOB(*len, DISCORD_ROUTE_LEN);                              \
     } while (0)
 
 /* determine which ratelimit group (aka bucket) a request belongs to
@@ -57,12 +57,12 @@ discord_bucket_get_route(enum http_method method,
     int routelen = 0;
     /* split endpoint sections */
     const char *curr = endpoint_fmt, *prev = "";
-    int currlen = 0;
+    size_t currlen = 0;
 
     ROUTE_PUSH(route, &routelen, "%d", method);
     do {
         u64snowflake id_arg = 0ULL;
-        int i;
+        size_t i;
 
         curr += 1 + currlen;
         currlen = strcspn(curr, "/");
@@ -102,7 +102,7 @@ discord_bucket_get_route(enum http_method method,
             ROUTE_PUSH(route, &routelen, "%" PRIu64, id_arg);
         }
         else {
-            ROUTE_PUSH(route, &routelen, "%.*s", currlen, curr);
+            ROUTE_PUSH(route, &routelen, "%.*s", (int)currlen, curr);
         }
 
         prev = curr;
@@ -118,7 +118,7 @@ discord_bucket_init(struct discord_adapter *adapter,
                     const long limit)
 {
     struct discord_bucket *b;
-    size_t len;
+    int len;
 
     b = calloc(1, sizeof(struct discord_bucket));
 
@@ -127,7 +127,7 @@ discord_bucket_init(struct discord_adapter *adapter,
 
     len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
                    hash->start);
-    ASSERT_S(len < sizeof(b->hash), "Out of bounds write attempt");
+    ASSERT_NOT_OOB(len, sizeof(b->hash));
 
     if (pthread_mutex_init(&b->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
@@ -292,7 +292,8 @@ _discord_bucket_populate(struct discord_adapter *adapter,
     if (reset_after.size) {
         struct sized_buffer global =
             ua_info_get_header(info, "x-ratelimit-global");
-        u64unix_ms reset_tstamp = now + 1000 * strtod(reset_after.start, NULL);
+        u64unix_ms reset_tstamp =
+            now + (u64unix_ms)(1000 * strtod(reset_after.start, NULL));
 
         if (global.size) {
             /* lock all buckets */
@@ -314,14 +315,15 @@ _discord_bucket_populate(struct discord_adapter *adapter,
         /* the Discord time + request's elapsed time */
         u64unix_ms offset;
 
-        server = 1000 * curl_getdate(date.start, NULL);
+        server = (u64unix_ms)(1000 * curl_getdate(date.start, NULL));
         psnip_clock_wall_get_time(&ts);
         offset = server + ts.nanoseconds / 1000000;
 
         /* reset timestamp =
          *   (system time) + (diff between Discord's reset timestamp and
          * offset) */
-        b->reset_tstamp = now + (1000 * strtod(reset.start, NULL) - offset);
+        b->reset_tstamp =
+            now + ((u64unix_ms)(1000 * strtod(reset.start, NULL)) - offset);
     }
 
     logconf_debug(&adapter->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
@@ -337,22 +339,22 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
 {
     struct discord_context *cxt;
     QUEUE queue;
-    QUEUE *q;
+    QUEUE *qelem;
 
     QUEUE_MOVE(&adapter->b_null->waitq, &queue);
     QUEUE_INIT(&adapter->b_null->waitq);
 
     while (!QUEUE_EMPTY(&queue)) {
-        q = QUEUE_HEAD(&queue);
-        QUEUE_REMOVE(q);
+        qelem = QUEUE_HEAD(&queue);
+        QUEUE_REMOVE(qelem);
 
-        cxt = QUEUE_DATA(q, struct discord_context, entry);
+        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
         if (0 == strcmp(cxt->route, route)) {
-            QUEUE_INSERT_TAIL(&b->waitq, q);
+            QUEUE_INSERT_TAIL(&b->waitq, qelem);
             cxt->bucket = b;
         }
         else {
-            QUEUE_INSERT_TAIL(&adapter->b_null->waitq, q);
+            QUEUE_INSERT_TAIL(&adapter->b_null->waitq, qelem);
         }
     }
 }

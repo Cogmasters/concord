@@ -26,7 +26,8 @@ _done_get_channels(struct discord *client,
     struct _discord_get_channel_at_pos_cxt *cxt = data;
 
     const struct discord_channel *found_ch = NULL;
-    int i, pos; /* calculate position */
+    int pos;
+    int i;
 
     for (i = 0, pos = 0; i < chs->size; ++i) {
         if (cxt->type == chs->array[i].type && pos++ == cxt->position) {
@@ -150,29 +151,30 @@ discord_get_channel_messages(struct discord *client,
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params) {
-        size_t offset = 0;
+        int offset = 0;
+
         if (params->limit) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "limit=%d", params->limit);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->around) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "%saround=%" PRIu64, *query ? "&" : "",
                                params->around);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->before) {
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "%sbefore=%" PRIu64, *query ? "&" : "",
                                params->before);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->after) {
             offset +=
-                snprintf(query + offset, sizeof(query) - offset,
+                snprintf(query + offset, sizeof(query) - (size_t)offset,
                          "%safter=%" PRIu64, *query ? "&" : "", params->after);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
     }
 
@@ -268,7 +270,7 @@ discord_create_reaction(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
     pct_emoji_name =
-        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+        emoji_name ? curl_escape(emoji_name, (int)strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -305,7 +307,7 @@ discord_delete_own_reaction(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
     pct_emoji_name =
-        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+        emoji_name ? curl_escape(emoji_name, (int)strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -344,7 +346,7 @@ discord_delete_user_reaction(struct discord *client,
     CCORD_EXPECT(client, user_id != 0, CCORD_BAD_PARAMETER, "");
 
     pct_emoji_name =
-        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+        emoji_name ? curl_escape(emoji_name, (int)strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -383,28 +385,28 @@ discord_get_reactions(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params) {
-        size_t offset = 0;
+        int offset = 0;
 
         if (params->after) {
             CCORD_EXPECT(client, params->after != 0, CCORD_BAD_PARAMETER, "");
 
-            offset += snprintf(query + offset, sizeof(query) - offset,
+            offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                                "?after=%" PRIu64, params->after);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
         if (params->limit) {
             CCORD_EXPECT(client, params->limit > 0 && params->limit <= 100,
                          CCORD_BAD_PARAMETER, "");
 
             offset +=
-                snprintf(query + offset, sizeof(query) - offset, "%slimit=%d",
-                         *query ? "&" : "?", params->limit);
-            ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+                snprintf(query + offset, sizeof(query) - (size_t)offset,
+                         "%slimit=%d", *query ? "&" : "?", params->limit);
+            ASSERT_NOT_OOB(offset, sizeof(query));
         }
     }
 
     pct_emoji_name =
-        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+        emoji_name ? curl_escape(emoji_name, (int)strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -460,7 +462,7 @@ discord_delete_all_reactions_for_emoji(struct discord *client,
     CCORD_EXPECT(client, message_id != 0, CCORD_BAD_PARAMETER, "");
 
     pct_emoji_name =
-        emoji_name ? curl_escape(emoji_name, strlen(emoji_name)) : NULL;
+        emoji_name ? curl_escape(emoji_name, (int)strlen(emoji_name)) : NULL;
 
     if (emoji_id)
         snprintf(emoji_endpoint, sizeof(emoji_endpoint), "%s:%" PRIu64,
@@ -610,15 +612,14 @@ discord_create_channel_invite(struct discord *client,
 {
     struct discord_request req = { 0 };
     struct sized_buffer body;
-    char buf[1024];
-    size_t len;
+    char buf[1024] = "{}";
+    size_t len = 2;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (params)
         len = discord_create_channel_invite_to_json(buf, sizeof(buf), params);
-    else
-        len = snprintf(buf, sizeof(buf), "{}");
+
     body.start = buf;
     body.size = len;
 
@@ -942,19 +943,19 @@ discord_list_public_archived_threads(
 {
     struct discord_request req = { 0 };
     char query[1024] = "";
-    size_t offset = 0;
+    int offset = 0;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (before) {
-        offset += snprintf(query + offset, sizeof(query) - offset,
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                            "before=%" PRIu64, before);
-        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
     if (limit) {
-        offset += snprintf(query + offset, sizeof(query) - offset,
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                            "%slimit=%d", *query ? "&" : "", limit);
-        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
@@ -975,19 +976,19 @@ discord_list_private_archived_threads(
 {
     struct discord_request req = { 0 };
     char query[1024] = "";
-    size_t offset = 0;
+    int offset = 0;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (before) {
-        offset += snprintf(query + offset, sizeof(query) - offset,
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                            "before=%" PRIu64, before);
-        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
     if (limit) {
-        offset += snprintf(query + offset, sizeof(query) - offset,
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                            "%slimit=%d", *query ? "&" : "", limit);
-        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);
@@ -1008,19 +1009,19 @@ discord_list_joined_private_archived_threads(
 {
     struct discord_request req = { 0 };
     char query[1024] = "";
-    size_t offset = 0;
+    int offset = 0;
 
     CCORD_EXPECT(client, channel_id != 0, CCORD_BAD_PARAMETER, "");
 
     if (before) {
-        offset += snprintf(query + offset, sizeof(query) - offset,
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                            "before=%" PRIu64, before);
-        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
     if (limit) {
-        offset += snprintf(query + offset, sizeof(query) - offset,
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
                            "%slimit=%d", *query ? "&" : "", limit);
-        ASSERT_S(offset < sizeof(query), "Out of bounds write attempt");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
     DISCORD_REQ_INIT(req, discord_thread_response_body, ret);

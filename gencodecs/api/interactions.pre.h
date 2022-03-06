@@ -138,11 +138,11 @@ STRUCT(discord_interaction_callback_data)
   COND_WRITE(this->embeds != NULL)
     FIELD_STRUCT_PTR(embeds, discord_embeds, *)
   COND_END
-  /** message flags combined as a bitfield (only
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only
        @ref DISCORD_MESSAGE_SUPRESS_EMBEDS and @ref DISCORD_MESSAGE_EPHEMERAL
        can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_ENUM(flags, discord_message_flags)
+    FIELD_BITMASK(flags)
   COND_END
   /** attachment objects with filename and description */
   COND_WRITE(this->attachments != NULL)
@@ -165,9 +165,11 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_edit_original_interaction_response} */
 PUB_STRUCT(discord_edit_original_interaction_response)
   /* QUERY FIELDS */
-  /* TODO: ignored by JSON encoding, is a query parameter */
+#if !defined(GENCODECS_ON_JSON)
   /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
+#endif
+
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)
@@ -192,15 +194,16 @@ STRUCT_END
 /** @CCORD_pub_struct{discord_create_followup_message} */
 PUB_STRUCT(discord_create_followup_message)
   /* QUERY FIELDS */
-  /* TODO: ignored by JSON encoding, is a query parameter */
+#if !defined(GENCODECS_ON_JSON)
   /** waits for server confirmation of message send before response, and
        returns the created message body (defaults to `false`; when `false` a
        message that is not saved does not return an error) */
     FIELD(wait, bool, true)
-  /* TODO: ignored by JSON encoding, is a query parameter */
   /** send a message to the specified thread within a webhook's channel; the
        thread will automatically be unarchived */
     FIELD_SNOWFLAKE(thread_id)
+#endif
+
   /* JSON FIELDS */
   /** override the default avatar of the webhook */
     FIELD_PTR(avatar_url, char, *)
@@ -222,19 +225,21 @@ PUB_STRUCT(discord_create_followup_message)
   COND_WRITE(this->attachments != NULL)
     FIELD_STRUCT_PTR(attachments, discord_attachments, *)
   COND_END
-  /** message flags combined as a bitfield (only `SUPPRESS_EMBEDS` can be
-       set) */
+  /** @ref DiscordAPIChannelMessageFlags combined as a bitfield (only 
+       `SUPPRESS_EMBEDS` can be set) */
   COND_WRITE(this->flags != 0)
-    FIELD_SNOWFLAKE(flags)
+    FIELD_BITMASK(flags)
   COND_END
 STRUCT_END
 
 /** @CCORD_pub_struct{discord_edit_followup_message} */
 PUB_STRUCT(discord_edit_followup_message)
   /* QUERY FIELDS */
-  /* TODO: ignored by JSON encoding, is a query parameter */
+#if !defined(GENCODECS_ON_JSON)
   /** id of the thread the message is in */
     FIELD_SNOWFLAKE(thread_id)
+#endif
+
   /* JSON FIELDS */
   /** the message contents (up to 2000 characters) */
     FIELD_PTR(content, char, *)

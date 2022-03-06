@@ -22,7 +22,6 @@
  */
 
 #include "log.h"
-#include <pthread.h>
 
 log_Logger L;
 
@@ -39,13 +38,13 @@ static void stdout_callback(log_Event *ev) {
   buf[strftime(buf, sizeof(buf), "%H:%M:%S", ev->time)] = '\0';
 #ifdef LOG_USE_COLOR
   fprintf(
-    ev->udata, "%s|\x1b[90m%010u\x1b[0m %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
-    buf, (unsigned)pthread_self(), level_colors[ev->level], level_strings[ev->level],
+    ev->udata, "%s %s%-5s\x1b[0m \x1b[90m%s:%d:\x1b[0m ",
+    buf, level_colors[ev->level], level_strings[ev->level],
     ev->file, ev->line);
 #else
   fprintf(
-    ev->udata, "%s|%010u %-5s %s:%d: ",
-    buf, (unsigned)pthread_self(), level_strings[ev->level], ev->file, ev->line);
+    ev->udata, "%s %-5s %s:%d: ",
+    buf, level_strings[ev->level], ev->file, ev->line);
 #endif
   vfprintf(ev->udata, ev->fmt, ev->ap);
   fprintf(ev->udata, "\n");
@@ -57,8 +56,8 @@ static void file_callback(log_Event *ev) {
   char buf[64];
   buf[strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", ev->time)] = '\0';
   fprintf(
-    ev->udata, "%s|%010u %-5s %s:%d: ",
-    buf, (unsigned)pthread_self(), level_strings[ev->level], ev->file, ev->line);
+    ev->udata, "%s %-5s %s:%d: ",
+    buf, level_strings[ev->level], ev->file, ev->line);
   vfprintf(ev->udata, ev->fmt, ev->ap);
   fprintf(ev->udata, "\n");
   fflush(ev->udata);
@@ -137,8 +136,7 @@ void _log_log(log_Logger *L, int level, const char *file, int line, const char *
   if (!L->quiet && level >= L->level) {
     init_event(&ev, stderr);
     va_start(ev.ap, fmt);
-    stdout_callback(&ev);
-    va_end(ev.ap);
+    stdout_callback(&ev); va_end(ev.ap);
   }
 
   for (i = 0; i < LOG_MAX_CALLBACKS && L->callbacks[i].fn; i++) {

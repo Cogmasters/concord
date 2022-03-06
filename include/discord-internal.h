@@ -28,7 +28,6 @@
 #include "uthash.h"
 #include "queue.h"
 #include "heap-inl.h"
-#include "banned.h"
 
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
@@ -43,7 +42,7 @@
     ((type *)((char *)(ptr)-offsetof(type, path)))
 
 /** @defgroup DiscordInternal Internal implementation details
- *   @brief Documentation useful when developing or debugging Concord itself
+ * @brief Documentation useful when developing or debugging Concord itself
  *  @{ */
 
 /** @brief Get client from its nested field */
@@ -65,8 +64,18 @@
         }                                                                     \
     } while (0)
 
+/**
+ * @brief Shortcut for checking OOB-write attempts
+ * @note unsigned values are expected
+ *
+ * @param nbytes amount of bytes to be written
+ * @param destsz size of dest in bytes
+ */
+#define ASSERT_NOT_OOB(nbytes, destsz)                                        \
+    ASSERT_S((size_t)nbytes < (size_t)destsz, "Out of bounds write attempt");
+
 /** @defgroup DiscordInternalAdapter REST API
- *   @brief Wrapper to the Discord REST API
+ * @brief Wrapper to the Discord REST API
  *  @{ */
 
 /** @brief Request's return context */
@@ -296,7 +305,7 @@ void discord_refcount_incr(struct discord_adapter *adapter,
 void discord_refcount_decr(struct discord_adapter *adapter, void *data);
 
 /** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
- *   @brief Enforce ratelimiting per the official Discord Documentation
+ * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
 /** @brief The bucket struct for handling ratelimiting */
@@ -401,7 +410,7 @@ void discord_bucket_build(struct discord_adapter *adapter,
 /** @} DiscordInternalAdapter */
 
 /** @defgroup DiscordInternalGateway WebSockets API
- *   @brief Wrapper to the Discord Gateway API
+ * @brief Wrapper to the Discord Gateway API
  *  @{ */
 
 struct discord_gateway_cmd_cbs {
@@ -489,6 +498,17 @@ struct discord_gateway_cbs {
     discord_ev_voice_server_update on_voice_server_update;
 };
 
+/** @defgroup DiscordInternalGatewaySessionStatus
+ * @brief Client's session status
+ *  @{ */
+/** client is currently offline */
+#define DISCORD_SESSION_OFFLINE 0u
+/** client will attempt to resume session after reconnect */
+#define DISCORD_SESSION_RESUMABLE 1u << 0
+/** client in the process of being shutdown */
+#define DISCORD_SESSION_SHUTDOWN 1u << 1
+/** @} DiscordInternalGatewaySessionStatus */
+
 /** @brief The handle used for establishing a WebSockets connection */
 struct discord_gateway {
     /** DISCORD_GATEWAY logging module */
@@ -534,16 +554,8 @@ struct discord_gateway {
         int concurrent;
         /** event counter to avoid reaching limit of 120 events per 60 sec */
         int event_count;
-
-        /** session status */
-        enum {
-            /** client is currently offline */
-            DISCORD_SESSION_OFFLINE = 0,
-            /** client will attempt to resume session after reconnect */
-            DISCORD_SESSION_RESUMABLE = 1 << 0,
-            /** client in the process of being shutdown */
-            DISCORD_SESSION_SHUTDOWN = 1 << 1
-        } status;
+        /** @ref DiscordInternalGatewaySessionStatus */
+        unsigned status;
 
         /** retry connection structure */
         struct {
@@ -682,7 +694,7 @@ struct discord {
     /** DISCORD logging module */
     struct logconf conf;
     /** whether this is the original client or a clone @deprecated unnecessary
-     *      once discord_clone() is removed*/
+     *      once discord_clone() is removed */
     bool is_original;
     /** the bot token */
     struct sized_buffer token;
@@ -694,6 +706,7 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+
     /** wakeup timer handle */
     struct {
         /** callback to be triggered on timer's timeout */

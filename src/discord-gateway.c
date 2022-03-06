@@ -253,7 +253,7 @@ on_hello(struct discord_gateway *gw)
                               sizeof("heartbeat_interval") - 1);
         if (f)
             gw->timer->interval =
-                strtol(data->start + f->val->start, NULL, 10);
+                strtoull(data->start + f->val->start, NULL, 10);
     }
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
@@ -626,7 +626,7 @@ on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
                        sizeof("last_pin_timestamp") - 1);
         if (f)
             cog_iso8601_to_unix_ms(data->start + f->val->start,
-                                   f->val->end - f->val->start,
+                                   (size_t)(f->val->end - f->val->start),
                                    &last_pin_timestamp);
     }
 
@@ -1289,7 +1289,7 @@ on_heartbeat_ack(struct discord_gateway *gw)
 {
     /* get request / response interval in milliseconds */
     pthread_rwlock_wrlock(&gw->timer->rwlock);
-    gw->timer->ping_ms = gw->timer->now - gw->timer->hbeat;
+    gw->timer->ping_ms = (int)(gw->timer->now - gw->timer->hbeat);
     pthread_rwlock_unlock(&gw->timer->rwlock);
 
     logconf_trace(&gw->conf, "PING: %d ms", gw->timer->ping_ms);
@@ -1391,18 +1391,25 @@ on_text_cb(void *p_gw,
         jsmnf *f;
 
         f = jsmnf_find(root, "t", 1);
-        if (f)
-            snprintf(gw->payload.name, sizeof(gw->payload.name), "%.*s",
-                     f->val->end - f->val->start, text + f->val->start);
+        if (f) {
+            if (JSMN_STRING == f->val->type)
+                snprintf(gw->payload.name, sizeof(gw->payload.name), "%.*s",
+                         f->val->end - f->val->start, text + f->val->start);
+            else
+                *gw->payload.name = '\0';
+        }
         f = jsmnf_find(root, "s", 1);
-        if (f) seq = (int)strtol(text + f->val->start, NULL, 10);
+        if (f) {
+            seq = (int)strtol(text + f->val->start, NULL, 10);
+        }
         f = jsmnf_find(root, "op", 2);
-        if (f)
+        if (f) {
             gw->payload.opcode = (int)strtol(text + f->val->start, NULL, 10);
+        }
         f = jsmnf_find(root, "d", 1);
         if (f) {
             gw->payload.data.start = (char *)text + f->val->start;
-            gw->payload.data.size = f->val->end - f->val->start;
+            gw->payload.data.size = (size_t)(f->val->end - f->val->start);
         }
     }
 
@@ -1530,8 +1537,12 @@ discord_gateway_init(struct discord_gateway *gw,
             if (enable_prefix) {
                 f = jsmnf_find(root, "prefix", sizeof("prefix") - 1);
                 if (f) {
-                    gw->cmds.prefix.start = buf.start + f->val->start;
-                    gw->cmds.prefix.size = f->val->end - f->val->start;
+                    char prefix[64] = "";
+
+                    snprintf(prefix, sizeof(prefix), "%.*s",
+                             f->val->end - f->val->start,
+                             buf.start + f->val->start);
+                    discord_set_prefix(CLIENT(gw, gw), prefix);
                 }
             }
         }
@@ -1679,14 +1690,15 @@ discord_gateway_start(struct discord_gateway *gw)
 
             f = jsmnf_find(root, "url", sizeof("url") - 1);
             if (f) {
-                struct sized_buffer base_url = { json.start + f->val->start,
-                                                 f->val->end - f->val->start };
-                size_t len = snprintf(
-                    url, sizeof(url), "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX,
-                    (int)base_url.size, base_url.start,
-                    ('/' == base_url.start[base_url.size - 1]) ? "" : "/");
+                const char *base_url = json.start + f->val->start;
+                const int base_url_len = f->val->end - f->val->start;
+                int len;
 
-                ASSERT_S(len < sizeof(url), "Out of bounds write attempt");
+                len = snprintf(url, sizeof(url),
+                               "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX,
+                               base_url_len, base_url,
+                               ('/' == base_url[base_url_len - 1]) ? "" : "/");
+                ASSERT_NOT_OOB(len, sizeof(url));
             }
             f = jsmnf_find(root, "shards", sizeof("shards") - 1);
             if (f)

@@ -40,6 +40,7 @@
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
         _type * _decor array;
 #define GENCODECS_LIST_END                                                    \
+        /** @private */                                                       \
         int realsize;                                                         \
     };
 
@@ -126,7 +127,7 @@
         __carray_free(this, struct _type, NULL,                               \
                       _type##_cleanup(&__CARRAY_OPERAND_A));
 #define GENCODECS_LISTTYPE_PTR(_type, _decor)                                 \
-        __carray_free(this, _type _decor, NULL, NULL);
+        __carray_free(this, _type _decor, NULL, free(__CARRAY_OPERAND_A));
 #define GENCODECS_LIST_END                                                    \
     }
 

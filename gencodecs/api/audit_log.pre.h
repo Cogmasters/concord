@@ -147,7 +147,7 @@ LIST_END
  * Audit Logs REST parameters
  * **************************************************************************/
 
-/* TODO: disable JSON encoding functions */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_guild_audit_log)
   /** filter the log for actions made by a user */
     FIELD_SNOWFLAKE(user_id)
@@ -160,3 +160,4 @@ STRUCT(discord_get_guild_audit_log)
     FIELD(limit, int, 50)
   COND_END
 STRUCT_END
+#endif

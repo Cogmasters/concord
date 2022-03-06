@@ -187,7 +187,7 @@ discord_execute_webhook(struct discord *client,
     enum http_method method;
     char buf[16384]; /**< @todo dynamic buffer */
     char query[4096] = "";
-    size_t len = 0;
+    int offset = 0;
 
     CCORD_EXPECT(client, webhook_id != 0, CCORD_BAD_PARAMETER, "");
     CCORD_EXPECT(client, NOT_EMPTY_STR(webhook_token), CCORD_BAD_PARAMETER,
@@ -195,14 +195,14 @@ discord_execute_webhook(struct discord *client,
     CCORD_EXPECT(client, params != NULL, CCORD_BAD_PARAMETER, "");
 
     if (params->wait) {
-        len = snprintf(query, sizeof(query), "wait=1");
-        ASSERT_S(len < sizeof(query), "Out of bounds write attempt");
+        offset = snprintf(query, sizeof(query), "wait=1");
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
     if (params->thread_id) {
-        len +=
-            snprintf(query + len, sizeof(query) - len, "%sthread_id=%" PRIu64,
-                     len ? "&" : "", params->thread_id);
-        ASSERT_S(len < sizeof(query), "Out of bounds write attempt");
+        offset += snprintf(query + offset, sizeof(query) - (size_t)offset,
+                           "%sthread_id=%" PRIu64, offset ? "&" : "",
+                           params->thread_id);
+        ASSERT_NOT_OOB(offset, sizeof(query));
     }
 
     body.size = discord_execute_webhook_to_json(buf, sizeof(buf), params);

@@ -12,12 +12,23 @@ extern "C" {
 
 #define __ERR(fmt, ...) log_fatal(fmt "%s", __VA_ARGS__)
 
+/**
+ * @brief Print error message and abort
+ *
+ * @param ... printf-like `format` and variadic arguments (if any)
+ */
 #define ERR(...)                                                              \
   do {                                                                        \
     __ERR(__VA_ARGS__, "");                                                   \
     abort();                                                                  \
   } while (0)
 
+/**
+ * @brief Assert that allows printing a error message
+ *
+ * @param expr conditional expression that's expected to be true
+ * @param msg error message
+ */
 #define ASSERT_S(expr, msg)                                                   \
   do {                                                                        \
     if (!(expr)) {                                                            \
@@ -26,7 +37,15 @@ extern "C" {
     }                                                                         \
   } while (0)
 
-/* THIS WILL ONLY WORK IF __VA_ARGS__ IS SET */
+/**
+ * @brief Assert that allows printing a error message in a printf-like fashion
+ * @warning if no variadic arguments are specified there will be errors, in 
+ *      that case use @ref ASSERT_S.
+ *
+ * @param expr conditional expression that's expected to be true
+ * @param fmt printf-like formatting string for the error message
+ * @param ... printf-like variadic arguments to be matched to `fmt`
+ */
 # define VASSERT_S(expr, fmt, ...)                                            \
   do {                                                                        \
     if (!(expr)) {                                                            \
@@ -143,7 +162,7 @@ extern "C" {
 
 /* helper function for logconf_log() */
 #define __logconf_log(conf, level, file, line, fmt, ...)                      \
-    _log_log(&(conf)->L, level, file, line, "[%s] " fmt "%s", (conf)->id,     \
+    _log_log((conf)->L, level, file, line, "[%s] " fmt "%s", (conf)->id,      \
              __VA_ARGS__)
 /**
  * @brief Run-time configurable log level
@@ -171,20 +190,25 @@ extern "C" {
 struct logconf {
     /** logging module id */
     char id[LOGCONF_ID_LEN];
-    /** log.c main structure */
-    log_Logger L;
     /** the id of the process where this module was created */
     unsigned pid;
     /** if true then logconf_cleanup() won't cleanup shared resources */
     _Bool is_branch;
-    /** config file conents */
+    /** config file contents */
     struct sized_buffer file;
+
+    /** http logging counter */
+    int *counter;
+    /** log.c main structure (shared with branches) */
+    log_Logger *L;
+
     struct {
         /** name of logging output file */
         char *fname;
         /** pointer to logging output file */
         FILE *f;
     } * logger, *http;
+
     /** list of 'id' that should be ignored */
     struct {
         size_t size;

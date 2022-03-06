@@ -2,6 +2,11 @@
  * User Datatypes
  * **************************************************************************/
 
+/** @defgroup DiscordAPIUserFlags User flags
+ * @brief Flags on a user account
+ * @ingroup DiscordAPIUser
+ *  @{ */
+
 /** None */
 PP_DEFINE(DISCORD_USER_NONE 0)
 /** Discord Employee */
@@ -32,6 +37,8 @@ PP_DEFINE(DISCORD_USER_VERIFIED_DEVELOPER 1 << 17)
 PP_DEFINE(DISCORD_USER_CERTIFIED_MODERATOR 1 << 18)
 /** Bot uses only HTTP interactions and is shownin the online member list */
 PP_DEFINE(DISCORD_USER_BOT_HTTP_INTERACTIONS 1 << 19)
+
+/** @} DiscordAPIUserFlags */
 
 ENUM(discord_premium_types)
     ENUMERATOR(DISCORD_PREMIUM_NONE, = 0)
@@ -76,12 +83,12 @@ PUB_STRUCT(discord_user)
     FIELD(verified, bool, false)
   /** the user's email */
     FIELD_PTR(email, char, *)
-  /** the flags on a user's account */
-    FIELD_SNOWFLAKE(flags)
+  /** the @ref DiscordAPIUserFlags on a user's account */
+    FIELD_BITMASK(flags)
   /** the type of Nitro subscription on a user's account */
     FIELD_ENUM(premium_type, discord_premium_types)
-  /** the public flags on a user's account */
-    FIELD_SNOWFLAKE(public_flags)
+  /** the public @ref DiscordAPIUserFlags on a user's account */
+    FIELD_BITMASK(public_flags)
 STRUCT_END
 
 /** @CCORD_pub_list{discord_users} */
@@ -135,7 +142,7 @@ PUB_STRUCT(discord_modify_current_user)
   COND_END
 STRUCT_END
 
-/* TODO: disable generating JSON encoding function */
+#if defined(GENCODECS_ON_STRUCT)
 STRUCT(discord_get_current_user_guilds)
   /** get guilds before this guild ID */
   COND_WRITE(this->before != 0)
@@ -150,6 +157,7 @@ STRUCT(discord_get_current_user_guilds)
     FIELD(limit, int, 200)
   COND_END
 STRUCT_END
+#endif
 
 /** @CCORD_pub_struct{discord_create_dm} */
 PUB_STRUCT(discord_create_dm)
