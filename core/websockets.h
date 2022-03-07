@@ -42,9 +42,9 @@ enum ws_status {
     WS_DISCONNECTED = 0,
     /** client connected to ws */
     WS_CONNECTED,
-    /** client in the process of disconnecting to ws */
+    /** client in the process of disconnecting from ws */
     WS_DISCONNECTING,
-    /** client in the process of connecting from ws */
+    /** client in the process of connecting to ws */
     WS_CONNECTING,
 };
 
