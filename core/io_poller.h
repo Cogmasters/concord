@@ -5,8 +5,8 @@
 #include <curl/curl.h>
 
 enum io_poller_events {
-  IO_POLLER_IN = 1,
-  IO_POLLER_OUT = 2,
+  IO_POLLER_IN  = 1 << 0,
+  IO_POLLER_OUT = 1 << 1,
 };
 
 typedef int io_poller_socket;
