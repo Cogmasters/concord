@@ -99,7 +99,7 @@ io_poller_perform(struct io_poller *io)
                 events |= IO_POLLER_OUT;
             io->pollfds[i].revents = 0;
             struct io_poller_element *element = &io->elements[i];
-            element->cb(element->user_data, events);
+            element->cb(io, events, element->user_data);
         }
     }
     for (int i = 0; i < io->curlm_cnt; i++) {
@@ -108,7 +108,7 @@ io_poller_perform(struct io_poller *io)
             (-1 != curlm->timeout && now >= curlm->timeout)) {
             curlm->should_perform = false;
             int result = curlm->cb ?
-                curlm->cb(curlm->multi, curlm->user_data) :
+                curlm->cb(io, curlm->multi, curlm->user_data) :
                 curl_multi_socket_all(curlm->multi, &curlm->running);
             
             if (result != 0)
@@ -119,8 +119,11 @@ io_poller_perform(struct io_poller *io)
 }
 
 bool
-io_poller_socket_add(
-    struct io_poller *io, io_poller_socket fd, enum io_poller_events events, io_poller_cb cb, void *user_data)
+io_poller_socket_add(struct io_poller *io,
+                     io_poller_socket fd,
+                     enum io_poller_events events,
+                     io_poller_cb cb,
+                     void *user_data)
 {
     int index = 0;
     for (; index < io->cnt; index++)
@@ -180,8 +183,9 @@ modify:
 }
 
 static void
-io_curl_cb(void *user_data, enum io_poller_events events)
+io_curl_cb(struct io_poller *io, enum io_poller_events events, void *user_data)
 {
+    (void)io;
     (void)events;
     struct io_curlm *io_curlm = user_data;
     io_curlm->should_perform = true;
