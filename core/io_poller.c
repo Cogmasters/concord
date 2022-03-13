@@ -261,28 +261,39 @@ io_poller_curlm_add(struct io_poller *io,
                     CURLM *multi,
                     io_poller_curl_cb cb,
                     void *user_data)
-{
-    struct io_curlm *io_curlm = calloc(1, sizeof *io_curlm);
-    io_curlm->io_poller = io;
-    io_curlm->cb = cb;
-    io_curlm->multi = multi;
-    io_curlm->user_data = user_data;
-    io_curlm->timeout = -1;
-    io_curlm->should_perform = true;
-
+{   
+    struct io_curlm *io_curlm = NULL;
+    size_t index = 0;
+    for (; index < io->curlm_cnt; index++) {
+        if (io->curlm[index]->multi == multi) {
+            io_curlm = io->curlm[index];
+            goto modify;
+        }
+    }
     if (io->curlm_cnt == io->curlm_cap) {
         size_t cap = io->curlm_cap << 1;
         if (!cap) cap = 8;
         void *tmp = realloc(io->curlm, cap * sizeof *io->curlm);
-        if (!tmp) return free(io_curlm), false;
+        if (!tmp) return false;
         io->curlm = tmp;
         io->curlm_cap = cap;
     }
+
+    if (!(io_curlm = calloc(1, sizeof *io_curlm)))
+        return false;
     io->curlm[io->curlm_cnt++] = io_curlm;
+    io_curlm->io_poller = io;
+    io_curlm->multi = multi;
+    io_curlm->timeout = -1;
+    io_curlm->should_perform = true;    
     curl_multi_setopt(multi, CURLMOPT_TIMERFUNCTION, curl_timer_cb);
     curl_multi_setopt(multi, CURLMOPT_TIMERDATA, io_curlm);
     curl_multi_setopt(multi, CURLMOPT_SOCKETFUNCTION, curl_socket_cb);
     curl_multi_setopt(multi, CURLMOPT_SOCKETDATA, io_curlm);
+
+modify:
+    io_curlm->cb = cb;
+    io_curlm->user_data = user_data;
     return true;
 }
 
