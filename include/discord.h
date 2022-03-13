@@ -18,6 +18,7 @@
 #include "error.h"
 #include "types.h"
 #include "concord-once.h"
+#include "io_poller.h"
 
 #define DISCORD_API_BASE_URL       "https://discord.com/api/v9"
 #define DISCORD_GATEWAY_URL_SUFFIX "?v=9&encoding=json"
@@ -264,6 +265,14 @@ uint64_t discord_timestamp(struct discord *client);
  * @return the client's logging module
  */
 struct logconf *discord_get_logconf(struct discord *client);
+
+/**
+ * @brief get the io_poller used by the discord client
+ * 
+ * @param client the client created with discord_init()
+ * @return struct io_poller* 
+ */
+struct io_poller *discord_get_io_poller(struct discord *client);
 
 /** @} Discord */
 

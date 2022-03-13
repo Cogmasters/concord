@@ -690,3 +690,9 @@ discord_get_logconf(struct discord *client)
 {
     return &client->conf;
 }
+
+struct io_poller *
+discord_get_io_poller(struct discord *client)
+{
+    return client->io_poller;
+}

@@ -1460,8 +1460,9 @@ default_scheduler_cb(struct discord *a,
 }
 
 static int
-on_io_poller_curl(CURLM *mhandle, void *user_data)
+on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 {
+    (void)io;
     (void)mhandle;
     return discord_gateway_perform(user_data);
 }

@@ -30,8 +30,9 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 }
 
 static int
-on_io_poller_curl(CURLM *mhandle, void *user_data)
+on_io_poller_curl(struct io_poller *io, CURLM *mhandle, void *user_data)
 {
+    (void)io;
     (void)mhandle;
     return discord_adapter_perform(user_data);
 }
