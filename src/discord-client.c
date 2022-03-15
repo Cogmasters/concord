@@ -341,7 +341,7 @@ discord_run(struct discord *client)
             }
 
             poll_result = io_poller_poll(client->io_poller, poll_time);
-            if (poll_result != -1) {
+            if (-1 == poll_result) {
                 /* TODO: handle poll error here */
             }
             else if (0 == poll_result && client->on_idle) {
@@ -689,4 +689,10 @@ struct logconf *
 discord_get_logconf(struct discord *client)
 {
     return &client->conf;
+}
+
+struct io_poller *
+discord_get_io_poller(struct discord *client)
+{
+    return client->io_poller;
 }

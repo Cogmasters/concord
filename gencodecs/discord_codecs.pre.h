@@ -52,7 +52,7 @@ PP_INCLUDE("types.h")
 #define GENCODECS_JSON_DECODER_u64snowflake GENCODECS_JSON_DECODER_uint64_t
 #define GENCODECS_JSON_DECODER_u64bitmask GENCODECS_JSON_DECODER_uint64_t
 #define GENCODECS_JSON_DECODER_u64unix_ms(f, buf, _var, _type)                \
-    if (f && f->val->type == JSMN_PRIMITIVE)                                  \
+    if (f && f->val->type == JSMN_STRING)                                     \
         cog_iso8601_to_unix_ms(buf + f->val->start,                           \
                                  f->val->end - f->val->start, &_var)
 
