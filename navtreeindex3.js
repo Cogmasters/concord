@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md59":[0,12,7],
 "d5/d7c/docs_2api_2gateway_8h.html":[6,0,1,0,6],
 "d5/d7c/docs_2api_2gateway_8h.html#aa062fba03e7be2d8c89fd228a9fc4245":[6,0,1,0,6,15],
 "d5/d7c/docs_2api_2gateway_8h.html#aa062fba03e7be2d8c89fd228a9fc4245a67682afa9e85b64f44f910dd220c3df0":[6,0,1,0,6,15,5],
@@ -55,20 +56,20 @@ var NAVTREEINDEX3 =
 "d5/daf/structdiscord.html#a89cf87aa2d78f5ec8d524cfe2fe208dc":[4,0,4,5],
 "d5/daf/structdiscord.html#a8b6ddc9583333027193256369e5600e5":[4,3,1,9],
 "d5/daf/structdiscord.html#a8b6ddc9583333027193256369e5600e5":[4,0,4,9],
-"d5/daf/structdiscord.html#aa6b920cecb961738d00682cd25bcd14a":[4,3,1,0],
 "d5/daf/structdiscord.html#aa6b920cecb961738d00682cd25bcd14a":[4,0,4,0],
+"d5/daf/structdiscord.html#aa6b920cecb961738d00682cd25bcd14a":[4,3,1,0],
 "d5/daf/structdiscord.html#aafa9ca0a9e439963893d2774870403a4":[4,3,1,6],
 "d5/daf/structdiscord.html#aafa9ca0a9e439963893d2774870403a4":[4,0,4,6],
-"d5/daf/structdiscord.html#ac2ac71153e3681e24b87a205ad2df97f":[4,3,1,2],
 "d5/daf/structdiscord.html#ac2ac71153e3681e24b87a205ad2df97f":[4,0,4,2],
+"d5/daf/structdiscord.html#ac2ac71153e3681e24b87a205ad2df97f":[4,3,1,2],
 "d5/daf/structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5":[4,0,4,4],
 "d5/daf/structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5":[4,3,1,4],
 "d5/daf/structdiscord.html#ad36541f87b8997a57c0467d29627e8d1":[4,0,4,3],
 "d5/daf/structdiscord.html#ad36541f87b8997a57c0467d29627e8d1":[4,3,1,3],
-"d5/daf/structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f":[4,3,1,12],
 "d5/daf/structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f":[4,0,4,12],
-"d5/daf/structdiscord.html#aec30edafaaff8f151616190450101eab":[4,0,4,8],
+"d5/daf/structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f":[4,3,1,12],
 "d5/daf/structdiscord.html#aec30edafaaff8f151616190450101eab":[4,3,1,8],
+"d5/daf/structdiscord.html#aec30edafaaff8f151616190450101eab":[4,0,4,8],
 "d5/daf/structdiscord.html#af3d2fe931cc6c487fb42ce7fe8db71a5":[4,3,1,11],
 "d5/daf/structdiscord.html#af3d2fe931cc6c487fb42ce7fe8db71a5":[4,0,4,11],
 "d5/db0/structdiscord__application__commands.html":[5,0,23],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "d6/d66/structdiscord__message.html#a985926879f0a05f4487c18b74a1dc6d5":[5,0,134,23],
 "d6/d66/structdiscord__message.html#a9c11461a5312d51a503a3f75a4305437":[5,0,134,18],
 "d6/d66/structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae":[5,0,134,7],
-"d6/d66/structdiscord__message.html#ac325084b69c1bf35bef45510ab6ce7a7":[5,0,134,14],
-"d6/d66/structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb":[5,0,134,4]
+"d6/d66/structdiscord__message.html#ac325084b69c1bf35bef45510ab6ce7a7":[5,0,134,14]
 };

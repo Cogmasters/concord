@@ -20,6 +20,7 @@ var group__Discord =
     [ "discord_clone", "d2/de5/group__Discord.html#gaf8dce62a982ad40031ec5e772e2a076a", null ],
     [ "discord_config_init", "d2/de5/group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb", null ],
     [ "discord_get_data", "d2/de5/group__Discord.html#ga74e4cd8487be005d63e8b62eba477ca4", null ],
+    [ "discord_get_io_poller", "d2/de5/group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655", null ],
     [ "discord_get_logconf", "d2/de5/group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3", null ],
     [ "discord_get_ping", "d2/de5/group__Discord.html#ga8a6d0002445738ace70f5eb2b22ca471", null ],
     [ "discord_get_self", "d2/de5/group__Discord.html#ga164add107d145df966be36cef1b9b4a9", null ],

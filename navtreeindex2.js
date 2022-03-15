@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"d3/dda/structdiscord__get__current__user__guilds.html#afa408b738f857ceb7840ec1944993adc":[5,0,92,0],
 "d3/ddc/emoji_8c-example.html":[7,9],
 "d3/dde/structdiscord__edit__webhook__message.html":[5,0,70],
 "d3/dde/structdiscord__edit__webhook__message.html#a726ce61e4590a290862ad3165c6c1c13":[5,0,70,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md55":[0,12,3],
 "d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md56":[0,12,4],
 "d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md57":[0,12,5],
-"d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md58":[0,12,6],
-"d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md59":[0,12,7]
+"d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md58":[0,12,6]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"de/d78/structdiscord__create__guild__sticker.html#a953bd44ae9266d79cdfd5bcf9c8f515e":[5,0,57,2],
 "de/d78/structdiscord__create__guild__sticker.html#aff550f949c14d25dc351955a68467c89":[5,0,57,1],
 "de/d7e/include_2invite_8h.html":[6,0,2,14],
 "de/d7e/include_2invite_8h_source.html":[6,0,2,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "functions_t.html":[5,2,0,19],
 "functions_u.html":[5,2,0,20],
 "functions_v.html":[5,2,0,21],
-"functions_vars.html":[5,2,1],
-"functions_vars.html":[5,2,1,0]
+"functions_vars.html":[5,2,1]
 };

@@ -133,14 +133,14 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "d1/dd0/voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8a81e6f7ac04d50531fb37ac458a24ddad",
-"d3/ddc/emoji_8c-example.html",
-"d5/d7c/docs_2api_2gateway_8h.html",
-"d6/d66/structdiscord__message.html#ad78515ac01b381ea3b653a5bd99695a9",
-"d9/d03/structdiscord__voice__states.html",
-"db/d35/structdiscord__webhook.html#adf324efc32012c6816056015de671032",
-"dc/d82/structdiscord__presence__update.html#a312462d3eb85ed62fc21253e64ef7560",
-"de/d78/structdiscord__create__guild__sticker.html#aff550f949c14d25dc351955a68467c89",
-"functions_vars_b.html"
+"d3/dda/structdiscord__get__current__user__guilds.html#afa408b738f857ceb7840ec1944993adc",
+"d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md59",
+"d6/d66/structdiscord__message.html#ac8e69ac0e67b0ae189b9705910cde7bb",
+"d9/d03/structdiscord__interaction__callback__data.html#ae2fc6faffe057299d37a50abe8184549",
+"db/d35/structdiscord__webhook.html#ad182fc083d8e1d5eabd9ea3ee5fdd59b",
+"dc/d82/structdiscord__presence__update.html",
+"de/d78/structdiscord__create__guild__sticker.html#a953bd44ae9266d79cdfd5bcf9c8f515e",
+"functions_vars.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

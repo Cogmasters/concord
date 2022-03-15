@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"db/d35/structdiscord__webhook.html#ad182fc083d8e1d5eabd9ea3ee5fdd59b":[5,0,238,4],
 "db/d35/structdiscord__webhook.html#adf324efc32012c6816056015de671032":[5,0,238,6],
 "db/d4e/structdiscord__emoji.html":[5,0,81],
 "db/d4e/structdiscord__emoji.html#a2f8f871daa760513aca81c79f0c9ad82":[5,0,81,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "dc/d66/structdiscord__activity.html#ae033c0ee62cec9a40c77dcb388f5b655":[5,0,2,13],
 "dc/d66/structdiscord__activity.html#ae0e7479c1dc08ab8a67a45ab6390ca5e":[5,0,2,2],
 "dc/d66/structdiscord__activity.html#af4132163c026bc8e6ed1adf0168be6a2":[5,0,2,14],
-"dc/d68/group__DiscordApplicationFlags.html":[4,6],
-"dc/d82/structdiscord__presence__update.html":[5,0,164]
+"dc/d68/group__DiscordApplicationFlags.html":[4,6]
 };

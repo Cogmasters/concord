@@ -158,6 +158,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="memItemLeft" align="right" valign="top">struct logconf *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/de5/group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3">discord_get_logconf</a> (struct <a class="el" href="../../d5/daf/structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve client's logging module for configuration purposes.  <a href="../../d2/de5/group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3">More...</a><br /></td></tr>
 <tr class="separator:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="memItemLeft" align="right" valign="top">struct io_poller *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/de5/group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655">discord_get_io_poller</a> (struct <a class="el" href="../../d5/daf/structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memdesc:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the io_poller used by the discord client  <a href="../../d2/de5/group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655">More...</a><br /></td></tr>
+<tr class="separator:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Functions and datatypes for the client. </p>
@@ -272,6 +275,33 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>pointer to user data </dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>the user should provide their own locking mechanism to protect its data from race conditions </dd></dl>
+
+</div>
+</div>
+<a id="gab53f8fde50dc0fa5311a9ffc9751b655" name="gab53f8fde50dc0fa5311a9ffc9751b655"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab53f8fde50dc0fa5311a9ffc9751b655">&#9670;&nbsp;</a></span>discord_get_io_poller()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct io_poller * discord_get_io_poller </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="../../d5/daf/structdiscord.html">discord</a> *&#160;</td>
+          <td class="paramname"><em>client</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>get the io_poller used by the discord client </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">client</td><td>the client created with <a class="el" href="../../d2/de5/group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>struct io_poller* </dd></dl>
 
 </div>
 </div>
