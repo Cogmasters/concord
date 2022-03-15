@@ -96,7 +96,7 @@ cog_iso8601_to_unix_ms(const char str[], size_t len, uint64_t *p_value)
   tm.tm_year -= 1900; /* struct tm takes years from 1900 */
 
   *p_value = (((uint64_t)mktime(&tm) + cog_timezone()) * 1000)
-             + (uint64_t)seconds * 1000.0;
+             + (uint64_t)(seconds * 1000.0);
 
   switch (tz_operator) {
   case '+': /* Add hours and minutes */
