@@ -344,8 +344,9 @@ discord_run(struct discord *client)
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
             }
-            else if (0 == poll_result && client->on_idle) {
-                client->on_idle(client);
+            else if (0 == poll_result) {
+                if (ccord_has_sigint != 0) discord_shutdown(client);
+                if (client->on_idle) client->on_idle(client);
             }
 
             if (client->on_cycle) client->on_cycle(client);
@@ -387,7 +388,8 @@ discord_run(struct discord *client)
 void
 discord_shutdown(struct discord *client)
 {
-    discord_gateway_shutdown(&client->gw);
+    if (client->gw.session->status != DISCORD_SESSION_SHUTDOWN)
+        discord_gateway_shutdown(&client->gw);
 }
 
 void
