@@ -12,7 +12,7 @@
  *
  * This global shall be set if a `SIGINT` is detected, running clients will
  *      then attempt to perform a clean disconnect, rather then just letting
- *      the program end abruply.
+ *      the program end abruptly.
  * @note client shall only attempt to disconnect if there aren't any active
  *      events waiting to be listened or reacted to
  */
