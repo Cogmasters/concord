@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* strcmp() */
-#include <signal.h>
 #include <pthread.h>
 #include <assert.h>
 
@@ -170,15 +169,6 @@ on_force_error(struct discord *client, const struct discord_message *msg)
                            });
 }
 
-/* shutdown gracefully on SIGINT received */
-void
-sigint_handler(int signum)
-{
-  (void)signum;
-  log_info("SIGINT received, shutting down ...");
-  discord_shutdown(client);
-}
-
 int
 main(int argc, char *argv[])
 {
@@ -188,7 +178,6 @@ main(int argc, char *argv[])
     else
         config_file = "../config.json";
 
-    signal(SIGINT, &sigint_handler);
     ccord_global_init();
 
     client = discord_config_init(config_file);
