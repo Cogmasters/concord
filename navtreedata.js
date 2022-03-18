@@ -25,8 +25,7 @@
 var NAVTREE =
 [
   [ "Concord", "index.html", [
-    [ "Discord API Roadmap", "d5/d74/md_docs_DISCORD_ROADMAP.html", [
-      [ "Concord", "index.html#autotoc_md0", null ],
+    [ "Concord - C Discord API library", "index.html#autotoc_md0", [
       [ "About", "index.html#autotoc_md1", [
         [ "Minimal example", "index.html#autotoc_md2", null ]
       ] ],
@@ -64,7 +63,9 @@ var NAVTREE =
       [ "Support", "index.html#autotoc_md27", null ],
       [ "Contributing", "index.html#autotoc_md28", null ],
       [ "Getting Started", "index.html#autotoc_md29", null ],
-      [ "Useful links", "index.html#autotoc_md30", null ],
+      [ "Useful links", "index.html#autotoc_md30", null ]
+    ] ],
+    [ "Discord API Roadmap", "d5/d74/md_docs_DISCORD_ROADMAP.html", [
       [ "Reference", "d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md32", [
         [ "Authentication", "d5/d74/md_docs_DISCORD_ROADMAP.html#autotoc_md33", null ]
       ] ],
