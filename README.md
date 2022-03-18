@@ -9,11 +9,11 @@
   </p>
 </div>
 
-## Concord
+# Concord - C Discord API library
 
 ## About
 
-Concord is an asynchronous C99 Discord API wrapper library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
+Concord is an asynchronous C99 Discord API library. It has minimal external dependencies, and a low-level translation of the Discord official documentation to C code.
 
 ### Minimal example
 
@@ -162,7 +162,7 @@ Type a message in any channel the bot is part of and the bot should send an exac
 
 #### Terminate Copycat-Bot
 
-With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Control</kbd>+<kbd>|</kbd>
+With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
 
 ## Installing Concord
 
