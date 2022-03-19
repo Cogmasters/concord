@@ -14,27 +14,30 @@ static void
 sigint_handler(int signum)
 {
   (void)signum;
+  fputs("\nSIGINT: Disconnecting running concord client(s) ...\n", stderr);
   ccord_has_sigint = 1;
 }
 
 CCORDcode
 ccord_global_init()
 {
-    if (once) return CCORD_GLOBAL_INIT;
-
-    signal(SIGINT, &sigint_handler);
-
-    if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
-        fprintf(stderr, "Couldn't start libcurl's globals\n");
+    if (once) {
         return CCORD_GLOBAL_INIT;
     }
-    if (work_global_init()) {
-        fprintf(stderr, "Attempt duplicate global initialization\n");
-        return CCORD_GLOBAL_INIT;
+    else {
+        __sighandler_t prev = signal(SIGINT, &sigint_handler);
+        if (prev != SIG_DFL && prev != sigint_handler)
+            signal(SIGINT, prev);
+        if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
+            fputs("Couldn't start libcurl's globals\n", stderr);
+            return CCORD_GLOBAL_INIT;
+        }
+        if (work_global_init()) {
+            fputs("Attempt duplicate global initialization\n", stderr);
+            return CCORD_GLOBAL_INIT;
+        }
+        once = 1;
     }
-
-    once = 1;
-
     return CCORD_OK;
 }
 
