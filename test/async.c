@@ -6,8 +6,6 @@
 
 #include "discord.h"
 
-struct discord *client;
-
 struct user_cxt {
     u64snowflake channel_id;
     unsigned long long counter;
@@ -180,7 +178,7 @@ main(int argc, char *argv[])
 
     ccord_global_init();
 
-    client = discord_config_init(config_file);
+    struct discord *client = discord_config_init(config_file);
     assert(NULL != client && "Couldn't initialize client");
 
     struct user_cxt cxt = { 0 };
