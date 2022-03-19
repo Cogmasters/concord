@@ -405,7 +405,7 @@ void discord_bucket_build(struct discord_adapter *adapter,
                           const char route[DISCORD_ROUTE_LEN],
                           struct ua_info *info);
 
-/** @} DIscordInternalAdapterRatelimit */
+/** @} DiscordInternalAdapterRatelimit */
 
 /** @} DiscordInternalAdapter */
 
@@ -498,7 +498,7 @@ struct discord_gateway_cbs {
     discord_ev_voice_server_update on_voice_server_update;
 };
 
-/** @defgroup DiscordInternalGatewaySessionStatus
+/** @defgroup DiscordInternalGatewaySessionStatus Client's session status
  * @brief Client's session status
  *  @{ */
 /** client is currently offline */
