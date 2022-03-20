@@ -84,9 +84,9 @@ do {                                       \
         exit(EXIT_FAILURE);                                                                                                                       \
     }                                                                                                                                             \
                                                                                                                                                   \
+    (carray)->size--;                                                                                                                             \
     (location) = (carray)->array[(index)];                                                                                                        \
-    memmove((carray)->array + index, (carray)->array + index + 1, sizeof(*(carray)->array) * (size_t) ((carray)->size - index));                  \
-    (carray)->size--
+    memmove((carray)->array + index, (carray)->array + index + 1, sizeof(*(carray)->array) * (size_t) ((carray)->size - index))
 
 /* carray_remove */
 #define __carray_remove(carray, value, _type, _compare, _free)                                                                                    \
@@ -101,11 +101,11 @@ do {                                                                            
             continue;                                                                                                                             \
                                                                                                                                                   \
         _free;                                                                                                                                    \
+        (carray)->size--;                                                                                                                         \
         memmove((carray)->array + __CARRAY_ITER_INDEX,                                                                                            \
                 (carray)->array + __CARRAY_ITER_INDEX + 1,                                                                                        \
                 sizeof(*(carray)->array) * (size_t) ((carray)->size - __CARRAY_ITER_INDEX));                                                      \
                                                                                                                                                   \
-        (carray)->size--;                                                                                                                         \
         __CARRAY_ITER_INDEX = -1;                                                                                                                 \
         break;                                                                                                                                    \
     }                                                                                                                                             \
