@@ -16,195 +16,6 @@ struct discord_ret_users;
  * @brief Channel's public API supported by Concord
  *  @{ */
 
-/******************************************************************************
- * Custom functions
- ******************************************************************************/
-
-/**
- * @brief Get a guild's channel from its given numerical position
- *
- * @param client the client created with discord_init()
- * @param guild_id guild the channel belongs to
- * @param type the channel type where to take position reference from
- * @CCORD_ret_obj{ret,channel}
- * @CCORD_return
- */
-CCORDcode discord_get_channel_at_pos(struct discord *client,
-                                     u64snowflake guild_id,
-                                     enum discord_channel_types type,
-                                     int position,
-                                     struct discord_ret_channel *ret);
-
-/******************************************************************************
- * Embed builder functions
- ******************************************************************************/
-
-/**
- * @brief Add title to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param format printf-like formatting string
- * @param ... variadic arguments to be matched to format
- */
-void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
-
-/**
- * @brief Add description to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param format printf-like formatting string
- * @param ... variadic arguments to be matched to format
- */
-void discord_embed_set_description(struct discord_embed *embed,
-                                   char format[],
-                                   ...);
-
-/**
- * @brief Add URL to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param format printf-like formatting string
- * @param ... variadic arguments to be matched to format
- */
-void discord_embed_set_url(struct discord_embed *embed, char format[], ...);
-
-/**
- * @brief Add thumbnail to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param url source url of thumbnail
- * @param proxy_url a proxied url of the thumbnail
- * @param height height of thumbnail
- * @param width width of thumbnail
- */
-void discord_embed_set_thumbnail(struct discord_embed *embed,
-                                 char url[],
-                                 char proxy_url[],
-                                 int height,
-                                 int width);
-/**
- * @brief Add image to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param url source url of image
- * @param proxy_url a proxied url of the image
- * @param height height of image
- * @param width width of image
- */
-void discord_embed_set_image(struct discord_embed *embed,
-                             char url[],
-                             char proxy_url[],
-                             int height,
-                             int width);
-
-/**
- * @brief Add video to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param url source url of video
- * @param proxy_url a proxied url of the video
- * @param height height of video
- * @param width width of video
- */
-void discord_embed_set_video(struct discord_embed *embed,
-                             char url[],
-                             char proxy_url[],
-                             int height,
-                             int width);
-
-/**
- * @brief Add footer to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param text footer text
- * @param icon_url url of footer icon
- * @param proxy_icon_url a proxied url of footer icon
- */
-void discord_embed_set_footer(struct discord_embed *embed,
-                              char text[],
-                              char icon_url[],
-                              char proxy_icon_url[]);
-
-/**
- * @brief Add provider to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- * longer being used
- *
- * @param embed the embed being modified
- * @param name name of provider
- * @param url url of provider
- */
-void discord_embed_set_provider(struct discord_embed *embed,
-                                char name[],
-                                char url[]);
-
-/**
- * @brief Add author to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- *        longer being used
- *
- * @param embed the embed being modified
- * @param name name of author
- * @param url url of author
- * @param icon_url url of author icon
- * @param proxy_icon_url a proxied url of author icon
- */
-void discord_embed_set_author(struct discord_embed *embed,
-                              char name[],
-                              char url[],
-                              char icon_url[],
-                              char proxy_icon_url[]);
-
-/**
- * @brief Add field to embed
- * @note the embed must be freed with `discord_embed_cleanup()` after its no
- *        longer being used
- *
- * @param embed the embed being modified
- * @param name name of the field
- * @param value value of the field
- * @param Inline whether or not this field should display inline
- */
-void discord_embed_add_field(struct discord_embed *embed,
-                             char name[],
-                             char value[],
-                             bool Inline);
-
-/**
- * @brief Append to an overwrite list
- * @note the list should be freed with `discord_overwrite_list_free()` after
- *        its no longer being used
- *
- * @param permission_overwrites list to be appended to
- * @param id role or user id
- * @param type either 0 (role) or 1 (member)
- * @param allow permission bit set
- * @param deny permission bit set
- */
-void discord_overwrite_append(struct discord_overwrites *permission_overwrites,
-                              u64snowflake id,
-                              int type,
-                              u64bitmask allow,
-                              u64bitmask deny);
-
-/******************************************************************************
- * Discord API functions
- ******************************************************************************/
-
 /**
  * @brief Get channel from given id
  * @note If the channel is a thread, a thread member object is included in the
@@ -806,6 +617,195 @@ CCORDcode discord_list_joined_private_archived_threads(
     u64unix_ms before,
     int limit,
     struct discord_ret_thread_response_body *ret);
+
+/** @defgroup DiscordAPIChannelEmbed Embed builder
+ * @brief Dynamic embed builder functions
+ *  @{ */
+
+/**
+ * @brief Add title to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param format printf-like formatting string
+ * @param ... variadic arguments to be matched to format
+ */
+void discord_embed_set_title(struct discord_embed *embed, char format[], ...);
+
+/**
+ * @brief Add description to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param format printf-like formatting string
+ * @param ... variadic arguments to be matched to format
+ */
+void discord_embed_set_description(struct discord_embed *embed,
+                                   char format[],
+                                   ...);
+
+/**
+ * @brief Add URL to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param format printf-like formatting string
+ * @param ... variadic arguments to be matched to format
+ */
+void discord_embed_set_url(struct discord_embed *embed, char format[], ...);
+
+/**
+ * @brief Add thumbnail to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param url source url of thumbnail
+ * @param proxy_url a proxied url of the thumbnail
+ * @param height height of thumbnail
+ * @param width width of thumbnail
+ */
+void discord_embed_set_thumbnail(struct discord_embed *embed,
+                                 char url[],
+                                 char proxy_url[],
+                                 int height,
+                                 int width);
+/**
+ * @brief Add image to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param url source url of image
+ * @param proxy_url a proxied url of the image
+ * @param height height of image
+ * @param width width of image
+ */
+void discord_embed_set_image(struct discord_embed *embed,
+                             char url[],
+                             char proxy_url[],
+                             int height,
+                             int width);
+
+/**
+ * @brief Add video to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param url source url of video
+ * @param proxy_url a proxied url of the video
+ * @param height height of video
+ * @param width width of video
+ */
+void discord_embed_set_video(struct discord_embed *embed,
+                             char url[],
+                             char proxy_url[],
+                             int height,
+                             int width);
+
+/**
+ * @brief Add footer to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param text footer text
+ * @param icon_url url of footer icon
+ * @param proxy_icon_url a proxied url of footer icon
+ */
+void discord_embed_set_footer(struct discord_embed *embed,
+                              char text[],
+                              char icon_url[],
+                              char proxy_icon_url[]);
+
+/**
+ * @brief Add provider to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ * longer being used
+ *
+ * @param embed the embed being modified
+ * @param name name of provider
+ * @param url url of provider
+ */
+void discord_embed_set_provider(struct discord_embed *embed,
+                                char name[],
+                                char url[]);
+
+/**
+ * @brief Add author to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ *        longer being used
+ *
+ * @param embed the embed being modified
+ * @param name name of author
+ * @param url url of author
+ * @param icon_url url of author icon
+ * @param proxy_icon_url a proxied url of author icon
+ */
+void discord_embed_set_author(struct discord_embed *embed,
+                              char name[],
+                              char url[],
+                              char icon_url[],
+                              char proxy_icon_url[]);
+
+/**
+ * @brief Add field to embed
+ * @note the embed must be freed with `discord_embed_cleanup()` after its no
+ *        longer being used
+ *
+ * @param embed the embed being modified
+ * @param name name of the field
+ * @param value value of the field
+ * @param Inline whether or not this field should display inline
+ */
+void discord_embed_add_field(struct discord_embed *embed,
+                             char name[],
+                             char value[],
+                             bool Inline);
+
+/** @} DiscordAPIChannelEmbed */
+
+/** @defgroup DiscordAPIChannelHelper Helper functions
+ * @brief Custom helper functions
+ *  @{ */
+
+/**
+ * @brief Get a guild's channel from its given numerical position
+ *
+ * @param client the client created with discord_init()
+ * @param guild_id guild the channel belongs to
+ * @param type the channel type where to take position reference from
+ * @CCORD_ret_obj{ret,channel}
+ * @CCORD_return
+ */
+CCORDcode discord_get_channel_at_pos(struct discord *client,
+                                     u64snowflake guild_id,
+                                     enum discord_channel_types type,
+                                     int position,
+                                     struct discord_ret_channel *ret);
+
+/**
+ * @brief Append to an overwrite list
+ * @note the list should be freed with `discord_overwrite_list_free()` after
+ *        its no longer being used
+ *
+ * @param permission_overwrites list to be appended to
+ * @param id role or user id
+ * @param type either 0 (role) or 1 (member)
+ * @param allow permission bit set
+ * @param deny permission bit set
+ */
+void discord_overwrite_append(struct discord_overwrites *permission_overwrites,
+                              u64snowflake id,
+                              int type,
+                              u64bitmask allow,
+                              u64bitmask deny);
+
+/** @} DiscordAPIChannelHelper */
 
 /** @example channel.c
  * Demonstrates a couple use cases of the Channel API */
