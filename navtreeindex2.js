@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"group__DiscordEventCallbackTypes.html#gacda9a4fd1cf4649b9ce3b7814654860d":[5,3,0,0,20],
+"group__DiscordEventCallbackTypes.html#gad1b1ed5faea88adf9465bade0feda6e1":[5,3,0,0,9],
 "group__DiscordEventCallbackTypes.html#gad846ac0cc7ca8e3b410815723feed7ab":[5,3,0,0,8],
 "group__DiscordEventCallbackTypes.html#gae3e6d1179d1a878d5862b4183bbdaf25":[5,3,0,0,19],
 "group__DiscordEventCallbackTypes.html#gaf06e78a3641689d4c37b210107246c4f":[5,3,0,0,18],
@@ -227,12 +229,12 @@ var NAVTREEINDEX2 =
 "sticker_8h_source.html":[7,0,1,0,15],
 "structdiscord.html":[5,0,4],
 "structdiscord.html":[5,3,1],
-"structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace":[5,3,1,6],
 "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace":[5,0,4,6],
-"structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810":[5,3,1,7],
+"structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace":[5,3,1,6],
 "structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810":[5,0,4,7],
-"structdiscord.html#a6eb2ea44ec9bf21857e1055e8baaae59":[5,3,1,8],
+"structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810":[5,3,1,7],
 "structdiscord.html#a6eb2ea44ec9bf21857e1055e8baaae59":[5,0,4,8],
+"structdiscord.html#a6eb2ea44ec9bf21857e1055e8baaae59":[5,3,1,8],
 "structdiscord.html#a89cf87aa2d78f5ec8d524cfe2fe208dc":[5,3,1,3],
 "structdiscord.html#a89cf87aa2d78f5ec8d524cfe2fe208dc":[5,0,4,3],
 "structdiscord.html#a8b6ddc9583333027193256369e5600e5":[5,3,1,10],
@@ -245,9 +247,7 @@ var NAVTREEINDEX2 =
 "structdiscord.html#ac2ac71153e3681e24b87a205ad2df97f":[5,3,1,0],
 "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5":[5,0,4,5],
 "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5":[5,3,1,5],
-"structdiscord.html#ad36541f87b8997a57c0467d29627e8d1":[5,0,4,12],
 "structdiscord.html#ad36541f87b8997a57c0467d29627e8d1":[5,3,1,12],
-"structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f":[5,0,4,9],
-"structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f":[5,3,1,9],
-"structdiscord.html#aec30edafaaff8f151616190450101eab":[5,0,4,11]
+"structdiscord.html#ad36541f87b8997a57c0467d29627e8d1":[5,0,4,12],
+"structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f":[5,3,1,9]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"structdiscord__ret__roles.html#a65fc2afd8fb3e319af40ff680eed2dea":[5,2,5,9,2],
+"structdiscord__ret__roles.html#a762d836064a09598213ea66b2a1dbc41":[5,2,5,9,3],
 "structdiscord__ret__roles.html#ac007e865c2783ad7d8ca7045e7a3b96e":[5,2,5,9,4],
 "structdiscord__ret__thread__members.html":[5,2,1,8],
 "structdiscord__ret__thread__members.html#a1296973a510e62e5f9aef97e054eaf02":[5,2,1,8,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "structws__info.html#a4b43e5c8eae30fcccf9abdecd3267d17":[6,0,250,0],
 "teams_8h.html":[7,0,1,0,16],
 "teams_8h_source.html":[7,0,1,0,16],
-"todo.html":[3],
-"types_8h.html":[7,0,0,2],
-"types_8h_source.html":[7,0,0,2]
+"todo.html":[3]
 };

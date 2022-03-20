@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"structdiscord__context.html#a6526455ab617eb16b0da37f0cfe4871f":[5,0,0,4,11],
+"structdiscord__context.html#a7065c633fca31ba5097384b48da6fb54":[5,0,0,4,2],
 "structdiscord__context.html#a78e6d79264c72dfabd7151c8834dbb25":[5,0,0,4,1],
 "structdiscord__context.html#ab51ae05deb02a235ec771c3c86716291":[5,0,0,4,12],
 "structdiscord__context.html#ac5c78dbeace47f85d5b056cca5c8ed82":[5,0,0,4,9],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "structdiscord__gateway.html#a0c1cf462499400d561f776f98f3226d7":[5,0,1,4,20],
 "structdiscord__gateway.html#a14f4f4117925f91a02e3b9a47cb50475":[5,0,1,4,1],
 "structdiscord__gateway.html#a16b177d81acbaf1007771d03024a2b6f":[5,0,1,4,26],
-"structdiscord__gateway.html#a1f467eefa8b7ed3ae62112016ef1cb4d":[5,0,1,4,28],
-"structdiscord__gateway.html#a2c73d65b2490525a2fdd0e42551d3b1d":[5,0,1,4,21],
-"structdiscord__gateway.html#a37d8eda465d7fe829272bafde7efd847":[5,0,1,4,34]
+"structdiscord__gateway.html#a1f467eefa8b7ed3ae62112016ef1cb4d":[5,0,1,4,28]
 };

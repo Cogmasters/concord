@@ -120,6 +120,7 @@ var NAVTREE =
       [ "Globals", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", "globals_func" ],
+        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ],
@@ -133,15 +134,15 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group__DiscordAPIChannel.html#ga4569f9cca16f5acc40e1be5d3ff5cb12",
-"group__DiscordEventCallbackTypes.html#gad846ac0cc7ca8e3b410815723feed7ab",
-"structdiscord.html#aec30edafaaff8f151616190450101eab",
-"structdiscord__context.html#a78e6d79264c72dfabd7151c8834dbb25",
-"structdiscord__gateway.html#a38fe47e02a4b9b8bd50390e708bfcabd",
-"structdiscord__integration.html#a0d9eef2b06668a856091f33b1a22f3c3",
-"structdiscord__modify__user__voice__state.html#a57effd1c5cfc4c556947b4af3916f500",
-"structdiscord__ret__roles.html#ac007e865c2783ad7d8ca7045e7a3b96e",
-"voice_8c-example.html"
+"group__DiscordAPIChannel.html#ga39b2f17ee2b7cd29d9150b9b4245dc5e",
+"group__DiscordEventCallbackTypes.html#gacda9a4fd1cf4649b9ce3b7814654860d",
+"structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f",
+"structdiscord__context.html#a6526455ab617eb16b0da37f0cfe4871f",
+"structdiscord__gateway.html#a2c73d65b2490525a2fdd0e42551d3b1d",
+"structdiscord__identify__connection.html#aa5328c579b99763a7ff3b27bfafb9867",
+"structdiscord__modify__user__voice__state.html",
+"structdiscord__ret__roles.html#a65fc2afd8fb3e319af40ff680eed2dea",
+"types_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

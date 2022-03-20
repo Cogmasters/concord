@@ -88,7 +88,8 @@ $(document).ready(function(){initNavTree('concord-once_8h.html',''); initResizab
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">concord-once.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -113,6 +114,12 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ccord_global_cleanup</b> ()</td></tr>
 <tr class="memdesc:ab214960b95e1af11bbfc98f1b310598a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleanup global shared-resources. <br /></td></tr>
 <tr class="separator:ab214960b95e1af11bbfc98f1b310598a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:adbc75aba745f0dc53f950961859e038f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="concord-once_8h.html#adbc75aba745f0dc53f950961859e038f">ccord_has_sigint</a></td></tr>
+<tr class="memdesc:adbc75aba745f0dc53f950961859e038f"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>SIGINT</code> is detected client(s) will be disconnected from their on-going session.  <a href="concord-once_8h.html#adbc75aba745f0dc53f950961859e038f">More...</a><br /></td></tr>
+<tr class="separator:adbc75aba745f0dc53f950961859e038f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Initialized once. </p>
@@ -137,6 +144,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ccord_global_cleanup<
 <dl class="section return"><dt>Returns</dt><dd>CCORD_OK on success, CCORD_GLOBAL_INIT on error </dd></dl>
 <dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#a31">audit-log.c</a>, <a class="el" href="ban_8c-example.html#a13">ban.c</a>, <a class="el" href="channel_8c-example.html#a46">channel.c</a>, <a class="el" href="components_8c-example.html#a31">components.c</a>, <a class="el" href="embed_8c-example.html#a31">embed.c</a>, <a class="el" href="emoji_8c-example.html#a27">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#a40">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#a21">guild-template.c</a>, <a class="el" href="guild_8c-example.html#a43">guild.c</a>, <a class="el" href="invite_8c-example.html#a20">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#a20">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#a22">pin.c</a>, <a class="el" href="reaction_8c-example.html#a29">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#a41">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#a47">slash-commands2.c</a>, <a class="el" href="voice_8c-example.html#a36">voice.c</a>, and <a class="el" href="webhook_8c-example.html#a0">webhook.c</a>.</dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="adbc75aba745f0dc53f950961859e038f" name="adbc75aba745f0dc53f950961859e038f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbc75aba745f0dc53f950961859e038f">&#9670;&nbsp;</a></span>ccord_has_sigint</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ccord_has_sigint</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code>SIGINT</code> is detected client(s) will be disconnected from their on-going session. </p>
+<p >This global shall be set if a <code>SIGINT</code> is detected, running clients will then attempt to perform a clean disconnect, rather then just letting the program end abruptly. </p><dl class="section note"><dt>Note</dt><dd>client shall only attempt to disconnect if there aren't any active events waiting to be listened or reacted to </dd></dl>
 
 </div>
 </div>

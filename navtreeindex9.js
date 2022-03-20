@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"types_8h.html":[7,0,0,2],
+"types_8h_source.html":[7,0,0,2],
 "voice_8c-example.html":[8,15],
 "voice__connections_8h.html":[7,0,1,0,19],
 "voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56":[7,0,1,0,19,4],

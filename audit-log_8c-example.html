@@ -97,7 +97,6 @@ $(document).ready(function(){initNavTree('audit-log_8c-example.html',''); initRe
 <div class="line"><span class="preprocessor">#include &lt;limits.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;assert.h&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;locale.h&gt;</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="discord_8h.html">discord.h</a>&quot;</span></div>
 <div class="line"> </div>
@@ -216,8 +215,6 @@ $(document).ready(function(){initNavTree('audit-log_8c-example.html',''); initRe
 <div class="line">        config_file = argv[1];</div>
 <div class="line">    <span class="keywordflow">else</span></div>
 <div class="line">        config_file = <span class="stringliteral">&quot;../config.json&quot;</span>;</div>
-<div class="line"> </div>
-<div class="line">    setlocale(LC_ALL, <span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    <a id="a31" name="a31"></a><a class="code hl_function" href="concord-once_8h.html#a9a5555031ccfdb102424695dfaca0727">ccord_global_init</a>();</div>
 <div class="line">    <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a id="a32" name="a32"></a><a class="code hl_function" href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb">discord_config_init</a>(config_file);</div>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"structdiscord__modify__user__voice__state.html":[6,0,157],
+"structdiscord__modify__user__voice__state.html#a0f19eec1c4108f78ad7b981faa66d80d":[6,0,157,1],
 "structdiscord__modify__user__voice__state.html#a57effd1c5cfc4c556947b4af3916f500":[6,0,157,0],
 "structdiscord__modify__webhook.html":[6,0,158],
 "structdiscord__modify__webhook.html#a10c3687ed614394612472f2f24047297":[6,0,158,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX7 =
 "structdiscord__ret__roles.html":[5,2,5,9],
 "structdiscord__ret__roles.html#a2e4391a0c52e0204799ac19e5004f6ef":[5,2,5,9,5],
 "structdiscord__ret__roles.html#a30058fa46cd4a8f07aa11fe6f1d4b40d":[5,2,5,9,1],
-"structdiscord__ret__roles.html#a4274c5f8d4d2885cf02281aeb59fc8c4":[5,2,5,9,0],
-"structdiscord__ret__roles.html#a65fc2afd8fb3e319af40ff680eed2dea":[5,2,5,9,2],
-"structdiscord__ret__roles.html#a762d836064a09598213ea66b2a1dbc41":[5,2,5,9,3]
+"structdiscord__ret__roles.html#a4274c5f8d4d2885cf02281aeb59fc8c4":[5,2,5,9,0]
 };
