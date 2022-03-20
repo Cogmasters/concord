@@ -1,9 +1,0 @@
-<map id="discord_activity" name="discord_activity">
-<area shape="rect" id="node1" title=" " alt="" coords="347,132,472,159"/>
-<area shape="rect" id="node2" href="$d8/d24/structdiscord__activity__timestamps.html" title=" " alt="" coords="5,5,216,32"/>
-<area shape="rect" id="node3" href="$df/d9c/structdiscord__activity__emoji.html" title=" " alt="" coords="26,56,195,83"/>
-<area shape="rect" id="node4" href="$dd/d4c/structdiscord__activity__party.html" title=" " alt="" coords="27,107,194,133"/>
-<area shape="rect" id="node5" href="$d2/dfe/structdiscord__activity__assets.html" title=" " alt="" coords="23,157,198,184"/>
-<area shape="rect" id="node6" href="$df/d1e/structdiscord__activity__secrets.html" title=" " alt="" coords="21,208,200,235"/>
-<area shape="rect" id="node7" href="$d8/d17/structdiscord__activity__buttons.html" title=" " alt="" coords="20,259,201,285"/>
-</map>

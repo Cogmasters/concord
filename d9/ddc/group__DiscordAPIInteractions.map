@@ -1,6 +1,0 @@
-<map id="Interactions API" name="Interactions API">
-<area shape="rect" id="node1" href="$d3/de3/group__DiscordAPI.html" title="The Discord public API supported by Concord." alt="" coords="5,31,48,56"/>
-<area shape="rect" id="node2" title="Interactions public API supported by Concord." alt="" coords="96,31,220,56"/>
-<area shape="rect" id="node3" href="$de/d05/group__DiscordAPIInteractionsApplicationCommand.html" title="Receiving and registering slash commands." alt="" coords="286,5,419,31"/>
-<area shape="rect" id="node4" href="$d1/dc0/group__DiscordAPIInteractionsReact.html" title="Receiving and sending interactions." alt="" coords="268,55,437,80"/>
-</map>

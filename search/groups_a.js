@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['user_0',['User',['../d2/dae/group__DiscordAPIUser.html',1,'']]],
-  ['user_20flags_1',['User flags',['../d6/dcd/group__DiscordAPIUserFlags.html',1,'']]]
+  ['slash_20commands_0',['Slash commands',['../group__DiscordAPIInteractionsApplicationCommand.html',1,'']]],
+  ['system_20channel_20flags_1',['System channel flags',['../group__DiscordAPIGuildSystemChannelFlags.html',1,'']]]
 ];

@@ -1,5 +1,0 @@
-<map id="Events" name="Events">
-<area shape="rect" id="node1" href="$d2/de5/group__Discord.html" title="Functions and datatypes for the client." alt="" coords="5,5,65,31"/>
-<area shape="rect" id="node2" title="The Discord public Events API supported by Concord." alt="" coords="113,5,180,31"/>
-<area shape="rect" id="node3" href="$d3/d75/group__DiscordEventCallbackTypes.html" title="Callback types for Discord events." alt="" coords="228,5,347,31"/>
-</map>

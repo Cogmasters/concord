@@ -1,9 +1,0 @@
-<map id="discord_invite" name="discord_invite">
-<area shape="rect" id="node1" title=" " alt="" coords="591,140,704,167"/>
-<area shape="rect" id="node2" href="$d6/d50/structdiscord__guild.html" title=" " alt="" coords="245,5,353,32"/>
-<area shape="rect" id="node3" href="$dc/d40/structdiscord__channel.html" title=" " alt="" coords="235,56,362,83"/>
-<area shape="rect" id="node4" href="$db/de3/structdiscord__user.html" title=" " alt="" coords="5,184,109,211"/>
-<area shape="rect" id="node5" href="$dc/dd9/structdiscord__application.html" title=" " alt="" coords="225,184,373,211"/>
-<area shape="rect" id="node7" href="$de/de8/structdiscord__guild__scheduled__event.html" title=" " alt="" coords="208,235,389,277"/>
-<area shape="rect" id="node6" href="$db/d15/structdiscord__invite__stage__instance.html" title=" " alt="" coords="221,301,377,342"/>
-</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['primitives_0',['Primitives',['../da/d86/group__ConcordTypes.html',1,'']]]
+  ['message_20flags_0',['Message flags',['../group__DiscordAPIChannelMessageFlags.html',1,'']]]
 ];

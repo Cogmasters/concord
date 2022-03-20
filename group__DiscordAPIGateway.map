@@ -1,0 +1,5 @@
+<map id="Gateway" name="Gateway">
+<area shape="rect" id="node1" href="$group__DiscordAPI.html" title="The Discord public API supported by Concord." alt="" coords="5,5,48,31"/>
+<area shape="rect" id="node2" title="Gateway&#39;s public API supported by Concord." alt="" coords="96,5,176,31"/>
+<area shape="rect" id="node3" href="$group__DiscordAPIGatewayHelper.html" title="Custom helper functions." alt="" coords="224,5,353,31"/>
+</map>

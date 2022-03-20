@@ -1,6 +1,0 @@
-<map id="Internal implementation details" name="Internal implementation details">
-<area shape="rect" id="node1" href="$d2/de5/group__Discord.html" title="Functions and datatypes for the client." alt="" coords="314,5,374,31"/>
-<area shape="rect" id="node2" title="Documentation useful when developing or debugging Concord itself." alt="" coords="5,47,185,87"/>
-<area shape="rect" id="node3" href="$d2/deb/group__DiscordInternalAdapter.html" title="Wrapper to the Discord REST API." alt="" coords="304,55,384,80"/>
-<area shape="rect" id="node4" href="$d4/df3/group__DiscordInternalGateway.html" title="Wrapper to the Discord Gateway API." alt="" coords="281,104,407,129"/>
-</map>

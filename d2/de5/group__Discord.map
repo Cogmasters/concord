@@ -1,5 +1,0 @@
-<map id="Client" name="Client">
-<area shape="rect" id="node1" title="Functions and datatypes for the client." alt="" coords="5,35,65,60"/>
-<area shape="rect" id="node2" href="$d4/d48/group__DiscordEvent.html" title="The Discord public Events API supported by Concord." alt="" coords="218,5,285,31"/>
-<area shape="rect" id="node3" href="$d1/d81/group__DiscordInternal.html" title="Documentation useful when developing or debugging Concord itself." alt="" coords="161,55,341,95"/>
-</map>

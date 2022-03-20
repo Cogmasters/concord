@@ -1,0 +1,9 @@
+<map id="discord_create_message" name="discord_create_message">
+<area shape="rect" id="node1" title=" " alt="" coords="571,144,753,171"/>
+<area shape="rect" id="node2" href="$structdiscord__embeds.html" title=" " alt="" coords="223,5,351,32"/>
+<area shape="rect" id="node3" href="$structdiscord__allowed__mention.html" title=" " alt="" coords="193,119,381,145"/>
+<area shape="rect" id="node4" href="$structsnowflakes.html" title=" " alt="" coords="5,85,100,112"/>
+<area shape="rect" id="node5" href="$structdiscord__message__reference.html" title=" " alt="" coords="185,169,389,196"/>
+<area shape="rect" id="node6" href="$structdiscord__components.html" title=" " alt="" coords="209,220,365,247"/>
+<area shape="rect" id="node7" href="$structdiscord__attachments.html" title=" " alt="" coords="208,271,367,297"/>
+</map>

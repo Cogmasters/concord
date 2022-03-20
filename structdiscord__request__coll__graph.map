@@ -1,0 +1,6 @@
+<map id="discord_request" name="discord_request">
+<area shape="rect" id="node1" title="Behavior of request return struct." alt="" coords="166,95,291,121"/>
+<area shape="rect" id="node2" href="$structdiscord__generic.html" title="Attributes of response datatype." alt="" coords="5,5,129,32"/>
+<area shape="rect" id="node3" href="$structdiscord__ret__generic.html" title="Request&#39;s return context." alt="" coords="154,5,303,32"/>
+<area shape="rect" id="node4" href="$structdiscord__attachments.html" title=" " alt="" coords="328,5,487,32"/>
+</map>

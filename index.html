@@ -1,11 +1,13 @@
+<!-- HTML header for doxygen 1.9.3-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta name="google-site-verification" content="XoZEPK5Xzs3Ib2DdLdDj4Ec8PkBCaaPr4EdZpOHRgK8" />
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Concord: Concord</title>
+<title>Concord - C Discord API library: Concord - C Discord API library</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -27,9 +29,9 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.ico"/></td>
   <td id="projectalign">
-   <div id="projectname">Concord
+   <div id="projectname">Concord - C Discord API library
    </div>
-   <div id="projectbrief">C library for handling the Discord API</div>
+   <div id="projectbrief">A Discord API wrapper library written in C</div>
   </td>
  </tr>
  </tbody>
@@ -85,7 +87,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Concord </div></div>
+  <div class="headertitle"><div class="title">Concord - C Discord API library </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p ><a class="anchor" id="md_README"></a> </p><div align="center"> <br  />
@@ -101,39 +103,39 @@ Minimal example</h3>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;concord/discord.h&gt;</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client) {</div>
-<div class="line">  <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="db/de3/structdiscord__user.html">discord_user</a> *<a class="code hl_variable" href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a> = <a class="code hl_function" href="d2/de5/group__Discord.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a>(client);</div>
-<div class="line">  log_info(<span class="stringliteral">&quot;Logged in as %s!&quot;</span>, <a class="code hl_variable" href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>-&gt;username);</div>
+<div class="line"><span class="keywordtype">void</span> on_ready(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client) {</div>
+<div class="line">  <span class="keyword">const</span> <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__user.html">discord_user</a> *<a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a> = <a class="code hl_function" href="group__Discord.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a>(client);</div>
+<div class="line">  log_info(<span class="stringliteral">&quot;Logged in as %s!&quot;</span>, <a class="code hl_variable" href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">bot</a>-&gt;username);</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">void</span> on_message(<span class="keyword">struct</span> <a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="d6/d66/structdiscord__message.html">discord_message</a> *msg) {</div>
-<div class="line">  <span class="keywordflow">if</span> (strcmp(msg-&gt;<a class="code hl_variable" href="d6/d66/structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">content</a>, <span class="stringliteral">&quot;ping&quot;</span>) != 0)</div>
+<div class="line"><span class="keywordtype">void</span> on_message(<span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord.html">discord</a> *client, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structdiscord__message.html">discord_message</a> *msg) {</div>
+<div class="line">  <span class="keywordflow">if</span> (strcmp(msg-&gt;<a class="code hl_variable" href="structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">content</a>, <span class="stringliteral">&quot;ping&quot;</span>) != 0)</div>
 <div class="line">    <span class="keywordflow">return</span>; <span class="comment">/* ignore messages that aren&#39;t &#39;ping&#39; */</span></div>
 <div class="line"> </div>
-<div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="df/dfa/structdiscord__create__message.html">discord_create_message</a> params = { .<a class="code hl_variable" href="df/dfa/structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = <span class="stringliteral">&quot;pong&quot;</span> };</div>
-<div class="line">  <a class="code hl_function" href="df/d2c/group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, msg-&gt;<a class="code hl_variable" href="d6/d66/structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
+<div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord__create__message.html">discord_create_message</a> params = { .<a class="code hl_variable" href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">content</a> = <span class="stringliteral">&quot;pong&quot;</span> };</div>
+<div class="line">  <a class="code hl_function" href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a>(client, msg-&gt;<a class="code hl_variable" href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">channel_id</a>, &amp;params, NULL);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
-<div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="d5/daf/structdiscord.html">discord</a> *client = <a class="code hl_function" href="d2/de5/group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a>(BOT_TOKEN);</div>
-<div class="line">  <a class="code hl_function" href="d4/d48/group__DiscordEvent.html#ga0887300c5c057ed2444ceec56a4a0fa9">discord_set_on_ready</a>(client, &amp;on_ready);</div>
-<div class="line">  <a class="code hl_function" href="d4/d48/group__DiscordEvent.html#gac5b2d764218baac6ec709234eab8cd2b">discord_set_on_message_create</a>(client, &amp;on_message);</div>
-<div class="line">  <a class="code hl_function" href="d2/de5/group__Discord.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
+<div class="line">  <span class="keyword">struct </span><a class="code hl_struct" href="structdiscord.html">discord</a> *client = <a class="code hl_function" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a>(BOT_TOKEN);</div>
+<div class="line">  <a class="code hl_function" href="group__DiscordEvent.html#ga0887300c5c057ed2444ceec56a4a0fa9">discord_set_on_ready</a>(client, &amp;on_ready);</div>
+<div class="line">  <a class="code hl_function" href="group__DiscordEvent.html#gac5b2d764218baac6ec709234eab8cd2b">discord_set_on_message_create</a>(client, &amp;on_message);</div>
+<div class="line">  <a class="code hl_function" href="group__Discord.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a>(client);</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__DiscordAPIChannel_html_ga07df37c9962d0debf713c7438a5b55b5"><div class="ttname"><a href="df/d2c/group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a></div><div class="ttdeci">CCORDcode discord_create_message(struct discord *client, u64snowflake channel_id, struct discord_create_message *params, struct discord_ret_message *ret)</div><div class="ttdoc">Post a message to a guild text or DM channel.</div></div>
-<div class="ttc" id="agroup__DiscordEvent_html_ga0887300c5c057ed2444ceec56a4a0fa9"><div class="ttname"><a href="d4/d48/group__DiscordEvent.html#ga0887300c5c057ed2444ceec56a4a0fa9">discord_set_on_ready</a></div><div class="ttdeci">void discord_set_on_ready(struct discord *client, discord_ev_idle callback)</div><div class="ttdoc">Triggers when the client is ready.</div></div>
-<div class="ttc" id="agroup__DiscordEvent_html_gac5b2d764218baac6ec709234eab8cd2b"><div class="ttname"><a href="d4/d48/group__DiscordEvent.html#gac5b2d764218baac6ec709234eab8cd2b">discord_set_on_message_create</a></div><div class="ttdeci">void discord_set_on_message_create(struct discord *client, discord_ev_message callback)</div><div class="ttdoc">Triggers when a message is created.</div></div>
-<div class="ttc" id="agroup__Discord_html_ga10b7d422776acf4fb67877f8f1d28af4"><div class="ttname"><a href="d2/de5/group__Discord.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a></div><div class="ttdeci">CCORDcode discord_run(struct discord *client)</div><div class="ttdoc">Start a connection to the Discord Gateway.</div></div>
-<div class="ttc" id="agroup__Discord_html_ga164add107d145df966be36cef1b9b4a9"><div class="ttname"><a href="d2/de5/group__Discord.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a></div><div class="ttdeci">const struct discord_user * discord_get_self(struct discord *client)</div><div class="ttdoc">Get the client's cached user.</div></div>
-<div class="ttc" id="agroup__Discord_html_gacd52a9fc58a1fcb9b4719a5cedd70f5d"><div class="ttname"><a href="d2/de5/group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a></div><div class="ttdeci">struct discord * discord_init(const char token[])</div><div class="ttdoc">Create a Discord Client handle by its token.</div></div>
-<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="df/dfa/structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:687</div></div>
-<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="df/dfa/structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:689</div></div>
-<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="d6/d66/structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:222</div></div>
-<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="d6/d66/structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:234</div></div>
-<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="d6/d66/structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:226</div></div>
-<div class="ttc" id="astructdiscord__user_html"><div class="ttname"><a href="db/de3/structdiscord__user.html">discord_user</a></div><div class="ttdef"><b>Definition:</b> user.h:104</div></div>
-<div class="ttc" id="astructdiscord__user_html_a5490343b03395b90c31987fae992b0c7"><div class="ttname"><a href="db/de3/structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">discord_user::bot</a></div><div class="ttdeci">bool bot</div><div class="ttdef"><b>Definition:</b> user.h:114</div></div>
-<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="d5/daf/structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:693</div></div>
+<div class="ttc" id="agroup__DiscordAPIChannel_html_ga07df37c9962d0debf713c7438a5b55b5"><div class="ttname"><a href="group__DiscordAPIChannel.html#ga07df37c9962d0debf713c7438a5b55b5">discord_create_message</a></div><div class="ttdeci">CCORDcode discord_create_message(struct discord *client, u64snowflake channel_id, struct discord_create_message *params, struct discord_ret_message *ret)</div><div class="ttdoc">Post a message to a guild text or DM channel.</div></div>
+<div class="ttc" id="agroup__DiscordEvent_html_ga0887300c5c057ed2444ceec56a4a0fa9"><div class="ttname"><a href="group__DiscordEvent.html#ga0887300c5c057ed2444ceec56a4a0fa9">discord_set_on_ready</a></div><div class="ttdeci">void discord_set_on_ready(struct discord *client, discord_ev_idle callback)</div><div class="ttdoc">Triggers when the client is ready.</div></div>
+<div class="ttc" id="agroup__DiscordEvent_html_gac5b2d764218baac6ec709234eab8cd2b"><div class="ttname"><a href="group__DiscordEvent.html#gac5b2d764218baac6ec709234eab8cd2b">discord_set_on_message_create</a></div><div class="ttdeci">void discord_set_on_message_create(struct discord *client, discord_ev_message callback)</div><div class="ttdoc">Triggers when a message is created.</div></div>
+<div class="ttc" id="agroup__Discord_html_ga10b7d422776acf4fb67877f8f1d28af4"><div class="ttname"><a href="group__Discord.html#ga10b7d422776acf4fb67877f8f1d28af4">discord_run</a></div><div class="ttdeci">CCORDcode discord_run(struct discord *client)</div><div class="ttdoc">Start a connection to the Discord Gateway.</div></div>
+<div class="ttc" id="agroup__Discord_html_ga164add107d145df966be36cef1b9b4a9"><div class="ttname"><a href="group__Discord.html#ga164add107d145df966be36cef1b9b4a9">discord_get_self</a></div><div class="ttdeci">const struct discord_user * discord_get_self(struct discord *client)</div><div class="ttdoc">Get the client's cached user.</div></div>
+<div class="ttc" id="agroup__Discord_html_gacd52a9fc58a1fcb9b4719a5cedd70f5d"><div class="ttname"><a href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d">discord_init</a></div><div class="ttdeci">struct discord * discord_init(const char token[])</div><div class="ttdoc">Create a Discord Client handle by its token.</div></div>
+<div class="ttc" id="astructdiscord__create__message_html"><div class="ttname"><a href="structdiscord__create__message.html">discord_create_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:687</div></div>
+<div class="ttc" id="astructdiscord__create__message_html_a8adf7603f7845f86b4d22dec96d8bc88"><div class="ttname"><a href="structdiscord__create__message.html#a8adf7603f7845f86b4d22dec96d8bc88">discord_create_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:689</div></div>
+<div class="ttc" id="astructdiscord__message_html"><div class="ttname"><a href="structdiscord__message.html">discord_message</a></div><div class="ttdef"><b>Definition:</b> channel.h:222</div></div>
+<div class="ttc" id="astructdiscord__message_html_aa48b4b9a69db9fae0bb8be3f139317ae"><div class="ttname"><a href="structdiscord__message.html#aa48b4b9a69db9fae0bb8be3f139317ae">discord_message::content</a></div><div class="ttdeci">char * content</div><div class="ttdef"><b>Definition:</b> channel.h:234</div></div>
+<div class="ttc" id="astructdiscord__message_html_ae8ca075067f08c4f1b793de670817d48"><div class="ttname"><a href="structdiscord__message.html#ae8ca075067f08c4f1b793de670817d48">discord_message::channel_id</a></div><div class="ttdeci">u64snowflake channel_id</div><div class="ttdef"><b>Definition:</b> channel.h:226</div></div>
+<div class="ttc" id="astructdiscord__user_html"><div class="ttname"><a href="structdiscord__user.html">discord_user</a></div><div class="ttdef"><b>Definition:</b> user.h:104</div></div>
+<div class="ttc" id="astructdiscord__user_html_a5490343b03395b90c31987fae992b0c7"><div class="ttname"><a href="structdiscord__user.html#a5490343b03395b90c31987fae992b0c7">discord_user::bot</a></div><div class="ttdeci">bool bot</div><div class="ttdef"><b>Definition:</b> user.h:114</div></div>
+<div class="ttc" id="astructdiscord_html"><div class="ttname"><a href="structdiscord.html">discord</a></div><div class="ttdoc">The Discord client handler.</div><div class="ttdef"><b>Definition:</b> discord-internal.h:693</div></div>
 </div><!-- fragment --><p> *This is a minimalistic example, refer to <a href="examples/"><code>examples/</code></a> for a better overview.*</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Build Instructions</h2>
@@ -142,7 +144,7 @@ On Windows</h3>
 <ul>
 <li>Install <b>Cygwin</b></li>
 <li><b>Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!</b></li>
-<li>You will want to check the Windows tutorial <a class="el" href="db/dbe/md_docs_WINDOWS.html">here</a>!</li>
+<li>You will want to check the Windows tutorial <a class="el" href="md_docs_WINDOWS.html">here</a>!</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md5"></a>
 On Linux, BSD, and Mac OS X</h3>
@@ -253,12 +255,12 @@ Support</h2>
 <p >Problems? Check out our <a href="https://discord.gg/Y7Xa6MA82v">Discord Server</a>.</p>
 <h2><a class="anchor" id="autotoc_md28"></a>
 Contributing</h2>
-<p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="d5/d74/md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
+<p >All kinds of contributions are welcome, all we ask is to abide to our guidelines! If you want to help but is unsure where to get started then our <a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a> is a good starting point. Check our links for more helpful information.</p>
 <h2><a class="anchor" id="autotoc_md29"></a>
 Getting Started</h2>
 <ul>
 <li><a href="https://cogmasters.github.io/concord/">Documentation</a></li>
-<li><a class="el" href="d5/d74/md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
+<li><a class="el" href="md_docs_DISCORD_ROADMAP.html">Discord API Roadmap</a></li>
 </ul>
 <h2><a class="anchor" id="autotoc_md30"></a>
 Useful links</h2>

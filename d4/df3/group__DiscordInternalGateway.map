@@ -1,6 +1,0 @@
-<map id="WebSockets API" name="WebSockets API">
-<area shape="rect" id="node1" href="$d1/d81/group__DiscordInternal.html" title="Documentation useful when developing or debugging Concord itself." alt="" coords="5,27,185,67"/>
-<area shape="rect" id="node2" title="Wrapper to the Discord Gateway API." alt="" coords="233,35,359,60"/>
-<area shape="rect" id="node3" href="$dd/de5/group__DiscordInternalGatewayIntents.html" title="Events user is interested on listening to." alt="" coords="457,5,586,31"/>
-<area shape="rect" id="node4" href="$d3/df4/group__DiscordInternalGatewaySessionStatus.html" title="Client&#39;s session status." alt="" coords="407,55,636,95"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="REST API" name="REST API">
-<area shape="rect" id="node1" href="$d1/d81/group__DiscordInternal.html" title="Documentation useful when developing or debugging Concord itself." alt="" coords="5,5,185,45"/>
-<area shape="rect" id="node2" title="Wrapper to the Discord REST API." alt="" coords="233,13,313,38"/>
-<area shape="rect" id="node3" href="$d8/d52/group__DiscordInternalAdapterRatelimit.html" title="Enforce ratelimiting per the official Discord Documentation." alt="" coords="361,13,464,38"/>
-</map>

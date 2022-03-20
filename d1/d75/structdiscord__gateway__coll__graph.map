@@ -1,9 +1,0 @@
-<map id="discord_gateway" name="discord_gateway">
-<area shape="rect" id="node1" title="The handle used for establishing a WebSockets connection." alt="" coords="288,184,420,211"/>
-<area shape="rect" id="node6" href="$d5/daf/structdiscord.html" title="The Discord client handler." alt="" coords="538,180,607,207"/>
-<area shape="rect" id="node2" href="$d1/df9/structwebsockets.html" title="Opaque handler for WebSockets." alt="" coords="37,133,136,160"/>
-<area shape="rect" id="node3" href="$d9/d96/structdiscord__identify.html" title=" " alt="" coords="24,184,149,211"/>
-<area shape="rect" id="node4" href="$d2/dbd/structdiscord__session__start__limit.html" title=" " alt="" coords="5,235,168,277"/>
-<area shape="rect" id="node5" href="$d3/d05/structdiscord__gateway__cmd__cbs.html" title=" " alt="" coords="829,11,1025,37"/>
-<area shape="rect" id="node7" href="$d0/d7c/structdiscord__gateway__cbs.html" title=" " alt="" coords="847,285,1008,312"/>
-</map>

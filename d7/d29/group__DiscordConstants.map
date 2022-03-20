@@ -1,9 +1,0 @@
-<map id="Constants" name="Constants">
-<area shape="rect" id="node1" href="$d8/de2/group__DiscordActivityFlags.html" title="Describe user activities." alt="" coords="140,5,308,31"/>
-<area shape="rect" id="node2" title="Macros for constants defined by Discord." alt="" coords="5,129,92,155"/>
-<area shape="rect" id="node3" href="$db/def/group__DiscordConstantsEmbed.html" title="Max length for embed fields." alt="" coords="165,55,283,80"/>
-<area shape="rect" id="node4" href="$df/dcb/group__DiscordConstantsGeneral.html" title="Max length for general fields." alt="" coords="161,104,287,129"/>
-<area shape="rect" id="node5" href="$d6/d1a/group__DiscordConstantsWebhook.html" title="Max length for embed fields." alt="" coords="157,153,291,179"/>
-<area shape="rect" id="node6" href="$d6/d4a/group__DiscordPermissions.html" title=" " alt="" coords="147,203,301,228"/>
-<area shape="rect" id="node7" href="$d5/d4a/group__DiscordVoiceSpeakingFlags.html" title=" " alt="" coords="147,252,301,277"/>
-</map>

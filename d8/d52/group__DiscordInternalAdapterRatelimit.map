@@ -1,4 +1,0 @@
-<map id="Ratelimiting" name="Ratelimiting">
-<area shape="rect" id="node1" href="$d2/deb/group__DiscordInternalAdapter.html" title="Wrapper to the Discord REST API." alt="" coords="5,5,85,31"/>
-<area shape="rect" id="node2" title="Enforce ratelimiting per the official Discord Documentation." alt="" coords="133,5,236,31"/>
-</map>

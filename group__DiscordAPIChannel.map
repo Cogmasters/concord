@@ -1,0 +1,7 @@
+<map id="Channel" name="Channel">
+<area shape="rect" id="node1" href="$group__DiscordAPI.html" title="The Discord public API supported by Concord." alt="" coords="5,55,48,80"/>
+<area shape="rect" id="node2" title="Channel&#39;s public API supported by Concord." alt="" coords="96,55,171,80"/>
+<area shape="rect" id="node3" href="$group__DiscordAPIChannelEmbed.html" title="Dynamic embed builder functions." alt="" coords="225,5,341,31"/>
+<area shape="rect" id="node4" href="$group__DiscordAPIChannelHelper.html" title="Custom helper functions." alt="" coords="219,55,348,80"/>
+<area shape="rect" id="node5" href="$group__DiscordAPIChannelMessageFlags.html" title=" " alt="" coords="226,104,341,129"/>
+</map>

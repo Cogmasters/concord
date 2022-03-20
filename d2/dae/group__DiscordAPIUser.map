@@ -1,5 +1,0 @@
-<map id="User" name="User">
-<area shape="rect" id="node1" href="$d3/de3/group__DiscordAPI.html" title="The Discord public API supported by Concord." alt="" coords="5,5,48,31"/>
-<area shape="rect" id="node2" title="User&#39;s public API supported by Concord." alt="" coords="96,5,148,31"/>
-<area shape="rect" id="node3" href="$d6/dcd/group__DiscordAPIUserFlags.html" title="Flags on a user account." alt="" coords="196,5,283,31"/>
-</map>
