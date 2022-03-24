@@ -258,6 +258,14 @@ int discord_get_ping(struct discord *client);
 uint64_t discord_timestamp(struct discord *client);
 
 /**
+ * @brief Get the current timestamp (in microseconds)
+ *
+ * @param client the client created with discord_init()
+ * @return the timestamp in microseconds
+ */
+uint64_t discord_timestamp_us(struct discord *client);
+
+/**
  * @brief Retrieve client's logging module for configuration purposes
  * @see logconf_setup(), logconf_set_quiet(), logconf_set_level()
  *

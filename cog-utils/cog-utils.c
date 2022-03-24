@@ -226,6 +226,17 @@ cog_timestamp_ms(void)
   return 0;
 }
 
+/* returns current timestamp in microseconds */
+uint64_t
+cog_timestamp_us(void)
+{
+  struct PsnipClockTimespec t;
+  if (0 == psnip_clock_get_time(PSNIP_CLOCK_TYPE_WALL, &t)) {
+    return (uint64_t)t.seconds * 1000000 + (uint64_t)t.nanoseconds / 1000;
+  }
+  return 0;
+}
+
 /* this can be used for checking if a user-given string does not
  *  exceeds a arbitrary threshold length */
 size_t

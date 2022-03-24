@@ -686,6 +686,12 @@ discord_timestamp(struct discord *client)
     (void)client;
     return cog_timestamp_ms();
 }
+uint64_t
+discord_timestamp_us(struct discord *client)
+{
+    (void)client;
+    return cog_timestamp_us();
+}
 
 struct logconf *
 discord_get_logconf(struct discord *client)
