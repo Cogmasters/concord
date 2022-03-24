@@ -282,6 +282,35 @@ struct logconf *discord_get_logconf(struct discord *client);
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
 
+struct discord_timer;
+typedef void (*discord_ev_timer)
+    (struct discord *client, struct discord_timer *ev);
+
+enum discord_timer_flags {
+    DISCORD_TIMER_MILLISECONDS    =      0,
+    DISCORD_TIMER_MICROSECONDS    = 1 << 0,
+    DISCORD_TIMER_DELETE          = 1 << 1,
+    DISCORD_TIMER_DELETE_AUTO     = 1 << 2,
+    DISCORD_TIMER_CANCELED        = 1 << 3,
+};
+
+struct discord_timer {
+    unsigned id;
+    discord_ev_timer cb;
+    void *data;
+    int64_t start_after;
+    int64_t interval;
+    int64_t repeat;
+    int flags;
+};
+
+
+unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
+
+
+unsigned discord_timer(struct discord *client, discord_ev_timer cb,
+                       void *data, int64_t start_after);
+
 /** @} Discord */
 
 #endif /* DISCORD_H */

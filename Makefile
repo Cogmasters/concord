@@ -35,6 +35,7 @@ DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/concord-once.o        \
                 $(OBJDIR)/$(SRC_DIR)/discord-ratelimit.o   \
                 $(OBJDIR)/$(SRC_DIR)/discord-client.o      \
                 $(OBJDIR)/$(SRC_DIR)/discord-gateway.o     \
+                $(OBJDIR)/$(SRC_DIR)/discord-timer.o       \
                 $(OBJDIR)/$(SRC_DIR)/discord-misc.o        \
                 $(OBJDIR)/$(SRC_DIR)/application_command.o \
                 $(OBJDIR)/$(SRC_DIR)/interaction.o         \

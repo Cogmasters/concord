@@ -12,7 +12,7 @@ static void
 _discord_init(struct discord *new_client)
 {
     ccord_global_init();
-
+    discord_timers_init(new_client);
     new_client->io_poller = io_poller_create();
     discord_adapter_init(&new_client->adapter, &new_client->conf,
                          &new_client->token);
@@ -97,6 +97,7 @@ void
 discord_cleanup(struct discord *client)
 {
     if (client->is_original) {
+        discord_timers_cleanup(client);
         logconf_cleanup(&client->conf);
         discord_adapter_cleanup(&client->adapter);
         discord_gateway_cleanup(&client->gw);
@@ -339,7 +340,18 @@ discord_run(struct discord *client)
                     poll_time = (int)(client->wakeup_timer.next - now);
                 }
             }
-
+            int64_t key;
+            if (priority_queue_peek(client->timers.user.q, &key, NULL)) {
+                key /= 1000;
+                if (key >= 0) {
+                    if (key >= now) {
+                        poll_time = 0;
+                    } else if (key - now > poll_time) {
+                        poll_time = (int)(key - now);
+                    }
+                }
+            }
+            
             poll_result = io_poller_poll(client->io_poller, poll_time);
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
@@ -355,6 +367,8 @@ discord_run(struct discord *client)
                 break;
 
             now = (int64_t)cog_timestamp_ms();
+            discord_timers_run(client, &client->timers.internal);
+            discord_timers_run(client, &client->timers.user);
 
             /* check for pending wakeup timers */
             if (client->wakeup_timer.next != -1
