@@ -28,7 +28,8 @@ CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/work.o       \
                 $(OBJDIR)/$(CORE_DIR)/io_poller.o
 THIRDP_OBJS   = $(OBJDIR)/$(THIRDP_DIR)/sha1.o           \
                 $(OBJDIR)/$(THIRDP_DIR)/curl-websocket.o \
-                $(OBJDIR)/$(THIRDP_DIR)/threadpool.o
+                $(OBJDIR)/$(THIRDP_DIR)/threadpool.o     \
+                $(OBJDIR)/$(THIRDP_DIR)/priority_queue.o
 DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/concord-once.o        \
                 $(OBJDIR)/$(SRC_DIR)/discord-adapter.o     \
                 $(OBJDIR)/$(SRC_DIR)/discord-ratelimit.o   \
