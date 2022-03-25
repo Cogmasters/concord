@@ -689,10 +689,36 @@ struct discord_timers {
     priority_queue *q;
 };
 
-
+/**
+ * @brief prepare timers for usage
+ * 
+ * @param client the client created with discord_init()
+ */
 void discord_timers_init(struct discord *client);
+
+/**
+ * @brief cleanup timers and call cancel any running ones
+ * 
+ * @param client the client created with discord_init()
+ */
 void discord_timers_cleanup(struct discord *client);
-void discord_timers_run(struct discord *client, struct discord_timers *timer);
+
+/**
+ * @brief run all timers that are due
+ * 
+ * @param client the client created with discord_init()
+ * @param timers the timers to run
+ */
+void discord_timers_run(struct discord *client, struct discord_timers *timers);
+
+/**
+ * @brief modifies or creates a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param timers the timer group to perform this operation on
+ * @param timer the timer that should be modified
+ * @return unsigned the id of the timer
+ */
 unsigned _discord_timer_ctl(
     struct discord *client,
     struct discord_timers *timers,

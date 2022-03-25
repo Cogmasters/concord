@@ -285,33 +285,69 @@ struct io_poller *discord_get_io_poller(struct discord *client);
 /** @defgroup DiscordTimer Timer
  * @brief Schedule callbacks to be called in the future
  *  @{ */
- 
+
+/**
+ * @brief struct used for modifying, and getting info about a timer
+ */
 struct discord_timer;
+
+/**
+ * @brief callback to be used with struct discord_timer
+ */
 typedef void (*discord_ev_timer)
     (struct discord *client, struct discord_timer *ev);
 
+/**
+ * @brief flags used to change behaviour of timer
+ */
 enum discord_timer_flags {
+    /** use milliseconds for interval and start_time */
     DISCORD_TIMER_MILLISECONDS    =      0,
+    /** use microseconds for interval and start_time */
     DISCORD_TIMER_MICROSECONDS    = 1 << 0,
+    /** whether or not timer is marked for deletion */
     DISCORD_TIMER_DELETE          = 1 << 1,
+    /** automatically delete a timer once its repeat counter runs out */
     DISCORD_TIMER_DELETE_AUTO     = 1 << 2,
+    /** timer has been canceled. user should cleanup only */
     DISCORD_TIMER_CANCELED        = 1 << 3,
 };
 
 struct discord_timer {
+    /** the identifier used for the timer. 0 creates a new timer */
     unsigned id;
+    /** the callback that should be called when timer triggers */
     discord_ev_timer cb;
+    /** user data */
     void *data;
+    /** delay before timer should start */
     int64_t start_after;
+    /** interval that the timer should repeat at. must be > 1 */
     int64_t interval;
+    /** how many times a timer should repeat (-1 == infinity) */
     int64_t repeat;
     int flags;
 };
 
-
+/**
+ * @brief modifies or creates a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param timer the timer that should be modified
+ * @return unsigned the id of the timer
+ */
 unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
 
-
+/**
+ * @brief creates a one shot timer that automatically
+ *        deletes itself upon completion
+ * 
+ * @param client the client created with discord_init()
+ * @param cb the callback that should be called when timer triggers
+ * @param data user data
+ * @param start_after delay before timer should start in milliseconds
+ * @return unsigned 
+ */
 unsigned discord_timer(struct discord *client, discord_ev_timer cb,
                        void *data, int64_t start_after);
                        
