@@ -38,9 +38,11 @@ discord_timers_cancel_all(struct discord *client, priority_queue *q)
 void
 discord_timers_cleanup(struct discord *client)
 {
+    priority_queue_set_max_capacity(client->timers.user.q, 0);
     discord_timers_cancel_all(client, client->timers.user.q);
     priority_queue_destroy(client->timers.user.q);
 
+    priority_queue_set_max_capacity(client->timers.internal.q, 0);
     discord_timers_cancel_all(client, client->timers.internal.q);
     priority_queue_destroy(client->timers.internal.q);
 }
