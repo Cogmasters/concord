@@ -73,10 +73,10 @@ _discord_timer_ctl(
     }
 }
 
-#define TIMER_TRY_DELETE                                          \
-  if (timer.flags & DISCORD_TIMER_DELETE && timer.repeat == 0) {  \
-        priority_queue_pop(timers->q, NULL, NULL);                    \
-        continue;                                                     \
+#define TIMER_TRY_DELETE                           \
+  if (timer.flags & DISCORD_TIMER_DELETE) {        \
+        priority_queue_pop(timers->q, NULL, NULL); \
+        continue;                                  \
   }
 
 void
@@ -91,14 +91,11 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
 
         TIMER_TRY_DELETE
 
-        if (timer.flags & DISCORD_TIMER_DELETE_AUTO) {
-          timer.flags |= DISCORD_TIMER_DELETE;
-          priority_queue_update(timers->q, timer.id, &now, &timer);
-        }
-
         if (timer.repeat > 0)
             timer.repeat--;
         if (timer.cb) timer.cb(client, &timer);
+        if (timer.repeat == 0 && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
+            timer.flags |= DISCORD_TIMER_DELETE;
         TIMER_TRY_DELETE
         
         int64_t next = -1;
