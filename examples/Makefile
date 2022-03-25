@@ -29,6 +29,7 @@ BOTS := audit-log \
         slash-commands2 \
         spam \
         webhook \
+        timers \
         $(XSRC)
 
 CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
