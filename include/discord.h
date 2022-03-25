@@ -282,6 +282,10 @@ struct logconf *discord_get_logconf(struct discord *client);
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
 
+/** @defgroup DiscordTimer Timer
+ * @brief Schedule callbacks to be called in the future
+ *  @{ */
+ 
 struct discord_timer;
 typedef void (*discord_ev_timer)
     (struct discord *client, struct discord_timer *ev);
@@ -310,7 +314,8 @@ unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
 
 unsigned discord_timer(struct discord *client, discord_ev_timer cb,
                        void *data, int64_t start_after);
-
+                       
+/** @} DiscordTimer */
 /** @} Discord */
 
 #endif /* DISCORD_H */
