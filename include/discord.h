@@ -316,6 +316,8 @@ enum discord_timer_flags {
 struct discord_timer {
     /** the identifier used for the timer. 0 creates a new timer */
     unsigned id;
+    /** the flags used to manipulate the timer */
+    enum discord_timer_flags flags;
     /** the callback that should be called when timer triggers */
     discord_ev_timer cb;
     /** user data */
@@ -326,7 +328,6 @@ struct discord_timer {
     int64_t interval;
     /** how many times a timer should repeat (-1 == infinity) */
     int64_t repeat;
-    int flags;
 };
 
 /**
