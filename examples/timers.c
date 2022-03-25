@@ -36,7 +36,7 @@ repeating_timer_cb(struct discord *client, struct discord_timer *timer) {
   printf("repeating_timer_cb %u triggered with flags %i\n",
          timer->id, timer->flags);
   printf("%"PRIi64", %"PRIi64"\n", timer->interval, timer->repeat);
-  if (timer->repeat == 1)
+  if (timer->repeat == 0)
       puts("Shutting down soon, press ctrl + c to cancel");
 }
 

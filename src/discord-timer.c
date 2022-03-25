@@ -86,13 +86,13 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
           priority_queue_update(timers->q, timer.id, &now, &timer);
         }
 
+        if (timer.repeat > 0)
+            timer.repeat--;
         if (timer.cb) timer.cb(client, &timer);
         TIMER_TRY_DELETE
         
         int64_t next = -1;
         if (timer.repeat != 0) {
-            if (timer.repeat > 0)
-              timer.repeat--;
             if (timer.interval > 0)
               next = now + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
                            ? timer.interval : timer.interval * 1000);
