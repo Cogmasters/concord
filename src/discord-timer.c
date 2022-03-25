@@ -52,10 +52,10 @@ _discord_timer_ctl(
     struct discord_timer *timer)
 {
     int64_t now = -1;
-    if (timer->start_after >= 0)
+    if (timer->delay >= 0)
         now = (int64_t)discord_timestamp_us(client) + 
               ((timer->flags & DISCORD_TIMER_MICROSECONDS)
-              ? timer->start_after : timer->start_after * 1000);
+              ? timer->delay : timer->delay * 1000);
     if (!timer->id) {
         return priority_queue_push(timers->q, &now, timer);
     } else {
@@ -110,12 +110,12 @@ discord_timer_ctl(struct discord *client, struct discord_timer *timer)
 }
 
 unsigned discord_timer(struct discord *client, discord_ev_timer cb,
-                       void *data, int64_t start_after)
+                       void *data, int64_t delay)
 {
     struct discord_timer timer = {
       .cb = cb,
       .data = data,
-      .start_after = start_after,
+      .delay = delay,
       .flags = DISCORD_TIMER_DELETE_AUTO,
     };
     return discord_timer_ctl(client, &timer);

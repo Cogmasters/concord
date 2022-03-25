@@ -58,7 +58,7 @@ main(int argc, char *argv[])
         .id = 0, /* 0 to create a new timer */
         .cb = repeating_timer_cb,
         .data = &one_shot_timer_id,
-        .start_after = 0, /* start right away */
+        .delay = 0, /* start right away */
         .interval = 100,
         .repeat = 10, /* -1 for infinity, 0 for never */
         .flags = DISCORD_TIMER_DELETE_AUTO,
