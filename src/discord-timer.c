@@ -52,6 +52,14 @@ _discord_timer_ctl(
     struct discord_timer *timer)
 {
     int64_t now = -1;
+    if (timer->flags & DISCORD_TIMER_DELETE) {
+        unsigned id;
+        if (timer->id) {
+            id = priority_queue_get(timers->q, timer->id, NULL, timer);
+            if (id) return priority_queue_del(timers->q, id) ? id : 0;
+        }
+        return 0;
+    }
     if (timer->delay >= 0)
         now = (int64_t)discord_timestamp_us(client) + 
               ((timer->flags & DISCORD_TIMER_MICROSECONDS)
@@ -60,15 +68,17 @@ _discord_timer_ctl(
         return priority_queue_push(timers->q, &now, timer);
     } else {
         if (priority_queue_update(timers->q, timer->id, &now, &timer))
-          return timer->id;
+            return timer->id;
         return 0;
     }
 }
+
 #define TIMER_TRY_DELETE                                          \
   if (timer.flags & DISCORD_TIMER_DELETE && timer.repeat == 0) {  \
-    priority_queue_pop(timers->q, NULL, NULL);                    \
-    continue;                                                     \
+        priority_queue_pop(timers->q, NULL, NULL);                    \
+        continue;                                                     \
   }
+
 void
 discord_timers_run(struct discord *client, struct discord_timers *timers)
 {
