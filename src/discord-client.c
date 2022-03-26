@@ -344,9 +344,9 @@ discord_run(struct discord *client)
             if (priority_queue_peek(client->timers.user.q, &key, NULL)) {
                 key /= 1000;
                 if (key >= 0) {
-                    if (key >= now) {
+                    if (key <= now) {
                         poll_time = 0;
-                    } else if (key - now > poll_time) {
+                    } else if (key - now < poll_time) {
                         poll_time = (int)(key - now);
                     }
                 }
