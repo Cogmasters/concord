@@ -685,6 +685,10 @@ void discord_gateway_send_presence_update(struct discord_gateway *gw);
 
 /** @} DiscordInternalGateway */
 
+/** @defgroup DiscordInternalTimer Timer API
+ * @brief Callback scheduling API
+ *  @{ */
+
 struct discord_timers {
     priority_queue *q;
 };
@@ -724,6 +728,7 @@ unsigned _discord_timer_ctl(
     struct discord_timers *timers,
     struct discord_timer *timer);
 
+/** @} DiscordInternalTimer */
 /**
  * @brief The Discord client handler
  *
