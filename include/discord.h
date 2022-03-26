@@ -286,10 +286,9 @@ struct io_poller *discord_get_io_poller(struct discord *client);
  * @brief Schedule callbacks to be called in the future
  *  @{ */
 
-/**
- * @brief struct used for modifying, and getting info about a timer
- */
+/* forward declaration */
 struct discord_timer;
+/**/
 
 /**
  * @brief callback to be used with struct discord_timer
@@ -313,6 +312,9 @@ enum discord_timer_flags {
     DISCORD_TIMER_CANCELED        = 1 << 3,
 };
 
+/**
+ * @brief struct used for modifying, and getting info about a timer
+ */
 struct discord_timer {
     /** the identifier used for the timer. 0 creates a new timer */
     unsigned id;
