@@ -351,6 +351,9 @@ unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
  */
 unsigned discord_timer(struct discord *client, discord_ev_timer cb,
                        void *data, int64_t delay);
+
+/** @example timers.c
+ * Demonstrates the Timer API for callback scheduling */
                        
 /** @} DiscordTimer */
 /** @} Discord */
