@@ -28,6 +28,7 @@
 #include "uthash.h"
 #include "queue.h"
 #include "heap-inl.h"
+#include "priority_queue.h"
 
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
@@ -684,6 +685,50 @@ void discord_gateway_send_presence_update(struct discord_gateway *gw);
 
 /** @} DiscordInternalGateway */
 
+/** @defgroup DiscordInternalTimer Timer API
+ * @brief Callback scheduling API
+ *  @{ */
+
+struct discord_timers {
+    priority_queue *q;
+};
+
+/**
+ * @brief prepare timers for usage
+ * 
+ * @param client the client created with discord_init()
+ */
+void discord_timers_init(struct discord *client);
+
+/**
+ * @brief cleanup timers and call cancel any running ones
+ * 
+ * @param client the client created with discord_init()
+ */
+void discord_timers_cleanup(struct discord *client);
+
+/**
+ * @brief run all timers that are due
+ * 
+ * @param client the client created with discord_init()
+ * @param timers the timers to run
+ */
+void discord_timers_run(struct discord *client, struct discord_timers *timers);
+
+/**
+ * @brief modifies or creates a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param timers the timer group to perform this operation on
+ * @param timer the timer that should be modified
+ * @return unsigned the id of the timer
+ */
+unsigned _discord_timer_ctl(
+    struct discord *client,
+    struct discord_timers *timers,
+    struct discord_timer *timer);
+
+/** @} DiscordInternalTimer */
 /**
  * @brief The Discord client handler
  *
@@ -706,6 +751,11 @@ struct discord {
     struct discord_gateway gw;
     /** the client's user structure */
     struct discord_user self;
+
+    struct {
+        struct discord_timers internal;
+        struct discord_timers user;
+    } timers;
 
     /** wakeup timer handle */
     struct {
