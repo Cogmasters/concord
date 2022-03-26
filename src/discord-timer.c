@@ -69,7 +69,7 @@ _discord_timer_ctl(
     if (!timer->id) {
         return priority_queue_push(timers->q, &now, timer);
     } else {
-        if (priority_queue_update(timers->q, timer->id, &now, &timer))
+        if (priority_queue_update(timers->q, timer->id, &now, timer))
             return timer->id;
         return 0;
     }
