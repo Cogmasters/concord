@@ -26,9 +26,7 @@ ccord_global_init()
     }
     else {
 #ifdef SIGINTCATCH
-        __sighandler_t prev = signal(SIGINT, &sigint_handler);
-        if (prev != SIG_DFL && prev != sigint_handler)
-            signal(SIGINT, prev);
+        signal(SIGINT, &sigint_handler);
 #endif
         if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
             fputs("Couldn't start libcurl's globals\n", stderr);

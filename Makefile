@@ -58,7 +58,7 @@ LIB := $(LIBDIR)/libdiscord.a
 
 CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) -I$(THIRDP_DIR) \
-          -I$(GENCODECS_DIR) -I$(PREFIX)/include -DLOG_USE_COLOR
+          -I$(GENCODECS_DIR) -I$(PREFIX)/include -DLOG_USE_COLOR -DSIGINTCATCH
 WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
 
 $(OBJDIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
