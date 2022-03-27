@@ -84,6 +84,12 @@ $ pkg install curl
 $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
+
+#### A note about SIGINT handling
+By default, Concord will not handle SIGINT (i.e. Control-C). You can enable
+the handler for this by adding `-DSIGINTCATCH` to the `CFLAGS` variable in
+the Makefile.
+
 ### Setting up your environment
 
 #### Clone Concord into your workspace
