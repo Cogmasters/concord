@@ -14,12 +14,12 @@ on_sigint(int sig) {
 }
 
 static void
-one_shot_timer_cb(struct discord *client, struct discord_timer *timer) {
+one_shot_timer_cb(struct discord *client, struct discord_ev_timer *ev) {
   printf("one_shot_timer_cb %u triggered with flags %i\n",
-         timer->id, timer->flags);
+         ev->id, ev->timer.flags);
 
   //DO NOT IGNORE CANCELATION
-  if (timer->flags & DISCORD_TIMER_CANCELED) {
+  if (ev->timer.flags & DISCORD_TIMER_CANCELED) {
       puts("Timer has been canceled");
       return;
   }
@@ -27,16 +27,16 @@ one_shot_timer_cb(struct discord *client, struct discord_timer *timer) {
       puts("Shutdown Canceled");
       return;
   }
-  puts(timer->data);
+  puts(ev->timer.data);
   discord_shutdown(client);
 }
 
 static void
-repeating_timer_cb(struct discord *client, struct discord_timer *timer) {
+repeating_timer_cb(struct discord *client, struct discord_ev_timer *ev) {
   printf("repeating_timer_cb %u triggered with flags %i\n",
-         timer->id, timer->flags);
-  printf("%"PRIi64", %"PRIi64"\n", timer->interval, timer->repeat);
-  if (timer->repeat == 0)
+         ev->id, ev->timer.flags);
+  printf("%i %i\n", ev->timer.interval, ev->timer.repeat);
+  if (ev->timer.repeat == 0)
       puts("Shutting down soon, press ctrl + c to cancel");
 }
 
@@ -54,8 +54,7 @@ main(int argc, char *argv[])
     unsigned one_shot_timer_id =
         discord_timer(client, one_shot_timer_cb, "Shutting Down", 5000);
     
-    discord_timer_ctl(client, &(struct discord_timer) {
-        .id = 0, /* 0 to create a new timer */
+    discord_timer_ctl(client, 0, &(struct discord_timer) {
         .cb = repeating_timer_cb,
         .data = &one_shot_timer_id,
         .delay = 0, /* start right away */

@@ -28,10 +28,10 @@ discord_timers_init(struct discord *client)
 static void
 discord_timers_cancel_all(struct discord *client, priority_queue *q)
 {
-    struct discord_timer timer;
-    while ((timer.id = priority_queue_pop(q, NULL, &timer))) {
-      timer.flags |= DISCORD_TIMER_CANCELED;
-      if (timer.cb) timer.cb(client, &timer);
+    struct discord_ev_timer ev;
+    while ((ev.id = priority_queue_pop(q, NULL, &ev.timer))) {
+      ev.timer.flags |= DISCORD_TIMER_CANCELED;
+      if (ev.timer.cb) ev.timer.cb(client, &ev);
     }
 }
 
@@ -51,14 +51,21 @@ unsigned
 _discord_timer_ctl(
     struct discord *client,
     struct discord_timers *timers,
+    discord_timer_id id,
     struct discord_timer *timer)
 {
     int64_t now = -1;
-    if (timer->flags & DISCORD_TIMER_DELETE) {
-        unsigned id;
-        if (timer->id) {
-            id = priority_queue_get(timers->q, timer->id, NULL, timer);
-            if (id) return priority_queue_del(timers->q, id) ? id : 0;
+
+    if (timer->flags & (DISCORD_TIMER_DELETE | DISCORD_TIMER_CANCELED)) {
+        if (id) {
+            struct discord_timer backup, *t = timer ? timer : &backup;
+            if ((id = priority_queue_get(timers->q, id, NULL, t))) {
+                int64_t run_now = 0;
+                t->flags |= timer->flags 
+                            & (DISCORD_TIMER_DELETE | DISCORD_TIMER_CANCELED);
+                priority_queue_update(timers->q, id, &run_now, t);
+                return id;
+            }
         }
         return 0;
     }
@@ -66,18 +73,18 @@ _discord_timer_ctl(
         now = (int64_t)discord_timestamp_us(client) + 
               ((timer->flags & DISCORD_TIMER_MICROSECONDS)
               ? timer->delay : timer->delay * 1000);
-    if (!timer->id) {
+    if (!id) {
         return priority_queue_push(timers->q, &now, timer);
     } else {
-        if (priority_queue_update(timers->q, timer->id, &now, timer))
-            return timer->id;
+        if (priority_queue_update(timers->q, id, &now, timer))
+            return id;
         return 0;
     }
 }
 
 #define TIMER_TRY_DELETE                           \
-  if (timer.flags & DISCORD_TIMER_DELETE) {        \
-        priority_queue_pop(timers->q, NULL, NULL); \
+  if (ev.timer.flags & DISCORD_TIMER_DELETE) {     \
+        priority_queue_del(timers->q, ev.id);         \
         continue;                                  \
   }
 
@@ -85,41 +92,42 @@ void
 discord_timers_run(struct discord *client, struct discord_timers *timers)
 {
     int64_t now = (int64_t)discord_timestamp_us(client);
-    struct discord_timer timer;
-    for (int64_t trigger; 
-        (timer.id = priority_queue_peek(timers->q, &trigger, &timer));)
+    struct discord_ev_timer ev;
+    for (int64_t trigger;
+         (ev.id = priority_queue_peek(timers->q, &trigger, &ev.timer));)
     {
         if (trigger > now || trigger == -1) return;
 
         TIMER_TRY_DELETE
 
-        if (timer.repeat > 0)
-            timer.repeat--;
-        if (timer.cb) timer.cb(client, &timer);
-        if (timer.repeat == 0 && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
-            timer.flags |= DISCORD_TIMER_DELETE;
+        if (ev.timer.repeat > 0)
+            ev.timer.repeat--;
+        if (ev.timer.cb) ev.timer.cb(client, &ev);
+        if ((ev.timer.repeat == 0 && (ev.timer.flags & DISCORD_TIMER_DELETE_AUTO)))
+            ev.timer.flags |= DISCORD_TIMER_DELETE;
         TIMER_TRY_DELETE
         
         int64_t next = -1;
-        if (timer.repeat != 0) {
-            if (timer.interval > 0)
-              next = now + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
-                           ? timer.interval : timer.interval * 1000);
+        if (ev.timer.repeat != 0) {
+            if (ev.timer.interval > 0)
+              next = now + ((ev.timer.flags & DISCORD_TIMER_MICROSECONDS)
+                           ? ev.timer.interval : ev.timer.interval * 1000);
         }
-        if (priority_queue_peek(timers->q, NULL, NULL) != timer.id)
-            continue;
-        
-        priority_queue_update(timers->q, timer.id, &next, &timer);
+        priority_queue_update(timers->q, ev.id, &next, &ev.timer);
     }
 }
-unsigned
-discord_timer_ctl(struct discord *client, struct discord_timer *timer)
+
+discord_timer_id
+discord_timer_ctl(struct discord *client,
+                  discord_timer_id timer_id,
+                  struct discord_timer *timer)
 {
-    return _discord_timer_ctl(client, &client->timers.user, timer);
+    return _discord_timer_ctl(client, &client->timers.user, timer_id, timer);
 }
 
-unsigned discord_timer(struct discord *client, discord_ev_timer cb,
-                       void *data, int64_t delay)
+discord_timer_id
+discord_timer(struct discord *client, discord_ev_timer cb,
+              void *data, int delay)
 {
     struct discord_timer timer = {
       .cb = cb,
@@ -127,5 +135,5 @@ unsigned discord_timer(struct discord *client, discord_ev_timer cb,
       .delay = delay,
       .flags = DISCORD_TIMER_DELETE_AUTO,
     };
-    return discord_timer_ctl(client, &timer);
+    return discord_timer_ctl(client, 0, &timer);
 }

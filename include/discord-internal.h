@@ -726,6 +726,7 @@ void discord_timers_run(struct discord *client, struct discord_timers *timers);
 unsigned _discord_timer_ctl(
     struct discord *client,
     struct discord_timers *timers,
+    discord_timer_id timer_id,
     struct discord_timer *timer);
 
 /** @} DiscordInternalTimer */
