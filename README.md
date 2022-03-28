@@ -85,11 +85,6 @@ $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
 ```
 
-#### A note about SIGINT handling
-By default, Concord will not handle SIGINT (i.e. Control-C). You can enable
-the handler for this by adding `-DSIGINTCATCH` to the `CFLAGS` variable in
-the Makefile.
-
 ### Setting up your environment
 
 #### Clone Concord into your workspace
@@ -105,7 +100,8 @@ $ make
 ```
 
 #### Special notes for non-Linux systems
-You might run into trouble with the compiler and linker not finding your Curl headers. You can do something like this:
+
+You might run into trouble with the compiler and linker not finding your Libcurl headers. You can do something like this:
 ```console
 $ CFLAGS=-I<some_path> LDFLAGS=-L<some_path> make
 ```
@@ -113,11 +109,27 @@ For instance, on a FreeBSD system:
 ```console
 $ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/lib make
 ```
-
 On OS X using MacPorts:
 ```console
 $ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make
 ```
+
+#### Special compilation flags
+
+The following outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities.
+
+```console
+$ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
+```
+
+* `-DCCORD_SIGINTCATCH`
+    * By default Concord will not shutdown gracefully when a SIGINT is received (i.e. <kbd>Ctrl</kbd>+<kbd>c</kbd>), enable this flag if you wish it to be handled for you.
+* `-DCCORD_VOICE`
+    * Enable experimental Voice Connection handling.
+* `-DCCORD_DEBUG_WEBSOCKETS`
+    * Enable verbose debugging for WebSockets communication.
+* `-DCCORD_DEBUG_ADAPTER`
+    * Enable verbose debugging-mode for REST communication.
 
 ### Configuring Concord
 
@@ -178,14 +190,14 @@ With <kbd>Ctrl</kbd>+<kbd>c</kbd> or with <kbd>Ctrl</kbd>+<kbd>|</kbd>
 # make install
 ```
 
-Included headers must be `concord/` prefixed:
-```c
-#include <concord/discord.h>
-```
-
 This will install the headers and libary files into $PREFIX. You can override this as such:
 ```console
 # PREFIX=/opt/concord make install
+```
+
+Note that included headers must be `concord/` prefixed:
+```c
+#include <concord/discord.h>
 ```
 
 ### Standalone executable
