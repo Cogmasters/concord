@@ -773,10 +773,10 @@ struct discord {
     /** space for user arbitrary data */
     void *data;
 
-#ifdef HAS_DISCORD_VOICE
+#ifdef CCORD_VOICE
     struct discord_voice vcs[DISCORD_MAX_VCS];
     struct discord_voice_cbs voice_cbs;
-#endif /* HAS_DISCORD_VOICE */
+#endif /* CCORD_VOICE */
 };
 
 /** @} DiscordInternal */

@@ -69,7 +69,7 @@ $(OBJDIR)/%.o: %.c
 all: $(LIB)
 
 voice:
-	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XOBJ=$(OBJDIR)/$(SRC_DIR)/discord-voice.o all
+	@ $(MAKE) XFLAGS=-DCCORD_VOICE XOBJ=$(OBJDIR)/$(SRC_DIR)/discord-voice.o all
 
 debug:
 	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all

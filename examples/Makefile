@@ -40,7 +40,7 @@ LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 all: $(BOTS)
 
 voice:
-	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=voice all
+	$(MAKE) XFLAGS=-DCCORD_VOICE XSRC=voice all
 
 $(BOTS): %: %.c
 	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)

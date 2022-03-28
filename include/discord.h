@@ -28,9 +28,9 @@ struct discord;
 /**/
 
 #include "discord_codecs.h"
-#ifdef HAS_DISCORD_VOICE
+#ifdef CCORD_VOICE
 #include "discord-voice.h"
-#endif /* HAS_DISCORD_VOICE */
+#endif /* CCORD_VOICE */
 #include "discord-templates.h"
 
 /** @defgroup DiscordConstants Constants
