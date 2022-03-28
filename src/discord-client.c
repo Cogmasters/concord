@@ -215,42 +215,48 @@ discord_get_self(struct discord *client)
 
 void
 discord_set_on_command(struct discord *client,
-                       char *command,
+                       char command[],
                        discord_ev_message callback)
 {
-    /**
-     * default command callback if prefix is detected, but command isn't
-     *  specified
-     */
-    if (client->gw.cmds.prefix.size && (!command || !*command)) {
-        client->gw.cmds.on_default.cb = callback;
-        return; /* EARLY RETURN */
+    const size_t cmd_len = command ? strlen(command) : 0;
+    size_t i;
+
+    /* fallback callback if prefix is detected, but command isn't specified */
+    if (client->gw.cmds.prefix.size && !cmd_len) {
+        client->gw.cmds.fallback.cb = callback;
+        return;
     }
-    size_t index = 0;
-    const size_t command_len = strlen(command);
-    for (; index < client->gw.cmds.amt; index++)
-        if (command_len == client->gw.cmds.pool[index].size
-            && 0 == strcmp(command, client->gw.cmds.pool[index].start))
-            goto modify;
-    if (index == client->gw.cmds.cap) {
+
+    /* if command is already set then modify it */
+    for (i = 0; i < client->gw.cmds.amt; i++) {
+        if (cmd_len == client->gw.cmds.pool[i].size
+            && 0 == strcmp(command, client->gw.cmds.pool[i].start))
+        {
+            goto _modify;
+        }
+    }
+
+    if (i == client->gw.cmds.cap) {
         size_t cap = 8;
-        while (cap <= index)
+        void *tmp;
+
+        while (cap <= i)
             cap <<= 1;
 
-        void *tmp =
+        tmp =
             realloc(client->gw.cmds.pool, cap * sizeof(*client->gw.cmds.pool));
-        if (tmp) {
-            client->gw.cmds.pool = tmp;
-            client->gw.cmds.cap = cap;
-        }
-        else
-            return;
+        if (!tmp) return;
+
+        client->gw.cmds.pool = tmp;
+        client->gw.cmds.cap = cap;
     }
+
     ++client->gw.cmds.amt;
-    client->gw.cmds.pool[index].start = strdup(command);
-    client->gw.cmds.pool[index].size = command_len;
-modify:
-    client->gw.cmds.pool[index].cb = callback;
+    client->gw.cmds.pool[i].size =
+        cog_strndup(command, cmd_len, &client->gw.cmds.pool[i].start);
+
+_modify:
+    client->gw.cmds.pool[i].cb = callback;
 
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);

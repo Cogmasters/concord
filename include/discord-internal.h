@@ -414,12 +414,6 @@ void discord_bucket_build(struct discord_adapter *adapter,
  * @brief Wrapper to the Discord Gateway API
  *  @{ */
 
-struct discord_gateway_cmd_cbs {
-    char *start;
-    size_t size;
-    discord_ev_message cb;
-};
-
 struct discord_gateway_cbs {
     /** triggers when connection first establishes */
     discord_ev_idle on_ready;
@@ -586,16 +580,22 @@ struct discord_gateway {
         /** the prefix expected for every command */
         struct sized_buffer prefix;
         /** user's command/callback pair @see discord_set_on_command() */
-        struct discord_gateway_cmd_cbs *pool;
+        struct {
+            /** the command string contents */
+            char *start;
+            /** the command string length */
+            size_t size;
+            /** the assigned callback for the command */
+            discord_ev_message cb;
+        } * pool, fallback;
         /** amount of command/callback pairs in pool */
         size_t amt;
         /** actual size of command/callback pairs in pool */
         size_t cap;
-        /** fallback function incase prefix matches but command doesn't */
-        struct discord_gateway_cmd_cbs on_default;
-        /** user's callbacks */
+
+        /** the user's callbacks for Discord events */
         struct discord_gateway_cbs cbs;
-        /** event execution flow callback */
+        /** the event scheduler callback */
         discord_ev_scheduler scheduler;
     } cmds;
 };
