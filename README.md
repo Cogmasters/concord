@@ -50,6 +50,7 @@ int main(void) {
 * Install **Cygwin**
 * **Make sure that you installed libcurl, gcc, make, and git when you ran the Cygwin installer!**
 * You will want to check the Windows tutorial [here](docs/WINDOWS.md)!
+* Mingw64 and Msys2 are currently NOT supported. Please see [this](docs/MSYS2_MINGW64.md) for more information.
 
 ### On Linux, BSD, and Mac OS X
 
@@ -80,6 +81,7 @@ $ pkg install curl
 ```
 
 #### OS X
+* Note: you will need to install Xcode, or at a minimum, the command-line tools with `xcode-select --install`.
 ```console
 $ brew install curl (Homebrew)
 $ port install curl (MacPorts)
@@ -113,10 +115,18 @@ On OS X using MacPorts:
 ```console
 $ CFLAGS=-I/opt/local/include LDFLAGS=-L/opt/local/lib make
 ```
+On OS X using a self-compiled libcurl:
+```console
+$ CFLAGS=-I/usr/local/include LDFLAGS=-L/usr/local/include make
+```
+On Windows with Cygwin, you might need to pass both arguments to use POSIX threading:
+```console
+$ CFLAGS="-pthread -lpthread" make
+```
 
 #### Special compilation flags
 
-The following outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities.
+The following section outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities.
 
 ```console
 $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
@@ -214,7 +224,12 @@ $ gcc myBot.c -o myBot -pthread -ldiscord -lcurl
 $ clang myBot.c -o myBot -pthread -ldiscord -lcurl
 ```
 
-#### UNIX C compiler
+#### UNIX C compilers
+##### This includes the following compilers:
+* IBM XL C/C++ (AIX, z/OS, possibly IBM i)
+* Sun/Oracle Studio (Solaris)
+* IRIX MIPSpro C++ (IRIX) -- NOTE: currently not supported
+* Possibly others!
 ```console
 $ cc myBot.c -o myBot -ldiscord -lcurl -lpthread
 ```
