@@ -24,9 +24,9 @@ setopt_cb(struct ua_conn *conn, void *p_token)
 
     ua_conn_add_header(conn, "Authorization", auth);
 
-#ifdef _CCORD_DEBUG_ADAPTER
+#ifdef CCORD_DEBUG_ADAPTER
     curl_easy_setopt(ua_conn_get_easy_handle(conn), CURLOPT_VERBOSE, 1L);
-#endif
+#endif /* CCORD_DEBUG_ADAPTER */
 }
 
 static int

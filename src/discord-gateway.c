@@ -1579,7 +1579,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
 }
 
-#ifdef _CCORD_DEBUG_WEBSOCKETS
+#ifdef CCORD_DEBUG_WEBSOCKETS
 static void
 _ws_curl_debug_dump(const char *text,
                     FILE *stream,
@@ -1664,7 +1664,7 @@ _ws_curl_debug_trace(
     _ws_curl_debug_dump(text, stderr, (unsigned char *)data, size);
     return 0;
 }
-#endif
+#endif /* CCORD_DEBUG_WEBSOCKETS */
 
 CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
@@ -1732,12 +1732,12 @@ discord_gateway_start(struct discord_gateway *gw)
     ws_set_url(gw->ws, url, NULL);
     ehandle = ws_start(gw->ws);
 
-#ifdef _CCORD_DEBUG_WEBSOCKETS
+#ifdef CCORD_DEBUG_WEBSOCKETS
     curl_easy_setopt(ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
     curl_easy_setopt(ehandle, CURLOPT_VERBOSE, 1L);
 #else
     (void)ehandle;
-#endif
+#endif /* CCORD_DEBUG_WEBSOCKETS */
 
     return CCORD_OK;
 }
