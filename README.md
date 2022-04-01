@@ -126,7 +126,7 @@ $ CFLAGS="-pthread -lpthread" make
 
 #### Special compilation flags
 
-The following section outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities.
+The following section outlines flags that can be attached to the Makefile if you wish to override the default compilation behavior with additional functionalities. Example:
 
 ```console
 $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
@@ -139,7 +139,7 @@ $ CFLAGS="-DCCORD_SIGINTCATCH -DCCORD_VOICE" make
 * `-DCCORD_DEBUG_WEBSOCKETS`
     * Enable verbose debugging for WebSockets communication.
 * `-DCCORD_DEBUG_ADAPTER`
-    * Enable verbose debugging-mode for REST communication.
+    * Enable verbose debugging for REST communication.
 
 ### Configuring Concord
 
