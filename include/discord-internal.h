@@ -27,7 +27,6 @@
 
 #include "uthash.h"
 #include "queue.h"
-#include "heap-inl.h"
 #include "priority_queue.h"
 
 /** @brief Return 1 if string isn't considered empty */
@@ -156,10 +155,6 @@ struct discord_context {
     struct ua_conn *conn;
     /** the request bucket's queue entry */
     QUEUE entry;
-    /** the min-heap node (for selecting timeouts) */
-    struct heap_node node;
-    /** the timeout timestamp */
-    u64unix_ms timeout_ms;
 
     /** current retry attempt (stop at adapter->retry_limit) */
     int retry_attempt;
@@ -196,8 +191,6 @@ struct discord_adapter {
 
     /** idle request handles of type 'struct discord_context' */
     QUEUE *idleq;
-    /* request timeouts */
-    struct heap timeouts;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -325,8 +318,6 @@ struct discord_bucket {
     QUEUE waitq;
     /** busy requests of type 'struct discord_context' */
     QUEUE busyq;
-    /** avoid excessive timeouts */
-    bool freeze;
     /** makes this structure hashable */
     UT_hash_handle hh;
 };

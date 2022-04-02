@@ -79,8 +79,6 @@ discord_adapter_init(struct discord_adapter *adapter,
      * share the same queue with the original */
     adapter->idleq = malloc(sizeof(QUEUE));
     QUEUE_INIT(adapter->idleq);
-    /* initialize min-heap for handling request timeouts */
-    heap_init(&adapter->timeouts);
 
     adapter->retry_limit = 3; /**< hard limit for now */
 }
@@ -458,7 +456,6 @@ _discord_context_reset(struct discord_context *cxt)
     *cxt->endpoint = '\0';
     *cxt->route = '\0';
     cxt->conn = NULL;
-    cxt->timeout_ms = 0;
     cxt->retry_attempt = 0;
 
     discord_attachments_cleanup(&cxt->req.attachments);
@@ -504,29 +501,6 @@ _discord_context_populate(struct discord_context *cxt,
     cxt->bucket = discord_bucket_get(adapter, route);
 }
 
-static int
-timer_less_than(const struct heap_node *ha, const struct heap_node *hb)
-{
-    const struct discord_context *a =
-        CONTAINEROF(ha, struct discord_context, node);
-    const struct discord_context *b =
-        CONTAINEROF(hb, struct discord_context, node);
-
-    return a->timeout_ms <= b->timeout_ms;
-}
-
-static void
-_discord_context_set_timeout(struct discord_adapter *adapter,
-                             u64unix_ms timeout,
-                             struct discord_context *cxt)
-{
-    cxt->bucket->freeze = true;
-
-    cxt->timeout_ms = timeout;
-
-    heap_insert(&adapter->timeouts, &cxt->node, &timer_less_than);
-}
-
 /* true if a timeout has been set, false otherwise */
 static bool
 _discord_context_timeout(struct discord_adapter *adapter,
@@ -540,8 +514,6 @@ _discord_context_timeout(struct discord_adapter *adapter,
     logconf_info(&adapter->conf,
                  "[%.4s] RATELIMITING (timeout %" PRId64 " ms)",
                  cxt->bucket->hash, (int64_t)(timeout - now));
-
-    _discord_context_set_timeout(adapter, timeout, cxt);
 
     return true;
 }
@@ -660,32 +632,6 @@ _discord_adapter_send(struct discord_adapter *adapter,
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
 }
 
-/* check and enqueue requests that have been timed out */
-static CCORDcode
-_discord_adapter_check_timeouts(struct discord_adapter *adapter)
-{
-    struct discord_context *cxt;
-    struct heap_node *hmin;
-
-    while (1) {
-        hmin = heap_min(&adapter->timeouts);
-        if (!hmin) break;
-
-        cxt = CONTAINEROF(hmin, struct discord_context, node);
-        if (cxt->timeout_ms > NOW(adapter)) {
-            /* current timestamp is lesser than lowest timeout */
-            break;
-        }
-
-        heap_remove(&adapter->timeouts, hmin, &timer_less_than);
-
-        cxt->bucket->freeze = false;
-        QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
-    }
-
-    return CCORD_OK;
-}
-
 /* send a standalone request to update stale bucket values */
 static CCORDcode
 _discord_adapter_send_single(struct discord_adapter *adapter,
@@ -740,7 +686,7 @@ _discord_adapter_check_pending(struct discord_adapter *adapter)
     /* iterate over buckets in search of pending requests */
     for (b = adapter->buckets; b != NULL; b = b->hh.next) {
         /* skip timed-out, busy and non-pending buckets */
-        if (b->freeze || !QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
+        if (!QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
             continue;
         }
 
@@ -835,11 +781,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
     if (retry && cxt->retry_attempt++ < adapter->retry_limit) {
         ua_conn_reset(cxt->conn);
 
-        if (wait_ms > 0) {
-            u64unix_ms timeout = NOW(adapter) + (u64unix_ms)wait_ms;
-            _discord_context_set_timeout(adapter, timeout, cxt);
-        }
-        else {
+        if (wait_ms <= 0) {
             QUEUE_INSERT_HEAD(&cxt->bucket->waitq, &cxt->entry);
         }
     }
@@ -858,9 +800,6 @@ discord_adapter_perform(struct discord_adapter *adapter)
     CURLMcode mcode;
     CCORDcode code;
     int alive = 0;
-
-    if (CCORD_OK != (code = _discord_adapter_check_timeouts(adapter)))
-        return code;
 
     if (CCORD_OK != (code = _discord_adapter_check_pending(adapter)))
         return code;
@@ -890,19 +829,7 @@ discord_adapter_stop_all(struct discord_adapter *adapter)
 {
     struct discord_context *cxt;
     struct discord_bucket *b;
-    struct heap_node *hmin;
     QUEUE *qelem;
-
-    /* cancel pending timeouts */
-    while ((hmin = heap_min(&adapter->timeouts)) != NULL) {
-        cxt = CONTAINEROF(hmin, struct discord_context, node);
-
-        heap_remove(&adapter->timeouts, hmin, &timer_less_than);
-
-        cxt->bucket->freeze = false;
-
-        QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
-    }
 
     /* cancel bucket's on-going transfers */
     for (b = adapter->buckets; b != NULL; b = b->hh.next) {
