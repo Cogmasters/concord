@@ -501,23 +501,6 @@ _discord_context_populate(struct discord_context *cxt,
     cxt->bucket = discord_bucket_get(adapter, route);
 }
 
-/* true if a timeout has been set, false otherwise */
-static bool
-_discord_context_timeout(struct discord_adapter *adapter,
-                         struct discord_context *cxt)
-{
-    u64unix_ms now = NOW(adapter);
-    u64unix_ms timeout = discord_bucket_get_timeout(adapter, cxt->bucket);
-
-    if (now > timeout) return false;
-
-    logconf_info(&adapter->conf,
-                 "[%.4s] RATELIMITING (timeout %" PRId64 " ms)",
-                 cxt->bucket->hash, (int64_t)(timeout - now));
-
-    return true;
-}
-
 void
 discord_refcount_incr(struct discord_adapter *adapter,
                       void *data,
@@ -595,12 +578,20 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
 /* add a request to libcurl's multi handle */
 static CCORDcode
 _discord_adapter_send(struct discord_adapter *adapter,
-                      struct discord_context *cxt)
+                      struct discord_bucket *b)
 {
+    struct discord_context *cxt;
+    QUEUE *qelem;
+
     struct ua_conn_attr conn_attr = { 0 };
     CURLMcode mcode;
     CURL *ehandle;
 
+    qelem = QUEUE_HEAD(&b->waitq);
+    QUEUE_REMOVE(qelem);
+    QUEUE_INIT(qelem);
+
+    cxt = QUEUE_DATA(qelem, struct discord_context, entry);
     cxt->conn = ua_conn_start(adapter->ua);
 
     conn_attr.method = cxt->method;
@@ -632,46 +623,18 @@ _discord_adapter_send(struct discord_adapter *adapter,
     return mcode ? CCORD_CURLM_INTERNAL : CCORD_OK;
 }
 
-/* send a standalone request to update stale bucket values */
-static CCORDcode
-_discord_adapter_send_single(struct discord_adapter *adapter,
-                             struct discord_bucket *b)
-{
-    struct discord_context *cxt;
-    QUEUE *qelem;
-
-    qelem = QUEUE_HEAD(&b->waitq);
-    QUEUE_REMOVE(qelem);
-    QUEUE_INIT(qelem);
-
-    cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-
-    return _discord_adapter_send(adapter, cxt);
-}
-
 /* send a batch of requests */
 static CCORDcode
 _discord_adapter_send_batch(struct discord_adapter *adapter,
                             struct discord_bucket *b)
 {
-    struct discord_context *cxt;
     CCORDcode code = CCORD_OK;
-    QUEUE *qelem;
     long i;
 
     for (i = b->remaining; i > 0; --i) {
         if (QUEUE_EMPTY(&b->waitq)) break;
 
-        qelem = QUEUE_HEAD(&b->waitq);
-        QUEUE_REMOVE(qelem);
-        QUEUE_INIT(qelem);
-
-        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-
-        /* timeout request if ratelimiting is necessary */
-        if (_discord_context_timeout(adapter, cxt)) break;
-
-        code = _discord_adapter_send(adapter, cxt);
+        code = _discord_adapter_send(adapter, b);
         if (code != CCORD_OK) break;
     }
 
@@ -693,10 +656,9 @@ _discord_adapter_check_pending(struct discord_adapter *adapter)
         /* if bucket is outdated then its necessary to send a single
          *      request to fetch updated values */
         if (b->reset_tstamp < NOW(adapter)) {
-            _discord_adapter_send_single(adapter, b);
+            _discord_adapter_send(adapter, b);
             continue;
         }
-
         /* send remainder or trigger timeout */
         _discord_adapter_send_batch(adapter, b);
     }
