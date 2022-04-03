@@ -728,6 +728,30 @@ unsigned _discord_timer_ctl(
     struct discord_timers *timers,
     struct discord_timer *timer);
 
+/**
+ * @brief modifies or creates a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param timer the timer that should be modified
+ * @return unsigned the id of the timer
+ */
+unsigned discord_internal_timer_ctl(
+    struct discord *client,
+    struct discord_timer *timer);
+
+/**
+ * @brief creates a one shot timer that automatically
+ *        deletes itself upon completion
+ * 
+ * @param client the client created with discord_init()
+ * @param cb the callback that should be called when timer triggers
+ * @param data user data
+ * @param delay delay before timer should start in milliseconds
+ * @return unsigned 
+ */
+unsigned discord_internal_timer(struct discord *client, discord_ev_timer cb,
+                                void *data, int64_t delay);
+
 /** @} DiscordInternalTimer */
 /**
  * @brief The Discord client handler

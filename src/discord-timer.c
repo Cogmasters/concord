@@ -112,14 +112,23 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         priority_queue_update(timers->q, timer.id, &next, &timer);
     }
 }
+
 unsigned
 discord_timer_ctl(struct discord *client, struct discord_timer *timer)
 {
     return _discord_timer_ctl(client, &client->timers.user, timer);
 }
 
-unsigned discord_timer(struct discord *client, discord_ev_timer cb,
-                       void *data, int64_t delay)
+unsigned 
+discord_internal_timer_ctl(struct discord *client,
+                                    struct discord_timer *timer)
+{
+    return _discord_timer_ctl(client, &client->timers.internal, timer);
+}
+
+static unsigned
+_discord_timer(struct discord *client, struct discord_timers *timers,
+              discord_ev_timer cb, void *data, int64_t delay)
 {
     struct discord_timer timer = {
       .cb = cb,
@@ -127,5 +136,20 @@ unsigned discord_timer(struct discord *client, discord_ev_timer cb,
       .delay = delay,
       .flags = DISCORD_TIMER_DELETE_AUTO,
     };
-    return discord_timer_ctl(client, &timer);
+    return _discord_timer_ctl(client, timers, &timer);
+}
+
+unsigned
+discord_timer(struct discord *client, discord_ev_timer cb,
+              void *data, int64_t delay)
+{
+    return _discord_timer(client, &client->timers.user, cb, data, delay);
+}
+
+
+unsigned
+discord_internal_timer(struct discord *client, discord_ev_timer cb,
+                       void *data, int64_t delay)
+{
+    return _discord_timer(client, &client->timers.internal, cb, data, delay);
 }
