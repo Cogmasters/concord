@@ -346,14 +346,18 @@ discord_run(struct discord *client)
                     poll_time = (int)(client->wakeup_timer.next - now);
                 }
             }
-            int64_t key;
-            if (priority_queue_peek(client->timers.user.q, &key, NULL)) {
-                key /= 1000;
-                if (key >= 0) {
-                    if (key <= now) {
-                        poll_time = 0;
-                    } else if (key - now < poll_time) {
-                        poll_time = (int)(key - now);
+            struct discord_timers *const timers[] =
+                { &client->timers.internal, &client->timers.user };
+            for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
+                int64_t trigger_us, trigger_ms;
+                if (priority_queue_peek(timers[i]->q, &trigger_us, NULL)) {
+                    trigger_ms = trigger_us / 1000;
+                    if (trigger_ms >= 0) {
+                        if (trigger_ms <= now) {
+                            poll_time = 0;
+                        } else if (trigger_ms - now < poll_time) {
+                            poll_time = (int)(trigger_ms - now);
+                        }
                     }
                 }
             }
@@ -373,8 +377,9 @@ discord_run(struct discord *client)
                 break;
 
             now = (int64_t)cog_timestamp_ms();
-            discord_timers_run(client, &client->timers.internal);
-            discord_timers_run(client, &client->timers.user);
+
+            for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++)
+                discord_timers_run(client, timers[i]);
 
             /* check for pending wakeup timers */
             if (client->wakeup_timer.next != -1
