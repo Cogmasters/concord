@@ -363,7 +363,7 @@ discord_run(struct discord *client)
                 int64_t trigger_us, trigger_ms;
                 if (priority_queue_peek(timers[i]->q, &trigger_us, NULL)) {
                     trigger_ms = trigger_us / 1000;
-                    if (trigger_ms >= 0) {
+                    if (trigger_us >= 0) {
                         if (trigger_ms <= now) {
                             poll_time = 0;
                         } else if (trigger_ms - now < poll_time) {
