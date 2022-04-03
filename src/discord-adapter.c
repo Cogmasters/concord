@@ -93,9 +93,8 @@ _discord_context_cleanup(struct discord_context *cxt)
 void
 discord_adapter_cleanup(struct discord_adapter *adapter)
 {
+    QUEUE(struct discord_context) queue, *qelem;
     struct discord_context *cxt;
-    QUEUE queue;
-    QUEUE *qelem;
 
     /* cleanup User-Agent handle */
     ua_cleanup(adapter->ua);
@@ -518,7 +517,7 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
     }
     else {
         /* get from idle requests queue */
-        QUEUE *qelem = QUEUE_HEAD(adapter->idleq);
+        QUEUE(struct discord_context) *qelem = QUEUE_HEAD(adapter->idleq);
         QUEUE_REMOVE(qelem);
 
         cxt = QUEUE_DATA(qelem, struct discord_context, entry);
@@ -547,14 +546,12 @@ static CCORDcode
 _discord_adapter_send(struct discord_adapter *adapter,
                       struct discord_bucket *b)
 {
-    struct discord_context *cxt;
-    QUEUE *qelem;
-
     struct ua_conn_attr conn_attr = { 0 };
+    struct discord_context *cxt;
     CURLMcode mcode;
     CURL *ehandle;
 
-    qelem = QUEUE_HEAD(&b->waitq);
+    QUEUE(struct discord_context) *qelem = QUEUE_HEAD(&b->waitq);
     QUEUE_REMOVE(qelem);
     QUEUE_INIT(qelem);
 
@@ -615,7 +612,7 @@ _discord_adapter_check_pending(struct discord_adapter *adapter)
 
     /* iterate over buckets in search of pending requests */
     for (b = adapter->buckets; b != NULL; b = b->hh.next) {
-        /* skip timed-out, busy and non-pending buckets */
+        /* skip busy and non-pending buckets */
         if (!QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
             continue;
         }
@@ -756,9 +753,9 @@ discord_adapter_perform(struct discord_adapter *adapter)
 void
 discord_adapter_stop_all(struct discord_adapter *adapter)
 {
+    QUEUE(struct discord_context) *qelem = NULL;
     struct discord_context *cxt;
     struct discord_bucket *b;
-    QUEUE *qelem;
 
     /* cancel bucket's on-going transfers */
     for (b = adapter->buckets; b != NULL; b = b->hh.next) {

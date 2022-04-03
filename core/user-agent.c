@@ -37,9 +37,9 @@ struct user_agent {
 
 struct ua_conn_queue {
     /** idle connections */
-    QUEUE idle;
+    QUEUE(struct ua_conn) idle;
     /* busy connections */
-    QUEUE busy;
+    QUEUE(struct ua_conn) busy;
     /** total amount of created connection handles  */
     int total;
     /** lock for blocking queue operations */
@@ -408,8 +408,8 @@ _ua_conn_cleanup(struct ua_conn *conn)
 struct ua_conn *
 ua_conn_start(struct user_agent *ua)
 {
+    QUEUE(struct ua_conn) *qelem = NULL;
     struct ua_conn *conn = NULL;
-    QUEUE *q;
 
     pthread_mutex_lock(&ua->connq->lock);
 
@@ -419,10 +419,10 @@ ua_conn_start(struct user_agent *ua)
     }
     else {
         /* remove from idle queue */
-        q = QUEUE_HEAD(&ua->connq->idle);
-        QUEUE_REMOVE(q);
+        qelem = QUEUE_HEAD(&ua->connq->idle);
+        QUEUE_REMOVE(qelem);
 
-        conn = QUEUE_DATA(q, struct ua_conn, entry);
+        conn = QUEUE_DATA(qelem, struct ua_conn, entry);
     }
     QUEUE_INSERT_TAIL(&ua->connq->busy, &conn->entry);
 
@@ -513,21 +513,21 @@ ua_init(struct ua_attr *attr)
 void
 ua_cleanup(struct user_agent *ua)
 {
-    QUEUE *ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
+    QUEUE(struct ua_conn)
+        * ua_queues[] = { &ua->connq->idle, &ua->connq->busy };
     size_t i;
 
     /* cleanup connection queues */
     for (i = 0; i < sizeof(ua_queues) / sizeof(QUEUE *); ++i) {
+        QUEUE(struct ua_conn) queue, *qelem;
         struct ua_conn *conn;
-        QUEUE queue;
-        QUEUE *q;
 
         QUEUE_MOVE(ua_queues[i], &queue);
         while (!QUEUE_EMPTY(&queue)) {
-            q = QUEUE_HEAD(&queue);
-            QUEUE_REMOVE(q);
+            qelem = QUEUE_HEAD(&queue);
+            QUEUE_REMOVE(qelem);
 
-            conn = QUEUE_DATA(q, struct ua_conn, entry);
+            conn = QUEUE_DATA(qelem, struct ua_conn, entry);
             _ua_conn_cleanup(conn);
         }
     }

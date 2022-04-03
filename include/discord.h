@@ -290,15 +290,11 @@ struct io_poller *discord_get_io_poller(struct discord *client);
 struct discord_timer;
 /**/
 
-/**
- * @brief callback to be used with struct discord_timer
- */
+/** @brief callback to be used with struct discord_timer */
 typedef void (*discord_ev_timer)
     (struct discord *client, struct discord_timer *ev);
 
-/**
- * @brief flags used to change behaviour of timer
- */
+/** @brief flags used to change behaviour of timer */
 enum discord_timer_flags {
     /** use milliseconds for interval and start_time */
     DISCORD_TIMER_MILLISECONDS    =      0,
@@ -312,9 +308,7 @@ enum discord_timer_flags {
     DISCORD_TIMER_CANCELED        = 1 << 3,
 };
 
-/**
- * @brief struct used for modifying, and getting info about a timer
- */
+/** @brief struct used for modifying, and getting info about a timer */
 struct discord_timer {
     /** the identifier used for the timer. 0 creates a new timer */
     unsigned id;
@@ -337,7 +331,7 @@ struct discord_timer {
  * 
  * @param client the client created with discord_init()
  * @param timer the timer that should be modified
- * @return unsigned the id of the timer
+ * @return the id of the timer
  */
 unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
 
@@ -349,7 +343,7 @@ unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
  * @param cb the callback that should be called when timer triggers
  * @param data user data
  * @param delay delay before timer should start in milliseconds
- * @return unsigned 
+ * @return the id of the timer 
  */
 unsigned discord_timer(struct discord *client, discord_ev_timer cb,
                        void *data, int64_t delay);
