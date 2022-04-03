@@ -691,6 +691,7 @@ void discord_gateway_send_presence_update(struct discord_gateway *gw);
 
 struct discord_timers {
     priority_queue *q;
+    struct discord_timer *currently_being_run;
 };
 
 /**
