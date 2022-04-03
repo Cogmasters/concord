@@ -786,8 +786,8 @@ struct discord {
     struct {
         /** callback to be triggered on timer's timeout */
         discord_ev_idle cb;
-        /** when `cb` should be called in milliseconds */
-        int64_t next;
+        /** the id of the wake timer */
+        unsigned id;
     } wakeup_timer;
 
     /** triggers when idle.  */

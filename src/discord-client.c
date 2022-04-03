@@ -288,20 +288,37 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
+
+static void
+discord_wake_timer_cb(struct discord *client, struct discord_timer *timer) {
+    if (~timer->flags & DISCORD_TIMER_CANCELED && client->wakeup_timer.cb)
+        client->wakeup_timer.cb(client);
+}
+
 void
 discord_set_next_wakeup(struct discord *client, int64_t delay)
 {
-    if (delay == -1)
-        client->wakeup_timer.next = -1;
-    else if (delay >= 0)
-        client->wakeup_timer.next = (int64_t)cog_timestamp_ms() + delay;
+    unsigned id = discord_internal_timer_ctl(client, 
+        &(struct discord_timer) {
+            .id = client->wakeup_timer.id,
+            .cb = discord_wake_timer_cb,
+            .delay = delay,
+        });
+    client->wakeup_timer.id = id;
 }
 
 void
 discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
 {
     client->wakeup_timer.cb = callback;
-    client->wakeup_timer.next = -1;
+    if (client->wakeup_timer.id) {
+        discord_internal_timer_ctl(client, 
+            &(struct discord_timer) {
+                .id = client->wakeup_timer.id,
+                .cb = discord_wake_timer_cb,
+                .delay = -1,
+            });
+    }
 }
 
 void
@@ -337,15 +354,9 @@ discord_run(struct discord *client)
 
             now = (int64_t)cog_timestamp_ms();
 
-            if (!client->on_idle) {
+            if (!client->on_idle) 
                 poll_time = now < next_run ? (int)(next_run - now) : 0;
 
-                if (client->wakeup_timer.next != -1
-                    && client->wakeup_timer.next <= now + poll_time)
-                {
-                    poll_time = (int)(client->wakeup_timer.next - now);
-                }
-            }
             struct discord_timers *const timers[] =
                 { &client->timers.internal, &client->timers.user };
             for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
@@ -376,17 +387,8 @@ discord_run(struct discord *client)
             if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
                 break;
 
-            now = (int64_t)cog_timestamp_ms();
-
             for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++)
                 discord_timers_run(client, timers[i]);
-
-            /* check for pending wakeup timers */
-            if (client->wakeup_timer.next != -1
-                && now >= client->wakeup_timer.next) {
-                client->wakeup_timer.next = -1;
-                if (client->wakeup_timer.cb) client->wakeup_timer.cb(client);
-            }
 
             if (next_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
