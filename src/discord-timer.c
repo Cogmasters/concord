@@ -69,6 +69,9 @@ _discord_timer_ctl(
     if (!timer->id) {
         return priority_queue_push(timers->q, &now, timer);
     } else {
+        if (timers->currently_being_run
+            && timers->currently_being_run->id == timer->id)
+            timers->currently_being_run->flags |= DISCORD_TIMER_DONT_UPDATE;
         if (priority_queue_update(timers->q, timer->id, &now, timer))
             return timer->id;
         return 0;
@@ -86,10 +89,11 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
 {
     int64_t now = (int64_t)discord_timestamp_us(client);
     struct discord_timer timer;
+    timers->currently_being_run = &timer;
     for (int64_t trigger; 
         (timer.id = priority_queue_peek(timers->q, &trigger, &timer));)
     {
-        if (trigger > now || trigger == -1) return;
+        if (trigger > now || trigger == -1) break;
 
         TIMER_TRY_DELETE
 
@@ -108,18 +112,29 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         }
         if (priority_queue_peek(timers->q, NULL, NULL) != timer.id)
             continue;
-        
+        if (timer.flags & DISCORD_TIMER_DONT_UPDATE)
+            continue;
         priority_queue_update(timers->q, timer.id, &next, &timer);
     }
+    timers->currently_being_run = NULL;
 }
+
 unsigned
 discord_timer_ctl(struct discord *client, struct discord_timer *timer)
 {
     return _discord_timer_ctl(client, &client->timers.user, timer);
 }
 
-unsigned discord_timer(struct discord *client, discord_ev_timer cb,
-                       void *data, int64_t delay)
+unsigned 
+discord_internal_timer_ctl(struct discord *client,
+                                    struct discord_timer *timer)
+{
+    return _discord_timer_ctl(client, &client->timers.internal, timer);
+}
+
+static unsigned
+_discord_timer(struct discord *client, struct discord_timers *timers,
+              discord_ev_timer cb, void *data, int64_t delay)
 {
     struct discord_timer timer = {
       .cb = cb,
@@ -127,5 +142,20 @@ unsigned discord_timer(struct discord *client, discord_ev_timer cb,
       .delay = delay,
       .flags = DISCORD_TIMER_DELETE_AUTO,
     };
-    return discord_timer_ctl(client, &timer);
+    return _discord_timer_ctl(client, timers, &timer);
+}
+
+unsigned
+discord_timer(struct discord *client, discord_ev_timer cb,
+              void *data, int64_t delay)
+{
+    return _discord_timer(client, &client->timers.user, cb, data, delay);
+}
+
+
+unsigned
+discord_internal_timer(struct discord *client, discord_ev_timer cb,
+                       void *data, int64_t delay)
+{
+    return _discord_timer(client, &client->timers.internal, cb, data, delay);
 }
