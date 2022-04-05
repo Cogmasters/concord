@@ -27,7 +27,6 @@
 
 #include "uthash.h"
 #include "queue.h"
-#include "heap-inl.h"
 #include "priority_queue.h"
 
 /** @brief Return 1 if string isn't considered empty */
@@ -156,10 +155,6 @@ struct discord_context {
     struct ua_conn *conn;
     /** the request bucket's queue entry */
     QUEUE entry;
-    /** the min-heap node (for selecting timeouts) */
-    struct heap_node node;
-    /** the timeout timestamp */
-    u64unix_ms timeout_ms;
 
     /** current retry attempt (stop at adapter->retry_limit) */
     int retry_attempt;
@@ -194,10 +189,8 @@ struct discord_adapter {
         pthread_mutex_t lock;
     } * global;
 
-    /** idle request handles of type 'struct discord_context' */
-    QUEUE *idleq;
-    /* request timeouts */
-    struct heap timeouts;
+    /** idle request handles */
+    QUEUE(struct discord_context) *idleq;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -321,12 +314,10 @@ struct discord_bucket {
     u64unix_ms reset_tstamp;
     /** synchronize ratelimiting between threads */
     pthread_mutex_t lock;
-    /** pending requests of type 'struct discord_context' */
-    QUEUE waitq;
-    /** busy requests of type 'struct discord_context' */
-    QUEUE busyq;
-    /** avoid excessive timeouts */
-    bool freeze;
+    /** pending requests */
+    QUEUE(struct discord_context) waitq;
+    /** busy requests */
+    QUEUE(struct discord_context) busyq;
     /** makes this structure hashable */
     UT_hash_handle hh;
 };
@@ -721,7 +712,7 @@ void discord_timers_run(struct discord *client, struct discord_timers *timers);
  * @param client the client created with discord_init()
  * @param timers the timer group to perform this operation on
  * @param timer the timer that should be modified
- * @return unsigned the id of the timer
+ * @return the id of the timer
  */
 unsigned _discord_timer_ctl(
     struct discord *client,
