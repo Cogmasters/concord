@@ -113,7 +113,7 @@ on_static(struct discord *client, const struct discord_message *msg)
             .title = "Concord",
             .description = "Discord API library",
             .url = "https://github.com/Cogmasters/concord",
-            .color = 3447003,
+        .color = 0x3498DB,
             .timestamp = discord_timestamp(client),
             .footer =
                 &(struct discord_embed_footer){
@@ -156,7 +156,7 @@ on_builder(struct discord *client, const struct discord_message *msg)
     if (msg->author->bot) return;
 
     struct discord_embed embed = {
-        .color = 3447003,
+        .color = 0x3498DB,
         .timestamp = discord_timestamp(client),
     };
 
