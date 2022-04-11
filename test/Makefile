@@ -1,7 +1,7 @@
 # This Makefile assumes the top folder has been built
 
 TOP = ..
-CC ?= gcc
+CC = gcc
 
 COGUTILS_DIR  := $(TOP)/cog-utils
 CORE_DIR      := $(TOP)/core
@@ -20,10 +20,16 @@ LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
 
 all: $(EXES)
 
-$(TEST_DISCORD): %: %.c
-	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)
-$(TEST_CORE): %: %.c
-	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)
+$(TEST_DISCORD): 
+	for test in $(TEST_DISCORD); do \
+		echo $$test; \
+		$(CC) $(CFLAGS) -o $$test $$test.c -ldiscord $(LDFLAGS); \
+	done
+$(TEST_CORE): 
+	for test in $(TEST_DISCORD); do \
+		echo $$test; \
+		$(CC) $(CFLAGS) -o $$test $$test.c -ldiscord $(LDFLAGS); \
+	done
 
 echo:
 	@ echo -e 'CC: $(CC)\n'

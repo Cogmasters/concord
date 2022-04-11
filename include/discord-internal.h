@@ -27,7 +27,7 @@
 
 #include "uthash.h"
 #include "queue.h"
-#include "heap-inl.h"
+#include "priority_queue.h"
 
 /** @brief Return 1 if string isn't considered empty */
 #define NOT_EMPTY_STR(str) ((str) && *(str))
@@ -155,10 +155,6 @@ struct discord_context {
     struct ua_conn *conn;
     /** the request bucket's queue entry */
     QUEUE entry;
-    /** the min-heap node (for selecting timeouts) */
-    struct heap_node node;
-    /** the timeout timestamp */
-    u64unix_ms timeout_ms;
 
     /** current retry attempt (stop at adapter->retry_limit) */
     int retry_attempt;
@@ -193,10 +189,8 @@ struct discord_adapter {
         pthread_mutex_t lock;
     } * global;
 
-    /** idle request handles of type 'struct discord_context' */
-    QUEUE *idleq;
-    /* request timeouts */
-    struct heap timeouts;
+    /** idle request handles */
+    QUEUE(struct discord_context) *idleq;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -320,12 +314,10 @@ struct discord_bucket {
     u64unix_ms reset_tstamp;
     /** synchronize ratelimiting between threads */
     pthread_mutex_t lock;
-    /** pending requests of type 'struct discord_context' */
-    QUEUE waitq;
-    /** busy requests of type 'struct discord_context' */
-    QUEUE busyq;
-    /** avoid excessive timeouts */
-    bool freeze;
+    /** pending requests */
+    QUEUE(struct discord_context) waitq;
+    /** busy requests */
+    QUEUE(struct discord_context) busyq;
     /** makes this structure hashable */
     UT_hash_handle hh;
 };
@@ -412,12 +404,6 @@ void discord_bucket_build(struct discord_adapter *adapter,
 /** @defgroup DiscordInternalGateway WebSockets API
  * @brief Wrapper to the Discord Gateway API
  *  @{ */
-
-struct discord_gateway_cmd_cbs {
-    char *start;
-    size_t size;
-    discord_ev_message cb;
-};
 
 struct discord_gateway_cbs {
     /** triggers when connection first establishes */
@@ -585,16 +571,22 @@ struct discord_gateway {
         /** the prefix expected for every command */
         struct sized_buffer prefix;
         /** user's command/callback pair @see discord_set_on_command() */
-        struct discord_gateway_cmd_cbs *pool;
+        struct {
+            /** the command string contents */
+            char *start;
+            /** the command string length */
+            size_t size;
+            /** the assigned callback for the command */
+            discord_ev_message cb;
+        } * pool, fallback;
         /** amount of command/callback pairs in pool */
         size_t amt;
         /** actual size of command/callback pairs in pool */
         size_t cap;
-        /** fallback function incase prefix matches but command doesn't */
-        struct discord_gateway_cmd_cbs on_default;
-        /** user's callbacks */
+
+        /** the user's callbacks for Discord events */
         struct discord_gateway_cbs cbs;
-        /** event execution flow callback */
+        /** the event scheduler callback */
         discord_ev_scheduler scheduler;
     } cmds;
 };
@@ -684,6 +676,75 @@ void discord_gateway_send_presence_update(struct discord_gateway *gw);
 
 /** @} DiscordInternalGateway */
 
+/** @defgroup DiscordInternalTimer Timer API
+ * @brief Callback scheduling API
+ *  @{ */
+
+struct discord_timers {
+    priority_queue *q;
+    struct discord_timer *currently_being_run;
+};
+
+/**
+ * @brief prepare timers for usage
+ * 
+ * @param client the client created with discord_init()
+ */
+void discord_timers_init(struct discord *client);
+
+/**
+ * @brief cleanup timers and call cancel any running ones
+ * 
+ * @param client the client created with discord_init()
+ */
+void discord_timers_cleanup(struct discord *client);
+
+/**
+ * @brief run all timers that are due
+ * 
+ * @param client the client created with discord_init()
+ * @param timers the timers to run
+ */
+void discord_timers_run(struct discord *client, struct discord_timers *timers);
+
+/**
+ * @brief modifies or creates a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param timers the timer group to perform this operation on
+ * @param timer the timer that should be modified
+ * @return the id of the timer
+ */
+unsigned _discord_timer_ctl(
+    struct discord *client,
+    struct discord_timers *timers,
+    struct discord_timer *timer);
+
+/**
+ * @brief modifies or creates a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param timer the timer that should be modified
+ * @return unsigned the id of the timer
+ */
+unsigned discord_internal_timer_ctl(
+    struct discord *client,
+    struct discord_timer *timer);
+
+/**
+ * @brief creates a one shot timer that automatically
+ *        deletes itself upon completion
+ * 
+ * @param client the client created with discord_init()
+ * @param cb the callback that should be called when timer triggers
+ * @param data user data
+ * @param delay delay before timer should start in milliseconds
+ * @return unsigned 
+ */
+unsigned discord_internal_timer(struct discord *client, discord_ev_timer cb,
+                                void *data, int64_t delay);
+
+/** @} DiscordInternalTimer */
 /**
  * @brief The Discord client handler
  *
@@ -707,12 +768,17 @@ struct discord {
     /** the client's user structure */
     struct discord_user self;
 
+    struct {
+        struct discord_timers internal;
+        struct discord_timers user;
+    } timers;
+
     /** wakeup timer handle */
     struct {
         /** callback to be triggered on timer's timeout */
         discord_ev_idle cb;
-        /** when `cb` should be called in milliseconds */
-        int64_t next;
+        /** the id of the wake timer */
+        unsigned id;
     } wakeup_timer;
 
     /** triggers when idle.  */
@@ -723,10 +789,10 @@ struct discord {
     /** space for user arbitrary data */
     void *data;
 
-#ifdef HAS_DISCORD_VOICE
+#ifdef CCORD_VOICE
     struct discord_voice vcs[DISCORD_MAX_VCS];
     struct discord_voice_cbs voice_cbs;
-#endif /* HAS_DISCORD_VOICE */
+#endif /* CCORD_VOICE */
 };
 
 /** @} DiscordInternal */

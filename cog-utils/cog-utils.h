@@ -156,6 +156,13 @@ int cog_sleep_ms(const long tms);
 uint64_t cog_timestamp_ms(void);
 
 /**
+ * @brief Get the current timestamp in microseconds
+ *
+ * @return the timestamp on success, 0 on failure
+ */
+uint64_t cog_timestamp_us(void);
+
+/**
  * @brief Check if arbitrary string length is exceeded
  *
  * @param str the string to be checked

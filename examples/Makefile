@@ -1,7 +1,7 @@
 # This Makefile assumes the top folder has been built
 
 TOP = ..
-CC ?= gcc
+CC = gcc
 
 COGUTILS_DIR := $(TOP)/cog-utils
 CORE_DIR     := $(TOP)/core
@@ -29,20 +29,24 @@ BOTS := audit-log \
         slash-commands2 \
         spam \
         webhook \
+        timers \
         $(XSRC)
 
 CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
            -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
            -O0 -g -pthread -Wall $(XFLAGS)
-LDFLAGS += -L$(TOP)/lib $(pkg-config --libs --cflags libcurl) -lcurl
+LDFLAGS += -L$(TOP)/lib -lcurl
 
 all: $(BOTS)
 
 voice:
-	$(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XSRC=voice all
+	$(MAKE) XFLAGS=-DCCORD_VOICE XSRC=voice all
 
-$(BOTS): %: %.c
-	$(CC) $(CFLAGS) -o $@ $< -ldiscord $(LDFLAGS)
+$(BOTS):
+	for bot in $(BOTS); do \
+		echo $$bot; \
+		$(CC) $(CFLAGS) -o $$bot $$bot.c -ldiscord $(LDFLAGS); \
+	done
 
 echo:
 	@ echo -e 'CC: $(CC)\n'

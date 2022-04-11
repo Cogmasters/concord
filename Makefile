@@ -17,36 +17,39 @@ CCORDDOCS_DIR = concord-docs
 GENCODECS_HDR = $(GENCODECS_DIR)/discord_codecs.h
 GENCODECS_OBJ = $(GENCODECS_DIR)/discord_codecs.o
 
-COGUTILS_OBJS = $(OBJDIR)/$(COGUTILS_DIR)/cog-utils.o  \
-                $(OBJDIR)/$(COGUTILS_DIR)/log.o        \
-                $(OBJDIR)/$(COGUTILS_DIR)/logconf.o    \
-                $(OBJDIR)/$(COGUTILS_DIR)/json-build.o \
-                $(OBJDIR)/$(COGUTILS_DIR)/jsmn-find.o
-CORE_OBJS     = $(OBJDIR)/$(CORE_DIR)/work.o       \
-                $(OBJDIR)/$(CORE_DIR)/user-agent.o \
-                $(OBJDIR)/$(CORE_DIR)/websockets.o \
-                $(OBJDIR)/$(CORE_DIR)/io_poller.o
-THIRDP_OBJS   = $(OBJDIR)/$(THIRDP_DIR)/sha1.o           \
-                $(OBJDIR)/$(THIRDP_DIR)/curl-websocket.o \
-                $(OBJDIR)/$(THIRDP_DIR)/threadpool.o
-DISCORD_OBJS  = $(OBJDIR)/$(SRC_DIR)/concord-once.o        \
-                $(OBJDIR)/$(SRC_DIR)/discord-adapter.o     \
-                $(OBJDIR)/$(SRC_DIR)/discord-ratelimit.o   \
-                $(OBJDIR)/$(SRC_DIR)/discord-client.o      \
-                $(OBJDIR)/$(SRC_DIR)/discord-gateway.o     \
-                $(OBJDIR)/$(SRC_DIR)/discord-misc.o        \
-                $(OBJDIR)/$(SRC_DIR)/application_command.o \
-                $(OBJDIR)/$(SRC_DIR)/interaction.o         \
-                $(OBJDIR)/$(SRC_DIR)/audit_log.o           \
-                $(OBJDIR)/$(SRC_DIR)/channel.o             \
-                $(OBJDIR)/$(SRC_DIR)/emoji.o               \
-                $(OBJDIR)/$(SRC_DIR)/gateway.o             \
-                $(OBJDIR)/$(SRC_DIR)/guild.o               \
-                $(OBJDIR)/$(SRC_DIR)/guild_template.o      \
-                $(OBJDIR)/$(SRC_DIR)/invite.o              \
-                $(OBJDIR)/$(SRC_DIR)/user.o                \
-                $(OBJDIR)/$(SRC_DIR)/voice.o               \
-                $(OBJDIR)/$(SRC_DIR)/webhook.o             \
+COGUTILS_OBJS = $(COGUTILS_DIR)/cog-utils.o  \
+                $(COGUTILS_DIR)/log.o        \
+                $(COGUTILS_DIR)/logconf.o    \
+                $(COGUTILS_DIR)/json-build.o \
+                $(COGUTILS_DIR)/jsmn-find.o
+CORE_OBJS     = $(CORE_DIR)/work.o       \
+                $(CORE_DIR)/user-agent.o \
+                $(CORE_DIR)/websockets.o \
+                $(CORE_DIR)/io_poller.o
+THIRDP_OBJS   = $(THIRDP_DIR)/sha1.o           \
+                $(THIRDP_DIR)/curl-websocket.o \
+                $(THIRDP_DIR)/threadpool.o     \
+                $(THIRDP_DIR)/priority_queue.o
+DISCORD_OBJS  = $(SRC_DIR)/concord-once.o              \
+                $(SRC_DIR)/discord-adapter.o           \
+                $(SRC_DIR)/discord-adapter_ratelimit.o \
+                $(SRC_DIR)/discord-adapter_refcount.o  \
+                $(SRC_DIR)/discord-client.o            \
+                $(SRC_DIR)/discord-gateway.o           \
+                $(SRC_DIR)/discord-timer.o             \
+                $(SRC_DIR)/discord-misc.o              \
+                $(SRC_DIR)/application_command.o       \
+                $(SRC_DIR)/interaction.o               \
+                $(SRC_DIR)/audit_log.o                 \
+                $(SRC_DIR)/channel.o                   \
+                $(SRC_DIR)/emoji.o                     \
+                $(SRC_DIR)/gateway.o                   \
+                $(SRC_DIR)/guild.o                     \
+                $(SRC_DIR)/guild_template.o            \
+                $(SRC_DIR)/invite.o                    \
+                $(SRC_DIR)/user.o                      \
+                $(SRC_DIR)/voice.o                     \
+                $(SRC_DIR)/webhook.o                   \
                 $(XOBJ)
 
 OBJS := $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS) \
@@ -59,18 +62,18 @@ CFLAGS += -std=c99 -O0 -g -pthread -D_XOPEN_SOURCE=600                     \
           -I$(GENCODECS_DIR) -I$(PREFIX)/include -DLOG_USE_COLOR
 WFLAGS += -Wall -Wextra -Wshadow -Wdouble-promotion -Wconversion -Wpedantic
 
-$(OBJDIR)/$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(WFLAGS) $(XFLAGS) -c -o $@ $<
-$(OBJDIR)/%.o: %.c
+%.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: $(LIB)
 
 voice:
-	@ $(MAKE) XFLAGS=-DHAS_DISCORD_VOICE XOBJ=$(OBJDIR)/$(SRC_DIR)/discord-voice.o all
+	@ $(MAKE) XFLAGS=-DCCORD_VOICE XOBJ=$(SRC_DIR)/discord-voice.o all
 
 debug:
-	@ $(MAKE) XFLAGS="-D_CCORD_DEBUG_WEBSOCKETS -D_CCORD_DEBUG_ADAPTER" all
+	@ $(MAKE) XFLAGS="-DCCORD_DEBUG_WEBSOCKETS -DCCORD_DEBUG_ADAPTER" all
 
 test: all
 	@ $(MAKE) -C $(TEST_DIR)
@@ -119,8 +122,7 @@ echo:
 	@ echo -e 'OBJS: $(OBJS)\n'
 
 clean: 
-	rm -rf $(OBJDIR)
-	rm -rf $(LIBDIR)
+	rm -rf $(GENCODECS_OBJS) $(COGUTILS_OBJS) $(CORE_OBJS) $(THIRDP_OBJS) $(DISCORD_OBJS)
 	@ $(MAKE) -C $(TEST_DIR) clean
 	@ $(MAKE) -C $(EXAMPLES_DIR) clean
 
