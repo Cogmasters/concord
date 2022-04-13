@@ -2,6 +2,12 @@
 #include "discord.h"
 #include "discord-internal.h"
 
+#define DISCORD_TIMER_ALLOWED_FLAGS \
+    ( DISCORD_TIMER_MILLISECONDS    \
+    | DISCORD_TIMER_MICROSECONDS    \
+    | DISCORD_TIMER_DELETE          \
+    | DISCORD_TIMER_DELETE_AUTO     ) 
+
 static int
 cmp_timers(const void *a, const void *b)
 {
@@ -51,38 +57,50 @@ unsigned
 _discord_timer_ctl(
     struct discord *client,
     struct discord_timers *timers,
-    struct discord_timer *timer)
+    struct discord_timer *timer_ret)
 {
-    int64_t now = -1;
-    if (timer->flags & DISCORD_TIMER_DELETE) {
-        unsigned id;
-        if (timer->id) {
-            id = priority_queue_get(timers->q, timer->id, NULL, timer);
-            if (id) return priority_queue_del(timers->q, id) ? id : 0;
+    struct discord_timer timer;
+    memcpy(&timer, timer_ret, sizeof timer);
+
+    int64_t key = -1;
+    if (timer.id) {
+        if (!priority_queue_get(timers->q, timer.id, &key, NULL))
+            return 0;
+
+        if (timer.flags & DISCORD_TIMER_GET) {
+            priority_queue_get(timers->q, timer.id, NULL, timer_ret);
+            if (timer.flags == DISCORD_TIMER_GET)
+                return timer.id;
         }
-        return 0;
     }
-    if (timer->delay >= 0)
+    
+    int64_t now = -1;
+    if (timer.delay >= 0)
         now = (int64_t)discord_timestamp_us(client) + 
-              ((timer->flags & DISCORD_TIMER_MICROSECONDS)
-              ? timer->delay : timer->delay * 1000);
-    if (!timer->id) {
-        return priority_queue_push(timers->q, &now, timer);
+              ((timer.flags & DISCORD_TIMER_MICROSECONDS)
+              ? timer.delay : timer.delay * 1000);
+    if (timer.flags & (DISCORD_TIMER_DELETE | DISCORD_TIMER_CANCELED))
+        now = 0;
+    
+    timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS | DISCORD_TIMER_CANCELED;
+
+    if (!timer.id) {
+        return priority_queue_push(timers->q, &now, &timer);
     } else {
         if (timers->currently_being_run
-            && timers->currently_being_run->id == timer->id)
+            && timers->currently_being_run->id == timer.id)
             timers->currently_being_run->flags |= DISCORD_TIMER_DONT_UPDATE;
-        if (priority_queue_update(timers->q, timer->id, &now, timer))
-            return timer->id;
+        if (priority_queue_update(timers->q, timer.id, &now, &timer))
+            return timer.id;
         return 0;
     }
 }
 
 #define TIMER_TRY_DELETE                           \
-  if (timer.flags & DISCORD_TIMER_DELETE) {        \
-        priority_queue_pop(timers->q, NULL, NULL); \
+    if (timer.flags & DISCORD_TIMER_DELETE) {      \
+        priority_queue_del(timers->q, timer.id);   \
         continue;                                  \
-  }
+    }
 
 void
 discord_timers_run(struct discord *client, struct discord_timers *timers)
@@ -95,25 +113,28 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
     {
         if (trigger > now || trigger == -1) break;
 
-        TIMER_TRY_DELETE
+        if (~timer.flags & DISCORD_TIMER_CANCELED)
+            TIMER_TRY_DELETE
 
-        if (timer.repeat > 0)
+        if (timer.repeat > 0 && ~timer.flags & DISCORD_TIMER_CANCELED)
             timer.repeat--;
         if (timer.cb) timer.cb(client, &timer);
-        if (timer.repeat == 0 && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
+        if ((timer.repeat == 0 || timer.flags & DISCORD_TIMER_CANCELED)
+            && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
             timer.flags |= DISCORD_TIMER_DELETE;
         TIMER_TRY_DELETE
         
+        if (timer.flags & DISCORD_TIMER_DONT_UPDATE)
+            continue;
+        
         int64_t next = -1;
-        if (timer.repeat != 0 && timer.delay != -1) {
+        if (timer.repeat != 0 && timer.delay != -1
+            && ~timer.flags & DISCORD_TIMER_CANCELED) {
             if (timer.interval > 0)
               next = now + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
                            ? timer.interval : timer.interval * 1000);
         }
-        if (priority_queue_peek(timers->q, NULL, NULL) != timer.id)
-            continue;
-        if (timer.flags & DISCORD_TIMER_DONT_UPDATE)
-            continue;
+        timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS;
         priority_queue_update(timers->q, timer.id, &next, &timer);
     }
     timers->currently_being_run = NULL;
@@ -151,7 +172,6 @@ discord_timer(struct discord *client, discord_ev_timer cb,
 {
     return _discord_timer(client, &client->timers.user, cb, data, delay);
 }
-
 
 unsigned
 discord_internal_timer(struct discord *client, discord_ev_timer cb,

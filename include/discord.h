@@ -308,6 +308,8 @@ enum discord_timer_flags {
     DISCORD_TIMER_CANCELED        = 1 << 3,
     /** used in the timer callback to skip update phase */
     DISCORD_TIMER_DONT_UPDATE     = 1 << 4,
+    /** used in discord_timer_ctl to get the timer's data */
+    DISCORD_TIMER_GET             = 1 << 5,
 };
 
 /** @brief struct used for modifying, and getting info about a timer */
