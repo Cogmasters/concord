@@ -310,6 +310,8 @@ enum discord_timer_flags {
     DISCORD_TIMER_DONT_UPDATE     = 1 << 4,
     /** used in discord_timer_ctl to get the timer's data */
     DISCORD_TIMER_GET             = 1 << 5,
+    /** timer should run using a fixed interval based on start time */
+    DISCORD_TIMER_INTERVAL_FIXED  = 1 << 6,
 };
 
 /** @brief struct used for modifying, and getting info about a timer */

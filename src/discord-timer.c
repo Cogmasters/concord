@@ -6,7 +6,8 @@
     ( DISCORD_TIMER_MILLISECONDS    \
     | DISCORD_TIMER_MICROSECONDS    \
     | DISCORD_TIMER_DELETE          \
-    | DISCORD_TIMER_DELETE_AUTO     ) 
+    | DISCORD_TIMER_DELETE_AUTO     \
+    | DISCORD_TIMER_INTERVAL_FIXED  ) 
 
 static int
 cmp_timers(const void *a, const void *b)
@@ -131,8 +132,10 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         if (timer.repeat != 0 && timer.delay != -1
             && ~timer.flags & DISCORD_TIMER_CANCELED) {
             if (timer.interval > 0)
-              next = now + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
-                           ? timer.interval : timer.interval * 1000);
+              next = ((timer.flags & DISCORD_TIMER_INTERVAL_FIXED)
+                     ? trigger : now) +
+                     ((timer.flags & DISCORD_TIMER_MICROSECONDS)
+                     ? timer.interval : timer.interval * 1000);
         }
         timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS;
         priority_queue_update(timers->q, timer.id, &next, &timer);
