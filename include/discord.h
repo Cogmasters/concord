@@ -355,6 +355,25 @@ unsigned discord_timer(struct discord *client, discord_ev_timer cb,
                        void *data, int64_t delay);
 
 /**
+ * @brief creates a repeating timer that automatically
+ *        deletes itself upon completion
+ * 
+ * @param client the client created with discord_init()
+ * @param cb the callback that should be called when timer triggers
+ * @param data user data
+ * @param delay delay before timer should start in milliseconds
+ * @param interval interval between runs
+ * @param repeat repetitions (-1 == infinity)
+ * @return the id of the timer 
+ */
+unsigned discord_timer_interval(struct discord *client,
+                                discord_ev_timer cb,
+                                void *data,
+                                int64_t delay,
+                                int64_t interval,
+                                int64_t repeat);
+
+/**
  * @brief get the data associated with the timer
  * 
  * @param client the client created with discord_init()

@@ -171,6 +171,21 @@ _discord_timer(struct discord *client, struct discord_timers *timers,
 }
 
 unsigned
+discord_timer_interval(struct discord *client, discord_ev_timer cb, void *data,
+                    int64_t delay, int64_t interval, int64_t repeat)
+{
+    struct discord_timer timer = {
+      .cb = cb,
+      .data = data,
+      .delay = delay,
+      .interval = interval,
+      .repeat = repeat,
+      .flags = DISCORD_TIMER_DELETE_AUTO,
+    };
+    return discord_timer_ctl(client, &timer);
+}
+
+unsigned
 discord_timer(struct discord *client, discord_ev_timer cb,
               void *data, int64_t delay)
 {
