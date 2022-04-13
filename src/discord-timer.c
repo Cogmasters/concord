@@ -183,3 +183,81 @@ discord_internal_timer(struct discord *client, discord_ev_timer cb,
 {
     return _discord_timer(client, &client->timers.internal, cb, data, delay);
 }
+
+bool
+discord_timer_get(struct discord *client, unsigned id,
+                  struct discord_timer *timer)
+{
+    if (!id) return 0;
+    return priority_queue_get(client->timers.user.q, id, NULL, timer);
+}
+
+static void
+discord_timer_disable_update_if_active(struct discord_timers *timers,
+                                       unsigned id)
+{
+    if (!timers->active.timer)
+        return;
+    if (timers->active.timer->id == id)
+        timers->active.skip_update_phase = true;
+}
+
+bool
+discord_timer_start(struct discord *client, unsigned id)
+{
+    struct discord_timer timer;
+    discord_timer_disable_update_if_active(&client->timers.user, id);
+    if (discord_timer_get(client, id, &timer)) {
+        if (timer.delay < 0)
+            timer.delay = 0;
+        return discord_timer_ctl(client, &timer);
+    }
+    return false;
+}
+
+bool
+discord_timer_stop(struct discord *client, unsigned id)
+{
+    struct discord_timer timer;
+    discord_timer_disable_update_if_active(&client->timers.user, id);
+    if (discord_timer_get(client, id, &timer)) {
+        int64_t disabled = -1;
+        return priority_queue_update(client->timers.user.q,
+                                     id, &disabled, &timer);
+    }
+    return false;
+}
+
+static bool
+discord_timer_add_flags(struct discord *client, unsigned id,
+                           enum discord_timer_flags flags)
+{
+    struct discord_timer timer;
+    discord_timer_disable_update_if_active(&client->timers.user, id);
+    if (discord_timer_get(client, id, &timer)) {
+        timer.flags |= flags;
+        int64_t run_now = 0;
+        return priority_queue_update(client->timers.user.q,
+                                     id, &run_now, &timer);
+    }
+    return false;
+}
+
+bool
+discord_timer_cancel(struct discord *client, unsigned id)
+{
+    return discord_timer_add_flags(client, id, DISCORD_TIMER_CANCELED);
+}
+
+bool
+discord_timer_delete(struct discord *client, unsigned id)
+{
+    return discord_timer_add_flags(client, id, DISCORD_TIMER_DELETE);
+}
+
+bool
+discord_timer_cancel_and_delete(struct discord *client, unsigned id)
+{
+    return discord_timer_add_flags(client, id, DISCORD_TIMER_DELETE 
+                                             | DISCORD_TIMER_CANCELED);
+}

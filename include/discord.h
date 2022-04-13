@@ -354,6 +354,63 @@ unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
 unsigned discord_timer(struct discord *client, discord_ev_timer cb,
                        void *data, int64_t delay);
 
+/**
+ * @brief get the data associated with the timer
+ * 
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @param timer where to copy the timer data to
+ * @return true on success
+ */
+bool discord_timer_get(struct discord *client, unsigned id,
+                       struct discord_timer *timer);
+
+/**
+ * @brief starts a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_start(struct discord *client, unsigned id);
+
+/**
+ * @brief stops a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_stop(struct discord *client, unsigned id);
+
+/**
+ * @brief cancels a timer,
+ * this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled
+ * 
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_cancel(struct discord *client, unsigned id);
+
+/**
+ * @brief deletes a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_delete(struct discord *client, unsigned id);
+
+/**
+ * @brief cancels, and deletes a timer
+ * 
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_cancel_and_delete(struct discord *client, unsigned id);
+
 /** @example timers.c
  * Demonstrates the Timer API for callback scheduling */
                        
