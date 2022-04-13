@@ -105,7 +105,7 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         TIMER_TRY_DELETE
         
         int64_t next = -1;
-        if (timer.repeat != 0) {
+        if (timer.repeat != 0 && timer.delay != -1) {
             if (timer.interval > 0)
               next = now + ((timer.flags & DISCORD_TIMER_MICROSECONDS)
                            ? timer.interval : timer.interval * 1000);
