@@ -306,8 +306,8 @@ enum discord_timer_flags {
     DISCORD_TIMER_DELETE_AUTO     = 1 << 2,
     /** timer has been canceled. user should cleanup only */
     DISCORD_TIMER_CANCELED        = 1 << 3,
-    /** used in the timer callback to skip update phase */
-    DISCORD_TIMER_DONT_UPDATE     = 1 << 4,
+
+    
     /** used in discord_timer_ctl to get the timer's data */
     DISCORD_TIMER_GET             = 1 << 5,
     /** timer should run using a fixed interval based on start time */
