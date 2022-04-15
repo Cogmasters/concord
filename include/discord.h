@@ -326,7 +326,7 @@ struct discord_timer {
     void *data;
     /** delay before timer should start */
     int64_t delay;
-    /** interval that the timer should repeat at. must be > 1 */
+    /** interval that the timer should repeat at. must be >= 0 */
     int64_t interval;
     /** how many times a timer should repeat (-1 == infinity) */
     int64_t repeat;
@@ -362,7 +362,7 @@ unsigned discord_timer(struct discord *client, discord_ev_timer cb,
  * @param cb the callback that should be called when timer triggers
  * @param data user data
  * @param delay delay before timer should start in milliseconds
- * @param interval interval between runs
+ * @param interval interval between runs. (-1 == disable repeat)
  * @param repeat repetitions (-1 == infinity)
  * @return the id of the timer 
  */

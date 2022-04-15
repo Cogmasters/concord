@@ -132,7 +132,7 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         int64_t next = -1;
         if (timer.repeat != 0 && timer.delay != -1
             && ~timer.flags & DISCORD_TIMER_CANCELED) {
-            if (timer.interval > 0)
+            if (timer.interval >= 0)
               next = ((timer.flags & DISCORD_TIMER_INTERVAL_FIXED)
                      ? trigger : now) +
                      ((timer.flags & DISCORD_TIMER_MICROSECONDS)
