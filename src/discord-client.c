@@ -348,32 +348,40 @@ discord_run(struct discord *client)
     while (1) {
         if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
 
-        next_run = (int64_t)cog_timestamp_ms();
+        next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
-            int poll_time = 0, poll_result;
+            int64_t poll_time = 0, poll_result;
 
-            now = (int64_t)cog_timestamp_ms();
-
-            if (!client->on_idle) 
-                poll_time = now < next_run ? (int)(next_run - now) : 0;
+            now = (int64_t)discord_timestamp_us(client);
 
             struct discord_timers *const timers[] =
                 { &client->timers.internal, &client->timers.user };
-            for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
-                int64_t trigger_us, trigger_ms;
-                if (priority_queue_peek(timers[i]->q, &trigger_us, NULL)) {
-                    trigger_ms = trigger_us / 1000;
-                    if (trigger_us >= 0) {
-                        if (trigger_ms <= now) {
+
+            if (!client->on_idle) {
+                poll_time = now < next_run ? (int)((next_run - now)) : 0;
+
+                for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
+                    int64_t trigger;
+                    if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
+                        if (trigger < 0)
+                            continue;
+                        if (trigger <= now)
                             poll_time = 0;
-                        } else if (trigger_ms - now < poll_time) {
-                            poll_time = (int)(trigger_ms - now);
-                        }
+                        else if (poll_time > trigger - now)
+                            poll_time = trigger - now;
                     }
                 }
             }
-            
-            poll_result = io_poller_poll(client->io_poller, poll_time);
+
+            if (poll_time && poll_time < 3000 /* 3 milliseconds */) {
+                poll_time = 1000; // FIXME: with below
+
+                // TODO: cog_sleep_us(poll_time);
+                //       poll_time = 0;
+            }
+
+            poll_result = io_poller_poll(client->io_poller,
+                                         (int)(poll_time / 1000));
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
             }
@@ -398,7 +406,7 @@ discord_run(struct discord *client)
                     break;
 
                 /* enforce a min 1 sec delay between runs */
-                next_run = now + 1000;
+                next_run = now + 1000000;
             }
         }
 
