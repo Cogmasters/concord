@@ -32,6 +32,30 @@ BOTS := audit-log \
         timers \
         $(XSRC)
 
+
+SRCS := audit-log.c \
+        ban.c \
+        channel.c \
+        components.c \
+        copycat.c \
+        embed.c \
+        emoji.c \
+        fetch-messages.c \
+        guild-template.c \
+        guild.c \
+        invite.c \
+        manual-dm.c \
+        pin.c \
+        ping-pong.c \
+        presence.c \
+        reaction.c \
+        shell.c \
+        slash-commands.c \
+        slash-commands2.c \
+        spam.c \
+        webhook.c \
+        timers.c
+
 CFLAGS  += -I$(INCLUDE_DIR) -I$(COGUTILS_DIR) -I$(CORE_DIR) \
            -I$(CORE_DIR)/third-party -I$(GENCODECS_DIR)     \
            -O0 -g -pthread -Wall $(XFLAGS)
@@ -42,7 +66,7 @@ all: $(BOTS)
 voice:
 	$(MAKE) XFLAGS=-DCCORD_VOICE XSRC=voice all
 
-$(BOTS):
+$(BOTS): $(SRCS)
 	for bot in $(BOTS); do \
 		echo $$bot; \
 		$(CC) $(CFLAGS) -o $$bot $$bot.c -ldiscord $(LDFLAGS); \
