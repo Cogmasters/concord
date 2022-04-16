@@ -339,11 +339,34 @@ discord_set_on_ready(struct discord *client, discord_ev_idle callback)
     client->gw.cmds.cbs.on_ready = callback;
 }
 
+static inline int64_t
+discord_timer_get_next_trigger(struct discord_timers *const timers[], size_t n,
+                               int64_t now, int64_t max_time)
+{
+    if (max_time == 0) return 0;
+
+    for (unsigned i = 0; i < n; i++) {
+        int64_t trigger;
+        if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
+            if (trigger < 0)
+                continue;
+
+            if (trigger <= now)
+                max_time = 0;
+            else if (max_time > trigger - now)
+                max_time = trigger - now;
+        }
+    }
+    return max_time;
+}
+
 CCORDcode
 discord_run(struct discord *client)
 {
     int64_t next_run, now;
     CCORDcode code;
+    struct discord_timers *const timers[] =
+        { &client->timers.internal, &client->timers.user };
 
     while (1) {
         if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
@@ -354,49 +377,39 @@ discord_run(struct discord *client)
 
             now = (int64_t)discord_timestamp_us(client);
 
-            struct discord_timers *const timers[] =
-                { &client->timers.internal, &client->timers.user };
-
             if (!client->on_idle) {
-                poll_time = now < next_run ? (int)((next_run - now)) : 0;
-
-                for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
-                    int64_t trigger;
-                    if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
-                        if (trigger < 0)
-                            continue;
-                        if (trigger <= now)
-                            poll_time = 0;
-                        else if (poll_time > trigger - now)
-                            poll_time = trigger - now;
-                    }
-                }
-
-                if (poll_time > 0) {
-                    if (poll_time < 1000) poll_time = 1000; // FIXME: with below
-
-                    // const int64_t sleep_time = poll_time % 1000;
-                    // TODO: if (sleep_time) cog_sleep_us(sleep_time);
-                }
+                poll_time = discord_timer_get_next_trigger(
+                    timers, sizeof timers / sizeof *timers, now,
+                    now < next_run ? ((next_run - now)) : 0);
             }
 
             poll_result = io_poller_poll(client->io_poller,
                                          (int)(poll_time / 1000));
+
+            now = (int64_t)discord_timestamp_us(client);
+
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
             }
             else if (0 == poll_result) {
                 if (ccord_has_sigint != 0) discord_shutdown(client);
-                if (client->on_idle) client->on_idle(client);
+                if (client->on_idle) {
+                    client->on_idle(client);
+                }
+                else {
+                    poll_time = discord_timer_get_next_trigger(
+                        timers, sizeof timers / sizeof *timers, now, 999);
+                    if (poll_time) cog_sleep_us(poll_time);
+                }
             }
 
             if (client->on_cycle) client->on_cycle(client);
 
-            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
-                break;
-
             for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++)
                 discord_timers_run(client, timers[i]);
+
+            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
+                break;
 
             if (next_run <= now) {
                 if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
