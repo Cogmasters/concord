@@ -288,9 +288,9 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
-
 static void
-discord_wake_timer_cb(struct discord *client, struct discord_timer *timer) {
+discord_wake_timer_cb(struct discord *client, struct discord_timer *timer)
+{
     if (~timer->flags & DISCORD_TIMER_CANCELED && client->wakeup_timer.cb)
         client->wakeup_timer.cb(client);
 }
@@ -298,12 +298,12 @@ discord_wake_timer_cb(struct discord *client, struct discord_timer *timer) {
 void
 discord_set_next_wakeup(struct discord *client, int64_t delay)
 {
-    unsigned id = discord_internal_timer_ctl(client, 
-        &(struct discord_timer) {
-            .id = client->wakeup_timer.id,
-            .cb = discord_wake_timer_cb,
-            .delay = delay,
-        });
+    unsigned id =
+        discord_internal_timer_ctl(client, &(struct discord_timer){
+                                               .id = client->wakeup_timer.id,
+                                               .cb = discord_wake_timer_cb,
+                                               .delay = delay,
+                                           });
     client->wakeup_timer.id = id;
 }
 
@@ -312,12 +312,11 @@ discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
 {
     client->wakeup_timer.cb = callback;
     if (client->wakeup_timer.id) {
-        discord_internal_timer_ctl(client, 
-            &(struct discord_timer) {
-                .id = client->wakeup_timer.id,
-                .cb = discord_wake_timer_cb,
-                .delay = -1,
-            });
+        discord_internal_timer_ctl(client, &(struct discord_timer){
+                                               .id = client->wakeup_timer.id,
+                                               .cb = discord_wake_timer_cb,
+                                               .delay = -1,
+                                           });
     }
 }
 
@@ -340,16 +339,17 @@ discord_set_on_ready(struct discord *client, discord_ev_idle callback)
 }
 
 static inline int64_t
-discord_timer_get_next_trigger(struct discord_timers *const timers[], size_t n,
-                               int64_t now, int64_t max_time)
+discord_timer_get_next_trigger(struct discord_timers *const timers[],
+                               size_t n,
+                               int64_t now,
+                               int64_t max_time)
 {
     if (max_time == 0) return 0;
 
     for (unsigned i = 0; i < n; i++) {
         int64_t trigger;
         if (priority_queue_peek(timers[i]->q, &trigger, NULL)) {
-            if (trigger < 0)
-                continue;
+            if (trigger < 0) continue;
 
             if (trigger <= now)
                 max_time = 0;
@@ -365,8 +365,8 @@ discord_run(struct discord *client)
 {
     int64_t next_run, now;
     CCORDcode code;
-    struct discord_timers *const timers[] =
-        { &client->timers.internal, &client->timers.user };
+    struct discord_timers *const timers[] = { &client->timers.internal,
+                                              &client->timers.user };
 
     while (1) {
         if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
@@ -383,8 +383,8 @@ discord_run(struct discord *client)
                     now < next_run ? ((next_run - now)) : 0);
             }
 
-            poll_result = io_poller_poll(client->io_poller,
-                                         (int)(poll_time / 1000));
+            poll_result =
+                io_poller_poll(client->io_poller, (int)(poll_time / 1000));
 
             now = (int64_t)discord_timestamp_us(client);
 
