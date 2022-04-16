@@ -371,13 +371,13 @@ discord_run(struct discord *client)
                             poll_time = trigger - now;
                     }
                 }
-            }
 
-            if (poll_time && poll_time < 3000 /* 3 milliseconds */) {
-                poll_time = 1000; // FIXME: with below
+                if (poll_time > 0) {
+                    if (poll_time < 1000) poll_time = 1000; // FIXME: with below
 
-                // TODO: cog_sleep_us(poll_time);
-                //       poll_time = 0;
+                    // const int64_t sleep_time = poll_time % 1000;
+                    // TODO: if (sleep_time) cog_sleep_us(sleep_time);
+                }
             }
 
             poll_result = io_poller_poll(client->io_poller,
