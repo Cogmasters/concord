@@ -110,12 +110,24 @@ void
 discord_timers_run(struct discord *client, struct discord_timers *timers)
 {
     int64_t now = (int64_t)discord_timestamp_us(client);
+    const int64_t start_time = now;
+
     struct discord_timer timer;
     timers->active.timer = &timer;
-    for (int64_t trigger, max_iterations = 10000; 
+
+    for (int64_t trigger, max_iterations = 100000; 
         (timer.id = priority_queue_peek(timers->q, &trigger, &timer)) 
         && max_iterations > 0; max_iterations--)
     {
+        //update now timestamp every so often
+        if ((max_iterations & 0x1F) == 0) {
+            now = (int64_t)discord_timestamp_us(client);
+            //break if we've spent too much time running timers
+            if (now - start_time > 3000)
+                break;
+        }
+
+        //no timers to run
         if (trigger > now || trigger == -1) break;
 
         if (~timer.flags & DISCORD_TIMER_CANCELED)
