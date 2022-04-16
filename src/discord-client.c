@@ -360,6 +360,11 @@ discord_timer_get_next_trigger(struct discord_timers *const timers[],
     return max_time;
 }
 
+#define BREAK_ON_FAIL(function)                                               \
+    do {                                                                      \
+        if (CCORD_OK != (code = function)) break;                             \
+    } while (0)
+
 CCORDcode
 discord_run(struct discord *client)
 {
@@ -369,7 +374,7 @@ discord_run(struct discord *client)
                                               &client->timers.user };
 
     while (1) {
-        if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
+        BREAK_ON_FAIL(discord_gateway_start(&client->gw));
 
         next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
@@ -408,15 +413,11 @@ discord_run(struct discord *client)
             for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++)
                 discord_timers_run(client, timers[i]);
 
-            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
-                break;
+            BREAK_ON_FAIL(io_poller_perform(client->io_poller));
 
             if (next_run <= now) {
-                if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
-                    break;
-                if (CCORD_OK
-                    != (code = discord_adapter_perform(&client->adapter)))
-                    break;
+                BREAK_ON_FAIL(discord_gateway_perform(&client->gw));
+                BREAK_ON_FAIL(discord_adapter_perform(&client->adapter));
 
                 /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000000;
@@ -432,6 +433,8 @@ discord_run(struct discord *client)
 
     return code;
 }
+
+#undef BREAK_ON_FAIL
 
 void
 discord_shutdown(struct discord *client)
