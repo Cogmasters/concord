@@ -76,14 +76,16 @@ _discord_timer_ctl(
     }
     
     int64_t now = -1;
-    if (timer.delay >= 0)
-        now = (int64_t)discord_timestamp_us(client) + 
+    if (timer.delay >= 0) {
+        now = (int64_t)discord_timestamp_us(client)
+              +
               ((timer.flags & DISCORD_TIMER_MICROSECONDS)
               ? timer.delay : timer.delay * 1000);
+    }
     if (timer.flags & (DISCORD_TIMER_DELETE | DISCORD_TIMER_CANCELED))
         now = 0;
     
-    timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS | DISCORD_TIMER_CANCELED;
+    timer.flags &= (DISCORD_TIMER_ALLOWED_FLAGS | DISCORD_TIMER_CANCELED);
 
     if (!timer.id) {
         return priority_queue_push(timers->q, &now, &timer);
@@ -96,11 +98,13 @@ _discord_timer_ctl(
     }
 }
 
-#define TIMER_TRY_DELETE                           \
-    if (timer.flags & DISCORD_TIMER_DELETE) {      \
-        priority_queue_del(timers->q, timer.id);   \
-        continue;                                  \
-    }
+#define TIMER_TRY_DELETE                               \
+    do {                                               \
+        if (timer.flags & DISCORD_TIMER_DELETE) {      \
+            priority_queue_del(timers->q, timer.id);   \
+            continue;                                  \
+        }                                              \
+    } while (0)
 
 void
 discord_timers_run(struct discord *client, struct discord_timers *timers)
@@ -114,29 +118,35 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
         if (trigger > now || trigger == -1) break;
 
         if (~timer.flags & DISCORD_TIMER_CANCELED)
-            TIMER_TRY_DELETE
+            TIMER_TRY_DELETE;
 
         if (timer.repeat > 0 && ~timer.flags & DISCORD_TIMER_CANCELED)
             timer.repeat--;
+
         timers->active.skip_update_phase = false;
         if (timer.cb) timer.cb(client, &timer);
         if (timers->active.skip_update_phase)
             continue;
+
         if ((timer.repeat == 0 || timer.flags & DISCORD_TIMER_CANCELED)
             && (timer.flags & DISCORD_TIMER_DELETE_AUTO))
+        {
             timer.flags |= DISCORD_TIMER_DELETE;
-        TIMER_TRY_DELETE
-        
-        
+        }
+
+        TIMER_TRY_DELETE;
         
         int64_t next = -1;
         if (timer.repeat != 0 && timer.delay != -1
-            && ~timer.flags & DISCORD_TIMER_CANCELED) {
-            if (timer.interval >= 0)
+            && ~timer.flags & DISCORD_TIMER_CANCELED)
+        {
+            if (timer.interval >= 0) {
               next = ((timer.flags & DISCORD_TIMER_INTERVAL_FIXED)
-                     ? trigger : now) +
+                     ? trigger : now)
+                     +
                      ((timer.flags & DISCORD_TIMER_MICROSECONDS)
                      ? timer.interval : timer.interval * 1000);
+            }
         }
         timer.flags &= DISCORD_TIMER_ALLOWED_FLAGS;
         priority_queue_update(timers->q, timer.id, &next, &timer);
