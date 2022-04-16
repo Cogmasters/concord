@@ -104,10 +104,7 @@ discord_run(struct discord *client)
 
             now = (int64_t)discord_timestamp_us(client);
 
-            if (-1 == poll_result) {
-                /* TODO: handle poll error here */
-            }
-            else if (0 == poll_result) {
+            if (0 == poll_result) {
                 if (ccord_has_sigint != 0) discord_shutdown(client);
                 if (client->on_idle) {
                     client->on_idle(client);
@@ -123,6 +120,13 @@ discord_run(struct discord *client)
 
             for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++)
                 discord_timers_run(client, timers[i]);
+
+            if (poll_result >= 0 && !client->on_idle)
+                poll_result = io_poller_poll(client->io_poller, 0);
+
+            if (-1 == poll_result) {
+                /* TODO: handle poll error here */
+            }
 
             BREAK_ON_FAIL(io_poller_perform(client->io_poller));
 
