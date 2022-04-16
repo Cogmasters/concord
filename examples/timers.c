@@ -6,7 +6,8 @@
 #include "discord.h"
 
 static void
-print_timer_info(struct discord_timer *timer) {
+print_timer_info(struct discord_timer *timer)
+{
     printf("Timer id:%u flags:%i "
            "delay:%"PRIi64" interval:%"PRIi64" repeat:%"PRIi64"\n",
            timer->id, timer->flags,
@@ -14,19 +15,27 @@ print_timer_info(struct discord_timer *timer) {
 }
 
 static void
-one_shot_timer_cb(struct discord *client, struct discord_timer *timer) {
+one_shot_timer_cb(struct discord *client, struct discord_timer *timer)
+{
     print_timer_info(timer);
     if (~timer->flags & DISCORD_TIMER_CANCELED) {
         //if timer is not canceled
         puts(timer->data);
-    } else {
+
+        //timers can be updated in the callback (see below)
+        //timer->interval += 100;
+        //timer->repeat = 1;
+        //return; //skip free(timer->data);
+    }
+    else {
         puts("ONE SHOT TIMER CANCELED");
     }
     free(timer->data);
 }
 
 static void
-repeating_timer_cb(struct discord *client, struct discord_timer *timer) {
+repeating_timer_cb(struct discord *client, struct discord_timer *timer)
+{
     print_timer_info(timer);
     if (timer->flags & DISCORD_TIMER_CANCELED) {
         printf("TIMER WITH ID %u CANCELED\n", timer->id);
@@ -48,7 +57,10 @@ main(int argc, char *argv[])
 
     discord_timer(client, one_shot_timer_cb, strdup("Hello World"), 1000);
     discord_timer(client, one_shot_timer_cb, strdup("Hello World!!!!!!"), 5000);
+
+    //start a one shot timer that will never get a chance to run
     discord_timer(client, one_shot_timer_cb, strdup("Hello World"), 15000);
+
     discord_timer_interval(client, repeating_timer_cb, NULL, 0, 1000, 10);
 
     //start 3 timers that will never get a chance to run
