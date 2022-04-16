@@ -332,12 +332,6 @@ discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
     client->on_cycle = callback;
 }
 
-void
-discord_set_on_ready(struct discord *client, discord_ev_idle callback)
-{
-    client->gw.cmds.cbs.on_ready = callback;
-}
-
 static inline int64_t
 discord_timer_get_next_trigger(struct discord_timers *const timers[],
                                size_t n,
@@ -447,6 +441,12 @@ void
 discord_reconnect(struct discord *client, bool resume)
 {
     discord_gateway_reconnect(&client->gw, resume);
+}
+
+void
+discord_set_on_ready(struct discord *client, discord_ev_idle callback)
+{
+    client->gw.cmds.cbs.on_ready = callback;
 }
 
 void
