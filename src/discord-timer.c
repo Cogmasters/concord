@@ -112,8 +112,9 @@ discord_timers_run(struct discord *client, struct discord_timers *timers)
     int64_t now = (int64_t)discord_timestamp_us(client);
     struct discord_timer timer;
     timers->active.timer = &timer;
-    for (int64_t trigger; 
-        (timer.id = priority_queue_peek(timers->q, &trigger, &timer));)
+    for (int64_t trigger, max_iterations = 10000; 
+        (timer.id = priority_queue_peek(timers->q, &trigger, &timer)) 
+        && max_iterations > 0; max_iterations--)
     {
         if (trigger > now || trigger == -1) break;
 
