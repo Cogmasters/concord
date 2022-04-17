@@ -266,32 +266,40 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
         return false;
     case HTTP_TOO_MANY_REQUESTS: {
         struct sized_buffer body = ua_info_get_body(info);
+        struct _jsmnf_szbuf message = { 0 };
         double retry_after = 1.0;
         bool is_global = false;
-        char message[256] = "";
-        jsmnf *root = jsmnf_init();
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
 
-        if (jsmnf_start(root, body.start, body.size) >= 0) {
-            jsmnf *f;
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, body.start, body.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
 
-            f = jsmnf_find(root, "global", sizeof("global") - 1);
-            if (f) is_global = (body.start[f->val->start] == 't');
-            f = jsmnf_find(root, "message", sizeof("message") - 1);
-            if (f)
-                snprintf(message, sizeof(message), "%.*s",
-                         f->val->end - f->val->start,
-                         body.start + f->val->start);
-            f = jsmnf_find(root, "retry_after", sizeof("retry_after") - 1);
-            if (f) retry_after = strtod(body.start + f->val->start, NULL);
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, body.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, "global", 6)))
+                    is_global = (*f->value.contents == 't');
+                if ((f = jsmnf_find(pairs, "message", 7)))
+                    message = f->value;
+                if ((f = jsmnf_find(pairs, "retry_after", 11)))
+                    retry_after = strtod(f->value.contents, NULL);
+            }
         }
 
         *wait_ms = (int64_t)(1000 * retry_after);
 
         logconf_warn(&adapter->conf,
-                     "429 %s RATELIMITING (wait: %" PRId64 " ms) : %s",
-                     is_global ? "GLOBAL" : "", *wait_ms, message);
-
-        jsmnf_cleanup(root);
+                     "429 %s RATELIMITING (wait: %" PRId64 " ms) : %.*s",
+                     is_global ? "GLOBAL" : "", *wait_ms, message.length,
+                     message.contents);
 
         return true;
     }
