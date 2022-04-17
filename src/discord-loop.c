@@ -72,7 +72,13 @@ discord_timer_get_next_trigger(struct discord_timers *const timers[],
 }
 
 #define BREAK_ON_FAIL(function)                                               \
-        if (CCORD_OK != (code = function)) break
+    if (CCORD_OK != (code = function)) break
+
+#define CALL_IO_POLLER_POLL(io_poller, delay)                                 \
+    do {                                                                      \
+        if (-1 == (poll_result = io_poller_poll(io_poller, (int)(delay))))    \
+            poll_errno = errno;                                               \
+    } while (0)
 
 CCORDcode
 discord_run(struct discord *client)
@@ -87,7 +93,8 @@ discord_run(struct discord *client)
 
         next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
-            int64_t poll_time = 0, poll_result;
+            int64_t poll_time = 0;
+            int poll_result, poll_errno = 0;
 
             now = (int64_t)discord_timestamp_us(client);
 
@@ -97,8 +104,7 @@ discord_run(struct discord *client)
                     now < next_run ? ((next_run - now)) : 0);
             }
 
-            poll_result =
-                io_poller_poll(client->io_poller, (int)(poll_time / 1000));
+            CALL_IO_POLLER_POLL(client->io_poller, poll_time / 1000);
 
             now = (int64_t)discord_timestamp_us(client);
 
@@ -120,10 +126,12 @@ discord_run(struct discord *client)
                 discord_timers_run(client, timers[i]);
 
             if (poll_result >= 0 && !client->on_idle)
-                poll_result = io_poller_poll(client->io_poller, 0);
+                CALL_IO_POLLER_POLL(client->io_poller, 0);
 
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
+                // use poll_errno instead of errno
+                (void)poll_errno;
             }
 
             BREAK_ON_FAIL(io_poller_perform(client->io_poller));
@@ -148,3 +156,4 @@ discord_run(struct discord *client)
 }
 
 #undef BREAK_ON_FAIL
+#undef CALL_IO_POLLER_POLL
