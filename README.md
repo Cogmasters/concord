@@ -43,6 +43,14 @@ int main(void) {
 ```
 *This is a minimalistic example, refer to [`examples/`](examples/) for a better overview.*
 
+## Supported operating systems (minimum requirements)
+* GNU/Linux 4.x
+* FreeBSD 12
+* NetBSD 8.1
+* Windows 7 (Cygwin)
+* GNU/Hurd 0.9
+* Mac OS X 10.9
+
 ## Build Instructions
 
 ### On Windows
