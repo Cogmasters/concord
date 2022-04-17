@@ -276,9 +276,9 @@ struct logconf *discord_get_logconf(struct discord *client);
 
 /**
  * @brief get the io_poller used by the discord client
- * 
+ *
  * @param client the client created with discord_init()
- * @return struct io_poller* 
+ * @return struct io_poller*
  */
 struct io_poller *discord_get_io_poller(struct discord *client);
 
@@ -291,23 +291,26 @@ struct discord_timer;
 /**/
 
 /** @brief callback to be used with struct discord_timer */
-typedef void (*discord_ev_timer)
-    (struct discord *client, struct discord_timer *ev);
+typedef void (*discord_ev_timer)(struct discord *client,
+                                 struct discord_timer *ev);
 
 /** @brief flags used to change behaviour of timer */
 enum discord_timer_flags {
     /** use milliseconds for interval and start_time */
-    DISCORD_TIMER_MILLISECONDS    =      0,
+    DISCORD_TIMER_MILLISECONDS = 0,
     /** use microseconds for interval and start_time */
-    DISCORD_TIMER_MICROSECONDS    = 1 << 0,
+    DISCORD_TIMER_MICROSECONDS = 1 << 0,
     /** whether or not timer is marked for deletion */
-    DISCORD_TIMER_DELETE          = 1 << 1,
+    DISCORD_TIMER_DELETE = 1 << 1,
     /** automatically delete a timer once its repeat counter runs out */
-    DISCORD_TIMER_DELETE_AUTO     = 1 << 2,
+    DISCORD_TIMER_DELETE_AUTO = 1 << 2,
     /** timer has been canceled. user should cleanup only */
-    DISCORD_TIMER_CANCELED        = 1 << 3,
-    /** used in the timer callback to skip update phase */
-    DISCORD_TIMER_DONT_UPDATE     = 1 << 4,
+    DISCORD_TIMER_CANCELED = 1 << 3,
+
+    /** used in discord_timer_ctl to get the timer's data */
+    DISCORD_TIMER_GET = 1 << 5,
+    /** timer should run using a fixed interval based on start time */
+    DISCORD_TIMER_INTERVAL_FIXED = 1 << 6,
 };
 
 /** @brief struct used for modifying, and getting info about a timer */
@@ -322,7 +325,7 @@ struct discord_timer {
     void *data;
     /** delay before timer should start */
     int64_t delay;
-    /** interval that the timer should repeat at. must be > 1 */
+    /** interval that the timer should repeat at. must be >= 0 */
     int64_t interval;
     /** how many times a timer should repeat (-1 == infinity) */
     int64_t repeat;
@@ -330,29 +333,109 @@ struct discord_timer {
 
 /**
  * @brief modifies or creates a timer
- * 
+ *
  * @param client the client created with discord_init()
  * @param timer the timer that should be modified
  * @return the id of the timer
  */
-unsigned discord_timer_ctl(struct discord *client, struct discord_timer *timer);
+unsigned discord_timer_ctl(struct discord *client,
+                           struct discord_timer *timer);
 
 /**
  * @brief creates a one shot timer that automatically
  *        deletes itself upon completion
- * 
+ *
  * @param client the client created with discord_init()
  * @param cb the callback that should be called when timer triggers
  * @param data user data
  * @param delay delay before timer should start in milliseconds
- * @return the id of the timer 
+ * @return the id of the timer
  */
-unsigned discord_timer(struct discord *client, discord_ev_timer cb,
-                       void *data, int64_t delay);
+unsigned discord_timer(struct discord *client,
+                       discord_ev_timer cb,
+                       void *data,
+                       int64_t delay);
+
+/**
+ * @brief creates a repeating timer that automatically
+ *        deletes itself upon completion
+ *
+ * @param client the client created with discord_init()
+ * @param cb the callback that should be called when timer triggers
+ * @param data user data
+ * @param delay delay before timer should start in milliseconds
+ * @param interval interval between runs. (-1 == disable repeat)
+ * @param repeat repetitions (-1 == infinity)
+ * @return the id of the timer
+ */
+unsigned discord_timer_interval(struct discord *client,
+                                discord_ev_timer cb,
+                                void *data,
+                                int64_t delay,
+                                int64_t interval,
+                                int64_t repeat);
+
+/**
+ * @brief get the data associated with the timer
+ *
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @param timer where to copy the timer data to
+ * @return true on success
+ */
+bool discord_timer_get(struct discord *client,
+                       unsigned id,
+                       struct discord_timer *timer);
+
+/**
+ * @brief starts a timer
+ *
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_start(struct discord *client, unsigned id);
+
+/**
+ * @brief stops a timer
+ *
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_stop(struct discord *client, unsigned id);
+
+/**
+ * @brief cancels a timer,
+ * this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled
+ *
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_cancel(struct discord *client, unsigned id);
+
+/**
+ * @brief deletes a timer
+ *
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_delete(struct discord *client, unsigned id);
+
+/**
+ * @brief cancels, and deletes a timer
+ *
+ * @param client the client created with discord_init()
+ * @param id id of the timer
+ * @return true on success
+ */
+bool discord_timer_cancel_and_delete(struct discord *client, unsigned id);
 
 /** @example timers.c
  * Demonstrates the Timer API for callback scheduling */
-                       
+
 /** @} DiscordTimer */
 /** @} Discord */
 

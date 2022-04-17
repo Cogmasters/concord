@@ -288,130 +288,6 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
-
-static void
-discord_wake_timer_cb(struct discord *client, struct discord_timer *timer) {
-    if (~timer->flags & DISCORD_TIMER_CANCELED && client->wakeup_timer.cb)
-        client->wakeup_timer.cb(client);
-}
-
-void
-discord_set_next_wakeup(struct discord *client, int64_t delay)
-{
-    unsigned id = discord_internal_timer_ctl(client, 
-        &(struct discord_timer) {
-            .id = client->wakeup_timer.id,
-            .cb = discord_wake_timer_cb,
-            .delay = delay,
-        });
-    client->wakeup_timer.id = id;
-}
-
-void
-discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
-{
-    client->wakeup_timer.cb = callback;
-    if (client->wakeup_timer.id) {
-        discord_internal_timer_ctl(client, 
-            &(struct discord_timer) {
-                .id = client->wakeup_timer.id,
-                .cb = discord_wake_timer_cb,
-                .delay = -1,
-            });
-    }
-}
-
-void
-discord_set_on_idle(struct discord *client, discord_ev_idle callback)
-{
-    client->on_idle = callback;
-}
-
-void
-discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
-{
-    client->on_cycle = callback;
-}
-
-void
-discord_set_on_ready(struct discord *client, discord_ev_idle callback)
-{
-    client->gw.cmds.cbs.on_ready = callback;
-}
-
-CCORDcode
-discord_run(struct discord *client)
-{
-    int64_t next_run, now;
-    CCORDcode code;
-
-    while (1) {
-        if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
-
-        next_run = (int64_t)cog_timestamp_ms();
-        while (1) {
-            int poll_time = 0, poll_result;
-
-            now = (int64_t)cog_timestamp_ms();
-
-            if (!client->on_idle) 
-                poll_time = now < next_run ? (int)(next_run - now) : 0;
-
-            struct discord_timers *const timers[] =
-                { &client->timers.internal, &client->timers.user };
-            for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
-                int64_t trigger_us, trigger_ms;
-                if (priority_queue_peek(timers[i]->q, &trigger_us, NULL)) {
-                    trigger_ms = trigger_us / 1000;
-                    if (trigger_us >= 0) {
-                        if (trigger_ms <= now) {
-                            poll_time = 0;
-                        } else if (trigger_ms - now < poll_time) {
-                            poll_time = (int)(trigger_ms - now);
-                        }
-                    }
-                }
-            }
-            
-            poll_result = io_poller_poll(client->io_poller, poll_time);
-            if (-1 == poll_result) {
-                /* TODO: handle poll error here */
-            }
-            else if (0 == poll_result) {
-                if (ccord_has_sigint != 0) discord_shutdown(client);
-                if (client->on_idle) client->on_idle(client);
-            }
-
-            if (client->on_cycle) client->on_cycle(client);
-
-            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
-                break;
-
-            for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++)
-                discord_timers_run(client, timers[i]);
-
-            if (next_run <= now) {
-                if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
-                    break;
-                if (CCORD_OK
-                    != (code = discord_adapter_perform(&client->adapter)))
-                    break;
-
-                /* enforce a min 1 sec delay between runs */
-                next_run = now + 1000;
-            }
-        }
-
-        /* stop all pending requests in case of connection shutdown */
-        if (true == discord_gateway_end(&client->gw)) {
-            discord_adapter_stop_all(&client->adapter);
-            break;
-        }
-    }
-
-    return code;
-}
-
 void
 discord_shutdown(struct discord *client)
 {
@@ -423,6 +299,12 @@ void
 discord_reconnect(struct discord *client, bool resume)
 {
     discord_gateway_reconnect(&client->gw, resume);
+}
+
+void
+discord_set_on_ready(struct discord *client, discord_ev_idle callback)
+{
+    client->gw.cmds.cbs.on_ready = callback;
 }
 
 void

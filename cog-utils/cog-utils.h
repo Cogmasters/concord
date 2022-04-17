@@ -141,12 +141,21 @@ size_t cog_strndup(const char src[], size_t len, char **p_dest);
 size_t cog_asprintf(char **strp, const char fmt[], ...);
 
 /**
- * @brief Sleep for milliseconds amount
+ * @brief Sleep for amount of milliseconds
  *
- * @param tms milliseconds amount to sleep for
+ * @param tms amount of milliseconds to sleep for
  * @return 0 on success, -1 on error with an `errno` set to indicate the error
  */
 int cog_sleep_ms(const long tms);
+
+
+/**
+ * @brief Sleep for amount of microseconds
+ *
+ * @param tms amount of microseconds to sleep for
+ * @return 0 on success, -1 on error with an `errno` set to indicate the error
+ */
+int cog_sleep_us(const long tms);
 
 /**
  * @brief Get the current timestamp in milliseconds
