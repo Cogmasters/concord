@@ -71,10 +71,10 @@ discord_timer_get_next_trigger(struct discord_timers *const timers[],
     return max_time;
 }
 
-#define BREAK_ON_FAIL(function)                                               \
+#define BREAK_ON_FAIL(code, function)                                         \
     if (CCORD_OK != (code = function)) break
 
-#define CALL_IO_POLLER_POLL(io_poller, delay)                                 \
+#define CALL_IO_POLLER_POLL(poll_errno, poll_result, io_poller, delay)        \
     do {                                                                      \
         if (-1 == (poll_result = io_poller_poll(io_poller, (int)(delay))))    \
             poll_errno = errno;                                               \
@@ -89,7 +89,7 @@ discord_run(struct discord *client)
                                               &client->timers.user };
 
     while (1) {
-        BREAK_ON_FAIL(discord_gateway_start(&client->gw));
+        BREAK_ON_FAIL(code, discord_gateway_start(&client->gw));
 
         next_run = (int64_t)discord_timestamp_us(client);
         while (1) {
@@ -104,7 +104,8 @@ discord_run(struct discord *client)
                     now < next_run ? ((next_run - now)) : 0);
             }
 
-            CALL_IO_POLLER_POLL(client->io_poller, poll_time / 1000);
+            CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
+                                poll_time / 1000);
 
             now = (int64_t)discord_timestamp_us(client);
 
@@ -126,7 +127,8 @@ discord_run(struct discord *client)
                 discord_timers_run(client, timers[i]);
 
             if (poll_result >= 0 && !client->on_idle)
-                CALL_IO_POLLER_POLL(client->io_poller, 0);
+                CALL_IO_POLLER_POLL(poll_errno, poll_result, client->io_poller,
+                                    0);
 
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
@@ -134,11 +136,11 @@ discord_run(struct discord *client)
                 (void)poll_errno;
             }
 
-            BREAK_ON_FAIL(io_poller_perform(client->io_poller));
+            BREAK_ON_FAIL(code, io_poller_perform(client->io_poller));
 
             if (next_run <= now) {
-                BREAK_ON_FAIL(discord_gateway_perform(&client->gw));
-                BREAK_ON_FAIL(discord_adapter_perform(&client->adapter));
+                BREAK_ON_FAIL(code, discord_gateway_perform(&client->gw));
+                BREAK_ON_FAIL(code, discord_adapter_perform(&client->adapter));
 
                 /* enforce a min 1 sec delay between runs */
                 next_run = now + 1000000;
