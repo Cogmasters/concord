@@ -111,6 +111,9 @@ JSMN_API long jsmnf_unescape(char buf[],
 
 #ifndef JSMN_HEADER
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "chash.h"
 
 #define _jsmnf_key_hash(key, hash)                                            \
