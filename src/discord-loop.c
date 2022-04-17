@@ -72,9 +72,7 @@ discord_timer_get_next_trigger(struct discord_timers *const timers[],
 }
 
 #define BREAK_ON_FAIL(function)                                               \
-    do {                                                                      \
-        if (CCORD_OK != (code = function)) break;                             \
-    } while (0)
+        if (CCORD_OK != (code = function)) break
 
 CCORDcode
 discord_run(struct discord *client)
