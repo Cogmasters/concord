@@ -154,8 +154,8 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
             char filename[1028];
         } http;
     } l = { 0 };
-
-    jsmnf *root = jsmnf_init();
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
     int ret;
 
     memset(conf, 0, sizeof *conf);
@@ -174,68 +174,67 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 
     conf->file.start = cog_load_whole_file_fp(fp, &conf->file.size);
 
-    if (jsmnf_start(root, conf->file.start, conf->file.size) >= 0) {
-        jsmnf *f;
+    /* populate logger settings with the 'config.json' file */
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, conf->file.start, conf->file.size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[256];
 
-        f = jsmnf_find(root, "logging", sizeof("logging") - 1);
-        if (f) {
-            jsmnf *f1;
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, conf->file.start, tokens, parser.toknext,
+                           pairs, sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
 
-            f1 = jsmnf_find(f, "level", sizeof("level") - 1);
-            if (f1)
-                snprintf(l.level, sizeof(l.level), "%.*s",
-                         f1->val->end - f1->val->start,
-                         conf->file.start + f1->val->start);
-            f1 = jsmnf_find(f, "filename", sizeof("filename") - 1);
-            if (f1)
-                snprintf(l.filename, sizeof(l.filename), "%.*s",
-                         f1->val->end - f1->val->start,
-                         conf->file.start + f1->val->start);
-            f1 = jsmnf_find(f, "quiet", sizeof("quiet") - 1);
-            if (f1) l.quiet = ('t' == conf->file.start[f1->val->start]);
-            f1 = jsmnf_find(f, "use_color", sizeof("use_color") - 1);
-            if (f1) l.use_color = ('t' == conf->file.start[f1->val->start]);
-            f1 = jsmnf_find(f, "overwrite", sizeof("overwrite") - 1);
-            if (f1) l.overwrite = ('t' == conf->file.start[f1->val->start]);
-            f1 = jsmnf_find(f, "http", sizeof("http") - 1);
-            if (f1) {
-                jsmnf *f2;
+            if ((f = jsmnf_find(pairs, "logging", 7))) {
+                jsmnf_pair *f1;
 
-                f2 = jsmnf_find(f1, "enable", sizeof("enable") - 1);
-                if (f2)
-                    l.http.enable = ('t' == conf->file.start[f2->val->start]);
-                f2 = jsmnf_find(f1, "filename", sizeof("filename") - 1);
-                if (f2)
-                    snprintf(l.http.filename, sizeof(l.http.filename), "%.*s",
-                             f2->val->end - f2->val->start,
-                             conf->file.start + f2->val->start);
-            }
-            f1 = jsmnf_find(f, "disable_modules",
-                            sizeof("disable_modules") - 1);
-            if (f1) {
-                size_t nelems = HASH_COUNT(root->child);
+                if ((f1 = jsmnf_find(f, "level", 5)))
+                    snprintf(l.level, sizeof(l.level), "%.*s",
+                             f1->value.length, f1->value.contents);
+                if ((f1 = jsmnf_find(f, "filename", 8)))
+                    snprintf(l.filename, sizeof(l.filename), "%.*s",
+                             f1->value.length, f1->value.contents);
+                if ((f1 = jsmnf_find(f, "quiet", 5)))
+                    l.quiet = ('t' == *f1->value.contents);
+                if ((f1 = jsmnf_find(f, "use_color", 8)))
+                    l.use_color = ('t' == *f1->value.contents);
+                if ((f1 = jsmnf_find(f, "overwrite", 9)))
+                    l.overwrite = ('t' == *f1->value.contents);
+                if ((f1 = jsmnf_find(f, "http", 4))) {
+                    jsmnf_pair *f2;
 
-                if (nelems) {
-                    jsmnf *f2, *tmp;
+                    if ((f2 = jsmnf_find(f1, "enable", 6)))
+                        l.http.enable = ('t' == *f2->value.contents);
+                    if ((f2 = jsmnf_find(f1, "filename", 8)))
+                        snprintf(l.http.filename, sizeof(l.http.filename),
+                                 "%.*s", f2->value.length, f2->value.contents);
+                }
+                if ((f1 = jsmnf_find(f, "disable_modules", 15)) && f1->length)
+                {
                     int i = 0;
 
                     conf->disable_modules.ids =
-                        calloc(1, nelems * sizeof(char *));
-                    HASH_ITER(hh, f1->child, f2, tmp)
-                    {
-                        if (f2 && f2->val->type == JSMN_STRING) {
-                            jsmnf_unescape(conf->disable_modules.ids + i,
-                                           conf->file.start + f2->val->start,
-                                           f2->val->end - f2->val->start);
-                            ++i;
+                        calloc(1, f1->length * sizeof(char *));
+                    for (i = 0; i < f1->length; ++i) {
+                        jsmnf_pair *f2 = f1->buckets + i;
+
+                        if (f2->type == JSMN_STRING) {
+                            conf->disable_modules.ids[i] =
+                                calloc(1, f2->value.length);
+
+                            jsmnf_unescape(
+                                conf->disable_modules.ids[i], f2->value.length,
+                                f2->value.contents, f2->value.length);
                         }
                     }
-                    conf->disable_modules.size = i;
+                    conf->disable_modules.size = f1->length;
                 }
             }
         }
     }
-    jsmnf_cleanup(root);
 
     /* skip everything else if this module is disabled */
     if (module_is_disabled(conf)) return;
@@ -322,21 +321,30 @@ struct sized_buffer
 logconf_get_field(struct logconf *conf, char *const path[], int depth)
 {
     struct sized_buffer field = { 0 };
-    jsmnf *root;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
     if (!conf->file.size) return field; /* empty field */
 
-    root = jsmnf_init();
-    if (jsmnf_start(root, conf->file.start, conf->file.size) >= 0) {
-        jsmnf *f = jsmnf_find_path(root, path, depth);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, conf->file.start, conf->file.size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[256];
 
-        if (f) {
-            field.start = conf->file.start + f->val->start;
-            field.size = f->val->end - f->val->start;
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, conf->file.start, tokens, parser.toknext,
+                           pairs, sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+            if ((f = jsmnf_find_path(pairs, path, depth))) {
+                /* TODO: field.start should be a 'const char*' */
+                field.start = (char *)f->value.contents;
+                field.size = f->value.length;
+            }
         }
     }
-    jsmnf_cleanup(root);
-
     return field;
 }
 
