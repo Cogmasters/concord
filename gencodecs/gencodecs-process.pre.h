@@ -1,5 +1,7 @@
 #ifndef GENCODECS_READ
+
 #   error "Missing GENCODECS_READ definition"
+
 #else
 
 #   define GENCODECS_ON_STRUCT
