@@ -12,7 +12,7 @@ discord_get_global_application_commands(
     u64snowflake application_id,
     struct discord_ret_application_commands *ret)
 {
-    struct discord_request req;
+    struct discord_request req = { 0 };
 
     CCORD_EXPECT(client, application_id != 0, CCORD_BAD_PARAMETER, "");
 
@@ -30,7 +30,7 @@ discord_create_global_application_command(
     struct discord_create_global_application_command *params,
     struct discord_ret_application_command *ret)
 {
-    struct discord_request req;
+    struct discord_request req = { 0 };
     struct sized_buffer body;
     char buf[4096];
 
