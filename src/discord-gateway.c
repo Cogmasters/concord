@@ -243,25 +243,34 @@ static void
 on_hello(struct discord_gateway *gw)
 {
     const struct sized_buffer *data = &gw->payload.data;
-    jsmnf *root = jsmnf_init();
+    jsmn_parser parser;
+    jsmntok_t tokens[4];
 
     gw->timer->interval = 0;
     gw->timer->hbeat = gw->timer->now;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f = jsmnf_find(root, "heartbeat_interval",
-                              sizeof("heartbeat_interval") - 1);
-        if (f)
-            gw->timer->interval =
-                strtoull(data->start + f->val->start, NULL, 10);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[4];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "heartbeat_interval", 18)))
+                gw->timer->interval = strtoull(f->value.contents, NULL, 10);
+        }
     }
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         send_resume(gw);
     else
         send_identify(gw);
-
-    jsmnf_cleanup(root);
 }
 
 static enum discord_gateway_events
@@ -353,185 +362,297 @@ on_guild_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_guild_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f = jsmnf_find(root, "id", sizeof("id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_parser parser;
+    jsmntok_t tokens[4];
+
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[4];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "id", 2)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
 
     ON(guild_delete, guild_id);
-
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_role_create(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     struct discord_role role = { 0 };
     u64snowflake guild_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[8];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "role", sizeof("role") - 1);
-        if (f) discord_role_from_jsmnf(f, data->start, &role);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[8];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "role", 4)))
+                discord_role_from_jsmnf(f, &role);
+        }
     }
 
     ON(guild_role_create, guild_id, &role);
 
     discord_role_cleanup(&role);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_role_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     struct discord_role role = { 0 };
     u64snowflake guild_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "role", sizeof("role") - 1);
-        if (f) discord_role_from_jsmnf(f, data->start, &role);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[8];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "role", 4)))
+                discord_role_from_jsmnf(f, &role);
+        }
     }
 
     ON(guild_role_update, guild_id, &role);
 
     discord_role_cleanup(&role);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_role_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0, role_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[8];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "role_id", sizeof("role_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &role_id);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[8];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "role_id", 7)))
+                sscanf(f->value.contents, "%" SCNu64, &role_id);
+        }
     }
 
     ON(guild_role_delete, guild_id, role_id);
-
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_member_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     struct discord_guild_member member = { 0 };
     u64snowflake guild_id = 0;
 
-    discord_guild_member_from_json(data->start, data->size, &member);
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_parser parser;
+    jsmntok_t tokens[4];
+
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[4];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
+    discord_guild_member_from_json(data->start, data->size, &member);
 
     ON(guild_member_add, guild_id, &member);
 
     discord_guild_member_cleanup(&member);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_member_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     struct discord_guild_member member = { 0 };
     u64snowflake guild_id = 0;
 
-    discord_guild_member_from_json(data->start, data->size, &member);
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_parser parser;
+    jsmntok_t tokens[4];
+
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[4];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
+    discord_guild_member_from_json(data->start, data->size, &member);
 
     ON(guild_member_update, guild_id, &member);
 
     discord_guild_member_cleanup(&member);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_member_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0;
     struct discord_user user = { 0 };
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "user", sizeof("user") - 1);
-        if (f) discord_user_from_jsmnf(f, data->start, &user);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[8];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "user", 4)))
+                discord_user_from_jsmnf(f, &user);
+        }
     }
 
     ON(guild_member_remove, guild_id, &user);
 
     discord_user_cleanup(&user);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_ban_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0;
     struct discord_user user = { 0 };
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "user", sizeof("user") - 1);
-        if (f) discord_user_from_jsmnf(f, data->start, &user);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[16];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "user", 4)))
+                discord_user_from_jsmnf(f, &user);
+        }
     }
 
     ON(guild_ban_add, guild_id, &user);
 
     discord_user_cleanup(&user);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_guild_ban_remove(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0;
     struct discord_user user = { 0 };
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[8];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "user", sizeof("user") - 1);
-        if (f) discord_user_from_jsmnf(f, data->start, &user);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[8];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "user", 4)))
+                discord_user_from_jsmnf(f, &user);
+        }
     }
 
     ON(guild_ban_remove, guild_id, &user);
 
     discord_user_cleanup(&user);
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -611,28 +732,37 @@ on_channel_delete(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_channel_pins_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0, channel_id = 0;
     u64unix_ms last_pin_timestamp = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[16];
 
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "last_pin_timestamp",
-                       sizeof("last_pin_timestamp") - 1);
-        if (f)
-            cog_iso8601_to_unix_ms(data->start + f->val->start,
-                                   (size_t)(f->val->end - f->val->start),
-                                   &last_pin_timestamp);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[16];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+            if ((f = jsmnf_find(pairs, "last_pin_timestamp", 18)))
+                cog_iso8601_to_unix_ms(f->value.contents,
+                                       (size_t)(f->value.length),
+                                       &last_pin_timestamp);
+        }
     }
 
     ON(channel_pins_update, guild_id, channel_id, last_pin_timestamp);
-
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -753,72 +883,108 @@ on_message_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_message_delete(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake message_id = 0, channel_id = 0, guild_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[16];
 
-        f = jsmnf_find(root, "id", sizeof("id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[16];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "id", 2)))
+                sscanf(f->value.contents, "%" SCNu64, &message_id);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+        }
     }
 
     ON(message_delete, message_id, channel_id, guild_id);
-
-    jsmnf_cleanup(root);
 }
 
 static void
 on_message_delete_bulk(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     struct snowflakes ids = { 0 };
     u64snowflake channel_id = 0, guild_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "ids", sizeof("ids") - 1);
-        if (f) snowflakes_from_jsmnf(f, data->start, &ids);
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[16];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "ids", 3)))
+                snowflakes_from_jsmnf(f, &ids);
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
 
     ON(message_delete_bulk, &ids, channel_id, guild_id);
 
     snowflakes_cleanup(&ids);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake user_id = 0, message_id = 0, channel_id = 0, guild_id = 0;
     struct discord_guild_member member = { 0 };
     struct discord_emoji emoji = { 0 };
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "user_id", sizeof("user_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &user_id);
-        f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
-        f = jsmnf_find(root, "member", sizeof("member") - 1);
-        if (f) discord_guild_member_from_jsmnf(f, data->start, &member);
-        f = jsmnf_find(root, "emoji", sizeof("emoji") - 1);
-        if (f) discord_emoji_from_jsmnf(f, data->start, &emoji);
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[32];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "user_id", 7)))
+                sscanf(f->value.contents, "%" SCNu64, &user_id);
+            if ((f = jsmnf_find(pairs, "message_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &message_id);
+            if ((f = jsmnf_find(pairs, "member", 6)))
+                discord_guild_member_from_jsmnf(f, &member);
+            if ((f = jsmnf_find(pairs, "emoji", 5)))
+                discord_emoji_from_jsmnf(f, &emoji);
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
 
     ON(message_reaction_add, user_id, channel_id, message_id, guild_id,
@@ -826,88 +992,122 @@ on_message_reaction_add(struct discord_gateway *gw, struct sized_buffer *data)
 
     discord_guild_member_cleanup(&member);
     discord_emoji_cleanup(&emoji);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_message_reaction_remove(struct discord_gateway *gw,
                            struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake user_id = 0, message_id = 0, channel_id = 0, guild_id = 0;
     struct discord_emoji emoji = { 0 };
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "user_id", sizeof("user_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &user_id);
-        f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
-        f = jsmnf_find(root, "emoji", sizeof("emoji") - 1);
-        if (f) discord_emoji_from_jsmnf(f, data->start, &emoji);
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[32];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "user_id", 7)))
+                sscanf(f->value.contents, "%" SCNu64, &user_id);
+            if ((f = jsmnf_find(pairs, "message_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &message_id);
+            if ((f = jsmnf_find(pairs, "emoji", 5)))
+                discord_emoji_from_jsmnf(f, &emoji);
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
 
     ON(message_reaction_remove, user_id, channel_id, message_id, guild_id,
        &emoji);
 
     discord_emoji_cleanup(&emoji);
-    jsmnf_cleanup(root);
 }
 
 static void
 on_message_reaction_remove_all(struct discord_gateway *gw,
                                struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake channel_id = 0, message_id = 0, guild_id = 0;
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[16];
 
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[16];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+            if ((f = jsmnf_find(pairs, "message_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &message_id);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+        }
     }
 
     ON(message_reaction_remove_all, channel_id, message_id, guild_id);
-
-    jsmnf_cleanup(root);
 }
 
 static void
 on_message_reaction_remove_emoji(struct discord_gateway *gw,
                                  struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake channel_id = 0, guild_id = 0, message_id = 0;
     struct discord_emoji emoji = { 0 };
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
 
-        f = jsmnf_find(root, "channel_id", sizeof("channel_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &channel_id);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "message_id", sizeof("message_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &message_id);
-        f = jsmnf_find(root, "emoji", sizeof("emoji") - 1);
-        if (f) discord_emoji_from_jsmnf(f, data->start, &emoji);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[32];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "channel_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &channel_id);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "message_id", 10)))
+                sscanf(f->value.contents, "%" SCNu64, &message_id);
+            if ((f = jsmnf_find(pairs, "emoji", 5)))
+                discord_emoji_from_jsmnf(f, &emoji);
+        }
     }
 
     ON(message_reaction_remove_emoji, channel_id, guild_id, message_id,
        &emoji);
 
     discord_emoji_cleanup(&emoji);
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -932,23 +1132,34 @@ on_voice_state_update(struct discord_gateway *gw, struct sized_buffer *data)
 static void
 on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 {
-    jsmnf *root = jsmnf_init();
     u64snowflake guild_id = 0;
     char token[512], endpoint[1024];
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[16];
 
-        f = jsmnf_find(root, "token", sizeof("token") - 1);
-        if (f)
-            snprintf(token, sizeof(token), "%.*s", f->val->end - f->val->start,
-                     data->start + f->val->start);
-        f = jsmnf_find(root, "guild_id", sizeof("guild_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &guild_id);
-        f = jsmnf_find(root, "endpoint", sizeof("endpoint") - 1);
-        if (f)
-            snprintf(endpoint, sizeof(endpoint), "%.*s",
-                     f->val->end - f->val->start, data->start + f->val->start);
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[16];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "token", 5)))
+                snprintf(token, sizeof(token), "%.*s", f->value.length,
+                         f->value.contents);
+            if ((f = jsmnf_find(pairs, "guild_id", 8)))
+                sscanf(f->value.contents, "%" SCNu64, &guild_id);
+            if ((f = jsmnf_find(pairs, "endpoint", 8)))
+                snprintf(endpoint, sizeof(endpoint), "%.*s", f->value.length,
+                         f->value.contents);
+        }
     }
 
 #ifdef HAS_DISCORD_VOICE
@@ -958,8 +1169,6 @@ on_voice_server_update(struct discord_gateway *gw, struct sized_buffer *data)
 
     if (gw->cmds.cbs.on_voice_server_update)
         ON(voice_server_update, token, guild_id, endpoint);
-
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -1020,18 +1229,32 @@ on_dispatch(struct discord_gateway *gw)
     switch (event = get_dispatch_event(gw->payload.name)) {
     case DISCORD_GATEWAY_EVENTS_READY: {
         const struct sized_buffer *data = &gw->payload.data;
-        jsmnf *root = jsmnf_init();
+
+        jsmn_parser parser;
+        jsmntok_t tokens[512];
 
         logconf_info(&gw->conf, "Succesfully started a Discord session!");
 
-        if (jsmnf_start(root, data->start, data->size) >= 0) {
-            jsmnf *f =
-                jsmnf_find(root, "session_id", sizeof("session_id") - 1);
-            if (f)
-                snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
-                         f->val->end - f->val->start,
-                         data->start + f->val->start);
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[512];
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, "session_id", 10)))
+                    snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
+                             f->value.length, f->value.contents);
+            }
+            else abort();
         }
+        else abort();
         ASSERT_S(*gw->session->id, "Missing session_id from READY event");
 
         gw->session->is_ready = true;
@@ -1040,8 +1263,6 @@ on_dispatch(struct discord_gateway *gw)
         if (gw->cmds.cbs.on_ready) on_event = &on_ready;
 
         send_heartbeat(gw);
-
-        jsmnf_cleanup(root);
     } break;
     case DISCORD_GATEWAY_EVENTS_RESUMED:
         logconf_info(&gw->conf, "Succesfully resumed a Discord session!");
@@ -1304,9 +1525,9 @@ on_connect_cb(void *p_gw,
               struct ws_info *info,
               const char *ws_protocols)
 {
-    struct discord_gateway *gw = p_gw;
     (void)ws;
     (void)info;
+    struct discord_gateway *gw = p_gw;
 
     logconf_info(&gw->conf, "Connected, WS-Protocols: '%s'", ws_protocols);
 }
@@ -1319,11 +1540,11 @@ on_close_cb(void *p_gw,
             const char *reason,
             size_t len)
 {
+    (void)ws;
+    (void)info;
     struct discord_gateway *gw = p_gw;
     enum discord_gateway_close_opcodes opcode =
         (enum discord_gateway_close_opcodes)wscode;
-    (void)ws;
-    (void)info;
 
     logconf_warn(
         &gw->conf,
@@ -1384,39 +1605,45 @@ on_text_cb(void *p_gw,
            const char *text,
            size_t len)
 {
-    struct discord_gateway *gw = p_gw;
-    jsmnf *root = jsmnf_init();
-    /* check sequence value first, then assign */
-    int seq = 0;
     (void)ws;
+    struct discord_gateway *gw = p_gw;
 
-    if (jsmnf_start(root, text, len) >= 0) {
-        jsmnf *f;
+    jsmn_parser parser;
+    jsmntok_t tokens[512];
 
-        f = jsmnf_find(root, "t", 1);
-        if (f) {
-            if (JSMN_STRING == f->val->type)
-                snprintf(gw->payload.name, sizeof(gw->payload.name), "%.*s",
-                         f->val->end - f->val->start, text + f->val->start);
-            else
-                *gw->payload.name = '\0';
+    jsmn_init(&parser);
+    if (0 < jsmn_parse(&parser, text, len, tokens,
+                       sizeof(tokens) / sizeof *tokens))
+    {
+        jsmnf_loader loader;
+        jsmnf_pair pairs[512];
+
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load(&loader, text, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(pairs, "t", 1))) {
+                if (JSMN_STRING == f->type)
+                    snprintf(gw->payload.name, sizeof(gw->payload.name),
+                             "%.*s", f->value.length, f->value.contents);
+                else
+                    *gw->payload.name = '\0';
+            }
+            if ((f = jsmnf_find(pairs, "s", 1))) {
+                int seq = (int)strtol(f->value.contents, NULL, 10);
+                if (seq) gw->payload.seq = seq;
+            }
+            if ((f = jsmnf_find(pairs, "op", 2)))
+                gw->payload.opcode = (int)strtol(f->value.contents, NULL, 10);
+            if ((f = jsmnf_find(pairs, "d", 1))) {
+                gw->payload.data.start = (char *)f->value.contents;
+                gw->payload.data.size = (size_t)f->value.length;
+            }
         }
-        f = jsmnf_find(root, "s", 1);
-        if (f) {
-            seq = (int)strtol(text + f->val->start, NULL, 10);
-        }
-        f = jsmnf_find(root, "op", 2);
-        if (f) {
-            gw->payload.opcode = (int)strtol(text + f->val->start, NULL, 10);
-        }
-        f = jsmnf_find(root, "d", 1);
-        if (f) {
-            gw->payload.data.start = (char *)text + f->val->start;
-            gw->payload.data.size = (size_t)(f->val->end - f->val->start);
-        }
+        else abort();
     }
-
-    if (seq) gw->payload.seq = seq;
 
     logconf_trace(
         &gw->conf,
@@ -1447,8 +1674,6 @@ on_text_cb(void *p_gw,
                       gw->payload.opcode);
         break;
     }
-
-    jsmnf_cleanup(root);
 }
 
 static discord_event_scheduler_t
@@ -1529,28 +1754,35 @@ discord_gateway_init(struct discord_gateway *gw,
     /* check for default prefix in config file */
     buf = logconf_get_field(conf, path, sizeof(path) / sizeof *path);
     if (buf.size) {
-        jsmnf *root = jsmnf_init();
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
 
-        if (jsmnf_start(root, buf.start, buf.size) >= 0) {
-            bool enable_prefix = false;
-            jsmnf *f;
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, buf.start, buf.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
 
-            f = jsmnf_find(root, "enable", sizeof("enable") - 1);
-            if (f) enable_prefix = (buf.start[f->val->start] == 't');
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, buf.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                bool enable_prefix = false;
+                jsmnf_pair *f;
 
-            if (enable_prefix) {
-                f = jsmnf_find(root, "prefix", sizeof("prefix") - 1);
-                if (f) {
+                if ((f = jsmnf_find(pairs, "enable", 6)))
+                    enable_prefix = (*f->value.contents == 't');
+
+                if (enable_prefix && (f = jsmnf_find(pairs, "prefix", 6))) {
                     char prefix[64] = "";
 
-                    snprintf(prefix, sizeof(prefix), "%.*s",
-                             f->val->end - f->val->start,
-                             buf.start + f->val->start);
+                    snprintf(prefix, sizeof(prefix), "%.*s", f->value.length,
+                             f->value.contents);
                     discord_set_prefix(CLIENT(gw, gw), prefix);
                 }
             }
         }
-        jsmnf_cleanup(root);
     }
 }
 
@@ -1687,34 +1919,41 @@ discord_gateway_start(struct discord_gateway *gw)
         return CCORD_DISCORD_BAD_AUTH;
     }
     else {
-        jsmnf *root = jsmnf_init();
+        jsmn_parser parser;
+        jsmntok_t tokens[32];
 
-        if (jsmnf_start(root, json.start, json.size) >= 0) {
-            jsmnf *f;
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, json.start, json.size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[32];
 
-            f = jsmnf_find(root, "url", sizeof("url") - 1);
-            if (f) {
-                const char *base_url = json.start + f->val->start;
-                const int base_url_len = f->val->end - f->val->start;
-                int len;
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, json.start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                jsmnf_pair *f;
 
-                len = snprintf(url, sizeof(url),
-                               "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX,
-                               base_url_len, base_url,
-                               ('/' == base_url[base_url_len - 1]) ? "" : "/");
-                ASSERT_NOT_OOB(len, sizeof(url));
+                if ((f = jsmnf_find(pairs, "url", 3))) {
+                    const char *base_url = f->value.contents;
+                    const int base_url_len = f->value.length;
+                    int len;
+
+                    len = snprintf(
+                        url, sizeof(url), "%.*s%s" DISCORD_GATEWAY_URL_SUFFIX,
+                        base_url_len, base_url,
+                        ('/' == base_url[base_url_len - 1]) ? "" : "/");
+                    ASSERT_NOT_OOB(len, sizeof(url));
+                }
+                if ((f = jsmnf_find(pairs, "shards", 6)))
+                    gw->session->shards =
+                        (int)strtol(f->value.contents, NULL, 10);
+                if ((f = jsmnf_find(pairs, "session_start_limit", 19)))
+                    discord_session_start_limit_from_jsmnf(
+                        f, &gw->session->start_limit);
             }
-            f = jsmnf_find(root, "shards", sizeof("shards") - 1);
-            if (f)
-                gw->session->shards =
-                    (int)strtol(json.start + f->val->start, NULL, 10);
-            f = jsmnf_find(root, "session_start_limit",
-                           sizeof("session_start_limit") - 1);
-            if (f)
-                discord_session_start_limit_from_jsmnf(
-                    f, json.start, &gw->session->start_limit);
         }
-        jsmnf_cleanup(root);
     }
 
     free(json.start);

@@ -202,15 +202,28 @@ scheduler(struct discord *client,
 {
     if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
         char cmd[1024] = "";
-        jsmnf *root = jsmnf_init();
 
-        if (jsmnf_start(root, data->start, data->size) >= 0) {
-            jsmnf *f = jsmnf_find(root, "content", sizeof("content") - 1);
-            if (f)
-                snprintf(cmd, sizeof(cmd), "%.*s", f->val->end - f->val->start,
-                         data->start + f->val->start);
+        jsmn_parser parser;
+        jsmntok_t tokens[16];
+
+        jsmn_init(&parser);
+        if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+                           sizeof(tokens) / sizeof *tokens))
+        {
+            jsmnf_loader loader;
+            jsmnf_pair pairs[16];
+
+            jsmnf_init(&loader);
+            if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext,
+                               pairs, sizeof(pairs) / sizeof *pairs))
+            {
+                jsmnf_pair *f;
+
+                if ((f = jsmnf_find(pairs, "content", 7)))
+                    snprintf(cmd, sizeof(cmd), "%.*s", f->value.length,
+                             f->value.contents);
+            }
         }
-        jsmnf_cleanup(root);
 
         if (0 == strcmp(PREFIX "ping", cmd)
             || 0 == strcmp(PREFIX "spam-block", cmd)) {

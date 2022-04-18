@@ -199,7 +199,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                              f1->value.length, f1->value.contents);
                 if ((f1 = jsmnf_find(f, "quiet", 5)))
                     l.quiet = ('t' == *f1->value.contents);
-                if ((f1 = jsmnf_find(f, "use_color", 8)))
+                if ((f1 = jsmnf_find(f, "use_color", 9)))
                     l.use_color = ('t' == *f1->value.contents);
                 if ((f1 = jsmnf_find(f, "overwrite", 9)))
                     l.overwrite = ('t' == *f1->value.contents);
