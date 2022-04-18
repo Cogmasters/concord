@@ -20,7 +20,8 @@ var searchData=
   ['discord_5fev_5fmessage_5freaction_5fremove_5fall_17',['discord_ev_message_reaction_remove_all',['../group__DiscordEventCallbackTypes.html#gaad755d8a4839e8d62219ae7e8b04e3af',1,'discord-events.h']]],
   ['discord_5fev_5fmessage_5freaction_5fremove_5femoji_18',['discord_ev_message_reaction_remove_emoji',['../group__DiscordEventCallbackTypes.html#gaf06e78a3641689d4c37b210107246c4f',1,'discord-events.h']]],
   ['discord_5fev_5fscheduler_19',['discord_ev_scheduler',['../group__DiscordEvent.html#gad81345672401df8df2e7bae2cf6aabe9',1,'discord-events.h']]],
-  ['discord_5fev_5fvoice_5fserver_5fupdate_20',['discord_ev_voice_server_update',['../group__DiscordEventCallbackTypes.html#gacda9a4fd1cf4649b9ce3b7814654860d',1,'discord-events.h']]],
-  ['discord_5fev_5fvoice_5fstate_5fupdate_21',['discord_ev_voice_state_update',['../group__DiscordEventCallbackTypes.html#gae3e6d1179d1a878d5862b4183bbdaf25',1,'discord-events.h']]],
-  ['discord_5fevent_5fscheduler_5ft_22',['discord_event_scheduler_t',['../group__DiscordEvent.html#ga863c695c73cb5efe372a0a1b6af56097',1,'discord-events.h']]]
+  ['discord_5fev_5ftimer_20',['discord_ev_timer',['../group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5',1,'discord.h']]],
+  ['discord_5fev_5fvoice_5fserver_5fupdate_21',['discord_ev_voice_server_update',['../group__DiscordEventCallbackTypes.html#gacda9a4fd1cf4649b9ce3b7814654860d',1,'discord-events.h']]],
+  ['discord_5fev_5fvoice_5fstate_5fupdate_22',['discord_ev_voice_state_update',['../group__DiscordEventCallbackTypes.html#gae3e6d1179d1a878d5862b4183bbdaf25',1,'discord-events.h']]],
+  ['discord_5fevent_5fscheduler_5ft_23',['discord_event_scheduler_t',['../group__DiscordEvent.html#ga863c695c73cb5efe372a0a1b6af56097',1,'discord-events.h']]]
 ];

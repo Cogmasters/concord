@@ -15,10 +15,11 @@ var searchData=
   ['discord_5fpremium_5ftier_12',['discord_premium_tier',['../docs_2api_2guild_8h.html#a0288a93351544abc90e98d8ef7f28864',1,'guild.h']]],
   ['discord_5fprivacy_5flevel_13',['discord_privacy_level',['../stage__instance_8h.html#a1f49145258318aaa86efc57935f0de2c',1,'stage_instance.h']]],
   ['discord_5fsticker_5ftypes_14',['discord_sticker_types',['../sticker_8h.html#add8dff7e42b02922f4fd9d302252b80b',1,'sticker.h']]],
-  ['discord_5fverification_5flevel_15',['discord_verification_level',['../docs_2api_2guild_8h.html#a46364f5acd98c9a69cecfdd4300192e1',1,'guild.h']]],
-  ['discord_5fvideo_5fquality_5fmodes_16',['discord_video_quality_modes',['../docs_2api_2channel_8h.html#a998f1864bc9a0b922f6fef690255695f',1,'channel.h']]],
-  ['discord_5fvisibility_5ftypes_17',['discord_visibility_types',['../docs_2api_2user_8h.html#a4720975ba04759033361d2788a60e3f8',1,'user.h']]],
-  ['discord_5fvoice_5fclose_5fopcodes_18',['discord_voice_close_opcodes',['../voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8',1,'voice_connections.h']]],
-  ['discord_5fvoice_5fopcodes_19',['discord_voice_opcodes',['../voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56',1,'voice_connections.h']]],
-  ['discord_5fwebhook_5ftypes_20',['discord_webhook_types',['../docs_2api_2webhook_8h.html#aacb8c6d69b0de8cbc4e518199cbeb84b',1,'webhook.h']]]
+  ['discord_5ftimer_5fflags_15',['discord_timer_flags',['../group__DiscordTimer.html#ga6e91b61d2abe8974ade81aa42b225a6f',1,'discord.h']]],
+  ['discord_5fverification_5flevel_16',['discord_verification_level',['../docs_2api_2guild_8h.html#a46364f5acd98c9a69cecfdd4300192e1',1,'guild.h']]],
+  ['discord_5fvideo_5fquality_5fmodes_17',['discord_video_quality_modes',['../docs_2api_2channel_8h.html#a998f1864bc9a0b922f6fef690255695f',1,'channel.h']]],
+  ['discord_5fvisibility_5ftypes_18',['discord_visibility_types',['../docs_2api_2user_8h.html#a4720975ba04759033361d2788a60e3f8',1,'user.h']]],
+  ['discord_5fvoice_5fclose_5fopcodes_19',['discord_voice_close_opcodes',['../voice__connections_8h.html#a9fb07bddcf342bdcc0802763af33caa8',1,'voice_connections.h']]],
+  ['discord_5fvoice_5fopcodes_20',['discord_voice_opcodes',['../voice__connections_8h.html#a141794a0c70ac7b43ee4f6aca4fb8b56',1,'voice_connections.h']]],
+  ['discord_5fwebhook_5ftypes_21',['discord_webhook_types',['../docs_2api_2webhook_8h.html#aacb8c6d69b0de8cbc4e518199cbeb84b',1,'webhook.h']]]
 ];

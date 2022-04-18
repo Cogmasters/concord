@@ -9,6 +9,7 @@ var examples =
     [ "manual-dm.c", "manual-dm_8c-example.html", null ],
     [ "pin.c", "pin_8c-example.html", null ],
     [ "reaction.c", "reaction_8c-example.html", null ],
+    [ "timers.c", "timers_8c-example.html", null ],
     [ "emoji.c", "emoji_8c-example.html", null ],
     [ "guild.c", "guild_8c-example.html", null ],
     [ "ban.c", "ban_8c-example.html", null ],

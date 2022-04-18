@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('structdiscord.html',''); initResizable
 <div class="dynheader">
 Collaboration diagram for discord:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__coll__graph.svg" width="267" height="234"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structdiscord__coll__graph.svg" width="410" height="263"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,13 +120,23 @@ Data Fields</h2></td></tr>
 <tr class="separator:ac439ecded3eac536b5de5dc24355a1d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00c5289d2e99e09a2f69fb78589a1ace"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structdiscord__user.html">discord_user</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace">self</a></td></tr>
 <tr class="separator:a00c5289d2e99e09a2f69fb78589a1ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae173bdc0814b27be7380b99c1f8fa93f"><td class="memItemLeft" >struct {</td></tr>
-<tr class="memitem:a7e0cb385370695526685b3cbe00d4db7"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__DiscordEventCallbackTypes.html#ga18532f61da11c561bd286b0ecabab97e">discord_ev_idle</a>&#160;&#160;&#160;<a class="el" href="structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810">cb</a></td></tr>
-<tr class="separator:a7e0cb385370695526685b3cbe00d4db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9a668ba9fa53c05d8a19b9b326a614a"><td class="memItemLeft" >&#160;&#160;&#160;int64_t&#160;&#160;&#160;<a class="el" href="structdiscord.html#a6eb2ea44ec9bf21857e1055e8baaae59">next</a></td></tr>
-<tr class="separator:aa9a668ba9fa53c05d8a19b9b326a614a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae173bdc0814b27be7380b99c1f8fa93f"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f">wakeup_timer</a></td></tr>
-<tr class="separator:ae173bdc0814b27be7380b99c1f8fa93f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a575a87531e1e8f0c5ab6e4c660aad716"><td class="memItemLeft" ><a id="a575a87531e1e8f0c5ab6e4c660aad716" name="a575a87531e1e8f0c5ab6e4c660aad716"></a>
+struct {</td></tr>
+<tr class="memitem:a1d92866c7e99cd6059e07f26cf0a5365"><td class="memItemLeft" >
+&#160;&#160;&#160;struct <a class="el" href="structdiscord__timers.html">discord_timers</a>&#160;&#160;&#160;<b>internal</b></td></tr>
+<tr class="separator:a1d92866c7e99cd6059e07f26cf0a5365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4d08c900e6b42d8c3584296bf3cec49"><td class="memItemLeft" >
+&#160;&#160;&#160;struct <a class="el" href="structdiscord__timers.html">discord_timers</a>&#160;&#160;&#160;<b>user</b></td></tr>
+<tr class="separator:ae4d08c900e6b42d8c3584296bf3cec49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a575a87531e1e8f0c5ab6e4c660aad716"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><b>timers</b></td></tr>
+<tr class="separator:a575a87531e1e8f0c5ab6e4c660aad716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ccd3bffd8de992f1ff725bad1d916e"><td class="memItemLeft" >struct {</td></tr>
+<tr class="memitem:a874b7a777b21a1ba0b0d08ed457dada8"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="group__DiscordEventCallbackTypes.html#ga18532f61da11c561bd286b0ecabab97e">discord_ev_idle</a>&#160;&#160;&#160;<a class="el" href="structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810">cb</a></td></tr>
+<tr class="separator:a874b7a777b21a1ba0b0d08ed457dada8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ca73d09d35649324572f81a76a7bbae"><td class="memItemLeft" >&#160;&#160;&#160;unsigned&#160;&#160;&#160;<a class="el" href="structdiscord.html#a168c138bf57beb4e5a824dbe805519ca">id</a></td></tr>
+<tr class="separator:a7ca73d09d35649324572f81a76a7bbae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ccd3bffd8de992f1ff725bad1d916e"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html#a52ccd3bffd8de992f1ff725bad1d916e">wakeup_timer</a></td></tr>
+<tr class="separator:a52ccd3bffd8de992f1ff725bad1d916e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b6ddc9583333027193256369e5600e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordEventCallbackTypes.html#ga18532f61da11c561bd286b0ecabab97e">discord_ev_idle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html#a8b6ddc9583333027193256369e5600e5">on_idle</a></td></tr>
 <tr class="separator:a8b6ddc9583333027193256369e5600e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec30edafaaff8f151616190450101eab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__DiscordEventCallbackTypes.html#ga18532f61da11c561bd286b0ecabab97e">discord_ev_idle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html#aec30edafaaff8f151616190450101eab">on_cycle</a></td></tr>
@@ -137,7 +147,7 @@ Data Fields</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The Discord client handler. </p>
 <p >Used to access/perform public functions from <a class="el" href="discord_8h.html" title="Public functions and datatypes.">discord.h</a> </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d" title="Create a Discord Client handle by its token.">discord_init()</a>, <a class="el" href="group__Discord.html#ga75bbe1d3eb9e6d03953b6313e5543afb" title="Create a Discord Client handle by a bot.config file.">discord_config_init()</a>, <a class="el" href="group__Discord.html#ga009d0e352a30c00f8b4765712fcfa5a9" title="Free a Discord Client handle.">discord_cleanup()</a> </dd></dl>
-<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#_a0">audit-log.c</a>, <a class="el" href="ban_8c-example.html#_a0">ban.c</a>, <a class="el" href="channel_8c-example.html#_a0">channel.c</a>, <a class="el" href="components_8c-example.html#_a0">components.c</a>, <a class="el" href="embed_8c-example.html#_a0">embed.c</a>, <a class="el" href="emoji_8c-example.html#_a0">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#_a0">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#_a0">guild-template.c</a>, <a class="el" href="guild_8c-example.html#_a0">guild.c</a>, <a class="el" href="invite_8c-example.html#_a0">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#_a0">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#_a0">pin.c</a>, <a class="el" href="reaction_8c-example.html#_a0">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#_a0">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#_a0">slash-commands2.c</a>, <a class="el" href="voice_8c-example.html#_a0">voice.c</a>, and <a class="el" href="webhook_8c-example.html#_a1">webhook.c</a>.</dd>
+<dl class="section examples"><dt>Examples</dt><dd><a class="el" href="audit-log_8c-example.html#_a0">audit-log.c</a>, <a class="el" href="ban_8c-example.html#_a0">ban.c</a>, <a class="el" href="channel_8c-example.html#_a0">channel.c</a>, <a class="el" href="components_8c-example.html#_a0">components.c</a>, <a class="el" href="embed_8c-example.html#_a0">embed.c</a>, <a class="el" href="emoji_8c-example.html#_a0">emoji.c</a>, <a class="el" href="fetch-messages_8c-example.html#_a0">fetch-messages.c</a>, <a class="el" href="guild-template_8c-example.html#_a0">guild-template.c</a>, <a class="el" href="guild_8c-example.html#_a0">guild.c</a>, <a class="el" href="invite_8c-example.html#_a0">invite.c</a>, <a class="el" href="manual-dm_8c-example.html#_a0">manual-dm.c</a>, <a class="el" href="pin_8c-example.html#_a0">pin.c</a>, <a class="el" href="reaction_8c-example.html#_a0">reaction.c</a>, <a class="el" href="slash-commands_8c-example.html#_a0">slash-commands.c</a>, <a class="el" href="slash-commands2_8c-example.html#_a0">slash-commands2.c</a>, <a class="el" href="timers_8c-example.html#_a6">timers.c</a>, <a class="el" href="voice_8c-example.html#_a0">voice.c</a>, and <a class="el" href="webhook_8c-example.html#_a1">webhook.c</a>.</dd>
 </dl>
 </div><h2 class="groupheader">Field Documentation</h2>
 <a id="ac2ac71153e3681e24b87a205ad2df97f" name="ac2ac71153e3681e24b87a205ad2df97f"></a>
@@ -260,23 +270,23 @@ Data Fields</h2></td></tr>
 
 </div>
 </div>
-<a id="a6eb2ea44ec9bf21857e1055e8baaae59" name="a6eb2ea44ec9bf21857e1055e8baaae59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6eb2ea44ec9bf21857e1055e8baaae59">&#9670;&nbsp;</a></span>next</h2>
+<a id="a168c138bf57beb4e5a824dbe805519ca" name="a168c138bf57beb4e5a824dbe805519ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a168c138bf57beb4e5a824dbe805519ca">&#9670;&nbsp;</a></span>id</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int64_t discord::next</td>
+          <td class="memname">unsigned discord::id</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >when <code>cb</code> should be called in milliseconds </p>
+<p >the id of the wake timer </p>
 
 </div>
 </div>
-<a id="ae173bdc0814b27be7380b99c1f8fa93f" name="ae173bdc0814b27be7380b99c1f8fa93f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae173bdc0814b27be7380b99c1f8fa93f">&#9670;&nbsp;</a></span></h2>
+<a id="a52ccd3bffd8de992f1ff725bad1d916e" name="a52ccd3bffd8de992f1ff725bad1d916e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52ccd3bffd8de992f1ff725bad1d916e">&#9670;&nbsp;</a></span></h2>
 
 <div class="memitem">
 <div class="memproto">

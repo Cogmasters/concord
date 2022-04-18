@@ -1,5 +1,6 @@
 var structdiscord__adapter =
 [
+    [ "QUEUE", "structdiscord__adapter.html#a115bcad0a1ad427ea6dfac7947c53c42", null ],
     [ "conf", "structdiscord__adapter.html#a6b15d023f57dd152fdde7c9d6c11f1b2", null ],
     [ "ua", "structdiscord__adapter.html#a4bc3965220fb197fe1dab2237a8dec7d", null ],
     [ "mhandle", "structdiscord__adapter.html#ad2c8847385455661aef96a361cc465fc", null ],
@@ -11,6 +12,5 @@ var structdiscord__adapter =
     [ "wait_ms", "structdiscord__adapter.html#ac8553135740a099439be90e391be7035", null ],
     [ "rwlock", "structdiscord__adapter.html#a09234545d41191d63d05ed1d80401b82", null ],
     [ "lock", "structdiscord__adapter.html#a6c82f5b486617094d1d1d0c79995e4ee", null ],
-    [ "idleq", "structdiscord__adapter.html#acf464c4562d52b562063a73d62afa2ba", null ],
     [ "retry_limit", "structdiscord__adapter.html#ace28dd1a98e5f37c331df51e6557775d", null ]
 ];

@@ -2,7 +2,6 @@ var group__DiscordInternalGateway =
 [
     [ "Client's session status", "group__DiscordInternalGatewaySessionStatus.html", "group__DiscordInternalGatewaySessionStatus" ],
     [ "Gateway intents", "group__DiscordInternalGatewayIntents.html", null ],
-    [ "discord_gateway_cmd_cbs", "structdiscord__gateway__cmd__cbs.html", null ],
     [ "discord_gateway_cbs", "structdiscord__gateway__cbs.html", [
       [ "on_ready", "structdiscord__gateway__cbs.html#ae86ef76fe8f9eb52e5adc99f79b397f6", null ],
       [ "on_application_command_create", "structdiscord__gateway__cbs.html#a8e1ad0628120a34756bdbc3ff785d5b0", null ],
@@ -69,10 +68,12 @@ var group__DiscordInternalGateway =
       [ "data", "structdiscord__gateway.html#aba3567c8e24c5f275f46833731755725", null ],
       [ "payload", "structdiscord__gateway.html#a1f467eefa8b7ed3ae62112016ef1cb4d", null ],
       [ "prefix", "structdiscord__gateway.html#a75e0773822f26760ac47acb62ee93139", null ],
-      [ "pool", "structdiscord__gateway.html#adc75e05c4320e2000fc7a788d2f8f919", null ],
+      [ "start", "structdiscord__gateway.html#acbd942573fb44bab8fe7b5870fb39d34", null ],
+      [ "size", "structdiscord__gateway.html#af9748239d5f0bbfca4e9a87977579a06", null ],
+      [ "cb", "structdiscord__gateway.html#abfed206a63d5ae495354e907f6854d07", null ],
+      [ "pool", "structdiscord__gateway.html#a1dfaa6357de33b14e5c2b69b221a83c4", null ],
       [ "amt", "structdiscord__gateway.html#a5d2e791438771d483b788b7f6a635b6f", null ],
       [ "cap", "structdiscord__gateway.html#ad88c952a09c79514d9bf5920c3f05bf6", null ],
-      [ "on_default", "structdiscord__gateway.html#afa64774af35c5ba50b40bf2273bc26da", null ],
       [ "cbs", "structdiscord__gateway.html#a37d8eda465d7fe829272bafde7efd847", null ],
       [ "scheduler", "structdiscord__gateway.html#a38fe47e02a4b9b8bd50390e708bfcabd", null ],
       [ "cmds", "structdiscord__gateway.html#a39b8f8d0a69176b7c6816186f353c369", null ]

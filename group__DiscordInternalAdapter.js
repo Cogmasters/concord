@@ -29,11 +29,10 @@ var group__DiscordInternalAdapter =
       [ "route", "structdiscord__context.html#af33a61861018d2e69ffe5656df409563", null ],
       [ "conn", "structdiscord__context.html#a5253717956ff5b1773e26791d9369937", null ],
       [ "entry", "structdiscord__context.html#ac5c78dbeace47f85d5b056cca5c8ed82", null ],
-      [ "node", "structdiscord__context.html#a17f23fac4a28480f464f7b857a58c81b", null ],
-      [ "timeout_ms", "structdiscord__context.html#a6526455ab617eb16b0da37f0cfe4871f", null ],
       [ "retry_attempt", "structdiscord__context.html#ab51ae05deb02a235ec771c3c86716291", null ]
     ] ],
     [ "discord_adapter", "structdiscord__adapter.html", [
+      [ "QUEUE", "structdiscord__adapter.html#a115bcad0a1ad427ea6dfac7947c53c42", null ],
       [ "conf", "structdiscord__adapter.html#a6b15d023f57dd152fdde7c9d6c11f1b2", null ],
       [ "ua", "structdiscord__adapter.html#a4bc3965220fb197fe1dab2237a8dec7d", null ],
       [ "mhandle", "structdiscord__adapter.html#ad2c8847385455661aef96a361cc465fc", null ],
@@ -45,7 +44,6 @@ var group__DiscordInternalAdapter =
       [ "wait_ms", "structdiscord__adapter.html#ac8553135740a099439be90e391be7035", null ],
       [ "rwlock", "structdiscord__adapter.html#a09234545d41191d63d05ed1d80401b82", null ],
       [ "lock", "structdiscord__adapter.html#a6c82f5b486617094d1d1d0c79995e4ee", null ],
-      [ "idleq", "structdiscord__adapter.html#acf464c4562d52b562063a73d62afa2ba", null ],
       [ "retry_limit", "structdiscord__adapter.html#ace28dd1a98e5f37c331df51e6557775d", null ]
     ] ],
     [ "discord_refcount", "structdiscord__refcount.html", [

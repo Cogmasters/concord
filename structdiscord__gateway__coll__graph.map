@@ -1,9 +1,8 @@
 <map id="discord_gateway" name="discord_gateway">
-<area shape="rect" id="node1" title="The handle used for establishing a WebSockets connection." alt="" coords="288,184,420,211"/>
-<area shape="rect" id="node6" href="$structdiscord.html" title="The Discord client handler." alt="" coords="538,180,607,207"/>
-<area shape="rect" id="node2" href="$structwebsockets.html" title="Opaque handler for WebSockets." alt="" coords="37,133,136,160"/>
-<area shape="rect" id="node3" href="$structdiscord__identify.html" title=" " alt="" coords="24,184,149,211"/>
-<area shape="rect" id="node4" href="$structdiscord__session__start__limit.html" title=" " alt="" coords="5,235,168,277"/>
-<area shape="rect" id="node5" href="$structdiscord__gateway__cmd__cbs.html" title=" " alt="" coords="829,11,1025,37"/>
-<area shape="rect" id="node7" href="$structdiscord__gateway__cbs.html" title=" " alt="" coords="847,285,1008,312"/>
+<area shape="rect" id="node1" title="The handle used for establishing a WebSockets connection." alt="" coords="125,109,257,136"/>
+<area shape="rect" id="node5" href="$structdiscord.html" title="The Discord client handler." alt="" coords="101,222,171,249"/>
+<area shape="rect" id="node2" href="$structwebsockets.html" title="Opaque handler for WebSockets." alt="" coords="5,13,104,39"/>
+<area shape="rect" id="node3" href="$structdiscord__identify.html" title=" " alt="" coords="128,13,253,39"/>
+<area shape="rect" id="node4" href="$structdiscord__session__start__limit.html" title=" " alt="" coords="277,5,440,47"/>
+<area shape="rect" id="node6" href="$structdiscord__gateway__cbs.html" title=" " alt="" coords="137,511,298,537"/>
 </map>

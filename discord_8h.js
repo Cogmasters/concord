@@ -4,6 +4,16 @@ var discord_8h =
     [ "CCORD_DISCORD_BAD_AUTH", "group__ConcordError.html#ga9355844f4e91b5a12e1bc25540cac2e4", null ],
     [ "CCORD_DISCORD_RATELIMIT", "group__ConcordError.html#ga17b4baf3b66ea2862c4981e4f3fc1639", null ],
     [ "CCORD_DISCORD_CONNECTION", "group__ConcordError.html#ga4f5d0733373b4e252a94665294c316bf", null ],
+    [ "discord_ev_timer", "group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5", null ],
+    [ "discord_timer_flags", "group__DiscordTimer.html#ga6e91b61d2abe8974ade81aa42b225a6f", [
+      [ "DISCORD_TIMER_MILLISECONDS", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa3338dc618299088b59238e69e6a1bfe0", null ],
+      [ "DISCORD_TIMER_MICROSECONDS", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faed94cce3c4ed6783143b1b1f0193e200", null ],
+      [ "DISCORD_TIMER_DELETE", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fadf15de56f1516ef493eada83b77ecb87", null ],
+      [ "DISCORD_TIMER_DELETE_AUTO", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa7ca0d000fbd3e69349aff6cd95b29e28", null ],
+      [ "DISCORD_TIMER_CANCELED", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e", null ],
+      [ "DISCORD_TIMER_GET", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fafee62f1c8a0dc5ebd3bc775890d350d4", null ],
+      [ "DISCORD_TIMER_INTERVAL_FIXED", "group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa3d9222cf6537cf7984b6c0df22eaa340", null ]
+    ] ],
     [ "discord_return_error", "group__ConcordError.html#gac88742928a867d61346e9f2e3e5d778d", null ],
     [ "discord_strerror", "group__ConcordError.html#gada62832835a3d70782b791e0cb607cd2", null ],
     [ "discord_init", "group__Discord.html#gacd52a9fc58a1fcb9b4719a5cedd70f5d", null ],
@@ -19,6 +29,16 @@ var discord_8h =
     [ "discord_set_presence", "group__Discord.html#gaed8749c82a27a024a0deae053aac67c8", null ],
     [ "discord_get_ping", "group__Discord.html#ga8a6d0002445738ace70f5eb2b22ca471", null ],
     [ "discord_timestamp", "group__Discord.html#ga15a8fe1a6d3f30c18c6985b3afae11f5", null ],
+    [ "discord_timestamp_us", "group__Discord.html#gab751b38fe43b55b59592560798b01c07", null ],
     [ "discord_get_logconf", "group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3", null ],
-    [ "discord_get_io_poller", "group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655", null ]
+    [ "discord_get_io_poller", "group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655", null ],
+    [ "discord_timer_ctl", "group__DiscordTimer.html#ga230faf2b14190f3c6ddecbcf9ed1ae6d", null ],
+    [ "discord_timer", "group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f", null ],
+    [ "discord_timer_interval", "group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155", null ],
+    [ "discord_timer_get", "group__DiscordTimer.html#ga9670267c1520768658351d73110d12e2", null ],
+    [ "discord_timer_start", "group__DiscordTimer.html#ga31e4b6fdffe218a59768f18a149617a7", null ],
+    [ "discord_timer_stop", "group__DiscordTimer.html#ga9bc2f8b274d62a173b051987b88dc890", null ],
+    [ "discord_timer_cancel", "group__DiscordTimer.html#ga29eb5a7785b557aabba9ed7506282307", null ],
+    [ "discord_timer_delete", "group__DiscordTimer.html#gab5e1ce15292d4eb17fb49ae64bf76d5f", null ],
+    [ "discord_timer_cancel_and_delete", "group__DiscordTimer.html#gab547a5a050e37b514b7a05bddc49e246", null ]
 ];

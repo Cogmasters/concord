@@ -110,11 +110,11 @@ $(document).ready(function(){initNavTree('discord-internal_8h.html',''); initRes
 <code>#include &quot;io_poller.h&quot;</code><br />
 <code>#include &quot;uthash.h&quot;</code><br />
 <code>#include &quot;queue.h&quot;</code><br />
-<code>#include &quot;heap-inl.h&quot;</code><br />
+<code>#include &quot;priority_queue.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for discord-internal.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="discord-internal_8h__incl.svg" width="1487" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="discord-internal_8h__incl.svg" width="1528" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -143,8 +143,6 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__bucket.html">discord_bucket</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bucket struct for handling ratelimiting.  <a href="structdiscord__bucket.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway__cmd__cbs.html">discord_gateway_cmd_cbs</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway__cbs.html">discord_gateway_cbs</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__gateway.html">discord_gateway</a></td></tr>
@@ -152,6 +150,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__event.html">discord_event</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Context in case event is scheduled to be triggered from concord's worker threads.  <a href="structdiscord__event.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timers.html">discord_timers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord.html">discord</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Discord client handler.  <a href="structdiscord.html#details">More...</a><br /></td></tr>
@@ -267,6 +267,24 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4b1d45c780c573a65db9ba28995b56f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalGateway.html#ga4b1d45c780c573a65db9ba28995b56f0">discord_gateway_send_presence_update</a> (struct <a class="el" href="structdiscord__gateway.html">discord_gateway</a> *gw)</td></tr>
 <tr class="memdesc:ga4b1d45c780c573a65db9ba28995b56f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send client's presence status update payload.  <a href="group__DiscordInternalGateway.html#ga4b1d45c780c573a65db9ba28995b56f0">More...</a><br /></td></tr>
 <tr class="separator:ga4b1d45c780c573a65db9ba28995b56f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6c4cd848c1604641d3e81044b5595e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gac6c4cd848c1604641d3e81044b5595e0">discord_timers_init</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memdesc:gac6c4cd848c1604641d3e81044b5595e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">prepare timers for usage  <a href="group__DiscordInternalTimer.html#gac6c4cd848c1604641d3e81044b5595e0">More...</a><br /></td></tr>
+<tr class="separator:gac6c4cd848c1604641d3e81044b5595e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaecdf1274fa5bffadff6070a008fa5a8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gaecdf1274fa5bffadff6070a008fa5a8a">discord_timers_cleanup</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memdesc:gaecdf1274fa5bffadff6070a008fa5a8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">cleanup timers and call cancel any running ones  <a href="group__DiscordInternalTimer.html#gaecdf1274fa5bffadff6070a008fa5a8a">More...</a><br /></td></tr>
+<tr class="separator:gaecdf1274fa5bffadff6070a008fa5a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc">discord_timers_run</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers)</td></tr>
+<tr class="memdesc:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">run all timers that are due  <a href="group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc">More...</a><br /></td></tr>
+<tr class="separator:ga883b03199ab5d2b4ede1cafab23e71fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4eebc4192161c78f1f61b7b7130cf472"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472">_discord_timer_ctl</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timers.html">discord_timers</a> *timers, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
+<tr class="memdesc:ga4eebc4192161c78f1f61b7b7130cf472"><td class="mdescLeft">&#160;</td><td class="mdescRight">modifies or creates a timer  <a href="group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472">More...</a><br /></td></tr>
+<tr class="separator:ga4eebc4192161c78f1f61b7b7130cf472"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393">discord_internal_timer_ctl</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
+<tr class="memdesc:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="mdescLeft">&#160;</td><td class="mdescRight">modifies or creates a timer  <a href="group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393">More...</a><br /></td></tr>
+<tr class="separator:ga4ecbde4db2fcabff2f4f08fbad449393"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842">discord_internal_timer</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> cb, void *data, int64_t delay)</td></tr>
+<tr class="memdesc:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a one shot timer that automatically deletes itself upon completion  <a href="group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842">More...</a><br /></td></tr>
+<tr class="separator:gaa1ca208a9cf4d3a7a4bff903cb357842"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Internal functions and datatypes. </p>

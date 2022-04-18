@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('structdiscord__adapter.html',''); init
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Data Fields</a>  </div>
   <div class="headertitle"><div class="title">discord_adapter Struct Reference<div class="ingroups"><a class="el" href="group__DiscordInternal.html">Internal implementation details</a> &raquo; <a class="el" href="group__DiscordInternalAdapter.html">REST API</a></div></div></div>
 </div><!--header-->
@@ -104,6 +105,11 @@ Collaboration diagram for discord_adapter:</div>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a115bcad0a1ad427ea6dfac7947c53c42"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__adapter.html#a115bcad0a1ad427ea6dfac7947c53c42">QUEUE</a> (struct <a class="el" href="structdiscord__context.html">discord_context</a>) *idleq</td></tr>
+<tr class="separator:a115bcad0a1ad427ea6dfac7947c53c42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:a6b15d023f57dd152fdde7c9d6c11f1b2"><td class="memItemLeft" align="right" valign="top">struct logconf&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__adapter.html#a6b15d023f57dd152fdde7c9d6c11f1b2">conf</a></td></tr>
@@ -132,17 +138,32 @@ struct {</td></tr>
 <tr class="separator:aee99639c21efa1fee11cbf16450d5297"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac673a231865619d0925696e25e8a456a"><td class="memItemLeft" valign="top">} *&#160;</td><td class="memItemRight" valign="bottom"><b>global</b></td></tr>
 <tr class="separator:ac673a231865619d0925696e25e8a456a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf464c4562d52b562063a73d62afa2ba"><td class="memItemLeft" align="right" valign="top">QUEUE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__adapter.html#acf464c4562d52b562063a73d62afa2ba">idleq</a></td></tr>
-<tr class="separator:acf464c4562d52b562063a73d62afa2ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd37bc58e06969e5587afce753737e22"><td class="memItemLeft" align="right" valign="top"><a id="acd37bc58e06969e5587afce753737e22" name="acd37bc58e06969e5587afce753737e22"></a>
-struct heap&#160;</td><td class="memItemRight" valign="bottom"><b>timeouts</b></td></tr>
-<tr class="separator:acd37bc58e06969e5587afce753737e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace28dd1a98e5f37c331df51e6557775d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__adapter.html#ace28dd1a98e5f37c331df51e6557775d">retry_limit</a></td></tr>
 <tr class="separator:ace28dd1a98e5f37c331df51e6557775d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The handle used for performing HTTP Requests. </p>
-</div><h2 class="groupheader">Field Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a115bcad0a1ad427ea6dfac7947c53c42" name="a115bcad0a1ad427ea6dfac7947c53c42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a115bcad0a1ad427ea6dfac7947c53c42">&#9670;&nbsp;</a></span>QUEUE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">discord_adapter::QUEUE </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structdiscord__context.html">discord_context</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >idle request handles </p>
+
+</div>
+</div>
+<h2 class="groupheader">Field Documentation</h2>
 <a id="a6b15d023f57dd152fdde7c9d6c11f1b2" name="a6b15d023f57dd152fdde7c9d6c11f1b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b15d023f57dd152fdde7c9d6c11f1b2">&#9670;&nbsp;</a></span>conf</h2>
 
@@ -306,21 +327,6 @@ struct heap&#160;</td><td class="memItemRight" valign="bottom"><b>timeouts</b></
       </table>
 </div><div class="memdoc">
 <p >global lock </p>
-
-</div>
-</div>
-<a id="acf464c4562d52b562063a73d62afa2ba" name="acf464c4562d52b562063a73d62afa2ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf464c4562d52b562063a73d62afa2ba">&#9670;&nbsp;</a></span>idleq</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">QUEUE* discord_adapter::idleq</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >idle request handles of type 'struct <a class="el" href="structdiscord__context.html" title="Context of individual requests that are scheduled to run asynchronously.">discord_context</a>' </p>
 
 </div>
 </div>

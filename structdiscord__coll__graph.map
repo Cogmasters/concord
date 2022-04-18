@@ -1,6 +1,7 @@
 <map id="discord" name="discord">
-<area shape="rect" id="node1" title="The Discord client handler." alt="" coords="103,103,173,130"/>
-<area shape="rect" id="node3" href="$structdiscord__gateway.html" title="The handle used for establishing a WebSockets connection." alt="" coords="72,201,204,228"/>
+<area shape="rect" id="node1" title="The Discord client handler." alt="" coords="174,118,243,145"/>
+<area shape="rect" id="node3" href="$structdiscord__gateway.html" title="The handle used for establishing a WebSockets connection." alt="" coords="143,231,275,257"/>
 <area shape="rect" id="node2" href="$structdiscord__adapter.html" title="The handle used for performing HTTP Requests." alt="" coords="5,5,132,32"/>
 <area shape="rect" id="node4" href="$structdiscord__user.html" title=" " alt="" coords="157,5,261,32"/>
+<area shape="rect" id="node5" href="$structdiscord__timers.html" title=" " alt="" coords="285,5,404,32"/>
 </map>

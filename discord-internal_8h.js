@@ -32,5 +32,11 @@ var discord_internal_8h =
     [ "discord_gateway_perform", "group__DiscordInternalGateway.html#ga8f3a46d9cc6ec42ca159766f6ffae8fb", null ],
     [ "discord_gateway_shutdown", "group__DiscordInternalGateway.html#ga820b8262c06ee3bba05d1284d4bc6910", null ],
     [ "discord_gateway_reconnect", "group__DiscordInternalGateway.html#ga44ee2f95d91bd642a68e074782ad4f13", null ],
-    [ "discord_gateway_send_presence_update", "group__DiscordInternalGateway.html#ga4b1d45c780c573a65db9ba28995b56f0", null ]
+    [ "discord_gateway_send_presence_update", "group__DiscordInternalGateway.html#ga4b1d45c780c573a65db9ba28995b56f0", null ],
+    [ "discord_timers_init", "group__DiscordInternalTimer.html#gac6c4cd848c1604641d3e81044b5595e0", null ],
+    [ "discord_timers_cleanup", "group__DiscordInternalTimer.html#gaecdf1274fa5bffadff6070a008fa5a8a", null ],
+    [ "discord_timers_run", "group__DiscordInternalTimer.html#ga883b03199ab5d2b4ede1cafab23e71fc", null ],
+    [ "_discord_timer_ctl", "group__DiscordInternalTimer.html#ga4eebc4192161c78f1f61b7b7130cf472", null ],
+    [ "discord_internal_timer_ctl", "group__DiscordInternalTimer.html#ga4ecbde4db2fcabff2f4f08fbad449393", null ],
+    [ "discord_internal_timer", "group__DiscordInternalTimer.html#gaa1ca208a9cf4d3a7a4bff903cb357842", null ]
 ];

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['voice_0',['Voice',['../group__DiscordAPIVoice.html',1,'']]],
-  ['voice_20speaking_20flags_1',['Voice speaking flags',['../group__DiscordVoiceSpeakingFlags.html',1,'']]]
+  ['user_0',['User',['../group__DiscordAPIUser.html',1,'']]],
+  ['user_20flags_1',['User flags',['../group__DiscordAPIUserFlags.html',1,'']]]
 ];

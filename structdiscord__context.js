@@ -10,7 +10,5 @@ var structdiscord__context =
     [ "route", "structdiscord__context.html#af33a61861018d2e69ffe5656df409563", null ],
     [ "conn", "structdiscord__context.html#a5253717956ff5b1773e26791d9369937", null ],
     [ "entry", "structdiscord__context.html#ac5c78dbeace47f85d5b056cca5c8ed82", null ],
-    [ "node", "structdiscord__context.html#a17f23fac4a28480f464f7b857a58c81b", null ],
-    [ "timeout_ms", "structdiscord__context.html#a6526455ab617eb16b0da37f0cfe4871f", null ],
     [ "retry_attempt", "structdiscord__context.html#ab51ae05deb02a235ec771c3c86716291", null ]
 ];

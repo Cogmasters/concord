@@ -1,0 +1,4 @@
+<map id="discord_timer" name="discord_timer">
+<area shape="rect" id="node1" title="struct used for modifying, and getting info about a timer" alt="" coords="5,112,116,139"/>
+<area shape="rect" id="node2" href="$structdiscord.html" title="The Discord client handler." alt="" coords="26,14,95,41"/>
+</map>

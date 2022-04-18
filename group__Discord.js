@@ -1,6 +1,7 @@
 var group__Discord =
 [
     [ "Events", "group__DiscordEvent.html", "group__DiscordEvent" ],
+    [ "Timer", "group__DiscordTimer.html", "group__DiscordTimer" ],
     [ "discord", "structdiscord.html", [
       [ "conf", "structdiscord.html#ac2ac71153e3681e24b87a205ad2df97f", null ],
       [ "is_original", "structdiscord.html#aafa9ca0a9e439963893d2774870403a4", null ],
@@ -10,8 +11,8 @@ var group__Discord =
       [ "gw", "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5", null ],
       [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
       [ "cb", "structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810", null ],
-      [ "next", "structdiscord.html#a6eb2ea44ec9bf21857e1055e8baaae59", null ],
-      [ "wakeup_timer", "structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f", null ],
+      [ "id", "structdiscord.html#a168c138bf57beb4e5a824dbe805519ca", null ],
+      [ "wakeup_timer", "structdiscord.html#a52ccd3bffd8de992f1ff725bad1d916e", null ],
       [ "on_idle", "structdiscord.html#a8b6ddc9583333027193256369e5600e5", null ],
       [ "on_cycle", "structdiscord.html#aec30edafaaff8f151616190450101eab", null ],
       [ "data", "structdiscord.html#ad36541f87b8997a57c0467d29627e8d1", null ]
@@ -29,6 +30,7 @@ var group__Discord =
     [ "discord_set_presence", "group__Discord.html#gaed8749c82a27a024a0deae053aac67c8", null ],
     [ "discord_get_ping", "group__Discord.html#ga8a6d0002445738ace70f5eb2b22ca471", null ],
     [ "discord_timestamp", "group__Discord.html#ga15a8fe1a6d3f30c18c6985b3afae11f5", null ],
+    [ "discord_timestamp_us", "group__Discord.html#gab751b38fe43b55b59592560798b01c07", null ],
     [ "discord_get_logconf", "group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3", null ],
     [ "discord_get_io_poller", "group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655", null ]
 ];

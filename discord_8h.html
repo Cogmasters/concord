@@ -88,7 +88,10 @@ $(document).ready(function(){initNavTree('discord_8h.html',''); initResizable();
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">discord.h File Reference</div></div>
 </div><!--header-->
@@ -127,6 +130,12 @@ Include dependency graph for discord.h:</div>
 </div>
 <p><a href="discord_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdiscord__timer.html">discord_timer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">struct used for modifying, and getting info about a timer  <a href="structdiscord__timer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a273fbb535b3d35f36c0f8ae9d57365a9"><td class="memItemLeft" align="right" valign="top"><a id="a273fbb535b3d35f36c0f8ae9d57365a9" name="a273fbb535b3d35f36c0f8ae9d57365a9"></a>
@@ -192,6 +201,29 @@ Macros</h2></td></tr>
 <tr class="memitem:ga4f5d0733373b4e252a94665294c316bf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#ga4f5d0733373b4e252a94665294c316bf">CCORD_DISCORD_CONNECTION</a>&#160;&#160;&#160;4</td></tr>
 <tr class="separator:ga4f5d0733373b4e252a94665294c316bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="memItemLeft" align="right" valign="top">
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>discord_ev_timer</b>) (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *ev)</td></tr>
+<tr class="memdesc:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">callback to be used with struct <a class="el" href="structdiscord__timer.html" title="struct used for modifying, and getting info about a timer">discord_timer</a> <br /></td></tr>
+<tr class="separator:ga8b23c7c024f54ddfd5e333bfd9387dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga6e91b61d2abe8974ade81aa42b225a6f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga6e91b61d2abe8974ade81aa42b225a6f">discord_timer_flags</a> { <br />
+&#160;&#160;<a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa3338dc618299088b59238e69e6a1bfe0">DISCORD_TIMER_MILLISECONDS</a> = 0
+, <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faed94cce3c4ed6783143b1b1f0193e200">DISCORD_TIMER_MICROSECONDS</a> = 1 &lt;&lt; 0
+, <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fadf15de56f1516ef493eada83b77ecb87">DISCORD_TIMER_DELETE</a> = 1 &lt;&lt; 1
+, <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa7ca0d000fbd3e69349aff6cd95b29e28">DISCORD_TIMER_DELETE_AUTO</a> = 1 &lt;&lt; 2
+, <br />
+&#160;&#160;<a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6faa917b8794f8f5251f044f0af4d6b280e">DISCORD_TIMER_CANCELED</a> = 1 &lt;&lt; 3
+, <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fafee62f1c8a0dc5ebd3bc775890d350d4">DISCORD_TIMER_GET</a> = 1 &lt;&lt; 5
+, <a class="el" href="group__DiscordTimer.html#gga6e91b61d2abe8974ade81aa42b225a6fa3d9222cf6537cf7984b6c0df22eaa340">DISCORD_TIMER_INTERVAL_FIXED</a> = 1 &lt;&lt; 6
+<br />
+ }</td></tr>
+<tr class="memdesc:ga6e91b61d2abe8974ade81aa42b225a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">flags used to change behaviour of timer  <a href="group__DiscordTimer.html#ga6e91b61d2abe8974ade81aa42b225a6f">More...</a><br /></td></tr>
+<tr class="separator:ga6e91b61d2abe8974ade81aa42b225a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gac88742928a867d61346e9f2e3e5d778d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ConcordError.html#gac88742928a867d61346e9f2e3e5d778d">discord_return_error</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, const char error[], <a class="el" href="group__ConcordError.html#ga4ca5a90a1068552190074f603f68b587">CCORDcode</a> code)</td></tr>
@@ -239,12 +271,42 @@ Functions</h2></td></tr>
 <tr class="memitem:ga15a8fe1a6d3f30c18c6985b3afae11f5"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga15a8fe1a6d3f30c18c6985b3afae11f5">discord_timestamp</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga15a8fe1a6d3f30c18c6985b3afae11f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current timestamp (in milliseconds)  <a href="group__Discord.html#ga15a8fe1a6d3f30c18c6985b3afae11f5">More...</a><br /></td></tr>
 <tr class="separator:ga15a8fe1a6d3f30c18c6985b3afae11f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab751b38fe43b55b59592560798b01c07"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gab751b38fe43b55b59592560798b01c07">discord_timestamp_us</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
+<tr class="memdesc:gab751b38fe43b55b59592560798b01c07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current timestamp (in microseconds)  <a href="group__Discord.html#gab751b38fe43b55b59592560798b01c07">More...</a><br /></td></tr>
+<tr class="separator:gab751b38fe43b55b59592560798b01c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="memItemLeft" align="right" valign="top">struct logconf *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3">discord_get_logconf</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve client's logging module for configuration purposes.  <a href="group__Discord.html#ga5ecca42ef5a99f9bfba9940b926068b3">More...</a><br /></td></tr>
 <tr class="separator:ga5ecca42ef5a99f9bfba9940b926068b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="memItemLeft" align="right" valign="top">struct io_poller *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655">discord_get_io_poller</a> (struct <a class="el" href="structdiscord.html">discord</a> *client)</td></tr>
 <tr class="memdesc:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the io_poller used by the discord client  <a href="group__Discord.html#gab53f8fde50dc0fa5311a9ffc9751b655">More...</a><br /></td></tr>
 <tr class="separator:gab53f8fde50dc0fa5311a9ffc9751b655"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga230faf2b14190f3c6ddecbcf9ed1ae6d"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga230faf2b14190f3c6ddecbcf9ed1ae6d">discord_timer_ctl</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
+<tr class="memdesc:ga230faf2b14190f3c6ddecbcf9ed1ae6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">modifies or creates a timer  <a href="group__DiscordTimer.html#ga230faf2b14190f3c6ddecbcf9ed1ae6d">More...</a><br /></td></tr>
+<tr class="separator:ga230faf2b14190f3c6ddecbcf9ed1ae6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85b715c14360d0436da5c8bd95ae5e4f"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">discord_timer</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> cb, void *data, int64_t delay)</td></tr>
+<tr class="memdesc:ga85b715c14360d0436da5c8bd95ae5e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a one shot timer that automatically deletes itself upon completion  <a href="group__DiscordTimer.html#ga85b715c14360d0436da5c8bd95ae5e4f">More...</a><br /></td></tr>
+<tr class="separator:ga85b715c14360d0436da5c8bd95ae5e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadbe05490558b071d3491994f491d6155"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155">discord_timer_interval</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, <a class="el" href="group__DiscordTimer.html#ga8b23c7c024f54ddfd5e333bfd9387dd5">discord_ev_timer</a> cb, void *data, int64_t delay, int64_t interval, int64_t repeat)</td></tr>
+<tr class="memdesc:gadbe05490558b071d3491994f491d6155"><td class="mdescLeft">&#160;</td><td class="mdescRight">creates a repeating timer that automatically deletes itself upon completion  <a href="group__DiscordTimer.html#gadbe05490558b071d3491994f491d6155">More...</a><br /></td></tr>
+<tr class="separator:gadbe05490558b071d3491994f491d6155"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9670267c1520768658351d73110d12e2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga9670267c1520768658351d73110d12e2">discord_timer_get</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id, struct <a class="el" href="structdiscord__timer.html">discord_timer</a> *timer)</td></tr>
+<tr class="memdesc:ga9670267c1520768658351d73110d12e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the data associated with the timer  <a href="group__DiscordTimer.html#ga9670267c1520768658351d73110d12e2">More...</a><br /></td></tr>
+<tr class="separator:ga9670267c1520768658351d73110d12e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31e4b6fdffe218a59768f18a149617a7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga31e4b6fdffe218a59768f18a149617a7">discord_timer_start</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id)</td></tr>
+<tr class="memdesc:ga31e4b6fdffe218a59768f18a149617a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">starts a timer  <a href="group__DiscordTimer.html#ga31e4b6fdffe218a59768f18a149617a7">More...</a><br /></td></tr>
+<tr class="separator:ga31e4b6fdffe218a59768f18a149617a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9bc2f8b274d62a173b051987b88dc890"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga9bc2f8b274d62a173b051987b88dc890">discord_timer_stop</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id)</td></tr>
+<tr class="memdesc:ga9bc2f8b274d62a173b051987b88dc890"><td class="mdescLeft">&#160;</td><td class="mdescRight">stops a timer  <a href="group__DiscordTimer.html#ga9bc2f8b274d62a173b051987b88dc890">More...</a><br /></td></tr>
+<tr class="separator:ga9bc2f8b274d62a173b051987b88dc890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29eb5a7785b557aabba9ed7506282307"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#ga29eb5a7785b557aabba9ed7506282307">discord_timer_cancel</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id)</td></tr>
+<tr class="memdesc:ga29eb5a7785b557aabba9ed7506282307"><td class="mdescLeft">&#160;</td><td class="mdescRight">cancels a timer, this will delete the timer if DISCORD_TIMER_DELETE_AUTO is enabled  <a href="group__DiscordTimer.html#ga29eb5a7785b557aabba9ed7506282307">More...</a><br /></td></tr>
+<tr class="separator:ga29eb5a7785b557aabba9ed7506282307"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab5e1ce15292d4eb17fb49ae64bf76d5f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#gab5e1ce15292d4eb17fb49ae64bf76d5f">discord_timer_delete</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id)</td></tr>
+<tr class="memdesc:gab5e1ce15292d4eb17fb49ae64bf76d5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">deletes a timer  <a href="group__DiscordTimer.html#gab5e1ce15292d4eb17fb49ae64bf76d5f">More...</a><br /></td></tr>
+<tr class="separator:gab5e1ce15292d4eb17fb49ae64bf76d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab547a5a050e37b514b7a05bddc49e246"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__DiscordTimer.html#gab547a5a050e37b514b7a05bddc49e246">discord_timer_cancel_and_delete</a> (struct <a class="el" href="structdiscord.html">discord</a> *client, unsigned id)</td></tr>
+<tr class="memdesc:gab547a5a050e37b514b7a05bddc49e246"><td class="mdescLeft">&#160;</td><td class="mdescRight">cancels, and deletes a timer  <a href="group__DiscordTimer.html#gab547a5a050e37b514b7a05bddc49e246">More...</a><br /></td></tr>
+<tr class="separator:gab547a5a050e37b514b7a05bddc49e246"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Public functions and datatypes. </p>

@@ -2,6 +2,7 @@ var group__DiscordInternal =
 [
     [ "REST API", "group__DiscordInternalAdapter.html", "group__DiscordInternalAdapter" ],
     [ "WebSockets API", "group__DiscordInternalGateway.html", "group__DiscordInternalGateway" ],
+    [ "Timer API", "group__DiscordInternalTimer.html", "group__DiscordInternalTimer" ],
     [ "discord-internal.h", "discord-internal_8h.html", null ],
     [ "discord-request.h", "discord-request_8h.html", null ],
     [ "discord", "structdiscord.html", [
@@ -13,8 +14,8 @@ var group__DiscordInternal =
       [ "gw", "structdiscord.html#ac439ecded3eac536b5de5dc24355a1d5", null ],
       [ "self", "structdiscord.html#a00c5289d2e99e09a2f69fb78589a1ace", null ],
       [ "cb", "structdiscord.html#a56b0ad42a1f11f53cb9eedbe8ab89810", null ],
-      [ "next", "structdiscord.html#a6eb2ea44ec9bf21857e1055e8baaae59", null ],
-      [ "wakeup_timer", "structdiscord.html#ae173bdc0814b27be7380b99c1f8fa93f", null ],
+      [ "id", "structdiscord.html#a168c138bf57beb4e5a824dbe805519ca", null ],
+      [ "wakeup_timer", "structdiscord.html#a52ccd3bffd8de992f1ff725bad1d916e", null ],
       [ "on_idle", "structdiscord.html#a8b6ddc9583333027193256369e5600e5", null ],
       [ "on_cycle", "structdiscord.html#aec30edafaaff8f151616190450101eab", null ],
       [ "data", "structdiscord.html#ad36541f87b8997a57c0467d29627e8d1", null ]
