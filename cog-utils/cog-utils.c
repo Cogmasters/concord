@@ -215,6 +215,40 @@ cog_sleep_ms(const long tms)
   return ret;
 }
 
+int
+cog_sleep_us(const long tms)
+{
+  int ret;
+
+#if _POSIX_C_SOURCE >= 199309L
+  struct timespec ts;
+
+  if (tms < 0) {
+    errno = EINVAL;
+    return -1;
+  }
+
+  ts.tv_sec = tms / 1000000;
+  ts.tv_nsec = (tms % 1000000) * 1000;
+
+  do {
+    ret = nanosleep(&ts, &ts);
+  } while (ret && errno == EINTR);
+#else
+  struct timeval timeout;
+  long _tms = tms;
+
+  timeout.tv_sec = _tms / 1000000L;
+  _tms = tms % 1000000L;
+  timeout.tv_usec = (int)_tms;
+  select(0, NULL, NULL, NULL, &timeout);
+
+  ret = 0;
+#endif
+
+  return ret;
+}
+
 /* returns current timestamp in milliseconds */
 uint64_t
 cog_timestamp_ms(void)
@@ -222,6 +256,17 @@ cog_timestamp_ms(void)
   struct PsnipClockTimespec t;
   if (0 == psnip_clock_get_time(PSNIP_CLOCK_TYPE_WALL, &t)) {
     return (uint64_t)t.seconds * 1000 + (uint64_t)t.nanoseconds / 1000000;
+  }
+  return 0;
+}
+
+/* returns current timestamp in microseconds */
+uint64_t
+cog_timestamp_us(void)
+{
+  struct PsnipClockTimespec t;
+  if (0 == psnip_clock_get_time(PSNIP_CLOCK_TYPE_WALL, &t)) {
+    return (uint64_t)t.seconds * 1000000 + (uint64_t)t.nanoseconds / 1000;
   }
   return 0;
 }

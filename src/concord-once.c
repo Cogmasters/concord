@@ -9,14 +9,16 @@ int ccord_has_sigint = 0;
 
 static int once;
 
+#ifdef CCORD_SIGINTCATCH
 /* shutdown gracefully on SIGINT received */
 static void
 sigint_handler(int signum)
 {
-  (void)signum;
-  fputs("\nSIGINT: Disconnecting running concord client(s) ...\n", stderr);
-  ccord_has_sigint = 1;
+    (void)signum;
+    fputs("\nSIGINT: Disconnecting running concord client(s) ...\n", stderr);
+    ccord_has_sigint = 1;
 }
+#endif /* CCORD_SIGINTCATCH */
 
 CCORDcode
 ccord_global_init()
@@ -25,9 +27,9 @@ ccord_global_init()
         return CCORD_GLOBAL_INIT;
     }
     else {
-        __sighandler_t prev = signal(SIGINT, &sigint_handler);
-        if (prev != SIG_DFL && prev != sigint_handler)
-            signal(SIGINT, prev);
+#ifdef CCORD_SIGINTCATCH
+        signal(SIGINT, &sigint_handler);
+#endif
         if (0 != curl_global_init(CURL_GLOBAL_DEFAULT)) {
             fputs("Couldn't start libcurl's globals\n", stderr);
             return CCORD_GLOBAL_INIT;

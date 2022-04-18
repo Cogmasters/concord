@@ -20,6 +20,9 @@
 
 typedef void *QUEUE[2];
 
+/* Improve readability by letting user specify underlying type. */
+#define QUEUE(type) QUEUE
+
 /* Private macros. */
 #define QUEUE_NEXT(q)       (*(QUEUE **) &((*(q))[0]))
 #define QUEUE_PREV(q)       (*(QUEUE **) &((*(q))[1]))

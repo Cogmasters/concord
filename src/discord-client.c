@@ -12,7 +12,7 @@ static void
 _discord_init(struct discord *new_client)
 {
     ccord_global_init();
-
+    discord_timers_init(new_client);
     new_client->io_poller = io_poller_create();
     discord_adapter_init(&new_client->adapter, &new_client->conf,
                          &new_client->token);
@@ -97,6 +97,7 @@ void
 discord_cleanup(struct discord *client)
 {
     if (client->is_original) {
+        discord_timers_cleanup(client);
         logconf_cleanup(&client->conf);
         discord_adapter_cleanup(&client->adapter);
         discord_gateway_cleanup(&client->gw);
@@ -214,42 +215,48 @@ discord_get_self(struct discord *client)
 
 void
 discord_set_on_command(struct discord *client,
-                       char *command,
+                       char command[],
                        discord_ev_message callback)
 {
-    /**
-     * default command callback if prefix is detected, but command isn't
-     *  specified
-     */
-    if (client->gw.cmds.prefix.size && (!command || !*command)) {
-        client->gw.cmds.on_default.cb = callback;
-        return; /* EARLY RETURN */
+    const size_t cmd_len = command ? strlen(command) : 0;
+    size_t i;
+
+    /* fallback callback if prefix is detected, but command isn't specified */
+    if (client->gw.cmds.prefix.size && !cmd_len) {
+        client->gw.cmds.fallback.cb = callback;
+        return;
     }
-    size_t index = 0;
-    const size_t command_len = strlen(command);
-    for (; index < client->gw.cmds.amt; index++)
-        if (command_len == client->gw.cmds.pool[index].size
-            && 0 == strcmp(command, client->gw.cmds.pool[index].start))
-            goto modify;
-    if (index == client->gw.cmds.cap) {
+
+    /* if command is already set then modify it */
+    for (i = 0; i < client->gw.cmds.amt; i++) {
+        if (cmd_len == client->gw.cmds.pool[i].size
+            && 0 == strcmp(command, client->gw.cmds.pool[i].start))
+        {
+            goto _modify;
+        }
+    }
+
+    if (i == client->gw.cmds.cap) {
         size_t cap = 8;
-        while (cap <= index)
+        void *tmp;
+
+        while (cap <= i)
             cap <<= 1;
 
-        void *tmp =
+        tmp =
             realloc(client->gw.cmds.pool, cap * sizeof(*client->gw.cmds.pool));
-        if (tmp) {
-            client->gw.cmds.pool = tmp;
-            client->gw.cmds.cap = cap;
-        }
-        else
-            return;
+        if (!tmp) return;
+
+        client->gw.cmds.pool = tmp;
+        client->gw.cmds.cap = cap;
     }
+
     ++client->gw.cmds.amt;
-    client->gw.cmds.pool[index].start = strdup(command);
-    client->gw.cmds.pool[index].size = command_len;
-modify:
-    client->gw.cmds.pool[index].cb = callback;
+    client->gw.cmds.pool[i].size =
+        cog_strndup(command, cmd_len, &client->gw.cmds.pool[i].start);
+
+_modify:
+    client->gw.cmds.pool[i].cb = callback;
 
     discord_add_intents(client, DISCORD_GATEWAY_GUILD_MESSAGES
                                     | DISCORD_GATEWAY_DIRECT_MESSAGES);
@@ -282,110 +289,6 @@ discord_set_event_scheduler(struct discord *client,
 }
 
 void
-discord_set_next_wakeup(struct discord *client, int64_t delay)
-{
-    if (delay == -1)
-        client->wakeup_timer.next = -1;
-    else if (delay >= 0)
-        client->wakeup_timer.next = (int64_t)cog_timestamp_ms() + delay;
-}
-
-void
-discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
-{
-    client->wakeup_timer.cb = callback;
-    client->wakeup_timer.next = -1;
-}
-
-void
-discord_set_on_idle(struct discord *client, discord_ev_idle callback)
-{
-    client->on_idle = callback;
-}
-
-void
-discord_set_on_cycle(struct discord *client, discord_ev_idle callback)
-{
-    client->on_cycle = callback;
-}
-
-void
-discord_set_on_ready(struct discord *client, discord_ev_idle callback)
-{
-    client->gw.cmds.cbs.on_ready = callback;
-}
-
-CCORDcode
-discord_run(struct discord *client)
-{
-    int64_t next_run, now;
-    CCORDcode code;
-
-    while (1) {
-        if (CCORD_OK != (code = discord_gateway_start(&client->gw))) break;
-
-        next_run = (int64_t)cog_timestamp_ms();
-        while (1) {
-            int poll_time = 0, poll_result;
-
-            now = (int64_t)cog_timestamp_ms();
-
-            if (!client->on_idle) {
-                poll_time = now < next_run ? (int)(next_run - now) : 0;
-
-                if (client->wakeup_timer.next != -1
-                    && client->wakeup_timer.next <= now + poll_time)
-                {
-                    poll_time = (int)(client->wakeup_timer.next - now);
-                }
-            }
-
-            poll_result = io_poller_poll(client->io_poller, poll_time);
-            if (-1 == poll_result) {
-                /* TODO: handle poll error here */
-            }
-            else if (0 == poll_result) {
-                if (ccord_has_sigint != 0) discord_shutdown(client);
-                if (client->on_idle) client->on_idle(client);
-            }
-
-            if (client->on_cycle) client->on_cycle(client);
-
-            if (CCORD_OK != (code = io_poller_perform(client->io_poller)))
-                break;
-
-            now = (int64_t)cog_timestamp_ms();
-
-            /* check for pending wakeup timers */
-            if (client->wakeup_timer.next != -1
-                && now >= client->wakeup_timer.next) {
-                client->wakeup_timer.next = -1;
-                if (client->wakeup_timer.cb) client->wakeup_timer.cb(client);
-            }
-
-            if (next_run <= now) {
-                if (CCORD_OK != (code = discord_gateway_perform(&client->gw)))
-                    break;
-                if (CCORD_OK
-                    != (code = discord_adapter_perform(&client->adapter)))
-                    break;
-
-                /* enforce a min 1 sec delay between runs */
-                next_run = now + 1000;
-            }
-        }
-
-        /* stop all pending requests in case of connection shutdown */
-        if (true == discord_gateway_end(&client->gw)) {
-            discord_adapter_stop_all(&client->adapter);
-            break;
-        }
-    }
-
-    return code;
-}
-
-void
 discord_shutdown(struct discord *client)
 {
     if (client->gw.session->status != DISCORD_SESSION_SHUTDOWN)
@@ -396,6 +299,12 @@ void
 discord_reconnect(struct discord *client, bool resume)
 {
     discord_gateway_reconnect(&client->gw, resume);
+}
+
+void
+discord_set_on_ready(struct discord *client, discord_ev_idle callback)
+{
+    client->gw.cmds.cbs.on_ready = callback;
 }
 
 void
@@ -685,6 +594,12 @@ discord_timestamp(struct discord *client)
 {
     (void)client;
     return cog_timestamp_ms();
+}
+uint64_t
+discord_timestamp_us(struct discord *client)
+{
+    (void)client;
+    return cog_timestamp_us();
 }
 
 struct logconf *

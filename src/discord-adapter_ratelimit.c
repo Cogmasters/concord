@@ -337,9 +337,8 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
                             struct discord_bucket *b,
                             const char route[DISCORD_ROUTE_LEN])
 {
+    QUEUE(struct discord_context) queue, *qelem;
     struct discord_context *cxt;
-    QUEUE queue;
-    QUEUE *qelem;
 
     QUEUE_MOVE(&adapter->b_null->waitq, &queue);
     QUEUE_INIT(&adapter->b_null->waitq);

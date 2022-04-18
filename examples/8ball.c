@@ -11,44 +11,51 @@ void on_ready(struct discord *client)
            bot->username, bot->discriminator);
 }
 
-void eight_ball(struct discord *client, const struct discord_message *msg) {
-
+void eight_ball(struct discord *client, const struct discord_message *msg)
+{
 	if(msg->author->bot) return;
 
 	srand(time(0));//generate seed for randomizer
 
 	char *phrases[20] = { //List of 8ball phrases/responses
-		":green_circle:It is certain.",
-		":green_circle:It is decidedly so.",
-		":green_circle:Without a doubt.",
-		":green_circle:Yes definitely.",
-		":green_circle:You may rely on it.",
-		":green_circle:As I see it, yes.",
-		":green_circle:Most likely.",
-		":green_circle:Outlook good.",
-		":green_circle:Yes.",
-		":green_circle:Signs Point to Yes.",
-		":yellow_circle:Reply hazy, try again.",
-		":yellow_circle:Ask again later.",
-		":yellow_circle:Better not tell you now.",
-		":yellow_circle:Cannot predict now.",
-		":yellow_circle:Concentrate and ask again.",
-		":red_circle:Don't count on it.",
-		":red_circle:My reply is no.",
-		":red_circle:My sources say no.",
-		":red_circle:Outlook not so good.",
+		":green_circle: It is certain.",
+		":green_circle: It is decidedly so.",
+		":green_circle: Without a doubt.",
+		":green_circle: Yes definitely.",
+		":green_circle: You may rely on it.",
+		":green_circle: As I see it, yes.",
+		":green_circle: Most likely.",
+		":green_circle: Outlook good.",
+		":green_circle: Yes.",
+		":green_circle: Signs Point to Yes.",
+		":yellow_circle: Reply hazy, try again.",
+		":yellow_circle: Ask again later.",
+		":yellow_circle: Better not tell you now.",
+		":yellow_circle: Cannot predict now.",
+		":yellow_circle: Concentrate and ask again.",
+		":red_circle: Don't count on it.",
+		":red_circle: My reply is no.",
+		":red_circle: My sources say no.",
+		":red_circle: Outlook not so good.",
 		":red_circle: Very doubtful."
-		};
-
-	int32_t answer = rand() % 20; //random number from 0 - 20
-
-	struct discord_embed embed = { // simple embed message
-		.title = ":8ball:8-Ball",
-		.description = phrases[answer]
 	};
 
+	int answer = rand() % (sizeof(phrases) / sizeof(*phrases));	// random index to phrases array
+
+	struct discord_embed embeds[] = { // simple embed message
+		{
+			.title = ":8ball: 8-Ball",
+			.description = phrases[answer]
+		}
+	};
+
+	struct discord_create_message params = {
+		.embeds = &(struct discord_embeds) {
+			.size = sizeof(embeds) / sizeof *embeds,
+			.array = embeds,
+		}
+	};
 	
-	struct discord_create_message_params params = { .embed = &embed};
 	discord_create_message(client, msg->channel_id, &params, NULL);
 
 }

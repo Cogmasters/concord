@@ -693,40 +693,43 @@ on_message_create(struct discord_gateway *gw, struct sized_buffer *data)
     if (gw->cmds.pool
         && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
     {
-        char *command_start = msg.content + gw->cmds.prefix.size;
-        size_t command_len = strcspn(command_start, " \n\t\r");
+        char *cmd_start = msg.content + gw->cmds.prefix.size;
+        size_t cmd_len = strcspn(cmd_start, " \n\t\r");
+        discord_ev_message cmd_cb = NULL;
 
-        struct discord_gateway_cmd_cbs *cmd = NULL;
+        char *tmp = msg.content; /* hold original ptr */
         size_t i;
 
+        /* match command to its callback */
         for (i = 0; i < gw->cmds.amt; ++i) {
-            if (command_len == gw->cmds.pool[i].size) {
-                /* check if command from channel matches set command */
-                if (!strncmp(gw->cmds.pool[i].start, command_start,
-                             command_len)) {
-                    cmd = &gw->cmds.pool[i];
-                    if (!cmd->cb) cmd = NULL;
-                    break;
-                }
+            if (cmd_len == gw->cmds.pool[i].size
+                && 0 == strncmp(gw->cmds.pool[i].start, cmd_start, cmd_len))
+            {
+
+                cmd_cb = gw->cmds.pool[i].cb;
+                break;
             }
         }
-        if (!cmd && gw->cmds.prefix.size) {
-            cmd = &gw->cmds.on_default;
+
+        /* couldn't match command to callback, get fallback if available */
+        if (!cmd_cb && gw->cmds.prefix.size) {
+            cmd_len = 0; /* no command specified */
+            cmd_cb = gw->cmds.fallback.cb ? gw->cmds.fallback.cb
+                                          : gw->cmds.cbs.on_message_create;
         }
 
-        if (cmd && cmd->cb) {
-            struct discord *client = CLIENT(gw, gw);
-            char *tmp = msg.content; /* hold original ptr */
+        if (cmd_cb) {
+            /* skip blank characters after command */
+            if (msg.content) {
+                msg.content = cmd_start + cmd_len;
+                while (*msg.content && isspace((int)msg.content[0]))
+                    ++msg.content;
+            }
 
-            /* skip blank characters */
-            msg.content = command_start + command_len;
-            while (*msg.content && isspace((int)msg.content[0]))
-                ++msg.content;
-
-            cmd->cb(client, &msg);
-
-            msg.content = tmp; /* retrieve original ptr */
+            cmd_cb(CLIENT(gw, gw), &msg);
         }
+
+        msg.content = tmp; /* retrieve original ptr */
     }
     else if (gw->cmds.cbs.on_message_create) {
         ON(message_create, &msg);
@@ -1576,7 +1579,7 @@ discord_gateway_cleanup(struct discord_gateway *gw)
     if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
 }
 
-#ifdef _CCORD_DEBUG_WEBSOCKETS
+#ifdef CCORD_DEBUG_WEBSOCKETS
 static void
 _ws_curl_debug_dump(const char *text,
                     FILE *stream,
@@ -1661,7 +1664,7 @@ _ws_curl_debug_trace(
     _ws_curl_debug_dump(text, stderr, (unsigned char *)data, size);
     return 0;
 }
-#endif
+#endif /* CCORD_DEBUG_WEBSOCKETS */
 
 CCORDcode
 discord_gateway_start(struct discord_gateway *gw)
@@ -1729,12 +1732,12 @@ discord_gateway_start(struct discord_gateway *gw)
     ws_set_url(gw->ws, url, NULL);
     ehandle = ws_start(gw->ws);
 
-#ifdef _CCORD_DEBUG_WEBSOCKETS
+#ifdef CCORD_DEBUG_WEBSOCKETS
     curl_easy_setopt(ehandle, CURLOPT_DEBUGFUNCTION, _ws_curl_debug_trace);
     curl_easy_setopt(ehandle, CURLOPT_VERBOSE, 1L);
 #else
     (void)ehandle;
-#endif
+#endif /* CCORD_DEBUG_WEBSOCKETS */
 
     return CCORD_OK;
 }
