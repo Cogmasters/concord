@@ -241,8 +241,8 @@ _jsmnf_load_pairs(struct jsmnf_loader *loader,
     }
     /* fall-through */
     case JSMN_UNDEFINED:
-        fprintf(stderr, "Unexpected key: %.*s\n", tok->end - tok->start,
-                js + tok->start);
+        fputs("Error: JSMN_UNDEFINED token detected, jsmn_parse() failure\n",
+              stderr);
         return JSMN_ERROR_INVAL;
     }
 
@@ -270,6 +270,8 @@ jsmnf_load(struct jsmnf_loader *loader,
         /* root */
         pairs[0].value.contents = js + tokens->start;
         pairs[0].value.length = tokens->end - tokens->start;
+
+        ++loader->pairnext;
     }
 
     ret = _jsmnf_load_pairs(loader, pairs, js, tokens, num_tokens, pairs,
