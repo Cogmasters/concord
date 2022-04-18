@@ -562,8 +562,10 @@ struct discord_gateway {
         int seq;
         /** field 't' */
         char name[32];
-        /** field 'd' */
+        /** field 'd' @deprecated replaced with `_data` */
         struct sized_buffer data;
+        /** field 'd' */
+        jsmnf_pair *_data;
     } payload;
 
     /** user-commands structure */
@@ -605,7 +607,7 @@ struct discord_event {
     /** the event unique id value */
     enum discord_gateway_events event;
     /** the event callback */
-    void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
+    void (*on_event)(struct discord_gateway *gw);
 };
 
 /**
