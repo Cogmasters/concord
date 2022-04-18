@@ -1,13 +1,13 @@
 #ifndef CWARE_LIBCHASH_H
 #define CWARE_LIBCHASH_H
 
-#define CWARE_LIBCHASH_VERSION  1.0.5
+#define CWARE_LIBCHASH_VERSION  "1.0.5"
 
 /* How big heap-allocated hashtables are by default */
 #ifndef CHASH_INITIAL_SIZE
 #define CHASH_INITIAL_SIZE 10
 #elif CHASH_INITIAL_SIZE <= 0 
-        "chash_init: default length must be greater than 0."
+        "chash_init: default length must be greater than 0"
 #endif
 
 /* Calculates the next size of the hashtable. */
@@ -22,7 +22,7 @@
 #endif
 
 /* The type that is used for counters; useful for aligning hashtable
- * length and capacity fields so type casting warnings do now appear */
+ * length and capacity fields so type casting warnings do not appear */
 #ifndef CHASH_COUNTER_TYPE
 #define CHASH_COUNTER_TYPE  int
 #endif
@@ -118,7 +118,7 @@ do {                                                                        \
                                                                             \
     fprintf(stderr, "__chash_resize: hashtable is full. could not resize"   \
                     " (%s:%i)\n", __FILE__, __LINE__);                      \
-    exit(EXIT_FAILURE);                                                     \
+    abort();                                                                \
   }                                                                         \
                                                                             \
   if((double) (hashtable)->length /                                         \
@@ -161,7 +161,7 @@ do {                                                                 \
     if((ptr) == NULL) {                                              \
         fprintf(stderr, #func ": " #ptr " cannot be null (%s:%i)\n", \
                 __FILE__, __LINE__);                                 \
-        exit(EXIT_FAILURE);                                          \
+        abort();                                                     \
     }                                                                \
 } while(0)
 
@@ -199,7 +199,7 @@ do {                                                                 \
     if((_length) <= 0) {                                                      \
         fprintf(stderr, "chash_init_stack: hashtable cannot have a maximum "  \
                         "length of 0 or less (%s:%i)\n", __FILE__, __LINE__); \
-        exit(EXIT_FAILURE);                                                   \
+        abort();                                                              \
     }                                                                         \
                                                                               \
     __chash_assert_nonnull(chash_init_stack, buffer);                         \
@@ -251,7 +251,7 @@ do {                                                                        \
                                                     __CHASH_INDEX != -1) {  \
     fprintf(stderr, "chash_lookup: failed to find key in hashtable (%s:%i)" \
                     "\n", __FILE__, __LINE__);                              \
-    exit(EXIT_FAILURE);                                                     \
+    abort();                                                                \
   }                                                                         \
                                                                             \
   storage = (hashtable)->buckets[__CHASH_HASH].value;                       \
@@ -271,7 +271,7 @@ do {                                                                        \
                                                   __CHASH_INDEX != -1) {    \
     fprintf(stderr, "chash_delete: failed to find key in hashtable (%s:%i)" \
                     "\n", __FILE__, __LINE__);                              \
-    exit(EXIT_FAILURE);                                                     \
+    abort();                                                                \
   }                                                                         \
                                                                             \
   namespace ## _FREE_KEY((hashtable)->buckets[__CHASH_HASH].key);           \
@@ -318,7 +318,7 @@ do {                                                                       \
                                                     __CHASH_INDEX != -1) { \
     fprintf(stderr, "chash_lookup_bucket: failed to find key in hashtable" \
                     "(%s:%i) \n", __FILE__, __LINE__);                     \
-    exit(EXIT_FAILURE);                                                    \
+    abort();                                                               \
   }                                                                        \
                                                                            \
   storage = ((hashtable)->buckets + __CHASH_HASH);                         \
