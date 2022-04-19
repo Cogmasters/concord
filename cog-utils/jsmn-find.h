@@ -52,15 +52,16 @@ typedef struct jsmnf_loader {
 JSMN_API void jsmnf_init(jsmnf_loader *loader);
 
 /**
- * @brief Populate the @ref jsmnf_pair pairs with jsmn tokens
+ * @brief Populate the @ref jsmnf_pair pairs from jsmn tokens
  *
  * @param loader the @ref jsmnf_loader initialized with jsmnf_init()
  * @param js the raw JSON string
- * @param tokens jsmn tokens initialized with jsmn_parse()
- * @param num_tokens amount of tokens initialized with jsmn_parse()
+ * @param tokens jsmn tokens initialized with jsmn_parse() / jsmn_parse_auto()
+ * @param num_tokens amount of tokens initialized with jsmn_parse() /
+ *      jsmn_parse_auto()
  * @param pairs jsmnf_pair pairs array
  * @param num_pairs maximum amount of pairs provided
- * @return a `enum jsmnerr` value for error or the number of tokens found
+ * @return a `enum jsmnerr` value for error or the amount of `pairs` used
  */
 JSMN_API int jsmnf_load(jsmnf_loader *loader,
                         const char js[],
@@ -94,6 +95,48 @@ JSMN_API jsmnf_pair *jsmnf_find(jsmnf_pair *head,
 JSMN_API jsmnf_pair *jsmnf_find_path(jsmnf_pair *head,
                                      char *const path[],
                                      int depth);
+
+/**
+ * @brief Populate and automatically allocate the @ref jsmnf_pair pairs from
+ *      jsmn tokens
+ * @brief jsmnf_load() counterpart that automatically allocates the necessary
+ *      amount of pairs necessary for sorting the JSON tokens
+ *
+ * @param loader the @ref jsmnf_loader initialized with jsmnf_init()
+ * @param js the raw JSON string
+ * @param tokens jsmn tokens initialized with jsmn_parse() / jsmn_parse_auto()
+ * @param num_tokens amount of tokens initialized with jsmn_parse() /
+ *      jsmn_parse_auto()
+ * @param p_pairs pointer to @ref jsmnf_pair to be dynamically increased @note
+ *      must be `free()`'d once done being used
+ * @param num_pairs initial amount of pairs provided
+ * @return a `enum jsmnerr` value for error or the amount of `pairs` used
+ */
+JSMN_API int jsmnf_load_auto(jsmnf_loader *loader,
+                             const char js[],
+                             const jsmntok_t tokens[],
+                             unsigned num_tokens,
+                             jsmnf_pair **p_pairs,
+                             unsigned num_pairs);
+
+/**
+ * @brief `jsmn_parse()` counterpart that automatically allocates the necessary
+ *      amount of tokens necessary for parsing the JSON string
+ *
+ * @param parser the `jsmn_parser` initialized with `jsmn_init()`
+ * @param js the raw JSON string
+ * @param len the raw JSON string length
+ * @param p_tokens pointer to `jsmntok_t` to be dynamically increased @note
+ *      must be `free()`'d once done being used
+ * @param num_tokens initial amount of tokens provided
+ * @return a `enum jsmnerr` value for error or the amount of `tokens` used
+ */
+JSMN_API int jsmn_parse_auto(jsmn_parser *parser,
+                             const char *js,
+                             size_t len,
+                             jsmntok_t **p_tokens,
+                             unsigned num_tokens);
+
 /**
  * @brief Utility function for unescaping a Unicode string
  *
@@ -317,6 +360,73 @@ jsmnf_find_path(struct jsmnf_pair *head, char *const path[], int depth)
         iter = found;
     }
     return found;
+}
+
+JSMN_API int
+jsmn_parse_auto(struct jsmn_parser *parser,
+                const char *js,
+                size_t len,
+                struct jsmntok **p_tokens,
+                unsigned num_tokens)
+{
+    int ret;
+
+    if (NULL == *p_tokens) {
+        *p_tokens = malloc(sizeof **p_tokens);
+        num_tokens = 1;
+    }
+
+    while (1) {
+        ret = jsmn_parse(parser, js, len, *p_tokens, num_tokens);
+        if (ret != JSMN_ERROR_NOMEM) {
+            break;
+        }
+        else {
+            const unsigned new_num_tokens = num_tokens * 2;
+            void *tmp;
+
+            tmp = realloc(*p_tokens, new_num_tokens * sizeof **p_tokens);
+            if (!tmp) return JSMN_ERROR_NOMEM;
+
+            num_tokens = new_num_tokens;
+            *p_tokens = tmp;
+        }
+    }
+    return ret;
+}
+
+JSMN_API int
+jsmnf_load_auto(struct jsmnf_loader *loader,
+                const char js[],
+                const struct jsmntok tokens[],
+                unsigned num_tokens,
+                struct jsmnf_pair **p_pairs,
+                unsigned num_pairs)
+{
+    int ret;
+
+    if (NULL == *p_pairs) {
+        *p_pairs = malloc(sizeof **p_pairs);
+        num_pairs = 1;
+    }
+
+    while (1) {
+        ret = jsmnf_load(loader, js, tokens, num_tokens, *p_pairs, num_pairs);
+        if (ret != JSMN_ERROR_NOMEM) {
+            break;
+        }
+        else {
+            const unsigned new_num_pairs = num_pairs * 2;
+            void *tmp;
+
+            tmp = realloc(*p_pairs, new_num_pairs * sizeof **p_pairs);
+            if (!tmp) return JSMN_ERROR_NOMEM;
+
+            num_pairs = new_num_pairs;
+            *p_pairs = tmp;
+        }
+    }
+    return ret;
 }
 
 static int
