@@ -190,7 +190,7 @@ struct discord_adapter {
     } * global;
 
     /** idle request handles */
-    QUEUE(struct discord_context) *idleq;
+    QUEUE(struct discord_context) * idleq;
 
     /** max amount of retries before a failed request gives up */
     int retry_limit;
@@ -554,6 +554,23 @@ struct discord_gateway {
         } retry;
     } * session;
 
+    /**
+     * parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable
+     * @todo store pairs and tokens 'realsize' to avoid unecessarily performing
+     *      realloc memory "decreases" (i.e only realloc when increasing is
+     *      necessary)
+     */
+    struct {
+        /** current iteration JSON key/value pairs */
+        jsmnf_pair *pairs;
+        /** current iteration number of JSON key/value pairs */
+        unsigned npairs;
+        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
+        jsmntok_t *tokens;
+        /** current iteration number of JSON tokens */
+        unsigned ntokens;
+    } parse;
+
     /** response-payload structure */
     struct {
         /** field 'op' */
@@ -689,21 +706,21 @@ struct discord_timers {
 
 /**
  * @brief prepare timers for usage
- * 
+ *
  * @param client the client created with discord_init()
  */
 void discord_timers_init(struct discord *client);
 
 /**
  * @brief cleanup timers and call cancel any running ones
- * 
+ *
  * @param client the client created with discord_init()
  */
 void discord_timers_cleanup(struct discord *client);
 
 /**
  * @brief run all timers that are due
- * 
+ *
  * @param client the client created with discord_init()
  * @param timers the timers to run
  */
@@ -711,40 +728,40 @@ void discord_timers_run(struct discord *client, struct discord_timers *timers);
 
 /**
  * @brief modifies or creates a timer
- * 
+ *
  * @param client the client created with discord_init()
  * @param timers the timer group to perform this operation on
  * @param timer the timer that should be modified
  * @return the id of the timer
  */
-unsigned _discord_timer_ctl(
-    struct discord *client,
-    struct discord_timers *timers,
-    struct discord_timer *timer);
+unsigned _discord_timer_ctl(struct discord *client,
+                            struct discord_timers *timers,
+                            struct discord_timer *timer);
 
 /**
  * @brief modifies or creates a timer
- * 
+ *
  * @param client the client created with discord_init()
  * @param timer the timer that should be modified
  * @return unsigned the id of the timer
  */
-unsigned discord_internal_timer_ctl(
-    struct discord *client,
-    struct discord_timer *timer);
+unsigned discord_internal_timer_ctl(struct discord *client,
+                                    struct discord_timer *timer);
 
 /**
  * @brief creates a one shot timer that automatically
  *        deletes itself upon completion
- * 
+ *
  * @param client the client created with discord_init()
  * @param cb the callback that should be called when timer triggers
  * @param data user data
  * @param delay delay before timer should start in milliseconds
- * @return unsigned 
+ * @return unsigned
  */
-unsigned discord_internal_timer(struct discord *client, discord_ev_timer cb,
-                                void *data, int64_t delay);
+unsigned discord_internal_timer(struct discord *client,
+                                discord_ev_timer cb,
+                                void *data,
+                                int64_t delay);
 
 /** @} DiscordInternalTimer */
 /**

@@ -1277,48 +1277,47 @@ on_text_cb(void *p_gw,
 {
     (void)ws;
     struct discord_gateway *gw = p_gw;
+    long ret;
 
     jsmn_parser parser;
-    jsmntok_t tokens[2048];
 
     jsmn_init(&parser);
-    if (0 < jsmn_parse(&parser, text, len, tokens,
-                       sizeof(tokens) / sizeof *tokens))
-    {
+    ret = jsmn_parse_auto(&parser, text, len, &gw->parse.tokens,
+                          gw->parse.ntokens);
+    if (ret > 0) {
         jsmnf_loader loader;
-        jsmnf_pair pairs[512];
+
+        gw->parse.ntokens = (unsigned)ret;
 
         jsmnf_init(&loader);
-        if (0 < jsmnf_load(&loader, text, tokens, parser.toknext, pairs,
-                           sizeof(pairs) / sizeof *pairs))
-        {
+        ret = jsmnf_load_auto(&loader, text, gw->parse.tokens, parser.toknext,
+                              &gw->parse.pairs, gw->parse.npairs);
+        if (ret > 0) {
             jsmnf_pair *f;
 
-            if ((f = jsmnf_find(pairs, "t", 1))) {
+            gw->parse.npairs = (unsigned)ret;
+
+            if ((f = jsmnf_find(gw->parse.pairs, "t", 1))) {
                 if (JSMN_STRING == f->type)
                     snprintf(gw->payload.name, sizeof(gw->payload.name),
                              "%.*s", f->value.length, f->value.contents);
                 else
                     *gw->payload.name = '\0';
             }
-            if ((f = jsmnf_find(pairs, "s", 1))) {
+            if ((f = jsmnf_find(gw->parse.pairs, "s", 1))) {
                 int seq = (int)strtol(f->value.contents, NULL, 10);
                 if (seq) gw->payload.seq = seq;
             }
-            if ((f = jsmnf_find(pairs, "op", 2)))
+            if ((f = jsmnf_find(gw->parse.pairs, "op", 2)))
                 gw->payload.opcode = (int)strtol(f->value.contents, NULL, 10);
-            if ((gw->payload._data = jsmnf_find(pairs, "d", 1))) {
+            if ((gw->payload._data = jsmnf_find(gw->parse.pairs, "d", 1))) {
                 gw->payload.data.start =
                     (char *)gw->payload._data->value.contents;
                 gw->payload.data.size =
                     (size_t)gw->payload._data->value.length;
             }
         }
-        else
-            abort();
     }
-    else
-        abort();
 
     logconf_trace(
         &gw->conf,
@@ -1484,6 +1483,8 @@ discord_gateway_cleanup(struct discord_gateway *gw)
         free(gw->cmds.pool);
     }
     if (gw->cmds.prefix.start) free(gw->cmds.prefix.start);
+    if (gw->parse.pairs) free(gw->parse.pairs);
+    if (gw->parse.tokens) free(gw->parse.tokens);
 }
 
 #ifdef CCORD_DEBUG_WEBSOCKETS
