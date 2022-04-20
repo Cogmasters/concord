@@ -554,12 +554,7 @@ struct discord_gateway {
         } retry;
     } * session;
 
-    /**
-     * parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable
-     * @todo store pairs and tokens 'realsize' to avoid unecessarily performing
-     *      realloc memory "decreases" (i.e only realloc when increasing is
-     *      necessary)
-     */
+    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
     struct {
         /** current iteration JSON key/value pairs */
         jsmnf_pair *pairs;
