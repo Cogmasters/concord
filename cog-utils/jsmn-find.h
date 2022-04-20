@@ -264,7 +264,7 @@ _jsmnf_load_pairs(struct jsmnf_loader *loader,
                 struct _jsmnf_szbuf value;
 
                 value.contents = js + _value->start;
-                value.length = _value->end - _value->end;
+                value.length = _value->end - _value->start;
 
                 ret = _jsmnf_load_pairs(loader, pair, js, _value,
                                         num_tokens - offset, pairs, num_pairs);
