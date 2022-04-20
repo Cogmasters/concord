@@ -7,7 +7,7 @@
 #define GENCODECS_JSON_DECODER_PTR_char(_f, _var, _type)                      \
     if (_f && _f->type == JSMN_STRING) {                                      \
         long _ret;                                                            \
-        _var = calloc(1, _f->value.length);                                   \
+        _var = calloc(1, _f->value.length + 1);                               \
         if (NULL == _var) return JSMN_ERROR_NOMEM;                            \
         _ret = jsmnf_unescape(_var, _f->value.length, _f->value.contents,     \
                               _f->value.length);                              \
