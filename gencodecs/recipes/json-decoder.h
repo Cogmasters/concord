@@ -110,18 +110,20 @@
     {                                                                         \
         size_t nbytes = 0;                                                    \
         jsmn_parser parser;                                                   \
-        jsmntok_t tokens[256];                                                \
+        jsmntok_t *tokens = NULL;                                             \
         jsmn_init(&parser);                                                   \
-        if (0 < jsmn_parse(&parser, buf, size, tokens,                        \
-                           sizeof(tokens) / sizeof *tokens)) {                \
+        if (0 < jsmn_parse_auto(&parser, buf, size, &tokens, 0)) {            \
             jsmnf_loader loader;                                              \
-            jsmnf_pair pairs[256];                                            \
-            long ret;                                                         \
+            jsmnf_pair *pairs = NULL;                                         \
             jsmnf_init(&loader);                                              \
-            ret = jsmnf_load(&loader, buf, tokens, parser.toknext, pairs,     \
-                             sizeof(pairs) / sizeof *pairs);                  \
-            if (0 < ret && 0 < (ret = _type##_from_jsmnf(pairs, this)))       \
-                nbytes = ret;                                                 \
+            if (0 < jsmnf_load_auto(&loader, buf, tokens, parser.toknext,     \
+                                    &pairs, 0)) {                             \
+                long ret;                                                     \
+                if (0 < (ret = _type##_from_jsmnf(pairs, this)))              \
+                    nbytes = ret;                                             \
+                free(pairs);                                                  \
+            }                                                                 \
+            free(tokens);                                                     \
         }                                                                     \
         return nbytes;                                                        \
     }
