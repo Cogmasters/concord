@@ -57,7 +57,7 @@ log_color_cb(log_Event *ev)
     fflush(ev->udata);
 }
 
-/** @todo this doesn't disable `logconf_http()` logging */
+/** TODO: this doesn't disable `logconf_http()` logging */
 static bool
 module_is_disabled(struct logconf *conf)
 {
@@ -217,17 +217,19 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
                     int i = 0;
 
                     conf->disable_modules.ids =
-                        calloc(1, f1->length * sizeof(char *));
+                        malloc(f1->length * sizeof(char *));
                     for (i = 0; i < f1->length; ++i) {
                         jsmnf_pair *f2 = f1->buckets + i;
 
                         if (f2->type == JSMN_STRING) {
-                            conf->disable_modules.ids[i] =
-                                calloc(1, f2->value.length);
+                            const size_t length = f2->value.length + 1;
+                            char *buf;
 
-                            jsmnf_unescape(
-                                conf->disable_modules.ids[i], f2->value.length,
-                                f2->value.contents, f2->value.length);
+                            buf = malloc(length);
+                            memcpy(buf, f2->value.contents, f2->value.length);
+                            buf[f2->value.length] = '\0';
+
+                            conf->disable_modules.ids[i] = buf;
                         }
                     }
                     conf->disable_modules.size = f1->length;
@@ -285,6 +287,8 @@ logconf_branch(struct logconf *branch, struct logconf *orig, const char id[])
                  "Out of bounds write attempt");
     }
     branch->pid = getpid();
+
+    module_is_disabled(branch);
 }
 
 void
