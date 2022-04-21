@@ -1277,25 +1277,20 @@ on_text_cb(void *p_gw,
 {
     (void)ws;
     struct discord_gateway *gw = p_gw;
-    long ret;
-
     jsmn_parser parser;
 
     jsmn_init(&parser);
-    ret = jsmn_parse_auto(&parser, text, len, &gw->parse.tokens,
-                          gw->parse.ntokens);
-    if (ret > 0) {
+    if (0 < jsmn_parse_auto(&parser, text, len, &gw->parse.tokens,
+                            &gw->parse.ntokens))
+    {
         jsmnf_loader loader;
 
-        gw->parse.ntokens = (unsigned)ret;
-
         jsmnf_init(&loader);
-        ret = jsmnf_load_auto(&loader, text, gw->parse.tokens, parser.toknext,
-                              &gw->parse.pairs, gw->parse.npairs);
-        if (ret > 0) {
+        if (0 < jsmnf_load_auto(&loader, text, gw->parse.tokens,
+                                parser.toknext, &gw->parse.pairs,
+                                &gw->parse.npairs))
+        {
             jsmnf_pair *f;
-
-            gw->parse.npairs = (unsigned)ret;
 
             if ((f = jsmnf_find(gw->parse.pairs, "t", 1))) {
                 if (JSMN_STRING == f->type)

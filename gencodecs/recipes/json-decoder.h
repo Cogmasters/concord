@@ -111,14 +111,16 @@
         size_t nbytes = 0;                                                    \
         jsmn_parser parser;                                                   \
         jsmntok_t *tokens = NULL;                                             \
+        unsigned tmp = 0;                                                     \
         jsmn_init(&parser);                                                   \
-        if (0 < jsmn_parse_auto(&parser, buf, size, &tokens, 0)) {            \
+        if (0 < jsmn_parse_auto(&parser, buf, size, &tokens, &tmp)) {         \
             jsmnf_loader loader;                                              \
             jsmnf_pair *pairs = NULL;                                         \
+            long ret;                                                         \
+            tmp = 0;                                                          \
             jsmnf_init(&loader);                                              \
             if (0 < jsmnf_load_auto(&loader, buf, tokens, parser.toknext,     \
-                                    &pairs, 0)) {                             \
-                long ret;                                                     \
+                                    &pairs, &tmp)) {                          \
                 if (0 < (ret = _type##_from_jsmnf(pairs, this)))              \
                     nbytes = ret;                                             \
                 free(pairs);                                                  \
