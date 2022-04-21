@@ -287,8 +287,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
 
                 if ((f = jsmnf_find(pairs, "global", 6)))
                     is_global = (*f->value.contents == 't');
-                if ((f = jsmnf_find(pairs, "message", 7)))
-                    message = f->value;
+                if ((f = jsmnf_find(pairs, "message", 7))) message = f->value;
                 if ((f = jsmnf_find(pairs, "retry_after", 11)))
                     retry_after = strtod(f->value.contents, NULL);
             }
@@ -354,7 +353,7 @@ _discord_adapter_run_sync(struct discord_adapter *adapter,
         if (wait_ms > 0) {
             /* block thread's runtime for delay amount */
             logconf_info(&adapter->conf,
-                         "[%.4s] RATELIMITING (wait %" PRId64 " ms)", b->hash,
+                         "[%.4s] RATELIMITING (wait %" PRId64 " ms)", b->key,
                          wait_ms);
             cog_sleep_ms(wait_ms);
 

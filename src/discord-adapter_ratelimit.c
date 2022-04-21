@@ -10,11 +10,17 @@
 
 struct _discord_route {
     /** route associated with bucket */
-    char route[DISCORD_ROUTE_LEN];
+    char key[DISCORD_ROUTE_LEN];
     /** this route's bucket */
     struct discord_bucket *bucket;
     /** makes this structure hashable */
     UT_hash_handle hh;
+};
+
+struct _discord_route_ht {
+    int length;
+    int capacity;
+    struct _discord_route *buckets;
 };
 
 static void
@@ -29,11 +35,11 @@ _discord_route_init(struct discord_adapter *adapter,
 
     r->bucket = b;
 
-    len = snprintf(r->route, sizeof(r->route), "%s", route);
-    ASSERT_NOT_OOB(len, sizeof(b->hash));
+    len = snprintf(r->key, sizeof(r->key), "%s", route);
+    ASSERT_NOT_OOB(len, sizeof(b->key));
 
     pthread_mutex_lock(&adapter->global->lock);
-    HASH_ADD(hh, adapter->routes, route, len, r);
+    HASH_ADD(hh, adapter->routes, key, len, r);
     pthread_mutex_unlock(&adapter->global->lock);
 }
 
@@ -125,9 +131,9 @@ discord_bucket_init(struct discord_adapter *adapter,
     b->remaining = 1;
     b->limit = limit;
 
-    len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
-                   hash->start);
-    ASSERT_NOT_OOB(len, sizeof(b->hash));
+    len =
+        snprintf(b->key, sizeof(b->key), "%.*s", (int)hash->size, hash->start);
+    ASSERT_NOT_OOB(len, sizeof(b->key));
 
     if (pthread_mutex_init(&b->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
@@ -136,7 +142,7 @@ discord_bucket_init(struct discord_adapter *adapter,
     QUEUE_INIT(&b->busyq);
 
     pthread_mutex_lock(&adapter->global->lock);
-    HASH_ADD(hh, adapter->buckets, hash, len, b);
+    HASH_ADD(hh, adapter->buckets, key, len, b);
     pthread_mutex_unlock(&adapter->global->lock);
 
     return b;
@@ -205,7 +211,7 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
         _discord_route_init(adapter, route, b);
     }
 
-    logconf_debug(&adapter->conf, "[%.4s] Match '%s' to bucket", b->hash,
+    logconf_debug(&adapter->conf, "[%.4s] Match '%s' to bucket", b->key,
                   route);
 
     return b;
@@ -254,7 +260,7 @@ discord_bucket_get(struct discord_adapter *adapter,
 
     if ((b = _discord_bucket_find(adapter, route)) != NULL) {
         logconf_trace(&adapter->conf, "[%.4s] Found a bucket match for '%s'!",
-                      b->hash, route);
+                      b->key, route);
 
         return b;
     }
@@ -327,7 +333,7 @@ _discord_bucket_populate(struct discord_adapter *adapter,
     }
 
     logconf_debug(&adapter->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
-                  b->hash, b->remaining, b->reset_tstamp);
+                  b->key, b->remaining, b->reset_tstamp);
 }
 
 /* in case of asynchronous requests, check if successive requests with

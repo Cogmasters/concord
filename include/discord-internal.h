@@ -168,12 +168,22 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /** client-side data reference counter for cleanup */
+    /** 
+     * client-side data reference counter for cleanup
+     * @todo replace with priority_queue.h
+     */
     struct discord_refcount *refcounts;
-    /** routes discovered (declared at adapter-ratelimit.c) */
+#if 0
+    /** routes discovered (declared at discord-adapter_ratelimit.c) */
+    struct _discord_route_ht *routes;
+    /** buckets discovered */
+    struct discord_bucket_ht *buckets;
+#else
+    /** routes discovered (declared at discord-adapter_ratelimit.c) */
     struct _discord_route *routes;
     /** buckets discovered */
     struct discord_bucket *buckets;
+#endif
     /** for routes that have not yet been assigned to a bucket */
     struct discord_bucket *b_null;
     /** for routes didn't receive a bucket match from Discord */
@@ -260,7 +270,10 @@ u64unix_ms discord_adapter_get_global_wait(struct discord_adapter *adapter);
  */
 void discord_adapter_stop_all(struct discord_adapter *adapter);
 
-/** @brief Naive garbage collector to cleanup user arbitrary data */
+/** 
+ * @brief Naive garbage collector to cleanup user arbitrary data
+ * @todo replace with priority_queue.h
+ */
 struct discord_refcount {
     /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
     void *data;
@@ -305,7 +318,7 @@ void discord_refcount_decr(struct discord_adapter *adapter, void *data);
 /** @brief The bucket struct for handling ratelimiting */
 struct discord_bucket {
     /** the hash associated with this bucket */
-    char hash[64];
+    char key[64];
     /** maximum connections this bucket can handle before ratelimit */
     long limit;
     /** connections this bucket can do before waiting for cooldown */
@@ -320,6 +333,12 @@ struct discord_bucket {
     QUEUE(struct discord_context) busyq;
     /** makes this structure hashable */
     UT_hash_handle hh;
+};
+
+struct discord_bucket_ht {
+    int length;
+    int capacity;
+    struct discord_bucket *buckets;
 };
 
 /**
