@@ -104,7 +104,7 @@ JSMN_API jsmnf_pair *jsmnf_find_path(const jsmnf_pair *head,
  *
  * @param[in,out] loader the @ref jsmnf_loader initialized with jsmnf_init()
  * @param[in] js the raw JSON string
- * @param[in] tokens jsmn tokens initialized with jsmn_parse() / 
+ * @param[in] tokens jsmn tokens initialized with jsmn_parse() /
  *      jsmn_parse_auto()
  * @param[in] num_tokens amount of tokens initialized with jsmn_parse() /
  *      jsmn_parse_auto()
@@ -177,10 +177,12 @@ JSMN_API long jsmnf_unescape(char buf[],
 
 #define _JSMNF_TABLE_HEAP   0
 #define _JSMNF_TABLE_BUCKET struct jsmnf_pair
-#define _JSMNF_TABLE_FREE_KEY(key)
-#define _JSMNF_TABLE_HASH(key, hash) _jsmnf_key_hash(key, hash)
-#define _JSMNF_TABLE_FREE_VALUE(value)
-#define _JSMNF_TABLE_COMPARE(cmp_a, cmp_b) _jsmnf_key_compare(cmp_a, cmp_b)
+#define _JSMNF_TABLE_FREE_KEY(_key)
+#define _JSMNF_TABLE_HASH(_key, _hash) _jsmnf_key_hash(_key, _hash)
+#define _JSMNF_TABLE_FREE_VALUE(_value)
+#define _JSMNF_TABLE_COMPARE(_cmp_a, _cmp_b) _jsmnf_key_compare(_cmp_a, _cmp_b)
+#define _JSMNF_TABLE_INIT(_bucket, _key, _value)                              \
+    chash_default_init(_bucket, _key, _value)
 
 JSMN_API void
 jsmnf_init(jsmnf_loader *loader)
