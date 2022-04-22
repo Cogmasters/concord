@@ -42,8 +42,6 @@ discord_adapter_init(struct discord_adapter *adapter,
                      struct logconf *conf,
                      struct sized_buffer *token)
 {
-    const struct sized_buffer key_null = { "null", 4 },
-                              key_miss = { "miss", 4 };
     struct ua_attr attr = { 0 };
 
     attr.conf = conf;
@@ -71,9 +69,7 @@ discord_adapter_init(struct discord_adapter *adapter,
     if (pthread_mutex_init(&adapter->global->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
 
-    /* initialize 'singleton' buckets */
-    adapter->b_null = discord_bucket_init(adapter, &key_null, 1L);
-    adapter->b_miss = discord_bucket_init(adapter, &key_miss, LONG_MAX);
+    discord_buckets_init(adapter);
 
     /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
      * share the same queue with the original */
@@ -86,6 +82,7 @@ discord_adapter_init(struct discord_adapter *adapter,
 static void
 _discord_context_cleanup(struct discord_context *cxt)
 {
+    discord_attachments_cleanup(&cxt->req.attachments);
     if (cxt->body.buf.start) free(cxt->body.buf.start);
     free(cxt);
 }
@@ -432,6 +429,8 @@ _discord_attachments_dup(struct discord_attachments *dest,
 {
     int i;
 
+    if (!src->size) return;
+
     __carray_init(dest, (size_t)src->size, struct discord_attachment, , );
     for (i = 0; i < src->size; ++i) {
         carray_insert(dest, i, src->array[i]);
@@ -463,7 +462,6 @@ _discord_context_reset(struct discord_context *cxt)
     *cxt->route = '\0';
     cxt->conn = NULL;
     cxt->retry_attempt = 0;
-
     discord_attachments_cleanup(&cxt->req.attachments);
 
     memset(&cxt->req, 0, sizeof(struct discord_request));
@@ -612,28 +610,29 @@ _discord_adapter_send_batch(struct discord_adapter *adapter,
     return code;
 }
 
+static void
+_discord_adapter_try_send(struct discord_adapter *adapter,
+                          struct discord_bucket *b)
+{
+    /* skip busy and non-pending buckets */
+    if (!QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
+        return;
+    }
+    /* if bucket is outdated then its necessary to send a single
+     *      request to fetch updated values */
+    if (b->reset_tstamp < NOW(adapter)) {
+        _discord_adapter_send(adapter, b);
+        return;
+    }
+    /* send remainder or trigger timeout */
+    _discord_adapter_send_batch(adapter, b);
+}
+
+/* TODO: redundant constant return value */
 static CCORDcode
 _discord_adapter_check_pending(struct discord_adapter *adapter)
 {
-    struct discord_bucket *b;
-
-    /* iterate over buckets in search of pending requests */
-    for (b = adapter->buckets; b != NULL; b = b->hh.next) {
-        /* skip busy and non-pending buckets */
-        if (!QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
-            continue;
-        }
-
-        /* if bucket is outdated then its necessary to send a single
-         *      request to fetch updated values */
-        if (b->reset_tstamp < NOW(adapter)) {
-            _discord_adapter_send(adapter, b);
-            continue;
-        }
-        /* send remainder or trigger timeout */
-        _discord_adapter_send_batch(adapter, b);
-    }
-
+    discord_buckets_foreach(adapter, &_discord_adapter_try_send);
     return CCORD_OK;
 }
 
@@ -757,33 +756,35 @@ discord_adapter_perform(struct discord_adapter *adapter)
     return CCORD_OK;
 }
 
+static void
+_discord_adapter_stop(struct discord_adapter *adapter,
+                      struct discord_bucket *b)
+{
+    QUEUE(struct discord_context) * qelem;
+    struct discord_context *cxt;
+    CURL *ehandle;
+
+    while (!QUEUE_EMPTY(&b->busyq)) {
+        qelem = QUEUE_HEAD(&b->busyq);
+        QUEUE_REMOVE(qelem);
+
+        cxt = QUEUE_DATA(qelem, struct discord_context, entry);
+        ehandle = ua_conn_get_easy_handle(cxt->conn);
+
+        curl_multi_remove_handle(adapter->mhandle, ehandle);
+
+        /* set for recycling */
+        ua_conn_stop(cxt->conn);
+        QUEUE_INSERT_TAIL(adapter->idleq, qelem);
+    }
+
+    /* cancel pending tranfers */
+    QUEUE_ADD(adapter->idleq, &b->waitq);
+    QUEUE_INIT(&b->waitq);
+}
+
 void
 discord_adapter_stop_all(struct discord_adapter *adapter)
 {
-    QUEUE(struct discord_context) *qelem = NULL;
-    struct discord_context *cxt;
-    struct discord_bucket *b;
-
-    /* cancel bucket's on-going transfers */
-    for (b = adapter->buckets; b != NULL; b = b->hh.next) {
-        CURL *ehandle;
-
-        while (!QUEUE_EMPTY(&b->busyq)) {
-            qelem = QUEUE_HEAD(&b->busyq);
-            QUEUE_REMOVE(qelem);
-
-            cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-            ehandle = ua_conn_get_easy_handle(cxt->conn);
-
-            curl_multi_remove_handle(adapter->mhandle, ehandle);
-
-            /* set for recycling */
-            ua_conn_stop(cxt->conn);
-            QUEUE_INSERT_TAIL(adapter->idleq, qelem);
-        }
-
-        /* cancel pending tranfers */
-        QUEUE_ADD(adapter->idleq, &b->waitq);
-        QUEUE_INIT(&b->waitq);
-    }
+    discord_buckets_foreach(adapter, &_discord_adapter_stop);
 }

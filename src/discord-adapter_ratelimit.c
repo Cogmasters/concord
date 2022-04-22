@@ -8,16 +8,45 @@
 #include "cog-utils.h"
 #include "clock.h"
 
+#define DISCORD_BUCKETS_TABLE_HEAP   1
+#define DISCORD_BUCKETS_TABLE_BUCKET struct discord_bucket
+#define DISCORD_BUCKETS_TABLE_FREE_KEY(_key)
+#define DISCORD_BUCKETS_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
+#define DISCORD_BUCKETS_TABLE_FREE_VALUE(_value) NULL
+#define DISCORD_BUCKETS_TABLE_COMPARE(_cmp_a, _cmp_b)                         \
+    chash_string_compare(_cmp_a, _cmp_b)
+#define DISCORD_BUCKETS_TABLE_INIT(bucket, _key, _value)                      \
+    memcpy(bucket.key, _key, sizeof(bucket.key))
+
+struct _discord_buckets_ht {
+    int length;
+    int capacity;
+    struct discord_bucket *buckets;
+    /** singleton for routes that have not yet been assigned to a bucket */
+    struct discord_bucket *null;
+    /** singleton for routes didn't receive a bucket match from Discord */
+    struct discord_bucket *miss;
+};
+
+#define DISCORD_ROUTES_TABLE_HEAP   1
+#define DISCORD_ROUTES_TABLE_BUCKET struct _discord_route
+#define DISCORD_ROUTES_TABLE_FREE_KEY(_key)
+#define DISCORD_ROUTES_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
+#define DISCORD_ROUTES_TABLE_FREE_VALUE(_value) NULL
+#define DISCORD_ROUTES_TABLE_COMPARE(_cmp_a, _cmp_b)                          \
+    chash_string_compare(_cmp_a, _cmp_b)
+#define DISCORD_ROUTES_TABLE_INIT(route, _key, _value)                        \
+    memcpy(route.key, _key, sizeof(route.key))
+
 struct _discord_route {
     /** route associated with bucket */
     char key[DISCORD_ROUTE_LEN];
     /** this route's bucket */
-    struct discord_bucket *bucket;
-    /** makes this structure hashable */
-    UT_hash_handle hh;
+    struct discord_bucket *value;
+    int state;
 };
 
-struct _discord_route_ht {
+struct _discord_routes_ht {
     int length;
     int capacity;
     struct _discord_route *buckets;
@@ -28,18 +57,8 @@ _discord_route_init(struct discord_adapter *adapter,
                     const char route[DISCORD_ROUTE_LEN],
                     struct discord_bucket *b)
 {
-    struct _discord_route *r;
-    int len;
-
-    r = calloc(1, sizeof(struct _discord_route));
-
-    r->bucket = b;
-
-    len = snprintf(r->key, sizeof(r->key), "%s", route);
-    ASSERT_NOT_OOB(len, sizeof(b->key));
-
     pthread_mutex_lock(&adapter->global->lock);
-    HASH_ADD(hh, adapter->routes, key, len, r);
+    chash_assign(adapter->routes, route, b, DISCORD_ROUTES_TABLE);
     pthread_mutex_unlock(&adapter->global->lock);
 }
 
@@ -118,22 +137,25 @@ discord_bucket_get_route(enum http_method method,
 
 #undef ROUTE_PUSH
 
-struct discord_bucket *
-discord_bucket_init(struct discord_adapter *adapter,
-                    const struct sized_buffer *hash,
-                    const long limit)
+static struct discord_bucket *
+_discord_bucket_init(struct discord_adapter *adapter,
+                     const struct sized_buffer *hash,
+                     const long limit)
 {
     struct discord_bucket *b;
-    int len;
+    char key[sizeof(b->key)];
+    int len = snprintf(key, sizeof(key), "%.*s", (int)hash->size, hash->start);
 
-    b = calloc(1, sizeof(struct discord_bucket));
+    ASSERT_NOT_OOB(len, sizeof(key));
+
+    pthread_mutex_lock(&adapter->global->lock);
+    chash_assign(adapter->buckets, key, NULL, DISCORD_BUCKETS_TABLE);
+    (void)chash_lookup_bucket(adapter->buckets, key, b, DISCORD_BUCKETS_TABLE);
+    pthread_mutex_unlock(&adapter->global->lock);
 
     b->remaining = 1;
     b->limit = limit;
-
-    len =
-        snprintf(b->key, sizeof(b->key), "%.*s", (int)hash->size, hash->start);
-    ASSERT_NOT_OOB(len, sizeof(b->key));
+    b->reset_tstamp = 0;
 
     if (pthread_mutex_init(&b->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
@@ -141,31 +163,40 @@ discord_bucket_init(struct discord_adapter *adapter,
     QUEUE_INIT(&b->waitq);
     QUEUE_INIT(&b->busyq);
 
-    pthread_mutex_lock(&adapter->global->lock);
-    HASH_ADD(hh, adapter->buckets, key, len, b);
-    pthread_mutex_unlock(&adapter->global->lock);
-
     return b;
+}
+
+void
+discord_buckets_init(struct discord_adapter *adapter)
+{
+    const struct sized_buffer keynull = { "null", 4 }, keymiss = { "miss", 4 };
+
+    adapter->buckets = chash_init(adapter->buckets, DISCORD_BUCKET_TABLE);
+    adapter->routes = chash_init(adapter->routes, DISCORD_ROUTE_TABLE);
+
+    /* initialize 'singleton' buckets */
+    adapter->buckets->null = _discord_bucket_init(adapter, &keynull, 1L);
+    adapter->buckets->miss = _discord_bucket_init(adapter, &keymiss, LONG_MAX);
 }
 
 void
 discord_buckets_cleanup(struct discord_adapter *adapter)
 {
-    struct _discord_route *r, *r_tmp;
-    struct discord_bucket *b, *b_tmp;
+    chash_free(adapter->buckets, DISCORD_BUCKETS_TABLE);
+    chash_free(adapter->routes, DISCORD_ROUTES_TABLE);
+}
 
-    /* cleanup routes */
-    HASH_ITER(hh, adapter->routes, r, r_tmp)
-    {
-        HASH_DEL(adapter->routes, r);
-        free(r);
-    }
-    /* cleanup buckets */
-    HASH_ITER(hh, adapter->buckets, b, b_tmp)
-    {
-        HASH_DEL(adapter->buckets, b);
-        pthread_mutex_destroy(&b->lock);
-        free(b);
+void
+discord_buckets_foreach(struct discord_adapter *adapter,
+                        void (*iter)(struct discord_adapter *adapter,
+                                     struct discord_bucket *b))
+{
+    struct discord_bucket *b;
+    int i;
+
+    for (i = 0; i < adapter->buckets->capacity; ++i) {
+        b = adapter->buckets->buckets + i;
+        if (CHASH_FILLED == b->state) (*iter)(adapter, b);
     }
 }
 
@@ -173,14 +204,19 @@ static struct discord_bucket *
 _discord_bucket_find(struct discord_adapter *adapter,
                      const char route[DISCORD_ROUTE_LEN])
 {
-    struct _discord_route *r;
+    struct _discord_route *r = NULL;
+    int ret;
 
     /* attempt to find bucket from 'route' */
     pthread_mutex_lock(&adapter->global->lock);
-    HASH_FIND_STR(adapter->routes, route, r);
+    ret = chash_contains(adapter->routes, route, ret, DISCORD_ROUTES_TABLE);
+    if (ret) {
+        (void)chash_lookup_bucket(adapter->routes, route, r,
+                                  DISCORD_ROUTES_TABLE);
+    }
     pthread_mutex_unlock(&adapter->global->lock);
 
-    return r ? r->bucket : NULL;
+    return r ? r->value : NULL;
 }
 
 static struct discord_bucket *
@@ -197,7 +233,7 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
 
         if (!hash.size) {
             /* no bucket given for route */
-            b = adapter->b_miss;
+            b = adapter->buckets->miss;
         }
         else {
             struct sized_buffer limit =
@@ -205,7 +241,7 @@ _discord_bucket_get_match(struct discord_adapter *adapter,
             long _limit =
                 limit.size ? strtol(limit.start, NULL, 10) : LONG_MAX;
 
-            b = discord_bucket_init(adapter, &hash, _limit);
+            b = _discord_bucket_init(adapter, &hash, _limit);
         }
 
         _discord_route_init(adapter, route, b);
@@ -234,8 +270,8 @@ u64unix_ms
 discord_bucket_get_timeout(struct discord_adapter *adapter,
                            struct discord_bucket *b)
 {
-    u64unix_ms global = discord_adapter_get_global_wait(adapter);
-    u64unix_ms reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
+    u64unix_ms global = discord_adapter_get_global_wait(adapter),
+               reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
 
     return (global > reset) ? global : reset;
 }
@@ -244,9 +280,8 @@ int64_t
 discord_bucket_get_wait(struct discord_adapter *adapter,
                         struct discord_bucket *b)
 {
-    struct discord *client = CLIENT(adapter, adapter);
-    u64unix_ms now = discord_timestamp(client);
-    u64unix_ms reset = discord_bucket_get_timeout(adapter, b);
+    u64unix_ms now = discord_timestamp(CLIENT(adapter, adapter)),
+               reset = discord_bucket_get_timeout(adapter, b);
 
     return (int64_t)(reset - now);
 }
@@ -268,7 +303,7 @@ discord_bucket_get(struct discord_adapter *adapter,
     logconf_trace(&adapter->conf,
                   "[null] Couldn't match known buckets to '%s'", route);
 
-    return adapter->b_null;
+    return adapter->buckets->null;
 }
 
 /* attempt to parse rate limit's header fields to the bucket
@@ -326,8 +361,9 @@ _discord_bucket_populate(struct discord_adapter *adapter,
         offset = server + ts.nanoseconds / 1000000;
 
         /* reset timestamp =
-         *   (system time) + (diff between Discord's reset timestamp and
-         * offset) */
+         *   (system time)
+         *      + (diff between Discord's reset timestamp and offset)
+         */
         b->reset_tstamp =
             now + ((u64unix_ms)(1000 * strtod(reset.start, NULL)) - offset);
     }
@@ -346,8 +382,8 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
     QUEUE(struct discord_context) queue, *qelem;
     struct discord_context *cxt;
 
-    QUEUE_MOVE(&adapter->b_null->waitq, &queue);
-    QUEUE_INIT(&adapter->b_null->waitq);
+    QUEUE_MOVE(&adapter->buckets->null->waitq, &queue);
+    QUEUE_INIT(&adapter->buckets->null->waitq);
 
     while (!QUEUE_EMPTY(&queue)) {
         qelem = QUEUE_HEAD(&queue);
@@ -359,7 +395,7 @@ _discord_bucket_null_filter(struct discord_adapter *adapter,
             cxt->bucket = b;
         }
         else {
-            QUEUE_INSERT_TAIL(&adapter->b_null->waitq, qelem);
+            QUEUE_INSERT_TAIL(&adapter->buckets->null->waitq, qelem);
         }
     }
 }
@@ -372,7 +408,7 @@ discord_bucket_build(struct discord_adapter *adapter,
                      struct ua_info *info)
 {
     /* match new route to existing or new bucket */
-    if (b == adapter->b_null) {
+    if (b == adapter->buckets->null) {
         b = _discord_bucket_get_match(adapter, route, info);
         _discord_bucket_null_filter(adapter, b, route);
     }

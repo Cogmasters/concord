@@ -25,6 +25,7 @@
 #include "cog-utils.h"
 #include "io_poller.h"
 
+#include "chash.h"
 #include "uthash.h"
 #include "queue.h"
 #include "priority_queue.h"
@@ -168,26 +169,15 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /** 
+    /**
      * client-side data reference counter for cleanup
      * @todo replace with priority_queue.h
      */
     struct discord_refcount *refcounts;
-#if 0
     /** routes discovered (declared at discord-adapter_ratelimit.c) */
-    struct _discord_route_ht *routes;
-    /** buckets discovered */
-    struct discord_bucket_ht *buckets;
-#else
-    /** routes discovered (declared at discord-adapter_ratelimit.c) */
-    struct _discord_route *routes;
-    /** buckets discovered */
-    struct discord_bucket *buckets;
-#endif
-    /** for routes that have not yet been assigned to a bucket */
-    struct discord_bucket *b_null;
-    /** for routes didn't receive a bucket match from Discord */
-    struct discord_bucket *b_miss;
+    struct _discord_routes_ht *routes;
+    /** buckets discovered (declared at discord-adapter_ratelimit.c) */
+    struct _discord_buckets_ht *buckets;
 
     /* client-wide ratelimiting timeout */
     struct {
@@ -270,7 +260,7 @@ u64unix_ms discord_adapter_get_global_wait(struct discord_adapter *adapter);
  */
 void discord_adapter_stop_all(struct discord_adapter *adapter);
 
-/** 
+/**
  * @brief Naive garbage collector to cleanup user arbitrary data
  * @todo replace with priority_queue.h
  */
@@ -331,33 +321,36 @@ struct discord_bucket {
     QUEUE(struct discord_context) waitq;
     /** busy requests */
     QUEUE(struct discord_context) busyq;
-    /** makes this structure hashable */
-    UT_hash_handle hh;
-};
 
-struct discord_bucket_ht {
-    int length;
-    int capacity;
-    struct discord_bucket *buckets;
+    int state;
+    void *value;
 };
 
 /**
- * @brief Initialize a individual bucket and assign it to `adapter`
+ * @brief Initialize buckets and routes respective hashtables
  *
+ * Hashtables shall be used for storage and retrieval of discovered routes and
+ *      buckets
  * @param adapter the handle initialized with discord_adapter_init()
- * @param hash the bucket's hash (for identification purposes)
- * @param limit the bucket's request threshold
  */
-struct discord_bucket *discord_bucket_init(struct discord_adapter *adapter,
-                                           const struct sized_buffer *hash,
-                                           const long limit);
+void discord_buckets_init(struct discord_adapter *adapter);
 
 /**
- * @brief Cleanup all buckets allocated
+ * @brief Cleanup all buckets and routes that have been discovered
  *
  * @param adapter the handle initialized with discord_adapter_init()
  */
 void discord_buckets_cleanup(struct discord_adapter *adapter);
+
+/**
+ * @brief Iterate and call `iter` callback for each discovered bucket
+ *
+ * @param adapter the handle initialized with discord_adapter_init()
+ * @param iter the user callback to be called per bucket
+ */
+void discord_buckets_foreach(struct discord_adapter *adapter,
+                             void (*iter)(struct discord_adapter *adapter,
+                                          struct discord_bucket *b));
 
 /**
  * @brief Return bucket timeout timestamp
@@ -533,8 +526,8 @@ struct discord_gateway {
         u64unix_ms now;
         /** timestamp of last succesful identify request */
         u64unix_ms identify;
-        /** timestamp of last succesful event timestamp in ms (resets every
-         * 60s) */
+        /** timestamp of last succesful event timestamp in ms
+         *      (resets every 60s) */
         u64unix_ms event;
         /** latency obtained from HEARTBEAT and HEARTBEAT_ACK interval */
         int ping_ms;
@@ -638,7 +631,7 @@ struct discord_event {
     /** the event unique id value */
     enum discord_gateway_events event;
     /** the event callback */
-    void (*on_event)(struct discord_gateway *gw);
+    void (*on_event)(struct discord_gateway * gw);
 };
 
 /**
