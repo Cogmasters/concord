@@ -8,83 +8,64 @@
 #include "cog-utils.h"
 #include "clock.h"
 
-#define DISCORD_BUCKETS_TABLE_HEAP   1
-#define DISCORD_BUCKETS_TABLE_BUCKET struct discord_bucket
-#define DISCORD_BUCKETS_TABLE_FREE_KEY(_key)
-#define DISCORD_BUCKETS_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
-#define DISCORD_BUCKETS_TABLE_FREE_VALUE(_value) NULL
-#define DISCORD_BUCKETS_TABLE_COMPARE(_cmp_a, _cmp_b)                         \
+#define RATELIMITER_TABLE_HEAP   1
+#define RATELIMITER_TABLE_BUCKET struct _discord_route
+#define RATELIMITER_TABLE_FREE_KEY(_key)
+#define RATELIMITER_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
+#define RATELIMITER_TABLE_FREE_VALUE(_value) _discord_bucket_cleanup(_value)
+#define RATELIMITER_TABLE_COMPARE(_cmp_a, _cmp_b)                             \
     chash_string_compare(_cmp_a, _cmp_b)
-#define DISCORD_BUCKETS_TABLE_INIT(bucket, _key, _value)                      \
-    memcpy(bucket.key, _key, sizeof(bucket.key))
-
-struct _discord_buckets_ht {
-    int length;
-    int capacity;
-    struct discord_bucket *buckets;
-    /** singleton for routes that have not yet been assigned to a bucket */
-    struct discord_bucket *null;
-    /** singleton for routes didn't receive a bucket match from Discord */
-    struct discord_bucket *miss;
-};
-
-#define DISCORD_ROUTES_TABLE_HEAP   1
-#define DISCORD_ROUTES_TABLE_BUCKET struct _discord_route
-#define DISCORD_ROUTES_TABLE_FREE_KEY(_key)
-#define DISCORD_ROUTES_TABLE_HASH(_key, _hash)  chash_string_hash(_key, _hash)
-#define DISCORD_ROUTES_TABLE_FREE_VALUE(_value) NULL
-#define DISCORD_ROUTES_TABLE_COMPARE(_cmp_a, _cmp_b)                          \
-    chash_string_compare(_cmp_a, _cmp_b)
-#define DISCORD_ROUTES_TABLE_INIT(route, _key, _value)                        \
-    memcpy(route.key, _key, sizeof(route.key))
+#define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
+    memcpy(route.key, _key, sizeof(route.key));                               \
+    route.value = _value
 
 struct _discord_route {
-    /** route associated with bucket */
+    /** route associated with request */
     char key[DISCORD_ROUTE_LEN];
-    /** this route's bucket */
+    /** this route's values */
     struct discord_bucket *value;
     int state;
 };
 
-struct _discord_routes_ht {
-    int length;
-    int capacity;
-    struct _discord_route *buckets;
-};
-
 static void
-_discord_route_init(struct discord_adapter *adapter,
-                    const char route[DISCORD_ROUTE_LEN],
-                    struct discord_bucket *b)
+_discord_bucket_cleanup(struct discord_bucket *b)
 {
-    pthread_mutex_lock(&adapter->global->lock);
-    chash_assign(adapter->routes, route, b, DISCORD_ROUTES_TABLE);
-    pthread_mutex_unlock(&adapter->global->lock);
+    pthread_mutex_destroy(&b->lock);
+    free(b);
 }
 
-#define ROUTE_PUSH(route, len, ...)                                           \
+static void
+_discord_ratelimiter_assign(struct discord_ratelimiter *rl,
+                            const char key[DISCORD_ROUTE_LEN],
+                            struct discord_bucket *b)
+{
+    pthread_mutex_lock(&rl->global.lock);
+    chash_assign(rl, key, b, RATELIMITER_TABLE);
+    pthread_mutex_unlock(&rl->global.lock);
+}
+
+#define KEY_PUSH(key, len, ...)                                               \
     do {                                                                      \
-        *len += snprintf(route + *len, DISCORD_ROUTE_LEN - (size_t)*len,      \
+        *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t)*len,        \
                          ":" __VA_ARGS__);                                    \
         ASSERT_NOT_OOB(*len, DISCORD_ROUTE_LEN);                              \
     } while (0)
 
-/* determine which ratelimit group (aka bucket) a request belongs to
- * by checking its route.
+/* determine which ratelimit group a request belongs to by generating its key.
  * see:  https://discord.com/developers/docs/topics/rate-limits */
 void
-discord_bucket_get_route(enum http_method method,
-                         char route[DISCORD_ROUTE_LEN],
-                         const char endpoint_fmt[],
-                         va_list args)
+discord_ratelimiter_build_key(enum http_method method,
+                              char key[DISCORD_ROUTE_LEN],
+                              const char endpoint_fmt[],
+                              va_list args)
 {
-    /* generated route length */
-    int routelen = 0;
+    /* generated key length */
+    int keylen = 0;
     /* split endpoint sections */
     const char *curr = endpoint_fmt, *prev = "";
     size_t currlen = 0;
 
-    ROUTE_PUSH(route, &routelen, "%d", method);
+    KEY_PUSH(key, &keylen, "%d", method);
     do {
         u64snowflake id_arg = 0ULL;
         size_t i;
@@ -118,16 +99,16 @@ discord_bucket_get_route(enum http_method method,
             }
         }
 
-        /* push section to route's string, in case of a major parameter the
+        /* push section to key's string, in case of a major parameter the
          * literal ID will be pushed */
         if (0 == strncmp(curr, "%" PRIu64, currlen)
             && (0 == strncmp(prev, "channels", 8)
                 || 0 == strncmp(prev, "guilds", 6)))
         {
-            ROUTE_PUSH(route, &routelen, "%" PRIu64, id_arg);
+            KEY_PUSH(key, &keylen, "%" PRIu64, id_arg);
         }
         else {
-            ROUTE_PUSH(route, &routelen, "%.*s", (int)currlen, curr);
+            KEY_PUSH(key, &keylen, "%.*s", (int)currlen, curr);
         }
 
         prev = curr;
@@ -135,27 +116,19 @@ discord_bucket_get_route(enum http_method method,
     } while (curr[currlen] != '\0');
 }
 
-#undef ROUTE_PUSH
+#undef KEY_PUSH
 
 static struct discord_bucket *
-_discord_bucket_init(struct discord_adapter *adapter,
-                     const struct sized_buffer *hash,
-                     const long limit)
+_discord_bucket_init(const struct sized_buffer *hash, const long limit)
 {
-    struct discord_bucket *b;
-    char key[sizeof(b->key)];
-    int len = snprintf(key, sizeof(key), "%.*s", (int)hash->size, hash->start);
+    struct discord_bucket *b = calloc(1, sizeof *b);
+    int len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
+                       hash->start);
 
-    ASSERT_NOT_OOB(len, sizeof(key));
-
-    pthread_mutex_lock(&adapter->global->lock);
-    chash_assign(adapter->buckets, key, NULL, DISCORD_BUCKETS_TABLE);
-    (void)chash_lookup_bucket(adapter->buckets, key, b, DISCORD_BUCKETS_TABLE);
-    pthread_mutex_unlock(&adapter->global->lock);
+    ASSERT_NOT_OOB(len, sizeof(b->hash));
 
     b->remaining = 1;
     b->limit = limit;
-    b->reset_tstamp = 0;
 
     if (pthread_mutex_init(&b->lock, NULL))
         ERR("Couldn't initialize pthread mutex");
@@ -166,156 +139,162 @@ _discord_bucket_init(struct discord_adapter *adapter,
     return b;
 }
 
-void
-discord_buckets_init(struct discord_adapter *adapter)
+struct discord_ratelimiter *
+discord_ratelimiter_init(struct logconf *conf)
 {
-    const struct sized_buffer keynull = { "null", 4 }, keymiss = { "miss", 4 };
+    const struct sized_buffer keynull = { "null", 4 };
+    struct discord_ratelimiter *rl = chash_init(rl, RATELIMITER_TABLE);
 
-    adapter->buckets = chash_init(adapter->buckets, DISCORD_BUCKET_TABLE);
-    adapter->routes = chash_init(adapter->routes, DISCORD_ROUTE_TABLE);
+    logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
 
-    /* initialize 'singleton' buckets */
-    adapter->buckets->null = _discord_bucket_init(adapter, &keynull, 1L);
-    adapter->buckets->miss = _discord_bucket_init(adapter, &keymiss, LONG_MAX);
+    /* initialize 'singleton' bucket */
+    rl->null = _discord_bucket_init(&keynull, 1L);
+
+    /* global ratelimiting resources */
+    rl->global.wait_ms = 0;
+    if (pthread_rwlock_init(&rl->global.rwlock, NULL))
+        ERR("Couldn't initialize pthread rwlock");
+    if (pthread_mutex_init(&rl->global.lock, NULL))
+        ERR("Couldn't initialize pthread mutex");
+
+    return rl;
 }
 
 void
-discord_buckets_cleanup(struct discord_adapter *adapter)
+discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 {
-    chash_free(adapter->buckets, DISCORD_BUCKETS_TABLE);
-    chash_free(adapter->routes, DISCORD_ROUTES_TABLE);
+    _discord_bucket_cleanup(rl->null);
+    pthread_rwlock_destroy(&rl->global.rwlock);
+    pthread_mutex_destroy(&rl->global.lock);
+    chash_free(rl, RATELIMITER_TABLE);
 }
 
 void
-discord_buckets_foreach(struct discord_adapter *adapter,
-                        void (*iter)(struct discord_adapter *adapter,
-                                     struct discord_bucket *b))
+discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
+                            struct discord_adapter *adapter,
+                            void (*iter)(struct discord_adapter *adapter,
+                                         struct discord_bucket *b))
 {
-    struct discord_bucket *b;
+    struct _discord_route *r;
     int i;
 
-    for (i = 0; i < adapter->buckets->capacity; ++i) {
-        b = adapter->buckets->buckets + i;
-        if (CHASH_FILLED == b->state) (*iter)(adapter, b);
+    pthread_mutex_lock(&rl->global.lock);
+    for (i = 0; i < rl->capacity; ++i) {
+        r = rl->buckets + i;
+        if (CHASH_FILLED == r->state) (*iter)(adapter, r->value);
     }
+    pthread_mutex_unlock(&rl->global.lock);
 }
 
 static struct discord_bucket *
-_discord_bucket_find(struct discord_adapter *adapter,
-                     const char route[DISCORD_ROUTE_LEN])
+_discord_bucket_find(struct discord_ratelimiter *rl,
+                     const char key[DISCORD_ROUTE_LEN])
 {
-    struct _discord_route *r = NULL;
+    struct discord_bucket *b = NULL;
     int ret;
 
-    /* attempt to find bucket from 'route' */
-    pthread_mutex_lock(&adapter->global->lock);
-    ret = chash_contains(adapter->routes, route, ret, DISCORD_ROUTES_TABLE);
+    /* attempt to find route from 'route' */
+    pthread_mutex_lock(&rl->global.lock);
+    ret = chash_contains(rl, key, ret, RATELIMITER_TABLE);
     if (ret) {
-        (void)chash_lookup_bucket(adapter->routes, route, r,
-                                  DISCORD_ROUTES_TABLE);
+        b = chash_lookup(rl, key, b, RATELIMITER_TABLE);
     }
-    pthread_mutex_unlock(&adapter->global->lock);
-
-    return r ? r->value : NULL;
-}
-
-static struct discord_bucket *
-_discord_bucket_get_match(struct discord_adapter *adapter,
-                          const char route[DISCORD_ROUTE_LEN],
-                          struct ua_info *info)
-{
-    struct discord_bucket *b;
-
-    /* create bucket if it doesn't exist yet */
-    if (NULL == (b = _discord_bucket_find(adapter, route))) {
-        struct sized_buffer hash =
-            ua_info_get_header(info, "x-ratelimit-bucket");
-
-        if (!hash.size) {
-            /* no bucket given for route */
-            b = adapter->buckets->miss;
-        }
-        else {
-            struct sized_buffer limit =
-                ua_info_get_header(info, "x-ratelimit-limit");
-            long _limit =
-                limit.size ? strtol(limit.start, NULL, 10) : LONG_MAX;
-
-            b = _discord_bucket_init(adapter, &hash, _limit);
-        }
-
-        _discord_route_init(adapter, route, b);
-    }
-
-    logconf_debug(&adapter->conf, "[%.4s] Match '%s' to bucket", b->key,
-                  route);
+    pthread_mutex_unlock(&rl->global.lock);
 
     return b;
 }
 
 u64unix_ms
-discord_adapter_get_global_wait(struct discord_adapter *adapter)
+discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl)
 {
     u64unix_ms global;
 
-    pthread_rwlock_rdlock(&adapter->global->rwlock);
-    global = adapter->global->wait_ms;
-    pthread_rwlock_unlock(&adapter->global->rwlock);
+    pthread_rwlock_rdlock(&rl->global.rwlock);
+    global = rl->global.wait_ms;
+    pthread_rwlock_unlock(&rl->global.rwlock);
 
     return global;
 }
 
 /* return ratelimit timeout timestamp for this bucket */
 u64unix_ms
-discord_bucket_get_timeout(struct discord_adapter *adapter,
+discord_bucket_get_timeout(struct discord_ratelimiter *rl,
                            struct discord_bucket *b)
 {
-    u64unix_ms global = discord_adapter_get_global_wait(adapter),
+    u64unix_ms global = discord_ratelimiter_get_global_wait(rl),
                reset = (b->remaining < 1) ? b->reset_tstamp : 0ULL;
 
     return (global > reset) ? global : reset;
 }
 
-int64_t
-discord_bucket_get_wait(struct discord_adapter *adapter,
-                        struct discord_bucket *b)
+void
+discord_bucket_try_sleep(struct discord_ratelimiter *rl,
+                         struct discord_bucket *b)
 {
-    u64unix_ms now = discord_timestamp(CLIENT(adapter, adapter)),
-               reset = discord_bucket_get_timeout(adapter, b);
+    /* sleep_ms := reset timestamp - current timestamp */
+    const int64_t sleep_ms =
+        (int64_t)(discord_bucket_get_timeout(rl, b) - cog_timestamp_ms());
 
-    return (int64_t)(reset - now);
+    if (sleep_ms > 0) {
+        /* block thread's runtime for delay amount */
+        logconf_info(&rl->conf, "[%.4s] RATELIMITING (wait %" PRId64 " ms)",
+                     b->hash, sleep_ms);
+        cog_sleep_ms(sleep_ms);
+    }
 }
 
-/* attempt to find a bucket associated with this route */
+/* attempt to find a bucket associated key */
 struct discord_bucket *
-discord_bucket_get(struct discord_adapter *adapter,
-                   const char route[DISCORD_ROUTE_LEN])
+discord_bucket_get(struct discord_ratelimiter *rl,
+                   const char key[DISCORD_ROUTE_LEN])
 {
     struct discord_bucket *b;
 
-    if ((b = _discord_bucket_find(adapter, route)) != NULL) {
-        logconf_trace(&adapter->conf, "[%.4s] Found a bucket match for '%s'!",
-                      b->key, route);
+    if (NULL != (b = _discord_bucket_find(rl, key))) {
+        logconf_trace(&rl->conf, "[%.4s] Found a bucket match for '%s'!",
+                      b->hash, key);
 
         return b;
     }
 
-    logconf_trace(&adapter->conf,
-                  "[null] Couldn't match known buckets to '%s'", route);
+    logconf_trace(&rl->conf, "[null] Couldn't match known buckets to '%s'",
+                  key);
 
-    return adapter->buckets->null;
+    return rl->null;
 }
 
-/* attempt to parse rate limit's header fields to the bucket
- *  linked with the connection which was performed */
+static struct discord_bucket *
+_discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
+                               const char key[DISCORD_ROUTE_LEN],
+                               struct ua_info *info)
+{
+    struct discord_bucket *b;
+
+    /* create bucket if it doesn't exist yet */
+    if (NULL == (b = _discord_bucket_find(rl, key))) {
+        struct sized_buffer limit =
+                                ua_info_get_header(info, "x-ratelimit-limit"),
+                            hash =
+                                ua_info_get_header(info, "x-ratelimit-bucket");
+        long _limit = limit.size ? strtol(limit.start, NULL, 10) : LONG_MAX;
+
+        b = _discord_bucket_init(&hash, _limit);
+        _discord_ratelimiter_assign(rl, key, b);
+    }
+
+    logconf_debug(&rl->conf, "[%.4s] Match '%s' to bucket", b->hash, key);
+
+    return b;
+}
+
+/* attempt to fill bucket's values with response header fields */
 static void
-_discord_bucket_populate(struct discord_adapter *adapter,
+_discord_bucket_populate(struct discord_ratelimiter *rl,
                          struct discord_bucket *b,
                          struct ua_info *info)
 {
     struct sized_buffer remaining, reset, reset_after;
-    struct discord *client = CLIENT(adapter, adapter);
-    u64unix_ms now = discord_timestamp(client);
+    u64unix_ms now = cog_timestamp_ms();
     long _remaining;
 
     remaining = ua_info_get_header(info, "x-ratelimit-remaining");
@@ -338,9 +317,9 @@ _discord_bucket_populate(struct discord_adapter *adapter,
 
         if (global.size) {
             /* lock all buckets */
-            pthread_rwlock_wrlock(&adapter->global->rwlock);
-            adapter->global->wait_ms = reset_tstamp;
-            pthread_rwlock_unlock(&adapter->global->rwlock);
+            pthread_rwlock_wrlock(&rl->global.rwlock);
+            rl->global.wait_ms = reset_tstamp;
+            pthread_rwlock_unlock(&rl->global.rwlock);
         }
         else {
             /* lock single bucket, timeout at discord_adapter_run() */
@@ -368,50 +347,50 @@ _discord_bucket_populate(struct discord_adapter *adapter,
             now + ((u64unix_ms)(1000 * strtod(reset.start, NULL)) - offset);
     }
 
-    logconf_debug(&adapter->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
-                  b->key, b->remaining, b->reset_tstamp);
+    logconf_debug(&rl->conf, "[%.4s] Remaining = %ld | Reset = %" PRIu64,
+                  b->hash, b->remaining, b->reset_tstamp);
 }
 
 /* in case of asynchronous requests, check if successive requests with
- * null buckets can be matched to a new route */
+ * `null` singleton buckets can be matched to a new route */
 static void
-_discord_bucket_null_filter(struct discord_adapter *adapter,
-                            struct discord_bucket *b,
-                            const char route[DISCORD_ROUTE_LEN])
+_discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
+                                 struct discord_bucket *b,
+                                 const char key[DISCORD_ROUTE_LEN])
 {
     QUEUE(struct discord_context) queue, *qelem;
     struct discord_context *cxt;
 
-    QUEUE_MOVE(&adapter->buckets->null->waitq, &queue);
-    QUEUE_INIT(&adapter->buckets->null->waitq);
+    QUEUE_MOVE(&rl->null->waitq, &queue);
+    QUEUE_INIT(&rl->null->waitq);
 
     while (!QUEUE_EMPTY(&queue)) {
         qelem = QUEUE_HEAD(&queue);
         QUEUE_REMOVE(qelem);
 
         cxt = QUEUE_DATA(qelem, struct discord_context, entry);
-        if (0 == strcmp(cxt->route, route)) {
+        if (0 == strcmp(cxt->key, key)) {
             QUEUE_INSERT_TAIL(&b->waitq, qelem);
-            cxt->bucket = b;
+            cxt->b = b;
         }
         else {
-            QUEUE_INSERT_TAIL(&adapter->buckets->null->waitq, qelem);
+            QUEUE_INSERT_TAIL(&rl->null->waitq, qelem);
         }
     }
 }
 
 /* attempt to create and/or update bucket's values */
 void
-discord_bucket_build(struct discord_adapter *adapter,
-                     struct discord_bucket *b,
-                     const char route[DISCORD_ROUTE_LEN],
-                     struct ua_info *info)
+discord_ratelimiter_build(struct discord_ratelimiter *rl,
+                          struct discord_bucket *b,
+                          const char key[DISCORD_ROUTE_LEN],
+                          struct ua_info *info)
 {
-    /* match new route to existing or new bucket */
-    if (b == adapter->buckets->null) {
-        b = _discord_bucket_get_match(adapter, route, info);
-        _discord_bucket_null_filter(adapter, b, route);
+    /* match key to a existing bucket, or create new */
+    if (b == rl->null) {
+        b = _discord_ratelimiter_get_match(rl, key, info);
+        _discord_ratelimiter_null_filter(rl, b, key);
     }
-    /* update bucket's values with header values */
-    _discord_bucket_populate(adapter, b, info);
+    /* populate bucket with response header values */
+    _discord_bucket_populate(rl, b, info);
 }
