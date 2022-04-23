@@ -8,6 +8,7 @@
 #include "cog-utils.h"
 #include "clock.h"
 
+/* chash heap-mode (auto-increase hashtable buckets) */
 #define RATELIMITER_TABLE_HEAP   1
 #define RATELIMITER_TABLE_BUCKET struct _discord_route
 #define RATELIMITER_TABLE_FREE_KEY(_key)
@@ -20,10 +21,11 @@
     route.value = _value
 
 struct _discord_route {
-    /** route associated with request */
+    /** key formed from a request's route */
     char key[DISCORD_ROUTE_LEN];
-    /** this route's values */
+    /** this route's bucket match */
     struct discord_bucket *value;
+    /** the route state in the hashtable (see chash.h 'State enums') */
     int state;
 };
 
@@ -34,16 +36,6 @@ _discord_bucket_cleanup(struct discord_bucket *b)
     free(b);
 }
 
-static void
-_discord_ratelimiter_assign(struct discord_ratelimiter *rl,
-                            const char key[DISCORD_ROUTE_LEN],
-                            struct discord_bucket *b)
-{
-    pthread_mutex_lock(&rl->global.lock);
-    chash_assign(rl, key, b, RATELIMITER_TABLE);
-    pthread_mutex_unlock(&rl->global.lock);
-}
-
 #define KEY_PUSH(key, len, ...)                                               \
     do {                                                                      \
         *len += snprintf(key + *len, DISCORD_ROUTE_LEN - (size_t)*len,        \
@@ -52,7 +44,7 @@ _discord_ratelimiter_assign(struct discord_ratelimiter *rl,
     } while (0)
 
 /* determine which ratelimit group a request belongs to by generating its key.
- * see:  https://discord.com/developers/docs/topics/rate-limits */
+ * see: https://discord.com/developers/docs/topics/rate-limits */
 void
 discord_ratelimiter_build_key(enum http_method method,
                               char key[DISCORD_ROUTE_LEN],
@@ -118,8 +110,12 @@ discord_ratelimiter_build_key(enum http_method method,
 
 #undef KEY_PUSH
 
+/* initialize bucket and assign it to ratelimiter hashtable */
 static struct discord_bucket *
-_discord_bucket_init(const struct sized_buffer *hash, const long limit)
+_discord_bucket_init(struct discord_ratelimiter *rl,
+                     const char key[DISCORD_ROUTE_LEN],
+                     const struct sized_buffer *hash,
+                     const long limit)
 {
     struct discord_bucket *b = calloc(1, sizeof *b);
     int len = snprintf(b->hash, sizeof(b->hash), "%.*s", (int)hash->size,
@@ -136,19 +132,20 @@ _discord_bucket_init(const struct sized_buffer *hash, const long limit)
     QUEUE_INIT(&b->waitq);
     QUEUE_INIT(&b->busyq);
 
+    pthread_mutex_lock(&rl->global.lock);
+    chash_assign(rl, key, b, RATELIMITER_TABLE);
+    pthread_mutex_unlock(&rl->global.lock);
+
     return b;
 }
 
 struct discord_ratelimiter *
 discord_ratelimiter_init(struct logconf *conf)
 {
-    const struct sized_buffer keynull = { "null", 4 };
+    const struct sized_buffer keynull = { "null", 4 }, keymiss = { "miss", 4 };
     struct discord_ratelimiter *rl = chash_init(rl, RATELIMITER_TABLE);
 
     logconf_branch(&rl->conf, conf, "DISCORD_RATELIMIT");
-
-    /* initialize 'singleton' bucket */
-    rl->null = _discord_bucket_init(&keynull, 1L);
 
     /* global ratelimiting resources */
     rl->global.wait_ms = 0;
@@ -157,13 +154,16 @@ discord_ratelimiter_init(struct logconf *conf)
     if (pthread_mutex_init(&rl->global.lock, NULL))
         ERR("Couldn't initialize pthread mutex");
 
+    /* initialize 'singleton' buckets */
+    rl->null = _discord_bucket_init(rl, "null", &keynull, 1L);
+    rl->miss = _discord_bucket_init(rl, "miss", &keymiss, LONG_MAX);
+
     return rl;
 }
 
 void
 discord_ratelimiter_cleanup(struct discord_ratelimiter *rl)
 {
-    _discord_bucket_cleanup(rl->null);
     pthread_rwlock_destroy(&rl->global.rwlock);
     pthread_mutex_destroy(&rl->global.lock);
     chash_free(rl, RATELIMITER_TABLE);
@@ -193,7 +193,6 @@ _discord_bucket_find(struct discord_ratelimiter *rl,
     struct discord_bucket *b = NULL;
     int ret;
 
-    /* attempt to find route from 'route' */
     pthread_mutex_lock(&rl->global.lock);
     ret = chash_contains(rl, key, ret, RATELIMITER_TABLE);
     if (ret) {
@@ -272,14 +271,20 @@ _discord_ratelimiter_get_match(struct discord_ratelimiter *rl,
 
     /* create bucket if it doesn't exist yet */
     if (NULL == (b = _discord_bucket_find(rl, key))) {
-        struct sized_buffer limit =
-                                ua_info_get_header(info, "x-ratelimit-limit"),
-                            hash =
-                                ua_info_get_header(info, "x-ratelimit-bucket");
-        long _limit = limit.size ? strtol(limit.start, NULL, 10) : LONG_MAX;
+        struct sized_buffer hash =
+            ua_info_get_header(info, "x-ratelimit-bucket");
 
-        b = _discord_bucket_init(&hash, _limit);
-        _discord_ratelimiter_assign(rl, key, b);
+        if (!hash.size) { /* bucket is not part of a ratelimiting group */
+            b = rl->miss;
+        }
+        else {
+            struct sized_buffer limit =
+                ua_info_get_header(info, "x-ratelimit-limit");
+            long _limit =
+                limit.size ? strtol(limit.start, NULL, 10) : LONG_MAX;
+
+            b = _discord_bucket_init(rl, key, &hash, _limit);
+        }
     }
 
     logconf_debug(&rl->conf, "[%.4s] Match '%s' to bucket", b->hash, key);
@@ -351,8 +356,8 @@ _discord_bucket_populate(struct discord_ratelimiter *rl,
                   b->hash, b->remaining, b->reset_tstamp);
 }
 
-/* in case of asynchronous requests, check if successive requests with
- * `null` singleton buckets can be matched to a new route */
+/* in case of asynchronous requests, check if successive requests made from a
+ * `null` singleton bucket can be matched to another bucket */
 static void
 _discord_ratelimiter_null_filter(struct discord_ratelimiter *rl,
                                  struct discord_bucket *b,
@@ -386,7 +391,7 @@ discord_ratelimiter_build(struct discord_ratelimiter *rl,
                           const char key[DISCORD_ROUTE_LEN],
                           struct ua_info *info)
 {
-    /* match key to a existing bucket, or create new */
+    /* try to match to existing, or create new bucket */
     if (b == rl->null) {
         b = _discord_ratelimiter_get_match(rl, key, info);
         _discord_ratelimiter_null_filter(rl, b, key);

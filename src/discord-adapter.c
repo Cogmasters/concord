@@ -478,7 +478,7 @@ _discord_context_populate(struct discord_context *cxt,
     memcpy(cxt->endpoint, endpoint, sizeof(cxt->endpoint));
     /* copy bucket's key */
     memcpy(cxt->key, key, sizeof(cxt->key));
-    /* route pertaining to the request */
+    /* bucket pertaining to the request */
     cxt->b = discord_bucket_get(adapter->ratelimiter, key);
 }
 
@@ -493,10 +493,10 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
 {
     struct discord_context *cxt;
 
-    if (QUEUE_EMPTY(adapter->idleq)) { /* create new request handler */
+    if (QUEUE_EMPTY(adapter->idleq)) { /* create new context struct */
         cxt = calloc(1, sizeof(struct discord_context));
     }
-    else { /* get context from idleq */
+    else { /* recycle a context struct from idleq */
         QUEUE(struct discord_context) *qelem = QUEUE_HEAD(adapter->idleq);
         QUEUE_REMOVE(qelem);
         cxt = QUEUE_DATA(qelem, struct discord_context, entry);
@@ -587,11 +587,11 @@ static void
 _discord_adapter_try_send(struct discord_adapter *adapter,
                           struct discord_bucket *b)
 {
-    /* skip busy and non-pending routes */
+    /* skip busy and non-pending buckets */
     if (!QUEUE_EMPTY(&b->busyq) || QUEUE_EMPTY(&b->waitq)) {
         return;
     }
-    /* if route is outdated then its necessary to send a single
+    /* if bucket is outdated then its necessary to send a single
      *      request to fetch updated values */
     if (b->reset_tstamp < NOW(adapter)) {
         _discord_adapter_send(adapter, b);

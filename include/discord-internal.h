@@ -169,10 +169,7 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /**
-     * client-side data reference counter for cleanup
-     * @todo replace with priority_queue.h
-     */
+    /** client-side data reference counter for cleanup */
     struct discord_refcount *refcounts;
 
     /** buckets discovered (declared at discord-adapter_ratelimit.c) */
@@ -188,7 +185,7 @@ struct discord_adapter {
 /**
  * @brief Initialize the fields of a Discord Adapter handle
  *
- * @param adapter a pointer to the http handle
+ * @param adapter the adapter handle to be initialized
  * @param conf optional pointer to a parent logconf
  * @param token the bot token
  */
@@ -243,15 +240,14 @@ void discord_adapter_stop_buckets(struct discord_adapter *adapter);
 
 /**
  * @brief Naive garbage collector to cleanup user arbitrary data
- * @todo replace with priority_queue.h
  */
 struct discord_refcount {
     /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
     void *data;
     /**
      * cleanup for when `data` is no longer needed
-     * @note this only has to be assigned once, it shall be called once `data`
-     *      is no longer referenced by any callback */
+     * @note this only has to be assigned once, it is automatically called once
+     *      `data` is no longer referenced by any callback */
     void (*cleanup)(void *data);
     /** `data` references count */
     int visits;
@@ -286,6 +282,7 @@ void discord_refcount_decr(struct discord_adapter *adapter, void *data);
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
+/** @brief The Discord bucket for handling per-group ratelimits */
 struct discord_bucket {
     /** the hash associated with the bucket's ratelimiting group */
     char hash[64];
@@ -337,13 +334,23 @@ struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
 struct discord_ratelimiter {
     /** DISCORD_RATELIMIT logging module */
     struct logconf conf;
-
+    /** amount of bucket's routes discovered */
     int length;
+    /** route's cap before increase */
     int capacity;
+    /**
+     * routes matched to individual buckets
+     * @note the `buckets` symbol here is for "hashtable buckets", and not
+     *      Discord buckets
+     * @note datatype declared at discord-adapter_ratelimit.c
+     */
     struct _discord_route *buckets;
-
-    /** singleton for routes that have not yet been assigned to a bucket */
+    /** singleton bucket for requests that haven't been matched to a
+     *      known or new bucket (i.e first time running the request) */
     struct discord_bucket *null;
+    /** singleton bucket for requests that are not part of any known
+     *      ratelimiting group */
+    struct discord_bucket *miss;
 
     /* client-wide ratelimiting timeout */
     struct {
@@ -374,7 +381,7 @@ struct discord_ratelimiter *discord_ratelimiter_init(struct logconf *conf);
 void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
 
 /**
- * @brief Iterate and call `iter` callback for each discovered bucket
+ * @brief Iterate known buckets
  *
  * @param rl the handle initialized with discord_ratelimiter_init()
  * @param adapter the handle initialized with discord_adapter_init()
@@ -386,12 +393,13 @@ void discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
                                               struct discord_bucket *b));
 
 /**
- * @brief Build unique key from the HTTP `route` (method and endpoint)
+ * @brief Build unique key formed from the HTTP method and endpoint
+ * @see https://discord.com/developers/docs/topics/rate-limits
  *
- * @param method the request method
- * @param key buffer filled obtained from original route
- * @param endpoint_fmt the printf-like endpoint formatting string
- * @param args variadic arguments matched to `endpoint_fmt`
+ * @param[in] method the request method
+ * @param[out] key unique key for matching to buckets
+ * @param[in] endpoint_fmt the printf-like endpoint formatting string
+ * @param[in] args variadic arguments matched to `endpoint_fmt`
  */
 void discord_ratelimiter_build_key(enum http_method method,
                                    char key[DISCORD_ROUTE_LEN],
