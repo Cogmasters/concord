@@ -128,12 +128,12 @@ do {                                                                        \
      (double) (hashtable)->capacity < CHASH_LOAD_THRESHOLD)                 \
     break;                                                                  \
                                                                             \
-  __CHASH_BUCKETS = malloc(__CHASH_NEXT_SIZE                                \
+  __CHASH_BUCKETS = malloc((size_t) (__CHASH_NEXT_SIZE                      \
                            * ((CHASH_COUNTER_TYPE)                          \
-                               sizeof(namespace ## _BUCKET)));              \
-  memset(__CHASH_BUCKETS, 0, __CHASH_NEXT_SIZE                              \
+                               sizeof(namespace ## _BUCKET))));             \
+  memset(__CHASH_BUCKETS, 0, ((size_t) (__CHASH_NEXT_SIZE                   \
                            * ((CHASH_COUNTER_TYPE)                          \
-                           sizeof(namespace ## _BUCKET)));                  \
+                           sizeof(namespace ## _BUCKET)))));                \
                                                                             \
   for(__CHASH_INDEX = 0; __CHASH_INDEX < (hashtable)->capacity;             \
                                                          __CHASH_INDEX++) { \
