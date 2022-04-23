@@ -111,7 +111,8 @@
 do {                                                                        \
   CHASH_COUNTER_TYPE __CHASH_INDEX = 0;                                     \
   namespace ## _BUCKET *__CHASH_BUCKETS = NULL;                             \
-  int __CHASH_NEXT_SIZE = CHASH_RESIZE((hashtable)->capacity);              \
+  CHASH_COUNTER_TYPE __CHASH_NEXT_SIZE = (CHASH_COUNTER_TYPE)               \
+                          CHASH_RESIZE((hashtable)->capacity);              \
                                                                             \
   if((namespace ## _HEAP) == 0) {                                           \
     if((hashtable)->length != (hashtable)->capacity) {                      \
@@ -127,10 +128,12 @@ do {                                                                        \
      (double) (hashtable)->capacity < CHASH_LOAD_THRESHOLD)                 \
     break;                                                                  \
                                                                             \
-  __CHASH_BUCKETS = malloc(__CHASH_NEXT_SIZE                                \
-                           * sizeof(namespace ## _BUCKET));                 \
-  memset(__CHASH_BUCKETS, 0, __CHASH_NEXT_SIZE                              \
-                           * sizeof(namespace ## _BUCKET));                 \
+  __CHASH_BUCKETS = malloc((size_t) (__CHASH_NEXT_SIZE                      \
+                           * ((CHASH_COUNTER_TYPE)                          \
+                               sizeof(namespace ## _BUCKET))));             \
+  memset(__CHASH_BUCKETS, 0, ((size_t) (__CHASH_NEXT_SIZE                   \
+                           * ((CHASH_COUNTER_TYPE)                          \
+                           sizeof(namespace ## _BUCKET)))));                \
                                                                             \
   for(__CHASH_INDEX = 0; __CHASH_INDEX < (hashtable)->capacity;             \
                                                          __CHASH_INDEX++) { \

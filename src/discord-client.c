@@ -288,9 +288,9 @@ discord_set_event_scheduler(struct discord *client,
     client->gw.cmds.scheduler = callback;
 }
 
-
 static void
-discord_wake_timer_cb(struct discord *client, struct discord_timer *timer) {
+discord_wake_timer_cb(struct discord *client, struct discord_timer *timer)
+{
     if (~timer->flags & DISCORD_TIMER_CANCELED && client->wakeup_timer.cb)
         client->wakeup_timer.cb(client);
 }
@@ -298,12 +298,12 @@ discord_wake_timer_cb(struct discord *client, struct discord_timer *timer) {
 void
 discord_set_next_wakeup(struct discord *client, int64_t delay)
 {
-    unsigned id = discord_internal_timer_ctl(client, 
-        &(struct discord_timer) {
-            .id = client->wakeup_timer.id,
-            .cb = discord_wake_timer_cb,
-            .delay = delay,
-        });
+    unsigned id =
+        discord_internal_timer_ctl(client, &(struct discord_timer){
+                                               .id = client->wakeup_timer.id,
+                                               .cb = discord_wake_timer_cb,
+                                               .delay = delay,
+                                           });
     client->wakeup_timer.id = id;
 }
 
@@ -312,12 +312,11 @@ discord_set_on_wakeup(struct discord *client, discord_ev_idle callback)
 {
     client->wakeup_timer.cb = callback;
     if (client->wakeup_timer.id) {
-        discord_internal_timer_ctl(client, 
-            &(struct discord_timer) {
-                .id = client->wakeup_timer.id,
-                .cb = discord_wake_timer_cb,
-                .delay = -1,
-            });
+        discord_internal_timer_ctl(client, &(struct discord_timer){
+                                               .id = client->wakeup_timer.id,
+                                               .cb = discord_wake_timer_cb,
+                                               .delay = -1,
+                                           });
     }
 }
 
@@ -354,11 +353,11 @@ discord_run(struct discord *client)
 
             now = (int64_t)cog_timestamp_ms();
 
-            if (!client->on_idle) 
+            if (!client->on_idle)
                 poll_time = now < next_run ? (int)(next_run - now) : 0;
 
-            struct discord_timers *const timers[] =
-                { &client->timers.internal, &client->timers.user };
+            struct discord_timers *const timers[] = { &client->timers.internal,
+                                                      &client->timers.user };
             for (unsigned i = 0; i < sizeof timers / sizeof *timers; i++) {
                 int64_t trigger_us, trigger_ms;
                 if (priority_queue_peek(timers[i]->q, &trigger_us, NULL)) {
@@ -366,13 +365,14 @@ discord_run(struct discord *client)
                     if (trigger_us >= 0) {
                         if (trigger_ms <= now) {
                             poll_time = 0;
-                        } else if (trigger_ms - now < poll_time) {
+                        }
+                        else if (trigger_ms - now < poll_time) {
                             poll_time = (int)(trigger_ms - now);
                         }
                     }
                 }
             }
-            
+
             poll_result = io_poller_poll(client->io_poller, poll_time);
             if (-1 == poll_result) {
                 /* TODO: handle poll error here */
@@ -402,9 +402,9 @@ discord_run(struct discord *client)
             }
         }
 
-        /* stop all pending requests in case of connection shutdown */
+        /* stop all pending bucket's requests in case of connection shutdown */
         if (true == discord_gateway_end(&client->gw)) {
-            discord_adapter_stop_all(&client->adapter);
+            discord_adapter_stop_buckets(&client->adapter);
             break;
         }
     }

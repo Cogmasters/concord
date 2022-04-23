@@ -287,8 +287,9 @@ logconf_branch(struct logconf *branch, struct logconf *orig, const char id[])
                  "Out of bounds write attempt");
     }
     branch->pid = getpid();
-
+#if 0
     module_is_disabled(branch);
+#endif
 }
 
 void
