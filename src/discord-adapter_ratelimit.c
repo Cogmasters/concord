@@ -7,6 +7,7 @@
 
 #include "cog-utils.h"
 #include "clock.h"
+#include "chash.h"
 
 /* chash heap-mode (auto-increase hashtable buckets) */
 #define RATELIMITER_TABLE_HEAP   1

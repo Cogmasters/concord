@@ -1400,7 +1400,7 @@ discord_gateway_init(struct discord_gateway *gw,
     /* client connection status */
     gw->session = calloc(1, sizeof *gw->session);
     gw->session->retry.enable = true;
-    gw->session->retry.limit = 5; /**< hard limit for now */
+    gw->session->retry.limit = 5; /* TODO: shouldn't be a hard limit */
 
     /* connection identify token */
     cog_strndup(token->start, token->size, &gw->id.token);

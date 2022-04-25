@@ -8,7 +8,6 @@
 #ifndef DISCORD_INTERNAL_H
 #define DISCORD_INTERNAL_H
 
-#include <inttypes.h>
 #include <pthread.h>
 
 #define JSONB_HEADER
@@ -25,8 +24,6 @@
 #include "cog-utils.h"
 #include "io_poller.h"
 
-#include "chash.h"
-#include "uthash.h"
 #include "queue.h"
 #include "priority_queue.h"
 
@@ -169,8 +166,8 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /** client-side data reference counter for cleanup */
-    struct discord_refcount *refcounts;
+    /** user's data reference counter for automatic cleanup */
+    struct discord_refcounter *refcounter;
 
     /** buckets discovered (declared at discord-adapter_ratelimit.c) */
     struct discord_ratelimiter *ratelimiter;
@@ -238,45 +235,69 @@ CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
  */
 void discord_adapter_stop_buckets(struct discord_adapter *adapter);
 
-/**
- * @brief Naive garbage collector to cleanup user arbitrary data
- */
-struct discord_refcount {
-    /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
-    void *data;
+/** @defgroup DiscordInternalAdapterRefcount Reference counter
+ * @brief Handle automatic cleanup of user's data
+ *  @{ */
+
+/** @brief Automatically cleanup user data
+ *
+ * Automatically cleanup user data that is passed around Discord event's
+ *      callbacks once its reference counter reaches 0, meaning there are no
+ *      more callbacks expecting the data */
+struct discord_refcounter {
+    /** DISCORD_REFCOUNT logging module */
+    struct logconf conf;
+    /** amount of individual user's data held for automatic cleanup */
+    int length;
+    /** cap before increase */
+    int capacity;
     /**
-     * cleanup for when `data` is no longer needed
-     * @note this only has to be assigned once, it is automatically called once
-     *      `data` is no longer referenced by any callback */
-    void (*cleanup)(void *data);
-    /** `data` references count */
-    int visits;
-    /** makes this structure hashable */
-    UT_hash_handle hh;
+     * individual user's data held for automatic cleanup
+     * @note datatype declared at discord-adapter_refcount.c
+     */
+    struct _intptr_bucket *buckets;
 };
+
+/**
+ * @brief Initialize reference counter handle
+ *
+ * A hashtable shall be used for storage and retrieval of user data
+ * @param conf optional pointer to a parent logconf
+ * @return the reference counter handle
+ */
+struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
+
+/**
+ * @brief Cleanup refcounter and all user data currently held
+ *
+ * @param rl the handle initialized with discord_refcounter_init()
+ */
+void discord_refcounter_cleanup(struct discord_refcounter *rc);
 
 /**
  * @brief Increment the reference counter for `ret->data`
  *
- * @param adapter the handle initialized with discord_adapter_init()
+ * @param rc the handle initialized with discord_refcounter_init()
  * @param data the user arbitrary data to have its reference counter
  * @param cleanup user-defined function for cleaning `data` resources once its
  *      no longer referenced
  */
-void discord_refcount_incr(struct discord_adapter *adapter,
-                           void *data,
-                           void (*cleanup)(void *data));
+void discord_refcounter_incr(struct discord_refcounter *rc,
+                             void *data,
+                             void (*cleanup)(void *data));
 
 /**
  * @brief Decrement the reference counter for `data`
  *
  * If the count reaches zero then `data` shall be cleanup up with its
  *      user-defined cleanup function
- * @param adapter the handle initialized with discord_adapter_init()
+ * @param rc the handle initialized with discord_refcounter_init()
  * @param data the user arbitrary data to have its reference counter
  *      decremented
  */
-void discord_refcount_decr(struct discord_adapter *adapter, void *data);
+void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
+
+/** @} DiscordInternalAdapterRefcount */
 
 /** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
  * @brief Enforce ratelimiting per the official Discord Documentation

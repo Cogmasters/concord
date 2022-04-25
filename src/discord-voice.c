@@ -493,7 +493,7 @@ _discord_voice_init(struct discord_voice *new_vc,
         new_vc->ws = ws_init(&cbs, new_vc->mhandle, &attr);
         logconf_branch(&new_vc->conf, &client->conf, "DISCORD_VOICE");
 
-        new_vc->reconnect.threshold = 5; /**< hard limit for now */
+        new_vc->reconnect.threshold = 5; /* TODO: shouldn't be a hard limit */
         new_vc->reconnect.enable = true;
     }
 

@@ -63,13 +63,14 @@ discord_adapter_init(struct discord_adapter *adapter,
                         on_io_poller_curl, adapter);
 
     adapter->ratelimiter = discord_ratelimiter_init(&adapter->conf);
+    adapter->refcounter = discord_refcounter_init(&adapter->conf);
 
     /* idleq is malloc'd to guarantee a client cloned by discord_clone() will
-     * share the same queue with the original */
+     *      share the same queue with the original */
     adapter->idleq = malloc(sizeof(QUEUE));
     QUEUE_INIT(adapter->idleq);
 
-    adapter->retry_limit = 3; /**< hard limit for now */
+    adapter->retry_limit = 3; /* TODO: shouldn't be a hard limit */
 }
 
 static void
@@ -96,6 +97,8 @@ discord_adapter_cleanup(struct discord_adapter *adapter)
     discord_adapter_stop_buckets(adapter);
     /* cleanup discovered buckets */
     discord_ratelimiter_cleanup(adapter->ratelimiter);
+    /* cleanup stored user data */
+    discord_refcounter_cleanup(adapter->refcounter);
 
     /* cleanup idle requests queue */
     QUEUE_MOVE(adapter->idleq, &queue);
@@ -511,7 +514,8 @@ _discord_adapter_run_async(struct discord_adapter *adapter,
         QUEUE_INSERT_TAIL(&cxt->b->waitq, &cxt->entry);
 
     if (req->ret.data)
-        discord_refcount_incr(adapter, req->ret.data, req->ret.cleanup);
+        discord_refcounter_incr(adapter->refcounter, req->ret.data,
+                                req->ret.cleanup);
 
     io_poller_curlm_enable_perform(CLIENT(adapter, adapter)->io_poller,
                                    adapter->mhandle);
@@ -693,7 +697,7 @@ _discord_adapter_check_action(struct discord_adapter *adapter,
         }
     }
     else {
-        discord_refcount_decr(adapter, cxt->req.ret.data);
+        discord_refcounter_decr(adapter->refcounter, cxt->req.ret.data);
         _discord_context_reset(cxt);
         QUEUE_INSERT_TAIL(adapter->idleq, &cxt->entry);
     }
