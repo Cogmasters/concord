@@ -270,7 +270,7 @@ struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
 /**
  * @brief Cleanup refcounter and all user data currently held
  *
- * @param rl the handle initialized with discord_refcounter_init()
+ * @param rc the handle initialized with discord_refcounter_init()
  */
 void discord_refcounter_cleanup(struct discord_refcounter *rc);
 
