@@ -126,19 +126,27 @@ struct discord_voice {
     /** can start sending/receiving additional events to discord */
     bool is_ready;
 
-    /**
-     * @see
-     * https://discord.com/developers/docs/topics/voice-connections#establishing-a-voice-websocket-connection-example-voice-ready-payload
-     */
-    /* VOICE PAYLOAD STRUCTURE */
+    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
+    struct {
+        /** current iteration JSON key/value pairs */
+        jsmnf_pair *pairs;
+        /** current iteration number of JSON key/value pairs */
+        unsigned npairs;
+        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
+        jsmntok_t *tokens;
+        /** current iteration number of JSON tokens */
+        unsigned ntokens;
+    } parse;
+
+    /** voice payload structure */
     struct {
         /** field 'op' */
         enum discord_voice_opcodes opcode;
         /** field 'd' */
-        struct sized_buffer event_data;
+        jsmnf_pair *data;
     } payload;
 
-    /* HEARTBEAT STRUCTURE */
+    /** heartbeat structure */
     struct {
         /** fixed interval between heartbeats */
         u64unix_ms interval_ms;
@@ -149,9 +157,6 @@ struct discord_voice {
     /** latency between client and websockets server, calculated by the
      * interval between HEARTBEAT and HEARTBEAT_ACK */
     int ping_ms;
-
-    /** pointer to client this struct is part of */
-    struct discord *p_client;
 
     /** if true shutdown websockets connection as soon as possible */
     bool shutdown;
@@ -175,6 +180,9 @@ struct discord_voice {
      * n store packets received every n minutes in a new file
      */
     int recv_interval;
+
+    /** pointer to client this struct is part of */
+    struct discord *p_client;
 };
 
 /**
