@@ -626,10 +626,8 @@ struct discord_gateway {
         int seq;
         /** field 't' */
         char name[32];
-        /** field 'd' @deprecated replaced with `_data` */
-        struct sized_buffer data;
         /** field 'd' */
-        jsmnf_pair *_data;
+        jsmnf_pair *data;
     } payload;
 
     /** user-commands structure */
@@ -655,23 +653,6 @@ struct discord_gateway {
         /** the event scheduler callback */
         discord_ev_scheduler scheduler;
     } cmds;
-};
-
-/**
- * @brief Context in case event is scheduled to be triggered
- *        from concord's worker threads
- */
-struct discord_event {
-    /** the event name */
-    char *name;
-    /** a copy of payload data */
-    struct sized_buffer data;
-    /** the discord gateway client */
-    struct discord_gateway *gw;
-    /** the event unique id value */
-    enum discord_gateway_events event;
-    /** the event callback */
-    void (*on_event)(struct discord_gateway *gw);
 };
 
 /**
@@ -820,8 +801,7 @@ unsigned discord_internal_timer(struct discord *client,
 struct discord {
     /** DISCORD logging module */
     struct logconf conf;
-    /** whether this is the original client or a clone @deprecated unnecessary
-     *      once discord_clone() is removed */
+    /** whether this is the original client or a clone */
     bool is_original;
     /** the bot token */
     struct sized_buffer token;

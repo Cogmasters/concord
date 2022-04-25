@@ -82,15 +82,29 @@ discord_config_init(const char config_file[])
     return new_client;
 }
 
-struct discord *
-discord_clone(const struct discord *orig_client)
+static void
+_discord_clone_gateway(struct discord_gateway *clone,
+                       const struct discord_gateway *orig)
 {
-    struct discord *clone_client = malloc(sizeof(struct discord));
+    const size_t n =
+        orig->parse.npairs - (size_t)(orig->payload.data - orig->parse.pairs);
 
-    memcpy(clone_client, orig_client, sizeof(struct discord));
-    clone_client->is_original = false;
+    clone->payload.data = malloc(n * sizeof *orig->parse.pairs);
+    memcpy(clone->payload.data, orig->payload.data,
+           n * sizeof *orig->parse.pairs);
+}
 
-    return clone_client;
+struct discord *
+discord_clone(const struct discord *orig)
+{
+    struct discord *clone = malloc(sizeof(struct discord));
+
+    memcpy(clone, orig, sizeof(struct discord));
+    clone->is_original = false;
+
+    _discord_clone_gateway(&clone->gw, &orig->gw);
+
+    return clone;
 }
 
 void

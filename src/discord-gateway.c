@@ -15,6 +15,41 @@
     case code:                                                                \
         return #code
 
+/**
+ * @brief Context in case event is scheduled to be triggered
+ *        from Concord's worker threads
+ */
+struct _discord_event_context {
+    /** the discord gateway client */
+    struct discord_gateway *gw;
+    /** the event unique id value */
+    enum discord_gateway_events event;
+    /** the event callback */
+    void (*on_event)(struct discord_gateway *gw);
+};
+
+static struct _discord_event_context *
+_discord_event_context_init(const struct discord_gateway *gw,
+                            enum discord_gateway_events event,
+                            void (*on_event)(struct discord_gateway *gw))
+{
+    struct _discord_event_context *cxt = malloc(sizeof *cxt);
+    struct discord *clone = discord_clone(CLIENT(gw, gw));
+
+    cxt->gw = &clone->gw;
+    cxt->event = event;
+    cxt->on_event = on_event;
+
+    return cxt;
+}
+
+static void
+_discord_event_context_cleanup(struct _discord_event_context *cxt)
+{
+    discord_cleanup(CLIENT(cxt->gw, gw));
+    free(cxt);
+}
+
 static const char *
 opcode_print(enum discord_gateway_opcodes opcode)
 {
@@ -246,10 +281,8 @@ on_hello(struct discord_gateway *gw)
     gw->timer->interval = 0;
     gw->timer->hbeat = gw->timer->now;
 
-    if ((f = jsmnf_find(gw->payload._data, "heartbeat_interval", 18)))
+    if ((f = jsmnf_find(gw->payload.data, "heartbeat_interval", 18)))
         gw->timer->interval = strtoull(f->value.contents, NULL, 10);
-    else
-        abort();
 
     if (gw->session->status & DISCORD_SESSION_RESUMABLE)
         send_resume(gw);
@@ -326,7 +359,7 @@ on_guild_create(struct discord_gateway *gw)
 {
     struct discord_guild guild = { 0 };
 
-    discord_guild_from_jsmnf(gw->payload._data, &guild);
+    discord_guild_from_jsmnf(gw->payload.data, &guild);
 
     ON(guild_create, &guild);
 
@@ -338,7 +371,7 @@ on_guild_update(struct discord_gateway *gw)
 {
     struct discord_guild guild = { 0 };
 
-    discord_guild_from_jsmnf(gw->payload._data, &guild);
+    discord_guild_from_jsmnf(gw->payload.data, &guild);
 
     ON(guild_update, &guild);
 
@@ -351,7 +384,7 @@ on_guild_delete(struct discord_gateway *gw)
     u64snowflake guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "id", 2)))
+    if ((f = jsmnf_find(gw->payload.data, "id", 2)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
 
     ON(guild_delete, guild_id);
@@ -364,9 +397,9 @@ on_guild_role_create(struct discord_gateway *gw)
     u64snowflake guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "role", 4)))
+    if ((f = jsmnf_find(gw->payload.data, "role", 4)))
         discord_role_from_jsmnf(f, &role);
 
     ON(guild_role_create, guild_id, &role);
@@ -381,9 +414,9 @@ on_guild_role_update(struct discord_gateway *gw)
     u64snowflake guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "role", 4)))
+    if ((f = jsmnf_find(gw->payload.data, "role", 4)))
         discord_role_from_jsmnf(f, &role);
 
     ON(guild_role_update, guild_id, &role);
@@ -397,9 +430,9 @@ on_guild_role_delete(struct discord_gateway *gw)
     u64snowflake guild_id = 0, role_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "role_id", 7)))
+    if ((f = jsmnf_find(gw->payload.data, "role_id", 7)))
         sscanf(f->value.contents, "%" SCNu64, &role_id);
 
     ON(guild_role_delete, guild_id, role_id);
@@ -412,9 +445,9 @@ on_guild_member_add(struct discord_gateway *gw)
     u64snowflake guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    discord_guild_member_from_jsmnf(gw->payload._data, &member);
+    discord_guild_member_from_jsmnf(gw->payload.data, &member);
 
     ON(guild_member_add, guild_id, &member);
 
@@ -428,9 +461,9 @@ on_guild_member_update(struct discord_gateway *gw)
     u64snowflake guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    discord_guild_member_from_jsmnf(gw->payload._data, &member);
+    discord_guild_member_from_jsmnf(gw->payload.data, &member);
 
     ON(guild_member_update, guild_id, &member);
 
@@ -444,9 +477,9 @@ on_guild_member_remove(struct discord_gateway *gw)
     struct discord_user user = { 0 };
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "user", 4)))
+    if ((f = jsmnf_find(gw->payload.data, "user", 4)))
         discord_user_from_jsmnf(f, &user);
 
     ON(guild_member_remove, guild_id, &user);
@@ -461,9 +494,9 @@ on_guild_ban_add(struct discord_gateway *gw)
     struct discord_user user = { 0 };
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "user", 4)))
+    if ((f = jsmnf_find(gw->payload.data, "user", 4)))
         discord_user_from_jsmnf(f, &user);
 
     ON(guild_ban_add, guild_id, &user);
@@ -478,9 +511,9 @@ on_guild_ban_remove(struct discord_gateway *gw)
     struct discord_user user = { 0 };
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "user", 4)))
+    if ((f = jsmnf_find(gw->payload.data, "user", 4)))
         discord_user_from_jsmnf(f, &user);
 
     ON(guild_ban_remove, guild_id, &user);
@@ -493,7 +526,7 @@ on_application_command_create(struct discord_gateway *gw)
 {
     struct discord_application_command cmd = { 0 };
 
-    discord_application_command_from_jsmnf(gw->payload._data, &cmd);
+    discord_application_command_from_jsmnf(gw->payload.data, &cmd);
 
     ON(application_command_create, &cmd);
 
@@ -505,7 +538,7 @@ on_application_command_update(struct discord_gateway *gw)
 {
     struct discord_application_command cmd = { 0 };
 
-    discord_application_command_from_jsmnf(gw->payload._data, &cmd);
+    discord_application_command_from_jsmnf(gw->payload.data, &cmd);
 
     ON(application_command_update, &cmd);
 
@@ -517,7 +550,7 @@ on_application_command_delete(struct discord_gateway *gw)
 {
     struct discord_application_command cmd = { 0 };
 
-    discord_application_command_from_jsmnf(gw->payload._data, &cmd);
+    discord_application_command_from_jsmnf(gw->payload.data, &cmd);
 
     ON(application_command_delete, &cmd);
 
@@ -529,7 +562,7 @@ on_channel_create(struct discord_gateway *gw)
 {
     struct discord_channel channel = { 0 };
 
-    discord_channel_from_jsmnf(gw->payload._data, &channel);
+    discord_channel_from_jsmnf(gw->payload.data, &channel);
 
     ON(channel_create, &channel);
 
@@ -541,7 +574,7 @@ on_channel_update(struct discord_gateway *gw)
 {
     struct discord_channel channel = { 0 };
 
-    discord_channel_from_jsmnf(gw->payload._data, &channel);
+    discord_channel_from_jsmnf(gw->payload.data, &channel);
 
     ON(channel_update, &channel);
 
@@ -553,7 +586,7 @@ on_channel_delete(struct discord_gateway *gw)
 {
     struct discord_channel channel = { 0 };
 
-    discord_channel_from_jsmnf(gw->payload._data, &channel);
+    discord_channel_from_jsmnf(gw->payload.data, &channel);
 
     ON(channel_delete, &channel);
 
@@ -567,11 +600,11 @@ on_channel_pins_update(struct discord_gateway *gw)
     u64unix_ms last_pin_timestamp = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload._data, "last_pin_timestamp", 18)))
+    if ((f = jsmnf_find(gw->payload.data, "last_pin_timestamp", 18)))
         cog_iso8601_to_unix_ms(f->value.contents, (size_t)(f->value.length),
                                &last_pin_timestamp);
 
@@ -583,7 +616,7 @@ on_thread_create(struct discord_gateway *gw)
 {
     struct discord_channel thread = { 0 };
 
-    discord_channel_from_jsmnf(gw->payload._data, &thread);
+    discord_channel_from_jsmnf(gw->payload.data, &thread);
 
     ON(thread_create, &thread);
 
@@ -595,7 +628,7 @@ on_thread_update(struct discord_gateway *gw)
 {
     struct discord_channel thread = { 0 };
 
-    discord_channel_from_jsmnf(gw->payload._data, &thread);
+    discord_channel_from_jsmnf(gw->payload.data, &thread);
 
     ON(thread_update, &thread);
 
@@ -607,7 +640,7 @@ on_thread_delete(struct discord_gateway *gw)
 {
     struct discord_channel thread = { 0 };
 
-    discord_channel_from_jsmnf(gw->payload._data, &thread);
+    discord_channel_from_jsmnf(gw->payload.data, &thread);
 
     ON(thread_delete, &thread);
 
@@ -619,7 +652,7 @@ on_interaction_create(struct discord_gateway *gw)
 {
     struct discord_interaction interaction = { 0 };
 
-    discord_interaction_from_jsmnf(gw->payload._data, &interaction);
+    discord_interaction_from_jsmnf(gw->payload.data, &interaction);
 
     ON(interaction_create, &interaction);
 
@@ -631,7 +664,7 @@ on_message_create(struct discord_gateway *gw)
 {
     struct discord_message msg = { 0 };
 
-    discord_message_from_jsmnf(gw->payload._data, &msg);
+    discord_message_from_jsmnf(gw->payload.data, &msg);
 
     if (gw->cmds.pool
         && !strncmp(gw->cmds.prefix.start, msg.content, gw->cmds.prefix.size))
@@ -686,7 +719,7 @@ on_message_update(struct discord_gateway *gw)
 {
     struct discord_message msg = { 0 };
 
-    discord_message_from_jsmnf(gw->payload._data, &msg);
+    discord_message_from_jsmnf(gw->payload.data, &msg);
 
     ON(message_update, &msg);
 
@@ -699,11 +732,11 @@ on_message_delete(struct discord_gateway *gw)
     u64snowflake message_id = 0, channel_id = 0, guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "id", 2)))
+    if ((f = jsmnf_find(gw->payload.data, "id", 2)))
         sscanf(f->value.contents, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
 
     ON(message_delete, message_id, channel_id, guild_id);
@@ -716,11 +749,11 @@ on_message_delete_bulk(struct discord_gateway *gw)
     u64snowflake channel_id = 0, guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "ids", 3)))
+    if ((f = jsmnf_find(gw->payload.data, "ids", 3)))
         snowflakes_from_jsmnf(f, &ids);
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
 
     ON(message_delete_bulk, &ids, channel_id, guild_id);
@@ -736,17 +769,17 @@ on_message_reaction_add(struct discord_gateway *gw)
     struct discord_emoji emoji = { 0 };
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "user_id", 7)))
+    if ((f = jsmnf_find(gw->payload.data, "user_id", 7)))
         sscanf(f->value.contents, "%" SCNu64, &user_id);
-    if ((f = jsmnf_find(gw->payload._data, "message_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "message_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload._data, "member", 6)))
+    if ((f = jsmnf_find(gw->payload.data, "member", 6)))
         discord_guild_member_from_jsmnf(f, &member);
-    if ((f = jsmnf_find(gw->payload._data, "emoji", 5)))
+    if ((f = jsmnf_find(gw->payload.data, "emoji", 5)))
         discord_emoji_from_jsmnf(f, &emoji);
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
 
     ON(message_reaction_add, user_id, channel_id, message_id, guild_id,
@@ -763,15 +796,15 @@ on_message_reaction_remove(struct discord_gateway *gw)
     struct discord_emoji emoji = { 0 };
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "user_id", 7)))
+    if ((f = jsmnf_find(gw->payload.data, "user_id", 7)))
         sscanf(f->value.contents, "%" SCNu64, &user_id);
-    if ((f = jsmnf_find(gw->payload._data, "message_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "message_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload._data, "emoji", 5)))
+    if ((f = jsmnf_find(gw->payload.data, "emoji", 5)))
         discord_emoji_from_jsmnf(f, &emoji);
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
 
     ON(message_reaction_remove, user_id, channel_id, message_id, guild_id,
@@ -786,11 +819,11 @@ on_message_reaction_remove_all(struct discord_gateway *gw)
     u64snowflake channel_id = 0, message_id = 0, guild_id = 0;
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload._data, "message_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "message_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
 
     ON(message_reaction_remove_all, channel_id, message_id, guild_id);
@@ -803,13 +836,13 @@ on_message_reaction_remove_emoji(struct discord_gateway *gw)
     struct discord_emoji emoji = { 0 };
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "channel_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "channel_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &channel_id);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "message_id", 10)))
+    if ((f = jsmnf_find(gw->payload.data, "message_id", 10)))
         sscanf(f->value.contents, "%" SCNu64, &message_id);
-    if ((f = jsmnf_find(gw->payload._data, "emoji", 5)))
+    if ((f = jsmnf_find(gw->payload.data, "emoji", 5)))
         discord_emoji_from_jsmnf(f, &emoji);
 
     ON(message_reaction_remove_emoji, channel_id, guild_id, message_id,
@@ -823,7 +856,7 @@ on_voice_state_update(struct discord_gateway *gw)
 {
     struct discord_voice_state vs = { 0 };
 
-    discord_voice_state_from_jsmnf(gw->payload._data, &vs);
+    discord_voice_state_from_jsmnf(gw->payload.data, &vs);
 
 #ifdef HAS_DISCORD_VOICE
     if (vs.user_id == CLIENT(gw, gw)->self.id) {
@@ -844,12 +877,12 @@ on_voice_server_update(struct discord_gateway *gw)
     char token[512], endpoint[1024];
     jsmnf_pair *f;
 
-    if ((f = jsmnf_find(gw->payload._data, "token", 5)))
+    if ((f = jsmnf_find(gw->payload.data, "token", 5)))
         snprintf(token, sizeof(token), "%.*s", f->value.length,
                  f->value.contents);
-    if ((f = jsmnf_find(gw->payload._data, "guild_id", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "guild_id", 8)))
         sscanf(f->value.contents, "%" SCNu64, &guild_id);
-    if ((f = jsmnf_find(gw->payload._data, "endpoint", 8)))
+    if ((f = jsmnf_find(gw->payload.data, "endpoint", 8)))
         snprintf(endpoint, sizeof(endpoint), "%.*s", f->value.length,
                  f->value.contents);
 
@@ -871,31 +904,24 @@ on_ready(struct discord_gateway *gw)
 static void
 dispatch_run(void *p_cxt)
 {
-    struct discord_event *cxt = p_cxt;
-    struct discord *client = CLIENT(cxt->gw, gw);
+    struct _discord_event_context *cxt = p_cxt;
 
     logconf_info(&cxt->gw->conf,
                  "Thread " ANSICOLOR("starts", ANSI_FG_RED) " to serve %s",
-                 cxt->name);
+                 cxt->gw->payload.name);
 
     cxt->on_event(cxt->gw);
 
     logconf_info(&cxt->gw->conf,
                  "Thread " ANSICOLOR("exits", ANSI_FG_RED) " from serving %s",
-                 cxt->name);
+                 cxt->gw->payload.name);
 
-    /* TODO: move to _discord_event_cleanup() */
-    free(cxt->name);
-    free(cxt->data.start);
-    discord_cleanup(client);
-    free(cxt);
+    _discord_event_context_cleanup(cxt);
 }
 
 static void
 on_dispatch(struct discord_gateway *gw)
 {
-    struct discord *client = CLIENT(gw, gw);
-
     /* event-callback selector */
     void (*on_event)(struct discord_gateway *) = NULL;
     /* get dispatch event opcode */
@@ -922,7 +948,7 @@ on_dispatch(struct discord_gateway *gw)
 
         logconf_info(&gw->conf, "Succesfully started a Discord session!");
 
-        if ((f = jsmnf_find(gw->payload._data, "session_id", 10)))
+        if ((f = jsmnf_find(gw->payload.data, "session_id", 10)))
             snprintf(gw->session->id, sizeof(gw->session->id), "%.*s",
                      f->value.length, f->value.contents);
         ASSERT_S(*gw->session->id, "Missing session_id from READY event");
@@ -1115,7 +1141,9 @@ on_dispatch(struct discord_gateway *gw)
         break;
     }
 
-    mode = gw->cmds.scheduler(client, &gw->payload.data, event);
+    mode =
+        gw->cmds.scheduler(CLIENT(gw, gw), gw->payload.data->value.contents,
+                           (size_t)gw->payload.data->value.length, event);
     if (!on_event) return;
 
     /* user subscribed to event */
@@ -1126,17 +1154,9 @@ on_dispatch(struct discord_gateway *gw)
         on_event(gw);
         break;
     case DISCORD_EVENT_WORKER_THREAD: {
-        struct discord_event *cxt = malloc(sizeof *cxt);
-        int ret;
-
-        cxt->name = strdup(gw->payload.name);
-        cxt->gw = &(discord_clone(client)->gw);
-        cxt->data.size = cog_strndup(gw->payload.data.start,
-                                     gw->payload.data.size, &cxt->data.start);
-        cxt->event = event;
-        cxt->on_event = on_event;
-
-        ret = work_run(&dispatch_run, cxt);
+        struct _discord_event_context *cxt =
+            _discord_event_context_init(gw, event, on_event);
+        int ret = work_run(&dispatch_run, cxt);
         VASSERT_S(0 == ret, "Couldn't create task (code %d)", ret);
     } break;
     default:
@@ -1151,7 +1171,11 @@ on_invalid_session(struct discord_gateway *gw)
     const char *reason;
 
     gw->session->status = DISCORD_SESSION_SHUTDOWN;
-    if (0 != strncmp(gw->payload.data.start, "false", gw->payload.data.size)) {
+
+    /* attempt to resume if session isn't invalid */
+    if (gw->payload.data->value.length != 5
+        || strncmp("false", gw->payload.data->value.contents, 5))
+    {
         gw->session->status |= DISCORD_SESSION_RESUMABLE;
         reason = "Invalid session, will attempt to resume";
         opcode = (enum ws_close_reason)DISCORD_GATEWAY_CLOSE_REASON_RECONNECT;
@@ -1305,12 +1329,7 @@ on_text_cb(void *p_gw,
             }
             if ((f = jsmnf_find(gw->parse.pairs, "op", 2)))
                 gw->payload.opcode = (int)strtol(f->value.contents, NULL, 10);
-            if ((gw->payload._data = jsmnf_find(gw->parse.pairs, "d", 1))) {
-                gw->payload.data.start =
-                    (char *)gw->payload._data->value.contents;
-                gw->payload.data.size =
-                    (size_t)gw->payload._data->value.length;
-            }
+            gw->payload.data = jsmnf_find(gw->parse.pairs, "d", 1);
         }
     }
 
@@ -1347,12 +1366,14 @@ on_text_cb(void *p_gw,
 
 static discord_event_scheduler_t
 default_scheduler_cb(struct discord *a,
-                     struct sized_buffer *b,
-                     enum discord_gateway_events c)
+                     const char b[],
+                     size_t c,
+                     enum discord_gateway_events d)
 {
     (void)a;
     (void)b;
     (void)c;
+    (void)d;
     return DISCORD_EVENT_MAIN_THREAD;
 }
 
@@ -1624,11 +1645,7 @@ discord_gateway_start(struct discord_gateway *gw)
                     discord_session_start_limit_from_jsmnf(
                         f, &gw->session->start_limit);
             }
-            else
-                abort();
         }
-        else
-            abort();
     }
 
     free(json.start);
