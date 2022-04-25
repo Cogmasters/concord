@@ -197,7 +197,8 @@ on_ping(struct discord *client, const struct discord_message *msg)
 
 enum discord_event_scheduler
 scheduler(struct discord *client,
-          struct sized_buffer *data,
+          const char data[],
+          size_t size,
           enum discord_gateway_events event)
 {
     if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
@@ -207,15 +208,15 @@ scheduler(struct discord *client,
         jsmntok_t tokens[16];
 
         jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, data->start, data->size, tokens,
+        if (0 < jsmn_parse(&parser, data, size, tokens,
                            sizeof(tokens) / sizeof *tokens))
         {
             jsmnf_loader loader;
             jsmnf_pair pairs[16];
 
             jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, data->start, tokens, parser.toknext,
-                               pairs, sizeof(pairs) / sizeof *pairs))
+            if (0 < jsmnf_load(&loader, data, tokens, parser.toknext, pairs,
+                               sizeof(pairs) / sizeof *pairs))
             {
                 jsmnf_pair *f;
 
@@ -232,7 +233,7 @@ scheduler(struct discord *client,
         else if (0 == strncmp("No", cmd, 2)) {
             struct discord_message msg = { 0 };
 
-            discord_message_from_json(data->start, data->size, &msg);
+            discord_message_from_json(data, size, &msg);
             on_spam_block_continue(client, &msg);
             discord_message_cleanup(&msg);
 
