@@ -1,3 +1,4 @@
+#include <string.h>
 
 #include "discord.h"
 #include "discord-internal.h"
