@@ -5,20 +5,21 @@
 #include "discord.h"
 #include "discord-internal.h"
 
+#define CHASH_BUCKETS_FIELD refs
 #include "chash.h"
 
-/* chash heap-mode (auto-increase hashtable buckets) */
-#define INTPTR_TABLE_HEAP   1
-#define INTPTR_TABLE_BUCKET struct _intptr_bucket
-#define INTPTR_TABLE_FREE_KEY(_key)
-#define INTPTR_TABLE_HASH(_key, _hash)       ((intptr_t)(_key))
-#define INTPTR_TABLE_FREE_VALUE(_value)      _discord_refcount_cleanup(&_value)
-#define INTPTR_TABLE_COMPARE(_cmp_a, _cmp_b) (_cmp_a == _cmp_b)
-#define INTPTR_TABLE_INIT(bucket, _key, _value)                               \
-    memset(&bucket, 0, sizeof(bucket));                                       \
-    chash_default_init(bucket, _key, _value)
+/* chash heap-mode (auto-increase hashtable) */
+#define REFCOUNTER_TABLE_HEAP   1
+#define REFCOUNTER_TABLE_BUCKET struct _discord_ref
+#define REFCOUNTER_TABLE_FREE_KEY(_key)
+#define REFCOUNTER_TABLE_HASH(_key, _hash)       ((intptr_t)(_key))
+#define REFCOUNTER_TABLE_FREE_VALUE(_value)      _discord_refvalue_cleanup(&_value)
+#define REFCOUNTER_TABLE_COMPARE(_cmp_a, _cmp_b) (_cmp_a == _cmp_b)
+#define REFCOUNTER_TABLE_INIT(ref, _key, _value)                              \
+    memset(&ref, 0, sizeof(ref));                                             \
+    chash_default_init(ref, _key, _value)
 
-struct _discord_refcount {
+struct _discord_refvalue {
     /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
     void *data;
     /**
@@ -30,51 +31,51 @@ struct _discord_refcount {
     int visits;
 };
 
-struct _intptr_bucket {
+struct _discord_ref {
     /** key is the user data's address */
     intptr_t key;
     /** holds the user data and information for automatic cleanup */
-    struct _discord_refcount value;
+    struct _discord_refvalue value;
     /** the route state in the hashtable (see chash.h 'State enums') */
     int state;
 };
 
 static void
-_discord_refcount_cleanup(struct _discord_refcount *ref)
+_discord_refvalue_cleanup(struct _discord_refvalue *value)
 {
-    if (ref->cleanup) ref->cleanup(ref->data);
+    if (value->cleanup) value->cleanup(value->data);
 }
 
-static struct _discord_refcount *
-_discord_refcount_find(struct discord_refcounter *rc, intptr_t key)
+static struct _discord_refvalue *
+_discord_refvalue_find(struct discord_refcounter *rc, intptr_t key)
 {
-    struct _intptr_bucket *bucket = NULL;
+    struct _discord_ref *ref = NULL;
 
-    bucket = chash_lookup_bucket(rc, key, bucket, INTPTR_TABLE);
+    ref = chash_lookup_bucket(rc, key, ref, REFCOUNTER_TABLE);
 
-    return &bucket->value;
+    return &ref->value;
 }
 
-static struct _discord_refcount *
-_discord_refcount_init(struct discord_refcounter *rc,
+static struct _discord_refvalue *
+_discord_refvalue_init(struct discord_refcounter *rc,
                        intptr_t key,
                        void *data,
                        void (*cleanup)(void *data))
 {
-    struct _discord_refcount ref;
+    struct _discord_refvalue value;
 
-    ref.data = data;
-    ref.cleanup = cleanup;
-    ref.visits = 0;
-    chash_assign(rc, key, ref, INTPTR_TABLE);
+    value.data = data;
+    value.cleanup = cleanup;
+    value.visits = 0;
+    chash_assign(rc, key, value, REFCOUNTER_TABLE);
 
-    return _discord_refcount_find(rc, key);
+    return _discord_refvalue_find(rc, key);
 }
 
 struct discord_refcounter *
 discord_refcounter_init(struct logconf *conf)
 {
-    struct discord_refcounter *rc = chash_init(rc, INTPTR_TABLE);
+    struct discord_refcounter *rc = chash_init(rc, REFCOUNTER_TABLE);
 
     logconf_branch(&rc->conf, conf, "DISCORD_REFCOUNT");
 
@@ -84,7 +85,7 @@ discord_refcounter_init(struct logconf *conf)
 void
 discord_refcounter_cleanup(struct discord_refcounter *rc)
 {
-    chash_free(rc, INTPTR_TABLE);
+    chash_free(rc, REFCOUNTER_TABLE);
 }
 
 void
@@ -92,30 +93,30 @@ discord_refcounter_incr(struct discord_refcounter *rc,
                         void *data,
                         void (*cleanup)(void *data))
 {
-    struct _discord_refcount *ref = NULL;
+    struct _discord_refvalue *value = NULL;
     intptr_t key = (intptr_t)data;
     int ret;
 
-    ret = chash_contains(rc, key, ret, INTPTR_TABLE);
+    ret = chash_contains(rc, key, ret, REFCOUNTER_TABLE);
     if (ret)
-        ref = _discord_refcount_find(rc, key);
+        value = _discord_refvalue_find(rc, key);
     else
-        ref = _discord_refcount_init(rc, key, data, cleanup);
-    ++ref->visits;
+        value = _discord_refvalue_init(rc, key, data, cleanup);
+    ++value->visits;
 }
 
 void
 discord_refcounter_decr(struct discord_refcounter *rc, void *data)
 {
-    struct _discord_refcount *ref = NULL;
+    struct _discord_refvalue *value = NULL;
     intptr_t key = (intptr_t)data;
     int ret;
 
-    ret = chash_contains(rc, key, ret, INTPTR_TABLE);
+    ret = chash_contains(rc, key, ret, REFCOUNTER_TABLE);
     if (ret) {
-        ref = _discord_refcount_find(rc, key);
-        if (0 == --ref->visits) {
-            chash_delete(rc, key, INTPTR_TABLE);
+        value = _discord_refvalue_find(rc, key);
+        if (0 == --value->visits) {
+            chash_delete(rc, key, REFCOUNTER_TABLE);
         }
     }
 }

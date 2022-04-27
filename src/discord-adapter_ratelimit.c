@@ -7,9 +7,12 @@
 
 #include "cog-utils.h"
 #include "clock.h"
+
+#define CHASH_VALUE_FIELD   bucket
+#define CHASH_BUCKETS_FIELD routes
 #include "chash.h"
 
-/* chash heap-mode (auto-increase hashtable buckets) */
+/* chash heap-mode (auto-increase hashtable) */
 #define RATELIMITER_TABLE_HEAP   1
 #define RATELIMITER_TABLE_BUCKET struct _discord_route
 #define RATELIMITER_TABLE_FREE_KEY(_key)
@@ -19,13 +22,13 @@
     chash_string_compare(_cmp_a, _cmp_b)
 #define RATELIMITER_TABLE_INIT(route, _key, _value)                           \
     memcpy(route.key, _key, sizeof(route.key));                               \
-    route.value = _value
+    route.bucket = _value
 
 struct _discord_route {
     /** key formed from a request's route */
     char key[DISCORD_ROUTE_LEN];
     /** this route's bucket match */
-    struct discord_bucket *value;
+    struct discord_bucket *bucket;
     /** the route state in the hashtable (see chash.h 'State enums') */
     int state;
 };
@@ -181,8 +184,8 @@ discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
 
     pthread_mutex_lock(&rl->global.lock);
     for (i = 0; i < rl->capacity; ++i) {
-        r = rl->buckets + i;
-        if (CHASH_FILLED == r->state) (*iter)(adapter, r->value);
+        r = rl->routes + i;
+        if (CHASH_FILLED == r->state) (*iter)(adapter, r->bucket);
     }
     pthread_mutex_unlock(&rl->global.lock);
 }

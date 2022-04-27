@@ -255,7 +255,7 @@ struct discord_refcounter {
      * individual user's data held for automatic cleanup
      * @note datatype declared at discord-adapter_refcount.c
      */
-    struct _intptr_bucket *buckets;
+    struct _discord_ref *refs;
 };
 
 /**
@@ -361,11 +361,9 @@ struct discord_ratelimiter {
     int capacity;
     /**
      * routes matched to individual buckets
-     * @note the `buckets` symbol here is for "hashtable buckets", and not
-     *      Discord buckets
      * @note datatype declared at discord-adapter_ratelimit.c
      */
-    struct _discord_route *buckets;
+    struct _discord_route *routes;
     /** singleton bucket for requests that haven't been matched to a
      *      known or new bucket (i.e first time running the request) */
     struct discord_bucket *null;
