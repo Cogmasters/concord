@@ -18,10 +18,10 @@ extern "C" {
  * @param ... printf-like `format` and variadic arguments (if any)
  */
 #define ERR(...)                                                              \
-  do {                                                                        \
-    __ERR(__VA_ARGS__, "");                                                   \
-    abort();                                                                  \
-  } while (0)
+    do {                                                                      \
+        __ERR(__VA_ARGS__, "");                                               \
+        abort();                                                              \
+    } while (0)
 
 /**
  * @brief Assert that allows printing a error message
@@ -30,35 +30,42 @@ extern "C" {
  * @param msg error message
  */
 #define ASSERT_S(expr, msg)                                                   \
-  do {                                                                        \
-    if (!(expr)) {                                                            \
-      ERR(ANSICOLOR("\n\tAssert Failed", ANSI_FG_RED)":\t%s\n\t"              \
-          ANSICOLOR("Expected", ANSI_FG_RED)":\t"msg, #expr);                 \
-    }                                                                         \
-  } while (0)
+    do {                                                                      \
+        if (!(expr)) {                                                        \
+            ERR(ANSICOLOR(                                                    \
+                    "\n\tAssert Failed",                                      \
+                    ANSI_FG_RED) ":\t%s\n\t" ANSICOLOR("Expected",            \
+                                                       ANSI_FG_RED) ":"       \
+                                                                    "\t" msg, \
+                #expr);                                                       \
+        }                                                                     \
+    } while (0)
 
 /**
  * @brief Assert that allows printing a error message in a printf-like fashion
- * @warning if no variadic arguments are specified there will be errors, in 
+ * @warning if no variadic arguments are specified there will be errors, in
  *      that case use @ref ASSERT_S.
  *
  * @param expr conditional expression that's expected to be true
  * @param fmt printf-like formatting string for the error message
  * @param ... printf-like variadic arguments to be matched to `fmt`
  */
-# define VASSERT_S(expr, fmt, ...)                                            \
-  do {                                                                        \
-    if (!(expr)) {                                                            \
-      ERR(ANSICOLOR("\n\tAssert Failed", ANSI_FG_RED)":\t"fmt"\n\t"           \
-          ANSICOLOR("Expected", ANSI_FG_RED)":\t %s", __VA_ARGS__, #expr);    \
-    }                                                                         \
-  } while (0)
+#define VASSERT_S(expr, fmt, ...)                                             \
+    do {                                                                      \
+        if (!(expr)) {                                                        \
+            ERR(ANSICOLOR("\n\tAssert Failed",                                \
+                          ANSI_FG_RED) ":\t" fmt                              \
+                                       "\n\t" ANSICOLOR(                      \
+                                           "Expected", ANSI_FG_RED) ":\t %s", \
+                __VA_ARGS__, #expr);                                          \
+        }                                                                     \
+    } while (0)
 
 /* Encode a string with ANSI color */
 #ifdef LOG_USE_COLOR
-# define ANSICOLOR(str, color) "\x1b[" color "m" str "\x1b[0m"
+#define ANSICOLOR(str, color) "\x1b[" color "m" str "\x1b[0m"
 #else
-# define ANSICOLOR(str, color) str
+#define ANSICOLOR(str, color) str
 #endif
 
 #define ANSI_FG_BLACK          "30"
@@ -174,6 +181,7 @@ extern "C" {
  * @param ... the printf-like format string and successive arguments
  */
 #define logconf_log(conf, level, file, line, ...)                             \
+    if (!(conf)->is_disabled)                                                 \
     __logconf_log(conf, level, file, line, __VA_ARGS__, "")
 
 /** Maximum length for module id */
@@ -194,6 +202,8 @@ struct logconf {
     unsigned pid;
     /** if true then logconf_cleanup() won't cleanup shared resources */
     _Bool is_branch;
+    /** if true then logging will be ignored for this module */
+    _Bool is_disabled;
     /** config file contents */
     struct sized_buffer file;
 

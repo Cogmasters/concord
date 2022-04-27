@@ -14,7 +14,7 @@
 #include "jsmn-find.h"
 
 static int
-get_log_level(char level[])
+_logconf_eval_level(char level[])
 {
     if (0 == strcasecmp(level, "TRACE")) return LOG_TRACE;
     if (0 == strcasecmp(level, "DEBUG")) return LOG_DEBUG;
@@ -27,7 +27,7 @@ get_log_level(char level[])
 }
 
 static void
-log_nocolor_cb(log_Event *ev)
+_log_nocolor_cb(log_Event *ev)
 {
     char buf[16];
 
@@ -42,7 +42,7 @@ log_nocolor_cb(log_Event *ev)
 }
 
 static void
-log_color_cb(log_Event *ev)
+_log_color_cb(log_Event *ev)
 {
     char buf[16];
 
@@ -57,32 +57,24 @@ log_color_cb(log_Event *ev)
     fflush(ev->udata);
 }
 
-/** TODO: this doesn't disable `logconf_http()` logging */
-static bool
-module_is_disabled(struct logconf *conf)
+static void
+_logconf_check_disabled(struct logconf *conf)
 {
     int i;
 
-    for (i = 0; i < conf->disable_modules.size; ++i) {
-        if (0 == strcmp(conf->id, conf->disable_modules.ids[i])) {
-            memset(conf->L, 0, sizeof *conf->L);
-            /* silence output for all levels but fatal*/
-            logconf_set_quiet(conf, true);
-            logconf_add_callback(conf, &log_nocolor_cb, stderr, LOG_FATAL);
-            return true;
-        }
-    }
-    return false;
+    for (i = 0; i < conf->disable_modules.size; ++i)
+        if (0 == strcmp(conf->id, conf->disable_modules.ids[i]))
+            conf->is_disabled = true;
 }
 
 static void
-lock(struct logconf *conf)
+_logconf_lock(struct logconf *conf)
 {
     if (conf->L->lock) conf->L->lock(true, conf->L->udata);
 }
 
 static void
-unlock(struct logconf *conf)
+_logconf_unlock(struct logconf *conf)
 {
     if (conf->L->lock) conf->L->lock(false, conf->L->udata);
 }
@@ -103,9 +95,9 @@ logconf_http(struct logconf *conf,
 
     tstamp_ms = cog_timestamp_ms();
 
-    lock(conf);
+    _logconf_lock(conf);
     counter = ++*conf->counter;
-    unlock(conf);
+    _logconf_unlock(conf);
 
     if (conf->http && conf->http->f) {
         char timestr[64], label[512];
@@ -136,7 +128,6 @@ logconf_http(struct logconf *conf,
     }
 
     if (p_info) {
-        memset(p_info, 0, sizeof *p_info);
         p_info->counter = counter;
         p_info->tstamp_ms = tstamp_ms;
     }
@@ -245,7 +236,7 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     conf->file.size = fsize;
 
     /* skip everything else if this module is disabled */
-    if (module_is_disabled(conf)) return;
+    _logconf_check_disabled(conf);
 
     /* SET LOGGER CONFIGS */
     if (*l.filename) {
@@ -255,8 +246,8 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
         ASSERT_S(NULL != conf->logger->f, "Could not create logger file");
 
         logconf_add_callback(conf,
-                             l.use_color ? &log_color_cb : &log_nocolor_cb,
-                             conf->logger->f, get_log_level(l.level));
+                             l.use_color ? &_log_color_cb : &_log_nocolor_cb,
+                             conf->logger->f, _logconf_eval_level(l.level));
     }
 
     /* SET HTTP DUMP CONFIGS */
@@ -270,8 +261,9 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     logconf_set_quiet(conf, true);
 
     /* make sure fatal still prints to stderr */
-    logconf_add_callback(conf, l.use_color ? &log_color_cb : &log_nocolor_cb,
-                         stderr, l.quiet ? LOG_FATAL : get_log_level(l.level));
+    logconf_add_callback(conf, l.use_color ? &_log_color_cb : &_log_nocolor_cb,
+                         stderr,
+                         l.quiet ? LOG_FATAL : _logconf_eval_level(l.level));
 }
 
 void
@@ -282,9 +274,9 @@ logconf_branch(struct logconf *branch, struct logconf *orig, const char id[])
         return;
     }
 
-    lock(orig);
+    _logconf_lock(orig);
     memcpy(branch, orig, sizeof(struct logconf));
-    unlock(orig);
+    _logconf_unlock(orig);
 
     branch->is_branch = true;
     if (id) {
@@ -293,9 +285,8 @@ logconf_branch(struct logconf *branch, struct logconf *orig, const char id[])
                  "Out of bounds write attempt");
     }
     branch->pid = getpid();
-#if 0
-    module_is_disabled(branch);
-#endif
+
+    _logconf_check_disabled(branch);
 }
 
 void
@@ -335,7 +326,7 @@ logconf_get_field(struct logconf *conf, char *const path[], unsigned depth)
     jsmn_parser parser;
     jsmntok_t tokens[256];
 
-    if (!conf->file.size) return field; /* empty field */
+    if (!conf->file.size) return field;
 
     jsmn_init(&parser);
     if (0 < jsmn_parse(&parser, conf->file.start, conf->file.size, tokens,
@@ -350,8 +341,7 @@ logconf_get_field(struct logconf *conf, char *const path[], unsigned depth)
         {
             jsmnf_pair *f;
             if ((f = jsmnf_find_path(pairs, conf->file.start, path, depth))) {
-                /* TODO: field.start should be a 'const char*' */
-                field.start = (char *)conf->file.start + f->v.pos;
+                field.start = conf->file.start + f->v.pos;
                 field.size = f->v.len;
             }
         }
