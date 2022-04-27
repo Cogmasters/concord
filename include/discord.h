@@ -158,15 +158,14 @@ struct discord *discord_config_init(const char config_file[]);
 
 /**
  * @brief Clone a discord client
- * @deprecated this function will be removed in the future
  *
  * Should be called before entering a thread, to ensure each thread
  *        has its own client instance with unique buffers, url and headers
- * @param orig_client the original client created with discord_init()
- * @return the original client clone
+ * @param orig the original client created with discord_init()
+ * @return the client clone
  */
 
-struct discord *discord_clone(const struct discord *orig_client);
+struct discord *discord_clone(const struct discord *orig);
 
 /**
  * @brief Free a Discord Client handle

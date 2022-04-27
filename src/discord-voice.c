@@ -151,17 +151,13 @@ send_identify(struct discord_voice *vc)
 static void
 on_hello(struct discord_voice *vc)
 {
-    const struct sized_buffer *data = &vc->payload.event_data;
     float hbeat_interval = 0.0f;
-    jsmnf *root = jsmnf_init();
+    jsmnf_pair *f;
 
     vc->hbeat.tstamp = cog_timestamp_ms();
+    if ((f = jsmnf_find(vc->payload.data, "heartbeat_interval", 18)))
+        hbeat_interval = strtof(f->value.contents, NULL);
 
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f = jsmnf_find(root, "heartbeat_interval",
-                              sizeof("heartbeat_interval") - 1);
-        if (f) hbeat_interval = strtof(data->start + f->val->start, NULL);
-    }
     vc->hbeat.interval_ms =
         (hbeat_interval < 5000.0f) ? (u64unix_ms)hbeat_interval : 5000;
 
@@ -169,8 +165,6 @@ on_hello(struct discord_voice *vc)
         send_resume(vc);
     else
         send_identify(vc);
-
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -198,32 +192,23 @@ static void
 on_speaking(struct discord_voice *vc)
 {
     struct discord *client = vc->p_client;
-    struct sized_buffer *data = &vc->payload.event_data;
 
     int speaking = 0, delay = 0, ssrc = 0;
     u64snowflake user_id = 0;
-    jsmnf *root;
+    jsmnf_pair *f;
 
     if (!client->voice_cbs.on_speaking) return;
 
-    root = jsmnf_init();
-
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
-
-        f = jsmnf_find(root, "user_id", sizeof("user_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &user_id);
-        f = jsmnf_find(root, "speaking", sizeof("speaking") - 1);
-        if (f) speaking = (int)strtol(data->start + f->val->start, NULL, 10);
-        f = jsmnf_find(root, "delay", sizeof("delay") - 1);
-        if (f) delay = (int)strtol(data->start + f->val->start, NULL, 10);
-        f = jsmnf_find(root, "ssrc", sizeof("ssrc") - 1);
-        if (f) ssrc = (int)strtol(data->start + f->val->start, NULL, 10);
-    }
+    if ((f = jsmnf_find(vc->payload.data, "user_id", 7)))
+        sscanf(f->value.contents, "%" SCNu64, &user_id);
+    if ((f = jsmnf_find(vc->payload.data, "speaking", 8)))
+        speaking = (int)strtol(f->value.contents, NULL, 10);
+    if ((f = jsmnf_find(vc->payload.data, "delay", 5)))
+        delay = (int)strtol(f->value.contents, NULL, 10);
+    if ((f = jsmnf_find(vc->payload.data, "ssrc", 4)))
+        ssrc = (int)strtol(f->value.contents, NULL, 10);
 
     client->voice_cbs.on_speaking(client, vc, user_id, speaking, delay, ssrc);
-
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -238,54 +223,34 @@ static void
 on_client_disconnect(struct discord_voice *vc)
 {
     struct discord *client = vc->p_client;
-    struct sized_buffer *data = &vc->payload.event_data;
-
     u64snowflake user_id = 0;
-    jsmnf *root;
+    jsmnf_pair *f;
 
     if (!client->voice_cbs.on_client_disconnect) return;
 
-    root = jsmnf_init();
-
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f = jsmnf_find(root, "user_id", sizeof("user_id") - 1);
-        if (f) sscanf(data->start + f->val->start, "%" SCNu64, &user_id);
-    }
+    if ((f = jsmnf_find(vc->payload.data, "user_id", 7)))
+        sscanf(f->value.contents, "%" SCNu64, &user_id);
 
     client->voice_cbs.on_client_disconnect(client, vc, user_id);
-
-    jsmnf_cleanup(root);
 }
 
 static void
 on_codec(struct discord_voice *vc)
 {
     struct discord *client = vc->p_client;
-    struct sized_buffer *data = &vc->payload.event_data;
-
-    char audio_codec[64] = { 0 }, video_codec[64] = { 0 };
-    jsmnf *root;
+    char audio_codec[64] = "", video_codec[64] = "";
+    jsmnf_pair *f;
 
     if (!client->voice_cbs.on_codec) return;
 
-    root = jsmnf_init();
-
-    if (jsmnf_start(root, data->start, data->size) >= 0) {
-        jsmnf *f;
-
-        f = jsmnf_find(root, "audio_codec", sizeof("audio_codec") - 1);
-        if (f)
-            snprintf(audio_codec, sizeof(audio_codec), "%.*s",
-                     f->val->end - f->val->start, data->start + f->val->start);
-        f = jsmnf_find(root, "video_codec", sizeof("video_codec") - 1);
-        if (f)
-            snprintf(video_codec, sizeof(video_codec), "%.*s",
-                     f->val->end - f->val->start, data->start + f->val->start);
-    }
+    if ((f = jsmnf_find(vc->payload.data, "audio_codec", 11)))
+        snprintf(audio_codec, sizeof(audio_codec), "%.*s", f->value.length,
+                 f->value.contents);
+    if ((f = jsmnf_find(vc->payload.data, "video_codec", 11)))
+        snprintf(video_codec, sizeof(video_codec), "%.*s", f->value.length,
+                 f->value.contents);
 
     client->voice_cbs.on_codec(client, vc, audio_codec, video_codec);
-
-    jsmnf_cleanup(root);
 }
 
 static void
@@ -376,22 +341,27 @@ on_text_cb(void *p_vc,
            const char *text,
            size_t len)
 {
-    struct discord_voice *vc = p_vc;
-    jsmnf *root = jsmnf_init();
     (void)ws;
     (void)info;
+    struct discord_voice *vc = p_vc;
+    jsmn_parser parser;
 
-    if (jsmnf_start(root, text, len) >= 0) {
-        jsmnf *f;
+    jsmn_init(&parser);
+    if (0 < jsmn_parse_auto(&parser, text, len, &vc->parse.tokens,
+                            &vc->parse.ntokens))
+    {
+        jsmnf_loader loader;
 
-        f = jsmnf_find(root, "op", 2);
-        if (f)
-            vc->payload.opcode = (int)strtol(text + f->val->start, NULL, 10);
-        f = jsmnf_find(root, "d", 1);
-        if (f) {
-            vc->payload.event_data.start = (char *)text + f->val->start;
-            vc->payload.event_data.size =
-                (size_t)(f->val->end - f->val->start);
+        jsmnf_init(&loader);
+        if (0 < jsmnf_load_auto(&loader, text, vc->parse.tokens,
+                                parser.toknext, &vc->parse.pairs,
+                                &vc->parse.npairs))
+        {
+            jsmnf_pair *f;
+
+            if ((f = jsmnf_find(vc->parse.pairs, "op", 2)))
+                vc->payload.opcode = (int)strtol(f->value.contents, NULL, 10);
+            vc->payload.data = jsmnf_find(vc->parse.pairs, "d", 1);
         }
     }
 
@@ -430,8 +400,6 @@ on_text_cb(void *p_vc,
                       vc->payload.opcode);
         break;
     }
-
-    jsmnf_cleanup(root);
 }
 
 /* send heartbeat pulse to websockets server in order
@@ -493,7 +461,7 @@ _discord_voice_init(struct discord_voice *new_vc,
         new_vc->ws = ws_init(&cbs, new_vc->mhandle, &attr);
         logconf_branch(&new_vc->conf, &client->conf, "DISCORD_VOICE");
 
-        new_vc->reconnect.threshold = 5; /**< hard limit for now */
+        new_vc->reconnect.threshold = 5; /* TODO: shouldn't be a hard limit */
         new_vc->reconnect.enable = true;
     }
 
@@ -842,6 +810,8 @@ _discord_voice_cleanup(struct discord_voice *vc)
 {
     if (vc->mhandle) curl_multi_cleanup(vc->mhandle);
     if (vc->ws) ws_cleanup(vc->ws);
+    if (vc->parse.pairs) free(vc->parse.pairs);
+    if (vc->parse.tokens) free(vc->parse.tokens);
 }
 
 void

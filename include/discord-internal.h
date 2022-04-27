@@ -8,7 +8,6 @@
 #ifndef DISCORD_INTERNAL_H
 #define DISCORD_INTERNAL_H
 
-#include <inttypes.h>
 #include <pthread.h>
 
 #define JSONB_HEADER
@@ -25,7 +24,6 @@
 #include "cog-utils.h"
 #include "io_poller.h"
 
-#include "uthash.h"
 #include "queue.h"
 #include "priority_queue.h"
 
@@ -123,7 +121,7 @@ struct discord_request {
 
 /** URL endpoint threshold length */
 #define DISCORD_ENDPT_LEN 512
-/** Bucket's route threshold length */
+/** Route's unique key threshold length */
 #define DISCORD_ROUTE_LEN 256
 
 /**
@@ -135,7 +133,7 @@ struct discord_context {
     struct discord_request req;
 
     /** the request's bucket */
-    struct discord_bucket *bucket;
+    struct discord_bucket *b;
 
     /** request body handle @note buffer is kept and recycled */
     struct {
@@ -149,8 +147,8 @@ struct discord_context {
     enum http_method method;
     /** the request's endpoint */
     char endpoint[DISCORD_ENDPT_LEN];
-    /** the request's route */
-    char route[DISCORD_ROUTE_LEN];
+    /** the request bucket's key */
+    char key[DISCORD_ROUTE_LEN];
     /** the connection handler assigned */
     struct ua_conn *conn;
     /** the request bucket's queue entry */
@@ -168,26 +166,11 @@ struct discord_adapter {
     struct user_agent *ua;
     /** curl_multi handle for performing non-blocking requests */
     CURLM *mhandle;
-    /** client-side data reference counter for cleanup */
-    struct discord_refcount *refcounts;
-    /** routes discovered (declared at adapter-ratelimit.c) */
-    struct _discord_route *routes;
-    /** buckets discovered */
-    struct discord_bucket *buckets;
-    /** for routes that have not yet been assigned to a bucket */
-    struct discord_bucket *b_null;
-    /** for routes didn't receive a bucket match from Discord */
-    struct discord_bucket *b_miss;
+    /** user's data reference counter for automatic cleanup */
+    struct discord_refcounter *refcounter;
 
-    /* client-wide ratelimiting timeout */
-    struct {
-        /** global ratelimit */
-        u64unix_ms wait_ms;
-        /** global rwlock  */
-        pthread_rwlock_t rwlock;
-        /** global lock */
-        pthread_mutex_t lock;
-    } * global;
+    /** buckets discovered (declared at discord-adapter_ratelimit.c) */
+    struct discord_ratelimiter *ratelimiter;
 
     /** idle request handles */
     QUEUE(struct discord_context) * idleq;
@@ -199,8 +182,8 @@ struct discord_adapter {
 /**
  * @brief Initialize the fields of a Discord Adapter handle
  *
- * @param adapter a pointer to the http handle
- * @param conf optional pointer to a pre-initialized logconf
+ * @param adapter the adapter handle to be initialized
+ * @param conf optional pointer to a parent logconf
  * @param token the bot token
  */
 void discord_adapter_init(struct discord_adapter *adapter,
@@ -245,66 +228,84 @@ CCORDcode discord_adapter_run(struct discord_adapter *adapter,
 CCORDcode discord_adapter_perform(struct discord_adapter *adapter);
 
 /**
- * @brief Get global timeout timestamp
- *
- * @param adapter the handle initialized with discord_adapter_init()
- * @return the most recent global timeout timestamp
- */
-u64unix_ms discord_adapter_get_global_wait(struct discord_adapter *adapter);
-
-/**
- * @brief Stop all on-going, pending and timed-out requests
+ * @brief Stop all bucket's on-going, pending and timed-out requests
  *
  * The requests will be moved over to client's 'idleq' queue
  * @param adapter the handle initialized with discord_adapter_init()
  */
-void discord_adapter_stop_all(struct discord_adapter *adapter);
+void discord_adapter_stop_buckets(struct discord_adapter *adapter);
 
-/** @brief Naive garbage collector to cleanup user arbitrary data */
-struct discord_refcount {
-    /** user arbitrary data to be retrieved at `done` or `fail` callbacks */
-    void *data;
+/** @defgroup DiscordInternalAdapterRefcount Reference counter
+ * @brief Handle automatic cleanup of user's data
+ *  @{ */
+
+/** @brief Automatically cleanup user data
+ *
+ * Automatically cleanup user data that is passed around Discord event's
+ *      callbacks once its reference counter reaches 0, meaning there are no
+ *      more callbacks expecting the data */
+struct discord_refcounter {
+    /** DISCORD_REFCOUNT logging module */
+    struct logconf conf;
+    /** amount of individual user's data held for automatic cleanup */
+    int length;
+    /** cap before increase */
+    int capacity;
     /**
-     * cleanup for when `data` is no longer needed
-     * @note this only has to be assigned once, it shall be called once `data`
-     *      is no longer referenced by any callback */
-    void (*cleanup)(void *data);
-    /** `data` references count */
-    int visits;
-    /** makes this structure hashable */
-    UT_hash_handle hh;
+     * individual user's data held for automatic cleanup
+     * @note datatype declared at discord-adapter_refcount.c
+     */
+    struct _discord_ref *refs;
 };
+
+/**
+ * @brief Initialize reference counter handle
+ *
+ * A hashtable shall be used for storage and retrieval of user data
+ * @param conf optional pointer to a parent logconf
+ * @return the reference counter handle
+ */
+struct discord_refcounter *discord_refcounter_init(struct logconf *conf);
+
+/**
+ * @brief Cleanup refcounter and all user data currently held
+ *
+ * @param rc the handle initialized with discord_refcounter_init()
+ */
+void discord_refcounter_cleanup(struct discord_refcounter *rc);
 
 /**
  * @brief Increment the reference counter for `ret->data`
  *
- * @param adapter the handle initialized with discord_adapter_init()
+ * @param rc the handle initialized with discord_refcounter_init()
  * @param data the user arbitrary data to have its reference counter
  * @param cleanup user-defined function for cleaning `data` resources once its
  *      no longer referenced
  */
-void discord_refcount_incr(struct discord_adapter *adapter,
-                           void *data,
-                           void (*cleanup)(void *data));
+void discord_refcounter_incr(struct discord_refcounter *rc,
+                             void *data,
+                             void (*cleanup)(void *data));
 
 /**
  * @brief Decrement the reference counter for `data`
  *
  * If the count reaches zero then `data` shall be cleanup up with its
  *      user-defined cleanup function
- * @param adapter the handle initialized with discord_adapter_init()
+ * @param rc the handle initialized with discord_refcounter_init()
  * @param data the user arbitrary data to have its reference counter
  *      decremented
  */
-void discord_refcount_decr(struct discord_adapter *adapter, void *data);
+void discord_refcounter_decr(struct discord_refcounter *rc, void *data);
+
+/** @} DiscordInternalAdapterRefcount */
 
 /** @defgroup DiscordInternalAdapterRatelimit Ratelimiting
  * @brief Enforce ratelimiting per the official Discord Documentation
  *  @{ */
 
-/** @brief The bucket struct for handling ratelimiting */
+/** @brief The Discord bucket for handling per-group ratelimits */
 struct discord_bucket {
-    /** the hash associated with this bucket */
+    /** the hash associated with the bucket's ratelimiting group */
     char hash[64];
     /** maximum connections this bucket can handle before ratelimit */
     long limit;
@@ -318,84 +319,133 @@ struct discord_bucket {
     QUEUE(struct discord_context) waitq;
     /** busy requests */
     QUEUE(struct discord_context) busyq;
-    /** makes this structure hashable */
-    UT_hash_handle hh;
 };
-
-/**
- * @brief Initialize a individual bucket and assign it to `adapter`
- *
- * @param adapter the handle initialized with discord_adapter_init()
- * @param hash the bucket's hash (for identification purposes)
- * @param limit the bucket's request threshold
- */
-struct discord_bucket *discord_bucket_init(struct discord_adapter *adapter,
-                                           const struct sized_buffer *hash,
-                                           const long limit);
-
-/**
- * @brief Cleanup all buckets allocated
- *
- * @param adapter the handle initialized with discord_adapter_init()
- */
-void discord_buckets_cleanup(struct discord_adapter *adapter);
 
 /**
  * @brief Return bucket timeout timestamp
  *
- * @param adapter the handle initialized with discord_adapter_init()
- * @param b the bucket to be checked for time out
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket the bucket to be checked for time out
  * @return the timeout timestamp
  */
-u64unix_ms discord_bucket_get_timeout(struct discord_adapter *adapter,
-                                      struct discord_bucket *b);
+u64unix_ms discord_bucket_get_timeout(struct discord_ratelimiter *rl,
+                                      struct discord_bucket *bucket);
 
 /**
- * @brief Get bucket pending cooldown time in milliseconds
+ * @brief Sleep for bucket's cooldown time
+ * @note this **WILL** block the bucket's execution thread
  *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param bucket the bucket to wait on cooldown
+ */
+void discord_bucket_try_sleep(struct discord_ratelimiter *rl,
+                              struct discord_bucket *bucket);
+
+/**
+ * @brief Get a `struct discord_bucket` assigned to `key`
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @param key obtained from discord_ratelimiter_get_key()
+ * @return bucket matched to `key`
+ */
+struct discord_bucket *discord_bucket_get(struct discord_ratelimiter *rl,
+                                          const char key[DISCORD_ROUTE_LEN]);
+
+/** @brief The ratelimiter struct for handling ratelimiting */
+struct discord_ratelimiter {
+    /** DISCORD_RATELIMIT logging module */
+    struct logconf conf;
+    /** amount of bucket's routes discovered */
+    int length;
+    /** route's cap before increase */
+    int capacity;
+    /**
+     * routes matched to individual buckets
+     * @note datatype declared at discord-adapter_ratelimit.c
+     */
+    struct _discord_route *routes;
+    /** singleton bucket for requests that haven't been matched to a
+     *      known or new bucket (i.e first time running the request) */
+    struct discord_bucket *null;
+    /** singleton bucket for requests that are not part of any known
+     *      ratelimiting group */
+    struct discord_bucket *miss;
+
+    /* client-wide ratelimiting timeout */
+    struct {
+        /** global ratelimit */
+        u64unix_ms wait_ms;
+        /** global rwlock  */
+        pthread_rwlock_t rwlock;
+        /** global lock */
+        pthread_mutex_t lock;
+    } global;
+};
+
+/**
+ * @brief Initialize ratelimiter handle
+ *
+ * A hashtable shall be used for storage and retrieval of discovered buckets
+ * @param conf optional pointer to a parent logconf
+ * @return the ratelimiter handle
+ */
+struct discord_ratelimiter *discord_ratelimiter_init(struct logconf *conf);
+
+/**
+ * @brief Cleanup all buckets that have been discovered
+ *
+ * @note pending requests will be moved to `adapter.idleq`
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ */
+void discord_ratelimiter_cleanup(struct discord_ratelimiter *rl);
+
+/**
+ * @brief Iterate known buckets
+ *
+ * @param rl the handle initialized with discord_ratelimiter_init()
  * @param adapter the handle initialized with discord_adapter_init()
- * @param the bucket to wait on cooldown
- * @return amount to sleep for in milliseconds
+ * @param iter the user callback to be called per bucket
  */
-int64_t discord_bucket_get_wait(struct discord_adapter *adapter,
-                                struct discord_bucket *bucket);
+void discord_ratelimiter_foreach(struct discord_ratelimiter *rl,
+                                 struct discord_adapter *adapter,
+                                 void (*iter)(struct discord_adapter *adapter,
+                                              struct discord_bucket *b));
 
 /**
- * @brief Get `route` from HTTP method and endpoint
+ * @brief Build unique key formed from the HTTP method and endpoint
+ * @see https://discord.com/developers/docs/topics/rate-limits
  *
- * @param method the request method
- * @param route buffer filled with generated route
- * @param endpoint_fmt the printf-like endpoint formatting string
- * @param args variadic arguments matched to `endpoint_fmt`
+ * @param[in] method the request method
+ * @param[out] key unique key for matching to buckets
+ * @param[in] endpoint_fmt the printf-like endpoint formatting string
+ * @param[in] args variadic arguments matched to `endpoint_fmt`
  */
-void discord_bucket_get_route(enum http_method method,
-                              char route[DISCORD_ROUTE_LEN],
-                              const char endpoint_fmt[],
-                              va_list args);
+void discord_ratelimiter_build_key(enum http_method method,
+                                   char key[DISCORD_ROUTE_LEN],
+                                   const char endpoint_fmt[],
+                                   va_list args);
 
 /**
- * @brief Get a `struct discord_bucket` assigned to `route`
+ * @brief Get global timeout timestamp
  *
- * @param adapter the handle initialized with discord_adapter_init()
- * @param route route obtained from discord_bucket_get_route()
- * @return bucket assigned to `route` or `adapter->b_null` if no match found
+ * @param rl the handle initialized with discord_ratelimiter_init()
+ * @return the most recent global timeout timestamp
  */
-struct discord_bucket *discord_bucket_get(struct discord_adapter *adapter,
-                                          const char route[DISCORD_ROUTE_LEN]);
+u64unix_ms discord_ratelimiter_get_global_wait(struct discord_ratelimiter *rl);
 
 /**
  * @brief Update the bucket with response header data
  *
- * @param adapter the handle initialized with discord_adapter_init()
+ * @param rl the handle initialized with discord_ratelimiter_init()
  * @param bucket NULL when bucket is first discovered
- * @param route route obtained from discord_bucket_get_route()
+ * @param key obtained from discord_ratelimiter_get_key()
  * @param info informational struct containing details on the current transfer
  * @note If the bucket was just discovered it will be created here.
  */
-void discord_bucket_build(struct discord_adapter *adapter,
-                          struct discord_bucket *bucket,
-                          const char route[DISCORD_ROUTE_LEN],
-                          struct ua_info *info);
+void discord_ratelimiter_build(struct discord_ratelimiter *rl,
+                               struct discord_bucket *bucket,
+                               const char key[DISCORD_ROUTE_LEN],
+                               struct ua_info *info);
 
 /** @} DiscordInternalAdapterRatelimit */
 
@@ -514,8 +564,8 @@ struct discord_gateway {
         u64unix_ms now;
         /** timestamp of last succesful identify request */
         u64unix_ms identify;
-        /** timestamp of last succesful event timestamp in ms (resets every
-         * 60s) */
+        /** timestamp of last succesful event timestamp in ms
+         *      (resets every 60s) */
         u64unix_ms event;
         /** latency obtained from HEARTBEAT and HEARTBEAT_ACK interval */
         int ping_ms;
@@ -554,6 +604,23 @@ struct discord_gateway {
         } retry;
     } * session;
 
+    /** current iteration JSON string data */
+    char *json;
+    /** current iteration JSON string data length */
+    size_t length;
+
+    /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
+    struct {
+        /** current iteration JSON key/value pairs */
+        jsmnf_pair *pairs;
+        /** current iteration number of JSON key/value pairs */
+        unsigned npairs;
+        /** current iteration JSON tokens (fed to `jsmnf_pair`) */
+        jsmntok_t *tokens;
+        /** current iteration number of JSON tokens */
+        unsigned ntokens;
+    } parse;
+
     /** response-payload structure */
     struct {
         /** field 'op' */
@@ -563,7 +630,7 @@ struct discord_gateway {
         /** field 't' */
         char name[32];
         /** field 'd' */
-        struct sized_buffer data;
+        jsmnf_pair *data;
     } payload;
 
     /** user-commands structure */
@@ -592,27 +659,10 @@ struct discord_gateway {
 };
 
 /**
- * @brief Context in case event is scheduled to be triggered
- *        from concord's worker threads
- */
-struct discord_event {
-    /** the event name */
-    char *name;
-    /** a copy of payload data */
-    struct sized_buffer data;
-    /** the discord gateway client */
-    struct discord_gateway *gw;
-    /** the event unique id value */
-    enum discord_gateway_events event;
-    /** the event callback */
-    void (*on_event)(struct discord_gateway *gw, struct sized_buffer *data);
-};
-
-/**
  * @brief Initialize the fields of Discord Gateway handle
  *
  * @param gw the gateway handle to be initialized
- * @param conf optional pointer to a initialized logconf
+ * @param conf optional pointer to a parent logconf
  * @param token the bot token
  */
 void discord_gateway_init(struct discord_gateway *gw,
@@ -757,8 +807,7 @@ unsigned discord_internal_timer(struct discord *client,
 struct discord {
     /** DISCORD logging module */
     struct logconf conf;
-    /** whether this is the original client or a clone @deprecated unnecessary
-     *      once discord_clone() is removed */
+    /** whether this is the original client or a clone */
     bool is_original;
     /** the bot token */
     struct sized_buffer token;

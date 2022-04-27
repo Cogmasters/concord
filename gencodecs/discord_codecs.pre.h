@@ -39,22 +39,21 @@ PP_INCLUDE("types.h")
         }
 
 /* Custom JSON decoding macros */
-#define GENCODECS_JSON_DECODER_PTR_json_char(f, buf, _var, _type)             \
-    if (f) {                                   \
-        _var = _gc_strndup(buf + f->val->start, f->val->end - f->val->start); \
-        ret += f->val->end - f->val->start;                                   \
+#define GENCODECS_JSON_DECODER_PTR_json_char(_f, _js, _var, _type)            \
+    if (_f) {                                                                 \
+        _var = _gc_strndup(js + _f->v.pos, _f->v.len);                        \
+        ret += _f->v.len;                                                     \
     }
-#define GENCODECS_JSON_DECODER_size_t(f, buf, _var, _type)                    \
-    if (f && f->val->type == JSMN_PRIMITIVE)                                  \
-        _var = (size_t)strtoull(buf + f->val->start, NULL, 10)
-#define GENCODECS_JSON_DECODER_uint64_t(f, buf, _var, _type)                  \
-    if (f) sscanf(buf + f->val->start, "%" SCNu64, &_var)
+#define GENCODECS_JSON_DECODER_size_t(_f, _js, _var, _type)                   \
+    if (_f && _f->type == JSMN_PRIMITIVE)                                     \
+        _var = (size_t)strtoull(_js + _f->v.pos, NULL, 10)
+#define GENCODECS_JSON_DECODER_uint64_t(_f, _js, _var, _type)                 \
+    if (_f) sscanf(_js + _f->v.pos, "%" SCNu64, &_var)
 #define GENCODECS_JSON_DECODER_u64snowflake GENCODECS_JSON_DECODER_uint64_t
 #define GENCODECS_JSON_DECODER_u64bitmask GENCODECS_JSON_DECODER_uint64_t
-#define GENCODECS_JSON_DECODER_u64unix_ms(f, buf, _var, _type)                \
-    if (f && f->val->type == JSMN_STRING)                                     \
-        cog_iso8601_to_unix_ms(buf + f->val->start,                           \
-                                 f->val->end - f->val->start, &_var)
+#define GENCODECS_JSON_DECODER_u64unix_ms(_f, _js, _var, _type)               \
+    if (_f && _f->type == JSMN_STRING)                                        \
+        cog_iso8601_to_unix_ms(_js + _f->v.pos, _f->v.len, &_var)
 
 /* Custom field macros */
 #define FIELD_SNOWFLAKE(_name)                                                \

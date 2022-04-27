@@ -149,7 +149,7 @@ discord_run(struct discord *client)
 
         /* stop all pending requests in case of connection shutdown */
         if (true == discord_gateway_end(&client->gw)) {
-            discord_adapter_stop_all(&client->adapter);
+            discord_adapter_stop_buckets(&client->adapter);
             break;
         }
     }
