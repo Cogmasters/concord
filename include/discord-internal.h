@@ -606,6 +606,11 @@ struct discord_gateway {
         } retry;
     } * session;
 
+    /** current iteration JSON string data */
+    char *json;
+    /** current iteration JSON string data length */
+    size_t length;
+
     /** parse JSON tokens into a `jsmnf_pairs` key/value pairs hashtable */
     struct {
         /** current iteration JSON key/value pairs */

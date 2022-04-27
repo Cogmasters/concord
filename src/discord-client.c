@@ -92,6 +92,8 @@ _discord_clone_gateway(struct discord_gateway *clone,
     clone->payload.data = malloc(n * sizeof *orig->parse.pairs);
     memcpy(clone->payload.data, orig->payload.data,
            n * sizeof *orig->parse.pairs);
+
+    clone->length = cog_strndup(orig->json, orig->length, &clone->json);
 }
 
 struct discord *
@@ -107,6 +109,19 @@ discord_clone(const struct discord *orig)
     return clone;
 }
 
+static void
+_discord_clone_gateway_cleanup(struct discord_gateway *clone)
+{
+    free(clone->payload.data);
+    free(clone->json);
+}
+
+static void
+_discord_clone_cleanup(struct discord *client)
+{
+    _discord_clone_gateway_cleanup(&client->gw);
+}
+
 void
 discord_cleanup(struct discord *client)
 {
@@ -120,6 +135,9 @@ discord_cleanup(struct discord *client)
 #ifdef HAS_DISCORD_VOICE
         discord_voice_connections_cleanup(client);
 #endif /* HAS_DISCORD_VOICE */
+    }
+    else {
+        _discord_clone_cleanup(client);
     }
     free(client);
 }

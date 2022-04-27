@@ -145,6 +145,12 @@ logconf_http(struct logconf *conf,
 void
 logconf_setup(struct logconf *conf, const char id[], FILE *fp)
 {
+    jsmn_parser parser;
+    jsmntok_t tokens[256];
+    size_t fsize;
+    char *file;
+    int ret;
+
     struct {
         char level[16];
         char filename[1028];
@@ -154,9 +160,6 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
             char filename[1028];
         } http;
     } l = { 0 };
-    jsmn_parser parser;
-    jsmntok_t tokens[256];
-    int ret;
 
     memset(conf, 0, sizeof *conf);
 
@@ -172,71 +175,74 @@ logconf_setup(struct logconf *conf, const char id[], FILE *fp)
     conf->logger = calloc(1, sizeof *conf->logger);
     conf->http = calloc(1, sizeof *conf->http);
 
-    conf->file.start = cog_load_whole_file_fp(fp, &conf->file.size);
+    file = cog_load_whole_file_fp(fp, &fsize);
 
     /* populate logger settings with the 'config.json' file */
     jsmn_init(&parser);
-    if (0 < jsmn_parse(&parser, conf->file.start, conf->file.size, tokens,
+    if (0 < jsmn_parse(&parser, file, fsize, tokens,
                        sizeof(tokens) / sizeof *tokens))
     {
         jsmnf_loader loader;
         jsmnf_pair pairs[256];
 
         jsmnf_init(&loader);
-        if (0 < jsmnf_load(&loader, conf->file.start, tokens, parser.toknext,
-                           pairs, sizeof(pairs) / sizeof *pairs))
+        if (0 < jsmnf_load(&loader, file, tokens, parser.toknext, pairs,
+                           sizeof(pairs) / sizeof *pairs))
         {
             jsmnf_pair *f;
 
-            if ((f = jsmnf_find(pairs, "logging", 7))) {
+            if ((f = jsmnf_find(pairs, file, "logging", 7))) {
                 jsmnf_pair *f1;
 
-                if ((f1 = jsmnf_find(f, "level", 5)))
-                    snprintf(l.level, sizeof(l.level), "%.*s",
-                             f1->value.length, f1->value.contents);
-                if ((f1 = jsmnf_find(f, "filename", 8)))
+                if ((f1 = jsmnf_find(f, file, "level", 5)))
+                    snprintf(l.level, sizeof(l.level), "%.*s", (int)f1->v.len,
+                             file + f1->v.pos);
+                if ((f1 = jsmnf_find(f, file, "filename", 8)))
                     snprintf(l.filename, sizeof(l.filename), "%.*s",
-                             f1->value.length, f1->value.contents);
-                if ((f1 = jsmnf_find(f, "quiet", 5)))
-                    l.quiet = ('t' == *f1->value.contents);
-                if ((f1 = jsmnf_find(f, "use_color", 9)))
-                    l.use_color = ('t' == *f1->value.contents);
-                if ((f1 = jsmnf_find(f, "overwrite", 9)))
-                    l.overwrite = ('t' == *f1->value.contents);
-                if ((f1 = jsmnf_find(f, "http", 4))) {
+                             (int)f1->v.len, file + f1->v.pos);
+                if ((f1 = jsmnf_find(f, file, "quiet", 5)))
+                    l.quiet = ('t' == file[f1->v.pos]);
+                if ((f1 = jsmnf_find(f, file, "use_color", 9)))
+                    l.use_color = ('t' == file[f1->v.pos]);
+                if ((f1 = jsmnf_find(f, file, "overwrite", 9)))
+                    l.overwrite = ('t' == file[f1->v.pos]);
+                if ((f1 = jsmnf_find(f, file, "http", 4))) {
                     jsmnf_pair *f2;
 
-                    if ((f2 = jsmnf_find(f1, "enable", 6)))
-                        l.http.enable = ('t' == *f2->value.contents);
-                    if ((f2 = jsmnf_find(f1, "filename", 8)))
+                    if ((f2 = jsmnf_find(f1, file, "enable", 6)))
+                        l.http.enable = ('t' == file[f2->v.pos]);
+                    if ((f2 = jsmnf_find(f1, file, "filename", 8)))
                         snprintf(l.http.filename, sizeof(l.http.filename),
-                                 "%.*s", f2->value.length, f2->value.contents);
+                                 "%.*s", (int)f2->v.len, file + f2->v.pos);
                 }
-                if ((f1 = jsmnf_find(f, "disable_modules", 15)) && f1->length)
-                {
+                if ((f1 = jsmnf_find(f, file, "disable_modules", 15))
+                    && f1->size) {
                     int i = 0;
 
                     conf->disable_modules.ids =
-                        malloc(f1->length * sizeof(char *));
-                    for (i = 0; i < f1->length; ++i) {
-                        jsmnf_pair *f2 = f1->buckets + i;
+                        malloc(f1->size * sizeof(char *));
+                    for (i = 0; i < f1->size; ++i) {
+                        jsmnf_pair *f2 = f1->fields + i;
 
                         if (f2->type == JSMN_STRING) {
-                            const size_t length = f2->value.length + 1;
+                            const size_t length = f2->v.len + 1;
                             char *buf;
 
                             buf = malloc(length);
-                            memcpy(buf, f2->value.contents, f2->value.length);
-                            buf[f2->value.length] = '\0';
+                            memcpy(buf, file + f2->v.pos, f2->v.len);
+                            buf[f2->v.len] = '\0';
 
                             conf->disable_modules.ids[i] = buf;
                         }
                     }
-                    conf->disable_modules.size = f1->length;
+                    conf->disable_modules.size = f1->size;
                 }
             }
         }
     }
+
+    conf->file.start = file;
+    conf->file.size = fsize;
 
     /* skip everything else if this module is disabled */
     if (module_is_disabled(conf)) return;
@@ -323,7 +329,7 @@ logconf_cleanup(struct logconf *conf)
 }
 
 struct sized_buffer
-logconf_get_field(struct logconf *conf, char *const path[], int depth)
+logconf_get_field(struct logconf *conf, char *const path[], unsigned depth)
 {
     struct sized_buffer field = { 0 };
     jsmn_parser parser;
@@ -343,10 +349,10 @@ logconf_get_field(struct logconf *conf, char *const path[], int depth)
                            pairs, sizeof(pairs) / sizeof *pairs))
         {
             jsmnf_pair *f;
-            if ((f = jsmnf_find_path(pairs, path, depth))) {
+            if ((f = jsmnf_find_path(pairs, conf->file.start, path, depth))) {
                 /* TODO: field.start should be a 'const char*' */
-                field.start = (char *)f->value.contents;
-                field.size = f->value.length;
+                field.start = (char *)conf->file.start + f->v.pos;
+                field.size = f->v.len;
             }
         }
     }

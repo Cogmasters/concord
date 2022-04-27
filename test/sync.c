@@ -204,26 +204,28 @@ scheduler(struct discord *client,
     if (event == DISCORD_GATEWAY_EVENTS_MESSAGE_CREATE) {
         char cmd[1024] = "";
 
+        jsmntok_t *tokens = NULL;
+        unsigned ntokens = 0;
         jsmn_parser parser;
-        jsmntok_t tokens[16];
 
         jsmn_init(&parser);
-        if (0 < jsmn_parse(&parser, data, size, tokens,
-                           sizeof(tokens) / sizeof *tokens))
-        {
+        if (0 < jsmn_parse_auto(&parser, data, size, &tokens, &ntokens)) {
+            jsmnf_pair *pairs = NULL;
+            unsigned npairs = 0;
             jsmnf_loader loader;
-            jsmnf_pair pairs[16];
 
             jsmnf_init(&loader);
-            if (0 < jsmnf_load(&loader, data, tokens, parser.toknext, pairs,
-                               sizeof(pairs) / sizeof *pairs))
+            if (0 < jsmnf_load_auto(&loader, data, tokens, parser.toknext,
+                                    &pairs, &npairs))
             {
                 jsmnf_pair *f;
 
-                if ((f = jsmnf_find(pairs, "content", 7)))
-                    snprintf(cmd, sizeof(cmd), "%.*s", f->value.length,
-                             f->value.contents);
+                if ((f = jsmnf_find(pairs, data, "content", 7)))
+                    snprintf(cmd, sizeof(cmd), "%.*s", (int)f->v.len,
+                             data + f->v.pos);
+                free(pairs);
             }
+            free(tokens);
         }
 
         if (0 == strcmp(PREFIX "ping", cmd)

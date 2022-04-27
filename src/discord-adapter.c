@@ -254,7 +254,7 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
         return false;
     case HTTP_TOO_MANY_REQUESTS: {
         struct sized_buffer body = ua_info_get_body(info);
-        struct _jsmnf_szbuf message = { 0 };
+        struct jsmnftok message = { 0 };
         double retry_after = 1.0;
         bool is_global = false;
         jsmn_parser parser;
@@ -273,11 +273,12 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
             {
                 jsmnf_pair *f;
 
-                if ((f = jsmnf_find(pairs, "global", 6)))
-                    is_global = (*f->value.contents == 't');
-                if ((f = jsmnf_find(pairs, "message", 7))) message = f->value;
-                if ((f = jsmnf_find(pairs, "retry_after", 11)))
-                    retry_after = strtod(f->value.contents, NULL);
+                if ((f = jsmnf_find(pairs, body.start, "global", 6)))
+                    is_global = ('t' == body.start[f->v.pos]);
+                if ((f = jsmnf_find(pairs, body.start, "message", 7)))
+                    message = f->v;
+                if ((f = jsmnf_find(pairs, body.start, "retry_after", 11)))
+                    retry_after = strtod(body.start + f->v.pos, NULL);
             }
         }
 
@@ -286,8 +287,8 @@ _discord_adapter_get_info(struct discord_adapter *adapter,
 
         logconf_warn(&adapter->conf,
                      "429 %s RATELIMITING (wait: %" PRId64 " ms) : %.*s",
-                     is_global ? "GLOBAL" : "", *wait_ms, message.length,
-                     message.contents);
+                     is_global ? "GLOBAL" : "", *wait_ms, message.len,
+                     body.start + message.pos);
 
         return true;
     }

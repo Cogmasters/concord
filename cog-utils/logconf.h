@@ -269,7 +269,7 @@ void logconf_cleanup(struct logconf *conf);
  */
 struct sized_buffer logconf_get_field(struct logconf *conf,
                                       char *const path[],
-                                      int depth);
+                                      unsigned depth);
 
 /**
  * @brief Log HTTP transfers
