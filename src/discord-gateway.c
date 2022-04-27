@@ -1157,7 +1157,11 @@ on_dispatch(struct discord_gateway *gw)
         struct _discord_event_context *cxt =
             _discord_event_context_init(gw, event, on_event);
         int ret = work_run(&dispatch_run, cxt);
-        VASSERT_S(0 == ret, "Couldn't create task (code %d)", ret);
+        if (ret != 0) {
+            log_error("Couldn't execute worker-thread (code %d)", ret);
+            _discord_event_context_cleanup(cxt);
+        }
+        break;
     } break;
     default:
         ERR("Unknown event handling mode (code: %d)", mode);
